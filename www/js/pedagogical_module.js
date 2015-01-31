@@ -446,6 +446,7 @@ define([
 		matchingID: null,
 		logging: null,
 		descriptionCounter: 0,
+		_assessment: null,
 	
 		/*****
 		 * Private Functions
@@ -602,6 +603,10 @@ define([
 			};
 			record.init("problemCompleted", 0);
 		},
+
+		setAssessment: function(/* object */ assess){
+			this._assessment = assess;
+		},
 		
 		processAnswer: function(/*string*/ id, /*string*/ nodePart, /*string | object*/ answer,/*string*/ answerString){
 			// Summary: Pocesses a student's answers and returns if correct, 
@@ -743,6 +748,10 @@ define([
 				solutionProvided: solutionGiven
 			}, logObj);
 			this.logging.log('solution-step', logObj);
+			
+			if(this._assessment){
+				this._assessment.updateError(nodePart, checkStatus);
+			}
 
 			console.log("**** PM returning:\n", returnObj);
 			return returnObj;

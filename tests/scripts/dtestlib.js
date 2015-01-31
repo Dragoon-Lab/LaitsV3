@@ -135,11 +135,11 @@ function rgbToColor(toConvert)
     {
         return "green";
     }
-    else if(toConvert === "rgb(255,213,0)" || toConvert === "yellow")
+    else if(toConvert === "rgb(255,213,0)" || toConvert === "yellow" || toConvert === "rgba(255,255,0,1)")
     {
         return "yellow";
     }
-    else if(toConvert === "rgb(255,128,128)" || toConvert === "red")
+    else if(toConvert === "rgb(255,128,128)" || toConvert === "rgba(255,128,128,1)" || toConvert === "red")
     {
         return "red";
     }
@@ -227,7 +227,7 @@ exports.getHtmlOfNode = function(client, nodeName){
 
 exports.waitTime = function(client, timeToWait)
 {
-    await(wait(timeToWait),defer());
+    wait(timeToWait);
 }
 
 exports.waitForEditor = function(client)
@@ -440,7 +440,7 @@ exports.getKindOfQuantity = function(client){
 
 exports.setKindOfQuantity = function(client, type){
     await(client.click('#selectKind', defer()));
-    await(client.click('#selectKind', defer()));
+    wait(100);
     await(client.waitForVisible('#selectKind_menu', defer()));
     var number = findDropDownByName(client, type);
     if(number != null)
@@ -695,6 +695,10 @@ exports.closeNodeEditor = function(client){
     await(client.click('span[class="dijitDialogCloseIcon"]',defer()));
 }
 
+exports.nodeEditorDelete = function(client){
+    await(client.click('#deleteButton', defer()));
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 5. Graph and table editor window functions
 // These functions require an open Graph & Table window
@@ -747,7 +751,10 @@ exports.getGraphResultText = function(client){
 
 exports.setQuantityValue = function(client,quantityName,newValue){
     // Summary: Changes the value in the box marked with quantityName to newValue
-    await(client.setValue('#textGraph_id' + quantityName, newValue, defer()));
+    await(client.setValue('#textGraph_id' + findIdbyName(client,quantityName), newValue , defer()));
+    await(client.addValue('#textGraph_id' + findIdbyName(client,quantityName), "\r" , defer()));
+    //wait(100);
+    await(client.click('#row0col0', defer())); 
 }
 
 exports.moveSliderRight = function(client,quantityName,distance){
@@ -771,7 +778,7 @@ exports.tableGetValue = function(client,row,column){
 
 exports.closeGraphAndTableWindow = function(client){
     // Summary: closes the graph/table window
-    console.warn("Not yet implemented.");
+    await(client.click('span[class="dijitDialogCloseIcon"]',defer()));
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

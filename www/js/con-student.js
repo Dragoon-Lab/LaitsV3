@@ -35,8 +35,9 @@ define([
 	'dijit/registry',
 	'./controller',
 	"./pedagogical_module",
-	"./typechecker"
-], function(aspect, array, declare, lang, dom, ready, registry, controller, PM, typechecker){
+	"./typechecker",
+	"./schemas-student"
+], function(aspect, array, declare, lang, dom, ready, registry, controller, PM, typechecker, schemaStudent){
 	// Summary: 
 	//			MVC for the node editor, for students
 	// Description:
@@ -52,6 +53,7 @@ define([
 	return declare(controller, {
 		_PM: null,
         _previousExpression:null,
+		_assessment: null,
 		constructor: function(mode, subMode, model){
 			console.log("++++++++ In student constructor");
 			this._PM = new PM(mode, subMode, model);
@@ -77,6 +79,14 @@ define([
 
 		setPMState: function(state){
 			this._PM.setState(state);
+		},
+		
+		setAssessment: function(session){
+			if(this._model.active.getSchemas()){
+				this._assessment = new schemaStudent(this._model, session);
+			}
+
+			this._PM.setAssessment(this._assessment);
 		},
 
 		populateSelections: function(){
@@ -320,6 +330,18 @@ define([
 			var directives = this._PM.checkDoneness(this._model);
 			this.applyDirectives(directives);
 			return directives;
+		},
+
+		nodeStartAssessment: function(){
+			if(this._assessment){
+				this._assessment.nodeStart(this.currentID);
+			}
+		},
+
+		nodeCloseAssessment: function(){
+			if(this._assessment){
+				this._assessment.nodeClose(this.currentID);
+			}
 		}
 
 	});

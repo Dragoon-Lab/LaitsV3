@@ -26,8 +26,8 @@ define([
 	'dojo/aspect', 'dojo/dom', "dojo/dom-class", "dojo/dom-construct", 'dojo/dom-style',
 	'dojo/keys', 'dojo/on', "dojo/ready",
 	"dijit/popup", 'dijit/registry', "dijit/TooltipDialog",
-	'./equation', './graph-objects','./typechecker', "./forum"
-], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, popup, registry, TooltipDialog, expression, graphObjects, typechecker, forum){
+	'./equation', './graph-objects','./typechecker', "./forum", "./schemas-student"
+], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, popup, registry, TooltipDialog, expression, graphObjects, typechecker, forum, schemaStudent){
 	// Summary: 
 	//			Controller for the node editor, common to all modes
 	// Description:
@@ -361,6 +361,8 @@ define([
 					domStyle.set(this.currentID, 'border', borderColor);	 // set border gray for studentModelNodes in TEST and EDITOR mode
 				}
 			}
+			
+			this.nodeCloseAssessment();
 
             if(this._previousExpression) //bug 2365
                 this._previousExpression=null; //clear the expression
@@ -535,6 +537,13 @@ define([
 		},
 		/* Stub to update connections in graph */
 		addQuantity: function(source, destinations){
+		},
+
+		updateDescription: function(descID){
+			console.log("===========>	changing node description to " + descID);
+			if(typeof descID !== 'undefined' && descID != null){
+				this._model.active.setDescriptionID(this.currentID, descID);
+			}
 		},
 
 		updateType: function(type){
@@ -974,6 +983,7 @@ define([
 			//Checks if the current mode is COACHED mode and exit from node editor if all the modes are defined
 			console.log("showNodeEditor called for node ", id);
 			this.currentID = id; //moved using inside populateNodeEditorFields
+			this.nodeStartAssessment();
 			this.disableHandlers = true;
 			this.initialControlSettings(id);
 			this.populateNodeEditorFields(id);
@@ -1108,6 +1118,8 @@ define([
                             this._model.active.setInitial(this.currentID, directive.value);
                         } else if(w.id == 'equationBox'){
                         	this.equationSet(directive.value);
+                        }else if(w.id == 'selectDescription'){
+                        	this.updateDescription(directive.value);
                         }
 
 						// Each control has its own function to update the
@@ -1133,6 +1145,14 @@ define([
 
 		addAssistanceScore: function(/* String */ id){
 			//stub over written in con-author. if there is a student specific implementation then kindly move this to con-student
+		},
+
+		nodeStartAssessment: function(){
+			//stub over written in con-student. assessment function called at node start.
+		},
+
+		nodeCloseAssessment: function(){
+			//stub over written in con-student. assessment function called at node close
 		}
 
 	});

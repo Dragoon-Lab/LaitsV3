@@ -2,167 +2,217 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/array",
 	"dojo/on",
+	"dojo/_base/lang",
+	"dojo/dom",
+	"dijit/registry",
+	"dojo/json",
 	"dojo/query",
 	"dojo/NodeList-dom",
 	"dojo/html",
 	"dojo/dom-construct",
+	"dijit/layout/AccordionContainer",
+	"dijit/layout/ContentPane",
 	"./schemas-load-save"
-], function(declare, array, on, dom-query, dom-list, html, dom-construct, schemas){
+], function(declare, array, on, lang, dom, registry, json, domQuery, domList, html, domConstruct, accordion, content, schemas){
 	return declare(null, {
-		schemaApplication: {},
 		nodesCount: 0,
 		maxNodes: 0, 
-		schema: {},
-		currentSchemaID: "",
+		currentSchema: {},
 		_model : {},
 		_schemas: {},
-		schemaSession: {},
-		currentNodes: null,
+		_session:{},
+		currentNodes: [],
 
 		constructor: function(/* object */ model, /* object */ session){
-			this.schemaSession = new schema(session, "");
-			schemaSession.getFileData("schemas.json").then(function(schemas){
-				this._schemas = schemas;
+			this._model = model;
+			this.schemaSession = new schemas(session, "");
+			var schemaObject;
+			this.schemaSession.getFileData("schemas.json").then(function(schemas){
+				schemaObject = schemas;
 			});
+			
+			this._schemas = json.parse(schemaObject);
+			this._session = session;
 
-			this.initWindow();	
+			this.makeSchemaWindow();
+			//this.initNodes();
+			this._initHandles();
 		},
 
-		initWindow: function(){
-			var schemaString = this.makeSchemaWindow();
-			schemaWidget = dom.byId("accordion");
-			html.set(schemaWidget, schemaString);
-			
-			var nodeString = this.makeNodesDropdown();
+		initNodes: function(){
+			this.curretNodes = [];
+			this.nodesCount = 0;
+			var nodeString = this.makeNodeDropdown();
 			nodesWidget = dom.byId("nodesDropdown");
 			html.set(nodesWidget, nodeString);
+			this.initNodesHandler();
 		},
 
 		makeSchemaWindow: function(){
 			//creates schema window html
-			contentPane = '<div id="radioSchema">';
+			contentPane = '';
+			var aContainer = new accordion({}, "accordion");
 			array.forEach(this._schemas, function(schemaType){
-				contentPane += '<div data-dojo-type="dijit/layout/ContentPane" title = "'+schemaType.schemaClass+'">';
+				//contentPane += '<div data-dojo-type="dijit/layout/ContentPane" title = "'+schemaType.schemaClass+'">';
+				contentPane = '';
 				array.forEach(schemaType.subClasses, function(schema){
-					contentPane += '<input type="radio" name="schema" class="schema" id="'+schema.id+'" value = "'+schema.id+'" data-dojo-type="dijit/form/RadioButton/><label for = "'+schema.id+'">'+schema.name+'</label>';
+					contentPane += '<input type="radio" name="schema" class="radioSchema" id="'+schema.id+'" value = "'+schema.id+'" data-dojo-type="dijit/form/RadioButton"/><label for = "'+schema.id+'">'+schema.name+'</label><br/>';
 				}, this);
-				contentPane += '</div>';
+				//contentPane += '</div>';
+				aContainer.addChild(new content({
+					title: schemaType.schemaClass,
+					content: contentPane
+				}));
 			}, this);
-			contentPane += '</div>';
-
-			return contentPane;
+			//contentPane += '';
+			aContainer.startup();
+			//return contentPane;
 		},
 
 		makeNodeDropdown: function(){
 			var nodes = this._model.given.getNodes();
-			nodesCount++;
+			this.nodesCount++;
+			this.maxNodes = 0;
 
-			var nodesSelect += '<select id = "nodes'+nodesCount+'" data-dojo-type = "dijit/form/Select">';
+			var nodesSelect = '<select class="nodesDropdown" id = "nodes'+ this.nodesCount+'" data-dojo-type = "dijit/form/Select">';
 			nodesSelect += '<option value="">--Select--</option>';
-			array.forEach(nodes, function(node){
-				if(!node.genus){
-					nodesSelect += '<option value = "'+ node.ID +'">'+ node.name +'</option>';
-					maxNodes ++;
-				}
-			}, this);
-			
+			if(nodes){
+				array.forEach(nodes, function(node){
+					if(node.genus == "required" && this.currentNodes.indexOf(node.ID) == -1){
+						nodesSelect += '<option value = "'+ node.ID +'">'+ node.name +'</option>';
+						this.maxNodes++;
+					}
+				}, this);
+			}
 			return nodesSelect;
 		},
 
 		_initHandles: function(){
-			var schemaWidget = dom.byId("radioSchema");
-			on(schemaWidget, "change", function(){
-				var schemas = dom-query(".schema");
-				schemas.forEach(function(schema){
-					if(schema.checked){
-						this.handleSchema(schema.value);
-					}
-				}, this);
-			});
+			var schemaWidget = dom.byId("accordion");
+			on(schemaWidget, "change", lang.hitch(this, function(){
+				this.handleSchema.apply(this, arguments);
+			}));
 			
 			var isolationWidget = dom.byId("isolationCheckbox");
-			on(isolationWidget, "change", function(){
-				this.handleDifficulty("isolation", isolationWidget.checked);
-			});
+			on(isolationWidget, "change", lang.hitch(this, function(){
+				this.handleDifficulty.apply(this, arguments);
+			}));
 
 			var cuesWidget = dom.byId("cuesCheckbox");
-			on(cuesWidget, "change", function(){
-				this.handleDifficulty("cues", cuesWidget.checked);
-			});
+			on(cuesWidget, "change", lang.hitch(this, function(){
+				this.handleDifficulty.apply(this, arguments);
+			}));
 
-			var phrasesWidget = domy.byId("phrasesCheckbox");
-			on(phrasesWidget, "change", function(){
-				this.handleDifficulty("phrase", phrasesWidget.checked);
-			});
-
-			this.initNodesHandler();
+			var phrasesWidget = dom.byId("phrasesCheckbox");
+			on(phrasesWidget, "change", lang.hitch(this, function(){
+				this.handleDifficulty.apply(this, arguments);
+			}));
 
 			var saveButtonWidget = dom.byId("saveSchema");
-			on(saveButtonWidget, "click", function(){
+			on(saveButtonWidget, "click", lang.hitch(this, function(){
 				this.saveSchema();
-			});
+			}));
 
 			var resetButtonWidget = dom.byId("resetSchema");
-			on(resetButtonWidget, "click", function(){
+			on(resetButtonWidget, "click", lang.hitch(this, function(){
 				this.resetSchema();
-			});
+			}));
 		},
 
 		initNodesHandler: function(){
-			var nodeID = "nodes" + nodesCount;
+			var nodeID = "nodes" + this.nodesCount;
 			nodesWidget = dom.byId(nodeID);
-			on(nodesWidget, "change", function(){
-				this.handleNodes(nodesWidget.nodeID, nodesWidget.attr('value'));
-			});
+			on(nodesWidget, "change", lang.hitch(this, function(){
+				return this.handleNodes.apply(this, arguments);
+			}));
 		},
 
-		handleSchema: function(value){
-			this._model.given.setSchemaClass(this.currentSchemaID, value);	
+		handleSchema: function(event){
+			this.currentSchema.schemaClass = event.target.id;
 		},
 		
-		handleDifficulty: function(type, value){
-			this._model.given.setSchemaDifficulty(this.currentSchemaID, type, value);
+		handleDifficulty: function(event){
+			var name = event.target.name;
+			var id = event.target.id;
+
+			var widget = dom.byId(id);
+			if(widget.checked){
+				this.currentSchema.difficulty[name] = 0;
+			} else {
+				this.currentSchema.difficulty[name] = 1;
+			}
 		},
 
-		handleNodes: function(id, nodeID){
-			this.currentNodes[id.slice(-1)] = nodeID;
-			if(this.nodesCount < this.maxNodes){
+		handleNodes: function(event){
+			var nodeID = event.target.id;
+			var nodesWidget = dom.byId(nodeID);
+			
+			this.currentNodes[this.nodesCount-1] = nodesWidget.value;
+			if(this.currentNodes.length <= this.maxNodes){
 				var nodeString = this.makeNodeDropdown();
-				var nodesWidget = dom.byId("nodesDropdown");
+				nodeString = '<br/>'+nodeString;
 				
-				var nodeDOM = dom-contruct.toDOM(nodeString);
-				dom-construct.place(nodesWidget, nodeDOM);
+				domConstruct.place(nodeString, nodeID, "after");
 				this.initNodesHandler();
 			}
 		},
 
-		showSchemaWindow: function(id){
-			this.currentSchemaID = id;
-			this._initHandles();
+		showSchemaWindow: function(){
+			this.currentSchema = this._model.given.createSchema();
+			this.nodesCount = 0;
+
+			this.resetSchema();
+			this.resetDifficulty();
+			this.initNodes();
 			
 			//show schema window
+			registry.byId("schemaAuthorBox").show();
 		},
 
-		saveSchema: function(){
+		saveSchema: function(){			
+			this._model.given.saveSchema(this.currentSchema);
 			if(this.currentNodes){
-				this._model.given.setSchemaNodes(this.currentNodes);
+				this._model.given.setSchemaNodes(this.currentSchema.ID, this.currentNodes);
 			}
 			
-			session.saveProblem(this._model.model);
+			this._session.saveProblem(this._model.model);
+			this.nodesCount = 0;
 			//hide schema window
-
+			registry.byId("schemaAuthorBox").hide();
 			//add schema to the list of dropdowns for edit.
 		},
 
 		resetSchema: function(){
-			var index = this._model.given.getSchemaIndex(this.currentSchemaID);
-			var schemas = this._model.given.getSchemas();
-			if(index){
+			//var index = this._model.given.getSchemaIndex(this.currentSchemaID);
+			//var schemas = this._model.given.getSchemas();
+			//this.nodesCount = 0;
+			/*if(index){
 				schemas.splice(index, 1);
-			}
-			this._model.given.addSchema(this.currentSchemaID);
-			
-			this.initWindow();
+			}*/
+			this.currentSchema = this._model.given.createSchema();
+			this.currentNodes = [];
+			this.resetDifficulty();
+			this.resetRadioButtons();
+			this.initNodes();
+		},
+
+		resetDifficulty: function(){
+			var widget = registry.byId("isolationCheckbox");
+			widget.set("checked", false);
+
+			widget = registry.byId("cuesCheckbox");
+			widget.set("checked", false);
+
+			widget = registry.byId("phrasesCheckbox");
+			widget.set("checked", false);
+		},
+		
+		resetRadioButtons: function(){
+			var widgets = domQuery(".radioSchema");
+			widgets.forEach(function(widget){
+				var rWidget = registry.byNode(widget);
+				rWidget.set("checked", false);
+			});
 		}
 	});
 });

@@ -1,34 +1,17 @@
 define([
-	"dojo/_base/declare", "./schemas-load-save"
-], function(declare, schemas){
-	return declare(schemas, {
-		//time: {},
-		//errors: {},
-		//_schemas: {},
+	"dojo/_base/declare",
+	"./assessment"
+], function(declare, assessment){
+	return declare(null, {
+		time: [],
+		errors: [],
 		//_model: {},
 		currentNodeTime: null,
 		currentNodeErrors: null,
 
-		constructor: function(/* object */ model){
-			//this._model = model;
-			//this._schemas = this._model.student.getSchemas();
-			this.assess = new assessment(model);
-			//this._init();
+		constructor: function(/* object */ model, /* object */session){
+			this.assess = new assessment(model, session);
 		},
-
-		/*_init: function(){
-			var nodes = this._model.given.getNodes();
-			array.forEach(nodes, function(node){
-				if(!nodes.genus){
-					this.time.push({node.ID: {
-						"startTime": "",
-						"endTime": "",
-						"diff": "",
-						}
-					});
-				}
-			}, this);
-		},*/
 
 		/* three function below are the major times when user can be called. 
 		** At node start, at node close and at every check of pedagogical module.
@@ -39,28 +22,28 @@ define([
 		// function called on closing of a node
 		nodeClose: function(/* string */ nodeID){
 			this.endTime();
-			this.currentNodeTime = null;
-			this.currentNodeErrors = null;
 
 			this.assess.updateSchema(this.currentNodeTime, this.currentNodeErrors);
 			this.assess.dummy();
-			this.access.saveSchema();
+			this.assess.saveSchema();
+			
+			this.resetNodeValues();
 		},
 
 		//function called on starting of a node
 		nodeStart: function(/* string */ nodeID){
-			this.currentNodeTime = this.getTime(nodeID) || this.addNodeTime(nodeID);
-			this.currentNodeErrors = this.getErrors(nodeID) || this.addErrors(nodeID);
+			this.currentNodeTime = this.addNodeTime(nodeID);
+			this.currentNodeErrors = this.addNodeErrors(nodeID);
 
 			this.startTime();
 		},
 
 		//function called at every pedagogical module check
 		updateError: function(/* string */ nodePart, /* boolean */ isCorrect){
-			if(!isCorrect){
-				this.currentNodeError.errors++;
+			if(isCorrect == "demo" || isCorrect == "incorrect"){
+				this.currentNodeErrors.errors++;
 			}
-			this.currentNodeError.total++;
+			this.currentNodeErrors.total++;
 		},
 
 		startTime: function(/* string */ nodeID){
@@ -69,24 +52,28 @@ define([
 		},
 
 		endTime: function(/* string */ nodeID){
-			this.currentTime.end = new Date();
-			this.currentTime.difference = this.currentNodeTime.end - this.currentNodeTime.start;
+			this.currentNodeTime.end = new Date();
+			this.currentNodeTime.difference = this.currentNodeTime.end - this.currentNodeTime.start;
 		},
 
 		addNodeTime: function(nodeID){
-			var givenID = this._model.student.getDescriptionID(nodeID);
-			var newTime = {
-				node: givenID,
-				start: new Date(),
-				end: null,
-				difference: 0,
-			};
-			//this.time.push(newTime);
+			var newTime = this.getTime(nodeID);
+			if(newTime == null){
+				newTime = {
+					node: nodeID,
+					given: "",
+					start: new Date(),
+					end: null,
+					difference: 0,
+				};
+
+				this.time.push(newTime);
+			}
 
 			return newTime;
 		},
 
-		/*getTime: function(nodeID){
+		getTime: function(nodeID){
 			var l = this.time.length;
 			for(var i = 0; i < l; i++){
 				if(this.time[i].node == nodeID){
@@ -98,27 +85,64 @@ define([
 		},
 
 		getError: function(nodeID){
-			var givenID = this._model.student.getDescriptionID(nodeID);
 			var l = this.errors.length;
 			for(var i = 0; i < l; i++){
-				if(this.errors[i].node == givenID){
+				if(this.errors[i].node == nodeID){
 					return this.errors[i];
 				}
 			}
 
 			return null;
-		},*/
+		},
+
+		getErrorIndex: function(nodeID){
+			var l = this.errors.length;
+			for(var i = 0; i < l; i++){
+				if(this.errors[i].node == nodeID){
+					return i;
+				}
+			}
+
+			return -1;
+		},
+
+		getTimeIndex: function(nodeID){
+			var l = this.time.length;
+			for(var i = 0; i < l; i++){
+				if(this.time[i].node == nodeID){
+					return i;
+				}
+			}
+
+			return -1;
+		},
 
 		addNodeErrors: function(nodeID){
-			var givenID = this._model.student.getDescriptionID(nodeID);
-			var newErrors = {
-				node: givenID,
-				errors: 0,
-				total: 0
-			};
-			//this.errors.push(newErrors);
+			var newErrors = this.getError(nodeID);
+			if(newErrors == null){
+				var newErrors = {
+					node: nodeID, 
+					given: "",
+					errors: 0,
+					total: 0
+				};
+				this.errors.push(newErrors);
+			}
 
 			return newErrors;
+		},
+
+		resetNodeValues: function(){
+			var eIndex = this.getErrorIndex(this.currentNodeErrors.node);
+			var tIndex = this.getTimeIndex(this.currentNodeTime.node);
+
+			this.time[tIndex].difference = 0;
+			this.time[tIndex].end = 0;
+			this.errors[eIndex].errors = 0;
+			this.errors[eIndex].total = 0;
+
+			this.currentNodeTime = null;
+			this.currentNodeErrors = null;
 		}
 	});
 });

@@ -60,7 +60,7 @@
 			"dijit/form/Button", "dijit/form/CheckBox", "dijit/form/TextBox",
 			"dijit/form/ComboBox", "dijit/form/Textarea",
 			"dijit/form/SimpleTextarea", "dijit/Menu",
-			"dijit/layout/ContentPane", "dijit/layout/AccordionContainer",
+			"dijit/layout/ContentPane", 
 			"dragoon/menu", // Wire up menus
 			"dragoon" // Load up Dragoon itself
         ]);	
@@ -121,7 +121,7 @@
              <button type="button" data-dojo-type="dijit/form/Button" id="graphButton">Graph</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="tableButton">Table</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="forumButton" disabled="true">Forum</button>
-             <button type="button" data-dojo-type="dijit/form/Button" id="schemaButton" disabled="true">Schema</button>
+             <button type="button" data-dojo-type="dijit/form/Button" id="schemaButton" disabled="true">Create Schema</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="descButton" disabled="true">Problem &amp; Times</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="saveButton" disabled="true">Save As...</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="mergeButton" disabled="true">Merge </button>
@@ -406,21 +406,21 @@
 		<div id="slideWrapper"> <!--container for slides --></div>
 	</div>
 
-	<div class="claro schema" id="schemaAuthorBox" data-dojo-type="dijit/Dialog" title="Schema Author">
+	<div class="claro sameedit schema" id="schemaAuthorBox" data-dojo-type="dijit/Dialog" title="Schema Author">
 		<div class = "fieldgroup">
 			<label for"accordion">Schemas</label>
-			<div id="accordion" data-dojo-type = "dijit/layout/AccordionContainer"/><!--div for schema box-->
+			<div id="accordion" /><!--div for schema box-->
 		</div>
 		<div class = "fieldgroup">
 			<label for="isolationCheckbox">Schema Application in Isolation?</label>
 			<input id="isolationCheckbox" name="isolation" data-dojo-type="dijit/form/CheckBox" value="agreed" checked="false"/>
 		</div>
 		<div class = "fieldgroup">
-			<label for="cuesCheckbox">Schema presentation has noun cues?</label>
+			<label for="cuesCheckbox">Schema presentation has cues?</label>
 			<input id="cuesCheckbox" name="cues" data-dojo-type="dijit/form/CheckBox" value="agreed" checked="false"/>
 		</div>
 		<div class = "fieldgroup">
-			<label for="phrasesCheckbox">Schema presentation has noun phrases?</label>
+			<label for="phrasesCheckbox">Problem quantities have noun phrases?</label>
 			<input id="phrasesCheckbox" name="phrases" data-dojo-type="dijit/form/CheckBox" value="agreed" checked="false"/>
 		</div>
 		<div class="fieldgroup">
