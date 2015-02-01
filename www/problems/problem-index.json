@@ -129,7 +129,7 @@
             'Thrown-Stone-2' : 'Thrown Stone 2'
         },
 
-    'Generic models':{
+    'Generic Models':{
             'constant':'constant',
             'constant-change-runs-out':'constant change runs out',
             'propor-to-set-point-minus-destination':'propor to set point minus destination',
