@@ -8,8 +8,9 @@ define([
 	"dojo/query",
 	"dojo/NodeList-dom",
 	"dojo/html",
+	"dijit/registry",
 	"./dashboard"
-], function(ioQuery, dom, ready, on, array, domClass, domQuery, nodeList, html, dashboard){
+], function(ioQuery, dom, ready, on, array, domClass, domQuery, nodeList, html, registry, dashboard){
 	var query = ioQuery.queryToObject(window.location.search.slice(1));
 
 	var db = new dashboard(query); 
@@ -42,7 +43,9 @@ define([
 			domClass.toggle(node, "hidden");
 			domClass.add(node, "visible");
 		});
-		
+		var widget = registry.byId(db.modules.display);
+		widget.set("checked", true);
+
 		if(db.modules.options){
 			var radioWidget = dom.byId("tableType");
 			domClass.remove(radioWidget, "hidden");
