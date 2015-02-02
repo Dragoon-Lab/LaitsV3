@@ -131,7 +131,8 @@ function getUrlRoot()
 function rgbToColor(toConvert)
 {
     toConvert = toConvert.trim();
-    if(toConvert === "rgb(0,128,0)" || toConvert === "rgba(148,255,148,1)" || toConvert === "rgba(144,238,144,1)" || toConvert === "green" || toConvert === "rgb(144,238,144)")
+    if(toConvert === "rgb(0,128,0)" || toConvert === "rgba(148,255,148,1)" || 
+       toConvert === "rgba(144,238,144,1)" || toConvert === "green" || toConvert === "rgb(144,238,144)")
     {
         return "green";
     }
@@ -147,11 +148,13 @@ function rgbToColor(toConvert)
     {
         return "white";
     }
-    else if(toConvert === "rgba(0,0,0,0)" || toConvert === "gray" || toConvert === "rgb(230,230,230)" || toConvert == "rgb(230,230,230)" || toConvert == "rgba(230,230,230,1)")
+    else if(toConvert === "rgba(0,0,0,0)" || toConvert === "gray" || toConvert === "rgb(230,230,230)" ||
+            toConvert == "rgb(230,230,230)" || toConvert == "rgba(230,230,230,1)")
     {
         return "gray";
     }
-    else if(toConvert === "rgb(46,254,247" || toConvert === "blue" || toConvert === "rgb(173,216,230)")
+    else if(toConvert === "rgb(46,254,247" || toConvert === "blue" || toConvert === "rgb(173,216,230)" ||
+        toConvert === "rgba(173,216,230,1)")
     {
         return "blue";
     }
