@@ -11,9 +11,9 @@ body {
     padding:20px;
 }
 
-h2 {
+h1 {
     padding-left: 0px !important;
-    text-align:right;
+    text-align:center;
 }
 
 .large { font-size:22px; }

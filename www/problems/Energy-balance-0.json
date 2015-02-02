@@ -1,0 +1,77 @@
+﻿{
+    "task": {
+        "taskName": "eb0",
+        "time": {
+            "start": 0,
+            "end": 30,
+            "step": 0.5,
+            "units": "days",
+            "integrationMethod": "Eulers Method"
+        },
+        "properties": {},
+        "image": {},
+        "taskDescription": [
+            "Energy Balance 0",
+            "Your body burns energy at a more-or-less constant amount per day, but the amount of energy primitive humans ingested per day varied greatly depending on how lucky they were at hunting and gathering.  When there is surplus energy from ingestion, it is stored as fat and other tissue.  When there is too little energy from ingestion, then fat and other tissues are converted back to energy.  Let's suppose Joe wants to build an accurate model of his weight changes, so he starts with this very basic model, which is that the energy stored (as fat, etc) changes daily depending on the energy balance.  The energy balance is the difference between the energy ingested and the energy burned by the body on that day.  When it is positive on a particular day (a good hunt!), then energy storage increase by the surplus.  When it is negative (a poor hunt), then stored energy decreases.  Build a model with two nodes:",
+            "* A parameter, energy balance, which is 100 calories, representing a small surplus per day.",
+            "* An accumulator, energy stored, which starts with 345000 calories (calories are a unit of energy).  It's value tomorrow is just its value today plus the energy balance for today.  ",
+            "",
+            "",
+            ""
+        ],
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 470,
+                    "y": 90
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "energy stored",
+                "description": "energy stored in Joe's body each day",
+                "type": "accumulator",
+                "initial": 345000,
+                "units": "calories",
+                "equation": "id2"
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 472.74517822265625,
+                    "y": 270.74517822265625
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "energy balance",
+                "description": "difference between energy ingested and energy expended each day",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 100,
+                "units": "calories"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

@@ -1,0 +1,163 @@
+{
+    "task": {
+        "taskName": "propor+to+source+minus+destination",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 0.5,
+            "integrationMethod": "Eulers Method",
+            "units": "seconds"
+        },
+        "properties": {},
+        "image": {},
+        "taskDescription": [
+            "* Process: stuff changes state from source to destination",
+            "* Source: Quantity of stuff in the Source state",
+            "* Destination: Quantity of stuff in the destination state",
+            "* Changing: a proportion of the difference between Source and Destination changes state each time unit.",
+            "",
+            "Popular names for this process:",
+            "* equilibrating ",
+            "* a kind of exponential transfer"
+        ],
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 422,
+                    "y": 202
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Source",
+                "description": "Quantity of stuff in the source state",
+                "type": "accumulator",
+                "initial": 55,
+                "equation": "-id2"
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id4",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id5",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 554,
+                    "y": 201
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Changing",
+                "description": "Quantity of stuff changing state each time unit",
+                "type": "function",
+                "equation": "id4*id5"
+            },
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 684,
+                    "y": 200
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Destination",
+                "description": "Quantity of stuff in the destination state",
+                "type": "accumulator",
+                "initial": 1,
+                "equation": "id2"
+            },
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id3",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 555,
+                    "y": 82
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Difference",
+                "description": "Difference between source and destination",
+                "type": "function",
+                "equation": "id1-id3"
+            },
+            {
+                "ID": "id5",
+                "inputs": [],
+                "position": {
+                    "x": 539.3309326171875,
+                    "y": 317.3309631347656
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Proportion changing",
+                "description": "Proportion of difference that changes state each time unit",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.3
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

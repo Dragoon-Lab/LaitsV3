@@ -538,7 +538,7 @@ define([
 				obj.model.task.givenModelNodes.push(newNode);
 				return newNode.ID;
 			},
-			addSchema: function(/* string */ schemaID){
+			createSchema: function(/* string */ schemaID){
 				var newSchema = {
 					ID: schemaID||"schema"+obj._SID++,
 					schemaClass: "",
@@ -549,12 +549,14 @@ define([
 						values:{}
 					},
 					nodes: "",
-					difficulty: {}
+					difficulty: {
+						isolation: 0,
+						cues: 0,
+						phrases: 0
+					}
 				}
 
-				obj.model.task.schemas.push(newSchema);
-
-				return newSchema.ID;
+				return newSchema;
 			},
 			/*merges imported model and returns ids of merged nodes*/
 			mergeNodes: function(model){
@@ -736,6 +738,9 @@ define([
 
 				return null;
 			},
+			saveSchema: function(schema){
+				obj.model.task.schemas.push(schema);
+			},
 			setName: function(/*string*/ id, /*string*/ name){
 				this.getNode(id).name = name.trim();
 			},
@@ -765,21 +770,17 @@ define([
 				var newDifficulty = {diffPart: value};
 				this.model.task.schemas.difficulty.push(newDifficulty);
 			},
-			setSchemaClass: function(/* string */ schemaID, /* string */ value){
-				var schema = this.getSchema(schemaID);
-				schema.schemaClass = value;
-			},
 			setSchemaNodes: function(/* string */ schemaID, /* array */ nodesID){
-				var nodes = this.model.task.schemas.nodes;
 				var l = nodesID.length;
 				index = 1;
 				var nodeString = "";
 				array.forEach(nodesID, function(ID){
-					if(index == l - 1){
+					if(index == l){
 						nodeString += ID;
 					} else {
 						nodeString += ID+", ";
 					}
+					index++;
 				}, this);
 				
 				var schema = this.getSchema(schemaID);

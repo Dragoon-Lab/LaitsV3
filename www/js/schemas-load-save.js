@@ -6,6 +6,7 @@ define([
 	return declare(null, {
 		_session: null,
 		_path: null,
+		count: 1,
 
 		constructor: function (/* object */ session, /* string */ path){
 			this._session = session;
@@ -13,12 +14,13 @@ define([
 		},
 
 		getFileData: function(/* string */ fileName, /* path */ path){
+			console.log("sachin ", fileName, " ",  path); 
 			path = path || this._path;
-			return xhr.post(path + fileName, function(){
-				handleAs: text,
+			return xhr.post(path + fileName, {
+				handleAs: "text",
 				sync: true
 			}).then(function(results){
-				console.log(fileName + "found, data : " + results);
+				console.log(fileName + " found, data : ");
 				return results;
 			}, function(err){
 				console.error(fileName + " not found, error message :  " + err);
@@ -28,10 +30,10 @@ define([
 		
 		sendData: function(/* object */ obj, /* object */ params, /* string */ fileName, /* string */ path){
 			path = path || this._path;
-			return xhr.post(path + fileName, function(){
+			return xhr.post(path + fileName, {
 				data:{
 					params: params,
-					object: obj,
+					object: obj
 				}
 			}).then(function(reply){
 				console.log("data sent successfully");
@@ -72,11 +74,12 @@ define([
 			var obj = {
 				schema_id: schema,
 				x: this._session.sessionId,
-				comptence: json.toJson(competence)
+				competence: json.toJson(competence),
+				count: this.count++
 			};
 			
 			xhr.post(this._path + "save_schema_application.php", {
-				data: obj,
+				data: obj
 			}).then(function(reply){
 				console.log("schema values were updated successfully");
 			}, function(err){
@@ -90,19 +93,37 @@ define([
 			var obj = { 
 				u: this._session.params.u,
 				x: this._session.sessionId,
-				s: schema,
+				s: schemaID,
 				sec: this._session.params.s
 			};
 
-			return xhr.post(this._path + "get_schema_application.php", function(){
-				data: obj
+			return xhr.post(this._path + "get_schema_application.php", {
+				data: obj,
 				sync: true
 			}).then(function(reply){
 				console.log("schema value retrieved "+reply);
 				return reply;
 			}, function(err){
 				console.error("schema value not received ", err);
-				throw error;
+				throw err;
+			});
+		},
+
+		logSchema: function(/* string */ schemaID, /* object */ diff){
+			var obj = {
+				x: this._session.sessionId,
+				schema_id: schemaID,
+				difficulty: json.toJson(diff)
+			};
+
+			return xhr.post(this._path + "save_schema_session.php", {
+				data: obj
+			}).then(function(reply){
+				console.log("schema session saved");
+				return reply
+			}, function(err){
+				console.error("schema session initiation failed : "+err);
+				throw err;
 			});
 		}
 	});

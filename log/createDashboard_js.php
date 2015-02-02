@@ -32,7 +32,7 @@
 			$query = $this->getQuery($section, $mode, $user, $problem, $fromTime, $fromDate, $toTime, $toDate);
 			$result = $this->al->getResults($query);
 			$objects = null;
-			if($result != null)
+			if($result->num_rows != 0)
 				$objects = $this->parseMessages($result);
 
 			return $objects;
