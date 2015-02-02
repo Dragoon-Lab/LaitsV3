@@ -169,6 +169,35 @@ define([
             }
             return false;
         },
+
+		checkPremature: function(nodeID){
+			if(!this._model.active.getDescriptionID(nodeID)){
+				return;
+			}
+			else if (this._model.isParentNode(this._model.active.getDescriptionID(nodeID))){
+				return;
+			}
+			var isPremature = true;
+			array.some(this._model.active.getNodes(), lang.hitch(this, function(node){
+				if(node.inputs.length > 0){
+				var isInputNode = array.some(node.inputs, function(input){
+						if(input.ID == nodeID) return true;
+					});
+				}
+				if(isInputNode){
+					isPremature = false;
+					return true;
+				}
+			}));
+
+			if(isPremature){
+				var directives = [{"id":"description","attribute":"status","value":"premature"},{"id":"description","attribute":"value","value":""},{"id":"message","attribute":"append","value":"The value entered for the description is premature."}];
+				this.applyDirectives(directives)
+			}
+
+			return isPremature;
+		},
+		
 		handleDescription: function(selectDescription){
 			console.log("****** in handleDescription ", this.currentID, selectDescription);
 			if(selectDescription == 'defaultSelect'){
@@ -180,11 +209,12 @@ define([
 			// This is only needed if the type has already been set,
 			// something that is generally only possible in TEST mode.
 			this.updateEquationLabels();
-
-			this.applyDirectives(this._PM.processAnswer(this.currentID, 'description', selectDescription, this._model.given.getName(selectDescription)));
-			if(this._forumparams){
-				// enable forum button and activate the event
-				this.activateForumButton();
+			if(!this.checkPremature(this.currentID)){
+				this.applyDirectives(this._PM.processAnswer(this.currentID, 'description', selectDescription, this._model.given.getName(selectDescription)));
+				if(this._forumparams){
+					// enable forum button and activate the event
+					this.activateForumButton();
+				}
 			}
 		},
 
