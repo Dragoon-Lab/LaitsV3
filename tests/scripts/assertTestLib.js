@@ -46,7 +46,7 @@ function convertArrayToMap(assocArray){
 
 exports.checkNodeValue = function(actual,expected,nodeName){
     assert(actual === expected,
-           "Description was " + actual + " instead of \"" + 
+           "Description was \"" +  actual + "\" instead of \"" + 
 	   expected + "\" for node " + nodeName);
 }
 
