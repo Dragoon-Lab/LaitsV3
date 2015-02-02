@@ -11,7 +11,7 @@ define([
 			"names": false,
 			"display": "competence",
 			"options": true,
-			"heading": "Leader Board",
+			"heading": "Open learner model (Generic models)",
 			"subHeading": "",
 			"sessionLink": false,
 			"userData": false,
@@ -21,7 +21,7 @@ define([
 			"names": true,
 			"display": "competence",
 			"options": true,
-			"heading": "Leader Board",
+			"heading": "Dashboard (Generic models)",
 			"subHeading": "",
 			"sessionLink": false,
 			"userData": true,
@@ -85,8 +85,8 @@ define([
 		constructor: function(/* object */ params, /* string */ path){
 			this.path = path||"";
 			this.query = params;
-			this.currentUser = this.query["u"];
-			this.query["u"] = "";
+			this.currentUser = this.query["us"];
+			//this.query["u"] = "";
 			this.modules = this.decideModules(this.query["t"]||"default");
 
 			this.init();
