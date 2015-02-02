@@ -1,109 +1,221 @@
 {
-    "task": {
-        "taskName": "constant",
-        "time": {
-            "start": 0,
-            "end": 10,
-            "step": 0.5,
-            "integrationMethod": "Eulers Method",
-            "units": "seconds"
-        },
-        "properties": {},
-        "image": {},
-        "taskDescription": [
-            "* Process: Generic change",
-            "* Source:  Quantity of stuff in source state",
-            "* Destination: Quantity of stuff in destination state",
-            "* Changing: A constant",
-            "",
-            "Some problems have only one accumulator, not both.",
-            "",
-            "Some common names for this type of change:",
-            "* linear transfer",
-            "* linear growth (refers to Destination only)",
-            "* linear decay (refers to Source only)",
-            "",
-            ""
-        ],
-        "givenModelNodes": [
-            {
-                "ID": "id1",
-                "inputs": [
-                    {
-                        "ID": "id3",
-                        "label": "-"
-                    }
-                ],
-                "position": {
-                    "x": 382,
-                    "y": 132
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": {},
-                "name": "Source",
-                "description": "The quantity of stuff in source state",
-                "type": "accumulator",
-                "initial": 10,
-                "equation": "-id3"
+    "taskName": "constant",
+    "time": {
+        "start": 0,
+        "end": 10,
+        "step": 0.5,
+        "integrationMethod": "Eulers Method",
+        "units": "seconds"
+    },
+    "properties": {},
+    "image": {},
+    "taskDescription": [
+        "* Process: Generic change",
+        "* Source:  Quantity of stuff in source state",
+        "* Destination: Quantity of stuff in destination state",
+        "* Changing: A constant",
+        "",
+        "Some problems have only one accumulator, not both.",
+        "",
+        "Some common names for this type of change:",
+        "* linear transfer",
+        "* linear growth (refers to Destination only)",
+        "* linear decay (refers to Source only)",
+        "",
+        ""
+    ],
+    "givenModelNodes": [
+        {
+            "ID": "id1",
+            "inputs": [
+                {
+                    "ID": "id3",
+                    "label": "-"
+                }
+            ],
+            "position": {
+                "x": 382,
+                "y": 132
             },
-            {
-                "ID": "id2",
-                "inputs": [
-                    {
-                        "ID": "id3",
-                        "label": ""
-                    }
-                ],
-                "position": {
-                    "x": 649,
-                    "y": 132
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": {},
-                "name": "Destination",
-                "description": "Quantity of stuff in Destination state",
-                "type": "accumulator",
+            "attemptCount": {
+                "description": 1,
+                "type": 1,
                 "initial": 1,
-                "equation": "id3",
-                "parentNode": true
+                "units": 0,
+                "equation": 1,
+                "assistanceScore": 0
             },
-            {
-                "ID": "id3",
-                "inputs": [],
-                "position": {
-                    "x": 499.3309631347656,
-                    "y": 149.33096313476562
+            "status": {
+                "description": "correct",
+                "type": "correct",
+                "equation": "correct",
+                "initial": "correct"
+            },
+            "name": "Source",
+            "description": "The quantity of stuff in source state",
+            "type": "accumulator",
+            "initial": 10,
+            "equation": "-id3"
+        },
+        {
+            "ID": "id2",
+            "inputs": [
+                {
+                    "ID": "id3",
+                    "label": ""
+                }
+            ],
+            "position": {
+                "x": 649,
+                "y": 132
+            },
+            "attemptCount": {
+                "description": 1,
+                "type": 1,
+                "initial": 1,
+                "units": 0,
+                "equation": 1,
+                "assistanceScore": 0
+            },
+            "status": {
+                "description": "correct",
+                "type": "correct",
+                "initial": "correct",
+                "equation": "correct"
+            },
+            "name": "Destination",
+            "description": "Quantity of stuff in Destination state",
+            "type": "accumulator",
+            "initial": 1,
+            "equation": "id3",
+            "parentNode": true
+        },
+        {
+            "ID": "id3",
+            "inputs": [],
+            "position": {
+                "x": 499.3309631347656,
+                "y": 149.33096313476562
+            },
+            "attemptCount": {
+                "description": 1,
+                "type": 1,
+                "initial": 1,
+                "units": 0,
+                "equation": 0,
+                "assistanceScore": 0
+            },
+            "status": {
+                "description": "correct",
+                "type": "correct",
+                "initial": "correct"
+            },
+            "name": "Changing",
+            "description": "Quantity of stuff that changes state per unit time",
+            "type": "parameter",
+            "parentNode": false,
+            "initial": 1.5
+        }
+    ],
+    "studentModelNodes": [
+        {
+            "ID": "id4",
+            "inputs": [],
+            "position": {
+                "x": 706.6531372070312,
+                "y": 138.61492919921875
+            },
+            "status": {
+                "description": {
+                    "status": "correct",
+                    "disabled": true
                 },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
+                "type": {
+                    "disabled": true,
+                    "status": "correct"
                 },
-                "status": {},
-                "name": "Changing",
-                "description": "Quantity of stuff that changes state per unit time",
-                "type": "parameter",
-                "parentNode": false,
-                "initial": 1.5
-            }
-        ],
-        "studentModelNodes": []
-    }
+                "initial": {
+                    "disabled": true,
+                    "status": "correct"
+                },
+                "equation": {
+                    "disabled": true
+                }
+            },
+            "descriptionID": "id3",
+            "equation": "",
+            "type": "parameter",
+            "initial": 1.5
+        },
+        {
+            "ID": "id5",
+            "inputs": [
+                {
+                    "ID": "id4",
+                    "label": ""
+                }
+            ],
+            "position": {
+                "x": 585,
+                "y": 153.9757080078125
+            },
+            "status": {
+                "description": {
+                    "status": "correct",
+                    "disabled": true
+                },
+                "type": {
+                    "disabled": true,
+                    "status": "correct"
+                },
+                "initial": {
+                    "disabled": true,
+                    "status": "correct"
+                },
+                "equation": {
+                    "disabled": true,
+                    "status": "correct"
+                }
+            },
+            "descriptionID": "id2",
+            "type": "accumulator",
+            "initial": 1,
+            "equation": "id4"
+        },
+        {
+            "ID": "id6",
+            "inputs": [
+                {
+                    "ID": "id4",
+                    "label": "-"
+                }
+            ],
+            "position": {
+                "x": 847.9861450195312,
+                "y": 151.9791717529297
+            },
+            "status": {
+                "description": {
+                    "status": "correct",
+                    "disabled": true
+                },
+                "type": {
+                    "disabled": true,
+                    "status": "correct"
+                },
+                "initial": {
+                    "disabled": true,
+                    "status": "correct"
+                },
+                "equation": {
+                    "disabled": true,
+                    "status": "correct"
+                }
+            },
+            "descriptionID": "id1",
+            "type": "accumulator",
+            "equation": "-id4",
+            "initial": 10
+        }
+    ]
 }

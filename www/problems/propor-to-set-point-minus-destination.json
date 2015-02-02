@@ -1,189 +1,416 @@
 {
-    "task": {
-        "taskName": "propor.+to+set+point+-+destination",
-        "time": {
-            "start": 0,
-            "end": 10,
-            "step": 0.5,
-            "integrationMethod": "Eulers Method",
-            "units": "seconds"
+    "taskName": "propor.+to+set+point+-+destination",
+    "time": {
+        "start": 0,
+        "end": 10,
+        "step": 0.5,
+        "integrationMethod": "Eulers Method",
+        "units": "seconds"
+    },
+    "properties": {},
+    "image": {},
+    "taskDescription": [
+        "* Process: Generic state change",
+        "* Source: Quantity of stuff in Source state",
+        "* Destination: Quantity of stuff in Destination state",
+        "* Changing: Proportional to set point - destination",
+        "",
+        "Some problems do not need the Source accumulator.  ",
+        "",
+        "If Destination is larger than Set point, then \"difference from set point\" is negative and so is Changing, so Source grows and Destination shrinks. ",
+        "",
+        "Popular names for this process:",
+        "* goal seeking",
+        "* homeostasis"
+    ],
+    "givenModelNodes": [
+        {
+            "ID": "id1",
+            "inputs": [
+                {
+                    "ID": "id2",
+                    "label": "-"
+                }
+            ],
+            "position": {
+                "x": 447,
+                "y": 197
+            },
+            "attemptCount": {
+                "description": 1,
+                "type": 1,
+                "initial": 1,
+                "units": 0,
+                "equation": 1,
+                "assistanceScore": 0
+            },
+            "status": {
+                "description": "correct",
+                "type": "correct",
+                "initial": "correct",
+                "equation": "correct"
+            },
+            "name": "Source",
+            "description": "Quantity of stuff in Source state",
+            "type": "accumulator",
+            "initial": 100,
+            "equation": "-id2"
         },
-        "properties": {},
-        "image": {},
-        "taskDescription": [
-            "* Process: Generic state change",
-            "* Source: Quantity of stuff in Source state",
-            "* Destination: Quantity of stuff in Destination state",
-            "* Changing: Proportional to set point - destination",
-            "",
-            "Some problems do not need the Source accumulator.  ",
-            "",
-            "If Destination is larger than Set point, then \"difference from set point\" is negative and so is Changing, so Source grows and Destination shrinks. ",
-            "",
-            "Popular names for this process:",
-            "* goal seeking",
-            "* homeostasis"
-        ],
-        "givenModelNodes": [
-            {
-                "ID": "id1",
-                "inputs": [
-                    {
-                        "ID": "id2",
-                        "label": "-"
-                    }
-                ],
-                "position": {
-                    "x": 447,
-                    "y": 197
+        {
+            "ID": "id2",
+            "inputs": [
+                {
+                    "ID": "id6",
+                    "label": ""
                 },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": {},
-                "name": "Source",
-                "description": "Quantity of stuff in Source state",
-                "type": "accumulator",
-                "initial": 100,
-                "equation": "-id2"
+                {
+                    "ID": "id5",
+                    "label": ""
+                }
+            ],
+            "position": {
+                "x": 575,
+                "y": 199
             },
-            {
-                "ID": "id2",
-                "inputs": [
-                    {
-                        "ID": "id6",
-                        "label": ""
-                    },
-                    {
-                        "ID": "id5",
-                        "label": ""
-                    }
-                ],
-                "position": {
-                    "x": 575,
-                    "y": 199
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": {},
-                "name": "Changing",
-                "description": "Quantity of stuff that changes state per time unit",
-                "type": "function",
-                "equation": "id6*id5"
+            "attemptCount": {
+                "description": 1,
+                "type": 1,
+                "initial": 0,
+                "units": 0,
+                "equation": 1,
+                "assistanceScore": 0
             },
-            {
-                "ID": "id3",
-                "inputs": [
-                    {
-                        "ID": "id2",
-                        "label": ""
-                    }
-                ],
-                "position": {
-                    "x": 724,
-                    "y": 197
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": {},
-                "name": "Destination",
-                "description": "Quantity of stuffin the Destination state",
-                "type": "accumulator",
-                "initial": 2,
-                "equation": "id2"
+            "status": {
+                "description": "correct",
+                "type": "correct",
+                "equation": "correct"
             },
-            {
-                "ID": "id4",
-                "inputs": [],
-                "position": {
-                    "x": 782.3309326171875,
-                    "y": 48.33095169067383
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": {},
-                "name": "Set point",
-                "description": "The destination quantity converges to this",
-                "type": "parameter",
-                "parentNode": false,
-                "initial": 15
+            "name": "Changing",
+            "description": "Quantity of stuff that changes state per time unit",
+            "type": "function",
+            "equation": "id6*id5"
+        },
+        {
+            "ID": "id3",
+            "inputs": [
+                {
+                    "ID": "id2",
+                    "label": ""
+                }
+            ],
+            "position": {
+                "x": 724,
+                "y": 197
             },
-            {
-                "ID": "id5",
-                "inputs": [
-                    {
-                        "ID": "id4",
-                        "label": ""
-                    },
-                    {
-                        "ID": "id3",
-                        "label": "-"
-                    }
-                ],
-                "position": {
-                    "x": 644,
-                    "y": 70
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": {},
-                "name": "Difference from set point",
-                "description": "Set point minus destination",
-                "type": "function",
-                "equation": "id4-id3"
+            "attemptCount": {
+                "description": 1,
+                "type": 1,
+                "initial": 1,
+                "units": 0,
+                "equation": 1,
+                "assistanceScore": 0
             },
-            {
-                "ID": "id6",
-                "inputs": [],
-                "position": {
-                    "x": 424.3309631347656,
-                    "y": 54.33095169067383
+            "status": {
+                "description": "correct",
+                "type": "correct",
+                "initial": "correct",
+                "equation": "correct"
+            },
+            "name": "Destination",
+            "description": "Quantity of stuffin the Destination state",
+            "type": "accumulator",
+            "initial": 2,
+            "equation": "id2"
+        },
+        {
+            "ID": "id4",
+            "inputs": [],
+            "position": {
+                "x": 782.3309326171875,
+                "y": 48.33095169067383
+            },
+            "attemptCount": {
+                "description": 1,
+                "type": 1,
+                "initial": 1,
+                "units": 0,
+                "equation": 0,
+                "assistanceScore": 0
+            },
+            "status": {
+                "description": "correct",
+                "type": "correct",
+                "initial": "correct"
+            },
+            "name": "Set point",
+            "description": "The destination quantity converges to this",
+            "type": "parameter",
+            "parentNode": false,
+            "initial": 15
+        },
+        {
+            "ID": "id5",
+            "inputs": [
+                {
+                    "ID": "id4",
+                    "label": ""
                 },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
+                {
+                    "ID": "id3",
+                    "label": "-"
+                }
+            ],
+            "position": {
+                "x": 644,
+                "y": 70
+            },
+            "attemptCount": {
+                "description": 1,
+                "type": 1,
+                "initial": 0,
+                "units": 0,
+                "equation": 1,
+                "assistanceScore": 0
+            },
+            "status": {
+                "description": "correct",
+                "type": "correct",
+                "equation": "correct"
+            },
+            "name": "Difference from set point",
+            "description": "Set point minus destination",
+            "type": "function",
+            "equation": "id4-id3"
+        },
+        {
+            "ID": "id6",
+            "inputs": [],
+            "position": {
+                "x": 424.3309631347656,
+                "y": 54.33095169067383
+            },
+            "attemptCount": {
+                "description": 1,
+                "type": 1,
+                "initial": 1,
+                "units": 0,
+                "equation": 0,
+                "assistanceScore": 0
+            },
+            "status": {
+                "description": "correct",
+                "type": "correct",
+                "initial": "correct"
+            },
+            "name": "Proportion changing",
+            "description": "Proportion of difference to set point that changes state per unit time",
+            "type": "parameter",
+            "parentNode": false,
+            "initial": 0.3
+        }
+    ],
+    "studentModelNodes": [
+        {
+            "ID": "id7",
+            "inputs": [
+                {
+                    "ID": "id8",
+                    "label": "-"
+                }
+            ],
+            "position": {
+                "x": 570,
+                "y": 184.98265075683594
+            },
+            "status": {
+                "description": {
+                    "status": "correct",
+                    "disabled": true
                 },
-                "status": {},
-                "name": "Proportion changing",
-                "description": "Proportion of difference to set point that changes state per unit time",
-                "type": "parameter",
-                "parentNode": false,
-                "initial": 0.3
-            }
-        ],
-        "studentModelNodes": []
-    }
+                "type": {
+                    "disabled": true,
+                    "status": "correct"
+                },
+                "initial": {
+                    "disabled": true,
+                    "status": "correct"
+                },
+                "equation": {
+                    "disabled": true,
+                    "status": "correct"
+                }
+            },
+            "descriptionID": "id1",
+            "type": "accumulator",
+            "initial": 100,
+            "equation": "-id8"
+        },
+        {
+            "ID": "id8",
+            "inputs": [
+                {
+                    "ID": "id9",
+                    "label": ""
+                },
+                {
+                    "ID": "id10",
+                    "label": ""
+                }
+            ],
+            "position": {
+                "x": 705.0000610351562,
+                "y": 184.98265075683594
+            },
+            "status": {
+                "description": {
+                    "status": "correct",
+                    "disabled": true
+                },
+                "type": {
+                    "disabled": true,
+                    "status": "correct"
+                },
+                "initial": {
+                    "disabled": true
+                },
+                "equation": {
+                    "disabled": true,
+                    "status": "correct"
+                }
+            },
+            "descriptionID": "id2",
+            "type": "function",
+            "equation": "id9*id10"
+        },
+        {
+            "ID": "id9",
+            "inputs": [],
+            "position": {
+                "x": 691.6531372070312,
+                "y": 306.618408203125
+            },
+            "status": {
+                "description": {
+                    "status": "correct",
+                    "disabled": true
+                },
+                "type": {
+                    "disabled": true,
+                    "status": "correct"
+                },
+                "initial": {
+                    "disabled": true,
+                    "status": "correct"
+                },
+                "equation": {
+                    "disabled": true
+                }
+            },
+            "descriptionID": "id6",
+            "equation": "",
+            "type": "parameter",
+            "initial": 0.3
+        },
+        {
+            "ID": "id10",
+            "inputs": [
+                {
+                    "ID": "id11",
+                    "label": ""
+                },
+                {
+                    "ID": "id12",
+                    "label": "-"
+                }
+            ],
+            "position": {
+                "x": 793.9931030273438,
+                "y": 88.97570037841797
+            },
+            "status": {
+                "description": {
+                    "status": "correct",
+                    "disabled": true
+                },
+                "type": {
+                    "disabled": true,
+                    "status": "correct"
+                },
+                "initial": {
+                    "disabled": true
+                },
+                "equation": {
+                    "disabled": true,
+                    "status": "correct"
+                }
+            },
+            "descriptionID": "id5",
+            "type": "function",
+            "equation": "id11-id12"
+        },
+        {
+            "ID": "id11",
+            "inputs": [],
+            "position": {
+                "x": 1020.6461791992188,
+                "y": 65.62881469726562
+            },
+            "status": {
+                "description": {
+                    "status": "correct",
+                    "disabled": true
+                },
+                "type": {
+                    "disabled": true,
+                    "status": "correct"
+                },
+                "initial": {
+                    "disabled": true,
+                    "status": "correct"
+                },
+                "equation": {
+                    "disabled": true
+                }
+            },
+            "descriptionID": "id4",
+            "equation": "",
+            "type": "parameter",
+            "initial": 15
+        },
+        {
+            "ID": "id12",
+            "inputs": [
+                {
+                    "ID": "id8",
+                    "label": ""
+                }
+            ],
+            "position": {
+                "x": 875.9896240234375,
+                "y": 181.9791717529297
+            },
+            "status": {
+                "description": {
+                    "status": "correct",
+                    "disabled": true
+                },
+                "type": {
+                    "disabled": true,
+                    "status": "correct"
+                },
+                "initial": {
+                    "disabled": true,
+                    "status": "correct"
+                },
+                "equation": {
+                    "disabled": true,
+                    "status": "correct"
+                }
+            },
+            "descriptionID": "id3",
+            "type": "accumulator",
+            "initial": 2,
+            "equation": "id8"
+        }
+    ]
 }
