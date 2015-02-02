@@ -57,7 +57,7 @@
 			},
 			{
 				"name" : "Motion - Opposite direction",
-				"id" : "opposite_direction ",
+				"id" : "opposite_direction",
 				"template" : "Two vehicles leave the same point traveling in opposite directions.",
 				"example" : "Two trains leave the same station at the same time. They travel in opposite directions. One train travels 64 km/h and the other 104 km/h. In how many hours will they be 1008 km apart?"
 			},
