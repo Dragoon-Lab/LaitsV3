@@ -285,7 +285,7 @@ define([
 		},
 
 		initTable: function(){
-			var tableString = "<table border='1'>";
+			var tableString = "<table border='1'><tr>";
 			var problems = this.getAllProblems();
 			if(this.modules['userData']){
 				tableString += "<th>Problems Started</th>";
@@ -297,6 +297,7 @@ define([
 			array.forEach(problems, function(problem){
 				tableString += "<th>" + problem + "</th>";
 			});
+			tableString += "</tr>";
 			return tableString;
 		},
 

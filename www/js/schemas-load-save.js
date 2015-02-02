@@ -79,7 +79,7 @@ define([
 			};
 			
 			xhr.post(this._path + "save_schema_application.php", {
-				data: obj,
+				data: obj
 			}).then(function(reply){
 				console.log("schema values were updated successfully");
 			}, function(err){
@@ -105,6 +105,24 @@ define([
 				return reply;
 			}, function(err){
 				console.error("schema value not received ", err);
+				throw err;
+			});
+		},
+
+		logSchema: function(/* string */ schemaID, /* object */ diff){
+			var obj = {
+				x: this._session.sessionId,
+				schema_id: schemaID,
+				difficulty: json.toJson(diff)
+			};
+
+			return xhr.post(this._path + "save_schema_session.php", {
+				data: obj
+			}).then(function(reply){
+				console.log("schema session saved");
+				return reply
+			}, function(err){
+				console.error("schema session initiation failed : "+err);
 				throw err;
 			});
 		}

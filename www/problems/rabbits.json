@@ -140,7 +140,7 @@
         "studentModelNodes": [],
 		"schemas": [
 			{
-				"ID": "growth",
+				"ID": "exponential_transfer",
 				"difficulty": {
 					"isolation": 0,
 					"cues": 0,

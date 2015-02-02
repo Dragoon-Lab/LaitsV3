@@ -10,6 +10,13 @@ define([
 		this._model = model;
 		this._session = new schemaSession(session);
 		this.initSchema();
+		this.initSchemaSession();
+	},
+
+	initSchemaSession: function(){
+		array.forEach(this._schemas, function(schema){
+			this._session.logSchema(schema.ID, schema.difficulty);
+		}, this);
 	},
 
 	initSchema: function(){
