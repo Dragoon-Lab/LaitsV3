@@ -101,7 +101,7 @@ define([
 					// givenID should always exist.
 					console.assert(givenID, "Node '" + id + "' has no corresponding given node");
 					var givenNode = this.model.given.getNode(givenID); 
-					return givenNode && ((!givenNode.genus  || node.genus === "required")? givenID : null);
+					return givenNode && ((!givenNode.genus  || givenNode.genus === "required")? givenID : null);
 				}, this);
 				// Calculate solutions
 				var givenSolution = this.findSolution(false, this.given.plotVariables);
@@ -110,7 +110,7 @@ define([
 
 
 			//create content pane for displaying graph/table and sliders
-			this.dialogContent += "<div data-dojo-type= 'dijit/layout/ContentPane' style='overflow:visible; width:50%; float:left; height: 700px; background-color: #FFFFFF'>"
+			this.dialogContent += "<div data-dojo-type= 'dijit/layout/ContentPane' style='overflow:visible; width:55%; float:left; height: 700px; background-color: #FFFFFF'>"
 			//create tab container on left side for graph and table
 			this.dialogContent += "<div data-dojo-type='dijit/layout/TabContainer' style='overflow:visible; height:700px; width:501px;'>"
 			//create tab for graph and fill it
@@ -128,7 +128,7 @@ define([
 			if(this.buttonClicked == "graph")
 				this.dialogContent += "</div><div id='TableTab' data-dojo-type='dijit/layout/ContentPane' style='overflow:visible' data-dojo-props='title:\"Table\"'>"
 			if(this.buttonClicked == "table")
-				this.dialogContent += "</div><div data-dojo-type='dijit/layout/ContentPane' style='overflow:visible' selected = true data-dojo-props='title:\"Table\"'>"
+				this.dialogContent += "</div><div id='TableTab' data-dojo-type='dijit/layout/ContentPane' style='overflow:visible' selected = true data-dojo-props='title:\"Table\"'>"
 			//Render table here
 			this.dialogContent += "<div id='table' stlye='overflow:visible'></div>";
 

@@ -144,6 +144,62 @@ describe("Test student mode:", function() {
         }));
     });
 
+    describe("Checking graph/table window:", function(){
+        it("Should open the table window and check the table values", async(function(){
+            dtest.menuOpenTable(client);
+
+            var years = true;
+            var current = 1859;
+            for(var i = 0; i < 61; i++)
+            {
+                if(!(dtest.tableGetValue(client, i, 0) == current))
+                {
+                    years = false;
+                }
+                current++;
+            }
+
+            //Population (rabbits) coumn
+            var population = true;
+            var populationValues = [24,31.2,40.6,52.7,68.5,89.1,116,151,196,255,331,430,559,727,945];
+            for(var i = 0; i < populationValues.length; i++)
+            {
+                if(!(dtest.tableGetValue(client, i, 1) == populationValues[i]))
+                {
+                    population = false;
+                }
+            }
+
+            //Net growth (rabbits/year)
+            var netGrowth = true;
+            var netGrowthValues = [7.20,9.36,12.2,15.8,20.6,26.7,34.8,45.2,58.7,76.4,99.3,129,168,218];
+            for(var i = 0; i < netGrowthValues.length; i++)
+            {
+                if(!(dtest.tableGetValue(client, i, 2) == netGrowthValues[i]))
+                {
+                    population = false;
+                }
+            }
+
+            assert(years === true,
+                "Values in the \"Time (years)\" column were incorrect");
+            assert(population === true,
+                "Values in the \"population (rabbits)\" column were incorrect");
+            assert(netGrowth === true,
+                "Values in the \"net growth (rabbits/year)\" column were incorrect");
+        }));
+
+        it("Should switch to graph tab and check the message", async(function(){
+            dtest.selectGraphTab(client);
+            var message = dtest.getGraphResultText;
+
+            assert(message = "Congratulations, your model's behavior matches the author's",
+                "Message text was " + message + " instead of Congratulations, your model's behavior matches the author's");
+        }));
+    });
+
+
+
     after(function(done) {
         client.end();
         done();
