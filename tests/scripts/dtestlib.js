@@ -369,17 +369,6 @@ exports.getNodeInteriorText = function(client,nodeName){
     console.warn("Not yet implemented.");
     return null;
 }
-// Alert messages
-
-exports.getAlertMessageText = function(client){
-    // Summary: Returns the string that is 
-    console.warn("Not yet implemented.");
-    return null;
-}
-
-exports.closeAlertMessage = function(client){
-    console.warn("Not yet implemented.");
-}
 
 
 
@@ -429,6 +418,10 @@ exports.setNodeName = function(client, nodeName){
 exports.popupWindowPressOk = function(client){
     await(client.click('#OkButton',defer()));
     wait(200);
+}
+
+exports.popupWindowGetText = function(client){
+    console.warn("Not yet implemented!");
 }
 
 //////////////////////////////////////////////////
