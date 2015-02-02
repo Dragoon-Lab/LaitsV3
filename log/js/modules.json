@@ -5,7 +5,7 @@
 			"display": "errors",
 			"options": false,
 			"heading": "Open learner model (Problems)",
-			"subHeading": "Each cell shows Red checks / Total checks. Your row is light blue. Refresh page to update.",
+			"subHeading": "Each cell shows Green checks / Total checks. Your row is light blue. Refresh page to update.",
 			"colors": true, 
 			"sessionLink": false,
 			"completeAnalysis": false,
