@@ -32,7 +32,7 @@ $result = $mysqli->query($query)
 	or trigger_error("Previous schema query failed ".$mysqli->error );
 
 if($row = $result->fetch_row()){
-	printSchema($row["comptence"]);
+	printSchema($row[0]);
 } else {
 	printSchema("null");
 }
