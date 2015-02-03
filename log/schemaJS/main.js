@@ -50,9 +50,11 @@ define([
 			var radioWidget = dom.byId("tableType");
 			domClass.remove(radioWidget, "hidden");
 			domClass.add(radioWidget, "visible");
-			on(radioWidget, "change", function(){
+
+			var elements = domQuery("input[name=type]");
+			on(elements, "change", function(){
 				var tableType = '';
-				array.forEach(radioWidget.elements, function(element){
+				array.forEach(elements, function(element){
 					if(element.checked){
 						tableType = element.value;
 					}
