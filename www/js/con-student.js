@@ -203,7 +203,12 @@ define([
 			// This is only needed if the type has already been set,
 			// something that is generally only possible in TEST mode.
 			this.updateEquationLabels();
-			var isPremature = (this._mode == "COACHED")? this.checkPremature(this.currentID) : false;
+			var isPremature = false;
+			var genus = this._model.given.getGenus(this._model.active.getDescriptionID(this.currentID));
+			if(!genus || genus == "required"){
+				isPremature = (this._mode == "COACHED")? this.checkPremature(this.currentID) : false;	
+			}
+			
 			if(!isPremature){
 				this.applyDirectives(this._PM.processAnswer(this.currentID, 'description', selectDescription, this._model.given.getName(selectDescription)));
 				if(this._forumparams){
