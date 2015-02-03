@@ -20,10 +20,11 @@ html, body, #main{
 	margin:0 0 0 0;
 	font:10pt Arial,Myriad,Tahoma,Verdana,sans-serif !important;
 }
-
+/*commented to make sure that in case the nodes go out the auto scroll is shown.*/
+/*
 .restrict-vscroll {
 	overflow-x:hidden!important;
-}
+}*/
 .claro .sameedit .dijitDisabled{
     background-color:#e6e6e6;
     cursor: pointer;
