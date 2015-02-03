@@ -1,236 +1,506 @@
 {
     "task": {
-    "taskName": "epidemic",
-    "time": {
-        "start": 0,
-        "end": 10,
-        "step": 0.5,
-        "integrationMethod": "Eulers Method",
-        "units": "seconds"
-    },
-    "properties": {},
-    "image": {},
-    "taskDescription": [
-        "",
-        "Analysis:",
-        "* Process:  Objects change from Source to Destination state",
-        "* Source:  Objects in source state",
-        "* Destination: Objects in destination state",
-        "* Changing:  The number of students that change state is the product of the number of meetings times the probability that a meeting will have a both a source and a destination object in it. ",
-        "",
-        "Popular names:",
-        "*  There is no generic name for this process, but it often used for epidemics, word of mouth sales, the spread of rumors, social networking, etc.",
-        "",
-        "Caveat:  If a meeting is such that A meeting B has the same effect as B meeting A, then the expression for Changing needs to have 0.5 in the product.  (i.e., because the meeting is a combination, not a permutation; these terms are from discrete math).  For our purposes, we can ignore this detail."
-    ],
-    "givenModelNodes": [
-        {
-            "ID": "id1",
-            "inputs": [
-                {
-                    "ID": "id2",
-                    "label": "-"
-                }
-            ],
-            "position": {
-                "x": 497,
-                "y": 304
-            },
-            "attemptCount": {
-                "description": 0,
-                "type": 0,
-                "initial": 0,
-                "units": 0,
-                "equation": 0,
-                "assistanceScore": 0
-            },
-            "status": {},
-            "name": "Source",
-            "description": "Quantity of stuff in source state",
-            "type": "accumulator",
-            "initial": 1000,
-            "equation": "-id2"
+        "taskName": "epidemic",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 0.5,
+            "integrationMethod": "Eulers Method",
+            "units": "seconds"
         },
-        {
-            "ID": "id2",
-            "inputs": [
-                {
-                    "ID": "id4",
-                    "label": ""
+        "properties": {},
+        "image": {},
+        "taskDescription": [
+            "",
+            "Analysis:",
+            "* Process:  Objects change from Source to Destination state",
+            "* Source:  Objects in source state",
+            "* Destination: Objects in destination state",
+            "* Changing:  The number of students that change state is the product of the number of meetings times the probability that a meeting will have a both a source and a destination object in it. ",
+            "",
+            "Popular names:",
+            "*  There is no generic name for this process, but it often used for epidemics, word of mouth sales, the spread of rumors, social networking, etc.",
+            "",
+            "Caveat:  If a meeting is such that A meeting B has the same effect as B meeting A, then the expression for Changing needs to have 0.5 in the product.  (i.e., because the meeting is a combination, not a permutation; these terms are from discrete math).  For our purposes, we can ignore this detail."
+        ],
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 497,
+                    "y": 304
                 },
-                {
-                    "ID": "id5",
-                    "label": ""
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 1,
+                    "units": 0,
+                    "equation": 1,
+                    "assistanceScore": 0
                 },
-                {
-                    "ID": "id7",
-                    "label": ""
-                }
-            ],
-            "position": {
-                "x": 645.9896240234375,
-                "y": 313.9757080078125
-            },
-            "attemptCount": {
-                "description": 0,
-                "type": 0,
-                "initial": 0,
-                "units": 0,
-                "equation": 0,
-                "assistanceScore": 0
-            },
-            "status": {
-                "equation": {
-                    "disabled": false
-                }
-            },
-            "name": "Changing",
-            "description": "Quantity of stuff changing state each time unit",
-            "type": "function",
-            "equation": "(id4*id5)*id7"
-        },
-        {
-            "ID": "id3",
-            "inputs": [
-                {
-                    "ID": "id2",
-                    "label": ""
-                }
-            ],
-            "position": {
-                "x": 799,
-                "y": 313
-            },
-            "attemptCount": {
-                "description": 0,
-                "type": 0,
-                "initial": 0,
-                "units": 0,
-                "equation": 0,
-                "assistanceScore": 0
-            },
-            "status": {},
-            "name": "Destination",
-            "description": "Quantity of stuff in destination state",
-            "type": "accumulator",
-            "initial": 1,
-            "equation": "id2"
-        },
-        {
-            "ID": "id4",
-            "inputs": [
-                {
-                    "ID": "id1",
-                    "label": ""
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "initial": "correct",
+                    "equation": "correct"
                 },
-                {
-                    "ID": "id6",
-                    "label": "/"
-                }
-            ],
-            "position": {
-                "x": 523,
-                "y": 446
+                "name": "Source",
+                "description": "Quantity of stuff in source state",
+                "type": "accumulator",
+                "initial": 1000,
+                "equation": "-id2"
             },
-            "attemptCount": {
-                "description": 0,
-                "type": 0,
-                "initial": 0,
-                "units": 0,
-                "equation": 0,
-                "assistanceScore": 0
-            },
-            "status": {},
-            "name": "Probability of source",
-            "description": "Probability of a meeting participant being in source state",
-            "type": "function",
-            "equation": "id1/id6"
-        },
-        {
-            "ID": "id5",
-            "inputs": [
-                {
-                    "ID": "id3",
-                    "label": ""
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id4",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id5",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id7",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 645.9896240234375,
+                    "y": 313.9757080078125
                 },
-                {
-                    "ID": "id6",
-                    "label": "/"
-                }
-            ],
-            "position": {
-                "x": 765,
-                "y": 448
-            },
-            "attemptCount": {
-                "description": 0,
-                "type": 0,
-                "initial": 0,
-                "units": 0,
-                "equation": 0,
-                "assistanceScore": 0
-            },
-            "status": {},
-            "name": "Probability of destination",
-            "description": "Probability of a meeting participant being in the destination state",
-            "type": "function",
-            "equation": "id3/id6"
-        },
-        {
-            "ID": "id6",
-            "inputs": [
-                {
-                    "ID": "id1",
-                    "label": ""
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 1,
+                    "assistanceScore": 0
                 },
-                {
-                    "ID": "id3",
-                    "label": ""
-                }
-            ],
-            "position": {
-                "x": 635.3309326171875,
-                "y": 524.3309326171875
+                "status": {
+                    "equation": "correct",
+                    "description": "correct",
+                    "type": "correct"
+                },
+                "name": "Changing",
+                "description": "Quantity of stuff changing state each time unit",
+                "type": "function",
+                "equation": "(id4*id5)*id7"
             },
-            "attemptCount": {
-                "description": 0,
-                "type": 0,
-                "initial": 0,
-                "units": 0,
-                "equation": 0,
-                "assistanceScore": 0
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 799,
+                    "y": 313
+                },
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 1,
+                    "units": 0,
+                    "equation": 1,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "initial": "correct",
+                    "equation": "correct"
+                },
+                "name": "Destination",
+                "description": "Quantity of stuff in destination state",
+                "type": "accumulator",
+                "initial": 1,
+                "equation": "id2"
             },
-            "status": {},
-            "name": "Total",
-            "description": "All stuff, including both source and destination states",
-            "type": "parameter",
-            "equation": "",
-            "parentNode": false,
-            "initial": 1001
-        },
-        {
-            "ID": "id7",
-            "inputs": [],
-            "position": {
-                "x": 638.3309326171875,
-                "y": 153.33096313476562
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id6",
+                        "label": "/"
+                    }
+                ],
+                "position": {
+                    "x": 523,
+                    "y": 446
+                },
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 1,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "equation": "correct"
+                },
+                "name": "Probability of source",
+                "description": "Probability of a meeting participant being in source state",
+                "type": "function",
+                "equation": "id1/id6"
             },
-            "attemptCount": {
-                "description": 0,
-                "type": 0,
-                "initial": 0,
-                "units": 0,
-                "equation": 0,
-                "assistanceScore": 0
+            {
+                "ID": "id5",
+                "inputs": [
+                    {
+                        "ID": "id3",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id6",
+                        "label": "/"
+                    }
+                ],
+                "position": {
+                    "x": 765,
+                    "y": 448
+                },
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 1,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "equation": "correct"
+                },
+                "name": "Probability of destination",
+                "description": "Probability of a meeting participant being in the destination state",
+                "type": "function",
+                "equation": "id3/id6"
             },
-            "status": {},
-            "name": "Meetings",
-            "description": "Number of meetings each time unit",
-            "type": "parameter",
-            "parentNode": false,
-            "initial": 200
-        }
-    ],
-    "studentModelNodes": []
-}
+            {
+                "ID": "id6",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id3",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 635.3309326171875,
+                    "y": 524.3309326171875
+                },
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 1,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "initial": "correct"
+                },
+                "name": "Total",
+                "description": "All stuff, including both source and destination states",
+                "type": "parameter",
+                "equation": "",
+                "parentNode": false,
+                "initial": 1001
+            },
+            {
+                "ID": "id7",
+                "inputs": [],
+                "position": {
+                    "x": 638.3309326171875,
+                    "y": 153.33096313476562
+                },
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 1,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "initial": "correct"
+                },
+                "name": "Meetings",
+                "description": "Number of meetings each time unit",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 200
+            }
+        ],
+        "studentModelNodes": [
+            {
+                "ID": "id8",
+                "inputs": [
+                    {
+                        "ID": "id9",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 988.9931030273438,
+                    "y": 254.98265075683594
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id1",
+                "type": "accumulator",
+                "initial": 1000,
+                "equation": "-id9"
+            },
+            {
+                "ID": "id9",
+                "inputs": [
+                    {
+                        "ID": "id10",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id11",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id12",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 836.99658203125,
+                    "y": 235.98959350585938
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id2",
+                "type": "function",
+                "equation": "(id10*id11)*id12"
+            },
+            {
+                "ID": "id10",
+                "inputs": [
+                    {
+                        "ID": "id8",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id13",
+                        "label": "/"
+                    }
+                ],
+                "position": {
+                    "x": 840.9896240234375,
+                    "y": 372.9861145019531
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id4",
+                "type": "function",
+                "equation": "id8/id13"
+            },
+            {
+                "ID": "id11",
+                "inputs": [
+                    {
+                        "ID": "id14",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id13",
+                        "label": "/"
+                    }
+                ],
+                "position": {
+                    "x": 830.0000610351562,
+                    "y": 89.9826431274414
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id5",
+                "type": "function",
+                "equation": "id14/id13"
+            },
+            {
+                "ID": "id12",
+                "inputs": [],
+                "position": {
+                    "x": 672.6427001953125,
+                    "y": 204.62188720703125
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true
+                    }
+                },
+                "descriptionID": "id7",
+                "equation": "",
+                "type": "parameter",
+                "initial": 200
+            },
+            {
+                "ID": "id13",
+                "inputs": [],
+                "position": {
+                    "x": 525.6461791992188,
+                    "y": 278.61492919921875
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true
+                    }
+                },
+                "descriptionID": "id6",
+                "equation": "",
+                "type": "parameter",
+                "initial": 1001
+            },
+            {
+                "ID": "id14",
+                "inputs": [
+                    {
+                        "ID": "id9",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 983.9931030273438,
+                    "y": 127.98611450195312
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id3",
+                "type": "accumulator",
+                "initial": 1,
+                "equation": "id9"
+            }
+        ]
+    }
 }
