@@ -45,6 +45,7 @@ define([
 		mode: [],
 		modules:{},
 		query:{}, // added if we want to send multiple queries. moving the query from main function to the global init. this init can be called again for each new function and then new table can be created. 
+		problemNames: [],
 		//sessionDetails:[],
 		decideModules: function(/* string */ type){
 			var returnModule;
@@ -88,6 +89,7 @@ define([
 			this.setObjects();
 			this.users = this.getAllUsers();
 			this.problems = this.getAllProblems();
+			this.getProblemNames();
 			
 			//initializing the arrays to be exact size as this will lead exact size of the table while rendering.
 			var totalUsers = this.users.length;
@@ -185,17 +187,43 @@ define([
 			//});
 			return problems;
 		},
+		
+		getProblemNames: function(){
+			var allProblems;
+			this.getFile("../problems/problem-index.json").then(function(result){
+				allProblems = result;
+			});
+			allProblems = json.parse(allProblems);
+
+			var index = 0;
+			array.forEach(this.problems, function(problem){
+				var breakOut = false;
+				for(var p in allProblems){
+					var obj = allProblems[p];
+					if(obj[problem]){
+						this.problemNames[index] = obj[problem];
+						breakOut = true;
+						break;
+					}
+				}
+
+				if(!breakOut){
+					this.problemNames[index] = problem;
+				}
+				index++;
+			}, this);
+		},
 
 		getFile: function(fileName){
-			xhr.get(this.path + fileName, {
-				handleAs : "json",
-				load: function(object){
-					return object;
-				},
-				error: function(err){
-					console.log("problemOrder txt returned with error, message : "+err);
-					throw err;
-				}
+			return xhr.post(this.path + fileName, {
+				handleAs : "text",
+				sync: true
+			}).then(function(results){
+				console.log("data received from file : ", fileName);
+				return results;
+			}, function(err){
+				console.log("data not received from file: ", fileName);
+				throw err;
 			});
 		},
 
@@ -292,9 +320,10 @@ define([
 				tableString += "<th>Problems Completed</th>";
 				tableString += "<th>Total time spent</th>";
 			}
-			if(this.modules['names'])
+			if(this.modules['names']){
 				tableString += "<th class='grey'>Users \/ Problems -></th>";
-			array.forEach(problems, function(problem){
+			}
+			array.forEach(this.problemNames, function(problem){
 				tableString += "<th>" + problem + "</th>";
 			});
 			tableString += "</tr>";
