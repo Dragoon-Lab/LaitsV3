@@ -169,6 +169,29 @@ define([
             }
             return false;
         },
+
+		checkPremature: function(nodeID){
+			if(!this._model.active.getDescriptionID(nodeID)){
+				return;
+			}
+			else if (this._model.isParentNode(this._model.active.getDescriptionID(nodeID))){
+				return;
+			}
+			var isPremature = true;
+			array.some(this._model.active.getNodes(), lang.hitch(this, function(node){
+				if(node.inputs.length > 0){
+					var isInputNode = array.some(node.inputs, function(input){
+						if(input.ID == nodeID) return true;
+					});
+				}
+				if(isInputNode){
+					isPremature = false;
+					return true;
+				}
+			}));
+			return isPremature;
+		},
+		
 		handleDescription: function(selectDescription){
 			console.log("****** in handleDescription ", this.currentID, selectDescription);
 			if(selectDescription == 'defaultSelect'){
@@ -180,11 +203,25 @@ define([
 			// This is only needed if the type has already been set,
 			// something that is generally only possible in TEST mode.
 			this.updateEquationLabels();
-
-			this.applyDirectives(this._PM.processAnswer(this.currentID, 'description', selectDescription, this._model.given.getName(selectDescription)));
-			if(this._forumparams){
-				// enable forum button and activate the event
-				this.activateForumButton();
+			var isPremature = false;
+			var genus = this._model.given.getGenus(this._model.active.getDescriptionID(this.currentID));
+			if(!genus || genus == "required"){
+				isPremature = (this._mode == "COACHED")? this.checkPremature(this.currentID) : false;	
+			}
+			
+			if(!isPremature){
+				this.applyDirectives(this._PM.processAnswer(this.currentID, 'description', selectDescription, this._model.given.getName(selectDescription)));
+				if(this._forumparams){
+					// enable forum button and activate the event
+					this.activateForumButton();
+				}
+			}else{
+				var directives = [{"id":"description","attribute":"status","value":"premature"},{"id":"description","attribute":"value","value":""},{"id":"message","attribute":"append","value":"The value entered for the description is premature."}];
+				this.applyDirectives(directives);
+				this.applyDirectives([{
+							id: "crisisAlert", attribute:
+							"open", value: "The node you are trying to create is Premature. Please follow the Target Node Strategy."
+						}]);
 			}
 		},
 

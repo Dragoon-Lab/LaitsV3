@@ -136,7 +136,11 @@ describe("Running through ONR Feb 2015 demo", function() {
         }));
 
         it("Should create a node for the liters of water in tank and get TNS popup and red", async(function(){
-            // TODO: check values here
+	    dtest.menuCreateNode(client);
+	    dtest.setNodeDescription(client,"Number of liters of water in tank");
+	    
+	    dtest.popupWindowPressOk(client);
+	    assert(dtest.getNodeDescriptionColor(client)==="red");
         }));
 
         it("Should select number of giardia per liter and turn green", async(function(){
