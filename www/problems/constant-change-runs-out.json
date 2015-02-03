@@ -1,286 +1,288 @@
 {
-    "taskName": "constant+change+runs+out",
-    "time": {
-        "start": 0,
-        "end": 10,
-        "step": 1,
-        "integrationMethod": "Eulers Method",
-        "units": "seconds"
-    },
-    "properties": {},
-    "image": {},
-    "taskDescription": [
-        "* Process: Changing from the source state to the destination state",
-        "* Source: Stuff in the source state",
-        "* Destination: Stuff in the destination state",
-        "* Changing:  A constantamount of stuff change each time unit until the source state runs out.",
-        "",
-        "This uses a function, min(X,Y), which returns either X or Y, whichever is smaller.  Thus, 5+min(2,3) is 7 and min(-8,2) is-8.  ",
-        "",
-        "When Source becomes less than Max changing, then the model subtracts only Source from Source, thus emptying it out.  If it subtracted Max changing instead, then Source would become negative.",
-        "",
-        "A complete list of functions that you can use in Dragoon expressions is available by clicking on the Help button and then on \"Math functions.\"",
-        "",
-        ""
-    ],
-    "givenModelNodes": [
-        {
-            "ID": "id1",
-            "inputs": [
-                {
-                    "ID": "id2",
-                    "label": "-"
-                }
-            ],
-            "position": {
-                "x": 477,
-                "y": 145
-            },
-            "attemptCount": {
-                "description": 1,
-                "type": 1,
-                "initial": 1,
-                "units": 0,
-                "equation": 1,
-                "assistanceScore": 0
-            },
-            "status": {
-                "description": "correct",
-                "type": "correct",
-                "initial": "correct",
-                "equation": "correct"
-            },
-            "name": "Source",
-            "description": "Amount of stuff in the source state",
-            "type": "accumulator",
-            "initial": 100,
-            "equation": "-id2"
+    "task": {
+        "taskName": "constant+change+runs+out",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 1,
+            "integrationMethod": "Eulers Method",
+            "units": "seconds"
         },
-        {
-            "ID": "id2",
-            "inputs": [
-                {
-                    "ID": "id1"
+        "properties": {},
+        "image": {},
+        "taskDescription": [
+            "* Process: Changing from the source state to the destination state",
+            "* Source: Stuff in the source state",
+            "* Destination: Stuff in the destination state",
+            "* Changing:  A constantamount of stuff change each time unit until the source state runs out.",
+            "",
+            "This uses a function, min(X,Y), which returns either X or Y, whichever is smaller.  Thus, 5+min(2,3) is 7 and min(-8,2) is-8.  ",
+            "",
+            "When Source becomes less than Max changing, then the model subtracts only Source from Source, thus emptying it out.  If it subtracted Max changing instead, then Source would become negative.",
+            "",
+            "A complete list of functions that you can use in Dragoon expressions is available by clicking on the Help button and then on \"Math functions.\"",
+            "",
+            ""
+        ],
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 477,
+                    "y": 145
                 },
-                {
-                    "ID": "id4"
-                }
-            ],
-            "position": {
-                "x": 610,
-                "y": 148
-            },
-            "attemptCount": {
-                "description": 1,
-                "type": 1,
-                "initial": 0,
-                "units": 0,
-                "equation": 1,
-                "assistanceScore": 0
-            },
-            "status": {
-                "description": "correct",
-                "type": "correct",
-                "equation": "correct"
-            },
-            "name": "Changing",
-            "description": "Amount of stuff changing each time unit",
-            "type": "function",
-            "equation": "min(id1,id4)"
-        },
-        {
-            "ID": "id3",
-            "inputs": [
-                {
-                    "ID": "id2",
-                    "label": ""
-                }
-            ],
-            "position": {
-                "x": 757,
-                "y": 143
-            },
-            "attemptCount": {
-                "description": 1,
-                "type": 1,
-                "initial": 1,
-                "units": 0,
-                "equation": 1,
-                "assistanceScore": 0
-            },
-            "status": {
-                "description": "correct",
-                "type": "correct",
-                "initial": "correct",
-                "equation": "correct"
-            },
-            "name": "Destination",
-            "description": "Amount of stuff in the destination state",
-            "type": "accumulator",
-            "initial": 4,
-            "equation": "id2"
-        },
-        {
-            "ID": "id4",
-            "inputs": [],
-            "position": {
-                "x": 597.3309326171875,
-                "y": 267.3309326171875
-            },
-            "attemptCount": {
-                "description": 1,
-                "type": 1,
-                "initial": 1,
-                "units": 0,
-                "equation": 0,
-                "assistanceScore": 0
-            },
-            "status": {
-                "description": "correct",
-                "type": "correct",
-                "initial": "correct"
-            },
-            "name": "Max changing",
-            "description": "The maximum amount of stuff changing each time unit",
-            "type": "parameter",
-            "parentNode": false,
-            "initial": 15
-        }
-    ],
-    "studentModelNodes": [
-        {
-            "ID": "id5",
-            "inputs": [
-                {
-                    "ID": "id6",
-                    "label": "-"
-                }
-            ],
-            "position": {
-                "x": 610.9896240234375,
-                "y": 212.98611450195312
-            },
-            "status": {
-                "description": {
-                    "status": "correct",
-                    "disabled": true
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 1,
+                    "units": 0,
+                    "equation": 1,
+                    "assistanceScore": 0
                 },
-                "type": {
-                    "disabled": true,
-                    "status": "correct"
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "initial": "correct",
+                    "equation": "correct"
                 },
-                "initial": {
-                    "disabled": true,
-                    "status": "correct"
-                },
-                "equation": {
-                    "disabled": true,
-                    "status": "correct"
-                }
+                "name": "Source",
+                "description": "Amount of stuff in the source state",
+                "type": "accumulator",
+                "initial": 100,
+                "equation": "-id2"
             },
-            "descriptionID": "id1",
-            "type": "accumulator",
-            "initial": 100,
-            "equation": "-id6"
-        },
-        {
-            "ID": "id6",
-            "inputs": [
-                {
-                    "ID": "id5"
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    },
+                    {
+                        "ID": "id4"
+                    }
+                ],
+                "position": {
+                    "x": 610,
+                    "y": 148
                 },
-                {
-                    "ID": "id7"
-                }
-            ],
-            "position": {
-                "x": 753.9931030273438,
-                "y": 212.98611450195312
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 1,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "equation": "correct"
+                },
+                "name": "Changing",
+                "description": "Amount of stuff changing each time unit",
+                "type": "function",
+                "equation": "min(id1,id4)"
             },
-            "status": {
-                "description": {
-                    "status": "correct",
-                    "disabled": true
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 757,
+                    "y": 143
                 },
-                "type": {
-                    "disabled": true,
-                    "status": "correct"
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 1,
+                    "units": 0,
+                    "equation": 1,
+                    "assistanceScore": 0
                 },
-                "initial": {
-                    "disabled": true
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "initial": "correct",
+                    "equation": "correct"
                 },
-                "equation": {
-                    "disabled": true,
-                    "status": "correct"
-                }
+                "name": "Destination",
+                "description": "Amount of stuff in the destination state",
+                "type": "accumulator",
+                "initial": 4,
+                "equation": "id2"
             },
-            "descriptionID": "id2",
-            "type": "function",
-            "equation": "min(id5,id7)"
-        },
-        {
-            "ID": "id7",
-            "inputs": [],
-            "position": {
-                "x": 741.6531372070312,
-                "y": 67.6253433227539
+            {
+                "ID": "id4",
+                "inputs": [],
+                "position": {
+                    "x": 597.3309326171875,
+                    "y": 267.3309326171875
+                },
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 1,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "initial": "correct"
+                },
+                "name": "Max changing",
+                "description": "The maximum amount of stuff changing each time unit",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 15
+            }
+        ],
+        "studentModelNodes": [
+            {
+                "ID": "id5",
+                "inputs": [
+                    {
+                        "ID": "id6",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 610.9896240234375,
+                    "y": 212.98611450195312
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id1",
+                "type": "accumulator",
+                "initial": 100,
+                "equation": "-id6"
             },
-            "status": {
-                "description": {
-                    "status": "correct",
-                    "disabled": true
+            {
+                "ID": "id6",
+                "inputs": [
+                    {
+                        "ID": "id5"
+                    },
+                    {
+                        "ID": "id7"
+                    }
+                ],
+                "position": {
+                    "x": 753.9931030273438,
+                    "y": 212.98611450195312
                 },
-                "type": {
-                    "disabled": true,
-                    "status": "correct"
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
                 },
-                "initial": {
-                    "disabled": true,
-                    "status": "correct"
-                },
-                "equation": {
-                    "disabled": true
-                }
+                "descriptionID": "id2",
+                "type": "function",
+                "equation": "min(id5,id7)"
             },
-            "descriptionID": "id4",
-            "equation": "",
-            "type": "parameter",
-            "initial": 15
-        },
-        {
-            "ID": "id8",
-            "inputs": [
-                {
-                    "ID": "id6",
-                    "label": ""
-                }
-            ],
-            "position": {
-                "x": 880.0000610351562,
-                "y": 214.98265075683594
+            {
+                "ID": "id7",
+                "inputs": [],
+                "position": {
+                    "x": 741.6531372070312,
+                    "y": 67.6253433227539
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true
+                    }
+                },
+                "descriptionID": "id4",
+                "equation": "",
+                "type": "parameter",
+                "initial": 15
             },
-            "status": {
-                "description": {
-                    "status": "correct",
-                    "disabled": true
+            {
+                "ID": "id8",
+                "inputs": [
+                    {
+                        "ID": "id6",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 880.0000610351562,
+                    "y": 214.98265075683594
                 },
-                "type": {
-                    "disabled": true,
-                    "status": "correct"
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
                 },
-                "initial": {
-                    "disabled": true,
-                    "status": "correct"
-                },
-                "equation": {
-                    "disabled": true,
-                    "status": "correct"
-                }
-            },
-            "descriptionID": "id3",
-            "type": "accumulator",
-            "initial": 4,
-            "equation": "id6"
-        }
-    ]
+                "descriptionID": "id3",
+                "type": "accumulator",
+                "initial": 4,
+                "equation": "id6"
+            }
+        ]
+    }
 }

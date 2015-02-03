@@ -1,357 +1,359 @@
 {
-    "taskName": "propor+to+source+minus+destination",
-    "time": {
-        "start": 0,
-        "end": 10,
-        "step": 0.5,
-        "integrationMethod": "Eulers Method",
-        "units": "seconds"
-    },
-    "properties": {},
-    "image": {},
-    "taskDescription": [
-        "* Process: stuff changes state from source to destination",
-        "* Source: Quantity of stuff in the Source state",
-        "* Destination: Quantity of stuff in the destination state",
-        "* Changing: a proportion of the difference between Source and Destination changes state each time unit.",
-        "",
-        "Popular names for this process:",
-        "* equilibrating ",
-        "* a kind of exponential transfer"
-    ],
-    "givenModelNodes": [
-        {
-            "ID": "id1",
-            "inputs": [
-                {
-                    "ID": "id2",
-                    "label": "-"
-                }
-            ],
-            "position": {
-                "x": 422,
-                "y": 202
+    "task": {
+        "taskName": "propor+to+source+minus+destination",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 0.5,
+            "integrationMethod": "Eulers Method",
+            "units": "seconds"
+        },
+        "properties": {},
+        "image": {},
+        "taskDescription": [
+            "* Process: stuff changes state from source to destination",
+            "* Source: Quantity of stuff in the Source state",
+            "* Destination: Quantity of stuff in the destination state",
+            "* Changing: a proportion of the difference between Source and Destination changes state each time unit.",
+            "",
+            "Popular names for this process:",
+            "* equilibrating ",
+            "* a kind of exponential transfer"
+        ],
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 422,
+                    "y": 202
+                },
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 1,
+                    "units": 0,
+                    "equation": 1,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "initial": "correct",
+                    "equation": "correct"
+                },
+                "name": "Source",
+                "description": "Quantity of stuff in the source state",
+                "type": "accumulator",
+                "initial": 55,
+                "equation": "-id2"
             },
-            "attemptCount": {
-                "description": 1,
-                "type": 1,
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id4",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id5",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 554,
+                    "y": 201
+                },
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 1,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "equation": "correct"
+                },
+                "name": "Changing",
+                "description": "Quantity of stuff changing state each time unit",
+                "type": "function",
+                "equation": "id4*id5"
+            },
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 684,
+                    "y": 200
+                },
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 1,
+                    "units": 0,
+                    "equation": 1,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "initial": "correct",
+                    "equation": "correct"
+                },
+                "name": "Destination",
+                "description": "Quantity of stuff in the destination state",
+                "type": "accumulator",
                 "initial": 1,
-                "units": 0,
-                "equation": 1,
-                "assistanceScore": 0
+                "equation": "id2"
             },
-            "status": {
-                "description": "correct",
-                "type": "correct",
-                "initial": "correct",
-                "equation": "correct"
-            },
-            "name": "Source",
-            "description": "Quantity of stuff in the source state",
-            "type": "accumulator",
-            "initial": 55,
-            "equation": "-id2"
-        },
-        {
-            "ID": "id2",
-            "inputs": [
-                {
-                    "ID": "id4",
-                    "label": ""
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id3",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 555,
+                    "y": 82
                 },
-                {
-                    "ID": "id5",
-                    "label": ""
-                }
-            ],
-            "position": {
-                "x": 554,
-                "y": 201
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 1,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "equation": "correct"
+                },
+                "name": "Difference",
+                "description": "Difference between source and destination",
+                "type": "function",
+                "equation": "id1-id3"
             },
-            "attemptCount": {
-                "description": 1,
-                "type": 1,
-                "initial": 0,
-                "units": 0,
-                "equation": 1,
-                "assistanceScore": 0
+            {
+                "ID": "id5",
+                "inputs": [],
+                "position": {
+                    "x": 539.3309326171875,
+                    "y": 317.3309631347656
+                },
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 1,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "initial": "correct"
+                },
+                "name": "Proportion changing",
+                "description": "Proportion of difference that changes state each time unit",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.3
+            }
+        ],
+        "studentModelNodes": [
+            {
+                "ID": "id6",
+                "inputs": [
+                    {
+                        "ID": "id7",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 498.9930725097656,
+                    "y": 232.9861297607422
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id1",
+                "type": "accumulator",
+                "initial": 55,
+                "equation": "-id7"
             },
-            "status": {
-                "description": "correct",
-                "type": "correct",
-                "equation": "correct"
+            {
+                "ID": "id7",
+                "inputs": [
+                    {
+                        "ID": "id8",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id9",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 645.9896240234375,
+                    "y": 233.9757080078125
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id2",
+                "type": "function",
+                "equation": "id8*id9"
             },
-            "name": "Changing",
-            "description": "Quantity of stuff changing state each time unit",
-            "type": "function",
-            "equation": "id4*id5"
-        },
-        {
-            "ID": "id3",
-            "inputs": [
-                {
-                    "ID": "id2",
-                    "label": ""
-                }
-            ],
-            "position": {
-                "x": 684,
-                "y": 200
+            {
+                "ID": "id8",
+                "inputs": [
+                    {
+                        "ID": "id6",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id10",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 647.9861450195312,
+                    "y": 84.9826431274414
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id4",
+                "type": "function",
+                "equation": "id6-id10"
             },
-            "attemptCount": {
-                "description": 1,
-                "type": 1,
+            {
+                "ID": "id9",
+                "inputs": [],
+                "position": {
+                    "x": 633.649658203125,
+                    "y": 376.618408203125
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true
+                    }
+                },
+                "descriptionID": "id5",
+                "equation": "",
+                "type": "parameter",
+                "initial": 0.3
+            },
+            {
+                "ID": "id10",
+                "inputs": [
+                    {
+                        "ID": "id7",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 786.99658203125,
+                    "y": 235.98959350585938
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id3",
+                "type": "accumulator",
                 "initial": 1,
-                "units": 0,
-                "equation": 1,
-                "assistanceScore": 0
-            },
-            "status": {
-                "description": "correct",
-                "type": "correct",
-                "initial": "correct",
-                "equation": "correct"
-            },
-            "name": "Destination",
-            "description": "Quantity of stuff in the destination state",
-            "type": "accumulator",
-            "initial": 1,
-            "equation": "id2"
-        },
-        {
-            "ID": "id4",
-            "inputs": [
-                {
-                    "ID": "id1",
-                    "label": ""
-                },
-                {
-                    "ID": "id3",
-                    "label": "-"
-                }
-            ],
-            "position": {
-                "x": 555,
-                "y": 82
-            },
-            "attemptCount": {
-                "description": 1,
-                "type": 1,
-                "initial": 0,
-                "units": 0,
-                "equation": 1,
-                "assistanceScore": 0
-            },
-            "status": {
-                "description": "correct",
-                "type": "correct",
-                "equation": "correct"
-            },
-            "name": "Difference",
-            "description": "Difference between source and destination",
-            "type": "function",
-            "equation": "id1-id3"
-        },
-        {
-            "ID": "id5",
-            "inputs": [],
-            "position": {
-                "x": 539.3309326171875,
-                "y": 317.3309631347656
-            },
-            "attemptCount": {
-                "description": 1,
-                "type": 1,
-                "initial": 1,
-                "units": 0,
-                "equation": 0,
-                "assistanceScore": 0
-            },
-            "status": {
-                "description": "correct",
-                "type": "correct",
-                "initial": "correct"
-            },
-            "name": "Proportion changing",
-            "description": "Proportion of difference that changes state each time unit",
-            "type": "parameter",
-            "parentNode": false,
-            "initial": 0.3
-        }
-    ],
-    "studentModelNodes": [
-        {
-            "ID": "id6",
-            "inputs": [
-                {
-                    "ID": "id7",
-                    "label": "-"
-                }
-            ],
-            "position": {
-                "x": 498.9930725097656,
-                "y": 232.9861297607422
-            },
-            "status": {
-                "description": {
-                    "status": "correct",
-                    "disabled": true
-                },
-                "type": {
-                    "disabled": true,
-                    "status": "correct"
-                },
-                "initial": {
-                    "disabled": true,
-                    "status": "correct"
-                },
-                "equation": {
-                    "disabled": true,
-                    "status": "correct"
-                }
-            },
-            "descriptionID": "id1",
-            "type": "accumulator",
-            "initial": 55,
-            "equation": "-id7"
-        },
-        {
-            "ID": "id7",
-            "inputs": [
-                {
-                    "ID": "id8",
-                    "label": ""
-                },
-                {
-                    "ID": "id9",
-                    "label": ""
-                }
-            ],
-            "position": {
-                "x": 645.9896240234375,
-                "y": 233.9757080078125
-            },
-            "status": {
-                "description": {
-                    "status": "correct",
-                    "disabled": true
-                },
-                "type": {
-                    "disabled": true,
-                    "status": "correct"
-                },
-                "initial": {
-                    "disabled": true
-                },
-                "equation": {
-                    "disabled": true,
-                    "status": "correct"
-                }
-            },
-            "descriptionID": "id2",
-            "type": "function",
-            "equation": "id8*id9"
-        },
-        {
-            "ID": "id8",
-            "inputs": [
-                {
-                    "ID": "id6",
-                    "label": ""
-                },
-                {
-                    "ID": "id10",
-                    "label": "-"
-                }
-            ],
-            "position": {
-                "x": 647.9861450195312,
-                "y": 84.9826431274414
-            },
-            "status": {
-                "description": {
-                    "status": "correct",
-                    "disabled": true
-                },
-                "type": {
-                    "disabled": true,
-                    "status": "correct"
-                },
-                "initial": {
-                    "disabled": true
-                },
-                "equation": {
-                    "disabled": true,
-                    "status": "correct"
-                }
-            },
-            "descriptionID": "id4",
-            "type": "function",
-            "equation": "id6-id10"
-        },
-        {
-            "ID": "id9",
-            "inputs": [],
-            "position": {
-                "x": 633.649658203125,
-                "y": 376.618408203125
-            },
-            "status": {
-                "description": {
-                    "status": "correct",
-                    "disabled": true
-                },
-                "type": {
-                    "disabled": true,
-                    "status": "correct"
-                },
-                "initial": {
-                    "disabled": true,
-                    "status": "correct"
-                },
-                "equation": {
-                    "disabled": true
-                }
-            },
-            "descriptionID": "id5",
-            "equation": "",
-            "type": "parameter",
-            "initial": 0.3
-        },
-        {
-            "ID": "id10",
-            "inputs": [
-                {
-                    "ID": "id7",
-                    "label": ""
-                }
-            ],
-            "position": {
-                "x": 786.99658203125,
-                "y": 235.98959350585938
-            },
-            "status": {
-                "description": {
-                    "status": "correct",
-                    "disabled": true
-                },
-                "type": {
-                    "disabled": true,
-                    "status": "correct"
-                },
-                "initial": {
-                    "disabled": true,
-                    "status": "correct"
-                },
-                "equation": {
-                    "disabled": true,
-                    "status": "correct"
-                }
-            },
-            "descriptionID": "id3",
-            "type": "accumulator",
-            "initial": 1,
-            "equation": "id7"
-        }
-    ]
+                "equation": "id7"
+            }
+        ]
+    }
 }
