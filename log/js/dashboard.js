@@ -89,7 +89,7 @@ define([
 			this.setObjects();
 			this.users = this.getAllUsers();
 			this.problems = this.getAllProblems();
-			this.getProblemNames();
+			this.problemNames = this.getProblemNames();
 			
 			//initializing the arrays to be exact size as this will lead exact size of the table while rendering.
 			var totalUsers = this.users.length;
@@ -190,6 +190,7 @@ define([
 		
 		getProblemNames: function(){
 			var allProblems;
+			var names = [];
 			this.getFile("../problems/problem-index.json").then(function(result){
 				allProblems = result;
 			});
@@ -201,17 +202,19 @@ define([
 				for(var p in allProblems){
 					var obj = allProblems[p];
 					if(obj[problem]){
-						this.problemNames[index] = obj[problem];
+						names[index] = obj[problem];
 						breakOut = true;
 						break;
 					}
 				}
 
 				if(!breakOut){
-					this.problemNames[index] = problem;
+					names[index] = problem;
 				}
 				index++;
 			}, this);
+
+			return names;
 		},
 
 		getFile: function(fileName){
