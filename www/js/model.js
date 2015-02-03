@@ -807,15 +807,15 @@ define([
 				var initialEntered = node.type && node.type == "function" || node.initial != null;
 				var equationEntered = node.type && node.type == "parameter" || node.equation;
 				if(!node.genus || node.genus == "required" || node.genus == "allowed" || node.genus == "preferred"){
-					return node.genus && node.name && node.description &&
+					return  node.name && node.description &&
 							node.type && (initialEntered || typeof initialEntered === "number") &&
 							(unitsOptional || node.units) &&
 							equationEntered;
 				}else if(node.genus == "initialValue"){
 					return node.genus && node.name && node.description;
 				}else{
-					return (node.name && node.description) ||
-							node.units;
+					return node.genus != "defaultSelect" && ((node.name && node.description) ||
+							node.units);
 				}
 			}
 		}, both);
