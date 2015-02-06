@@ -358,11 +358,7 @@ define([
 					var urlString = '';
 					if(this.modules['sessionLink']){
 						//for devel server
-						//urlString = "<a href='/devel/index.html?u=" + user + "&m=" + this.mode[row][col] + "&sm=feedback&is=algebraic&p=" + problem + "&s=" + this.section + "&c=Continue&l=false' target='_blank' title='Click to check session' style='width:90px'>";
-						//for demo server
-						urlString = "<a href='/demo/index.html?u=" + user + "&m=" + this.mode[row][col] + "&sm=feedback&is=algebraic&p=" + problem + "&s=" + this.section + "&c=Continue&l=false' target='_blank' title='Click to check session'>";
-						//for local server
-						//var urlString = "<a href='/code/index.html?u=" + user + "&m=" + this.mode[row][col] + "&sm=feedback&is=algebraic&p=" + problem + "&s=" + this.section + "&c=Continue&l=false' target='_blank' title='Click to check session'>";
+						urlString = "<a href='../index.html?u=" + user + "&m=" + this.mode[row][col] + "&sm=feedback&is=algebraic&p=" + problem + "&s=" + this.section + "&c=Continue&l=false' target='_blank' title='Click to check session'>";
 					}
 					var complete = this.problemComplete[row][col];
 					var runningStatus = this.sessionRunning[row][col];

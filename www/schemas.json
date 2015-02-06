@@ -62,7 +62,7 @@
 				"example" : "There is a 10 mA current flowing into node A. The junction divides into two paths. If current flowing through one of them is 2mA, then how much current is flowing in the other path?"
 			},
 			{
-				"name" : "Kirchoff's votage law",
+				"name" : "Kirchoff's voltage law",
 				"id" : "kirchoff_voltage_law",
 				"template" : "Voltage change in a complete closed loop is 0.",
 				"example" : "Find the current flowing through two loads in parallel when they are connected to a source of 10V?"
