@@ -1,0 +1,313 @@
+{
+    "task": {
+        "taskName": "zener diode voltage regulator",
+        "time": {
+            "start": 0,
+            "end": 0.1,
+            "step": 0.005,
+            "integrationMethod": "Eulers Method",
+            "units": "seconds"
+        },
+        "properties": {},
+        "image": {
+            "URL": "http://i.imgur.com/s4nxTgj.png"
+        },
+        "taskDescription": [
+            "Create a model for the zener diode voltage regulator shown here.  Assume a 13-volt diode and a 180 ohm resistor.  Assume the diode speed is 2000 ohm/volt/second.  Graph the voltage across the zener.",
+            ""
+        ],
+        "lessonsLearned": "",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 402.99713134765625,
+                    "y": 106.98863220214844
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Zener diode resistance",
+                "genus": "required",
+                "description": "Zener diode resistance",
+                "type": "accumulator",
+                "initial": 200,
+                "units": "ohms",
+                "equation": "id2"
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id3",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id4",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 540,
+                    "y": 82.98294830322266
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "zener resistance change",
+                "description": "Change in the zener diode's resistance each time period",
+                "genus": "required",
+                "type": "function",
+                "units": "ohms",
+                "equation": "id3*id4"
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 704.4410400390625,
+                    "y": 77.42402648925781
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Zener speed",
+                "description": "The change in  ohms of the zener per volt of residue",
+                "genus": "required",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 2000,
+                "units": "ohms/volt"
+            },
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id5",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id6",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 613.991455078125,
+                    "y": 194.9857940673828
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Zener voltage residue",
+                "description": "V across zener in excess of zener set point",
+                "genus": "required",
+                "type": "function",
+                "units": "volts",
+                "equation": "id5-id6"
+            },
+            {
+                "ID": "id5",
+                "inputs": [],
+                "position": {
+                    "x": 757.438232421875,
+                    "y": 214.42686462402344
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Zener set point",
+                "description": "Zener voltage set point",
+                "genus": "required",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 13,
+                "units": "volts"
+            },
+            {
+                "ID": "id6",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id7",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 483.991455078125,
+                    "y": 228.99147033691406
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "V across zener",
+                "description": "Voltage drop across the zener diode",
+                "genus": "required",
+                "type": "function",
+                "units": "volts",
+                "equation": "id1*id7",
+                "parentNode": true
+            },
+            {
+                "ID": "id7",
+                "inputs": [
+                    {
+                        "ID": "id8",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id9",
+                        "label": "/"
+                    }
+                ],
+                "position": {
+                    "x": 597.9971313476562,
+                    "y": 363.991455078125
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Zener diode current",
+                "description": "Current through the zener diode",
+                "genus": "required",
+                "type": "function",
+                "units": "amps",
+                "equation": "id8/id9"
+            },
+            {
+                "ID": "id8",
+                "inputs": [],
+                "position": {
+                    "x": 731.9885864257812,
+                    "y": 372.9829406738281
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "power supply voltage",
+                "description": "Voltage supplied by the supply",
+                "genus": "required",
+                "type": "function",
+                "units": "volts",
+                "equation": "20"
+            },
+            {
+                "ID": "id9",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id10",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 402.99713134765625,
+                    "y": 298.991455078125
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "load on power supply",
+                "description": "resistance of zener resistor series circuit",
+                "genus": "required",
+                "type": "function",
+                "units": "ohms",
+                "equation": "id1+id10"
+            },
+            {
+                "ID": "id10",
+                "inputs": [],
+                "position": {
+                    "x": 463.43255615234375,
+                    "y": 414.4268798828125
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "R of R",
+                "description": "resistance of the resistor",
+                "genus": "required",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 180,
+                "units": "ohms"
+            }
+        ],
+        "studentModelNodes": [],
+        "schemas": []
+    }
+}
