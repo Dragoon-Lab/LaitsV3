@@ -38,14 +38,19 @@
                     "y": 197
                 },
                 "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
+                    "description": 1,
+                    "type": 1,
+                    "initial": 1,
                     "units": 0,
-                    "equation": 0,
+                    "equation": 1,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "initial": "correct",
+                    "equation": "correct"
+                },
                 "name": "Source",
                 "description": "Quantity of stuff in Source state",
                 "type": "accumulator",
@@ -69,14 +74,18 @@
                     "y": 199
                 },
                 "attemptCount": {
-                    "description": 0,
-                    "type": 0,
+                    "description": 1,
+                    "type": 1,
                     "initial": 0,
                     "units": 0,
-                    "equation": 0,
+                    "equation": 1,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "equation": "correct"
+                },
                 "name": "Changing",
                 "description": "Quantity of stuff that changes state per time unit",
                 "type": "function",
@@ -95,14 +104,19 @@
                     "y": 197
                 },
                 "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
+                    "description": 1,
+                    "type": 1,
+                    "initial": 1,
                     "units": 0,
-                    "equation": 0,
+                    "equation": 1,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "initial": "correct",
+                    "equation": "correct"
+                },
                 "name": "Destination",
                 "description": "Quantity of stuffin the Destination state",
                 "type": "accumulator",
@@ -117,14 +131,18 @@
                     "y": 48.33095169067383
                 },
                 "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
+                    "description": 1,
+                    "type": 1,
+                    "initial": 1,
                     "units": 0,
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "initial": "correct"
+                },
                 "name": "Set point",
                 "description": "The destination quantity converges to this",
                 "type": "parameter",
@@ -148,14 +166,18 @@
                     "y": 70
                 },
                 "attemptCount": {
-                    "description": 0,
-                    "type": 0,
+                    "description": 1,
+                    "type": 1,
                     "initial": 0,
                     "units": 0,
-                    "equation": 0,
+                    "equation": 1,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "equation": "correct"
+                },
                 "name": "Difference from set point",
                 "description": "Set point minus destination",
                 "type": "function",
@@ -169,14 +191,18 @@
                     "y": 54.33095169067383
                 },
                 "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
+                    "description": 1,
+                    "type": 1,
+                    "initial": 1,
                     "units": 0,
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "initial": "correct"
+                },
                 "name": "Proportion changing",
                 "description": "Proportion of difference to set point that changes state per unit time",
                 "type": "parameter",
@@ -184,6 +210,209 @@
                 "initial": 0.3
             }
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [
+            {
+                "ID": "id7",
+                "inputs": [
+                    {
+                        "ID": "id8",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 570,
+                    "y": 184.98265075683594
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id1",
+                "type": "accumulator",
+                "initial": 100,
+                "equation": "-id8"
+            },
+            {
+                "ID": "id8",
+                "inputs": [
+                    {
+                        "ID": "id9",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id10",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 705.0000610351562,
+                    "y": 184.98265075683594
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id2",
+                "type": "function",
+                "equation": "id9*id10"
+            },
+            {
+                "ID": "id9",
+                "inputs": [],
+                "position": {
+                    "x": 691.6531372070312,
+                    "y": 306.618408203125
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true
+                    }
+                },
+                "descriptionID": "id6",
+                "equation": "",
+                "type": "parameter",
+                "initial": 0.3
+            },
+            {
+                "ID": "id10",
+                "inputs": [
+                    {
+                        "ID": "id11",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id12",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 793.9931030273438,
+                    "y": 88.97570037841797
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id5",
+                "type": "function",
+                "equation": "id11-id12"
+            },
+            {
+                "ID": "id11",
+                "inputs": [],
+                "position": {
+                    "x": 1020.6461791992188,
+                    "y": 65.62881469726562
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true
+                    }
+                },
+                "descriptionID": "id4",
+                "equation": "",
+                "type": "parameter",
+                "initial": 15
+            },
+            {
+                "ID": "id12",
+                "inputs": [
+                    {
+                        "ID": "id8",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 875.9896240234375,
+                    "y": 181.9791717529297
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id3",
+                "type": "accumulator",
+                "initial": 2,
+                "equation": "id8"
+            }
+        ]
     }
 }

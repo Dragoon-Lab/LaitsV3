@@ -40,8 +40,7 @@ describe("Test student mode:", function() {
 
         it("Should have correct description color", async(function(){
             var descColor = dtest.getNodeDescriptionColor(client);
-            assert(descColor === "red" ,
-                "Description color was " + descColor + " instead of red");
+	    atest.checkNodeValue(descColor,"red","Number of liters of water in tank");
         }));
 
         after(async(function(){
