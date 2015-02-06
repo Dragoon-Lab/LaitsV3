@@ -1,0 +1,342 @@
+{
+    "task": {
+        "taskName": "full wave rectifier with capacitor",
+        "time": {
+            "start": 0,
+            "end": 0.02,
+            "step": 0.0003,
+            "integrationMethod": "Eulers Method",
+            "units": "seconds"
+        },
+        "properties": {},
+        "image": {
+            "URL": "http://i.stack.imgur.com/BLGnf.gif"
+        },
+        "taskDescription": [
+            "Model a full wave rectifier with a 5 voltage AC power supply, a 5000 ohm load and a 0.1 farad smoothing capacitor.  Graph the output voltage.  This model is buggy.  The changes to the accumulator seem to be divided by the size of the time step.",
+            "",
+            ""
+        ],
+        "lessonsLearned": "",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2"
+                    }
+                ],
+                "position": {
+                    "x": 499.9999694824219,
+                    "y": 101.98863220214844
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "AC voltage source",
+                "description": "alternating current voltage source",
+                "genus": "required",
+                "type": "function",
+                "units": "volts",
+                "equation": "id2*sinewave(60,0)"
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 354.4410705566406,
+                    "y": 76.4297103881836
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Max voltage",
+                "description": "Peak of AC voltage",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 5,
+                "units": "volts",
+                "genus": "required"
+            },
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    }
+                ],
+                "position": {
+                    "x": 567.9971313476562,
+                    "y": 205.9801025390625
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Positive peaks",
+                "genus": "required",
+                "description": "AC voltage with negative peaks removed",
+                "type": "function",
+                "units": "volts",
+                "equation": "max(0,id1)"
+            },
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    }
+                ],
+                "position": {
+                    "x": 415.9942932128906,
+                    "y": 214.9857940673828
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Negative peaks",
+                "genus": "required",
+                "description": "AC voltage with positive peaks removed",
+                "type": "function",
+                "units": "volts",
+                "equation": "min(0,id1)"
+            },
+            {
+                "ID": "id5",
+                "inputs": [
+                    {
+                        "ID": "id3",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id4",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 497.99713134765625,
+                    "y": 304.98577880859375
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Lumpy positive voltage",
+                "genus": "required",
+                "description": "AC voltage with negative peaks flipped over",
+                "type": "function",
+                "units": "volts",
+                "equation": "id3-id4"
+            },
+            {
+                "ID": "id6",
+                "inputs": [
+                    {
+                        "ID": "id7",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id8",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 657.9971313476562,
+                    "y": 128.99147033691406
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Output voltage",
+                "genus": "required",
+                "description": "Voltage across capacitor and load resistor",
+                "type": "accumulator",
+                "initial": 0,
+                "units": "volts",
+                "equation": "id7-id8",
+                "parentNode": true
+            },
+            {
+                "ID": "id7",
+                "inputs": [
+                    {
+                        "ID": "id5"
+                    },
+                    {
+                        "ID": "id6"
+                    }
+                ],
+                "position": {
+                    "x": 655,
+                    "y": 301.9886169433594
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "charging capacitor",
+                "description": "Voltage added to capacitor",
+                "genus": "required",
+                "type": "function",
+                "units": "volts",
+                "equation": "max(0,(id5-id6))"
+            },
+            {
+                "ID": "id8",
+                "inputs": [
+                    {
+                        "ID": "id9",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id10",
+                        "label": "/"
+                    }
+                ],
+                "position": {
+                    "x": 776.9885864257812,
+                    "y": 116.98863220214844
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "discharging capacitor",
+                "description": "Voltage removed from capacitor by output current",
+                "genus": "required",
+                "type": "function",
+                "units": "volts",
+                "equation": "id9/id10"
+            },
+            {
+                "ID": "id9",
+                "inputs": [
+                    {
+                        "ID": "id6",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id11",
+                        "label": "/"
+                    }
+                ],
+                "position": {
+                    "x": 760.9942626953125,
+                    "y": 280.9801025390625
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Output current",
+                "description": "Current through load",
+                "genus": "required",
+                "type": "function",
+                "units": "amps",
+                "equation": "id6/id11"
+            },
+            {
+                "ID": "id10",
+                "inputs": [],
+                "position": {
+                    "x": 879.4410400390625,
+                    "y": 105.42118835449219
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Capacitance of capacitor",
+                "description": "Capacitance of capacitor",
+                "genus": "required",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.1,
+                "units": "farad"
+            },
+            {
+                "ID": "id11",
+                "inputs": [],
+                "position": {
+                    "x": 886.4439086914062,
+                    "y": 270.42120361328125
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "resistance of load",
+                "description": "Resistance of the load",
+                "genus": "required",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 5000,
+                "units": "ohms"
+            }
+        ],
+        "studentModelNodes": [],
+        "schemas": []
+    }
+}

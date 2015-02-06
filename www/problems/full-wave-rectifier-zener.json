@@ -1,0 +1,664 @@
+{
+    "task": {
+        "taskName": "full wave rectifier with zener",
+        "time": {
+            "start": 0,
+            "end": 0.02,
+            "step": 0.0003,
+            "integrationMethod": "Eulers Method",
+            "units": "seconds"
+        },
+        "properties": {},
+        "image": {
+            "URL": "http://www.ece.umd.edu/class/enee206.S2004/lectures/figs/figs13/fig13-8.jpg"
+        },
+        "taskDescription": [
+            "Model a full wave rectifier with a zener diode. Assume a 13 volt zener, a 1000 ohm load, 120 volts peak to peak, a 0.1 farad smoothing capacitor, and let R be 1000 ohms.  Graph the output voltage.  This model is buggy.",
+            "",
+            ""
+        ],
+        "lessonsLearned": "",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [],
+                "position": {
+                    "x": 322.438232421875,
+                    "y": 38.432552337646484
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Voltage peak to peak",
+                "genus": "required",
+                "description": "Voltage of the AC supply peak to peak",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 120,
+                "units": "volts"
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 397.3309631347656,
+                    "y": 268.3309326171875
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Frequency",
+                "genus": "required",
+                "description": "Wavelength of the AC supply",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 60,
+                "units": "cps"
+            },
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    },
+                    {
+                        "ID": "id2"
+                    }
+                ],
+                "position": {
+                    "x": 469.9999694824219,
+                    "y": 113.99147033691406
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "AC voltage",
+                "genus": "required",
+                "description": "AC voltage",
+                "type": "function",
+                "units": "volts",
+                "equation": "(id1*0.5)*sinewave(id2,0)"
+            },
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id3"
+                    }
+                ],
+                "position": {
+                    "x": 568.991455078125,
+                    "y": 34.98579406738281
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Positive peaks",
+                "genus": "required",
+                "description": "Positive peaks from the AC supply",
+                "type": "function",
+                "units": "volts",
+                "equation": "max(0,id3)"
+            },
+            {
+                "ID": "id5",
+                "inputs": [
+                    {
+                        "ID": "id3"
+                    }
+                ],
+                "position": {
+                    "x": 532.9971313476562,
+                    "y": 219.9857940673828
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Negative peaks",
+                "genus": "required",
+                "description": "Negative peaks from the AC supply",
+                "type": "function",
+                "units": "volts",
+                "equation": "min(0,id3)"
+            },
+            {
+                "ID": "id6",
+                "inputs": [
+                    {
+                        "ID": "id4",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id5",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 635.9943237304688,
+                    "y": 137.9829559326172
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Lumpy positive voltage",
+                "genus": "required",
+                "description": "DC voltage, but lumpy",
+                "type": "function",
+                "units": "volts",
+                "equation": "id4-id5"
+            },
+            {
+                "ID": "id7",
+                "inputs": [
+                    {
+                        "ID": "id8",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id9",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 787.9971313476562,
+                    "y": 62.98295211791992
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "V across capacitor",
+                "genus": "required",
+                "description": "Voltage across the capacitor",
+                "type": "accumulator",
+                "initial": 0,
+                "units": "volts",
+                "equation": "id8-id9"
+            },
+            {
+                "ID": "id8",
+                "inputs": [
+                    {
+                        "ID": "id6"
+                    },
+                    {
+                        "ID": "id7"
+                    }
+                ],
+                "position": {
+                    "x": 681.9885864257812,
+                    "y": 35.9801139831543
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Charging capacitor",
+                "description": "Charging capacitor",
+                "genus": "required",
+                "type": "function",
+                "units": "volts",
+                "equation": "max(0,(id6-id7))"
+            },
+            {
+                "ID": "id9",
+                "inputs": [
+                    {
+                        "ID": "id10",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id11",
+                        "label": "/"
+                    }
+                ],
+                "position": {
+                    "x": 690.9943237304688,
+                    "y": 244.9857940673828
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Discharging capacitor",
+                "description": "Voltage change due to discharging",
+                "genus": "required",
+                "type": "function",
+                "units": "volts",
+                "equation": "id10/id11"
+            },
+            {
+                "ID": "id10",
+                "inputs": [
+                    {
+                        "ID": "id19",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id22",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 761.9885864257812,
+                    "y": 397.9829406738281
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Output current",
+                "description": "Output current",
+                "genus": "required",
+                "type": "function",
+                "units": "amps",
+                "equation": "id19+id22"
+            },
+            {
+                "ID": "id11",
+                "inputs": [],
+                "position": {
+                    "x": 591.4439086914062,
+                    "y": 382.42401123046875
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Capacitance of capacitor",
+                "description": "Capacitance of capacitor",
+                "genus": "required",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.01,
+                "units": "farads"
+            },
+            {
+                "ID": "id12",
+                "inputs": [],
+                "position": {
+                    "x": 893.4325561523438,
+                    "y": 78.43254852294922
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "R of R",
+                "genus": "required",
+                "description": "Resistance of resistor R",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 1000,
+                "units": "ohms"
+            },
+            {
+                "ID": "id13",
+                "inputs": [
+                    {
+                        "ID": "id14",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 963.991455078125,
+                    "y": 151.98863220214844
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "R of Zener",
+                "genus": "required",
+                "description": "Resistance of zener diode",
+                "type": "accumulator",
+                "initial": 200,
+                "units": "ohms",
+                "equation": "id14"
+            },
+            {
+                "ID": "id14",
+                "inputs": [
+                    {
+                        "ID": "id15",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id16",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 1093,
+                    "y": 218
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Change of zener resistance",
+                "description": "Resitance added or subtracted from zener each time period",
+                "genus": "required",
+                "type": "function",
+                "units": "ohms",
+                "equation": "id15*id16"
+            },
+            {
+                "ID": "id15",
+                "inputs": [],
+                "position": {
+                    "x": 1043.3309326171875,
+                    "y": 66.33094787597656
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "zener speed",
+                "description": "How fast the zener can change resistance",
+                "genus": "required",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 10000,
+                "units": "ohms/volt"
+            },
+            {
+                "ID": "id16",
+                "inputs": [
+                    {
+                        "ID": "id18",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id17",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 974,
+                    "y": 339
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "zener voltage difference",
+                "description": "Difference between zener voltage and its set point",
+                "genus": "required",
+                "type": "function",
+                "equation": "id18-id17"
+            },
+            {
+                "ID": "id17",
+                "inputs": [],
+                "position": {
+                    "x": 1074.3309326171875,
+                    "y": 361.3309631347656
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "zener set point",
+                "genus": "required",
+                "description": "Voltage that zener wants to drop",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 13,
+                "units": "volts"
+            },
+            {
+                "ID": "id18",
+                "inputs": [
+                    {
+                        "ID": "id19",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id13",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 870.9942626953125,
+                    "y": 397.9829406738281
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "zener voltage drop",
+                "genus": "required",
+                "description": "Voltage across zener",
+                "type": "function",
+                "units": "volts",
+                "equation": "id19*id13"
+            },
+            {
+                "ID": "id19",
+                "inputs": [
+                    {
+                        "ID": "id7",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id20",
+                        "label": "/"
+                    }
+                ],
+                "position": {
+                    "x": 857.9971313476562,
+                    "y": 267.9829406738281
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "zener current",
+                "description": "Current though zener",
+                "type": "function",
+                "units": "amps",
+                "equation": "id7/id20",
+                "genus": "required"
+            },
+            {
+                "ID": "id20",
+                "inputs": [
+                    {
+                        "ID": "id12",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id13",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 770.9942626953125,
+                    "y": 170.9801025390625
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "R of Zener resistor loop",
+                "genus": "required",
+                "description": "Resistance of zener and R",
+                "type": "function",
+                "units": "ohms",
+                "equation": "id12+id13"
+            },
+            {
+                "ID": "id21",
+                "inputs": [],
+                "position": {
+                    "x": 336.44390869140625,
+                    "y": 349.4268798828125
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "R of Load",
+                "description": "Resistance of load resistor",
+                "genus": "required",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 1000,
+                "units": "ohms"
+            },
+            {
+                "ID": "id22",
+                "inputs": [
+                    {
+                        "ID": "id18",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id21",
+                        "label": "/"
+                    }
+                ],
+                "position": {
+                    "x": 487.99713134765625,
+                    "y": 318.991455078125
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "I through load",
+                "description": "Current through the load",
+                "genus": "required",
+                "type": "function",
+                "units": "amps",
+                "equation": "id18/id21"
+            }
+        ],
+        "studentModelNodes": [],
+        "schemas": []
+    }
+}
