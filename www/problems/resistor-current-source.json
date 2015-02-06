@@ -1,0 +1,106 @@
+{
+    "task": {
+        "taskName": "resistor current source",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 1,
+            "integrationMethod": "Eulers Method",
+            "units": "seconds"
+        },
+        "properties": {},
+        "image": {
+            "URL": "http://i.imgur.com/nCUTf4I.png"
+        },
+        "taskDescription": [
+            "Model a 10 amp current source in series with a 2000 ohm resistor. "
+        ],
+        "lessonsLearned": "",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [],
+                "position": {
+                    "x": 381.44390869140625,
+                    "y": 94.42687225341797
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "I thru R",
+                "genus": "required",
+                "description": "Current through resistor  R",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 10,
+                "units": "amps"
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 640.4353637695312,
+                    "y": 96.4297103881836
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "R of R",
+                "genus": "required",
+                "description": "Resistance of resistor R",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 2000,
+                "units": "ohms"
+            },
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id2",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 520.9943237304688,
+                    "y": 107.98294830322266
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "V across R",
+                "genus": "required",
+                "description": "Voltage drop across resistor R",
+                "type": "function",
+                "units": "volts",
+                "equation": "id1*id2"
+            }
+        ],
+        "studentModelNodes": [],
+        "schemas": []
+    }
+}

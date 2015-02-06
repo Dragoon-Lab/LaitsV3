@@ -121,6 +121,38 @@
             }
 
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [],
+        "schemas": [
+            {
+                "ID": "linear_transfer",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 0
+                },
+                "nodes": "id1, id3",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                }
+            },
+            {
+                "ID": "exponential_transfer",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 0
+                },
+                "nodes": "id2, id3, id4",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                }
+            }
+        ]
     }
 }

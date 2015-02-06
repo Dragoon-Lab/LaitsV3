@@ -1,0 +1,162 @@
+{
+    "task": {
+        "taskName": "diode resistor 2",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 1,
+            "integrationMethod": "Eulers Method",
+            "units": "seconds"
+        },
+        "properties": {},
+        "image": {
+            "URL": "http://www.johnloomis.org/ece201L/lab6/diode1.jpg"
+        },
+        "taskDescription": [
+            "Model a diode in series with a resistor and a variable voltage source.  Assume the diode is ideal, the resistor is 500 ohms and the voltage varies between +5 volts and -5 volts.  Use pulsetrain(0,5,5) to represent a changing supply voltage.  Graph the current through the diode.",
+            ""
+        ],
+        "lessonsLearned": "",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2"
+                    }
+                ],
+                "position": {
+                    "x": 500.9942932128906,
+                    "y": 119.98579406738281
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "voltage source",
+                "genus": "required",
+                "description": "Source of variable voltage",
+                "type": "function",
+                "units": "volts",
+                "equation": "id2*pulsetrain((0,5),5)"
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 372.3309631347656,
+                    "y": 133.33096313476562
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Source max volts",
+                "description": "The maximum absolute value of the variable voltage",
+                "genus": "required",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 5,
+                "units": "volts"
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 893.4325561523438,
+                    "y": 100.42118835449219
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Resistance",
+                "genus": "required",
+                "description": "Resistance of the resistor",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 500,
+                "units": "ohms"
+            },
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id5",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id3",
+                        "label": "/"
+                    }
+                ],
+                "position": {
+                    "x": 765,
+                    "y": 115.98011016845703
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "current",
+                "genus": "required",
+                "description": "Current through resistor, diode and battery",
+                "type": "function",
+                "units": "amps",
+                "equation": "id5/id3",
+                "parentNode": true
+            },
+            {
+                "ID": "id5",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    }
+                ],
+                "position": {
+                    "x": 643.991455078125,
+                    "y": 117.98294830322266
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "voltage at VL",
+                "description": "Voltage at node VL",
+                "type": "function",
+                "units": "volts",
+                "equation": "max(0,id1)",
+                "genus": "required"
+            }
+        ],
+        "studentModelNodes": [],
+        "schemas": []
+    }
+}
