@@ -6,7 +6,7 @@ var client = require('webdriverio').remote({
     desiredCapabilities: {
         // See other browers at:
         // http://code.google.com/p/selenium/wiki/DesiredCapabilities
-        browserName: 'chrome'
+        browserName: 'firefox'
     }
 });
 // import chai assertion library
@@ -42,26 +42,32 @@ describe("Test author mode", function() {
             //Doubled because of bug, remove in future
             dtest.setNodeUnits(client, "rabbits");
             dtest.setNodeExpression(client, "net growth");
+            dtest.waitTime(100);
+            dtest.checkExpression(client);            
             dtest.checkExpression(client);
         }));
 
         it("Should fill in function node - net growth", async(function(){
-            dtest.openEditorForNode(client, "net growth");          
+            dtest.openEditorForNode(client, "net growth");
+            dtest.waitTime(100);          
             dtest.setNodeDescription(client, "The number of additional rabbits each year");
             dtest.setKindOfQuantity(client, "in model & required");
             dtest.setNodeUnits(client, "rabbits/year");
             dtest.setNodeType(client, "Function");
             dtest.setNodeExpression(client, "growth rate*population");
             dtest.checkExpression(client);
+            dtest.checkExpression(client);
         }));
 
         it("Should fill in parameter node - growth rate", async(function(){
-            dtest.openEditorForNode(client, "growth rate");         
+            dtest.openEditorForNode(client, "growth rate");
+            dtest.waitTime(100);         
             dtest.setNodeDescription(client, "The number of additional rabbits per year per rabbit");
             dtest.setNodeInitialValue(client, 0.3);
             dtest.setKindOfQuantity(client, "in model & required");
             dtest.setNodeType(client, "Parameter");
             dtest.setNodeUnits(client, "1/year");
+            dtest.checkExpression(client);
         }));
     });
 
@@ -153,6 +159,7 @@ describe("Test author mode", function() {
         }));
 
         it("Should have correct table values", async(function(){
+            dtest.waitTime(100);
             var years = true;
             var yearsValues = [0.000,1.000,2.000,3.000,4.000,5.000,6.000,7.000,8.000,9.000];
             for(var i = 0; i < yearsValues.length; i++)
