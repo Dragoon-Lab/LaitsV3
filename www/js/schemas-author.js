@@ -178,7 +178,7 @@ define([
 		},
 
 		showSchemaWindow: function(){
-			this.currentSchema = this._model.given.createSchema();
+			//this.currentSchema = this._model.given.createSchema();
 			this.nodesCount = 0;
 
 			this.resetSchema();

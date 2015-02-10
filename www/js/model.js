@@ -122,7 +122,7 @@ define([
 			collides: function(element)
 			{
 				if(!element.position){
-					return false;
+					return true;
 				}
 				var x = element.position.x;
 				var y = element.position.y;
@@ -561,9 +561,9 @@ define([
 					},
 					nodes: "",
 					difficulty: {
-						isolation: 0,
-						cues: 0,
-						phrases: 0
+						isolation: 1,
+						cues: 1,
+						phrases: 1
 					}
 				}
 
