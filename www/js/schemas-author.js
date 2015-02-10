@@ -98,8 +98,10 @@ define([
 			nodesSelect += '<option value="">--Select--</option>';
 			if(nodes){
 				array.forEach(nodes, function(node){
-					if(node.genus == "required" && this.currentNodes.indexOf(node.ID) == -1){
-						nodesSelect += '<option value = "'+ node.ID +'">'+ node.name +'</option>';
+					if(node.genus == "required"){ 
+						if(this.currentNodes.indexOf(node.ID) == -1){
+							nodesSelect += '<option value = "'+ node.ID +'">'+ node.name +'</option>';
+						}
 						this.maxNodes++;
 					}
 				}, this);
@@ -168,7 +170,7 @@ define([
 			var nodesWidget = dom.byId(nodeID);
 			
 			this.currentNodes[this.nodesCount-1] = nodesWidget.value;
-			if(this.currentNodes.length <= this.maxNodes){
+			if(this.currentNodes.length < this.maxNodes){
 				var nodeString = this.makeNodeDropdown();
 				nodeString = '<br/>'+nodeString;
 				
