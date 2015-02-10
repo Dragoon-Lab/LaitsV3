@@ -1,0 +1,189 @@
+{
+    "task": {
+        "taskName": "ac voltage generator",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 1,
+            "integrationMethod": "Eulers Method",
+            "units": "seconds"
+        },
+        "properties": {},
+        "image": {
+            "URL": "http://www.faqs.org/docs/electric/AC/02008.png"
+        },
+        "taskDescription": [
+            "Model an AC voltage generator whose output is 20 volts peak-to-peak and whose voltage is centered on 15 volts.  The wave length should be 4 seconds."
+        ],
+        "lessonsLearned": "",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [],
+                "position": {
+                    "x": 401.44390869140625,
+                    "y": 39.42687225341797
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "genus": "required",
+                "name": "Voltage peak to peak",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 20,
+                "units": "volts",
+                "description": "Voltage peak to peak"
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 569.4410400390625,
+                    "y": 270.42120361328125
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Average voltage",
+                "genus": "required",
+                "description": "Voltage that the waveform is centered on",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 15,
+                "units": "volts"
+            },
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id9"
+                    }
+                ],
+                "position": {
+                    "x": 496.9886169433594,
+                    "y": 174.9857940673828
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "equation": {
+                        "disabled": false
+                    }
+                },
+                "name": "Sine wave",
+                "genus": "required",
+                "description": "A sine wave from +1 to -1",
+                "equation": "pulsetrain((1,id9),id9)",
+                "type": "function",
+                "parentNode": false,
+                "units": "volts"
+            },
+            {
+                "ID": "id6",
+                "inputs": [
+                    {
+                        "ID": "id3"
+                    },
+                    {
+                        "ID": "id1"
+                    }
+                ],
+                "position": {
+                    "x": 562.9971313476562,
+                    "y": 84.98579406738281
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Expanded sine wave",
+                "genus": "required",
+                "description": "sine wave with right peak-to-peak voltage",
+                "type": "function",
+                "units": "volts",
+                "equation": "id3*(id1/2)"
+            },
+            {
+                "ID": "id8",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 697.9971313476562,
+                    "y": 159.9857940673828
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Output voltage",
+                "description": "Output voltage really",
+                "genus": "required",
+                "type": "function",
+                "units": "volts",
+                "equation": "Average voltage+Expanded sine wave"
+            },
+            {
+                "ID": "id9",
+                "inputs": [],
+                "position": {
+                    "x": 346.44390869140625,
+                    "y": 151.42971801757812
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "wavelength",
+                "description": "The time per repetition of the sine wave",
+                "genus": "required",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 4,
+                "units": "sec"
+            }
+        ],
+        "studentModelNodes": [],
+        "schemas": []
+    }
+}

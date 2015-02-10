@@ -1,0 +1,137 @@
+{
+    "task": {
+        "taskName": "kcl",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 1,
+            "integrationMethod": "Eulers Method",
+            "units": "seconds"
+        },
+        "properties": {},
+        "image": {
+            "URL": "http://upload.wikimedia.org/wikipedia/commons/4/46/KCL_-_Kirchhoff%27s_circuit_laws.svg"
+        },
+        "taskDescription": [
+            "Model the circuit shown above.  What is current i4?",
+            ""
+        ],
+        "lessonsLearned": "",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [],
+                "position": {
+                    "x": 357.438232421875,
+                    "y": 53.432552337646484
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "I1",
+                "description": "Current i1 leaving the node",
+                "genus": "required",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 2,
+                "units": "amps"
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 360.4353942871094,
+                    "y": 187.4240264892578
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "I2",
+                "genus": "required",
+                "description": "Current i2 entering the node",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 3,
+                "units": "amps"
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 598.4325561523438,
+                    "y": 81.4297103881836
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "I3",
+                "genus": "required",
+                "description": "Current i3 entering the node",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.5,
+                "units": "amps"
+            },
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id1",
+                        "label": "-"
+                    },
+                    {
+                        "ID": "id3",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 522.9971313476562,
+                    "y": 205.9801025390625
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "I4",
+                "genus": "required",
+                "description": "Current i4 leaving the node",
+                "type": "function",
+                "units": "amps",
+                "equation": "(id2-id1)+id3",
+                "parentNode": true
+            }
+        ],
+        "studentModelNodes": [],
+        "schemas": []
+    }
+}
