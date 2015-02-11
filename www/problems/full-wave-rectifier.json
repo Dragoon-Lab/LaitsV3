@@ -1,5 +1,5 @@
 {
-    "task": {
+    "task": {        
         "taskName": "full wave rectifier",
         "time": {
             "start": 0,
@@ -192,6 +192,23 @@
             }
         ],
         "studentModelNodes": [],
-        "schemas": []
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "full_wave_rectifier",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id5, id6, id7",
+                "difficulty": {
+                    "isolation": 0,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            }
+        ]
     }
 }

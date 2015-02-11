@@ -346,12 +346,8 @@ define([
 					window.open(url.replace("m=AUTHOR","m=STUDENT"),"newwindow");
 				});
 
-				menu.add("schemaButton", "click", function(){
-					registry.byId("schemaAuthorBox").show();
-				});
-
 				var schema = new schemaAuthor(givenModel, session);
-				on(registry.byId("schemaButton"), "click", function(){
+				menu.add("schemaButton", function(){
 					schema.showSchemaWindow();
 				});
 
