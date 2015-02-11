@@ -23,15 +23,55 @@ describe("Test graph/table window:", function() {
 
     before(async(function (done) {
             dtest.openProblem(client,[["problem","rabbits"],["mode","STUDENT"],
-                                      ["user", "AutoTest"],
                                       ["section","regression-testing"],
                                       ["logging","True"]]);
     }));
 
+    describe("Creating nodes:", function(){
+        it("Should create Accumulator node - population", async(function(){
+            dtest.menuCreateNode(client);
+            dtest.setNodeDescription(client, "The number of rabbits in the population");
+            dtest.popupWindowPressOk(client);
+            dtest.setNodeType(client, "Accumulator");
+            dtest.popupWindowPressOk(client);
+            dtest.setNodeInitialValue(client, 24);
+            dtest.setNodeUnits(client, "rabbits");     
+            dtest.setNodeExpression(client, "net growth");
+            dtest.checkExpression(client);
+            dtest.nodeEditorDone(client);
+
+        }));
+
+        it("Should fill in function node - net growth", async(function(){
+            dtest.openEditorForNode(client, "net growth");
+            dtest.setNodeType(client, "Function");
+            dtest.setNodeUnits(client, "rabbits/year");
+            dtest.setNodeExpression(client, "growth rate*population");
+            dtest.checkExpression(client);
+            dtest.nodeEditorDone(client);
+
+        }));
+
+        it("Should fill in parameter node - growth rate", async(function(){
+            dtest.openEditorForNode(client, "growth rate");
+            dtest.setNodeType(client, "Parameter");
+            dtest.setNodeInitialValue(client, 0.3);
+            dtest.setNodeUnits(client, "1/year");
+            dtest.nodeEditorDone(client);
+            dtest.popupWindowPressOk(client);
+        }));
+    });
+
     describe("checking table values:", function(){
+        var lessonsLearnedClosed = false;  // only shows up once
+        
         afterEach(async(function(){
             dtest.closeGraphAndTableWindow(client);
-            dtest.waitTime(300);
+            if (!lessonsLearnedClosed){ 
+                dtest.lessonsLearnedClose(client);
+                lessonsLearnedClosed = true;
+            }
+            dtest.waitTime(300);            
         }))
 
         it("Should have correct table values", async(function(){
