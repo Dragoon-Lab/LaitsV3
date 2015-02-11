@@ -337,6 +337,23 @@
             }
         ],
         "studentModelNodes": [],
-        "schemas": []
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "smoothing_capacitor_for_full_wave",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id2, id3, id4, id5, id6, id7, id8, id9, id10, id11",
+                "difficulty": {
+                    "isolation": 0,
+                    "cues": 0,
+                    "phrases": 1
+                }
+            }
+        ]
     }
 }
