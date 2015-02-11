@@ -6,7 +6,7 @@ var client = require('webdriverio').remote({
     desiredCapabilities: {
         // See other browers at:
         // http://code.google.com/p/selenium/wiki/DesiredCapabilities
-        browserName: 'firefox'
+        browserName: 'chrome'
     }
 });
 // import chai assertion library
