@@ -1,0 +1,125 @@
+{
+    "task": {
+        "taskName": "resistor battery series",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 1,
+            "integrationMethod": "Eulers Method",
+            "units": "seconds"
+        },
+        "properties": {},
+        "image": {
+            "URL": "http://www.school-for-champions.com/science/images/electricity_ohms_law_dc_circuit.gif"
+        },
+        "taskDescription": [
+            "Model a circuit composed of a 5 volt voltage source and a 1000 ohm resistor.  What is the current through the resistor?",
+            ""
+        ],
+        "lessonsLearned": "",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [],
+                "position": {
+                    "x": 382.3309631347656,
+                    "y": 115.3309555053711
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "V across R",
+                "description": "Voltage across resistor R",
+                "genus": "required",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 5,
+                "units": "volts"
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id3",
+                        "label": "/"
+                    }
+                ],
+                "position": {
+                    "x": 540,
+                    "y": 97.98294830322266
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "I thru R",
+                "genus": "required",
+                "description": "Current through resistor R",
+                "type": "function",
+                "units": "amps",
+                "equation": "id1/id3",
+                "parentNode": true
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 653.991455078125,
+                    "y": 76.98863220214844
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Resistance of R",
+                "description": "Resistance of resistor R",
+                "genus": "required",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 1000,
+                "units": "ohms"
+            }
+        ],
+        "studentModelNodes": [],
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "ohms_law_voltage",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id2, id3",
+                "difficulty": {
+                    "isolation": 0,
+                    "cues": 0,
+                    "phrases": 1
+                }
+            }
+        ]
+    }
+}

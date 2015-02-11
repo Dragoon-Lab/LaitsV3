@@ -1,0 +1,214 @@
+{
+    "task": {
+        "taskName": "two resistors in parallel",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 1,
+            "integrationMethod": "Eulers Method",
+            "units": "seconds"
+        },
+        "properties": {},
+        "image": {
+            "URL": "http://www.ceb.cam.ac.uk/data/images/groups/CREST/Teaching/impedence/paral1.gif"
+        },
+        "taskDescription": [
+            "Model two resistors in parallel with each other and a 5 volt battery.  Assume R1 is 500 ohms and R2 is 1500 ohms.  What is the current through the battery?",
+            ""
+        ],
+        "lessonsLearned": "",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [],
+                "position": {
+                    "x": 575.4353637695312,
+                    "y": 50.42118835449219
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "V battery",
+                "genus": "required",
+                "description": "Battery's voltage",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 5,
+                "units": "volts"
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 338.43255615234375,
+                    "y": 101.4297103881836
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "R of R1",
+                "genus": "required",
+                "description": "Resistance of resistor R1",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 500,
+                "units": "ohms"
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 823.4325561523438,
+                    "y": 100.42118835449219
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "R of R2",
+                "genus": "required",
+                "description": "Resistance of resistor R2",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 1500,
+                "units": "ohms"
+            },
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id2",
+                        "label": "/"
+                    }
+                ],
+                "position": {
+                    "x": 474.9999694824219,
+                    "y": 114.98579406738281
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "I thru R1",
+                "genus": "required",
+                "description": "Current through resistor R1",
+                "type": "function",
+                "units": "amps",
+                "equation": "id1/id2"
+            },
+            {
+                "ID": "id5",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id3",
+                        "label": "/"
+                    }
+                ],
+                "position": {
+                    "x": 711.9885864257812,
+                    "y": 114.98579406738281
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "I thru R2",
+                "genus": "required",
+                "description": "Current through resistor R2",
+                "type": "function",
+                "units": "amps",
+                "equation": "id1/id3"
+            },
+            {
+                "ID": "id6",
+                "inputs": [
+                    {
+                        "ID": "id4",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id5",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 590.9943237304688,
+                    "y": 233.99147033691406
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "I thru battery",
+                "description": "Current through the battery",
+                "genus": "required",
+                "type": "function",
+                "units": "amps",
+                "equation": "id4+id5",
+                "parentNode": true
+            }
+        ],
+        "studentModelNodes": [],
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "superposition",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id2, id3, id4, id5, id6",
+                "difficulty": {
+                    "isolation": 0,
+                    "cues": 0,
+                    "phrases": 1
+                }
+            }
+        ]
+    }
+}

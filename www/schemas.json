@@ -40,6 +40,77 @@
 			}
 		]
 	},
+	{
+		"schemaClass" : "Electronic Schemas",
+		"subClasses": [
+			{
+				"name" : "Ohms law: voltage source",
+				"id" : "ohms_law_voltage",
+				"template" : "Current flowing through a load is given voltage/resistance offered by it.",
+				"example" : "Find the current running through a load when voltage difference provided by the source is 5V and resistance of the load is 1000 ohms."
+			},
+			{
+				"name" : "Ohms law: current source",
+				"id" : "ohms_law_current",
+				"template" : "Voltage across a resistor is given by current flowing through the load*resistance offered by it.",
+				"example" : "Find the voltage across a resistor of 1000 ohms when 5 mA current is flowing through it."
+			},
+			{
+				"name" : "Kirchoff's current law",
+				"id" : "kirchoff_current_law",
+				"template" : "At a junction in the circuit the sum of all the currents is zero, where current flowing into the node are taken as negative and flowing away are taken as positive.",
+				"example" : "There is a 10 mA current flowing into node A. The junction divides into two paths. If current flowing through one of them is 2mA, then how much current is flowing in the other path?"
+			},
+			{
+				"name" : "Kirchoff's voltage law",
+				"id" : "kirchoff_voltage_law",
+				"template" : "Voltage change in a complete closed loop is 0.",
+				"example" : "Find the current flowing through two loads in parallel when they are connected to a source of 10V?"
+			},
+			{
+				"name" : "Superposition",
+				"id" : "superposition",
+				"template" : "Current in a circuit with more than one independent sources is given by the sum of current from individual sources.",
+				"example" : "There are two independent sources of 5V and 10V in parallel to a load of 1000 ohms. Find the current flowing through it."
+			},
+			{
+				"name" : "Resistor capacitor in series",
+				"id" : "resistor_capacitor_series",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Resistor inductor in series",
+				"id" : "resistor_inductor_series",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Alternating current source",
+				"id" : "alternating_current_source",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Full wave rectifier",
+				"id" : "full_wave_rectifier",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Smoothing capacitor for a full wave rectifier",
+				"id" : "smoothing_capacitor_for_full_wave",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Zener diode voltage regulator",
+				"id" : "zener_diode_voltage_regulator",
+				"template" : "",
+				"example" : ""
+			}
+		]
+	},
 	{ 
 		"schemaClass" : "Motion & River Currents", 
 		"subClasses" : [

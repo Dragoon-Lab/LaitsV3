@@ -279,7 +279,7 @@ define([
 					message: "no kind selected for author node type",
 					functionTag: "handleKind"
 				});
-				kind = "";
+				kind = "defaultSelect";
 				this._model.given.setGenus(this.currentID, kind);
 			}else{
 				this._model.given.setGenus(this.currentID, kind);
@@ -601,7 +601,7 @@ define([
 			
 			var value = this._model.given.getGenus(this.currentID);
 			if(!value)
-				value='';
+				value='required';
 			kind.set('value',value);
 
 			/*

@@ -121,6 +121,9 @@ define([
 
 			collides: function(element)
 			{
+				if(!element.position){
+					return true;
+				}
 				var x = element.position.x;
 				var y = element.position.y;
 				if(this.x > x - this.nodeWidth && this.x < x + this.nodeWidth &&
@@ -215,6 +218,14 @@ define([
 					}
 					if(node.description){
 						descriptions[node.description] = node.ID;
+					}
+
+					if(!node.position){
+						obj._updateNextXYPosition();
+						node.position = {
+							x: obj.x, 
+							y: obj.y
+						};
 					}
 				}, this);
 				/*
@@ -550,9 +561,9 @@ define([
 					},
 					nodes: "",
 					difficulty: {
-						isolation: 0,
-						cues: 0,
-						phrases: 0
+						isolation: 1,
+						cues: 1,
+						phrases: 1
 					}
 				}
 
@@ -807,15 +818,15 @@ define([
 				var initialEntered = node.type && node.type == "function" || node.initial != null;
 				var equationEntered = node.type && node.type == "parameter" || node.equation;
 				if(!node.genus || node.genus == "required" || node.genus == "allowed" || node.genus == "preferred"){
-					return node.genus && node.name && node.description &&
+					return  node.name && node.description &&
 							node.type && (initialEntered || typeof initialEntered === "number") &&
 							(unitsOptional || node.units) &&
 							equationEntered;
 				}else if(node.genus == "initialValue"){
 					return node.genus && node.name && node.description;
 				}else{
-					return (node.name && node.description) ||
-							node.units;
+					return node.genus != "defaultSelect" && ((node.name && node.description) ||
+							node.units);
 				}
 			}
 		}, both);

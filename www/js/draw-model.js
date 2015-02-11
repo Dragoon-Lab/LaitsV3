@@ -46,6 +46,7 @@ define([
 		_instance: null,
 		_givenModel: null,
 		_logging:null,
+		_showColor:false,
 		// Hook for updates
 		updater: function(nodeID,setOfConnections){
             //time to update borders
@@ -62,8 +63,8 @@ define([
             }, this);
 
         },
-		constructor: function(givenModel){
-
+		constructor: function(givenModel, /*boolean*/ showColor){
+			this._showColor = showColor;
 			// setup some defaults for jsPlumb.
 			var instance = jsPlumb.getInstance({
 				Endpoint : ["Dot", {radius:0.1}], //hiding it
@@ -158,17 +159,23 @@ define([
 			var borderColor = "",
 			boxshadow = "";
 			var backgroundcolor = "";
+			var color = "";
 			if(type){
-				var color = this._givenModel.getCorrectness?
-				this._givenModel.getCorrectness(nodeID):"neutral";
-				borderColor += "3px "+isComplete+" " + colorMap[color];
-				boxshadow = 'inset 0px 0px 5px #000 , 0px 0px 10px #000';
-				//check for perfect node
-				if (this._givenModel.getAssistanceScore){
-					if (this._givenModel.isComplete(nodeID) && this._givenModel.getAssistanceScore(nodeID) === 0){
-						backgroundcolor = colorMap.perfect;
+				if(this._showColor){
+					color = this._givenModel.getCorrectness?
+					this._givenModel.getCorrectness(nodeID):"neutral";
+					//check for perfect node
+					if (this._givenModel.getAssistanceScore){
+						if (this._givenModel.isComplete(nodeID) && this._givenModel.getAssistanceScore(nodeID) === 0){
+							backgroundcolor = colorMap.perfect;
+						}
 					}
+				}else{
+					color = "neutral";
+					backgroundcolor = "";
 				}
+				borderColor += "3px "+isComplete+" " + colorMap[color];
+				boxshadow = 'inset 0px 0px 5px #000 , 0px 0px 10px #000';				
 			}
 			console.log("borderColor: ", borderColor);
 			if(updateNode){

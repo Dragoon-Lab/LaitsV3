@@ -119,7 +119,14 @@ define([
 
 		ready(function(){
 			
-			var drawModel = new drawmodel(givenModel.active);
+			//In TEST and EDITOR mode remove background color and border colors		 
+			if(controllerObject._mode == "TEST" || controllerObject._mode == "EDITOR"){
+				showColor = false;
+			}else{
+				showColor = true;
+			}
+
+			var drawModel = new drawmodel(givenModel.active, showColor);
 			drawModel.setLogging(session);
 
 			// Wire up drawing new node
@@ -137,26 +144,6 @@ define([
 			aspect.after(controllerObject, "colorNodeBorder",
 						 lang.hitch(drawModel, drawModel.colorNodeBorder), 
 						 true);
-
-			var removeStatusColor = function(){
-				array.forEach(givenModel.model.task.studentModelNodes, function(studentNode){
-					 if(typeof givenModel.active.getType(studentNode.ID) !== "undefined"){
-							var isComplete = givenModel.active.isComplete(studentNode.ID, true)?'solid':'dashed';
-							var borderColor = "3px "+isComplete+" gray";
-							var boxshadow = 'inset 0px 0px 5px #000 , 0px 0px 10px #000';
-							style.set(studentNode.ID, 'border', borderColor);
-							style.set(studentNode.ID, 'box-shadow', boxshadow);
-							style.set(studentNode.ID, 'backgroundColor', "white");
-						}
-					});
-			}
-			//In TEST and EDITOR mode remove background color and border color on update		 
-			if(controllerObject._mode == "TEST" || controllerObject._mode == "EDITOR"){
-				removeStatusColor();
-				aspect.after(drawModel, "updater", function(){
-					removeStatusColor();
-				});
-			}
 
 			/* add "Create Node" button to menu */
 			menu.add("createNodeButton", function(){
@@ -359,12 +346,8 @@ define([
 					window.open(url.replace("m=AUTHOR","m=STUDENT"),"newwindow");
 				});
 
-				menu.add("schemaButton", "click", function(){
-					registry.byId("schemaAuthorBox").show();
-				});
-
 				var schema = new schemaAuthor(givenModel, session);
-				on(registry.byId("schemaButton"), "click", function(){
+				menu.add("schemaButton", function(){
 					schema.showSchemaWindow();
 				});
 
