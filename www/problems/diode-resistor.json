@@ -43,7 +43,7 @@
                 "description": "Source of variable voltage",
                 "type": "function",
                 "units": "volts",
-                "equation": "id2*pulsetrain((0,5),5)"
+                "equation": "id2*sinewave(1/5,0)"
             },
             {
                 "ID": "id2",
