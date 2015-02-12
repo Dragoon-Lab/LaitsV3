@@ -1,0 +1,136 @@
+{
+    "task": {
+        "taskName": "two barrels",
+        "time": {
+            "start": 0,
+            "end": 25,
+            "step": 1,
+            "integrationMethod": "Eulers Method",
+            "units": "minutes"
+        },
+        "properties": {},
+        "image": {
+            "URL": "http://i.imgur.com/3a8WaO4.png"
+        },
+        "taskDescription": [
+            "The higher barrel starts with 50 gallons of water in it, and the lower barrel is empty.  The tiny hose only lets 10% of the water in the upper barrel through per minute.  Make graphs of both barrels' water levels.",
+            ""
+        ],
+        "lessonsLearned": "",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Upper barrel",
+                "description": "Water in upper barrel",
+                "type": "accumulator",
+                "initial": 50,
+                "units": "gallons",
+                "parentNode": true,
+                "equation": "-id2"
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id3",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 493,
+                    "y": 237
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "water draining",
+                "description": "Water draining from upper barrel to lower barrel each minute",
+                "type": "function",
+                "units": "gallons",
+                "equation": "id1*id3"
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 624.3309326171875,
+                    "y": 150.33096313476562
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Proportion water draining",
+                "description": "The proportion of the upper barrel's water that drains out each minute",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.1
+            },
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 565,
+                    "y": 358
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Lower barrel",
+                "description": "Water in the lower barrel",
+                "type": "accumulator",
+                "initial": 0,
+                "units": "gallons",
+                "equation": "id2"
+            }
+        ],
+        "studentModelNodes": [],
+        "schemas": []
+    }
+}

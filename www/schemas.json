@@ -86,8 +86,14 @@
 				"example" : ""
 			},
 			{
-				"name" : "Alternating current source",
-				"id" : "alternating_current_source",
+				"name" : "Ideal diode",
+				"id" : "ideal_diode",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Alternating voltage generator",
+				"id" : "alternating_voltage_generator",
 				"template" : "",
 				"example" : ""
 			},

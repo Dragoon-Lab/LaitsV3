@@ -249,7 +249,7 @@
                 "description": "Voltage from battery-switch combination",
                 "type": "function",
                 "units": "volts",
-                "equation": "id8*pulsetrain((0,5),5)"
+                "equation": "id8*sinewave(1/5,0)"
             }
         ],
         "studentModelNodes": [],

@@ -162,7 +162,7 @@
                 "genus": "required",
                 "type": "function",
                 "units": "voltage",
-                "equation": "id8*pulsetrain((0,5),5)"
+                "equation": "id8*sinewave(1/5,0)"
             },
             {
                 "ID": "id6",
