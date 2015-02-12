@@ -4,7 +4,7 @@
         "time": {
             "start": 0,
             "end": 0.1,
-            "step": 0.001,
+            "step": 0.0005,
             "integrationMethod": "Eulers Method",
             "units": "seconds"
         },
