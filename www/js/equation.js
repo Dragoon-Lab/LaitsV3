@@ -87,7 +87,7 @@ define([
 			console.log(isNaN(givenResult));
 			var flag = Math.abs(studentResult - givenResult) <= 10e-10 * Math.abs(studentResult + givenResult);
 
-			if(givenEqn.indexOf("max") >= 0 || givenEqn.indexOf("min") >= 0){
+			if(givenEqn.indexOf("max") >= 0 || givenEqn.indexOf("min") >= 0 || givenEqn.indexOf("sinewave") >= 0){
 				var index = 0;
 				var nodes = Object.keys(valsCopy);
 				var givenVals1 = {};
