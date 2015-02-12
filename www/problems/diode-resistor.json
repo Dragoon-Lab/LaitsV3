@@ -157,6 +157,23 @@
             }
         ],
         "studentModelNodes": [],
-        "schemas": []
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "ideal_diode",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id2, id3, id4, id5",
+                "difficulty": {
+                    "isolation": 0,
+                    "cues": 0,
+                    "phrases": 1
+                }
+            }
+        ]
     }
 }
