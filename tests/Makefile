@@ -19,6 +19,7 @@ install:
 	sudo npm install chai webdriverio
 	sudo npm install synchronize
 	sudo curl http://selenium-release.storage.googleapis.com/2.42/selenium-server-standalone-2.42.2.jar > selenium-server-standalone-2.28.0.jar
+	sudo curl http://chromedriver.storage.googleapis.com/2.14/chromedriver_mac32.zip
 else
 install:
 	-rm -r -f npm
