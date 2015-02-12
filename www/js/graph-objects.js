@@ -54,10 +54,11 @@ define([
                 parameter = expression.isSum(parse)&&expression.isProduct(parse)?'':expression.isSum(parse)?'+':expression.isProduct(parse)?'*':'';
 				parameter = '<strong style="font-size:18px">'+parameter+'</strong>';
 			}
-			var initialValue = model.getInitial(nodeId) || '';
-			if(!typeof initialValue === "number"){
-				initialValue = '';
-			}
+			var initialValue = typeof(model.getInitial(nodeId)) === "number"? model.getInitial(nodeId) : '';
+
+			//if(!(typeof initialValue === "number")){
+			//	initialValue = '';
+			//}
 			var unitsValue = model.getUnits(nodeId);
 			if(!unitsValue){
 				unitsValue = '';
