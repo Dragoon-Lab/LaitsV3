@@ -3,8 +3,8 @@
         "taskName": "ac voltage generator",
         "time": {
             "start": 0,
-            "end": 10,
-            "step": 0.1,
+            "end": 0.1,
+            "step": 0.001,
             "integrationMethod": "Eulers Method",
             "units": "seconds"
         },
@@ -13,7 +13,8 @@
             "URL": "http://www.faqs.org/docs/electric/AC/02008.png"
         },
         "taskDescription": [
-            "Model an AC voltage generator whose output is 20 volts peak-to-peak and whose voltage is centered on 15 volts.  The wave length should be 4 seconds."
+            "Model an AC voltage generator whose output is 20 volts peak-to-peak and whose voltage is centered on 15 volts. The frequency should be 60 Hertz.",
+            ""
         ],
         "lessonsLearned": "",
         "givenModelNodes": [
@@ -94,7 +95,7 @@
                 "name": "Sine wave",
                 "genus": "required",
                 "description": "A sine wave from +1 to -1",
-                "equation": "sinewave(1/id9, 0)",
+                "equation": "sinewave(id9,0)",
                 "type": "function",
                 "parentNode": false,
                 "units": "volts"
@@ -175,17 +176,34 @@
                     "assistanceScore": 0
                 },
                 "status": {},
-                "name": "wavelength",
-                "description": "The time per repetition of the sine wave",
+                "name": "frequency",
+                "description": "Number of cycles per seconds",
                 "genus": "required",
                 "equation": "",
                 "type": "parameter",
                 "parentNode": false,
-                "initial": 4,
-                "units": "sec"
+                "initial": 60,
+                "units": "Hertz"
             }
         ],
         "studentModelNodes": [],
-        "schemas": []
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "alternating_voltage_generator",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "",
+                "difficulty": {
+                    "isolation": 0,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            }
+        ]
     }
 }
