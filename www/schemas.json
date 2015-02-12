@@ -86,8 +86,8 @@
 				"example" : ""
 			},
 			{
-				"name" : "Alternating current source",
-				"id" : "alternating_current_source",
+				"name" : "Alternating voltage generator",
+				"id" : "alternating_voltage_generator",
 				"template" : "",
 				"example" : ""
 			},
