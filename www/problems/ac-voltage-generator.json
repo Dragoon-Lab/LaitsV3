@@ -4,7 +4,7 @@
         "time": {
             "start": 0,
             "end": 10,
-            "step": 1,
+            "step": 0.1,
             "integrationMethod": "Eulers Method",
             "units": "seconds"
         },
@@ -94,7 +94,7 @@
                 "name": "Sine wave",
                 "genus": "required",
                 "description": "A sine wave from +1 to -1",
-                "equation": "pulsetrain((1,id9),id9)",
+                "equation": "sinewave(1/id9, 0)",
                 "type": "function",
                 "parentNode": false,
                 "units": "volts"
@@ -122,7 +122,7 @@
                     "assistanceScore": 0
                 },
                 "status": {},
-                "name": "Expanded sine wave",
+                "name": "expanded sine wave",
                 "genus": "required",
                 "description": "sine wave with right peak-to-peak voltage",
                 "type": "function",
@@ -133,8 +133,10 @@
                 "ID": "id8",
                 "inputs": [
                     {
-                        "ID": "id2",
-                        "label": ""
+                        "ID": "id2"
+                    },
+                    {
+                        "ID": "id6"
                     }
                 ],
                 "position": {
@@ -155,7 +157,7 @@
                 "genus": "required",
                 "type": "function",
                 "units": "volts",
-                "equation": "Average voltage+Expanded sine wave"
+                "equation": "id2+id6"
             },
             {
                 "ID": "id9",
