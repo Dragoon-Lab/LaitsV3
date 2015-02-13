@@ -3,8 +3,8 @@
         "taskName": "resistor inductor 1",
         "time": {
             "start": 0,
-            "end": 25,
-            "step": 1,
+            "end": 0.1,
+            "step": 0.0005,
             "integrationMethod": "Eulers Method",
             "units": "seconds"
         },
@@ -162,7 +162,7 @@
                 "genus": "required",
                 "type": "function",
                 "units": "voltage",
-                "equation": "id8*sinewave(1/5,0)"
+                "equation": "id8*sinewave(60,0)"
             },
             {
                 "ID": "id6",
