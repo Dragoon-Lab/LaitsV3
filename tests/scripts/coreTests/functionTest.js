@@ -20,7 +20,7 @@ var sync = require('synchronize');
 var async = sync.asyncIt;
 var atest = require("../assertTestLib.js");
 
-describe("Test graph/table window:", function() {
+describe("Test math functions:", function() {
 
     before(async(function (done) {
             dtest.openProblem(client,[["problem","MathFunctionsTest"],["mode","AUTHOR"],
