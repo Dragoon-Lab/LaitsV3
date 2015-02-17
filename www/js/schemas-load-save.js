@@ -34,7 +34,6 @@ define([
 		},
 
 		getFileData: function(/* string */ fileName, /* path */ path){
-			console.log("sachin ", fileName, " ",  path); 
 			path = path || this._path;
 			return xhr.post(path + fileName, {
 				handleAs: "text",
