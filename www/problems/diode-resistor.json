@@ -13,7 +13,7 @@
             "URL": "http://www.johnloomis.org/ece201L/lab6/diode1.jpg"
         },
         "taskDescription": [
-            "Model a diode in series with a resistor and a variable voltage source.  Assume the diode is ideal, the resistor is 500 ohms and the voltage varies between +5 volts and -5 volts.  Use pulsetrain(0,5,5) to represent a changing supply voltage.  Graph the current through the diode.",
+            "Model a diode in series with a resistor and a variable voltage source.  Assume the diode is ideal, the resistor is 500 ohms and the voltage varies between +5 volts and -5 volts.  Use sinewave(60, 0) to represent a changing supply voltage.  Graph the current through the diode.",
             ""
         ],
         "lessonsLearned": "",
@@ -160,18 +160,50 @@
         "schemas": [
             {
                 "ID": "schema1",
-                "schemaClass": "ideal_diode",
+                "schemaClass": "diode",
                 "competence": {
                     "errors": 0,
                     "total": 0,
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id1, id2, id3, id4, id5",
+                "nodes": "id1, id5",
                 "difficulty": {
-                    "isolation": 0,
+                    "isolation": 1,
                     "cues": 0,
-                    "phrases": 1
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema2",
+                "schemaClass": "alternating_voltage_generator",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id2, id1",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema3",
+                "schemaClass": "ohms_law_voltage",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id4, id3, id5",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
                 }
             }
         ]
