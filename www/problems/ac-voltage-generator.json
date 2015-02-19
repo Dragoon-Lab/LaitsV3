@@ -1,19 +1,19 @@
 {
     "task": {
-        "taskName": "two resistors in series",
+        "taskName": "ac voltage generator",
         "time": {
             "start": 0,
-            "end": 10,
-            "step": 1,
+            "end": 0.1,
+            "step": 0.0005,
             "integrationMethod": "Eulers Method",
             "units": "seconds"
         },
         "properties": {},
         "image": {
-            "URL": "http://artsites.ucsc.edu/ems/music/tech_background/o_law/Image2.gif"
+            "URL": "http://www.faqs.org/docs/electric/AC/02008.png"
         },
         "taskDescription": [
-            "Model a circuit that has two resistors in series.  Assume a 5 volt battery, and that R1 is 500 ohms while R2 is 1500 ohms.   Unfortunately, the model cannot be executed by Dragoon.  Needs more work.  ",
+            "Model an AC voltage generator whose output is 20 volts peak-to-peak and whose voltage is centered on 15 volts. The frequency should be 60 Hertz.",
             ""
         ],
         "lessonsLearned": "",
@@ -22,8 +22,8 @@
                 "ID": "id1",
                 "inputs": [],
                 "position": {
-                    "x": 351.3309631347656,
-                    "y": 90.33094787597656
+                    "x": 401.44390869140625,
+                    "y": 39.42687225341797
                 },
                 "attemptCount": {
                     "description": 0,
@@ -34,21 +34,21 @@
                     "assistanceScore": 0
                 },
                 "status": {},
-                "name": "V of battery",
                 "genus": "required",
-                "description": "Voltage across battery",
+                "name": "Voltage peak to peak",
                 "equation": "",
                 "type": "parameter",
                 "parentNode": false,
-                "initial": 5,
-                "units": "volts"
+                "initial": 20,
+                "units": "volts",
+                "description": "Voltage peak to peak"
             },
             {
                 "ID": "id2",
                 "inputs": [],
                 "position": {
-                    "x": 784.4410400390625,
-                    "y": 50.42118835449219
+                    "x": 569.4410400390625,
+                    "y": 270.42120361328125
                 },
                 "attemptCount": {
                     "description": 0,
@@ -59,21 +59,25 @@
                     "assistanceScore": 0
                 },
                 "status": {},
-                "name": "R of R1",
+                "name": "Average voltage",
                 "genus": "required",
-                "description": "Resistance of resistor R1",
+                "description": "Voltage that the waveform is centered on",
                 "equation": "",
                 "type": "parameter",
                 "parentNode": false,
-                "initial": 500,
-                "units": "ohms"
+                "initial": 15,
+                "units": "volts"
             },
             {
                 "ID": "id3",
-                "inputs": [],
+                "inputs": [
+                    {
+                        "ID": "id9"
+                    }
+                ],
                 "position": {
-                    "x": 781.4439086914062,
-                    "y": 189.4268798828125
+                    "x": 496.9886169433594,
+                    "y": 174.9857940673828
                 },
                 "attemptCount": {
                     "description": 0,
@@ -83,95 +87,32 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {},
-                "name": "R of R2",
+                "status": {
+                    "equation": {
+                        "disabled": false
+                    }
+                },
+                "name": "Sine wave",
                 "genus": "required",
-                "description": "Resistance of resistor R2",
-                "equation": "",
-                "type": "parameter",
+                "description": "A sine wave from +1 to -1",
+                "equation": "sinewave(id9,0)",
+                "type": "function",
                 "parentNode": false,
-                "initial": 1500,
-                "units": "ohms"
-            },
-            {
-                "ID": "id4",
-                "inputs": [
-                    {
-                        "ID": "id6",
-                        "label": ""
-                    },
-                    {
-                        "ID": "id3",
-                        "label": "/"
-                    }
-                ],
-                "position": {
-                    "x": 585.9943237304688,
-                    "y": 203.99147033691406
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": {},
-                "name": "I thru R2",
-                "description": "Current through resistor R2 downward",
-                "genus": "required",
-                "type": "function",
-                "units": "amps",
-                "equation": "id6/id3"
-            },
-            {
-                "ID": "id5",
-                "inputs": [
-                    {
-                        "ID": "id7",
-                        "label": ""
-                    },
-                    {
-                        "ID": "id2",
-                        "label": ""
-                    }
-                ],
-                "position": {
-                    "x": 528.991455078125,
-                    "y": 81.98863220214844
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": {},
-                "name": "V across R1",
-                "genus": "required",
-                "description": "Voltage across resistor R1 from top to bottom",
-                "type": "function",
-                "units": "volts",
-                "equation": "id7*id2"
+                "units": "volts"
             },
             {
                 "ID": "id6",
                 "inputs": [
                     {
-                        "ID": "id1",
-                        "label": ""
+                        "ID": "id3"
                     },
                     {
-                        "ID": "id5",
-                        "label": "-"
+                        "ID": "id1"
                     }
                 ],
                 "position": {
-                    "x": 448.991455078125,
-                    "y": 202.98294067382812
+                    "x": 562.9971313476562,
+                    "y": 84.98579406738281
                 },
                 "attemptCount": {
                     "description": 0,
@@ -182,24 +123,26 @@
                     "assistanceScore": 0
                 },
                 "status": {},
-                "name": "V across R2",
-                "description": "Voltage across resistor R2 from top to bottom",
+                "name": "expanded sine wave",
+                "genus": "required",
+                "description": "sine wave with right peak-to-peak voltage",
                 "type": "function",
                 "units": "volts",
-                "equation": "id1-id5",
-                "genus": "required"
+                "equation": "id3*(id1/2)"
             },
             {
-                "ID": "id7",
+                "ID": "id8",
                 "inputs": [
                     {
-                        "ID": "id4",
-                        "label": ""
+                        "ID": "id2"
+                    },
+                    {
+                        "ID": "id6"
                     }
                 ],
                 "position": {
-                    "x": 695.9943237304688,
-                    "y": 122.98294830322266
+                    "x": 697.9971313476562,
+                    "y": 159.9857940673828
                 },
                 "attemptCount": {
                     "description": 0,
@@ -210,30 +153,55 @@
                     "assistanceScore": 0
                 },
                 "status": {},
-                "name": "I thru R1",
+                "name": "Output voltage",
+                "description": "Output voltage really",
                 "genus": "required",
-                "description": "Current through resistor R1 downward",
                 "type": "function",
-                "units": "amps",
-                "equation": "id4"
+                "units": "volts",
+                "equation": "id2+id6"
+            },
+            {
+                "ID": "id9",
+                "inputs": [],
+                "position": {
+                    "x": 346.44390869140625,
+                    "y": 151.42971801757812
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "frequency",
+                "description": "Number of cycles per seconds",
+                "genus": "required",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 60,
+                "units": "Hertz"
             }
         ],
         "studentModelNodes": [],
         "schemas": [
             {
                 "ID": "schema1",
-                "schemaClass": "kirchoff_voltage_law",
+                "schemaClass": "alternating_voltage_generator",
                 "competence": {
                     "errors": 0,
                     "total": 0,
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id1, id2, id3, id4, id5, id6, id7",
+                "nodes": "",
                 "difficulty": {
                     "isolation": 0,
                     "cues": 0,
-                    "phrases": 1
+                    "phrases": 0
                 }
             }
         ]

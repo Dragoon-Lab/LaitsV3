@@ -3,8 +3,8 @@
         "taskName": "diode resistor 2",
         "time": {
             "start": 0,
-            "end": 10,
-            "step": 1,
+            "end": 0.1,
+            "step": 0.0005,
             "integrationMethod": "Eulers Method",
             "units": "seconds"
         },
@@ -43,7 +43,7 @@
                 "description": "Source of variable voltage",
                 "type": "function",
                 "units": "volts",
-                "equation": "id2*pulsetrain((0,5),5)"
+                "equation": "id2*sinewave(60,0)"
             },
             {
                 "ID": "id2",
@@ -157,6 +157,23 @@
             }
         ],
         "studentModelNodes": [],
-        "schemas": []
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "ideal_diode",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id2, id3, id4, id5",
+                "difficulty": {
+                    "isolation": 0,
+                    "cues": 0,
+                    "phrases": 1
+                }
+            }
+        ]
     }
 }

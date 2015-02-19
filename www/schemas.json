@@ -76,8 +76,8 @@
 			{
 				"name" : "Resistor capacitor in series",
 				"id" : "resistor_capacitor_series",
-				"template" : "Current in a circuit when increases slowly when a resistor and capacitor are present in a series",
-				"example" : "Find the current flowing in a circuit when a 1000 ohm resistor and 10 microF capacitor are put in series with source of 10 V."
+				"template" : "",
+				"example" : ""
 			},
 			{
 				"name" : "Resistor inductor in series",
@@ -86,8 +86,14 @@
 				"example" : ""
 			},
 			{
-				"name" : "Alternating current source",
-				"id" : "alternating_current_source",
+				"name" : "Ideal diode",
+				"id" : "ideal_diode",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Alternating voltage generator",
+				"id" : "alternating_voltage_generator",
 				"template" : "",
 				"example" : ""
 			},

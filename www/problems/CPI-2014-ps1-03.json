@@ -18,11 +18,11 @@
             "Jared is on a diet and loses 2.5 pounds each week. He started his diet weighing 200 pounds. Construct a model that",
             "shows how his weight changes each week.",
             "Analysis:",
-            "* Process: Jared&apos;s weight is decreasing",
-            "* Source: Jared&apos;s weight",
+            "* Process: Jared's weight is decreasing",
+            "* Source: Jared's weight",
             "* Destination: irrelevant",
             "* Changing: a constant 2.5 pounds changes state each week",
-            "Implementation: See image, or see the problem â€œconstantâ€� in the problem set â€œgeneric changes.â€�"
+            "Implementation: See image, or see the problem \"constant\" in the problem set \"generic changes\"."
             ],
         "lessonsLearned": [
             "The graph of the quantity \"Jared&apos;s weight\" is a straight line headed downward, so this quantity is said to exhibit \"linear",

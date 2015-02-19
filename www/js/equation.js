@@ -73,7 +73,7 @@ define([
 			var givenVals = {};
 			array.forEach(model.given.getNodes(), function(node){
 				/* Parameter and accumulator nodes are treated as independent. */
-				if((!node.genus || node.genus === "required") && (node.type == 'parameter' || node.type == 'accumulator')){
+				if((!node.genus || node.genus === "required")/* && (node.type == 'parameter' || node.type == 'accumulator')*/){
 					givenVals[node.ID] = Math.random();
 				}
 			});
@@ -81,21 +81,21 @@ define([
 
 			var givenResult = this.getEquationValue(givenParse, model, givenVals, "given", seed);
 			var studentResult = this.getEquationValue(student, model, givenVals, "solution", seed);
-			console.log(typeof givenResult);
-			console.log(givenResult);
-			console.log(givenResult === NaN);
-			console.log(isNaN(givenResult));
+
 			var flag = Math.abs(studentResult - givenResult) <= 10e-10 * Math.abs(studentResult + givenResult);
 
-			if(givenEqn.indexOf("max") >= 0 || givenEqn.indexOf("min") >= 0){
+			if(givenEqn.indexOf("max") >= 0 || givenEqn.indexOf("min") >= 0 || givenEqn.indexOf("sinewave") >= 0){
 				var index = 0;
 				var nodes = Object.keys(valsCopy);
 				var givenVals1 = {};
 				for(var i = 0; i<nodes.length; i++){
 					givenVals1[nodes[i]] = -1*valsCopy[nodes[i]];
 				}
+
+
 				var givenResult1 = this.getEquationValue(givenParse, model, givenVals1, "given", seed);
 				var studentResult1 = this.getEquationValue(student, model, givenVals1, "solution", seed);
+
 
 				flag = flag && (Math.abs(studentResult1 - givenResult1) <= 10e-10 * Math.abs(studentResult1 + givenResult1));
 			}
@@ -103,7 +103,6 @@ define([
 			{
 				flag = true;
 			}
-			console.log(flag);
 			return flag; 
 		},
 
@@ -145,9 +144,7 @@ define([
 			}, this);
 			if(active == "solution")
 				values = solutionVals;
-
 			var result = parse.evaluate(values, 0, seed);
-
 			return result;
 		},
 		/*

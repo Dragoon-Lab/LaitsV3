@@ -121,6 +121,9 @@ define([
 
 			collides: function(element)
 			{
+				if(!element.position){
+					return true;
+				}
 				var x = element.position.x;
 				var y = element.position.y;
 				if(this.x > x - this.nodeWidth && this.x < x + this.nodeWidth &&
@@ -215,6 +218,14 @@ define([
 					}
 					if(node.description){
 						descriptions[node.description] = node.ID;
+					}
+
+					if(!node.position){
+						obj._updateNextXYPosition();
+						node.position = {
+							x: obj.x, 
+							y: obj.y
+						};
 					}
 				}, this);
 				/*
@@ -550,9 +561,9 @@ define([
 					},
 					nodes: "",
 					difficulty: {
-						isolation: 0,
-						cues: 0,
-						phrases: 0
+						isolation: 1,
+						cues: 1,
+						phrases: 1
 					}
 				}
 

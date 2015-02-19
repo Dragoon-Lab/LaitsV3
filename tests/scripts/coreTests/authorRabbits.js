@@ -42,26 +42,32 @@ describe("Test author mode", function() {
             //Doubled because of bug, remove in future
             dtest.setNodeUnits(client, "rabbits");
             dtest.setNodeExpression(client, "net growth");
+            dtest.waitTime(100);
+            dtest.checkExpression(client);            
             dtest.checkExpression(client);
         }));
 
         it("Should fill in function node - net growth", async(function(){
-            dtest.openEditorForNode(client, "net growth");          
+            dtest.openEditorForNode(client, "net growth");
+            dtest.waitTime(100);          
             dtest.setNodeDescription(client, "The number of additional rabbits each year");
             dtest.setKindOfQuantity(client, "in model & required");
             dtest.setNodeUnits(client, "rabbits/year");
             dtest.setNodeType(client, "Function");
             dtest.setNodeExpression(client, "growth rate*population");
             dtest.checkExpression(client);
+            dtest.checkExpression(client);
         }));
 
         it("Should fill in parameter node - growth rate", async(function(){
-            dtest.openEditorForNode(client, "growth rate");         
+            dtest.openEditorForNode(client, "growth rate");
+            dtest.waitTime(100);         
             dtest.setNodeDescription(client, "The number of additional rabbits per year per rabbit");
             dtest.setNodeInitialValue(client, 0.3);
             dtest.setKindOfQuantity(client, "in model & required");
             dtest.setNodeType(client, "Parameter");
             dtest.setNodeUnits(client, "1/year");
+            dtest.checkExpression(client);
         }));
     });
 
@@ -147,26 +153,26 @@ describe("Test author mode", function() {
     });
 
     describe("Checking graph/table window", function(){
-        it("Should open the table window and switch to graph tab", async(function(){
-            dtest.menuOpenGraph(client);
-            dtest.selectTableTab(client);
+        it("Should open the graph window and switch to table tab", async(function(){
+            dtest.menuOpenTable(client);
+            //dtest.selectTableTab(client);
         }));
 
         it("Should have correct table values", async(function(){
+            dtest.waitTime(100);
             var years = true;
-            var current = 1859;
-            for(var i = 0; i < 61; i++)
+            var yearsValues = [0.000,1.000,2.000,3.000,4.000,5.000,6.000,7.000,8.000,9.000];
+            for(var i = 0; i < yearsValues.length; i++)
             {
-                if(!(dtest.tableGetValue(client, i, 0) == current))
+                if(!(dtest.tableGetValue(client, i, 0) == yearsValues[i]))
                 {
                     years = false;
                 }
-                current++;
             }
 
             //Population (rabbits) coumn
             var population = true;
-            var populationValues = [24,31.2,40.6,52.7,68.5,89.1,116,151,196,255,331,430,559,727,945];
+            var populationValues = [24,31.2,40.6,52.7,68.5,89.1,116,151,196,255];
             for(var i = 0; i < populationValues.length; i++)
             {
                 if(!(dtest.tableGetValue(client, i, 1) == populationValues[i]))
@@ -177,7 +183,7 @@ describe("Test author mode", function() {
 
             //Net growth (rabbits/year)
             var netGrowth = true;
-            var netGrowthValues = [7.20,9.36,12.2,15.8,20.6,26.7,34.8,45.2,58.7,76.4,99.3,129,168,218];
+            var netGrowthValues = [7.20,9.36,12.2,15.8,20.6,26.7,34.8,45.2,58.7,76.4];
             for(var i = 0; i < netGrowthValues.length; i++)
             {
                 if(!(dtest.tableGetValue(client, i, 2) == netGrowthValues[i]))
@@ -195,8 +201,8 @@ describe("Test author mode", function() {
         }));
     });
 
-    /*after(function(done) {
+    after(function(done) {
         client.end();
         done();
-    });*/
+    });
 });

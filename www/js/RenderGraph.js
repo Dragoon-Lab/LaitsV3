@@ -148,7 +148,7 @@ define([
 				else
 				{
 					if(this.model.active.checkStudentNodeCount() < 0)
-						this.dialogContent += "<font color='red'>Some nodes that the author requires are missing from your model, probably because a subexpression in some node's expression needs to be turned into a node.</font><br>";
+						this.dialogContent += "<font color='red'>Some nodes that the author requires are missing from your model, possibly because a subexpression in some node's expression needs to be turned into a node.</font><br>";
 					else if(this.model.active.checkStudentNodeCount() > 0){
 						this.dialogContent += "<font color='red'>Your model does not match the author's.  You may have extra nodes in your model.</font><br>"
 					}
