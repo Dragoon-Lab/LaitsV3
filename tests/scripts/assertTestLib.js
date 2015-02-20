@@ -44,6 +44,23 @@ function convertArrayToMap(assocArray){
     return newMap;
 }
 
+<<<<<<< Updated upstream
+=======
+exports.checkTableValues = function(name, col, values,dtest,client){
+	var correct = true;
+	for(var i  = 0; i < values.length; i++)
+	{
+		if(!(dtest.tableGetValue(client, i, col) == values[i]))
+		{
+			correct = false;
+		}
+	}
+
+	assert(correct === true,
+		"Value(s) in the \"" + name + "\" column were incorrect");
+}
+
+>>>>>>> Stashed changes
 exports.checkNodeValue = function(actual,expected,nodeName){
     assert(actual === expected,
            "Description was \"" +  actual + "\" instead of \"" + 
