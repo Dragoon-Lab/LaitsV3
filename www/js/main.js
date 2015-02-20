@@ -554,8 +554,8 @@ define([
 					problemComplete: problemComplete
 				});
 				
-				var searchPattern = new RegExp('^pal', 'i'); 
-				if(searchPattern.test(query.p)){ // check if problem name starts with pal
+				var searchPattern = new RegExp('^pal3', 'i'); 
+				if(searchPattern.test(query.s)){ // check if problem name starts with pal
 					var tc = new tincan(givenModel);
 					//Connect to learning record store
 					tc.connect();
