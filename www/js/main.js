@@ -47,11 +47,12 @@ define([
 	"./createSlides",
 	"./lessons-learned",
 	"./schemas-author",
+	"./tincan"
 ], function(
 		array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry, toolTip,
 		menu, loadSave, model,
 		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, equation, 
-		description, State, typechecker, slides, lessonsLearned, schemaAuthor
+		description, State, typechecker, slides, lessonsLearned, schemaAuthor, tincan
 ){
 	// Summary: 
 	//			Menu controller
@@ -83,7 +84,6 @@ define([
 		if(solutionGraph){
 			givenModel.loadModel(solutionGraph);
 		}
-
 		/*
 		 start up controller
 		 */
@@ -145,6 +145,7 @@ define([
 						 lang.hitch(drawModel, drawModel.colorNodeBorder), 
 						 true);
 
+
 			/* add "Create Node" button to menu */
 			menu.add("createNodeButton", function(){
 
@@ -174,7 +175,6 @@ define([
             makeTooltip('questionMarkURL', "If you wish to use an image from your computer, <br>" +
                 "you must first upload it to a website and then copy <br>" +
                 "the URL of the image into this box.");
-
 			/*
 			 Connect node editor to "click with no move" events.
 			 */
@@ -554,6 +554,15 @@ define([
 					problemComplete: problemComplete
 				});
 				
+				var searchPattern = new RegExp('^pal', 'i'); 
+				if(searchPattern.test(query.p)){ // check if problem name starts with pal
+					var tc = new tincan(givenModel);
+					//Connect to learning record store
+					tc.connect();
+					//Send Statements
+					tc.sendStatements();
+				}
+
 				promise.then(function(){
 					 if(window.history.length == 1)
                                                 window.close();
