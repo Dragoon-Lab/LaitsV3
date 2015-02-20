@@ -329,6 +329,11 @@ define([
 				// Description button wiring
 				menu.add("descButton", function(){
 					style.set(dom.byId("publishResponse"), "display", "none");
+					//Display publish problem button on devel and localhost
+					if(window.location.hostname === "localhost" ||
+					   window.location.pathname.indexOf("/devel/") === 0){
+						style.set(registry.byId("problemPublishButton").domNode, "display", "inline");
+					}
 					registry.byId("authorDescDialog").show();
 				});
 				aspect.after(registry.byId('authorDescDialog'), "hide", function(){
@@ -338,6 +343,7 @@ define([
 				on(registry.byId("descCloseButton"), "click", function(){
 					registry.byId("authorDescDialog").hide();
 				});
+
 				on(registry.byId("problemPublishButton"), "click", function(){
 					var w = confirm("Are you sure you want to publish the problem");
 					var response = "There was some error while publishing the problem.";
@@ -356,6 +362,7 @@ define([
 						style.set(responseWidget, "display", "block");
 					}
 				});
+
 				on(registry.byId("previewButton"),"click",function(){
 					var user = query.u;
 					var timestamp = new Date().getTime();
