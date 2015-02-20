@@ -311,16 +311,48 @@
         "schemas": [
             {
                 "ID": "schema1",
-                "schemaClass": "zener_diode_voltage_regulator",
+                "schemaClass": "zener_diode",
                 "competence": {
                     "errors": 0,
                     "total": 0,
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id1, id2, id3, id4, id5, id6, id7, id8, id9, id10",
+                "nodes": "id6, id2, id1, id3, id4, id5, id7",
                 "difficulty": {
-                    "isolation": 0,
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema2",
+                "schemaClass": "ohms_law_voltage",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id9, id7, id8",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema3",
+                "schemaClass": "ohms_law_current",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id6, id7",
+                "difficulty": {
+                    "isolation": 1,
                     "cues": 0,
                     "phrases": 0
                 }

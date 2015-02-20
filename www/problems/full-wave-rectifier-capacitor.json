@@ -340,6 +340,70 @@
         "schemas": [
             {
                 "ID": "schema1",
+                "schemaClass": "capacitor",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id6, id9, id8, id10",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema2",
+                "schemaClass": "alternating_voltage_generator",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id2",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema3",
+                "schemaClass": "full_wave_rectifier",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id3, id4, id5",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema4",
+                "schemaClass": "ohms_law_voltage",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id6, id9, id11",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema5",
                 "schemaClass": "smoothing_capacitor_for_full_wave",
                 "competence": {
                     "errors": 0,
@@ -347,11 +411,11 @@
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id6, id7, id9, id8",
+                "nodes": "id5, id7, id6",
                 "difficulty": {
-                    "isolation": 0,
+                    "isolation": 1,
                     "cues": 0,
-                    "phrases": 1
+                    "phrases": 0
                 }
             }
         ]

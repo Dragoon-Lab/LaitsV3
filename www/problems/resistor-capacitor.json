@@ -13,7 +13,7 @@
             "URL": "http://onlinephys.com/rc_circuit.gif"
         },
         "taskDescription": [
-            "Model a 500 ohm resistor in series with a 0.003 farad capacitor and a battery-switch combination that delivers either 5 volts or a short.  Use pulsetrain(0,5,5) to represent the switch being closed from 0 to 5 seconds and then open from 6 to 10 seconds.  Graph the voltage across the capacitor.",
+            "Model a 500 ohm resistor in series with a 0.003 farad capacitor and a battery-switch combination that delivers either 5 volts or a short.  Use sinewave(60, 0) to represent the switch being closed from 0 to 5 seconds and then open from 6 to 10 seconds.  Graph the voltage across the capacitor.",
             "",
             ""
         ],
@@ -256,16 +256,48 @@
         "schemas": [
             {
                 "ID": "schema1",
-                "schemaClass": "resistor_capacitor_series",
+                "schemaClass": "capacitor",
                 "competence": {
                     "errors": 0,
                     "total": 0,
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id1, id2, id3, id4, id5, id6, id8, id9",
+                "nodes": "id1, id2, id4, id3",
                 "difficulty": {
-                    "isolation": 0,
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema2",
+                "schemaClass": "kirchoff_voltage_law",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id5, id9",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema3",
+                "schemaClass": "ohms_law_voltage",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id3, id5, id6",
+                "difficulty": {
+                    "isolation": 1,
                     "cues": 0,
                     "phrases": 0
                 }

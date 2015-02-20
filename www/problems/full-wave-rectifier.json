@@ -195,6 +195,22 @@
         "schemas": [
             {
                 "ID": "schema1",
+                "schemaClass": "alternating_voltage_generator",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id3, id2",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema2",
                 "schemaClass": "full_wave_rectifier",
                 "competence": {
                     "errors": 0,
@@ -202,9 +218,9 @@
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id5, id6, id7",
+                "nodes": "id3, id5, id6, id7",
                 "difficulty": {
-                    "isolation": 0,
+                    "isolation": 1,
                     "cues": 0,
                     "phrases": 0
                 }

@@ -328,6 +328,7 @@ define([
 
 				// Description button wiring
 				menu.add("descButton", function(){
+					style.set(dom.byId("publishResponse"), "display", "none");
 					registry.byId("authorDescDialog").show();
 				});
 				aspect.after(registry.byId('authorDescDialog'), "hide", function(){
@@ -336,6 +337,24 @@ define([
 				});
 				on(registry.byId("descCloseButton"), "click", function(){
 					registry.byId("authorDescDialog").hide();
+				});
+				on(registry.byId("problemPublishButton"), "click", function(){
+					var w = confirm("Are you sure you want to publish the problem");
+					var response = "There was some error while publishing the problem.";
+					if(w == true){
+						session.publishProblem(givenModel.model).then(function(reply){
+							response = "The problem has been successfully published.";
+						});
+					
+						var responseWidget = dom.byId("publishResponse");
+						responseWidget.innerHTML = response;
+						if(response.indexOf("error") >=0){
+							style.set(responseWidget, "color", "red");
+						} else {
+							style.set(responseWidget, "color", "green");
+						}
+						style.set(responseWidget, "display", "block");
+					}
 				});
 				on(registry.byId("previewButton"),"click",function(){
 					var user = query.u;
