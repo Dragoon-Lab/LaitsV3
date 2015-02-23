@@ -142,7 +142,7 @@
 					}
 				}
 				
-				//echo "row -> ".json_encode($row)." <- <br/>";
+				//echo "row -> ".json_encode($row)." <- ".$upObject->sessionRunning." <br/>";
 				$stepTime = $newMessage['time'] - $oldMessage['time'];
 				//echo $newMessage['time']." - ".$oldMessage['time']." = ".$stepTime."<br/>";	
 				if($stepTime > $this->al->getActionTime() && $inFocus){
@@ -418,7 +418,6 @@
 								array_push($currentProperty->status, "DEMO");
 								$currentProperty->time = $newMessage['time'] - $propertyStartTime;
 								$propertyStartTime = $newMessage['time'];
-								//echo "row - ".print_r($row)."</br>";
 
 								$currentIndex = $currentNode->getIndex($currentProperty->name);
 								if($currentIndex >= 0){
@@ -480,7 +479,7 @@
 						$errorRatio = $incorrectChecks/$totalChecks;
 					}
 
-					$diff = strtotime($currentTime) - strtotime($row['time']) - $newMessage['time'];
+					$diff = strtotime($currentTime) - strtotime($oldRow['time']) - $oldMessage['time'];
 					if($upObject->sessionRunning && $diff > 7200){
 						$upObject->sessionRunning = false;
 					}
