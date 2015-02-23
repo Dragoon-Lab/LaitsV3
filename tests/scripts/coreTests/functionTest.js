@@ -23,10 +23,9 @@ var atest = require("../assertTestLib.js");
 describe("Test math functions:", function() {
 
     before(async(function (done) {
-            dtest.openProblem(client,[["problem","MathFunctionsTest"],["mode","AUTHOR"],
+            dtest.openProblem(client,[["problem","dtest-function-test"],["mode","AUTHOR"],
                                       ["user", "AutoTests"],
                                       ["section","login.html"],
-                                      ["group","AutoTests"],
                                       ["logging","True"]]);
     }));
 

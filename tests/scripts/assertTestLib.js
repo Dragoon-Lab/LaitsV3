@@ -46,11 +46,8 @@ function convertArrayToMap(assocArray){
 
 exports.checkTableValues = function(name, col, values,dtest,client){
 	var correct = true;
-	
-		console.log(name);
 	for(var i  = 0; i < values.length; i++)
 	{
-		console.log(dtest.tableGetValue(client, i, col));
 		if(!(dtest.tableGetValue(client, i, col) == values[i]))
 		{
 			correct = false;
