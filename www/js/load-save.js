@@ -151,7 +151,7 @@ define([
 
 		publishProblem: function(model){
 			var object = {
-				sg: json.toJson(model)
+				sg: json.toJson(model.task)
 			};
 
 			return xhr.post(this.path + "publish_solution.php", {
