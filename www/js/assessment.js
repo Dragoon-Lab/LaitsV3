@@ -97,7 +97,11 @@ define([
 		getScore: function(type){
 			var obj = {};
 			array.forEach(this._schemas, function(schema){
-				obj[schema.ID] = schema.competence.values[type];
+				if(schema.competence.values[type]){
+					obj[schema.schemaClass] = schema.competence.values[type];
+				} else {
+					obj[schema.schemaClass] = 0;
+				}
 			}, this);
 
 			return obj;
@@ -119,7 +123,10 @@ define([
 				}
 			}, this);
 
-			return success/total;
+			if(total != 0)
+				return success/total;
+			else 
+				return 0;
 		}
 		
 	});
