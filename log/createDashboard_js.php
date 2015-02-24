@@ -413,7 +413,9 @@
 						} else if($checkResult === "INCORRECT"){
 							array_push($currentProperty->answers, $newMessage['value']);
 							$incorrectChecks = $incorrectChecks+1;
-							$currentProperty->correctValue = $newMessage['correctValue'];
+							if(in_array('correctValue', $newMessage)){
+								$currentProperty->correctValue = $newMessage['correctValue'];
+							}
 							if($newMessage['solutionProvided'] == "true" && !$autoCreated){
 								array_push($currentProperty->status, "DEMO");
 								$currentProperty->time = $newMessage['time'] - $propertyStartTime;
