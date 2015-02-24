@@ -122,7 +122,7 @@ define([
 			collides: function(element)
 			{
 				if(!element.position){
-					return false;
+					return true;
 				}
 				var x = element.position.x;
 				var y = element.position.y;
@@ -194,6 +194,19 @@ define([
 				array.forEach(this.given.getNodes(), intID);
 				array.forEach(this.student.getNodes(), intID);
 				this._ID = largest + 1;
+				
+				var schemas = this.active.getSchemas();
+				var largestSID = 0;
+				if(schemas){
+					array.forEach(schemas, function(schema){
+						if(schema.ID.length >= 6 && schema.ID.slice(0, 6) == "schema"){
+							var n = parseInt(schema.ID.slice(6));
+							if(n && n > largestSID)
+								largestSID = n;
+						}
+					});
+				}
+				this._SID = largestSID + 1;
 
 				/*
 				 Sanity test that all given model IDs, node names,
@@ -561,9 +574,9 @@ define([
 					},
 					nodes: "",
 					difficulty: {
-						isolation: 0,
-						cues: 0,
-						phrases: 0
+						isolation: 1,
+						cues: 1,
+						phrases: 1
 					}
 				}
 

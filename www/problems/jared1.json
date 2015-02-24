@@ -14,7 +14,7 @@
         "image": {
             "URL": "images/weighing-scales2.jpg"
         },
-        "taskDescription": " Jared is on a diet and loses 2.5 pounds each week. He started the diet weighing 200 pounds. A node defining Jared's weekly weight loss as a function of time has been given. Construct a model for Jared's weight as a function of time. ",
+        "taskDescription": " Jared is on a diet and loses 2.5 pounds each week. He started the diet weighing 200 pounds. Construct a model for Jared's weight as a function of time. ",
         "givenModelNodes": [
             {
                 "ID": "id1",

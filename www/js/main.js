@@ -47,11 +47,12 @@ define([
 	"./createSlides",
 	"./lessons-learned",
 	"./schemas-author",
+	"./tincan"
 ], function(
 		array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry, toolTip,
 		menu, loadSave, model,
 		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, equation, 
-		description, State, typechecker, slides, lessonsLearned, schemaAuthor
+		description, State, typechecker, slides, lessonsLearned, schemaAuthor, tincan
 ){
 	// Summary: 
 	//			Menu controller
@@ -83,7 +84,6 @@ define([
 		if(solutionGraph){
 			givenModel.loadModel(solutionGraph);
 		}
-
 		/*
 		 start up controller
 		 */
@@ -145,6 +145,7 @@ define([
 						 lang.hitch(drawModel, drawModel.colorNodeBorder), 
 						 true);
 
+
 			/* add "Create Node" button to menu */
 			menu.add("createNodeButton", function(){
 
@@ -174,7 +175,6 @@ define([
             makeTooltip('questionMarkURL', "If you wish to use an image from your computer, <br>" +
                 "you must first upload it to a website and then copy <br>" +
                 "the URL of the image into this box.");
-
 			/*
 			 Connect node editor to "click with no move" events.
 			 */
@@ -328,6 +328,12 @@ define([
 
 				// Description button wiring
 				menu.add("descButton", function(){
+					style.set(dom.byId("publishResponse"), "display", "none");
+					//Display publish problem button on devel and localhost
+					if(window.location.hostname === "localhost" ||
+					   window.location.pathname.indexOf("/devel/") === 0){
+						style.set(registry.byId("problemPublishButton").domNode, "display", "inline");
+					}
 					registry.byId("authorDescDialog").show();
 				});
 				aspect.after(registry.byId('authorDescDialog'), "hide", function(){
@@ -337,6 +343,26 @@ define([
 				on(registry.byId("descCloseButton"), "click", function(){
 					registry.byId("authorDescDialog").hide();
 				});
+
+				on(registry.byId("problemPublishButton"), "click", function(){
+					var w = confirm("Are you sure you want to publish the problem");
+					var response = "There was some error while publishing the problem.";
+					if(w == true){
+						session.publishProblem(givenModel.model).then(function(reply){
+							response = "The problem has been successfully published.";
+						});
+					
+						var responseWidget = dom.byId("publishResponse");
+						responseWidget.innerHTML = response;
+						if(response.indexOf("error") >=0){
+							style.set(responseWidget, "color", "red");
+						} else {
+							style.set(responseWidget, "color", "green");
+						}
+						style.set(responseWidget, "display", "block");
+					}
+				});
+
 				on(registry.byId("previewButton"),"click",function(){
 					var user = query.u;
 					var timestamp = new Date().getTime();
@@ -346,12 +372,8 @@ define([
 					window.open(url.replace("m=AUTHOR","m=STUDENT"),"newwindow");
 				});
 
-				menu.add("schemaButton", "click", function(){
-					registry.byId("schemaAuthorBox").show();
-				});
-
 				var schema = new schemaAuthor(givenModel, session);
-				on(registry.byId("schemaButton"), "click", function(){
+				menu.add("schemaButton", function(){
 					schema.showSchemaWindow();
 				});
 
@@ -532,6 +554,15 @@ define([
 					problemComplete: problemComplete
 				});
 				
+				var searchPattern = new RegExp('^pal3', 'i'); 
+				if(searchPattern.test(query.s)){ // check if problem name starts with pal
+					var tc = new tincan(givenModel);
+					//Connect to learning record store
+					tc.connect();
+					//Send Statements
+					tc.sendStatements();
+				}
+
 				promise.then(function(){
 					 if(window.history.length == 1)
                                                 window.close();

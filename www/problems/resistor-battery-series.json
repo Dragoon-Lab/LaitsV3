@@ -14,6 +14,7 @@
         },
         "taskDescription": [
             "Model a circuit composed of a 5 volt voltage source and a 1000 ohm resistor.  What is the current through the resistor?",
+            "",
             ""
         ],
         "lessonsLearned": "",
@@ -22,8 +23,8 @@
                 "ID": "id1",
                 "inputs": [],
                 "position": {
-                    "x": 382.3309631347656,
-                    "y": 115.3309555053711
+                    "x": 382.33096313477,
+                    "y": 115.33095550537
                 },
                 "attemptCount": {
                     "description": 0,
@@ -57,7 +58,7 @@
                 ],
                 "position": {
                     "x": 540,
-                    "y": 97.98294830322266
+                    "y": 97.982948303223
                 },
                 "attemptCount": {
                     "description": 0,
@@ -80,8 +81,8 @@
                 "ID": "id3",
                 "inputs": [],
                 "position": {
-                    "x": 653.991455078125,
-                    "y": 76.98863220214844
+                    "x": 653.99145507812,
+                    "y": 76.988632202148
                 },
                 "attemptCount": {
                     "description": 0,
@@ -103,6 +104,23 @@
             }
         ],
         "studentModelNodes": [],
-        "schemas": []
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "ohms_law_voltage",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id2, id3",
+                "difficulty": {
+                    "isolation": 0,
+                    "cues": 0,
+                    "phrases": 1
+                }
+            }
+        ]
     }
 }

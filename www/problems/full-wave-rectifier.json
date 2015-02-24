@@ -23,8 +23,8 @@
                 "ID": "id1",
                 "inputs": [],
                 "position": {
-                    "x": 345.4353942871094,
-                    "y": 44.42687225341797
+                    "x": 345.43539428711,
+                    "y": 44.426872253418
                 },
                 "attemptCount": {
                     "description": 0,
@@ -48,8 +48,8 @@
                 "ID": "id2",
                 "inputs": [],
                 "position": {
-                    "x": 401.44390869140625,
-                    "y": 199.4268798828125
+                    "x": 401.44390869141,
+                    "y": 199.42687988281
                 },
                 "attemptCount": {
                     "description": 0,
@@ -80,8 +80,8 @@
                     }
                 ],
                 "position": {
-                    "x": 495.9942932128906,
-                    "y": 98.99147033691406
+                    "x": 495.99429321289,
+                    "y": 98.991470336914
                 },
                 "attemptCount": {
                     "description": 0,
@@ -111,8 +111,8 @@
                     }
                 ],
                 "position": {
-                    "x": 608.991455078125,
-                    "y": 61.9886360168457
+                    "x": 608.99145507812,
+                    "y": 61.988636016846
                 },
                 "attemptCount": {
                     "description": 0,
@@ -138,8 +138,8 @@
                     }
                 ],
                 "position": {
-                    "x": 565.9943237304688,
-                    "y": 226.98863220214844
+                    "x": 565.99432373047,
+                    "y": 226.98863220215
                 },
                 "attemptCount": {
                     "description": 0,
@@ -170,8 +170,8 @@
                     }
                 ],
                 "position": {
-                    "x": 705.9942626953125,
-                    "y": 170.9801025390625
+                    "x": 705.99426269531,
+                    "y": 170.98010253906
                 },
                 "attemptCount": {
                     "description": 0,
@@ -192,6 +192,39 @@
             }
         ],
         "studentModelNodes": [],
-        "schemas": []
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "alternating_voltage_generator",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id3, id2",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema2",
+                "schemaClass": "full_wave_rectifier",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id3, id5, id6, id7",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            }
+        ]
     }
 }

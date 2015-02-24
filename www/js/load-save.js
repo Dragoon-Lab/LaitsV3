@@ -149,6 +149,25 @@ define([
 			});
 		},
 
+		publishProblem: function(model){
+			var object = {
+				sg: json.toJson(model.task)
+			};
+
+			return xhr.post(this.path + "publish_solution.php", {
+				data: object,
+				sync: true
+			}).then(function(reply){
+				console.log("problem published: ", reply);
+				return reply;
+			}, function(err){
+				this.clientLog("error", {
+					message: "problem not published error: "+ err,
+					functionTag: "publishProblem"
+				});
+			});
+		},
+
 		getTime: function(){
 			// Returns time in seconds since start of session.
 			return	((new Date()).getTime() - this._startTime)/1000.0;

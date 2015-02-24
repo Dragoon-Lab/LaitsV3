@@ -69,19 +69,25 @@
 			},
 			{
 				"name" : "Superposition",
-				"id" : "superposition",
+				"id" : "electronic_superposition",
 				"template" : "Current in a circuit with more than one independent sources is given by the sum of current from individual sources.",
 				"example" : "There are two independent sources of 5V and 10V in parallel to a load of 1000 ohms. Find the current flowing through it."
 			},
 			{
-				"name" : "Resistor capacitor in series",
-				"id" : "resistor_capacitor_series",
-				"template" : "Current in a circuit when increases slowly when a resistor and capacitor are present in a series",
-				"example" : "Find the current flowing in a circuit when a 1000 ohm resistor and 10 microF capacitor are put in series with source of 10 V."
+				"name" : "Capacitor",
+				"id" : "capacitor",
+				"template" : "",
+				"example" : ""
 			},
 			{
-				"name" : "Resistor inductor in series",
-				"id" : "resistor_inductor_series",
+				"name" : "Inductor",
+				"id" : "inductor",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Ideal diode",
+				"id" : "diode",
 				"template" : "",
 				"example" : ""
 			},
@@ -104,8 +110,8 @@
 				"example" : ""
 			},
 			{
-				"name" : "Zener diode voltage regulator",
-				"id" : "zener_diode_voltage_regulator",
+				"name" : "Zener diode",
+				"id" : "zener_diode",
 				"template" : "",
 				"example" : ""
 			}

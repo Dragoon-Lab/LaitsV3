@@ -13,17 +13,28 @@
             "URL": "http://artsites.ucsc.edu/ems/music/tech_background/o_law/Image2.gif"
         },
         "taskDescription": [
-            "Model a circuit that has two resistors in series.  Assume a 5 volt battery, and that R1 is 500 ohms while R2 is 1500 ohms.   Unfortunately, the model cannot be executed by Dragoon.  Needs more work.  ",
+            "Model a circuit that has two resistors in series.  Assume that R1 is 500 ohms, R2 is 1500 ohms, and the current through R1 is 0.005 amp downward.   What is the voltage of the battery, measured with the bottom negative and the top positive?  ",
+            "",
+            "",
             ""
         ],
         "lessonsLearned": "",
         "givenModelNodes": [
             {
                 "ID": "id1",
-                "inputs": [],
+                "inputs": [
+                    {
+                        "ID": "id5",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id6",
+                        "label": ""
+                    }
+                ],
                 "position": {
-                    "x": 351.3309631347656,
-                    "y": 90.33094787597656
+                    "x": 410,
+                    "y": 85
                 },
                 "attemptCount": {
                     "description": 0,
@@ -37,18 +48,18 @@
                 "name": "V of battery",
                 "genus": "required",
                 "description": "Voltage across battery",
-                "equation": "",
-                "type": "parameter",
-                "parentNode": false,
-                "initial": 5,
+                "equation": "id5+id6",
+                "type": "function",
+                "parentNode": true,
+                "initial": "",
                 "units": "volts"
             },
             {
                 "ID": "id2",
                 "inputs": [],
                 "position": {
-                    "x": 784.4410400390625,
-                    "y": 50.42118835449219
+                    "x": 803.33093261719,
+                    "y": 45.330951690674
                 },
                 "attemptCount": {
                     "description": 0,
@@ -72,8 +83,8 @@
                 "ID": "id3",
                 "inputs": [],
                 "position": {
-                    "x": 781.4439086914062,
-                    "y": 189.4268798828125
+                    "x": 669.33093261719,
+                    "y": 257.33093261719
                 },
                 "attemptCount": {
                     "description": 0,
@@ -97,17 +108,13 @@
                 "ID": "id4",
                 "inputs": [
                     {
-                        "ID": "id6",
+                        "ID": "id7",
                         "label": ""
-                    },
-                    {
-                        "ID": "id3",
-                        "label": "/"
                     }
                 ],
                 "position": {
-                    "x": 585.9943237304688,
-                    "y": 203.99147033691406
+                    "x": 615,
+                    "y": 181
                 },
                 "attemptCount": {
                     "description": 0,
@@ -123,7 +130,7 @@
                 "genus": "required",
                 "type": "function",
                 "units": "amps",
-                "equation": "id6/id3"
+                "equation": "id7"
             },
             {
                 "ID": "id5",
@@ -138,8 +145,8 @@
                     }
                 ],
                 "position": {
-                    "x": 528.991455078125,
-                    "y": 81.98863220214844
+                    "x": 558,
+                    "y": 72
                 },
                 "attemptCount": {
                     "description": 0,
@@ -161,17 +168,17 @@
                 "ID": "id6",
                 "inputs": [
                     {
-                        "ID": "id1",
+                        "ID": "id4",
                         "label": ""
                     },
                     {
-                        "ID": "id5",
-                        "label": "-"
+                        "ID": "id3",
+                        "label": ""
                     }
                 ],
                 "position": {
-                    "x": 448.991455078125,
-                    "y": 202.98294067382812
+                    "x": 498,
+                    "y": 231
                 },
                 "attemptCount": {
                     "description": 0,
@@ -186,20 +193,15 @@
                 "description": "Voltage across resistor R2 from top to bottom",
                 "type": "function",
                 "units": "volts",
-                "equation": "id1-id5",
+                "equation": "id4*id3",
                 "genus": "required"
             },
             {
                 "ID": "id7",
-                "inputs": [
-                    {
-                        "ID": "id4",
-                        "label": ""
-                    }
-                ],
+                "inputs": [],
                 "position": {
-                    "x": 695.9943237304688,
-                    "y": 122.98294830322266
+                    "x": 717.33093261719,
+                    "y": 127.33095550537
                 },
                 "attemptCount": {
                     "description": 0,
@@ -213,12 +215,79 @@
                 "name": "I thru R1",
                 "genus": "required",
                 "description": "Current through resistor R1 downward",
-                "type": "function",
+                "type": "parameter",
                 "units": "amps",
-                "equation": "id4"
+                "equation": "",
+                "parentNode": false,
+                "initial": 0.005
             }
         ],
         "studentModelNodes": [],
-        "schemas": []
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "kirchoff_voltage_law",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id5, id1, id6",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema2",
+                "schemaClass": "ohms_law_voltage",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id4, id3, id6",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema3",
+                "schemaClass": "ohms_law_current",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id5, id2, id7",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema4",
+                "schemaClass": "kirchoff_current_law",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id4, id7",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            }
+        ]
     }
 }

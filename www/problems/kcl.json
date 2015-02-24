@@ -13,7 +13,7 @@
             "URL": "http://upload.wikimedia.org/wikipedia/commons/4/46/KCL_-_Kirchhoff%27s_circuit_laws.svg"
         },
         "taskDescription": [
-            "Model the circuit shown above.  What is current i4?",
+            "Assuming current I1 is 2 amps, I2 is 3 amps and I3 is 0.5 amps, what I4?",
             ""
         ],
         "lessonsLearned": "",
@@ -22,8 +22,8 @@
                 "ID": "id1",
                 "inputs": [],
                 "position": {
-                    "x": 357.438232421875,
-                    "y": 53.432552337646484
+                    "x": 357.43823242188,
+                    "y": 53.432552337646
                 },
                 "attemptCount": {
                     "description": 0,
@@ -47,8 +47,8 @@
                 "ID": "id2",
                 "inputs": [],
                 "position": {
-                    "x": 360.4353942871094,
-                    "y": 187.4240264892578
+                    "x": 360.43539428711,
+                    "y": 187.42402648926
                 },
                 "attemptCount": {
                     "description": 0,
@@ -72,8 +72,8 @@
                 "ID": "id3",
                 "inputs": [],
                 "position": {
-                    "x": 598.4325561523438,
-                    "y": 81.4297103881836
+                    "x": 598.43255615234,
+                    "y": 81.429710388184
                 },
                 "attemptCount": {
                     "description": 0,
@@ -110,8 +110,8 @@
                     }
                 ],
                 "position": {
-                    "x": 522.9971313476562,
-                    "y": 205.9801025390625
+                    "x": 522.99713134766,
+                    "y": 205.98010253906
                 },
                 "attemptCount": {
                     "description": 0,
@@ -132,6 +132,23 @@
             }
         ],
         "studentModelNodes": [],
-        "schemas": []
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "kirchoff_current_law",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id2, id3, id4",
+                "difficulty": {
+                    "isolation": 0,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            }
+        ]
     }
 }

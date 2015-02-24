@@ -46,7 +46,7 @@ define([
 			this.assess.updateSchema(this.currentNodeTime, this.currentNodeErrors);
 			this.assess.dummy();
 			this.assess.saveSchema();
-			
+
 			this.resetNodeValues();
 		},
 
@@ -62,7 +62,7 @@ define([
 		updateError: function(/* string */ nodePart, /* boolean */ isCorrect){
 			if(isCorrect == "demo" || isCorrect == "incorrect"){
 				this.currentNodeErrors.errors++;
-			}
+			} 
 			this.currentNodeErrors.total++;
 		},
 
@@ -91,6 +91,14 @@ define([
 			}
 
 			return newTime;
+		},
+
+		getAssessmentScore: function(type){
+			return this.assess.getScore(type);
+		},
+
+		getSuccessFactor: function(){
+			return this.assess.getSuccessFactor();
 		},
 
 		getTime: function(nodeID){

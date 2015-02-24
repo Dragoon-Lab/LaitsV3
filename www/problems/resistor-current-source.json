@@ -13,7 +13,8 @@
             "URL": "http://i.imgur.com/nCUTf4I.png"
         },
         "taskDescription": [
-            "Model a 10 amp current source in series with a 2000 ohm resistor. "
+            "Model a 10 amp current source in series with a 2000 ohm resistor. ",
+            ""
         ],
         "lessonsLearned": "",
         "givenModelNodes": [
@@ -21,8 +22,8 @@
                 "ID": "id1",
                 "inputs": [],
                 "position": {
-                    "x": 381.44390869140625,
-                    "y": 94.42687225341797
+                    "x": 381.44390869141,
+                    "y": 94.426872253418
                 },
                 "attemptCount": {
                     "description": 0,
@@ -46,8 +47,8 @@
                 "ID": "id2",
                 "inputs": [],
                 "position": {
-                    "x": 640.4353637695312,
-                    "y": 96.4297103881836
+                    "x": 640.43536376953,
+                    "y": 96.429710388184
                 },
                 "attemptCount": {
                     "description": 0,
@@ -80,8 +81,8 @@
                     }
                 ],
                 "position": {
-                    "x": 520.9943237304688,
-                    "y": 107.98294830322266
+                    "x": 520.99432373047,
+                    "y": 107.98294830322
                 },
                 "attemptCount": {
                     "description": 0,
@@ -101,6 +102,23 @@
             }
         ],
         "studentModelNodes": [],
-        "schemas": []
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "ohms_law_current",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id2, id3",
+                "difficulty": {
+                    "isolation": 0,
+                    "cues": 0,
+                    "phrases": 1
+                }
+            }
+        ]
     }
 }

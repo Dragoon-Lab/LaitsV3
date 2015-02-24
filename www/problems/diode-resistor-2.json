@@ -3,8 +3,8 @@
         "taskName": "diode resistor 2",
         "time": {
             "start": 0,
-            "end": 0.1,
-            "step": 0.0005,
+            "end": 2,
+            "step": 0.01,
             "integrationMethod": "Eulers Method",
             "units": "seconds"
         },
@@ -13,7 +13,8 @@
             "URL": "http://www.johnloomis.org/ece201L/lab6/diode1.jpg"
         },
         "taskDescription": [
-            "Model a diode in series with a resistor and a variable voltage source.  Assume the diode is ideal, the resistor is 500 ohms and the voltage varies between +5 volts and -5 volts.  Use pulsetrain(0,5,5) to represent a changing supply voltage.  Graph the current through the diode.",
+            "Model a diode in series with a resistor and a variable voltage source.  Assume the diode is ideal, the resistor is 500 ohms and the voltage varies between +5 volts and -5 volts.  Nodes have been given to you that represent the varying source voltage. Graph the current through the diode.",
+            "",
             ""
         ],
         "lessonsLearned": "",
@@ -26,8 +27,8 @@
                     }
                 ],
                 "position": {
-                    "x": 500.9942932128906,
-                    "y": 119.98579406738281
+                    "x": 515,
+                    "y": 87
                 },
                 "attemptCount": {
                     "description": 0,
@@ -43,14 +44,14 @@
                 "description": "Source of variable voltage",
                 "type": "function",
                 "units": "volts",
-                "equation": "id2*sinewave(60,0)"
+                "equation": "id2*sinewave(1,0)"
             },
             {
                 "ID": "id2",
                 "inputs": [],
                 "position": {
-                    "x": 372.3309631347656,
-                    "y": 133.33096313476562
+                    "x": 358.33096313477,
+                    "y": 75.330947875977
                 },
                 "attemptCount": {
                     "description": 0,
@@ -58,7 +59,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "Source max volts",
@@ -74,8 +75,8 @@
                 "ID": "id3",
                 "inputs": [],
                 "position": {
-                    "x": 893.4325561523438,
-                    "y": 100.42118835449219
+                    "x": 894.33093261719,
+                    "y": 71.330947875977
                 },
                 "attemptCount": {
                     "description": 0,
@@ -108,8 +109,8 @@
                     }
                 ],
                 "position": {
-                    "x": 765,
-                    "y": 115.98011016845703
+                    "x": 772,
+                    "y": 84
                 },
                 "attemptCount": {
                     "description": 0,
@@ -136,8 +137,8 @@
                     }
                 ],
                 "position": {
-                    "x": 643.991455078125,
-                    "y": 117.98294830322266
+                    "x": 644,
+                    "y": 85
                 },
                 "attemptCount": {
                     "description": 0,
@@ -156,7 +157,117 @@
                 "genus": "required"
             }
         ],
-        "studentModelNodes": [],
-        "schemas": []
+        "studentModelNodes": [
+            {
+                "ID": "id6",
+                "inputs": [],
+                "position": {
+                    "x": 515,
+                    "y": 87
+                },
+                "status": {
+                    "equation": {
+                        "disabled": false,
+                        "status": "incorrect"
+                    },
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id1",
+                "units": "volts",
+                "type": "function",
+                "equation": ""
+            },
+            {
+                "ID": "id7",
+                "inputs": [],
+                "position": {
+                    "x": 358.33096313477,
+                    "y": 75.330947875977
+                },
+                "status": {
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id2",
+                "initial": 5,
+                "units": "volts",
+                "type": "parameter"
+            }
+        ],
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "diode",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id5",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema2",
+                "schemaClass": "alternating_voltage_generator",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id2, id1",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema3",
+                "schemaClass": "ohms_law_voltage",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id4, id3, id5",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            }
+        ]
     }
 }
