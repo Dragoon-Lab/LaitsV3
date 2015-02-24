@@ -1,561 +1,641 @@
 {
-    "task": {
-        "taskName": "MathFunctionsTest",
-        "time": {
-            "start": 0,
-            "end": 4,
-            "step": 0.5,
-            "integrationMethod": "Eulers Method",
-            "units": "seconds"
+  "task": {
+    "taskName": "MathFunctionsTest",
+    "time": {
+      "start": 0,
+      "end": 4,
+      "step": 0.5,
+      "integrationMethod": "Eulers Method",
+      "units": "seconds"
+    },
+    "properties": [
+      
+    ],
+    "image": {
+      
+    },
+    "taskDescription": [
+      "",
+      ""
+    ],
+    "lessonsLearned": "",
+    "givenModelNodes": [
+      {
+        "ID": "id1",
+        "inputs": [
+          {
+            "ID": "id2"
+          }
+        ],
+        "position": {
+          "x": 139,
+          "y": 46
         },
-        "properties": [],
-        "image": [],
-        "taskDescription": [
-            ""
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": [
+          
         ],
-        "lessonsLearned": "",
-        "givenModelNodes": [
-            {
-                "ID": "id1",
-                "inputs": [
-                    {
-                        "ID": "id2"
-                    }
-                ],
-                "position": {
-                    "x": 139,
-                    "y": 46
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": [],
-                "name": "absolute value",
-                "description": "absolute value",
-                "genus": "required",
-                "type": "function",
-                "equation": "abs(id2)"
-            },
-            {
-                "ID": "id2",
-                "inputs": [],
-                "position": {
-                    "x": 515,
-                    "y": 199
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": [],
-                "name": "x",
-                "description": "x",
-                "type": "accumulator",
-                "initial": -2,
-                "equation": "1",
-                "genus": "required"
-            },
-            {
-                "ID": "id3",
-                "inputs": [
-                    {
-                        "ID": "id2"
-                    }
-                ],
-                "position": {
-                    "x": 138,
-                    "y": 154
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": [],
-                "name": "arc cosine",
-                "description": "arc cosine",
-                "genus": "required",
-                "type": "function",
-                "equation": "acos(id2)"
-            },
-            {
-                "ID": "id4",
-                "inputs": [
-                    {
-                        "ID": "id2"
-                    }
-                ],
-                "position": {
-                    "x": 134,
-                    "y": 254
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": {
-                    "equation": {
-                        "disabled": false
-                    }
-                },
-                "name": "arc sine",
-                "genus": "required",
-                "description": "arc sine",
-                "type": "function",
-                "equation": "asin(id2)"
-            },
-            {
-                "ID": "id6",
-                "inputs": [
-                    {
-                        "ID": "id2"
-                    }
-                ],
-                "position": {
-                    "x": 155,
-                    "y": 343
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": [],
-                "name": "arc tangent",
-                "genus": "required",
-                "description": "arc tangent",
-                "type": "function",
-                "equation": "atan(id2)"
-            },
-            {
-                "ID": "id7",
-                "inputs": [
-                    {
-                        "ID": "id2"
-                    }
-                ],
-                "position": {
-                    "x": 257,
-                    "y": 391
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": [],
-                "name": "ceiling",
-                "genus": "required",
-                "description": "ceiling",
-                "type": "function",
-                "equation": "ceil(id2)"
-            },
-            {
-                "ID": "id8",
-                "inputs": [
-                    {
-                        "ID": "id2"
-                    }
-                ],
-                "position": {
-                    "x": 349,
-                    "y": 432
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": [],
-                "name": "cosine",
-                "genus": "required",
-                "description": "cosine",
-                "type": "function",
-                "equation": "cos(id2)"
-            },
-            {
-                "ID": "id9",
-                "inputs": [
-                    {
-                        "ID": "id2"
-                    }
-                ],
-                "position": {
-                    "x": 436,
-                    "y": 444
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": [],
-                "name": "square root",
-                "description": "square root",
-                "genus": "required",
-                "type": "function",
-                "equation": "sqrt(id2)"
-            },
-            {
-                "ID": "id10",
-                "inputs": [
-                    {
-                        "ID": "id2"
-                    }
-                ],
-                "position": {
-                    "x": 513,
-                    "y": 455
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": [],
-                "name": "exponential",
-                "description": "exponential",
-                "genus": "required",
-                "type": "function",
-                "equation": "exp(id2)"
-            },
-            {
-                "ID": "id11",
-                "inputs": [
-                    {
-                        "ID": "id2"
-                    }
-                ],
-                "position": {
-                    "x": 593,
-                    "y": 454
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": [],
-                "name": "factorial",
-                "genus": "required",
-                "description": "factorial",
-                "type": "function",
-                "equation": "fac(id2)"
-            },
-            {
-                "ID": "id13",
-                "inputs": [
-                    {
-                        "ID": "id2"
-                    }
-                ],
-                "position": {
-                    "x": 670,
-                    "y": 450
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": [],
-                "description": "floorof",
-                "genus": "required",
-                "type": "function",
-                "equation": "floor(id2)",
-                "name": "floorof"
-            },
-            {
-                "ID": "id14",
-                "inputs": [
-                    {
-                        "ID": "id2"
-                    }
-                ],
-                "position": {
-                    "x": 761,
-                    "y": 430
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": [],
-                "name": "Logarithm",
-                "genus": "required",
-                "description": "Logarithm",
-                "type": "function",
-                "equation": "log(id2)"
-            },
-            {
-                "ID": "id15",
-                "inputs": [
-                    {
-                        "ID": "id2"
-                    }
-                ],
-                "position": {
-                    "x": 841,
-                    "y": 391
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": [],
-                "name": "maximum",
-                "description": "maximum",
-                "genus": "required",
-                "type": "function",
-                "equation": "max(0,id2)"
-            },
-            {
-                "ID": "id16",
-                "inputs": [
-                    {
-                        "ID": "id2"
-                    }
-                ],
-                "position": {
-                    "x": 915,
-                    "y": 341
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": [],
-                "name": "minimum",
-                "genus": "required",
-                "description": "minimum",
-                "type": "function",
-                "equation": "min(0,id2)"
-            },
-            {
-                "ID": "id17",
-                "inputs": [
-                    {
-                        "ID": "id2"
-                    }
-                ],
-                "position": {
-                    "x": 986,
-                    "y": 256
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": [],
-                "name": "power",
-                "genus": "required",
-                "description": "power",
-                "type": "function",
-                "equation": "pow(id2,2)"
-            },
-            {
-                "ID": "id18",
-                "inputs": [
-                    {
-                        "ID": "id2"
-                    }
-                ],
-                "position": {
-                    "x": 941,
-                    "y": 186
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": [],
-                "name": "pythogorean",
-                "description": "pythogorean",
-                "type": "function",
-                "equation": "pyt(id2,1)",
-                "genus": "required"
-            },
-            {
-                "ID": "id19",
-                "inputs": [
-                    {
-                        "ID": "id2"
-                    }
-                ],
-                "position": {
-                    "x": 1001,
-                    "y": 131
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": [],
-                "name": "roundnum",
-                "genus": "required",
-                "description": "roundnum",
-                "type": "function",
-                "equation": "round(id2)"
-            },
-            {
-                "ID": "id20",
-                "inputs": [
-                    {
-                        "ID": "id2"
-                    }
-                ],
-                "position": {
-                    "x": 936,
-                    "y": 82
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": [],
-                "name": "sine",
-                "description": "sine",
-                "genus": "required",
-                "type": "function",
-                "equation": "sin(id2)"
-            },
-            {
-                "ID": "id22",
-                "inputs": [
-                    {
-                        "ID": "id2"
-                    }
-                ],
-                "position": {
-                    "x": 750,
-                    "y": 40
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": [],
-                "name": "tangent",
-                "genus": "required",
-                "description": "tangent",
-                "type": "function",
-                "equation": "tan(id2)"
-            },
-            {
-                "ID": "id23",
-                "inputs": [],
-                "position": {
-                    "x": 523,
-                    "y": 62
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": [],
-                "name": "pulsefunc",
-                "genus": "required",
-                "description": "pulsefunc",
-                "type": "function",
-                "equation": "pulse(0,3)"
-            },
-            {
-                "ID": "id24",
-                "inputs": [],
-                "position": {
-                    "x": 400,
-                    "y": 200
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": [],
-                "name": "pulse train",
-                "description": "pulse train",
-                "genus": "required",
-                "type": "function",
-                "equation": "pulsetrain((0,1),1)"
-            }
+        "name": "absolute value",
+        "description": "absolute value",
+        "genus": "required",
+        "type": "function",
+        "equation": "abs(id2)"
+      },
+      {
+        "ID": "id2",
+        "inputs": [
+          
         ],
-        "studentModelNodes": [],
-        "schemas": []
-    }
+        "position": {
+          "x": 515,
+          "y": 199
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": [
+          
+        ],
+        "name": "x",
+        "description": "x",
+        "type": "accumulator",
+        "initial": -2,
+        "equation": "1",
+        "genus": "required"
+      },
+      {
+        "ID": "id3",
+        "inputs": [
+          {
+            "ID": "id2"
+          }
+        ],
+        "position": {
+          "x": 138,
+          "y": 154
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": [
+          
+        ],
+        "name": "arc cosine",
+        "description": "arc cosine",
+        "genus": "required",
+        "type": "function",
+        "equation": "acos(id2)"
+      },
+      {
+        "ID": "id4",
+        "inputs": [
+          {
+            "ID": "id2"
+          }
+        ],
+        "position": {
+          "x": 134,
+          "y": 254
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": {
+          "equation": {
+            "disabled": false
+          }
+        },
+        "name": "arc sine",
+        "genus": "required",
+        "description": "arc sine",
+        "type": "function",
+        "equation": "asin(id2)"
+      },
+      {
+        "ID": "id6",
+        "inputs": [
+          {
+            "ID": "id2"
+          }
+        ],
+        "position": {
+          "x": 155,
+          "y": 343
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": [
+          
+        ],
+        "name": "arc tangent",
+        "genus": "required",
+        "description": "arc tangent",
+        "type": "function",
+        "equation": "atan(id2)"
+      },
+      {
+        "ID": "id7",
+        "inputs": [
+          {
+            "ID": "id2"
+          }
+        ],
+        "position": {
+          "x": 257,
+          "y": 391
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": [
+          
+        ],
+        "name": "ceiling",
+        "genus": "required",
+        "description": "ceiling",
+        "type": "function",
+        "equation": "ceil(id2)"
+      },
+      {
+        "ID": "id8",
+        "inputs": [
+          {
+            "ID": "id2"
+          }
+        ],
+        "position": {
+          "x": 349,
+          "y": 432
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": [
+          
+        ],
+        "name": "cosine",
+        "genus": "required",
+        "description": "cosine",
+        "type": "function",
+        "equation": "cos(id2)"
+      },
+      {
+        "ID": "id9",
+        "inputs": [
+          {
+            "ID": "id2"
+          }
+        ],
+        "position": {
+          "x": 436,
+          "y": 444
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": [
+          
+        ],
+        "name": "square root",
+        "description": "square root",
+        "genus": "required",
+        "type": "function",
+        "equation": "sqrt(id2)"
+      },
+      {
+        "ID": "id10",
+        "inputs": [
+          {
+            "ID": "id2"
+          }
+        ],
+        "position": {
+          "x": 513,
+          "y": 455
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": [
+          
+        ],
+        "name": "exponential",
+        "description": "exponential",
+        "genus": "required",
+        "type": "function",
+        "equation": "exp(id2)"
+      },
+      {
+        "ID": "id11",
+        "inputs": [
+          {
+            "ID": "id2"
+          }
+        ],
+        "position": {
+          "x": 593,
+          "y": 454
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": [
+          
+        ],
+        "name": "factorial",
+        "genus": "required",
+        "description": "factorial",
+        "type": "function",
+        "equation": "fac(id2)"
+      },
+      {
+        "ID": "id13",
+        "inputs": [
+          {
+            "ID": "id2"
+          }
+        ],
+        "position": {
+          "x": 670,
+          "y": 450
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": [
+          
+        ],
+        "description": "floorof",
+        "genus": "required",
+        "type": "function",
+        "equation": "floor(id2)",
+        "name": "floorof"
+      },
+      {
+        "ID": "id14",
+        "inputs": [
+          {
+            "ID": "id2"
+          }
+        ],
+        "position": {
+          "x": 761,
+          "y": 430
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": [
+          
+        ],
+        "name": "Logarithm",
+        "genus": "required",
+        "description": "Logarithm",
+        "type": "function",
+        "equation": "log(id2)"
+      },
+      {
+        "ID": "id15",
+        "inputs": [
+          {
+            "ID": "id2"
+          }
+        ],
+        "position": {
+          "x": 841,
+          "y": 391
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": [
+          
+        ],
+        "name": "maximum",
+        "description": "maximum",
+        "genus": "required",
+        "type": "function",
+        "equation": "max(0,id2)"
+      },
+      {
+        "ID": "id16",
+        "inputs": [
+          {
+            "ID": "id2"
+          }
+        ],
+        "position": {
+          "x": 915,
+          "y": 341
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": [
+          
+        ],
+        "name": "minimum",
+        "genus": "required",
+        "description": "minimum",
+        "type": "function",
+        "equation": "min(0,id2)"
+      },
+      {
+        "ID": "id17",
+        "inputs": [
+          {
+            "ID": "id2"
+          }
+        ],
+        "position": {
+          "x": 986,
+          "y": 256
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": [
+          
+        ],
+        "name": "power",
+        "genus": "required",
+        "description": "power",
+        "type": "function",
+        "equation": "pow(id2,2)"
+      },
+      {
+        "ID": "id18",
+        "inputs": [
+          {
+            "ID": "id2"
+          }
+        ],
+        "position": {
+          "x": 941,
+          "y": 186
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": [
+          
+        ],
+        "name": "pythogorean",
+        "description": "pythogorean",
+        "type": "function",
+        "equation": "pyt(id2,1)",
+        "genus": "required"
+      },
+      {
+        "ID": "id19",
+        "inputs": [
+          {
+            "ID": "id2"
+          }
+        ],
+        "position": {
+          "x": 1001,
+          "y": 131
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": [
+          
+        ],
+        "name": "roundnum",
+        "genus": "required",
+        "description": "roundnum",
+        "type": "function",
+        "equation": "round(id2)"
+      },
+      {
+        "ID": "id20",
+        "inputs": [
+          {
+            "ID": "id2"
+          }
+        ],
+        "position": {
+          "x": 936,
+          "y": 82
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": [
+          
+        ],
+        "name": "sine",
+        "description": "sine",
+        "genus": "required",
+        "type": "function",
+        "equation": "sin(id2)"
+      },
+      {
+        "ID": "id22",
+        "inputs": [
+          {
+            "ID": "id2"
+          }
+        ],
+        "position": {
+          "x": 750,
+          "y": 40
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": [
+          
+        ],
+        "name": "tangent",
+        "genus": "required",
+        "description": "tangent",
+        "type": "function",
+        "equation": "tan(id2)"
+      },
+      {
+        "ID": "id23",
+        "inputs": [
+          
+        ],
+        "position": {
+          "x": 523,
+          "y": 62
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": [
+          
+        ],
+        "name": "pulsefunc",
+        "genus": "required",
+        "description": "pulsefunc",
+        "type": "function",
+        "equation": "pulse(0,3)"
+      },
+      {
+        "ID": "id24",
+        "inputs": [
+          
+        ],
+        "position": {
+          "x": 411,
+          "y": 68
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": [
+          
+        ],
+        "name": "pulse train",
+        "description": "pulse train",
+        "genus": "required",
+        "type": "function",
+        "equation": "pulsetrain((0,1),1)"
+      },
+      {
+        "ID": "id25",
+        "inputs": [
+          
+        ],
+        "position": {
+          "x": 1200,
+          "y": 100
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": {
+          
+        },
+        "name": "sine wave",
+        "description": "sine wave",
+        "type": "function",
+        "equation": "sinewave(1,0)"
+      }
+    ],
+    "studentModelNodes": [
+      
+    ],
+    "schemas": [
+      
+    ]
+  }
 }
