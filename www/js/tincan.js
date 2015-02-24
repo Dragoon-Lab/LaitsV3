@@ -141,9 +141,11 @@ define([
 			        "completion": true,
 			        "success": true,
 			        "duration": "PT0S",
-			        "successFactor" : successFactor,
 			        "score": {
 			            "scaled": assesmentScore[schema.schemaClass]
+			        },
+			        "extensions":{
+			        	 "successFactor" : successFactor
 			        }
 		    	};
 
