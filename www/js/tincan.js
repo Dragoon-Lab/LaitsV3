@@ -30,6 +30,7 @@ define([
 	'dojo/dom-style',
 	'dojo/keys', 
 	'dojo/on',
+	'dojo/io-query',
 	'dojo/ready',
 	'dijit/popup', 
 	'dijit/registry', 
@@ -38,8 +39,8 @@ define([
 	'./graph-objects',
 	'./typechecker',
 	'./forum',
-	'dojo/io-query'
-], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, popup, registry, TooltipDialog, expression, graphObjects, typechecker, forum, ioquery){
+	'./schemas-student'
+], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ioquery, ready, popup, registry, TooltipDialog, expression, graphObjects, typechecker, forum, schemasStudent){
 	// Summary: 
 	//			Module to connect to LRS and send statement data
 	// Description:
@@ -48,9 +49,11 @@ define([
 
 	return declare(null, {
 		_model: null, 
+		_assessment: null,
 
-		constructor: function(givenModel){
+		constructor: function(givenModel, assesment){
 			_model = givenModel;
+			_assessment = assesment;
 		},
 
 		connect: function() {
@@ -86,7 +89,8 @@ define([
 			//send statement to learning record store.
 			var baseURL = 'https://s3-us-west-1.amazonaws.com/ictpal3/'
 			var statement = {};
-
+			var assesmentScore = _assessment.getAssessmentScore("dummy");
+			var successFactor = _assessment.getSuccessFactor();
 			statement.actor = {
 					        "objectType": "Agent",
 					        "name": "test user",
@@ -132,21 +136,21 @@ define([
 				                }
 				            }]
 				        }};
-
+				
 				statement.result =  {
 			        "completion": true,
 			        "success": true,
 			        "duration": "PT0S",
-			        "successFactor" : 1.0,
+			        "successFactor" : successFactor,
 			        "score": {
-			            "scaled": 1.0
+			            "scaled": assesmentScore[schema.schemaClass]
 			        }
 		    	};
 
-		    	var stmt = this.tincan.prepareStatement(statement);
-		    	console.log("Sending Statement: ", stmt);
+
+		    	console.log("Sending Statement: ", statement);
 		    	//Send statement to LRS
-		    	this.tincan.sendStatement(stmt);
+		    	this.tincan.sendStatement(statement);
 			}));
 		}
 	});

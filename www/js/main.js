@@ -555,8 +555,8 @@ define([
 				});
 				
 				var searchPattern = new RegExp('^pal3', 'i'); 
-				if(searchPattern.test(query.s)){ // check if problem name starts with pal
-					var tc = new tincan(givenModel);
+				if(query.m != "AUTHOR" && searchPattern.test(query.s)){ // check if session name starts with pal
+					var tc = new tincan(givenModel, controllerObject._assessment);
 					//Connect to learning record store
 					tc.connect();
 					//Send Statements
