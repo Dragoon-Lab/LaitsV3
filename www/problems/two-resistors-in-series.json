@@ -1,254 +1,293 @@
 {
-  "task": {
-    "taskName": "two resistors in series",
-    "time": {
-      "start": 0,
-      "end": 10,
-      "step": 1,
-      "integrationMethod": "Eulers Method",
-      "units": "seconds"
-    },
-    "properties": {
-      
-    },
-    "image": {
-      "URL": "http://artsites.ucsc.edu/ems/music/tech_background/o_law/Image2.gif"
-    },
-    "taskDescription": [
-      "Model a circuit that has two resistors in series.  Assume that R1 is 500 ohms, R2 is 1500 ohms, and the current through R1 is 0.005 amp downward.   What is the voltage of the battery, measured with the bottom negative and the top positive?  ",
-      "",
-      "",
-      ""
-    ],
-    "lessonsLearned": "",
-    "givenModelNodes": [
-      {
-        "ID": "id1",
-        "inputs": [
-          {
-            "ID": "id5",
-            "label": ""
-          },
-          {
-            "ID": "id6",
-            "label": ""
-          }
+    "task": {
+        "taskName": "two resistors in series",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 1,
+            "integrationMethod": "Eulers Method",
+            "units": "seconds"
+        },
+        "properties": {},
+        "image": {
+            "URL": "http://artsites.ucsc.edu/ems/music/tech_background/o_law/Image2.gif"
+        },
+        "taskDescription": [
+            "Model a circuit that has two resistors in series.  Assume that R1 is 500 ohms, R2 is 1500 ohms, and the current through R1 is 0.005 amp downward.   What is the voltage of the battery, measured with the bottom negative and the top positive?  ",
+            "",
+            "",
+            ""
         ],
-        "position": {
-          "x": 410,
-          "y": 85
-        },
-        "attemptCount": {
-          "description": 0,
-          "type": 0,
-          "initial": 0,
-          "units": 0,
-          "equation": 0,
-          "assistanceScore": 0
-        },
-        "status": {
-          
-        },
-        "name": "V of battery",
-        "genus": "required",
-        "description": "Voltage across battery",
-        "equation": "id5+id6",
-        "type": "function",
-        "parentNode": true,
-        "initial": "",
-        "units": "volts"
-      },
-      {
-        "ID": "id2",
-        "inputs": [
-          
+        "lessonsLearned": "",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id5",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id6",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 410,
+                    "y": 85
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "V of battery",
+                "genus": "required",
+                "description": "Voltage across battery",
+                "equation": "id5+id6",
+                "type": "function",
+                "parentNode": true,
+                "initial": "",
+                "units": "volts"
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 803.33093261719,
+                    "y": 45.330951690674
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "R of R1",
+                "genus": "required",
+                "description": "Resistance of resistor R1",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 500,
+                "units": "ohms"
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 669.33093261719,
+                    "y": 257.33093261719
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "R of R2",
+                "genus": "required",
+                "description": "Resistance of resistor R2",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 1500,
+                "units": "ohms"
+            },
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id7",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 615,
+                    "y": 181
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "I thru R2",
+                "description": "Current through resistor R2 downward",
+                "genus": "required",
+                "type": "function",
+                "units": "amps",
+                "equation": "id7"
+            },
+            {
+                "ID": "id5",
+                "inputs": [
+                    {
+                        "ID": "id7",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id2",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 558,
+                    "y": 72
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "V across R1",
+                "genus": "required",
+                "description": "Voltage across resistor R1 from top to bottom",
+                "type": "function",
+                "units": "volts",
+                "equation": "id7*id2"
+            },
+            {
+                "ID": "id6",
+                "inputs": [
+                    {
+                        "ID": "id4",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id3",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 498,
+                    "y": 231
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "V across R2",
+                "description": "Voltage across resistor R2 from top to bottom",
+                "type": "function",
+                "units": "volts",
+                "equation": "id4*id3",
+                "genus": "required"
+            },
+            {
+                "ID": "id7",
+                "inputs": [],
+                "position": {
+                    "x": 717.33093261719,
+                    "y": 127.33095550537
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "I thru R1",
+                "genus": "required",
+                "description": "Current through resistor R1 downward",
+                "type": "parameter",
+                "units": "amps",
+                "equation": "",
+                "parentNode": false,
+                "initial": 0.005
+            }
         ],
-        "position": {
-          "x": 803.33093261719,
-          "y": 45.330951690674
-        },
-        "attemptCount": {
-          "description": 0,
-          "type": 0,
-          "initial": 0,
-          "units": 0,
-          "equation": 0,
-          "assistanceScore": 0
-        },
-        "status": {
-          
-        },
-        "name": "R of R1",
-        "genus": "required",
-        "description": "Resistance of resistor R1",
-        "equation": "",
-        "type": "parameter",
-        "parentNode": false,
-        "initial": 500,
-        "units": "ohms"
-      },
-      {
-        "ID": "id3",
-        "inputs": [
-          
-        ],
-        "position": {
-          "x": 669.33093261719,
-          "y": 257.33093261719
-        },
-        "attemptCount": {
-          "description": 0,
-          "type": 0,
-          "initial": 0,
-          "units": 0,
-          "equation": 0,
-          "assistanceScore": 0
-        },
-        "status": {
-          
-        },
-        "name": "R of R2",
-        "genus": "required",
-        "description": "Resistance of resistor R2",
-        "equation": "",
-        "type": "parameter",
-        "parentNode": false,
-        "initial": 1500,
-        "units": "ohms"
-      },
-      {
-        "ID": "id4",
-        "inputs": [
-          {
-            "ID": "id7",
-            "label": ""
-          }
-        ],
-        "position": {
-          "x": 615,
-          "y": 181
-        },
-        "attemptCount": {
-          "description": 0,
-          "type": 0,
-          "initial": 0,
-          "units": 0,
-          "equation": 0,
-          "assistanceScore": 0
-        },
-        "status": {
-          
-        },
-        "name": "I thru R2",
-        "description": "Current through resistor R2 downward",
-        "genus": "required",
-        "type": "function",
-        "units": "amps",
-        "equation": "id7"
-      },
-      {
-        "ID": "id5",
-        "inputs": [
-          {
-            "ID": "id7",
-            "label": ""
-          },
-          {
-            "ID": "id2",
-            "label": ""
-          }
-        ],
-        "position": {
-          "x": 558,
-          "y": 72
-        },
-        "attemptCount": {
-          "description": 0,
-          "type": 0,
-          "initial": 0,
-          "units": 0,
-          "equation": 0,
-          "assistanceScore": 0
-        },
-        "status": {
-          
-        },
-        "name": "V across R1",
-        "genus": "required",
-        "description": "Voltage across resistor R1 from top to bottom",
-        "type": "function",
-        "units": "volts",
-        "equation": "id7*id2"
-      },
-      {
-        "ID": "id6",
-        "inputs": [
-          {
-            "ID": "id4",
-            "label": ""
-          },
-          {
-            "ID": "id3",
-            "label": ""
-          }
-        ],
-        "position": {
-          "x": 498,
-          "y": 231
-        },
-        "attemptCount": {
-          "description": 0,
-          "type": 0,
-          "initial": 0,
-          "units": 0,
-          "equation": 0,
-          "assistanceScore": 0
-        },
-        "status": {
-          
-        },
-        "name": "V across R2",
-        "description": "Voltage across resistor R2 from top to bottom",
-        "type": "function",
-        "units": "volts",
-        "equation": "id4*id3",
-        "genus": "required"
-      },
-      {
-        "ID": "id7",
-        "inputs": [
-          
-        ],
-        "position": {
-          "x": 717.33093261719,
-          "y": 127.33095550537
-        },
-        "attemptCount": {
-          "description": 0,
-          "type": 0,
-          "initial": 0,
-          "units": 0,
-          "equation": 0,
-          "assistanceScore": 0
-        },
-        "status": {
-          
-        },
-        "name": "I thru R1",
-        "genus": "required",
-        "description": "Current through resistor R1 downward",
-        "type": "parameter",
-        "units": "amps",
-        "equation": "",
-        "parentNode": false,
-        "initial": 0.005
-      }
-    ],
-    "studentModelNodes": [
-      
-    ],
-    "schemas": [
-      
-    ]
-  }
+        "studentModelNodes": [],
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "kirchoff_voltage_law",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id5, id1, id6",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema2",
+                "schemaClass": "ohms_law_voltage",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id4, id3, id6",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema3",
+                "schemaClass": "ohms_law_current",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id5, id2, id7",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema4",
+                "schemaClass": "kirchoff_current_law",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id4, id7",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            }
+        ]
+    }
 }

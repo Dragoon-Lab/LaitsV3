@@ -1,217 +1,230 @@
 {
-  "task": {
-    "taskName": "full wave rectifier",
-    "time": {
-      "start": 0,
-      "end": 0.02,
-      "step": 0.000167,
-      "integrationMethod": "Eulers Method",
-      "units": "seconds"
-    },
-    "properties": {
-      
-    },
-    "image": {
-      "URL": "http://upload.wikimedia.org/wikipedia/commons/1/13/4_diodes_bridge_rectifier.jpg"
-    },
-    "taskDescription": [
-      "Model a full wave rectifier being driving by an ac voltage generator that supplies 120 volts peak-to-peak, centered on zero, with 60 cycles per second. Graph the output voltage",
-      "",
-      ""
-    ],
-    "lessonsLearned": "",
-    "givenModelNodes": [
-      {
-        "ID": "id1",
-        "inputs": [
-          
+    "task": {
+        "taskName": "full wave rectifier",
+        "time": {
+            "start": 0,
+            "end": 0.02,
+            "step": 0.000167,
+            "integrationMethod": "Eulers Method",
+            "units": "seconds"
+        },
+        "properties": {},
+        "image": {
+            "URL": "http://upload.wikimedia.org/wikipedia/commons/1/13/4_diodes_bridge_rectifier.jpg"
+        },
+        "taskDescription": [
+            "Model a full wave rectifier being driving by an ac voltage generator that supplies 120 volts peak-to-peak, centered on zero, with 60 cycles per second. Graph the output voltage",
+            "",
+            ""
         ],
-        "position": {
-          "x": 345.43539428711,
-          "y": 44.426872253418
-        },
-        "attemptCount": {
-          "description": 0,
-          "type": 0,
-          "initial": 0,
-          "units": 0,
-          "equation": 0,
-          "assistanceScore": 0
-        },
-        "status": {
-          
-        },
-        "name": "Voltage peak to peak",
-        "genus": "required",
-        "description": "The voltage of the AC supply, peak to peak",
-        "equation": "",
-        "type": "parameter",
-        "parentNode": false,
-        "initial": 120,
-        "units": "volts"
-      },
-      {
-        "ID": "id2",
-        "inputs": [
-          
+        "lessonsLearned": "",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [],
+                "position": {
+                    "x": 345.43539428711,
+                    "y": 44.426872253418
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Voltage peak to peak",
+                "genus": "required",
+                "description": "The voltage of the AC supply, peak to peak",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 120,
+                "units": "volts"
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 401.44390869141,
+                    "y": 199.42687988281
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Frequency",
+                "genus": "required",
+                "description": "Number of cycles per second",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 60,
+                "units": "cps"
+            },
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    },
+                    {
+                        "ID": "id2"
+                    }
+                ],
+                "position": {
+                    "x": 495.99429321289,
+                    "y": 98.991470336914
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "equation": {
+                        "disabled": false
+                    }
+                },
+                "name": "AC voltage",
+                "genus": "required",
+                "description": "AC voltage supply",
+                "type": "function",
+                "units": "volts",
+                "equation": "(id1*0.5)*sinewave(id2,0)"
+            },
+            {
+                "ID": "id5",
+                "inputs": [
+                    {
+                        "ID": "id3"
+                    }
+                ],
+                "position": {
+                    "x": 608.99145507812,
+                    "y": 61.988636016846
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Positive peaks",
+                "genus": "required",
+                "description": "Positive peaks from the AC waveform",
+                "type": "function",
+                "units": "volts",
+                "equation": "max(0,id3)"
+            },
+            {
+                "ID": "id6",
+                "inputs": [
+                    {
+                        "ID": "id3"
+                    }
+                ],
+                "position": {
+                    "x": 565.99432373047,
+                    "y": 226.98863220215
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Negative peaks",
+                "genus": "required",
+                "description": "Negative peaks from the AC waveform",
+                "type": "function",
+                "units": "volts",
+                "equation": "min(0,id3)"
+            },
+            {
+                "ID": "id7",
+                "inputs": [
+                    {
+                        "ID": "id5",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id6",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 705.99426269531,
+                    "y": 170.98010253906
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Output voltage",
+                "genus": "required",
+                "description": "Output voltage, positive only",
+                "type": "function",
+                "units": "volts",
+                "equation": "id5-id6",
+                "parentNode": true
+            }
         ],
-        "position": {
-          "x": 401.44390869141,
-          "y": 199.42687988281
-        },
-        "attemptCount": {
-          "description": 0,
-          "type": 0,
-          "initial": 0,
-          "units": 0,
-          "equation": 0,
-          "assistanceScore": 0
-        },
-        "status": {
-          
-        },
-        "name": "Frequency",
-        "genus": "required",
-        "description": "Number of cycles per second",
-        "equation": "",
-        "type": "parameter",
-        "parentNode": false,
-        "initial": 60,
-        "units": "cps"
-      },
-      {
-        "ID": "id3",
-        "inputs": [
-          {
-            "ID": "id1"
-          },
-          {
-            "ID": "id2"
-          }
-        ],
-        "position": {
-          "x": 495.99429321289,
-          "y": 98.991470336914
-        },
-        "attemptCount": {
-          "description": 0,
-          "type": 0,
-          "initial": 0,
-          "units": 0,
-          "equation": 0,
-          "assistanceScore": 0
-        },
-        "status": {
-          "equation": {
-            "disabled": false
-          }
-        },
-        "name": "AC voltage",
-        "genus": "required",
-        "description": "AC voltage supply",
-        "type": "function",
-        "units": "volts",
-        "equation": "(id1*0.5)*sinewave(id2,0)"
-      },
-      {
-        "ID": "id5",
-        "inputs": [
-          {
-            "ID": "id3"
-          }
-        ],
-        "position": {
-          "x": 608.99145507812,
-          "y": 61.988636016846
-        },
-        "attemptCount": {
-          "description": 0,
-          "type": 0,
-          "initial": 0,
-          "units": 0,
-          "equation": 0,
-          "assistanceScore": 0
-        },
-        "status": {
-          
-        },
-        "name": "Positive peaks",
-        "genus": "required",
-        "description": "Positive peaks from the AC waveform",
-        "type": "function",
-        "units": "volts",
-        "equation": "max(0,id3)"
-      },
-      {
-        "ID": "id6",
-        "inputs": [
-          {
-            "ID": "id3"
-          }
-        ],
-        "position": {
-          "x": 565.99432373047,
-          "y": 226.98863220215
-        },
-        "attemptCount": {
-          "description": 0,
-          "type": 0,
-          "initial": 0,
-          "units": 0,
-          "equation": 0,
-          "assistanceScore": 0
-        },
-        "status": {
-          
-        },
-        "name": "Negative peaks",
-        "genus": "required",
-        "description": "Negative peaks from the AC waveform",
-        "type": "function",
-        "units": "volts",
-        "equation": "min(0,id3)"
-      },
-      {
-        "ID": "id7",
-        "inputs": [
-          {
-            "ID": "id5",
-            "label": ""
-          },
-          {
-            "ID": "id6",
-            "label": "-"
-          }
-        ],
-        "position": {
-          "x": 705.99426269531,
-          "y": 170.98010253906
-        },
-        "attemptCount": {
-          "description": 0,
-          "type": 0,
-          "initial": 0,
-          "units": 0,
-          "equation": 0,
-          "assistanceScore": 0
-        },
-        "status": {
-          
-        },
-        "name": "Output voltage",
-        "genus": "required",
-        "description": "Output voltage, positive only",
-        "type": "function",
-        "units": "volts",
-        "equation": "id5-id6",
-        "parentNode": true
-      }
-    ],
-    "studentModelNodes": [
-      
-    ],
-    "schemas": [
-      
-    ]
-  }
+        "studentModelNodes": [],
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "alternating_voltage_generator",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id3, id2",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema2",
+                "schemaClass": "full_wave_rectifier",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id3, id5, id6, id7",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            }
+        ]
+    }
 }
