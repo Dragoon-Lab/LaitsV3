@@ -73,7 +73,8 @@ define([
 			this._startTime = (new Date()).getTime();
 			this.path = path || "";
 			this.doLogging = params.l=="false" ? false : true;
-			
+			this.startTime = new Date();
+
 			// Create a session
 			this.log("start-session", params);
 			
@@ -208,6 +209,11 @@ define([
 				break;
 			}
 			this.log('client-message', opts);
+		},
+
+		calculateDuration: function(){
+			// Summary:	 Returns the session duration in milliseconds
+			return new Date() - this.startTime;
 		}
 	});
 });

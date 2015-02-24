@@ -48,12 +48,11 @@ define([
 	//			
 
 	return declare(null, {
-		_model: null, 
-		_assessment: null,
 
-		constructor: function(givenModel, assesment){
-			_model = givenModel;
-			_assessment = assesment;
+		constructor: function(givenModel, assesment, session){
+			this._model = givenModel;
+			this._assessment = assesment;
+			this._session = session;
 		},
 
 		connect: function() {
@@ -89,8 +88,8 @@ define([
 			//send statement to learning record store.
 			var baseURL = 'https://s3-us-west-1.amazonaws.com/ictpal3/'
 			var statement = {};
-			var assesmentScore = _assessment.getAssessmentScore("dummy");
-			var successFactor = _assessment.getSuccessFactor();
+			var assesmentScore = this._assessment.getAssessmentScore("dummy");
+			var successFactor = this._assessment.getSuccessFactor();
 			statement.actor = {
 					        "objectType": "Agent",
 					        "name": "test user",
@@ -103,18 +102,18 @@ define([
 					        }
 				    	};
 
-			var taskName =  _model.getTaskName().split(" ");
+			var taskName =  this._model.getTaskName().split(" ");
 			var resourceName = taskName.join("%20");
 			statement['object'] = {
 							"objectType": "Activity",
 							"id" : baseURL + resourceName + ".html",
 					        "definition": {
-					            "name": { "en-us": _model.getTaskName() }
+					            "name": { "en-us": this._model.getTaskName() }
 					        }
 						  };
 
 			//Create a new Statement for every schema associated with the problem 
-			array.forEach(_model.given.getSchemas(), lang.hitch(this, function(schema){ 
+			array.forEach(this._model.given.getSchemas(), lang.hitch(this, function(schema){ 
 				statement.context = {
 							"contextActivities": {
 				            "parent": [{
@@ -138,9 +137,9 @@ define([
 				        }};
 				
 				statement.result =  {
-			        "completion": true,
-			        "success": true,
-			        "duration": "PT0S",
+			        "completion": this._model.matchesGivenSolution(),
+			        "success": this._model.student.matchesGivenSolutionAndCorrect(),
+			        "duration": this.isoDuration(this._session.calculateDuration()),
 			        "score": {
 			            "scaled": assesmentScore[schema.schemaClass]
 			        },
@@ -154,6 +153,10 @@ define([
 		    	//Send statement to LRS
 		    	this.tincan.sendStatement(statement);
 			}));
-		}
+		},
+		isoDuration: function(milliseconds) {
+   			var d = new Date(milliseconds);
+   			return 'P' + 'T' + d.getUTCHours() + 'H' + d.getUTCMinutes() + 'M' + d.getUTCSeconds() +'S';
+		}		
 	});
 });
