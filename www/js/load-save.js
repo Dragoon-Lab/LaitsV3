@@ -128,7 +128,7 @@ define([
 			this.saveProblem(model,sessionId); //reuse saveProblem with new sessionId of renamed problem
             var tmp = document.URL.replace("p="+this.params.p,"p="+newParams.p);
             var url =tmp.replace("g="+this.params.g,"g="+newParams.g);
-            window.open(url,"newwindow");
+            window.open(url,"_self");
 		},
 		saveProblem: function(model,newSessionID){
 			// Summary: saves the string held in this.saveData in the database.
