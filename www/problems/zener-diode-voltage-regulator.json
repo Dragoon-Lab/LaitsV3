@@ -3,8 +3,8 @@
         "taskName": "zener diode voltage regulator",
         "time": {
             "start": 0,
-            "end": 0.1,
-            "step": 0.005,
+            "end": 120,
+            "step": 0.1,
             "integrationMethod": "Eulers Method",
             "units": "seconds"
         },
@@ -13,7 +13,8 @@
             "URL": "http://i.imgur.com/s4nxTgj.png"
         },
         "taskDescription": [
-            "Create a model for the zener diode voltage regulator shown here.  Assume a 13-volt diode and a 180 ohm resistor.  Assume the diode speed is 2000 ohm/volt/second.  Graph the voltage across the zener.",
+            "Create a model for the zener diode voltage regulator shown here.  The power supply is 20 volts with a 2 volt peak-to-peak sine wave \"wiggle\" whose frequency is 0.02 cps.  The zener diode should remove most of this wiggle.  Assume a 13-volt diode and a 180 ohm resistor.  Assume the diode speed is 1000 ohm/volt/second.  Graph the voltage across the zener.",
+            "",
             ""
         ],
         "lessonsLearned": "",
@@ -101,7 +102,7 @@
                 "equation": "",
                 "type": "parameter",
                 "parentNode": false,
-                "initial": 2000,
+                "initial": 1000,
                 "units": "ohms/volt"
             },
             {
@@ -228,7 +229,11 @@
             },
             {
                 "ID": "id8",
-                "inputs": [],
+                "inputs": [
+                    {
+                        "ID": "id11"
+                    }
+                ],
                 "position": {
                     "x": 731.9885864257812,
                     "y": 372.9829406738281
@@ -247,7 +252,7 @@
                 "genus": "required",
                 "type": "function",
                 "units": "volts",
-                "equation": "20"
+                "equation": "20+sinewave(id11,0)"
             },
             {
                 "ID": "id9",
@@ -305,6 +310,30 @@
                 "parentNode": false,
                 "initial": 180,
                 "units": "ohms"
+            },
+            {
+                "ID": "id11",
+                "inputs": [],
+                "position": {
+                    "x": 867.3309326171875,
+                    "y": 396.3309631347656
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "wiggle frequency",
+                "description": "Frequency of wiggle in power supply",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.02,
+                "units": "cps"
             }
         ],
         "studentModelNodes": [],
@@ -358,5 +387,5 @@
                 }
             }
         ]
-    }       
+    }
 }

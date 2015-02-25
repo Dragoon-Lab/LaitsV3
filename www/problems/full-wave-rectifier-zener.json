@@ -3,8 +3,8 @@
         "taskName": "full wave rectifier with zener",
         "time": {
             "start": 0,
-            "end": 0.02,
-            "step": 0.0003,
+            "end": 80,
+            "step": 0.1,
             "integrationMethod": "Eulers Method",
             "units": "seconds"
         },
@@ -13,7 +13,8 @@
             "URL": "http://www.ece.umd.edu/class/enee206.S2004/lectures/figs/figs13/fig13-8.jpg"
         },
         "taskDescription": [
-            "Model a full wave rectifier with a zener diode. Assume a 13 volt zener, a 1000 ohm load, 120 volts peak to peak, a 0.1 farad smoothing capacitor, and let R be 1000 ohms.  Graph the output voltage.",
+            "Model the full wave rectifier with a zener diode shown above. Assume the AC power is 40 volts peak to peak at 0.02 cps.  Assume a 13 volt zener diode, a 1000 ohm load, a 0.1 farad smoothing capacitor, and let R be 180 ohms.  Assume the zener speed is 2500 ohm/volt/second. Graph the output voltage, that is, the voltage across the zener diode.",
+            "",
             "",
             ""
         ],
@@ -41,15 +42,15 @@
                 "equation": "",
                 "type": "parameter",
                 "parentNode": false,
-                "initial": 120,
+                "initial": 40,
                 "units": "volts"
             },
             {
                 "ID": "id2",
                 "inputs": [],
                 "position": {
-                    "x": 397.3309631347656,
-                    "y": 268.3309326171875
+                    "x": 404.3309631347656,
+                    "y": 255.33094787597656
                 },
                 "attemptCount": {
                     "description": 0,
@@ -66,7 +67,7 @@
                 "equation": "",
                 "type": "parameter",
                 "parentNode": false,
-                "initial": 60,
+                "initial": 0.02,
                 "units": "cps"
             },
             {
@@ -134,8 +135,8 @@
                     }
                 ],
                 "position": {
-                    "x": 532.9971313476562,
-                    "y": 219.9857940673828
+                    "x": 546,
+                    "y": 256
                 },
                 "attemptCount": {
                     "description": 0,
@@ -166,8 +167,8 @@
                     }
                 ],
                 "position": {
-                    "x": 635.9943237304688,
-                    "y": 137.9829559326172
+                    "x": 623,
+                    "y": 183
                 },
                 "attemptCount": {
                     "description": 0,
@@ -198,8 +199,8 @@
                     }
                 ],
                 "position": {
-                    "x": 787.9971313476562,
-                    "y": 62.98295211791992
+                    "x": 736,
+                    "y": 224
                 },
                 "attemptCount": {
                     "description": 0,
@@ -229,8 +230,8 @@
                     }
                 ],
                 "position": {
-                    "x": 681.9885864257812,
-                    "y": 35.9801139831543
+                    "x": 685,
+                    "y": 61
                 },
                 "attemptCount": {
                     "description": 0,
@@ -261,8 +262,8 @@
                     }
                 ],
                 "position": {
-                    "x": 690.9943237304688,
-                    "y": 244.9857940673828
+                    "x": 641,
+                    "y": 373
                 },
                 "attemptCount": {
                     "description": 0,
@@ -284,17 +285,17 @@
                 "ID": "id10",
                 "inputs": [
                     {
-                        "ID": "id19",
+                        "ID": "id7",
                         "label": ""
                     },
                     {
-                        "ID": "id22",
-                        "label": ""
+                        "ID": "id24",
+                        "label": "/"
                     }
                 ],
                 "position": {
-                    "x": 761.9885864257812,
-                    "y": 397.9829406738281
+                    "x": 755,
+                    "y": 382
                 },
                 "attemptCount": {
                     "description": 0,
@@ -304,20 +305,24 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "equation": {
+                        "disabled": false
+                    }
+                },
                 "name": "Output current",
                 "description": "Output current",
                 "genus": "required",
                 "type": "function",
                 "units": "amps",
-                "equation": "id19+id22"
+                "equation": "id7/id24"
             },
             {
                 "ID": "id11",
                 "inputs": [],
                 "position": {
-                    "x": 591.4439086914062,
-                    "y": 382.42401123046875
+                    "x": 479.3309631347656,
+                    "y": 352.3309631347656
                 },
                 "attemptCount": {
                     "description": 0,
@@ -334,15 +339,15 @@
                 "equation": "",
                 "type": "parameter",
                 "parentNode": false,
-                "initial": 0.01,
+                "initial": 0.1,
                 "units": "farads"
             },
             {
                 "ID": "id12",
                 "inputs": [],
                 "position": {
-                    "x": 893.4325561523438,
-                    "y": 78.43254852294922
+                    "x": 873.3309326171875,
+                    "y": 153.33096313476562
                 },
                 "attemptCount": {
                     "description": 0,
@@ -359,7 +364,7 @@
                 "equation": "",
                 "type": "parameter",
                 "parentNode": false,
-                "initial": 1000,
+                "initial": 180,
                 "units": "ohms"
             },
             {
@@ -371,8 +376,8 @@
                     }
                 ],
                 "position": {
-                    "x": 963.991455078125,
-                    "y": 151.98863220214844
+                    "x": 979,
+                    "y": 205
                 },
                 "attemptCount": {
                     "description": 0,
@@ -404,8 +409,8 @@
                     }
                 ],
                 "position": {
-                    "x": 1093,
-                    "y": 218
+                    "x": 1096,
+                    "y": 207
                 },
                 "attemptCount": {
                     "description": 0,
@@ -427,8 +432,8 @@
                 "ID": "id15",
                 "inputs": [],
                 "position": {
-                    "x": 1043.3309326171875,
-                    "y": 66.33094787597656
+                    "x": 1170,
+                    "y": 198.33094787597656
                 },
                 "attemptCount": {
                     "description": 0,
@@ -445,24 +450,24 @@
                 "equation": "",
                 "type": "parameter",
                 "parentNode": false,
-                "initial": 10000,
+                "initial": 2500,
                 "units": "ohms/volt"
             },
             {
                 "ID": "id16",
                 "inputs": [
                     {
-                        "ID": "id18",
+                        "ID": "id17",
                         "label": ""
                     },
                     {
-                        "ID": "id17",
+                        "ID": "id18",
                         "label": "-"
                     }
                 ],
                 "position": {
-                    "x": 974,
-                    "y": 339
+                    "x": 1093,
+                    "y": 368
                 },
                 "attemptCount": {
                     "description": 0,
@@ -477,14 +482,14 @@
                 "description": "Difference between zener voltage and its set point",
                 "genus": "required",
                 "type": "function",
-                "equation": "id18-id17"
+                "equation": "id17-id18"
             },
             {
                 "ID": "id17",
                 "inputs": [],
                 "position": {
-                    "x": 1074.3309326171875,
-                    "y": 361.3309631347656
+                    "x": 1170,
+                    "y": 348.3309631347656
                 },
                 "attemptCount": {
                     "description": 0,
@@ -508,49 +513,17 @@
                 "ID": "id18",
                 "inputs": [
                     {
-                        "ID": "id19",
-                        "label": ""
-                    },
-                    {
-                        "ID": "id13",
-                        "label": ""
-                    }
-                ],
-                "position": {
-                    "x": 870.9942626953125,
-                    "y": 397.9829406738281
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": {},
-                "name": "zener voltage drop",
-                "genus": "required",
-                "description": "Voltage across zener",
-                "type": "function",
-                "units": "volts",
-                "equation": "id19*id13"
-            },
-            {
-                "ID": "id19",
-                "inputs": [
-                    {
                         "ID": "id7",
                         "label": ""
                     },
                     {
-                        "ID": "id20",
-                        "label": "/"
+                        "ID": "id25",
+                        "label": "-"
                     }
                 ],
                 "position": {
-                    "x": 857.9971313476562,
-                    "y": 267.9829406738281
+                    "x": 989,
+                    "y": 371
                 },
                 "attemptCount": {
                     "description": 0,
@@ -560,52 +533,25 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {},
-                "name": "zener current",
-                "description": "Current though zener",
-                "type": "function",
-                "units": "amps",
-                "equation": "id7/id20",
-                "genus": "required"
-            },
-            {
-                "ID": "id20",
-                "inputs": [
-                    {
-                        "ID": "id12",
-                        "label": ""
-                    },
-                    {
-                        "ID": "id13",
-                        "label": ""
+                "status": {
+                    "equation": {
+                        "disabled": false
                     }
-                ],
-                "position": {
-                    "x": 770.9942626953125,
-                    "y": 170.9801025390625
                 },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": {},
-                "name": "R of Zener resistor loop",
+                "name": "V across Z",
                 "genus": "required",
-                "description": "Resistance of zener and R",
+                "description": "Voltage across zener",
                 "type": "function",
-                "units": "ohms",
-                "equation": "id12+id13"
+                "units": "volts",
+                "equation": "id7-id25",
+                "parentNode": true
             },
             {
                 "ID": "id21",
                 "inputs": [],
                 "position": {
-                    "x": 336.44390869140625,
-                    "y": 349.4268798828125
+                    "x": 1155.3309326171875,
+                    "y": 52.33095169067383
                 },
                 "attemptCount": {
                     "description": 0,
@@ -626,20 +572,18 @@
                 "units": "ohms"
             },
             {
-                "ID": "id22",
+                "ID": "id23",
                 "inputs": [
                     {
-                        "ID": "id18",
-                        "label": ""
+                        "ID": "id21"
                     },
                     {
-                        "ID": "id21",
-                        "label": "/"
+                        "ID": "id13"
                     }
                 ],
                 "position": {
-                    "x": 487.99713134765625,
-                    "y": 318.991455078125
+                    "x": 1047,
+                    "y": 74
                 },
                 "attemptCount": {
                     "description": 0,
@@ -650,12 +594,75 @@
                     "assistanceScore": 0
                 },
                 "status": {},
-                "name": "I through load",
-                "description": "Current through the load",
-                "genus": "required",
+                "name": "R of Zener and Load",
+                "description": "Equivalent resistance of load resistor & zener",
                 "type": "function",
-                "units": "amps",
-                "equation": "id18/id21"
+                "units": "ohms",
+                "equation": "(id21*id13)/(id21+id13)"
+            },
+            {
+                "ID": "id24",
+                "inputs": [
+                    {
+                        "ID": "id12",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id23",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 803,
+                    "y": 70
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "R of Load and zener and R",
+                "description": "Equivalent resistance of load resistor, zener and resistor R",
+                "type": "function",
+                "units": "ohms",
+                "equation": "id12+id23",
+                "parentNode": false,
+                "initial": ""
+            },
+            {
+                "ID": "id25",
+                "inputs": [
+                    {
+                        "ID": "id10",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id12",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 861,
+                    "y": 370
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "V across R",
+                "description": "Voltage drop across resistor R",
+                "type": "function",
+                "units": "volts",
+                "equation": "id10*id12"
             }
         ],
         "studentModelNodes": [],
