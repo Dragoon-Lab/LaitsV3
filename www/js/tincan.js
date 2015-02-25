@@ -30,6 +30,7 @@ define([
 	'dojo/dom-style',
 	'dojo/keys', 
 	'dojo/on',
+	'dojo/io-query',
 	'dojo/ready',
 	'dijit/popup', 
 	'dijit/registry', 
@@ -38,8 +39,8 @@ define([
 	'./graph-objects',
 	'./typechecker',
 	'./forum',
-	'dojo/io-query'
-], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, popup, registry, TooltipDialog, expression, graphObjects, typechecker, forum, ioquery){
+	'./schemas-student'
+], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ioquery, ready, popup, registry, TooltipDialog, expression, graphObjects, typechecker, forum, schemasStudent){
 	// Summary: 
 	//			Module to connect to LRS and send statement data
 	// Description:
@@ -47,10 +48,11 @@ define([
 	//			
 
 	return declare(null, {
-		_model: null, 
 
-		constructor: function(givenModel){
-			_model = givenModel;
+		constructor: function(givenModel, assesment, session){
+			this._model = givenModel;
+			this._assessment = assesment;
+			this._session = session;
 		},
 
 		connect: function() {
@@ -86,7 +88,8 @@ define([
 			//send statement to learning record store.
 			var baseURL = 'https://s3-us-west-1.amazonaws.com/ictpal3/'
 			var statement = {};
-
+			var assesmentScore = this._assessment.getAssessmentScore("dummy");
+			var successFactor = this._assessment.getSuccessFactor();
 			statement.actor = {
 					        "objectType": "Agent",
 					        "name": "test user",
@@ -99,18 +102,18 @@ define([
 					        }
 				    	};
 
-			var taskName =  _model.getTaskName().split(" ");
+			var taskName =  this._model.getTaskName().split(" ");
 			var resourceName = taskName.join("%20");
 			statement['object'] = {
 							"objectType": "Activity",
 							"id" : baseURL + resourceName + ".html",
 					        "definition": {
-					            "name": { "en-us": _model.getTaskName() }
+					            "name": { "en-us": this._model.getTaskName() }
 					        }
 						  };
 
 			//Create a new Statement for every schema associated with the problem 
-			array.forEach(_model.given.getSchemas(), lang.hitch(this, function(schema){ 
+			array.forEach(this._model.given.getSchemas(), lang.hitch(this, function(schema){ 
 				statement.context = {
 							"contextActivities": {
 				            "parent": [{
@@ -132,22 +135,28 @@ define([
 				                }
 				            }]
 				        }};
-
+				
 				statement.result =  {
-			        "completion": true,
-			        "success": true,
-			        "duration": "PT0S",
-			        "successFactor" : 1.0,
+			        "completion": this._model.matchesGivenSolution(),
+			        "success": this._model.student.matchesGivenSolutionAndCorrect(),
+			        "duration": this.isoDuration(this._session.calculateDuration()),
 			        "score": {
-			            "scaled": 1.0
+			            "scaled": assesmentScore[schema.schemaClass]
+			        },
+			        "extensions":{
+			        	 "successFactor" : successFactor
 			        }
 		    	};
 
-		    	var stmt = this.tincan.prepareStatement(statement);
-		    	console.log("Sending Statement: ", stmt);
+
+		    	console.log("Sending Statement: ", statement);
 		    	//Send statement to LRS
-		    	this.tincan.sendStatement(stmt);
+		    	this.tincan.sendStatement(statement);
 			}));
-		}
+		},
+		isoDuration: function(milliseconds) {
+   			var d = new Date(milliseconds);
+   			return 'P' + 'T' + d.getUTCHours() + 'H' + d.getUTCMinutes() + 'M' + d.getUTCSeconds() +'S';
+		}		
 	});
 });
