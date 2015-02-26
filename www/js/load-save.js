@@ -119,7 +119,7 @@ define([
 		saveAsProblem : function(model,problemName,groupName){
 			//update params to be passed
 			console.log("+++save as problem called+++");
-			var newParams = dojo.clone(this.params);  //clone the object
+			var newParams = dojo.clone(this.params);  //clone the object			
 			newParams.p = problemName;
 			newParams.g = groupName;
 			//insert new session ID for newly saved as problem
@@ -127,8 +127,12 @@ define([
 			console.log("renaming problem session id :"+sessionId);
 			this.log("rename-problem",newParams,sessionId);
 			this.saveProblem(model,sessionId); //reuse saveProblem with new sessionId of renamed problem
-			var tmp = document.URL.replace("p="+this.params.p,"p="+newParams.p);
-			var url =tmp.replace("g="+this.params.g,"g="+newParams.g);
+			var url = document.URL.replace("p="+this.params.p,"p="+newParams.p);
+			if (this.params.g === undefined) {
+				url = url + "&g=" + newParams.g;
+			} else {
+				url = url.replace("g="+this.params.g,"g="+newParams.g);
+			}
 			window.open(url,"_self");
 		},
 		saveProblem: function(model,newSessionID){
