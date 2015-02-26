@@ -108,7 +108,7 @@
             {
                 "ID": "schema1",
                 "schemaClass": "ohms_law_voltage",
-                "name" : "Ohms law: voltage source",
+                "name": "Ohms law: voltage source",
                 "competence": {
                     "errors": 0,
                     "total": 0,

@@ -341,6 +341,7 @@
             {
                 "ID": "schema1",
                 "schemaClass": "capacitor",
+                "name" : "Capacitor",
                 "competence": {
                     "errors": 0,
                     "total": 0,
@@ -357,6 +358,7 @@
             {
                 "ID": "schema2",
                 "schemaClass": "alternating_voltage_generator",
+                "name" : "Alternating voltage generator",
                 "competence": {
                     "errors": 0,
                     "total": 0,
@@ -373,6 +375,7 @@
             {
                 "ID": "schema3",
                 "schemaClass": "full_wave_rectifier",
+                "name" : "Full wave rectifier",
                 "competence": {
                     "errors": 0,
                     "total": 0,
@@ -389,6 +392,7 @@
             {
                 "ID": "schema4",
                 "schemaClass": "ohms_law_voltage",
+                "name" : "Ohms law: voltage source",
                 "competence": {
                     "errors": 0,
                     "total": 0,
@@ -405,6 +409,7 @@
             {
                 "ID": "schema5",
                 "schemaClass": "smoothing_capacitor_for_full_wave",
+                "name" : "Smoothing capacitor for a full wave rectifier",
                 "competence": {
                     "errors": 0,
                     "total": 0,

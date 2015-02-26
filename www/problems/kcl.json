@@ -136,6 +136,7 @@
             {
                 "ID": "schema1",
                 "schemaClass": "kirchoff_current_law",
+                "name": "Kirchoff's current law",
                 "competence": {
                     "errors": 0,
                     "total": 0,
