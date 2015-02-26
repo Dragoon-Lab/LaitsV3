@@ -116,7 +116,7 @@ define([
 			//create tab for graph and fill it
 			this.dialogContent += "<div id='GraphTab' data-dojo-type='dijit/layout/ContentPane' style='overflow:auto; ' data-dojo-props='title:\"Graph\"'>";
 			array.forEach(this.active.plotVariables, function(id){
-				var show = this.model.active.getType(id) == "accumulator";
+				var show = this.model.active.getType(id) == "accumulator" || this.model.given.getParent(this.model.active.getGivenID(id));
 				var checked = show ? " checked='checked'" : "";
 				this.dialogContent += "<div><input id='sel" + id + "' data-dojo-type='dijit/form/CheckBox' class='show_graphs' thisid='" + id + "'" + checked + "/>" + " Show " + this.model.active.getName(id) + "</div>";
 				var style = show ? "" : " style='display: none;'";
@@ -233,10 +233,12 @@ define([
 						titleOrientation: "away", titleGap: 5
 						});
 
-					// var obj = this.getMinMaxFromArray(this.student.arrayOfNodeValues[j]);
+					var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
 					charts[id].addAxis("y", {
 						vertical: true, // min: obj.min, max: obj.max,
-						title: this.labelString(id)
+						title: this.labelString(id),
+						min: obj.min,
+						max:obj.max
 						});
 
 					if(this.mode != "AUTHOR"){
@@ -363,6 +365,19 @@ define([
 					max = array[i];
 				}
 			}
+			// Check if the maximum and minimum are same and change the min and max values
+			if(min == max){
+				if (min < 0){
+					min = min * 2;
+					max = 0;
+				} else if (min > 0) {
+					min = 0;
+					max = max * 2;
+				} else {
+					min = -1;
+					max = +1;
+				}
+			}
 			return {min: min, max: max};
 		},
 
@@ -372,8 +387,26 @@ define([
 		 */
 		renderDialog: function(calculationObj){
 			var activeSolution = this.findSolution(true, this.active.plotVariables);
+			var givenSolution = this.findSolution(false, this.given.plotVariables);	
 			//update and render the charts
 			array.forEach(this.active.plotVariables, function(id, k){
+				// Calculate Min and Max values to plot on y axis based on given solution and your solution
+				var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
+				var givenObj = this.getMinMaxFromArray(givenSolution.plotValues[k]);				
+				if(givenObj.min < obj.min){
+					obj.min = givenObj.min;
+				}
+				if(givenObj.max > obj.max){
+					obj.max = givenObj.max;
+				}
+				//Redraw y axis based on new min and max values
+				this.chart[id].addAxis("y", {
+						vertical: true,
+						min: obj.min,
+						max: obj.max,
+						title: this.labelString(id)
+						});
+
 				this.chart[id].updateSeries(
 					"Your solution",
 					this.formatSeriesForChart(activeSolution, k),

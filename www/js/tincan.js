@@ -49,16 +49,16 @@ define([
 
 	return declare(null, {
 
-		constructor: function(givenModel, assesment, session){
+		constructor: function(givenModel, assessment, session, topicIndex){
 			this._model = givenModel;
-			this._assessment = assesment;
+			this._assessment = assessment;
 			this._session = session;
+			this._topicIndex = topicIndex;
 		},
 
 		connect: function() {
 			//Connect to the Learning Record Store
-			this.tincan = new TinCan (
-				{
+			this.tincan = new TinCan ({
 			    	recordStores: [
 			            {
 			                endpoint:"http://ec2-54-68-99-213.us-west-2.compute.amazonaws.com/data/xAPI/", 
@@ -67,7 +67,7 @@ define([
 			                allowFail: false
 			            }
 			        ]
-				});
+			});
 		},
 
 
@@ -90,10 +90,20 @@ define([
 			var statement = {};
 			var assesmentScore = this._assessment.getAssessmentScore("dummy");
 			var successFactor = this._assessment.getSuccessFactor();
+
+			var username = this._session.params.u;
+			var email = username;
+
+			var topic = this._topicIndex[this._session.params.p] || "No Topic";
+
+			if (username.indexOf("..") > 0){
+				email = username.split("..")[0];
+			}
+
 			statement.actor = {
 					        "objectType": "Agent",
 					        "name": "test user",
-					        "mbox": "mailto:testuserICT@ict.usc.edu"
+					        "mbox": "mailto:" + email
 				    	};
 			statement.verb = {
 					        "id": baseURL + "Completed.html",
@@ -101,17 +111,16 @@ define([
 					            "en-US": "Completed"
 					        }
 				    	};
-
-			var taskName =  this._model.getTaskName().split(" ");
-			var resourceName = taskName.join("%20");
+			
 			statement['object'] = {
 							"objectType": "Activity",
-							"id" : baseURL + resourceName + ".html",
+							"id" : baseURL + this._session.params.p + ".html",
 					        "definition": {
-					            "name": { "en-us": this._model.getTaskName() }
+					            "name": { "en-US": this._session.params.p }
 					        }
 						  };
-
+			statement.revision = this._session.params.u;
+			
 			//Create a new Statement for every schema associated with the problem 
 			var schemas = this._model.active.getSchemas();
 			array.forEach(schemas, lang.hitch(this, function(schema){ 
@@ -131,12 +140,11 @@ define([
 				                "id": baseURL + schema.schemaClass + ".html",
 				                "definition": {
 				                    "name": {
-				                        "en-US": schema.name
+				                        "en-US": topic
 				                    }
 				                }
 				            }]
-				        }};
-				
+				        }};								
 				statement.result =  {
 			        "completion": this._model.matchesGivenSolution(),
 			        "success": this._model.student.matchesGivenSolutionAndCorrect(),
