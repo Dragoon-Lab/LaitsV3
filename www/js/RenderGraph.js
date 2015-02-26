@@ -233,10 +233,12 @@ define([
 						titleOrientation: "away", titleGap: 5
 						});
 
-					// var obj = this.getMinMaxFromArray(this.student.arrayOfNodeValues[j]);
+					var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
 					charts[id].addAxis("y", {
 						vertical: true, // min: obj.min, max: obj.max,
-						title: this.labelString(id)
+						title: this.labelString(id),
+						min: obj.min,
+						max:obj.max
 						});
 
 					if(this.mode != "AUTHOR"){
@@ -363,6 +365,11 @@ define([
 					max = array[i];
 				}
 			}
+			// Check if the maximum and minimum are same and change the min and max values
+			if(min == max){ 
+				min = min - 1;
+				max = max + 1;
+			}
 			return {min: min, max: max};
 		},
 
@@ -372,8 +379,26 @@ define([
 		 */
 		renderDialog: function(calculationObj){
 			var activeSolution = this.findSolution(true, this.active.plotVariables);
+			var givenSolution = this.findSolution(false, this.given.plotVariables);	
 			//update and render the charts
 			array.forEach(this.active.plotVariables, function(id, k){
+				// Calculate Min and Max values to plot on y axis based on given solution and your solution
+				var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
+				var givenObj = this.getMinMaxFromArray(givenSolution.plotValues[k]);				
+				if(givenObj.min < obj.min){
+					obj.min = givenObj.min;
+				}
+				if(givenObj.max > obj.max){
+					obj.max = givenObj.max;
+				}
+				//Redraw y axis based on new min and max values
+				this.chart[id].addAxis("y", {
+						vertical: true,
+						min: obj.min,
+						max: obj.max,
+						title: this.labelString(id)
+						});
+
 				this.chart[id].updateSeries(
 					"Your solution",
 					this.formatSeriesForChart(activeSolution, k),
