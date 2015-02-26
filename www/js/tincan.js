@@ -49,9 +49,9 @@ define([
 
 	return declare(null, {
 
-		constructor: function(givenModel, assesment, session){
+		constructor: function(givenModel, assessment, session){
 			this._model = givenModel;
-			this._assessment = assesment;
+			this._assessment = assessment;
 			this._session = session;
 		},
 
@@ -90,10 +90,18 @@ define([
 			var statement = {};
 			var assesmentScore = this._assessment.getAssessmentScore("dummy");
 			var successFactor = this._assessment.getSuccessFactor();
+
+			var username = this._session.params.u;
+			var email = username;
+
+			if (username.indexOf("..") > 0){
+				email = username.split("..")[0];
+			}
+
 			statement.actor = {
 					        "objectType": "Agent",
 					        "name": "test user",
-					        "mbox": "mailto:testuserICT@ict.usc.edu"
+					        "mbox": "mailto:" + email
 				    	};
 			statement.verb = {
 					        "id": baseURL + "Completed.html",
@@ -108,7 +116,7 @@ define([
 							"objectType": "Activity",
 							"id" : baseURL + resourceName + ".html",
 					        "definition": {
-					            "name": { "en-us": this._model.getTaskName() }
+					            "name": { "en-us": this._session.params.p }
 					        }
 						  };
 
