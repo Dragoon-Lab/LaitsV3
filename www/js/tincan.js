@@ -116,10 +116,11 @@ define([
 							"objectType": "Activity",
 							"id" : baseURL + this._session.params.p + ".html",
 					        "definition": {
-					            "name": { "en-us": this._session.params.p }
+					            "name": { "en-US": this._session.params.p }
 					        }
 						  };
-
+			statement.revision = this._session.params.u;
+			
 			//Create a new Statement for every schema associated with the problem 
 			var schemas = this._model.active.getSchemas();
 			array.forEach(schemas, lang.hitch(this, function(schema){ 
@@ -143,8 +144,7 @@ define([
 				                    }
 				                }
 				            }]
-				        }};
-				
+				        }};								
 				statement.result =  {
 			        "completion": this._model.matchesGivenSolution(),
 			        "success": this._model.student.matchesGivenSolutionAndCorrect(),
