@@ -144,7 +144,22 @@ define([
 			aspect.after(controllerObject, "colorNodeBorder",
 						 lang.hitch(drawModel, drawModel.colorNodeBorder), 
 						 true);
-
+			//GET problem-topic index for PAL problems
+			palTopicIndex = "";
+			var searchPattern = new RegExp('^pal3', 'i');
+				if(query.m != "AUTHOR" && searchPattern.test(query.s)){
+				var xhrArgs = {
+		            url: "problems/PAL3-problem-topics.json",
+		            handleAs: "json",
+		            load: function(data){
+						palTopicIndex = data;
+		            },
+					error: function(error){
+						console.log("error retrieving file name");
+					}
+		        }
+		        dojo.xhrGet(xhrArgs);
+		    }
 
 			/* add "Create Node" button to menu */
 			menu.add("createNodeButton", function(){
@@ -556,7 +571,7 @@ define([
 				
 				var searchPattern = new RegExp('^pal3', 'i'); 
 				if(query.m != "AUTHOR" && searchPattern.test(query.s)){ // check if session name starts with pal
-					var tc = new tincan(givenModel, controllerObject._assessment,session);
+					var tc = new tincan(givenModel, controllerObject._assessment,session, palTopicIndex);
 					//Connect to learning record store
 					tc.connect();
 					//Send Statements
