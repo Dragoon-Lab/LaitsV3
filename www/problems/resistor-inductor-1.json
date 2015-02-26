@@ -318,6 +318,7 @@
             {
                 "ID": "schema1",
                 "schemaClass": "inductor",
+                "name": "Inductor",
                 "competence": {
                     "errors": 0,
                     "total": 0,
@@ -334,6 +335,7 @@
             {
                 "ID": "schema2",
                 "schemaClass": "kirchoff_voltage_law",
+                "name": "Kirchoff's voltage law",
                 "competence": {
                     "errors": 0,
                     "total": 0,
@@ -350,6 +352,7 @@
             {
                 "ID": "schema3",
                 "schemaClass": "ohms_law_current",
+                "name": "Ohms law: current source",
                 "competence": {
                     "errors": 0,
                     "total": 0,

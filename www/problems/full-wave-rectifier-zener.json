@@ -24,8 +24,8 @@
                 "ID": "id1",
                 "inputs": [],
                 "position": {
-                    "x": 322.438232421875,
-                    "y": 38.432552337646484
+                    "x": 322.43823242188,
+                    "y": 38.432552337646
                 },
                 "attemptCount": {
                     "description": 0,
@@ -49,8 +49,8 @@
                 "ID": "id2",
                 "inputs": [],
                 "position": {
-                    "x": 404.3309631347656,
-                    "y": 255.33094787597656
+                    "x": 404.33096313477,
+                    "y": 255.33094787598
                 },
                 "attemptCount": {
                     "description": 0,
@@ -81,8 +81,8 @@
                     }
                 ],
                 "position": {
-                    "x": 469.9999694824219,
-                    "y": 113.99147033691406
+                    "x": 469.99996948242,
+                    "y": 113.99147033691
                 },
                 "attemptCount": {
                     "description": 0,
@@ -108,8 +108,8 @@
                     }
                 ],
                 "position": {
-                    "x": 568.991455078125,
-                    "y": 34.98579406738281
+                    "x": 568.99145507812,
+                    "y": 34.985794067383
                 },
                 "attemptCount": {
                     "description": 0,
@@ -321,8 +321,8 @@
                 "ID": "id11",
                 "inputs": [],
                 "position": {
-                    "x": 479.3309631347656,
-                    "y": 352.3309631347656
+                    "x": 479.33096313477,
+                    "y": 352.33096313477
                 },
                 "attemptCount": {
                     "description": 0,
@@ -346,8 +346,8 @@
                 "ID": "id12",
                 "inputs": [],
                 "position": {
-                    "x": 873.3309326171875,
-                    "y": 153.33096313476562
+                    "x": 873.33093261719,
+                    "y": 153.33096313477
                 },
                 "attemptCount": {
                     "description": 0,
@@ -433,7 +433,7 @@
                 "inputs": [],
                 "position": {
                     "x": 1170,
-                    "y": 198.33094787597656
+                    "y": 198.33094787598
                 },
                 "attemptCount": {
                     "description": 0,
@@ -489,7 +489,7 @@
                 "inputs": [],
                 "position": {
                     "x": 1170,
-                    "y": 348.3309631347656
+                    "y": 348.33096313477
                 },
                 "attemptCount": {
                     "description": 0,
@@ -550,8 +550,8 @@
                 "ID": "id21",
                 "inputs": [],
                 "position": {
-                    "x": 1155.3309326171875,
-                    "y": 52.33095169067383
+                    "x": 1155.3309326172,
+                    "y": 52.330951690674
                 },
                 "attemptCount": {
                     "description": 0,
@@ -670,6 +670,7 @@
             {
                 "ID": "schema1",
                 "schemaClass": "alternating_voltage_generator",
+                "name": "Alternating voltage generator",
                 "competence": {
                     "errors": 0,
                     "total": 0,
@@ -686,6 +687,7 @@
             {
                 "ID": "schema2",
                 "schemaClass": "full_wave_rectifier",
+                "name": "Full wave rectifier",
                 "competence": {
                     "errors": 0,
                     "total": 0,
@@ -702,6 +704,7 @@
             {
                 "ID": "schema3",
                 "schemaClass": "smoothing_capacitor_for_full_wave",
+                "name": "Smoothing capacitor for a full wave rectifier",
                 "competence": {
                     "errors": 0,
                     "total": 0,
@@ -718,6 +721,7 @@
             {
                 "ID": "schema4",
                 "schemaClass": "capacitor",
+                "name": "Capacitor",
                 "competence": {
                     "errors": 0,
                     "total": 0,
@@ -734,6 +738,7 @@
             {
                 "ID": "schema5",
                 "schemaClass": "zener_diode",
+                "name": "Zener diode",
                 "competence": {
                     "errors": 0,
                     "total": 0,
@@ -749,14 +754,15 @@
             },
             {
                 "ID": "schema6",
-                "schemaClass": "kirchoff_current_law",
+                "schemaClass": "ohms_law_voltage",
+                "name": "Ohms law: voltage source",
                 "competence": {
                     "errors": 0,
                     "total": 0,
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id22, id10, id19",
+                "nodes": "id10, id25, id12",
                 "difficulty": {
                     "isolation": 1,
                     "cues": 0,
@@ -765,14 +771,15 @@
             },
             {
                 "ID": "schema7",
-                "schemaClass": "ohms_law_current",
+                "schemaClass": "resistance_series",
+                "name": "Resistance of two resistors in Series",
                 "competence": {
                     "errors": 0,
                     "total": 0,
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id19, id18, id13",
+                "nodes": "id23, id24, id13",
                 "difficulty": {
                     "isolation": 1,
                     "cues": 0,
@@ -781,14 +788,32 @@
             },
             {
                 "ID": "schema8",
-                "schemaClass": "ohms_law_voltage",
+                "schemaClass": "resistance_parallel",
+                "name": "Resistance of two resistors in Parallel",
                 "competence": {
                     "errors": 0,
                     "total": 0,
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id21, id22, id18",
+                "nodes": "id21, id23, id13",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            }
+            {
+                "ID": "schema9",
+                "schemaClass": "kirchoff_voltage_law",
+                "name": "Kirchoff's voltage law",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id25, id7, id18",
                 "difficulty": {
                     "isolation": 1,
                     "cues": 0,

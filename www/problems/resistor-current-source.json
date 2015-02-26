@@ -106,6 +106,7 @@
             {
                 "ID": "schema1",
                 "schemaClass": "ohms_law_current",
+                "name": "Ohms law: current source",
                 "competence": {
                     "errors": 0,
                     "total": 0,

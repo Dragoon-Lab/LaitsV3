@@ -191,6 +191,7 @@
             {
                 "ID": "schema1",
                 "schemaClass": "alternating_voltage_generator",
+                "name" : "Alternating voltage generator",
                 "competence": {
                     "errors": 0,
                     "total": 0,
