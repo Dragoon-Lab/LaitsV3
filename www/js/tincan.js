@@ -109,12 +109,10 @@ define([
 					            "en-US": "Completed"
 					        }
 				    	};
-
-			var taskName =  this._model.getTaskName().split(" ");
-			var resourceName = taskName.join("%20");
+			
 			statement['object'] = {
 							"objectType": "Activity",
-							"id" : baseURL + resourceName + ".html",
+							"id" : baseURL + this._session.params.p + ".html",
 					        "definition": {
 					            "name": { "en-us": this._session.params.p }
 					        }
