@@ -98,9 +98,9 @@ define([
 			var obj = {};
 			array.forEach(this._schemas, function(schema){
 				if(schema.competence.values[type]){
-					obj[schema.schemaClass] = schema.competence.values[type];
+					obj[schema.name] = schema.competence.values[type];
 				} else {
-					obj[schema.schemaClass] = 0;
+					obj[schema.name] = 0;
 				}
 			}, this);
 

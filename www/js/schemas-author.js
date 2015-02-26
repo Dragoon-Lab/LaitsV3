@@ -76,7 +76,7 @@ define([
 				//contentPane += '<div data-dojo-type="dijit/layout/ContentPane" title = "'+schemaType.schemaClass+'">';
 				contentPane = '';
 				array.forEach(schemaType.subClasses, function(schema){
-					contentPane += '<input type="radio" name="schema" class="radioSchema" id="'+schema.id+'" value = "'+schema.id+'" data-dojo-type="dijit/form/RadioButton"/><label for = "'+schema.id+'">'+schema.name+'</label><br/>';
+					contentPane += '<input type="radio" name="schema" class="radioSchema" id="'+schema.id+'" value = "'+schema.name+'" data-dojo-type="dijit/form/RadioButton"/><label for = "'+schema.id+'">'+schema.name+'</label><br/>';
 				}, this);
 				//contentPane += '</div>';
 				aContainer.addChild(new content({
@@ -98,7 +98,7 @@ define([
 			nodesSelect += '<option value="">--Select--</option>';
 			if(nodes){
 				array.forEach(nodes, function(node){
-					if(node.genus == "required"){ 
+					if(!node.genus || node.genus == "required"){ 
 						if(this.currentNodes.indexOf(node.ID) == -1){
 							nodesSelect += '<option value = "'+ node.ID +'">'+ node.name +'</option>';
 						}
@@ -151,6 +151,7 @@ define([
 
 		handleSchema: function(event){
 			this.currentSchema.schemaClass = event.target.id;
+			this.currentSchema.name = event.target.value;
 		},
 		
 		handleDifficulty: function(event){

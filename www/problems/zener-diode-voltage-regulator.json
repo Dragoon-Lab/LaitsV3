@@ -15,6 +15,7 @@
         "taskDescription": [
             "Create a model for the zener diode voltage regulator shown here.  The power supply is 20 volts with a 2 volt peak-to-peak sine wave \"wiggle\" whose frequency is 0.02 cps.  The zener diode should remove most of this wiggle.  Assume a 13-volt diode and a 180 ohm resistor.  Assume the diode speed is 1000 ohm/volt/second.  Graph the voltage across the zener.",
             "",
+            "",
             ""
         ],
         "lessonsLearned": "",
@@ -28,8 +29,8 @@
                     }
                 ],
                 "position": {
-                    "x": 402.99713134765625,
-                    "y": 106.98863220214844
+                    "x": 402.99713134766,
+                    "y": 106.98863220215
                 },
                 "attemptCount": {
                     "description": 0,
@@ -62,7 +63,7 @@
                 ],
                 "position": {
                     "x": 540,
-                    "y": 82.98294830322266
+                    "y": 82.982948303223
                 },
                 "attemptCount": {
                     "description": 0,
@@ -84,8 +85,8 @@
                 "ID": "id3",
                 "inputs": [],
                 "position": {
-                    "x": 704.4410400390625,
-                    "y": 77.42402648925781
+                    "x": 704.44104003906,
+                    "y": 77.424026489258
                 },
                 "attemptCount": {
                     "description": 0,
@@ -118,8 +119,8 @@
                     }
                 ],
                 "position": {
-                    "x": 613.991455078125,
-                    "y": 194.9857940673828
+                    "x": 613.99145507812,
+                    "y": 194.98579406738
                 },
                 "attemptCount": {
                     "description": 0,
@@ -141,8 +142,8 @@
                 "ID": "id5",
                 "inputs": [],
                 "position": {
-                    "x": 757.438232421875,
-                    "y": 214.42686462402344
+                    "x": 757.43823242188,
+                    "y": 214.42686462402
                 },
                 "attemptCount": {
                     "description": 0,
@@ -175,8 +176,8 @@
                     }
                 ],
                 "position": {
-                    "x": 483.991455078125,
-                    "y": 228.99147033691406
+                    "x": 483.99145507812,
+                    "y": 228.99147033691
                 },
                 "attemptCount": {
                     "description": 0,
@@ -208,8 +209,8 @@
                     }
                 ],
                 "position": {
-                    "x": 597.9971313476562,
-                    "y": 363.991455078125
+                    "x": 597.99713134766,
+                    "y": 363.99145507812
                 },
                 "attemptCount": {
                     "description": 0,
@@ -235,8 +236,8 @@
                     }
                 ],
                 "position": {
-                    "x": 731.9885864257812,
-                    "y": 372.9829406738281
+                    "x": 731.98858642578,
+                    "y": 372.98294067383
                 },
                 "attemptCount": {
                     "description": 0,
@@ -267,8 +268,8 @@
                     }
                 ],
                 "position": {
-                    "x": 402.99713134765625,
-                    "y": 298.991455078125
+                    "x": 402.99713134766,
+                    "y": 298.99145507812
                 },
                 "attemptCount": {
                     "description": 0,
@@ -290,8 +291,8 @@
                 "ID": "id10",
                 "inputs": [],
                 "position": {
-                    "x": 463.43255615234375,
-                    "y": 414.4268798828125
+                    "x": 463.43255615234,
+                    "y": 414.42687988281
                 },
                 "attemptCount": {
                     "description": 0,
@@ -315,8 +316,8 @@
                 "ID": "id11",
                 "inputs": [],
                 "position": {
-                    "x": 867.3309326171875,
-                    "y": 396.3309631347656
+                    "x": 867.33093261719,
+                    "y": 396.33096313477
                 },
                 "attemptCount": {
                     "description": 0,
@@ -341,6 +342,7 @@
             {
                 "ID": "schema1",
                 "schemaClass": "zener_diode",
+                "name": "Zener diode",
                 "competence": {
                     "errors": 0,
                     "total": 0,
@@ -357,6 +359,7 @@
             {
                 "ID": "schema2",
                 "schemaClass": "ohms_law_voltage",
+                "name": "Ohms law: voltage source",
                 "competence": {
                     "errors": 0,
                     "total": 0,
@@ -373,6 +376,7 @@
             {
                 "ID": "schema3",
                 "schemaClass": "ohms_law_current",
+                "name": "Ohms law: current source",
                 "competence": {
                     "errors": 0,
                     "total": 0,
@@ -380,6 +384,40 @@
                     "values": {}
                 },
                 "nodes": "id1, id6, id7",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema4",
+                "schemaClass": "resistance_series",
+                "name": "Resistance of two resistors in Series",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id9, id10",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema5",
+                "schemaClass": "alternating_voltage_generator",
+                "name": "Alternating voltage generator",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id11, id8",
                 "difficulty": {
                     "isolation": 1,
                     "cues": 0,

@@ -566,6 +566,7 @@ define([
 				var newSchema = {
 					ID: schemaID||"schema"+obj._SID++,
 					schemaClass: "",
+					name: "",
 					competence: {
 						errors: 0,
 						total: 0,
