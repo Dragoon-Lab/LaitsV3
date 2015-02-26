@@ -118,15 +118,14 @@ define([
 					        "definition": {
 					            "name": { "en-US": this._session.params.p }
 					        }
-						  };
-			statement.revision = this._session.params.u;
+						  };			
 			
 			//Create a new Statement for every schema associated with the problem 
 			var schemas = this._model.active.getSchemas();
 			array.forEach(schemas, lang.hitch(this, function(schema){ 
 				statement.context = {
-							"contextActivities": {
-				            "parent": [{
+						"contextActivities": {
+				           "parent": [{
 				                "objectType": "Activity",
 				                "id": baseURL + schema.schemaClass + ".html",
 				                "definition": {
@@ -143,8 +142,10 @@ define([
 				                        "en-US": topic
 				                    }
 				                }
-				            }]
-				        }};								
+				            }]			            	
+				        },
+				    	"revision" : this._session.params.u
+				    };
 				statement.result =  {
 			        "completion": this._model.matchesGivenSolution(),
 			        "success": this._model.student.matchesGivenSolutionAndCorrect(),
@@ -153,7 +154,7 @@ define([
 			            "scaled": assesmentScore[schema.name]
 			        },
 			        "extensions":{
-			        	 "successFactor" : successFactor
+			        	 "https://s3-us-west-1.amazonaws.com/ictpal3/successFactor" : successFactor
 			        }
 		    	};
 
