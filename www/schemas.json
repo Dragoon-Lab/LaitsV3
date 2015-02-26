@@ -74,6 +74,18 @@
 				"example" : "There are two independent sources of 5V and 10V in parallel to a load of 1000 ohms. Find the current flowing through it."
 			},
 			{
+				"name" : "Resistance of two resistors in Series",
+				"id" : "resistance_series",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Resistance of two resistors in Parallel",
+				"id" : "resistance_parallel",
+				"template" : "",
+				"example" : ""
+			},
+			{
 				"name" : "Capacitor",
 				"id" : "capacitor",
 				"template" : "",
