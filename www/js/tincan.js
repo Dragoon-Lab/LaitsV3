@@ -49,16 +49,16 @@ define([
 
 	return declare(null, {
 
-		constructor: function(givenModel, assessment, session){
+		constructor: function(givenModel, assessment, session, topicIndex){
 			this._model = givenModel;
 			this._assessment = assessment;
 			this._session = session;
+			this._topicIndex = topicIndex;
 		},
 
 		connect: function() {
 			//Connect to the Learning Record Store
-			this.tincan = new TinCan (
-				{
+			this.tincan = new TinCan ({
 			    	recordStores: [
 			            {
 			                endpoint:"http://ec2-54-68-99-213.us-west-2.compute.amazonaws.com/data/xAPI/", 
@@ -67,7 +67,7 @@ define([
 			                allowFail: false
 			            }
 			        ]
-				});
+			});
 		},
 
 
@@ -93,6 +93,8 @@ define([
 
 			var username = this._session.params.u;
 			var email = username;
+
+			var topic = this._topicIndex[this._session.params.p] || "No Topic";
 
 			if (username.indexOf("..") > 0){
 				email = username.split("..")[0];
@@ -137,7 +139,7 @@ define([
 				                "id": baseURL + schema.schemaClass + ".html",
 				                "definition": {
 				                    "name": {
-				                        "en-US": schema.name
+				                        "en-US": topic
 				                    }
 				                }
 				            }]
