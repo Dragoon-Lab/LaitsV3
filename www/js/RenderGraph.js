@@ -116,7 +116,7 @@ define([
 			//create tab for graph and fill it
 			this.dialogContent += "<div id='GraphTab' data-dojo-type='dijit/layout/ContentPane' style='overflow:auto; ' data-dojo-props='title:\"Graph\"'>";
 			array.forEach(this.active.plotVariables, function(id){
-				var show = this.model.active.getType(id) == "accumulator";
+				var show = this.model.active.getType(id) == "accumulator" || this.model.given.getParent(this.model.active.getGivenID(id));
 				var checked = show ? " checked='checked'" : "";
 				this.dialogContent += "<div><input id='sel" + id + "' data-dojo-type='dijit/form/CheckBox' class='show_graphs' thisid='" + id + "'" + checked + "/>" + " Show " + this.model.active.getName(id) + "</div>";
 				var style = show ? "" : " style='display: none;'";
@@ -366,9 +366,17 @@ define([
 				}
 			}
 			// Check if the maximum and minimum are same and change the min and max values
-			if(min == max){ 
-				min = min - 1;
-				max = max + 1;
+			if(min == max){
+				if (min < 0){
+					min = min * 2;
+					max = 0;
+				} else if (min > 0) {
+					min = 0;
+					max = max * 2;
+				} else {
+					min = -1;
+					max = +1;
+				}
 			}
 			return {min: min, max: max};
 		},
