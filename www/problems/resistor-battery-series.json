@@ -13,7 +13,7 @@
             "URL": "http://www.school-for-champions.com/science/images/electricity_ohms_law_dc_circuit.gif"
         },
         "taskDescription": [
-            "Model a circuit composed of a 10 volt voltage source and a 5 ohm resistor.  What is the current through the resistor?",
+            "Model a circuit composed of a 5 volt voltage source and a 1000 ohm resistor.  What is the current through the resistor?",
             "",
             ""
         ],
@@ -41,7 +41,7 @@
                 "equation": "",
                 "type": "parameter",
                 "parentNode": false,
-                "initial": 10,
+                "initial": 5,
                 "units": "volts"
             },
             {
@@ -99,7 +99,7 @@
                 "equation": "",
                 "type": "parameter",
                 "parentNode": false,
-                "initial": 5,
+                "initial": 1000,
                 "units": "ohms"
             }
         ],
