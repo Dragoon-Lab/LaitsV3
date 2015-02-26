@@ -119,7 +119,8 @@ define([
 						  };
 
 			//Create a new Statement for every schema associated with the problem 
-			array.forEach(this._model.given.getSchemas(), lang.hitch(this, function(schema){ 
+			var schemas = this._model.active.getSchemas();
+			array.forEach(schemas, lang.hitch(this, function(schema){ 
 				statement.context = {
 							"contextActivities": {
 				            "parent": [{
@@ -127,7 +128,7 @@ define([
 				                "id": baseURL + schema.schemaClass + ".html",
 				                "definition": {
 				                    "name": {
-				                        "en-US": schema.schemaClass
+				                        "en-US": schema.name
 				                    }
 				                }
 				            }],
@@ -136,7 +137,7 @@ define([
 				                "id": baseURL + schema.schemaClass + ".html",
 				                "definition": {
 				                    "name": {
-				                        "en-US": schema.schemaClass
+				                        "en-US": schema.name
 				                    }
 				                }
 				            }]
@@ -147,7 +148,7 @@ define([
 			        "success": this._model.student.matchesGivenSolutionAndCorrect(),
 			        "duration": this.isoDuration(this._session.calculateDuration()),
 			        "score": {
-			            "scaled": assesmentScore[schema.schemaClass]
+			            "scaled": assesmentScore[schema.name]
 			        },
 			        "extensions":{
 			        	 "successFactor" : successFactor
