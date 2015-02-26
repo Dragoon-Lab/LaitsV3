@@ -22,20 +22,20 @@
 
 
 /**
- * 
+ *
  * Test file to load and save Dragoon problems
  * @author: Brandon Strong
- * 
+ *
  **/
 
 define([
 	"dojo/_base/declare", "dojo/request/xhr", "dojo/_base/json",
 	"dojo/_base/lang"
 ], function(declare, xhr, json, lang){
-	// Summary: 
+	// Summary:
 	//			Loads and saves sessions and sets up logging
 	// Description:
-	//			Manage sessions and communicate with the server, including 
+	//			Manage sessions and communicate with the server, including
 	//			logging
 	// Tags:
 	//			save session, logging
@@ -62,7 +62,7 @@ define([
 		// It also sets the path.
 		params:{},
 		counter:null,
-	
+
 		constructor: function(/*object*/ params, /*string*/ path){
 			// Dragoon database requires that clientID be 50 characters.
 			this.sessionId = FNV1aHash(params.u+"_"+params.s) +
@@ -77,7 +77,7 @@ define([
 
 			// Create a session
 			this.log("start-session", params);
-			
+
 		},
 
 		loadProblem: function(/*object*/ params){
@@ -107,7 +107,7 @@ define([
 				handleAs: "json"
 			}).then(function(reply){  // this makes blocking?
 				console.log("Got the conflict status ", reply);
-				return reply.isConflict;			
+				return reply.isConflict;
 			}, function(err){
 				alert('error');
 				this.clientLog("error", {
@@ -116,17 +116,20 @@ define([
 				});
 			});
 		},
-		saveAsProblem : function(model,problemName,groupName){ 
+		saveAsProblem : function(model,problemName,groupName){
 			//update params to be passed
+			console.log("+++save as problem called+++");
 			var newParams = dojo.clone(this.params);  //clone the object
 			newParams.p = problemName;
 			newParams.g = groupName;
 			//insert new session ID for newly saved as problem
 			var sessionId = FNV1aHash(this.params.u+this.params.s)+'_'+new Date().getTime();
 			console.log("renaming problem session id :"+sessionId);
-			this.log("rename-problem",newParams,sessionId);			
-			
+			this.log("rename-problem",newParams,sessionId);
 			this.saveProblem(model,sessionId); //reuse saveProblem with new sessionId of renamed problem
+			var tmp = document.URL.replace("p="+this.params.p,"p="+newParams.p);
+			var url =tmp.replace("g="+this.params.g,"g="+newParams.g);
+			window.open(url,"_self");
 		},
 		saveProblem: function(model,newSessionID){
 			// Summary: saves the string held in this.saveData in the database.
@@ -178,7 +181,7 @@ define([
 			// Add time to log message (allowing override).
 			if(this.doLogging){
 				var p = lang.mixin({time: this.getTime()}, params);
-			
+
 				return xhr.post(this.path + "logger.php", {
 					data: {
 						method: method,
