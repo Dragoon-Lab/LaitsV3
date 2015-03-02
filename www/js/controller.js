@@ -288,6 +288,10 @@ define([
 				this.controlMap.equation = "equationBox";
 				domStyle.set('equationBox', 'display', 'block');				
 				domStyle.set('givenEquationBox', 'display', 'none');
+				var kind = registry.byId(this.controlMap.kind).value;
+				if(kind == "required"){
+					this._model.given.setGenus(this.currentID, kind);
+				}
 			}
 			console.log("++++++++++ entering closeEditor");
 			// Erase modifications to the control settingse.
