@@ -223,6 +223,7 @@
             {
                 "ID": "schema1",
                 "schemaClass": "diode",
+				"name": "Ideal diode",
                 "competence": {
                     "errors": 0,
                     "total": 0,
@@ -239,6 +240,7 @@
             {
                 "ID": "schema2",
                 "schemaClass": "alternating_voltage_generator",
+				"name": "Alternating voltage generator",
                 "competence": {
                     "errors": 0,
                     "total": 0,
@@ -255,6 +257,7 @@
             {
                 "ID": "schema3",
                 "schemaClass": "ohms_law_voltage",
+				"name": "Alternating voltage generator",
                 "competence": {
                     "errors": 0,
                     "total": 0,
