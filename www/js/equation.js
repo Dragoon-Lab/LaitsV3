@@ -79,12 +79,14 @@ define([
 			});
 			var valsCopy = dojo.clone(givenVals);
 
-			var givenResult = this.getEquationValue(givenParse, model, givenVals, "given", seed);
-			var studentResult = this.getEquationValue(student, model, givenVals, "solution", seed);
+			var givenResult = this.getEquationValue(givenParse, model, givenVals, "given", seed, 0);
+			var studentResult = this.getEquationValue(student, model, givenVals, "solution", seed, 0);
+
+			console.log("results:" + givenResult + ":" + studentResult);
 
 			var flag = Math.abs(studentResult - givenResult) <= 10e-10 * Math.abs(studentResult + givenResult);
 
-			if(givenEqn.indexOf("max") >= 0 || givenEqn.indexOf("min") >= 0 || givenEqn.indexOf("sinewave") >= 0){
+			if(givenEqn.indexOf("max") >= 0 || givenEqn.indexOf("min") >= 0){
 				var index = 0;
 				var nodes = Object.keys(valsCopy);
 				var givenVals1 = {};
@@ -92,12 +94,22 @@ define([
 					givenVals1[nodes[i]] = -1*valsCopy[nodes[i]];
 				}
 
+				console.log(givenVals1);
+			console.log("results:" + givenResult1 + ":" + studentResult1);
 
-				var givenResult1 = this.getEquationValue(givenParse, model, givenVals1, "given", seed);
-				var studentResult1 = this.getEquationValue(student, model, givenVals1, "solution", seed);
+				var givenResult1 = this.getEquationValue(givenParse, model, givenVals1, "given", seed, 0);
+				var studentResult1 = this.getEquationValue(student, model, givenVals1, "solution", seed, 0);
 
 
 				flag = flag && (Math.abs(studentResult1 - givenResult1) <= 10e-10 * Math.abs(studentResult1 + givenResult1));
+			}
+
+			if(givenEqn.indexOf("sinewave") >= 0)
+			{
+				var givenResult2 = this.getEquationValue(givenParse, model, givenVals, "given", seed, 1);
+				var studentResult2 = this.getEquationValue(student, model, givenVals, "solution", seed, 1);
+
+				flag = flag && (Math.abs(studentResult2 - givenResult2) <= 10e-10 * Math.abs(studentResult2 + givenResult2));
 			}
 			if(isNaN(givenResult) && isNaN(studentResult))
 			{
@@ -106,7 +118,7 @@ define([
 			return flag; 
 		},
 
-		getEquationValue: function(/* math parser object */ parse, /*model object*/ model, values, /* string */ active, /* float */ seed){
+		getEquationValue: function(/* math parser object */ parse, /*model object*/ model, values, /* string */ active, /* float */ seed, /* float */ time){
 			var id;
 			var solutionVals = {};
 			array.forEach(parse.variables(), function(variable){
@@ -144,7 +156,7 @@ define([
 			}, this);
 			if(active == "solution")
 				values = solutionVals;
-			var result = parse.evaluate(values, 0, seed);
+			var result = parse.evaluate(values, time, seed);
 			return result;
 		},
 		/*

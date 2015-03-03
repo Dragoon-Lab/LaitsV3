@@ -43,7 +43,6 @@ function convertArrayToMap(assocArray){
     }
     return newMap;
 }
-
 exports.checkTableValues = function(name, col, values,dtest,client){
 	var correct = true;
 	for(var i  = 0; i < values.length; i++)

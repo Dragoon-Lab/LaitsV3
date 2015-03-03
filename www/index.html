@@ -124,7 +124,7 @@
              <button type="button" data-dojo-type="dijit/form/Button" id="forumButton" disabled="true">Forum</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="schemaButton" disabled="true">Create Schema</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="descButton" disabled="true">Problem &amp; Times</button>
-             <button type="button" data-dojo-type="dijit/form/Button" id="saveButton" disabled="true">Copy To...</button>
+             <button type="button" data-dojo-type="dijit/form/Button" id="saveButton" disabled="true">Save As</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="mergeButton" disabled="true">Merge </button>
 			 <button type="button" data-dojo-type="dijit/form/Button" id="previewButton" disabled="true">Preview</button>
 			 <button type="button" data-dojo-type="dijit/form/Button" id="slidesButton" disabled="true">Hints</button>
@@ -185,6 +185,8 @@
 	  <div class="fieldgroup">
             <label for="authorSetTimeStepUnits">Units:</label>
             <select data-dojo-type="dijit/form/ComboBox" id="authorSetTimeStepUnits" name="authorSetTimeStepUnits" class="timeStepAuthor">
+              <option>microseconds</option>
+              <option>milliseconds</option>
               <option>seconds</option>
               <option>minutes</option>
               <option>hours</option>
@@ -223,7 +225,7 @@
 	</div>
 
     <!-- authorSaveProblem, authorSaveGroup -->
-    <div class="claro sameedit" data-dojo-type="dijit/Dialog" id="authorSaveDialog" title="Copy To...">
+    <div class="claro sameedit" data-dojo-type="dijit/Dialog" id="authorSaveDialog" title="Save As...">
         <div class="fieldgroup">
             <label for="authorSaveProblem" style="width:7em">Problem Name:</label>
             <input id="authorSaveProblem" style="width:10em" value="0" data-dojo-type="dijit/form/TextBox"></input>
