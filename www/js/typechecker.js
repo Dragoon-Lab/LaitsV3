@@ -66,11 +66,13 @@ define([
 
 			// we do this type conversion because we used a textbox for 
 			// initialvalue input which is a numerical
+			if(!inputString || 0 === inputString.length)
+				inputString = NaN;
 			var input= +inputString; // usage of + unary operator converts a string to number
 
 			// use isNaN to test if conversion worked.
 
-			if(isNaN(input)){
+			if(isNaN(input) || !input || 0 === input.length){
 				var errorType;
 				// Put in checks here
 				console.log('not a number');
