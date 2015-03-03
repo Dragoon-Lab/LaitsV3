@@ -227,6 +227,7 @@
             {
                 "ID": "schema1",
                 "schemaClass": "kirchoff_voltage_law",
+				"name" : "Kirchoff's voltage law",
                 "competence": {
                     "errors": 0,
                     "total": 0,
@@ -243,6 +244,7 @@
             {
                 "ID": "schema2",
                 "schemaClass": "ohms_law_voltage",
+				"name" : "Ohms law: voltage source",
                 "competence": {
                     "errors": 0,
                     "total": 0,
@@ -259,6 +261,7 @@
             {
                 "ID": "schema3",
                 "schemaClass": "ohms_law_current",
+				"name" : "Ohms law: current source",
                 "competence": {
                     "errors": 0,
                     "total": 0,
@@ -275,6 +278,7 @@
             {
                 "ID": "schema4",
                 "schemaClass": "kirchoff_current_law",
+				"name" : "Kirchoff's current law",
                 "competence": {
                     "errors": 0,
                     "total": 0,
