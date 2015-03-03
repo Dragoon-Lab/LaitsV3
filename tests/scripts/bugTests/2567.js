@@ -95,8 +95,8 @@ describe("Regression test for bug 2456", function() {
         }));
     });
 
-    /*after(function(done) {
+    after(function(done) {
         client.end();
         done();
-    });*/
+    });
 });
