@@ -7,6 +7,7 @@
   "diode-resistor-2" : "Diodes",
   "full-wave-rectifier" : "Power Supplies",
   "full-wave-rectifier-capacitor" : "Power Supplies",  
+  "static-zener-diode-regulator" : "Zener Diodes",
   "zener-diode-voltage-regulator" : "Zener Diodes",
   "full-wave-rectifier-zener" : "Power Supplies"
 }
