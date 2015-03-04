@@ -10,7 +10,7 @@
  */
 
 
-currentVersion = "2.156"; //Current version number for Dragoon
+currentVersion = "2.157"; //Current version number for Dragoon
 
 function getVersion(){
 	/*
