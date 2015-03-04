@@ -711,7 +711,7 @@
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id6, id7, id8",
+                "nodes": "id7, id8, id9, id10, id11",
                 "difficulty": {
                     "isolation": 1,
                     "cues": 0,
