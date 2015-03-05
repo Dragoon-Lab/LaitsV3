@@ -58,6 +58,7 @@ describe("Test math functions:", function() {
             var tanValues = [2.19, -14.1, -1.56, -0.546, 0.00, 0.546, 1.56, 14.1];
             var pulseValues = [0.00, 1.00, 1.00, 1.00, 1.00, 1.00, 0.00, 0.00];
             var pulseTrain = [1.00, 1.00, 0.00, 0.00, 1.00, 1.00, 0.00, 0.00];
+            var sineWave = [0.00, "1.22e-16", "-2.45e-16", "3.67e-16", "-4.90e-16", "6.12e-16", "-7.35e-16", "8.57e-16"];
 
             atest.checkTableValues("absolute value", 2, absValues, dtest, client);
             atest.checkTableValues("arc cosine", 3, acosValues, dtest, client);
@@ -78,7 +79,8 @@ describe("Test math functions:", function() {
             atest.checkTableValues("sine", 18, sinValues, dtest, client);
             atest.checkTableValues("tangent", 19, tanValues, dtest, client);
             atest.checkTableValues("pulse", 20, pulseValues, dtest, client); 
-            atest.checkTableValues("pulse train", 21, pulseTrain, dtest, client);
+            atest.checkTableValues("pulse train", 21, pulseTrain, dtest, client);            
+            atest.checkTableValues("sine wave", 21, sineWave, dtest, client);
         }));
     });
     after(function(done) {
