@@ -51,7 +51,7 @@ var async = sync.asyncIt;
 
 // Replace this example test with your own:
 
-describe("Regression test for bug 2456", function() {
+describe("Regression test for bug 2567", function() {
 
     before(async(function (done) {
             dtest.openProblem(client,[["problem","79"],["mode","AUTHOR"],
