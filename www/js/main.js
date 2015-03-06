@@ -208,25 +208,25 @@ define([
 				var node = registry.byId(mover.node);
 				var widthLimit = document.documentElement.clientWidth - 110;
 				var topLimit = 20;
+
+				if(g.x > widthLimit) {
+					g.x = widthLimit;
+					node.style.left = widthLimit+"px";
+				}
+					
+				if(g.x < 0) {
+					g.x = 0;
+					node.style.left = "0px";
+				}
+					
 				if((g.y + scrollTop) < topLimit){
 					//check if bounds inside
 					if(g.y < topLimit) { // BUG: this g.y should be absolute coordinates instead
 						g.y = topLimit;
 						node.style.top = topLimit+"px";  // BUG: This needs to correct for scroll
 					}
-									
-					if(g.x > widthLimit) {
-						g.x = widthLimit;
-						node.style.left = widthLimit+"px";
-					}
-					
-					if(g.x < 0) {
-						g.x = 0;
-						node.style.left = "0px";
-					}
-					
-					givenModel.active.setPosition(mover.node.id, {"x": g.x, "y": g.y});
 				}
+				givenModel.active.setPosition(mover.node.id, {"x": g.x, "y": g.y});
 				// It would be more efficient if we only saved the changed node.
 				session.saveProblem(givenModel.model);	 // Autosave to server
 			}, true);
