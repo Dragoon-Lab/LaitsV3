@@ -279,25 +279,6 @@
           "cues": 1,
           "phrases": 1
         }
-      },
-      {
-        "ID": "schema4",
-        "schemaClass": "alternating_voltage_generator",
-        "name": "Alternating voltage generator",
-        "competence": {
-          "errors": 0,
-          "total": 0,
-          "timeSpent": 0,
-          "values": {
-            
-          }
-        },
-        "nodes": "id2, id1",
-        "difficulty": {
-          "isolation": 1,
-          "cues": 1,
-          "phrases": 1
-        }
       }
     ]
   }
