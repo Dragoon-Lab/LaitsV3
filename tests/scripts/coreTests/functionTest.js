@@ -80,7 +80,7 @@ describe("Test math functions:", function() {
             atest.checkTableValues("tangent", 19, tanValues, dtest, client);
             atest.checkTableValues("pulse", 20, pulseValues, dtest, client); 
             atest.checkTableValues("pulse train", 21, pulseTrain, dtest, client);            
-            atest.checkTableValues("sine wave", 21, sineWave, dtest, client);
+            atest.checkTableValues("sine wave", 22, sineWave, dtest, client);
         }));
     });
     after(function(done) {
