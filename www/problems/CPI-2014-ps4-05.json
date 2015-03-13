@@ -11,7 +11,7 @@
         "properties": {},
         "image": {},
         "taskDescription": [
-            "A farmer applies 50 gallons of poison a week to his corn field until he runs out of poison.  The poison tank starts with 326 units of poison.  The corn field starts with 50,000 weeds.  A gallon of poison kills 250 weeks.  Regardless of the poison, 20% of the weeds in the field produce a new weed every week.  Construct a model that shows how the number of weeds and the poison left in the tank change.  Be sure that the poison tank does not have a negative amount of poison in it."
+            "A farmer applies 50 gallons of poison a week to his corn field until he runs out of poison.  The poison tank starts with 326 units of poison.  The corn field starts with 50,000 weeds.  A gallon of poison kills 250 weeds.  Regardless of the poison, 20% of the weeds in the field produce a new weed every week.  Construct a model that shows how the number of weeds and the poison left in the tank change.  Be sure that the poison tank does not have a negative amount of poison in it."
         ],
         "lessonsLearned": [
             "There are three processes going on in this system:",
