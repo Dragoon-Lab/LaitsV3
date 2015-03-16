@@ -386,42 +386,59 @@ define([
 		 * new values for student nodes are calculated
 		 */
 		renderDialog: function(calculationObj){
-			var activeSolution = this.findSolution(true, this.active.plotVariables);
-			var givenSolution = this.findSolution(false, this.given.plotVariables);	
-			//update and render the charts
-			array.forEach(this.active.plotVariables, function(id, k){
-				// Calculate Min and Max values to plot on y axis based on given solution and your solution
-				var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
-				var givenObj = this.getMinMaxFromArray(givenSolution.plotValues[k]);				
-				if(givenObj.min < obj.min){
-					obj.min = givenObj.min;
+				
+				if(this.mode != "AUTHOR")
+				{
+					var activeSolution = this.findSolution(true, this.active.plotVariables);
+					var givenSolution = this.findSolution(false, this.given.plotVariables);	
+					//update and render the charts
+					array.forEach(this.active.plotVariables, function(id, k){
+							// Calculate Min and Max values to plot on y axis based on given solution and your solution
+							var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
+							var givenObj = this.getMinMaxFromArray(givenSolution.plotValues[k]);				
+							if(givenObj.min < obj.min){
+								obj.min = givenObj.min;
+							}
+							if(givenObj.max > obj.max){
+								obj.max = givenObj.max;
+							}
+							//Redraw y axis based on new min and max values
+							this.chart[id].addAxis("y", {
+									vertical: true,
+									min: obj.min,
+									max: obj.max,
+									title: this.labelString(id)
+									});
+							this.chart[id].updateSeries(
+								"Your solution",
+								this.formatSeriesForChart(activeSolution, k),
+								{stroke: "green"}
+							);
+							this.chart[id].render();
+						
+					}, this);
 				}
-				if(givenObj.max > obj.max){
-					obj.max = givenObj.max;
+				else
+				{
+				//update and render the charts
+				var activeSolution = this.findSolution(true, this.active.plotVariables);
+					array.forEach(this.active.plotVariables, function(id, k){
+							this.chart[id].updateSeries(
+								"Your solution",
+								this.formatSeriesForChart(activeSolution, k),
+								{stroke: "green"}
+							);
+							this.chart[id].render();
+						
+					}, this);
 				}
-				//Redraw y axis based on new min and max values
-				this.chart[id].addAxis("y", {
-						vertical: true,
-						min: obj.min,
-						max: obj.max,
-						title: this.labelString(id)
-						});
-
-				this.chart[id].updateSeries(
-					"Your solution",
-					this.formatSeriesForChart(activeSolution, k),
-					{stroke: "green"}
-				);
-				this.chart[id].render();
-			}, this);
-
-			var paneText = "";
-			paneText += this.initTable();
-			paneText += this.setTableHeader();
-			paneText += this.setTableContent();
-			paneText += this.closeTable();
-			
-			this.contentPane.setContent(paneText);
+				var paneText = "";
+				paneText += this.initTable();
+				paneText += this.setTableHeader();
+				paneText += this.setTableContent();
+				paneText += this.closeTable();
+				
+				this.contentPane.setContent(paneText);
 		},
 		initTable: function(){
 			return "<div style='overflow:visible' align='center'>" + "<table class='solution' style='overflow:visible'>";
