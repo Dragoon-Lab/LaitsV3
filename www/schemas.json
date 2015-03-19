@@ -44,16 +44,10 @@
 		"schemaClass" : "Electronic Schemas",
 		"subClasses": [
 			{
-				"name" : "Ohms law: voltage source",
-				"id" : "ohms_law_voltage",
-				"template" : "Current flowing through a load is given voltage/resistance offered by it.",
+				"name" : "Ohms law",
+				"id" : "ohms_law",
+				"template" : "Current flowing through a a load is directly proportional to voltage across it and inversely proportional to the resistance of the load.",
 				"example" : "Find the current running through a load when voltage difference provided by the source is 5V and resistance of the load is 1000 ohms."
-			},
-			{
-				"name" : "Ohms law: current source",
-				"id" : "ohms_law_current",
-				"template" : "Voltage across a resistor is given by current flowing through the load*resistance offered by it.",
-				"example" : "Find the voltage across a resistor of 1000 ohms when 5 mA current is flowing through it."
 			},
 			{
 				"name" : "Kirchoff's current law",
