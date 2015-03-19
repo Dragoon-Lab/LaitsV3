@@ -35,6 +35,6 @@ exports.getLocalPath = function()
 
 exports.getTestTarget = function()
 {
-	//Change this to "demo", "devel", or "local" depending on what you wish to test
+	//Change this to "demo", "devel", "pal3", or "local" depending on what you wish to test
 	return "local";
 }

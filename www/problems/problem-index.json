@@ -15,8 +15,8 @@
         "Blood Glucose" : {
             "zero-set-point-homeostasis" : "Zero set point homeostasis",
             "nonzero-set-point-homeostasis" : "Nonzero set point homeostasis",
-            "two-loop-homoestatis":"Two loop homoestatis",
-            "simple-Blood-glucose homoestatis" : "Simple Blood glucose homoestatis" ,
+            "two-loop-homeostasis":"Two loop homeostasis",
+            "simple-blood-glucose-homeostasis" : "Simple blood glucose homeostasis" ,
             "glucose-min-model" : "Glucose min model"
         },
 

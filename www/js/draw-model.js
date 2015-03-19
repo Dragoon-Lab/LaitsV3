@@ -166,7 +166,7 @@ define([
 					this._givenModel.getCorrectness(nodeID):"neutral";
 					//check for perfect node
 					if (this._givenModel.getAssistanceScore){
-						if (this._givenModel.isComplete(nodeID) && this._givenModel.getAssistanceScore(nodeID) === 0){
+						if (this._givenModel.isComplete(nodeID) && this._givenModel.getAssistanceScore(nodeID) === 0 && this._givenModel.getCorrectness(nodeID) === "correct"){
 							backgroundcolor = colorMap.perfect;
 						}
 					}

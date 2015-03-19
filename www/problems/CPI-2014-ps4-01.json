@@ -168,7 +168,7 @@
                 "equation": "",
                 "type": "parameter",
                 "parentNode": false,
-                "initial": 5,
+                "initial": 10,
                 "units": "kg",
                 "genus": "extra"
             },

@@ -94,7 +94,7 @@
                 "parentNode": false,
                 "units": "",
                 "description": "The amount of thermal energy of the water each hour",
-                "initial": null,
+                "initial": 0,
                 "equation": "id3"
             },
             {

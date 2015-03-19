@@ -51,7 +51,7 @@ var async = sync.asyncIt;
 
 // Replace this example test with your own:
 
-describe("Regression test for bug 2456", function() {
+describe("Regression test for bug 2567", function() {
 
     before(async(function (done) {
             dtest.openProblem(client,[["problem","79"],["mode","AUTHOR"],
@@ -60,7 +60,7 @@ describe("Regression test for bug 2456", function() {
                                       ["logging","false"]]);
     }));
 
-    describe("Test for yellow description with incorrect choice", function(){
+    describe("Test for but 2567, random function showing NaN with parameter", function(){
         it("A function node with the random funciton should be created", async(function(){
             dtest.menuCreateNode(client);
             dtest.setNodeName(client, "randomFunc");
