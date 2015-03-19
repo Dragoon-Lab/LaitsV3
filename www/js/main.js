@@ -399,6 +399,7 @@ define([
                     registry.byId("authorSaveDialog").show();
                 });
 
+                //authorMergeDialog
                 menu.add("mergeButton", function(){
                     registry.byId("authorMergeDialog").show();
              	});
@@ -442,7 +443,8 @@ define([
                		 });
 				});
 
-                aspect.after(registry.byId('authorSaveDialog'), "hide", function(){
+				//Author Save Dialog
+                on(registry.byId("saveCloseButton"), "click", function(){
                     console.log("Rename and Save Problem edits");
                     // Save problem
 					var problemName = registry.byId("authorSaveProblem").value;
@@ -451,12 +453,8 @@ define([
 						alert('Missing input ');
 						return; 
 					}
-					session.saveAsProblem(givenModel.model,problemName,groupName);	
+					session.saveAsProblem(givenModel.model,problemName,groupName);                    
                 });
-                on(registry.byId("saveCloseButton"), "click", function(){
-                    registry.byId("authorSaveDialog").hide();
-                });
-                //authorMergeDialog
                 
                 //Author Save Dialog - check for name conflict on losing focus
                 //from textboxes of Rename dialog
