@@ -77,6 +77,7 @@ define([
 			this.active.plotVariables = this.active.timeStep.xvars.concat(
 				this.active.timeStep.functions);
 			/*
+
 			 Match list of given model variables.
 			 If the given model node is not part of the given solution,
 			 set variable to null to indicate that it should not
@@ -87,12 +88,11 @@ define([
 			 */
             console.log("length of active plot variables",this.active.plotVariables.length);
             var activeSolution = this.findSolution(true, this.active.plotVariables);
-            if(activeSolution.status == "error" && activeSolution.type == "missing") {
-				// Return value from findSlution in calculation, returns an array and we check for status and any missing nodes
-				this.dialogWidget.set("content", "<div>Not all nodes have been completed. For example, \"" + activeSolution.missingNode + "\" is not yet fully defined.</div>"); //We show the error message like "A Node is Missing"
+
+           if(activeSolution.status == "error" && activeSolution.type == "missing") {
+               this.checkIfNodeIsComplete();
 				return;
 			}
-
 			if(this.mode != "AUTHOR"){
 				//check for author mode. Here we need to create just one graph.
 				this.given.plotVariables = array.map(this.active.plotVariables, function(id){
@@ -260,20 +260,11 @@ define([
 					legends[id] = new Legend({chart: charts[id]}, "legend" + id);
 
 				}, this);
-			} else {
-                //Now it is possible that there might be incomplete nodes which are not listed in active plot variables
-                var thisModel = this;
-                var modStatus = true;
-                array.forEach(this.model.active.getNodes(), function (thisnode) {
-                    if(thisModel.model.active.getType(thisnode.ID)=="function" || thisModel.model.active.getType(thisnode.ID)=="accumulator"){
-                        thisModel.dialogWidget.set("content", "<div>Not all nodes have been completed. For example, \"" + thisModel.model.active.getName(thisnode.ID) + "\" is not yet fully defined.</div>");
-                        modStatus = false;
-                        return;
-                    }
-                });
-                if(modStatus)
-				    this.dialogWidget.set("content", "<div>There isn't anything to plot. Try adding some accumulator or function nodes.</div>"); //Error telling there are no nodes and graph cant be rendered
 			}
+            else this.checkIfNodeIsComplete();
+
+                //Now it is possible that there might be incomplete nodes which are not listed in active plot variables
+
 			this.chart = charts;
 
 			// The following loop makes sure legends of function node graphs are not visible initially
@@ -296,8 +287,28 @@ define([
 					}
 				});
 			}, this);
-			this.resizeWindow();
-		},
+
+        },
+
+        checkIfNodeIsComplete: function(){
+            alert("checkIfCompleteisCalled");
+            var thisModel = this;
+            var modStatus = true;
+            array.forEach(this.model.active.getNodes(), function (thisnode) {
+                if(thisModel.model.active.getType(thisnode.ID)=="function" || thisModel.model.active.getType(thisnode.ID)=="accumulator"){
+                    thisModel.dialogWidget.set("content", "<div>Not all nodes have been completed. For example, \"" + thisModel.model.active.getName(thisnode.ID) + "\" is not yet fully defined.</div>");
+                    modStatus = false;
+                    return;
+                }
+                else if(thisModel.model.active.getUnits(thisnode.ID)==undefined){
+                    thisModel.dialogWidget.set("content", "<div>Not all node have been completed. For example, \"" + thisModel.model.active.getName(thisnode.ID) + "\" has units field undefined.</div>");
+                    modStatus = false;
+                    return;
+                }
+            });
+            if(modStatus)
+                this.dialogWidget.set("content", "<div>There isn't anything to plot. Try adding some accumulator or function nodes.</div>"); //Error telling there are no nodes and graph cant be rendered
+        },
 
 		/*
 		 * @brief: this functionformats array of node values into an array which consists of object of type
