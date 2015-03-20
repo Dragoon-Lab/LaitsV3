@@ -287,11 +287,10 @@ define([
 					}
 				});
 			}, this);
-
+            this.resizeWindow();
         },
 
         checkIfNodeIsComplete: function(){
-            alert("checkIfCompleteisCalled");
             var thisModel = this;
             var modStatus = true;
             array.forEach(this.model.active.getNodes(), function (thisnode) {
