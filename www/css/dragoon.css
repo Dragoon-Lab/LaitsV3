@@ -181,6 +181,12 @@ height:385px;
 	margin-bottom: 5px;
 }
 
+.error{
+	font:11pt Arial,Myriad,Tahoma,Verdana,sans-serif;
+	font-weight: bold;
+	color: red;
+}
+
 input[type=radio]{
 	opacity:1 !important;
 }

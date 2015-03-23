@@ -414,6 +414,7 @@
 	</div>
 
 	<div class="claro sameedit schema" id="schemaAuthorBox" data-dojo-type="dijit/Dialog" title="Schema Author">
+		<div id = "errorBox" class = "error"></div>
 		<div class = "fieldgroup">
 			<label for"accordion">Schemas</label>
 			<div id="accordion" /><!--div for schema box-->
@@ -435,11 +436,24 @@
 			<div id="nodesDropdown"></div> <!-- place holder for nodes dropdown -->
 		</div>
 		<div id="buttons">
-			<button id="saveSchema" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Save</button>
+			<button id="goToFactors" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Next</button>
 			<button id="resetSchema" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Reset</button>
 		</div>
 
 	</div>
+
+	<div class = "claro sameedit schemaFactor" id="schemaFactorBox" data-dojo-type="dijit/Dialog" title="Schema Author">
+		<div id = "factors">
+			<div class="heading">
+				<span class="slip">Slip</span>
+				<span class="guess">Guess</span>
+			</div>
+			<div id = "values"></div><!-- place holder for input text boxes -->
+		</div>
+		<div id="buttons">
+			<button id="saveSchema" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Save</button>
+		</div>
+	</div> <!-- div for schema factor values -->
 				
     </div>  <!-- main -->			
 </body>

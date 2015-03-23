@@ -30,10 +30,12 @@ define([
 	"dojo/NodeList-dom",
 	"dojo/html",
 	"dojo/dom-construct",
+	"dijit/form/TextBox",
 	"dijit/layout/AccordionContainer",
 	"dijit/layout/ContentPane",
+	"dijit/form/RadioButton",
 	"./schemas-load-save"
-], function(declare, array, on, lang, dom, registry, json, domQuery, domList, html, domConstruct, accordion, content, schemas){
+], function(declare, array, on, lang, dom, registry, json, domQuery, domList, html, domConstruct, text, accordion, content, radio, schemas){
 	return declare(null, {
 		nodesCount: 0,
 		maxNodes: 0, 
@@ -130,14 +132,19 @@ define([
 				this.handleDifficulty.apply(this, arguments);
 			}));
 
-			var saveButtonWidget = dom.byId("saveSchema");
-			on(saveButtonWidget, "click", lang.hitch(this, function(){
-				this.saveSchema();
+			var gotoButtonWidget = dom.byId("goToFactors");
+			on(gotoButtonWidget, "click", lang.hitch(this, function(){
+				this.initFactorsWidget();
 			}));
 
 			var resetButtonWidget = dom.byId("resetSchema");
 			on(resetButtonWidget, "click", lang.hitch(this, function(){
 				this.resetSchema();
+			}));
+
+			var saveButtonWidget = dom.byId("saveSchema");
+			on(saveButtonWidget, "click", lang.hitch(this, function(){
+				this.saveSchema();
 			}));
 		},
 
@@ -192,6 +199,29 @@ define([
 			registry.byId("schemaAuthorBox").show();
 		},
 
+		initFactorsWindow: function(){
+			var goToFormats = true;
+			//check if schema window is filled
+			if(this.currentSchema.name == ""){
+				goToFormats = false;
+				this.showError("Please select the schema before saving it.");
+			} else if(this.currentNodes.length == 0){
+				goToFormats = false;
+				this.showError("Please select the nodes that are part of the schema.");
+			}
+			//hide schema window
+			if(goToFormats){
+				registry.byId("schemaAuthorBox").hide();
+			
+				this.makeFactorWindow();
+				registry.byId("schemaFactorBox").show();
+			}
+		},
+
+		showError: function(/* string */ message){
+			dom.byId("errorBox").innerHTML = message;
+		},
+
 		saveSchema: function(){			
 			this._model.given.saveSchema(this.currentSchema);
 			if(this.currentNodes){
@@ -200,9 +230,8 @@ define([
 			
 			this._session.saveProblem(this._model.model);
 			this.nodesCount = 0;
-			//hide schema window
-			registry.byId("schemaAuthorBox").hide();
-			//add schema to the list of dropdowns for edit.
+			//close factor window
+			registry.byId("schemaFactorBox").hide();
 		},
 
 		resetSchema: function(){
@@ -236,6 +265,112 @@ define([
 				var rWidget = registry.byNode(widget);
 				rWidget.set("checked", false);
 			});
+		},
+
+		initFactorHandler: function(id){
+			var spanWidget = dom.byId(id);
+
+			var children = spanWidget.children();
+			array.forEach(children, function(widget){	
+				on(widget, "blur", lang.hitch(this, function(){
+					return this.handleFactors.apply(this, arguments);
+				}));
+			}, this);
+		},
+
+		makeFactorWindow: function(){
+			//var html = "";
+			var nodes = this.currentNodes;
+			array.forEach(nodes, function(id){
+				var node = this._model.given.getNode(id);
+				createInputDom(node);
+			});
+		},
+
+		getRate: function(node){
+			if(!(node in this.currentSchema.rates))
+				this.currentSchema.rates[node] = {};
+			
+			return this.currentSchema.rates[node];
+		},
+
+		handleFactors: function(event){
+			var factor = event.target.name;
+			var nodePart = event.target.id;
+			var tParent = event.target.parent();
+			var nodeString = tParent.id;
+
+			var nodeID = nodeString.split("_")[0];
+			
+			var schemaRate = this.getRate(nodeID);
+			if(schemaRate){
+				if(!(nodePart in schemaRate)){
+					schemaRate[nodePart] = {};
+				}
+				
+				var nodeRate = schemarate[nodePart];
+				nodeRate[factor] = event.target.value;
+			}					
+		},
+
+		createInputDom: function(node){
+			var id = node.ID;
+			var type = node.type;
+			var units = node.units;
+			
+			domConstruct.create
+
+			this.createInputBoxes(id, "description");
+			this.createInputBoxes(id, "type", "0.33", "guess");
+
+			if(units != ""){
+				this.createInputBoxes(id, "units");
+			}
+			switch(type){
+				case "accumulator":
+					this.createInputBoxes(id, "initial");
+					this.createInputBoxes(id, "equation");
+					break;
+				case "parameter":
+					this.createInputBoxes(id, "initial");
+					break;
+				case "function":
+					this.createInputBoxes(id, "equation");
+					break;
+				default:
+					break;
+			}
+		},
+
+		createInputBoxes: function(nodeID, nodePart, value, valueBox){
+			var idString = nodeID + "_"+nodePart;
+			var inputHolder = domConstruct.create("div", {
+				id: idString,
+				innerHTML: nodePart + ":&nbsp;",
+				className: fieldgroup
+			}, nodeID);
+			//span.innerHTML = nodePart+":&nbsp;";
+			var slipValue = (valueBox == "slip" || valueBox == "both")? value : "";
+			var guessValue = (valueBox == "guess" || valueBox == "both")? value : "";
+			var slipTextBox = new textBox({
+				name: "slip",
+				className: "slip",
+				id: nodePart,
+				value: slipValue
+			});
+			
+			var guessTextBox = new textBox({
+				name: "guess",
+				className: "guess",
+				id: nodePart,
+				value: guessValue
+			});
+
+			domConstruct.place(slipTextBox, idString);
+			domConstruct.place(guessTextBox, idString);
+
+			domConstruct.place(idString, id);
+			this.initFactorsHandler(idString);
 		}
 	});
 });
