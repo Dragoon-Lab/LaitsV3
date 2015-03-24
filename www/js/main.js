@@ -263,10 +263,12 @@ define([
 							}
 						}
 					}, this);
-					var isComplete = givenModel.given.isComplete(controllerObject.currentID, true)?'solid':'dashed';
-					var borderColor = "3px "+isComplete+" gray";
-					style.set(controllerObject.currentID, 'border', borderColor);
-					style.set(controllerObject.currentID, 'backgroundColor', "white");
+					if(typeof controllerObject._model.active.getType(controllerObject.currentID) !== "undefined"){
+						var isComplete = givenModel.given.isComplete(controllerObject.currentID, true)?'solid':'dashed';
+						var borderColor = "3px "+isComplete+" gray";
+						style.set(controllerObject.currentID, 'border', borderColor);
+						style.set(controllerObject.currentID, 'backgroundColor', "white");
+					}
 				}
 				session.saveProblem(givenModel.model);
 				//This section errors out in author mode
