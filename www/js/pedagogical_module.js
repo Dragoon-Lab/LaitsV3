@@ -482,7 +482,8 @@ define([
 				}
 				break;
 			case "initial":
-				if(this.model.given.getUnits(givenNodeID)){
+				debugger;
+				if(this.model.given.getUnits(givenNodeID) && this.model.student.getUnits(this.model.student.getNodeIDFor(givenNodeID)) != this.model.given.getUnits(givenNodeID)){
                     disable(obj, "units", false);
 					newPart = "units";
 				}else if(nodeType === "function" || nodeType === "accumulator"){
