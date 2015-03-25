@@ -482,7 +482,6 @@ define([
 				}
 				break;
 			case "initial":
-				debugger;
 				if(this.model.given.getUnits(givenNodeID) && this.model.student.getUnits(this.model.student.getNodeIDFor(givenNodeID)) != this.model.given.getUnits(givenNodeID)){
                     disable(obj, "units", false);
 					newPart = "units";
