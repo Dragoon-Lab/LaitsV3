@@ -128,11 +128,13 @@ define([
 			return timeStep;
 		},
 		
-		findSolution: function(isActive, plotVariables){ 
+		findStaticSolution: function(isActive, start, stop, step, node, plotVariables){
 			// Summary:	 Find a solution
 			// Returns:	 an object of the form
 			//			{status: s, type: m, missingNode: n/soln: solution}
 		    var choice = isActive?this.active:this.given;
+
+		    var time = this.model.getTime();
             /*
 			 Calculate solution by solving differential 
 			 equation for accumulator nodes
@@ -140,6 +142,9 @@ define([
 			try { // we try to run the method because there might be some nodes missing and an error is generated
 				var solution;
 				console.log(this.model.getIntegrationMethod());
+				console.log(choice.timeStep.parameters);
+				console.log(choice.timeStep.parameters.id0);
+				choice.timeStep.parameters["id1"] = 5;
                 if(this.model.getIntegrationMethod() == "Midpoint Method")
 					solution = integrate.midpointMethod(
 					choice.timeStep, 
@@ -167,6 +172,85 @@ define([
 				});
 				return {status: 'error', type: 'missing', missingNode: miss_node};
 			}
+			console.log(solution);
+			/*
+			 Given a solution, create an array of values for the
+			 list of plot variables.  The list may include function nodes.
+			 */
+
+			var nodes = [];			 
+			if(plotVariables){
+				// If id is null, then make row null
+				var plotValues = array.map(plotVariables, function(x){
+					return x?[]:null;
+				});
+				var timeStep = choice.timeStep;
+				// Copy parameters object.
+				var variables = lang.mixin({}, timeStep.parameters);
+				for(var k = start; k < stop; k += step){
+						nodes.push(k);
+						timeStep.parameters[node] = k;
+						variables = lang.mixin({}, timeStep.parameters);
+						array.forEach(timeStep.functions, function(id){
+							variables[id] = timeStep.parse[id].evaluate(variables, time.start);
+						});
+						array.forEach(plotVariables, function(id, k){
+							if(id){
+								plotValues[k].push(variables[id]);
+							}
+						});
+				}	
+				return {times: nodes, plotValues: plotValues};
+			}else{
+				return {status: 'solution', soln: solution};
+			}
+
+		},
+
+		findSolution: function(isActive, plotVariables){ 
+			// Summary:	 Find a solution
+			// Returns:	 an object of the form
+			//			{status: s, type: m, missingNode: n/soln: solution}
+			console.log(plotVariables);
+		    var choice = isActive?this.active:this.given;
+            /*
+			 Calculate solution by solving differential 
+			 equation for accumulator nodes
+			 */
+			try { // we try to run the method because there might be some nodes missing and an error is generated
+				var solution;
+				console.log(this.model.getIntegrationMethod());
+				console.log(choice.timeStep.parameters);
+				console.log(choice.timeStep.parameters.id0);
+				choice.timeStep.parameters["id1"] = 5;
+                if(this.model.getIntegrationMethod() == "Midpoint Method")
+					solution = integrate.midpointMethod(
+					choice.timeStep, 
+					equation.evaluateTimeStep,
+					choice.initialValues, 
+					this.model.getTime());
+				else
+					solution = integrate.eulersMethod(
+					choice.timeStep, 
+					equation.evaluateTimeStep,
+					choice.initialValues, 
+					this.model.getTime());
+			}
+			catch(err){ // we catch the correspoding error here
+            	var if_id=err.message.substr(19).trim(); //In case the name is not generated and a node id is , we have to get the name from the active object for the user to understand
+				console.log("catch error",this.model.active.getName(if_id));  
+				if(this.model.active.getName(if_id)){
+					var miss_node=this.model.active.getName(if_id); // In case a node is incomplete
+				}else{
+					miss_node=if_id;
+				}
+				this._logging.clientLog("error", {
+					message:"graph/table created with missing node : "+miss_node,
+					functionTag : "findSolution"
+				});
+				return {status: 'error', type: 'missing', missingNode: miss_node};
+			}
+			console.log(solution);
 			/*
 			 Given a solution, create an array of values for the
 			 list of plot variables.  The list may include function nodes.

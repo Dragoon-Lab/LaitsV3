@@ -38,11 +38,12 @@ define([
 	"dijit/_base",
 	"dijit/layout/ContentPane",
 	"dojo/dom",
+	"./integrate",
 	"dijit/layout/TabContainer",
 	"dojo/parser",
 	
 	"dojo/domReady!"
-], function(array, declare, lang, on, domAttr, registry, Chart, Default, Lines, Grid, Legend, calculations, logger, base, contentPane, dom){
+], function(array, declare, lang, on, domAttr, registry, Chart, Default, Lines, Grid, Legend, calculations, logger, base, contentPane, dom, integrate){
 
 	// The calculations constructor is loaded before the RenderGraph constructor
 	return declare(calculations, {
@@ -76,6 +77,9 @@ define([
 			/* List of variables to plot: Include functions */
 			this.active.plotVariables = this.active.timeStep.xvars.concat(
 				this.active.timeStep.functions);
+			var staticPlot = this.findStaticSolution(true, 0,10,1, "id1", this.active.plotVariables);
+			console.log(staticPlot);
+			console.log(this.active.plotVariables);
 			/*
 			 Match list of given model variables.
 			 If the given model node is not part of the given solution,
@@ -130,7 +134,20 @@ define([
 			if(this.buttonClicked == "table")
 				this.dialogContent += "</div><div id='TableTab' data-dojo-type='dijit/layout/ContentPane' style='overflow:visible' selected = true data-dojo-props='title:\"Table\"'>"
 			//Render table here
-			this.dialogContent += "<div id='table' stlye='overflow:visible'></div>";
+			this.dialogContent += "<div id='table' stlye='overflow:visible'></div></div>";
+
+
+			this.dialogContent += "<div id='StaticTab' data-dojo-type='dijit/layout/ContentPane' style='overflow:visible' selected = true data-dojo-props='title:\"Static\"'>"
+
+			array.forEach(this.active.plotVariables, function(id){
+				var show = this.model.active.getType(id) == "accumulator" || this.model.given.getParent(this.model.active.getGivenID(id));
+				var checked = show ? " checked='checked'" : "";
+				this.dialogContent += "<div><input id='selStatic" + id + "' data-dojo-type='dijit/form/CheckBox' class='show_graphs' thisid='" + id + "'" + checked + "/>" + " Show " + this.model.active.getName(id) + "</div>";
+				var style = show ? "" : " style='display: none;'";
+				this.dialogContent += "<div	 id='chartStatic" + id + "'" + style + "></div>";
+				// Since the legend div is replaced, we cannot hide the legend here.
+				this.dialogContent += "<div class='legend' id='legendStatic" + id + "'></div>";
+			}, this);
 
 			//end divs for graph and table 
 			this.dialogContent += "</div></div></div>"
@@ -169,13 +186,17 @@ define([
 
 			this.createSliderAndDialogObject();	
 
-			var graphTab = null;
+						var graphTab = null;
+			var tableTab = null;
+			var staticTab = null;
 			var count = -1;
 			while(graphTab == null){
 				count++;
-				graphTab = dom.byId("GraphTab");
+				graphTab = dom.byId("dijit_layout_TabContainer_" + count + "_tablist_GraphTab");
+				tableTab = dom.byId("dijit_layout_TabContainer_" + count + "_tablist_TableTab");
+				staticTab = dom.byId("dijit_layout_TabContainer_" + count + "_tablist_StaticTab");
 			}
-			var tableTab = dom.byId("TableTab");
+			console.log(graphTab);
 			graphTab.addEventListener("click", function(){ 
 				console.log("graph tab clicked");
 				logger.session.log('ui-action', {
@@ -193,10 +214,20 @@ define([
 
 			graphTab.style.border = "thin solid black";
 			tableTab.style.border = "thin solid black";
+			staticTab.style.border = "thin solid black";
 
+
+			/****************************
+			Testing for static window
+			****************************/
+
+			
+			console.log(staticPlot);
 
 			var charts = {};
+			var chartsStatic = {};
 			var legends = {};
+			var legendsStatic = {};
 			var paneText="";
 			
 			//graphTabTitle.style.borderWidth = "3px";
@@ -216,6 +247,8 @@ define([
 				content:paneText
 			}, "table");
 
+
+			console.log(activeSolution);
 
 			if(this.active.plotVariables.length > 0){ //we check the length of object, if there are nodes, then we proceed else give an error and return
 				array.forEach(this.active.plotVariables, function(id, k){
@@ -274,6 +307,69 @@ define([
                 if(modStatus)
 				    this.dialogWidget.set("content", "<div>There isn't anything to plot. Try adding some accumulator or function nodes.</div>"); //Error telling there are no nodes and graph cant be rendered
 			}
+
+
+			console.log(staticPlot);
+			console.log(staticPlot.plotValues);
+			if(this.active.plotVariables.length > 0){ //we check the length of object, if there are nodes, then we proceed else give an error and return
+				array.forEach(this.active.plotVariables, function(id, k){
+					var str = "chartStatic" + id;
+					console.log(str);
+					chartsStatic[id] = new Chart(str);
+					chartsStatic[id].addPlot("default", {
+						type: Lines,
+						// Do not include markers if there are too
+						// many plot points.  It looks ugly and slows down
+						// plotting significantly.
+						markers: staticPlot.times.length < 25
+						});
+					chartsStatic[id].addAxis("x", {
+						title: this.labelString(),
+						titleOrientation: "away", titleGap: 5
+						});
+
+					var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
+					chartsStatic[id].addAxis("y", {
+						vertical: true, // min: obj.min, max: obj.max,
+						title: this.labelString(id),
+						min: obj.min,
+						max:obj.max
+						});
+
+					if(this.mode != "AUTHOR"){
+						var givenID = this.model.active.getDescriptionID(id);
+					}
+					//plot chart for student node
+					chartsStatic[id].addSeries(
+						"Your solution",
+						this.formatSeriesForChart(staticPlot, k),
+						{stroke: "green"}
+					);
+					if(this.mode != "AUTHOR"  && this.mode != "EDITOR" && this.given.plotVariables[k]){
+						chartsStatic[id].addSeries(
+							"Author's solution",
+							this.formatSeriesForChart(givenSolution, k), {stroke: "red"}
+						);
+					}
+					chartsStatic[id].render();
+					legendsStatic[id] = new Legend({chart: charts[id]}, "legendStatic" + id);
+
+				}, this);
+			} /*else {
+                //Now it is possible that there might be incomplete nodes which are not listed in active plot variables
+                var thisModel = this;
+                var modStatus = true;
+                array.forEach(this.model.active.getNodes(), function (thisnode) {
+                    if(thisModel.model.active.getType(thisnode.ID)=="function" || thisModel.model.active.getType(thisnode.ID)=="accumulator"){
+                        thisModel.dialogWidget.set("content", "<div>Not all nodes have been completed. For example, \"" + thisModel.model.active.getName(thisnode.ID) + "\" is not yet fully defined.</div>");
+                        modStatus = false;
+                        return;
+                    }
+                });
+                if(modStatus)
+				    this.dialogWidget.set("content", "<div>There isn't anything to plot. Try adding some accumulator or function nodes.</div>"); //Error telling there are no nodes and graph cant be rendered
+			}*/
+
 			this.chart = charts;
 
 			// The following loop makes sure legends of function node graphs are not visible initially
@@ -293,6 +389,24 @@ define([
 						var obj = { display: "none" };
 						domAttr.set("chart" + id, "style", obj);
 						domAttr.set("legend" + id, "style", obj);
+					}
+				});
+			}, this);
+
+			array.forEach(this.active.plotVariables, function(id){
+				if(this.model.active.getType(id) == "function"){
+					var leg_style = { display: "none" };
+					var k = domAttr.set("legendStatic" + id, "style", leg_style);
+				}
+				var check = registry.byId("selStatic" + id);
+				check.on("Change", function(checked){
+					if(checked) {
+						domAttr.remove("chartStatic" + id, "style");
+						domAttr.remove("legendStatic" + id, "style");
+					}else{
+						var obj = { display: "none" };
+						domAttr.set("chartStatic" + id, "style", obj);
+						domAttr.set("legendStatic" + id, "style", obj);
 					}
 				});
 			}, this);
