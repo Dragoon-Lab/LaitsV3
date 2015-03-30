@@ -805,8 +805,15 @@ define([
 		},
 
 	notifyCompleteness : function (model){
-		if(model.matchesGivenSolution() && !model.isCompleteFlag){
+		if(!model.isCompleteFlag && model.matchesGivenSolution()){
 			model.isCompleteFlag = true;
+			
+			var logObj = lang.mixin({
+				type : "completeness-check",
+				problemComplete: model.isCompleteFlag
+			}, logObj);
+			this.logging.log('solution-step', logObj);
+
 			record.increment("problemCompleted", 1);
 			if(this.showFeedback){
 				// Number of problems to show the hint upon completion

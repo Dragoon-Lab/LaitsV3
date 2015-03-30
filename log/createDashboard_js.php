@@ -461,6 +461,8 @@
 							$pushNodeBack = false;
 							$autoCreated = false;
 						}
+					} else if($type === "completeness-check"){
+						$upObject->problemComplete = $newMessage['problemComplete'];
 					}
 				} else if($method === "window-focus"){
 					$type = $newMessage['type'];
