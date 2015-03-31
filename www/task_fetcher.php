@@ -42,6 +42,10 @@ $shortProblemName = (strlen($problem) > 30) ? substr($problem, 0,30) : $problem;
 
 // Group is optional
 $group = isset($_GET['g'])?mysqli_real_escape_string($mysqli,$_GET['g']):null;
+$userPrecedence = true;
+if(isset($_GET['m']) && $_GET['m'] == "AUTHOR"){
+  $userPrecedence = isset($_GET['up'])?($_GET['up'] == "true"):false;
+}
 
 /*
   Print out JSON object containing the model task and the share bit
@@ -86,12 +90,21 @@ if(isset($_GET['u']) && isset($_GET['s']) && isset($_GET['m'])){
   $user = mysqli_real_escape_string($mysqli,$_GET['u']);
   $section = mysqli_real_escape_string($mysqli,$_GET['s']);
   $mode = $_GET['m'];  // only four choices
-  $gs = isset($_GET['g'])? "= '$group'":'IS NULL';  
+  if(isset($_GET['g']) && !$userPrecedence){
+    //group takes precedence over user, quick fix for sustainability class
+    $query = <<<EOT
+    SELECT t1.solution_graph, t1.share FROM solutions AS t1 JOIN session AS t2 USING (session_id) 
+      WHERE t2.section = '$section' AND t2.mode = '$mode' 
+          AND t2.problem = '$shortProblemName' AND t2.group = '$group' ORDER BY t1.time DESC LIMIT 1
+EOT;
+  } else {
+  $gs = isset($_GET['g'])?"= '$group'":'IS NULL';
   $query = <<<EOT
     SELECT t1.solution_graph, t1.share FROM solutions AS t1 JOIN session AS t2 USING (session_id) 
       WHERE t2.user = '$user' AND t2.section = '$section' AND t2.mode = '$mode' 
           AND t2.problem = '$shortProblemName' AND t2.group $gs ORDER BY t1.time DESC LIMIT 1
 EOT;
+  }
 
   $result = $mysqli->query($query)
     or trigger_error("Previous work query failed." . $mysqli->error);
