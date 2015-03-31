@@ -263,10 +263,12 @@ define([
 							}
 						}
 					}, this);
-					var isComplete = givenModel.given.isComplete(controllerObject.currentID, true)?'solid':'dashed';
-					var borderColor = "3px "+isComplete+" gray";
-					style.set(controllerObject.currentID, 'border', borderColor);
-					style.set(controllerObject.currentID, 'backgroundColor', "white");
+					if(typeof controllerObject._model.active.getType(controllerObject.currentID) !== "undefined"){
+						var isComplete = givenModel.given.isComplete(controllerObject.currentID, true)?'solid':'dashed';
+						var borderColor = "3px "+isComplete+" gray";
+						style.set(controllerObject.currentID, 'border', borderColor);
+						style.set(controllerObject.currentID, 'backgroundColor', "white");
+					}
 				}
 				session.saveProblem(givenModel.model);
 				//This section errors out in author mode
@@ -320,9 +322,7 @@ define([
                     //
                     // The parameters should be escaped, Bug #2423
                     // Should add logging, Bug #2424
-                    window.open(query.f+"?&n="+prob_name+"&s="+query.s+"&fid="+query.fid+"&sid="+query.sid,"newwindow",
-                        "height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
-                    );
+                    window.open(query.f+"?&n="+prob_name+"&s="+query.s+"&fid="+query.fid+"&sid="+query.sid, "_blank" );
                 });
 				//setter function used for setting forum parameters
 				//inside controller
