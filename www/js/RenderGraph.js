@@ -77,13 +77,17 @@ define([
 			/* List of variables to plot: Include functions */
 			this.active.plotVariables = this.active.timeStep.xvars.concat(
 				this.active.timeStep.functions);
-			var staticPlot = this.findStaticSolution(true, 0,10,1, "id1", this.active.plotVariables);
-			console.log(staticPlot);
+			this.staticVar = 0;
+			console.log(this.staticVar);
+			var staticNodes = this.checkForParameters();
+			var staticPlot = this.findStaticSolution(true, 0,10,1, staticNodes[this.staticVar].ID, this.active.plotVariables);
+			console.log(this.checkForParameters());
+			console.log(this.model.given.getNodes());
 			console.log(this.active.plotVariables);
 			/*
 			 Match list of given model variables.
 			 If the given model node is not part of the given solution,
-			 set variable to null to indicate that it should not
+		 set variable to null to indicate that it should not
 			 be calulated.
 
 			 To include optional nodes,
@@ -139,6 +143,14 @@ define([
 
 			this.dialogContent += "<div id='StaticTab' data-dojo-type='dijit/layout/ContentPane' style='overflow:visible' selected = true data-dojo-props='title:\"Static\"'>"
 
+			this.dialogContent += "<select data-dojo-type='dijit/form/ComboBox' id='staticSelect' name='staticSelect' data-dojo-id='combo'>"
+			    array.forEach(staticNodes, function(node){
+			    	this.dialogContent += "<option>";
+			    	this.dialogContent += node.description;
+			    	this.dialogContent += "</option>";
+			    },this);
+			this.dialogContent += "</select>"
+
 			array.forEach(this.active.plotVariables, function(id){
 				var show = this.model.active.getType(id) == "accumulator" || this.model.given.getParent(this.model.active.getGivenID(id));
 				var checked = show ? " checked='checked'" : "";
@@ -176,7 +188,6 @@ define([
 			}
 			this.plotVariables = this.active.timeStep.xvars.concat(
 				this.active.timeStep.functions);
-			console.log(this.checkForNan());
 			if(this.mode === "AUTHOR" && this.checkForNan())
 			{
 				this.dialogContent += "<font color='red' id = 'errorText'>The solution contains imaginary or overflowed numbers</font><br>";
@@ -371,6 +382,7 @@ define([
 			}*/
 
 			this.chart = charts;
+			this.chartsStatic = chartsStatic;
 
 			// The following loop makes sure legends of function node graphs are not visible initially
 			// until the user requests, we use the display : none property
@@ -411,6 +423,8 @@ define([
 				});
 			}, this);
 			this.resizeWindow();
+
+
 		},
 
 		/*
@@ -554,6 +568,72 @@ define([
 				
 				this.contentPane.setContent(paneText);
 		},
+
+		renderStaticDialog: function(){
+				if(this.mode != "AUTHOR")
+				{
+					var staticNodes = this.checkForParameters();
+					var staticPlot = this.findStaticSolution(true, 0,10,1, staticNodes[0].ID, this.active.plotVariables);
+					//update and render the charts
+					array.forEach(this.active.plotVariables, function(id, k){
+							// Calculate Min and Max values to plot on y axis based on given solution and your solution
+							var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
+							var givenObj = this.getMinMaxFromArray(givenSolution.plotValues[k]);				
+							if(givenObj.min < obj.min){
+								obj.min = givenObj.min;
+							}
+							if(givenObj.max > obj.max){
+								obj.max = givenObj.max;
+							}
+							//Redraw y axis based on new min and max values
+							this.chart[id].addAxis("y", {
+									vertical: true,
+									min: obj.min,
+									max: obj.max,
+									title: this.labelString(id)
+									});
+							this.chart[id].updateSeries(
+								"Your solution",
+								this.formatSeriesForChart(activeSolution, k),
+								{stroke: "green"}
+							);
+							this.chart[id].render();
+						
+					}, this);
+				}
+				else
+				{
+				//update and render the charts
+					var staticVar = this.checkStaticVar();
+					var staticNodes = this.checkForParameters();
+					var staticPlot = this.findStaticSolution(true, 0,10,1, staticVar.ID, this.active.plotVariables);
+					console.log(staticVar);
+					array.forEach(this.active.plotVariables, function(id, k){
+							this.chartsStatic[id].updateSeries(
+								"Your solution",
+								this.formatSeriesForChart(staticPlot, k),
+								{stroke: "green"}
+							);
+							this.chartsStatic[id].render();
+						
+					}, this);
+				}
+		},
+
+		checkStaticVar: function(){			
+			var parameters = this.checkForParameters();
+			var result = parameters[0];
+			var staticSelect = dom.byId("staticSelect");
+			console.log(staticSelect.value);
+			array.forEach(parameters, function(parameter){
+				if(parameter.description == staticSelect.value)
+				{
+					result = parameter;
+				}
+			}, this);
+			return result;
+		}, 
+
 		initTable: function(){
 			return "<div style='overflow:visible' align='center'>" + "<table class='solution' style='overflow:visible'>";
 		},
@@ -618,6 +698,19 @@ define([
 				});
 			}
 			return nan;
+		},
+
+		checkForParameters: function(){
+			var result = [];
+			array.forEach(this.model.given.getNodes(), function(node)
+			{
+				console.log(node);
+				if(node.type == "parameter")
+				{
+					result.push(node);
+				}
+			}, this);
+			return result;
 		}
 	});
 });

@@ -381,6 +381,7 @@ define([
 				console.log("	   new solution", this.getTime());
 				//this function is specific to graph/table
 				this.renderDialog();
+				this.renderStaticDialog();
 				this._rendering = false;
 				console.log("	   new plot done", this.getTime());
 			}));
