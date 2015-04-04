@@ -813,7 +813,7 @@ define([
 				this.logging.log("solution-step", {
 					type: "parse-error",
 					node: this._model.active.getName(this.currentID),
-					nodeID: this.curentID,
+					nodeID: this.currentID,
 					property: "equation",
 					value: inputEquation,
 					correctResult: this._model.given.getEquation(this.currentID),
