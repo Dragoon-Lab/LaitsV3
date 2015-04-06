@@ -82,7 +82,27 @@ define([
 		var givenModel = new model(query.m, query.p);
 		logging.session.log('open-problem', {problem : query.p});
 		if(solutionGraph){
-			givenModel.loadModel(solutionGraph);
+			try{
+				givenModel.loadModel(solutionGraph);
+			}catch(error){
+				if(query.m == "AUTHOR"){
+					dom.byId("error-message").innerHTML = error.message;
+			    	style.set("errorMessageBox", "display", "block");
+			    	var handler = on(dom.byId("error-message-close"), "click", function(){
+			    		//Fade Out
+					    dojo.style("errorMessageBox", "opacity", "1");
+					    var fadeArgs = {
+					        node: "errorMessageBox"
+					    };
+					    dojo.fadeOut(fadeArgs).play();
+					    handler.remove();
+			    	});
+			    }else {
+			    	dom.byId("error-message").innerHTML = "This problem could not be loaded. Please contact the problem's author.";
+			    	style.set("errorMessageBox", "display", "block");
+			    	throw Error("Model could not be loaded.");
+			    }
+			}
 		}
 		/*
 		 start up controller

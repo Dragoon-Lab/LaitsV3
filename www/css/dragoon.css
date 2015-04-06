@@ -230,3 +230,26 @@ input[type=radio]{
 .dijitButtonContents{
     padding: 2px 4px 4px 4px;
 }
+
+#errorMessageBox{
+  position: relative;
+  padding: 15px;
+  border: 2px solid red;
+  border-radius: 7px;
+  margin: 0 auto;
+  width: 30%;
+  background-color: rgba(255,0,0,0.1);
+  text-align: center;
+}
+#error-message-close{
+  float: right;
+  width: 10%;
+  display: inline-block;
+  margin-top: 5px;
+}
+
+#error-message{
+  width: 90%;
+  margin: 0;
+  display: inline-block;
+}
