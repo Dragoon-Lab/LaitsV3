@@ -133,6 +133,27 @@ define([
 			// Returns:	 an object of the form
 			//			{status: s, type: m, missingNode: n/soln: solution}
 		    var choice = isActive?this.active:this.given;
+		    console.log(choice);
+		    var min = 0;
+		    var max = 0;
+
+		    /*var val = choice.timeStep.parameters[node], min, max;
+				if(val==0){
+					transform = function(x){ return x; }; // identity function
+					min = -1;
+					max = 1;
+				}else if(val>0){
+					// Range from 1/10 to 10 times the nominal value
+					// Use logarithmic scale for the slider.
+					transform = Math.exp;
+					val = Math.log(val);
+					min = val - Math.log(10);
+					max = val + Math.log(10);
+				}else{
+					transform = function(x){ return x; }; // identity function
+					min = 2*val;
+					max = -2*val;
+				}*/
 
 		    var time = this.model.getTime();
             /*
@@ -143,8 +164,6 @@ define([
 				var solution;
 				console.log(this.model.getIntegrationMethod());
 				console.log(choice.timeStep.parameters);
-				console.log(choice.timeStep.parameters.id0);
-				choice.timeStep.parameters["id1"] = 5;
                 if(this.model.getIntegrationMethod() == "Midpoint Method")
 					solution = integrate.midpointMethod(
 					choice.timeStep, 
@@ -177,7 +196,7 @@ define([
 			 Given a solution, create an array of values for the
 			 list of plot variables.  The list may include function nodes.
 			 */
-
+			 var step = 1;
 			var nodes = [];			 
 			if(plotVariables){
 				// If id is null, then make row null
@@ -189,8 +208,8 @@ define([
 				var variables = lang.mixin({}, timeStep.parameters);
 				for(var k = start; k < stop; k += step){
 						nodes.push(k);
-						timeStep.parameters[node] = k;
-						variables = lang.mixin({}, timeStep.parameters);
+						variables[node] = k;
+						//variables = lang.mixin({}, parameters);
 						array.forEach(timeStep.functions, function(id){
 							variables[id] = timeStep.parse[id].evaluate(variables, time.start);
 						});
@@ -200,6 +219,7 @@ define([
 							}
 						});
 				}	
+				console.log(timeStep.parameters);
 				return {times: nodes, plotValues: plotValues};
 			}else{
 				return {status: 'solution', soln: solution};
@@ -222,7 +242,6 @@ define([
 				console.log(this.model.getIntegrationMethod());
 				console.log(choice.timeStep.parameters);
 				console.log(choice.timeStep.parameters.id0);
-				choice.timeStep.parameters["id1"] = 5;
                 if(this.model.getIntegrationMethod() == "Midpoint Method")
 					solution = integrate.midpointMethod(
 					choice.timeStep, 
@@ -448,6 +467,9 @@ define([
 				// this.createDom().
 				// Set width as number of characters.
 				this.dialogContent += "<input id=\"" + textBoxID[paramID] + "\" type=\"text\" size=10 value=\"" + sliderVars[paramID] + "\">";
+				console.log(sliderVars[paramID]);
+				console.log(sliderVars);
+				console.log(paramID);
 				units = this.model.active.getUnits(paramID);
 				if(units){
 					this.dialogContent += " " + units;

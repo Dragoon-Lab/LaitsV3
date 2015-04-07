@@ -78,8 +78,8 @@ define([
 			this.active.plotVariables = this.active.timeStep.xvars.concat(
 				this.active.timeStep.functions);
 			this.staticVar = 0;
-			console.log(this.staticVar);
 			var staticNodes = this.checkForParameters();
+			console.log(staticNodes[this.staticVar].ID);
 			var staticPlot = this.findStaticSolution(true, 0,10,1, staticNodes[this.staticVar].ID, this.active.plotVariables);
 			console.log(this.checkForParameters());
 			console.log(this.model.given.getNodes());
@@ -93,7 +93,6 @@ define([
 			 To include optional nodes,
 			 one would need to order them using topologicalSort
 			 */
-            console.log("length of active plot variables",this.active.plotVariables.length);
             var activeSolution = this.findSolution(true, this.active.plotVariables);
             if(activeSolution.status == "error" && activeSolution.type == "missing") {
 				// Return value from findSlution in calculation, returns an array and we check for status and any missing nodes
@@ -359,7 +358,7 @@ define([
 					if(this.mode != "AUTHOR"  && this.mode != "EDITOR" && this.given.plotVariables[k]){
 						chartsStatic[id].addSeries(
 							"Author's solution",
-							this.formatSeriesForChart(givenSolution, k), {stroke: "red"}
+							this.formatSeriesForChart(staticPlot, k), {stroke: "red"}
 						);
 					}
 					chartsStatic[id].render();
@@ -572,8 +571,9 @@ define([
 		renderStaticDialog: function(){
 				if(this.mode != "AUTHOR")
 				{
-					var staticNodes = this.checkForParameters();
-					var staticPlot = this.findStaticSolution(true, 0,10,1, staticNodes[0].ID, this.active.plotVariables);
+					var staticVar = this.checkStaticVar();
+					var activeSolution = this.findStaticSolution(true, 0,10,1, staticVar.ID, this.active.plotVariables);
+					var givenSolution = this.findStaticSolution(false, 0,10,1, staticVar.ID, this.active.plotVariables);
 					//update and render the charts
 					array.forEach(this.active.plotVariables, function(id, k){
 							// Calculate Min and Max values to plot on y axis based on given solution and your solution
@@ -606,8 +606,11 @@ define([
 				//update and render the charts
 					var staticVar = this.checkStaticVar();
 					var staticNodes = this.checkForParameters();
+					console.log("Static nodes:");
+					console.log(staticNodes);
 					var staticPlot = this.findStaticSolution(true, 0,10,1, staticVar.ID, this.active.plotVariables);
 					console.log(staticVar);
+					console.log(staticPlot);
 					array.forEach(this.active.plotVariables, function(id, k){
 							this.chartsStatic[id].updateSeries(
 								"Your solution",
