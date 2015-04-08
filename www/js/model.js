@@ -220,9 +220,7 @@ define([
 						throw new Error("Duplicate node id " + node.id);
 					}
 					if(node.name in names){
-						var duplicateNameId = names[node.name];
-						duplicateName.push(node.ID);
-						duplicateName.push(names[node.name]);
+						duplicateName[node.name] = node.ID;
 					}
 					if(node.description in descriptions){
 						var duplicateNodeId = descriptions[node.description];
@@ -252,18 +250,18 @@ define([
 				 Does not corretly handle case where student completes
 				 the model, deletes some nodes, and reopens the problem.
 				 */
+				var errorMessage = "";
 
 				if(Object.keys(duplicateName).length > 0){
 					var duplicateStr = "";
 					array.forEach(Object.keys(duplicateName), function(duplicate){
-			 		duplicateStr += duplicateName[duplicate] + ", ";
+			 		duplicateStr += duplicate + ", ";
 					});
 					duplicateStr = duplicateStr.substring(0, duplicateStr.length-2);
 
 					//throw error for duplicate names
-					throw new Error("The following nodes have the duplicate names:<br/><strong>"+ duplicateStr + "</strong>. Please change them to be unique.");
+					errorMessage = "Multiple nodes have same names:<br/><strong>"+ duplicateStr + "</strong>. Please change them to be unique.<br/><br/>";
 				}
-
 				if(Object.keys(duplicateDescription).length > 0){
 					var duplicateStr = "";
 					array.forEach(Object.keys(duplicateDescription), function(duplicate){
@@ -272,7 +270,10 @@ define([
 					duplicateStr = duplicateStr.substring(0, duplicateStr.length-2);
 
 					//throw error for duplicate descriptions
-					throw new Error("The following nodes have the duplicate descriptions:<br/><strong>"+ duplicateStr + "</strong>. Please change them to be unique.");
+					errorMessage += "The following nodes have the duplicate descriptions:<br/><strong>"+ duplicateStr + "</strong>. Please change them to be unique.";
+				}
+				if(errorMessage != ""){
+					throw new Error(errorMessage);
 				}
 
 				this.isCompleteFlag = this.matchesGivenSolution();

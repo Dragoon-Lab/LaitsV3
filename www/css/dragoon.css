@@ -243,9 +243,9 @@ input[type=radio]{
 }
 #error-message-close{
   float: right;
-  width: 10%;
   display: inline-block;
-  margin-top: 5px;
+  position: absolute;
+  top: 40%;
 }
 
 #error-message{
