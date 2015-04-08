@@ -227,6 +227,14 @@ define([
 					}
 				}
 				givenModel.active.setPosition(mover.node.id, {"x": g.x, "y": g.y});
+
+				//Update position for student node
+				if(controllerObject._mode == "AUTHOR"){
+					var studentNodeID = givenModel.student.getNodeIDFor(mover.node.id);
+					if(typeof studentNodeID !== "undefined" && studentNodeID != null ){
+						givenModel.student.setPosition(studentNodeID, {"x": g.x, "y": g.y});
+					}
+				}
 				// It would be more efficient if we only saved the changed node.
 				session.saveProblem(givenModel.model);	 // Autosave to server
 			}, true);
@@ -449,11 +457,27 @@ define([
                     // Save problem
 					var problemName = registry.byId("authorSaveProblem").value;
 					var groupName = registry.byId("authorSaveGroup").value;
-					if(problemName&&problemName=='' || groupName&&groupName==''){
-						alert('Missing input ');
-						return; 
+					var checkProblemName = new RegExp('^[A-Za-z0-9\-]+$');
+
+					if(typeof problemName !== 'undefined' && problemName==''){
+						alert('Missing Problem Name');
+						return;
+					}else if(typeof groupName!=='undefined' && groupName==''){	
+						alert('Missing Group Name');
+						return;
+					}else if(problemName && problemName.length > 0 && problemName.length<=30 && checkProblemName.test(problemName)){
+						var checkHyphen = new RegExp('^[\-]+$');
+						if(!checkHyphen.test(problemName)){
+							session.saveAsProblem(givenModel.model,problemName,groupName); 
+						} else{
+							alert("Problem names must contain atleast one alphanumeric character.");
+							return;
+						}
+					}else{
+						alert("Problem names must be between 1 and 30 characters, and may only include alphanumeric characters and the \"-\" symbol");
+						return;
 					}
-					session.saveAsProblem(givenModel.model,problemName,groupName);                    
+
                 });
                 
                 //Author Save Dialog - check for name conflict on losing focus
