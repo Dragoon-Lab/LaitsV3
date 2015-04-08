@@ -300,17 +300,19 @@ define([
 				}
 				session.saveProblem(givenModel.model);
 				//This section errors out in author mode
-                var descDirective=controllerObject._model.student.getStatusDirectives(controllerObject.currentID);
-                var directive = null;
-                for(i=0;i<descDirective.length;i++){
-                    if(descDirective[i].id=="description")
-                            directive=descDirective[i];
-                        
-                }
-                if(controllerObject._mode !== "TEST" && controllerObject._mode !== "EDITOR"){
-                	if(directive&&(directive.value=="incorrect" || directive.value=="premature"))
-                            drawModel.deleteNode(controllerObject.currentID);
-                }
+				if(controllerObject._mode !== "AUTHOR"){
+	                var descDirective=controllerObject._model.student.getStatusDirectives(controllerObject.currentID);
+	                var directive = null;
+	                for(i=0;i<descDirective.length;i++){
+	                    if(descDirective[i].id=="description")
+	                            directive=descDirective[i];
+	                        
+	                }
+	                if(controllerObject._mode !== "TEST" && controllerObject._mode !== "EDITOR"){
+	                	if(directive&&(directive.value=="incorrect" || directive.value=="premature"))
+	                            drawModel.deleteNode(controllerObject.currentID);
+	                }
+           		}
     		});
 			
 			// Wire up close button...
