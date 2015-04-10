@@ -28,7 +28,7 @@
         "lessonsLearned": [
             "The graph of the quantity \"books\" is a straight line headed upwards. This type of behavior is called \"linear growth.\"",
             "The simplest model that exhibits linear growth is exactly like the one you just constructed: An accumulator with a",
-            "parameter whose value is repeatedly added to the accumulator&apos;s value."
+            "parameter whose value is repeatedly added to the accumulator's value."
         ],
         "slides": [
             {
