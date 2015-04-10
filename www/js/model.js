@@ -592,27 +592,61 @@ define([
 				var idMap = {};
 
 				var nodes = model.task.givenModelNodes;
+				
+				var currentGivenNodes = obj.model.task.givenModelNodes;
+				var isNewProblem = false;
+				if(currentGivenNodes.length == 0){
+					obj.model.task.givenModelNodes = nodes;
+					obj.model.task.schemas = model.task.schemas;
+					isNewProblem = true;
+				}
+
+				var currentSNodes = obj.model.task.studentModelNodes;
+				if(currentSNodes.length == 0 && isNewProblem){
+					obj.model.task.studentModelNodes = model.task.studentModelNodes;
+				}
+				
+				if(isNewProblem){
+					var index = 0;
+					array.forEach(nodes, function(node){
+						ids[index] = node.ID;
+						index++;
+					});
+
+					return ids;
+				}
 
 				//copy author nodes
 				array.forEach(nodes,function(node){
                		obj._updateNextXYPosition();
 					node.position = {x: obj.x, y: obj.y};
-					var nID = "id" + obj._ID; //replace old id with new ID
+					var newID = parseInt(node.ID.replace("id", "")) + shift;
+					var nID = "id" + newID; //replace old id with new ID
 					idMap[node.ID]=nID; //store old ID vs new ID
 					node.ID =nID;
-					node.name=node.name+obj._ID;
-					node.description=node.description+obj._ID;
+					
+					if(obj.active.getNodeIDByName(node.name)){
+						node.name=node.name+"_duplicate";
+					}
+					if(obj.active.getNodeIDByDescription(node.description)){
+						node.description=node.description+"_duplicate";
+					}
 					ids.push(node.ID);
+
 					/*trick to update equations with new ids */
 					if(node.equation){
 						var equation = node.equation;
-						var nEquation=equation.replace(/(\d+)+/g, function(match, number) {
-       							return parseInt(number)+shift;
+						console.log("sachin shift value "+ shift);
+						var nEquation=equation.replace(/(id\d+)+/g, function(match, str) {
+								var number = str.replace("id", "");
+       							return "id"+(parseInt(number)+shift);
        						});
 						//also update inputs for graph generation
 						for(i=0;i<node.inputs.length;i++){
 							node.inputs[i].ID=node.inputs[i].ID.replace(/\d+$/, function(n){ return parseInt(n)+shift });//shift = total nodes in old model
+
 						}
+
 						node.equation=nEquation;
 					}
 					obj._ID=obj._ID+1; //for next coming node
@@ -625,11 +659,12 @@ define([
 				array.forEach(snodes,function(node){
 					obj._updateNextXYPosition(true);
 					node.position = {x: obj.x, y: obj.y};
-					var nID = "id" + obj._ID; //replace old id with new ID
+					var newID = parseInt(node.ID.replace("id", "")) + shift;
+					var nID = "id" + newID; //replace old id with new ID
 					sIDMap[node.ID]=nID; //store old vs new StudentIDs
 					node.ID =nID;
-					node.name=node.name+obj._ID;
-					node.description=node.description+obj._ID;
+					//node.name=node.name+obj._ID;
+					//node.description=node.description+obj._ID;
 					node.descriptionID=idMap[node.descriptionID]; //new DescriptionID of Node
 					sids.push(node.ID);
 					obj._ID=obj._ID+1; //for next coming node
@@ -644,16 +679,15 @@ define([
 						var isExpressionValid = true;
 						var equation = snode.equation;
 						array.forEach(snode.inputs, lang.hitch(this, function(input){
-				   			  var studentNodeID = sIDMap[input.ID];
-					 		  if(studentNodeID){
-									inputs.push({ "ID": studentNodeID});
-									var regexp = "(" +input.ID +")([^0-9]?)";
-									var re = new RegExp(regexp);
-									equation = equation.replace(re, studentNodeID+"$2");
-								}
-								else{
-									isExpressionValid = false;
-								}
+				   			var studentNodeID = sIDMap[input.ID];
+					 		if(studentNodeID){
+								inputs.push({ "ID": studentNodeID});
+								var regexp = "(" +input.ID +")([^0-9]?)";
+								var re = new RegExp(regexp);
+								equation = equation.replace(re, studentNodeID+"$2");
+							}else{
+								isExpressionValid = false;
+							}
 						}));
 						if(isExpressionValid){
 							snode.inputs=inputs;

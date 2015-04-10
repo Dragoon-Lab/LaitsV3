@@ -431,8 +431,8 @@ define([
 								var ids = givenModel.active.mergeNodes(solutionGraph);
 								//var snodes = solutionGraph.task.studentModelNodes;
 								//var sids = givenModel.active.mergeNodes(snodes,true);
+								givenModel.loadModel(givenModel.model);	
 								
-								session.saveProblem(givenModel.model);
 								//add merged nodes
 								array.forEach(ids,function(id){	
 									var node = 	givenModel.active.getNode(id);
@@ -443,10 +443,11 @@ define([
 									var node = 	givenModel.active.getNode(id);
 									drawModel.setConnections(node.inputs,dojo.byId(id));
 								},this);
+								session.saveProblem(givenModel.model); //moved the saving part to the end of the function call so that if anything breaks the broken model is not saved.
 								registry.byId("authorMergeDialog").hide();
 							}else{
 								console.log("Problem Not found");
-								alert("Problem Not found");
+								alert("Problem Not found, please check the problem name you have entered.");
 							}
                		 });
 				});
