@@ -20,9 +20,9 @@
             "Analysis:",
             "* Process: buying books",
             "* Source: irrelevant",
-            "* Destination: Rodâ€™s books",
+            "* Destination: Rod's books",
             "* Changing: a constant number, 2, of books changes state each week",
-            "Implementation: See image above, but change the numbers and names. Or see the problem â€œconstantâ€� in the problem",
+            "Implementation: See image above, but change the numbers and names. Or see the problem constant in the problem",
             "set generic changes."
         ],
         "lessonsLearned": [
