@@ -35,7 +35,6 @@ define([
 	// Description:
 	//			Displays messages in a messagbox at the top of page
 	//			on dragoon problems.
-	//			type can take values: error, success, info, warn
 	// Tags:
 	//			Messagebox, Error, Info, Warn, Success
 
@@ -46,6 +45,8 @@ define([
 		_message: null,
 		
 		constructor: function(/* String */ container, /* String */ type, /* String */ message){
+		//	container: Id of the container 
+		//	type can have following values : error, success, info, warn
 			_container = container;
 			_type = type;
 			_message = message;
@@ -57,20 +58,21 @@ define([
 			var nl = query(".error-message");
 			var idCount = nl.length;
 			//Create Outer Div
-			var messageOuterDiv = domConstruct.create("div", {
+			messageOuterDiv = domConstruct.create("div", {
 				id: _container+ "message-outer-"+ idCount, 
 				class:"messageBox messageBox-"+_type });
 			_messageBox = messageOuterDiv;
 
 			//Create Message Text Div
-			var messageTextDiv  = domConstruct.create("div", { id: _container + "-message-text-"+ idCount, class:"error-message", innerHTML: _message});		
+			var messageTextDiv  = domConstruct.create("div", {
+				id: _container + "-message-text-"+ idCount, 
+				class:"error-message", innerHTML: _message });		
 			domConstruct.place(messageTextDiv, messageOuterDiv , "first");
 
 			//Create Error Message Div
 			var errorMessageCloseDiv = domConstruct.create("div", { 
 				id: _container + "-message-close-"+ idCount, class:"error-message-close",
-				innerHTML: "<img src='images/close.png' width='12px' height='12px'>"
-				});
+				innerHTML: "<img src='images/close.png' width='12px' height='12px'>" });
 			domConstruct.place(errorMessageCloseDiv, messageOuterDiv);
 
 			var handler = on(messageOuterDiv, "click", function(){
@@ -86,7 +88,9 @@ define([
 					    handler.remove();
 			    	});
 
+			//add message box to container.
 			domConstruct.place(messageOuterDiv, _container, "last");
+			style.set(_messageBox, "display", "none");
 		},
 
 		show: function(){
