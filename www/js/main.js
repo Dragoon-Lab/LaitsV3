@@ -47,12 +47,13 @@ define([
 	"./createSlides",
 	"./lessons-learned",
 	"./schemas-author",
+	"./message-box",
 	"./tincan"
 ], function(
 		array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry, toolTip,
 		menu, loadSave, model,
 		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, equation, 
-		description, State, typechecker, slides, lessonsLearned, schemaAuthor, tincan
+		description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan
 ){
 	// Summary: 
 	//			Menu controller
@@ -86,20 +87,11 @@ define([
 				givenModel.loadModel(solutionGraph);
 			}catch(error){
 				if(query.m == "AUTHOR"){
-					dom.byId("error-message").innerHTML = error.message;
-			    	style.set("errorMessageBox", "display", "block");
-			    	var handler = on(dom.byId("error-message-close"), "click", function(){
-			    		//Fade Out
-					    dojo.style("errorMessageBox", "opacity", "1");
-					    var fadeArgs = {
-					        node: "errorMessageBox"
-					    };
-					    dojo.fadeOut(fadeArgs).play();
-					    handler.remove();
-			    	});
+					var errorMessage = new messageBox("errorMessageBox", "error", error.message);
+			    	errorMessage.show();
 			    }else {
-			    	dom.byId("error-message").innerHTML = "This problem could not be loaded. Please contact the problem's author.";
-			    	style.set("errorMessageBox", "display", "block");
+			    	var errorMessage = new messageBox("errorMessageBox", "error", "This problem could not be loaded. Please contact the problem's author.");
+			    	errorMessage.show();
 			    	throw Error("Model could not be loaded.");
 			    }
 			}

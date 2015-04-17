@@ -260,7 +260,7 @@ define([
 					duplicateStr = duplicateStr.substring(0, duplicateStr.length-2);
 
 					//throw error for duplicate names
-					errorMessage = "Multiple nodes have same names:<br/><strong>"+ duplicateStr + "</strong>. Please change them to be unique.<br/><br/>";
+					errorMessage = "Multiple nodes have same names: <strong>"+ duplicateStr + "</strong>. Please change them to be unique.<br/><br/>";
 				}
 				if(Object.keys(duplicateDescription).length > 0){
 					var duplicateStr = "";
@@ -270,7 +270,7 @@ define([
 					duplicateStr = duplicateStr.substring(0, duplicateStr.length-2);
 
 					//throw error for duplicate descriptions
-					errorMessage += "The following nodes have the duplicate descriptions:<br/><strong>"+ duplicateStr + "</strong>. Please change them to be unique.";
+					errorMessage += "The following nodes have the duplicate descriptions: <strong>"+ duplicateStr + "</strong>. Please change them to be unique.";
 				}
 				if(errorMessage != ""){
 					throw new Error(errorMessage);

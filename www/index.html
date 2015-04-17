@@ -139,15 +139,10 @@
 		 <button type="button" data-dojo-type="dijit/form/Button" id="lessonsLearnedButton" disabled="true">Lessons Learned</button>
 	     <button type="button" data-dojo-type="dijit/form/Button" id="doneButton">Done</button>
 	</div> <!-- Menubar -->
+
         <div id="drawingPane" class="restrict-vscroll" data-dojo-type="dijit/layout/ContentPane" region="center">
-		
+        <div id="errorMessageBox"></div>
 		<!--<div id="tableGrid" data-dojo-type="dijit/layout/ContentPane" region="center"></div>-->
-		
-        
-          <div id="errorMessageBox" style="display:none;">
-            <div id="error-message">Error Message</div>
-            <div id="error-message-close"><img src="images/close.png" width="20px" height="20px"></div>
-          </div>
 		<!-- Putting jsPlumb-stuff for demo -->
 		 <canvas id="myCanvas" height = "800" width="800"></canvas>
 		<div class="demo statemachine-demo" id="statemachine-demo">
