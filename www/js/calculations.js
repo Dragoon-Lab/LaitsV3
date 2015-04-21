@@ -128,12 +128,15 @@ define([
 			return timeStep;
 		},
 		
-		findStaticSolution: function(isActive, start, stop, step, node, plotVariables){
+		findStaticSolution: function(isActive, givennode, plotVariables){
 			// Summary:	 Find a solution
 			// Returns:	 an object of the form
 			//			{status: s, type: m, missingNode: n/soln: solution}
 		    var choice = isActive?this.active:this.given;
-		    console.log(choice);
+		    var node = givennode.ID;
+		    var start = givennode.initial / 10;
+		    var stop = givennode.initial * 10;
+		    var step = (stop - start) / 10;
 		    var min = 0;
 		    var max = 0;
 

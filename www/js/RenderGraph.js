@@ -27,7 +27,7 @@
 define([
 	"dojo/_base/array", "dojo/_base/declare",
 	"dojo/_base/lang", "dojo/on", 'dojo/dom-attr',
-	"dijit/registry",
+	"dijit/registry", "dijit/form/ComboBox", "dojo/store/Memory",
 	"dojox/charting/Chart",
 	"dojox/charting/axis2d/Default",
 	"dojox/charting/plot2d/Lines",
@@ -41,9 +41,8 @@ define([
 	"./integrate",
 	"dijit/layout/TabContainer",
 	"dojo/parser",
-	
 	"dojo/domReady!"
-], function(array, declare, lang, on, domAttr, registry, Chart, Default, Lines, Grid, Legend, calculations, logger, base, contentPane, dom, integrate){
+], function(array, declare, lang, on, domAttr, registry, ComboBox, Memory, Chart, Default, Lines, Grid, Legend, calculations, logger, base, contentPane, dom, integrate){
 
 	// The calculations constructor is loaded before the RenderGraph constructor
 	return declare(calculations, {
@@ -78,9 +77,9 @@ define([
 			this.active.plotVariables = this.active.timeStep.xvars.concat(
 				this.active.timeStep.functions);
 			this.staticVar = 0;
-			var staticNodes = this.checkForParameters();
-			console.log(staticNodes[this.staticVar].ID);
-			var staticPlot = this.findStaticSolution(true, 0,10,1, staticNodes[this.staticVar].ID, this.active.plotVariables);
+			staticNodes = this.checkForParameters();
+			console.log(staticNodes[this.staticVar]);
+			var staticPlot = this.findStaticSolution(true, staticNodes[this.staticVar], this.active.plotVariables);
 			console.log(this.checkForParameters());
 			console.log(this.model.given.getNodes());
 			console.log(this.active.plotVariables);
@@ -112,6 +111,7 @@ define([
 				}, this);
 				// Calculate solutions
 				var givenSolution = this.findSolution(false, this.given.plotVariables);
+				var staticGiven = this.findStaticSolution(false, 0,10,1, staticNodes[this.staticVar].ID, this.active.plotVariables);
 			}
 			this.resizeWindow();
 
@@ -142,13 +142,11 @@ define([
 
 			this.dialogContent += "<div id='StaticTab' data-dojo-type='dijit/layout/ContentPane' style='overflow:visible' selected = true data-dojo-props='title:\"Static\"'>"
 
-			this.dialogContent += "<select data-dojo-type='dijit/form/ComboBox' id='staticSelect' name='staticSelect' data-dojo-id='combo'>"
-			    array.forEach(staticNodes, function(node){
-			    	this.dialogContent += "<option>";
-			    	this.dialogContent += node.description;
-			    	this.dialogContent += "</option>";
-			    },this);
-			this.dialogContent += "</select>"
+			this.dialogContent += "<input id='staticSelect'>";
+
+
+
+
 
 			array.forEach(this.active.plotVariables, function(id){
 				var show = this.model.active.getType(id) == "accumulator" || this.model.given.getParent(this.model.active.getGivenID(id));
@@ -161,7 +159,7 @@ define([
 			}, this);
 
 			//end divs for graph and table 
-			this.dialogContent += "</div></div></div>"
+			this.dialogContent += "</div></div></div>";
 
 			//create content pane for sliders
 			this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' style='overflow:auto; width:40%; float:right; height: 100%; background-color: #FFFFFF'>";
@@ -196,7 +194,7 @@ define([
 
 			this.createSliderAndDialogObject();	
 
-						var graphTab = null;
+			var graphTab = null;
 			var tableTab = null;
 			var staticTab = null;
 			var count = -1;
@@ -222,6 +220,7 @@ define([
 				});
 			});
 
+
 			graphTab.style.border = "thin solid black";
 			tableTab.style.border = "thin solid black";
 			staticTab.style.border = "thin solid black";
@@ -232,6 +231,8 @@ define([
 			****************************/
 
 			
+			this.createComboBox(staticNodes);
+
 			console.log(staticPlot);
 
 			var charts = {};
@@ -319,6 +320,11 @@ define([
 			}
 
 
+			
+			var staticVar = this.checkStaticVar(true);
+			staticPlot = this.findStaticSolution(true, staticVar, this.active.plotVariables);
+			staticVar = this.checkStaticVar(false);			
+			givenPlot = this.findStaticSolution(false, staticVar, this.active.plotVariables);
 			console.log(staticPlot);
 			console.log(staticPlot.plotValues);
 			if(this.active.plotVariables.length > 0){ //we check the length of object, if there are nodes, then we proceed else give an error and return
@@ -358,7 +364,7 @@ define([
 					if(this.mode != "AUTHOR"  && this.mode != "EDITOR" && this.given.plotVariables[k]){
 						chartsStatic[id].addSeries(
 							"Author's solution",
-							this.formatSeriesForChart(staticPlot, k), {stroke: "red"}
+							this.formatSeriesForChart(staticGiven, k), {stroke: "red"}
 						);
 					}
 					chartsStatic[id].render();
@@ -379,6 +385,8 @@ define([
                 if(modStatus)
 				    this.dialogWidget.set("content", "<div>There isn't anything to plot. Try adding some accumulator or function nodes.</div>"); //Error telling there are no nodes and graph cant be rendered
 			}*/
+
+
 
 			this.chart = charts;
 			this.chartsStatic = chartsStatic;
@@ -434,6 +442,43 @@ define([
 			return array.map(result.times, function(time, k){
 				return {x: time, y: result.plotValues[j][k]};
 			});
+		},
+
+		createComboBox: function(staticNodes){
+			/*var tempData = [];
+			var temp = {id:1, name:1};
+			console.log(staticNodes);
+			array.forEach(staticNodes, function(node)
+			{
+				temp.id = node.description;
+				temp.name = node.description;
+				tempData.add(temp);
+			});
+			console.log(tempData);*/
+			var stateStore = new Memory();
+
+			array.forEach(staticNodes, function(node)
+			{
+				stateStore.put({id:node.description, name:node.description});
+			});
+    var comboBox = new ComboBox({
+        id: "staticSelect",
+        name: "state",
+        value: staticNodes[0].description,
+        store: stateStore,
+        searchAttr: "name"
+    }, "staticSelect");
+    	console.log(comboBox);
+    	this.registerEventOnStaticChange(comboBox);
+    	on(comboBox, "change", lang.hitch(this, function(){
+				this.renderStaticDialog();
+			}));
+		},
+
+
+		registerEventOnStaticChange: function(){
+			
+			
 		},
 
 		doLayout: function()
@@ -571,13 +616,12 @@ define([
 		renderStaticDialog: function(){
 				if(this.mode != "AUTHOR")
 				{
-					var staticVar = this.checkStaticVar();
-					var activeSolution = this.findStaticSolution(true, 0,10,1, staticVar.ID, this.active.plotVariables);
-					var givenSolution = this.findStaticSolution(false, 0,10,1, staticVar.ID, this.active.plotVariables);
+					var staticVar = this.checkStaticVar(true);
+					var activeSolution = this.findStaticSolution(true, staticVar, this.active.plotVariables);
 					//update and render the charts
 					array.forEach(this.active.plotVariables, function(id, k){
 							// Calculate Min and Max values to plot on y axis based on given solution and your solution
-							var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
+							/*var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
 							var givenObj = this.getMinMaxFromArray(givenSolution.plotValues[k]);				
 							if(givenObj.min < obj.min){
 								obj.min = givenObj.min;
@@ -591,26 +635,23 @@ define([
 									min: obj.min,
 									max: obj.max,
 									title: this.labelString(id)
-									});
-							this.chart[id].updateSeries(
+									});*/
+							console.log(id);
+							console.log(this.chartsStatic);
+							this.chartsStatic[id].updateSeries(
 								"Your solution",
 								this.formatSeriesForChart(activeSolution, k),
 								{stroke: "green"}
 							);
-							this.chart[id].render();
+							this.chartsStatic[id].render();
 						
 					}, this);
 				}
 				else
 				{
 				//update and render the charts
-					var staticVar = this.checkStaticVar();
-					var staticNodes = this.checkForParameters();
-					console.log("Static nodes:");
-					console.log(staticNodes);
-					var staticPlot = this.findStaticSolution(true, 0,10,1, staticVar.ID, this.active.plotVariables);
-					console.log(staticVar);
-					console.log(staticPlot);
+					var staticVar = this.checkStaticVar(true);
+					var staticPlot = this.findStaticSolution(true, staticVar, this.active.plotVariables);
 					array.forEach(this.active.plotVariables, function(id, k){
 							this.chartsStatic[id].updateSeries(
 								"Your solution",
@@ -623,17 +664,44 @@ define([
 				}
 		},
 
-		checkStaticVar: function(){			
-			var parameters = this.checkForParameters();
+		checkStaticVar: function(choice){	//true is active, false is given 		
+			var parameters = this.checkForParameters(choice);
 			var result = parameters[0];
 			var staticSelect = dom.byId("staticSelect");
 			console.log(staticSelect.value);
-			array.forEach(parameters, function(parameter){
-				if(parameter.description == staticSelect.value)
-				{
-					result = parameter;
-				}
-			}, this);
+			console.log(parameters);
+
+
+			if(typeof parameters[0].description != 'undefined')
+			{
+				array.forEach(parameters, function(parameter){
+					
+					if(parameter.description == staticSelect.value)
+					{
+						console.log(parameter);
+						result = parameter;
+					}
+				}, this);
+			}
+			else
+			{
+				var givenParameters = this.checkForParameters(false);
+				var tempResult = givenParameters[0];
+				array.forEach(givenParameters, function(parameter){					
+					if(parameter.description == staticSelect.value)
+					{
+						tempResult = parameter;
+					}
+				}, this);
+				console.log(tempResult);
+				array.forEach(parameters, function(parameter){
+					console.log(parameter);
+					if(parameter.descriptionID == tempResult.ID)
+					{
+						result = parameter;
+					}
+				}, this);
+			}
 			return result;
 		}, 
 
@@ -703,16 +771,30 @@ define([
 			return nan;
 		},
 
-		checkForParameters: function(){
+		checkForParameters: function(choice){ //true is active, false is given 
 			var result = [];
-			array.forEach(this.model.given.getNodes(), function(node)
+			if(choice === true)
 			{
-				console.log(node);
-				if(node.type == "parameter")
+				array.forEach(this.model.active.getNodes(), function(node)
 				{
-					result.push(node);
-				}
-			}, this);
+					console.log(node);
+					if(node.type == "parameter")
+					{
+						result.push(node);
+					}
+				}, this);
+			}
+			else
+			{
+				array.forEach(this.model.given.getNodes(), function(node)
+				{
+					console.log(node);
+					if(node.type == "parameter")
+					{
+						result.push(node);
+					}
+				}, this);
+			}
 			return result;
 		}
 	});
