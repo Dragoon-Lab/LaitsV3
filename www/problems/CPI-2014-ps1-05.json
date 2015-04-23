@@ -28,7 +28,7 @@
             "* Changing 2: a constant 3 assignments changes state each week"
         ],
         "lessonsLearned": [
-            "This model combines linear growth and linear decay. If you play with the sliders, you&apos;ll see that regardless of the values",
+            "This model combines linear growth and linear decay. If you play with the sliders, you'll see that regardless of the values",
             "of the parameters, the graph is always a straight line. Thus, if you combine two or more linear changes, you get a linear",
             "change."
         ],

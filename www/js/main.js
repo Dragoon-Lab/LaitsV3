@@ -47,12 +47,13 @@ define([
 	"./createSlides",
 	"./lessons-learned",
 	"./schemas-author",
+	"./message-box",
 	"./tincan"
 ], function(
 		array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry, toolTip,
 		menu, loadSave, model,
 		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, equation, 
-		description, State, typechecker, slides, lessonsLearned, schemaAuthor, tincan
+		description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan
 ){
 	// Summary: 
 	//			Menu controller
@@ -82,7 +83,18 @@ define([
 		var givenModel = new model(query.m, query.p);
 		logging.session.log('open-problem', {problem : query.p});
 		if(solutionGraph){
-			givenModel.loadModel(solutionGraph);
+			try{
+				givenModel.loadModel(solutionGraph);
+			}catch(error){
+				if(query.m == "AUTHOR"){
+					var errorMessage = new messageBox("errorMessageBox", "error", error.message);
+			    	errorMessage.show();
+			    }else {
+			    	var errorMessage = new messageBox("errorMessageBox", "error", "This problem could not be loaded. Please contact the problem's author.");
+			    	errorMessage.show();
+			    	throw Error("Model could not be loaded.");
+			    }
+			}
 		}
 		/*
 		 start up controller
@@ -280,17 +292,19 @@ define([
 				}
 				session.saveProblem(givenModel.model);
 				//This section errors out in author mode
-                var descDirective=controllerObject._model.student.getStatusDirectives(controllerObject.currentID);
-                var directive = null;
-                for(i=0;i<descDirective.length;i++){
-                    if(descDirective[i].id=="description")
-                            directive=descDirective[i];
-                        
-                }
-                if(controllerObject._mode !== "TEST" && controllerObject._mode !== "EDITOR"){
-                	if(directive&&(directive.value=="incorrect" || directive.value=="premature"))
-                            drawModel.deleteNode(controllerObject.currentID);
-                }
+				if(controllerObject._mode !== "AUTHOR"){
+	                var descDirective=controllerObject._model.student.getStatusDirectives(controllerObject.currentID);
+	                var directive = null;
+	                for(i=0;i<descDirective.length;i++){
+	                    if(descDirective[i].id=="description")
+	                            directive=descDirective[i];
+	                        
+	                }
+	                if(controllerObject._mode !== "TEST" && controllerObject._mode !== "EDITOR"){
+	                	if(directive&&(directive.value=="incorrect" || directive.value=="premature"))
+	                            drawModel.deleteNode(controllerObject.currentID);
+	                }
+           		}
     		});
 			
 			// Wire up close button...

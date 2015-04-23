@@ -759,7 +759,14 @@ define([
 
 			//false value is set because while creating a name we are already checking for uniqueness and checking again while re-opening the node is not needed.
 			if(name){
-				this.applyDirectives(this.authorPM.process(false, "name", name, equation.isVariable(name)));
+				var nodes = this._model.given.getNodes();
+				var isDuplicateName = false;
+				array.forEach(nodes, lang.hitch(this, function(node){
+					if(node.name == this._model.given.getName(this.currentID) && node.ID != this.currentID)
+						isDuplicateName = true;
+				}));
+
+				this.applyDirectives(this.authorPM.process(isDuplicateName, "name", name, equation.isVariable(name)));
 			}
 			//color kind widget
 			if(this._model.given.getGenus(this.currentID) === '' || this._model.given.getGenus(this.currentID)){
@@ -768,7 +775,14 @@ define([
 			//color description widget
 			//uniqueness taken care of by the handler while adding a new value. So a false value sent.
 			if(this._model.given.getDescription(this.currentID)){
-				this.applyDirectives(this.authorPM.process(false, "description", this._model.given.getDescription(this.currentID)));
+				var nodes = this._model.given.getNodes();
+				var isDuplicateDescription = false;
+				array.forEach(nodes, lang.hitch(this, function(node){
+					if(node.description == this._model.given.getDescription(this.currentID) && node.ID != this.currentID)
+						isDuplicateDescription = true;
+				}));
+
+				this.applyDirectives(this.authorPM.process(isDuplicateDescription, "description", this._model.given.getDescription(this.currentID)));
 			}
 			//color units widget
 			var unitsChoice = this._model.given.getUnits(this.currentID);

@@ -213,18 +213,21 @@ define([
 				 and descriptions are distinct, if they are defined.
 				 */
 				var ids = {}, names = {}, descriptions = {};
+				var duplicateDescription = [];
+				var duplicateName = [];
 				array.forEach(this.given.getNodes(), function(node){
 					if(node.ID in ids){
 						throw new Error("Duplicate node id " + node.id);
 					}
 					if(node.name in names){
-						throw new Error("Duplicate node name \"" + node.name +
-								"\" for " + node.ID + " and " + names[node.name]);
+						duplicateName[node.name] = node.ID;
 					}
 					if(node.description in descriptions){
-						throw new Error("Duplicate node description \"" + node.description +
-								"\" for " + node.ID + " and " + descriptions[node.description]);
+						var duplicateNodeId = descriptions[node.description];
+						duplicateDescription[node.ID] = node.name;
+						duplicateDescription[duplicateNodeId] = this.given.getName(duplicateNodeId);			
 					}
+
 					ids[node.ID] = true;
 					if(node.name){
 						names[node.name] = node.ID;
@@ -247,6 +250,32 @@ define([
 				 Does not corretly handle case where student completes
 				 the model, deletes some nodes, and reopens the problem.
 				 */
+				var errorMessage = "";
+
+				if(Object.keys(duplicateName).length > 0){
+					var duplicateStr = "";
+					array.forEach(Object.keys(duplicateName), function(duplicate){
+			 		duplicateStr += duplicate + ", ";
+					});
+					duplicateStr = duplicateStr.substring(0, duplicateStr.length-2);
+
+					//throw error for duplicate names
+					errorMessage = "Multiple nodes have same names: <strong>"+ duplicateStr + "</strong>. Please change them to be unique.<br/><br/>";
+				}
+				if(Object.keys(duplicateDescription).length > 0){
+					var duplicateStr = "";
+					array.forEach(Object.keys(duplicateDescription), function(duplicate){
+						duplicateStr += duplicateDescription[duplicate] + ", ";
+					});
+					duplicateStr = duplicateStr.substring(0, duplicateStr.length-2);
+
+					//throw error for duplicate descriptions
+					errorMessage += "The following nodes have the duplicate descriptions: <strong>"+ duplicateStr + "</strong>. Please change them to be unique.";
+				}
+				if(errorMessage != ""){
+					throw new Error(errorMessage);
+				}
+
 				this.isCompleteFlag = this.matchesGivenSolution();
 			},
 

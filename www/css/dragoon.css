@@ -236,3 +236,45 @@ input[type=radio]{
 .dijitButtonContents{
     padding: 2px 4px 4px 4px;
 }
+
+.messageBox{
+  position: relative;
+  padding: 15px;
+  border-radius: 7px;
+  margin: 0 auto;
+  width: 60%;
+  text-align: center;
+  margin-bottom:8px;
+}
+.error-message-close{
+  float: right;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+
+.error-message{
+  width: 90%;
+  margin: 0;
+  display: inline-block;
+}
+
+.messageBox-error{
+   background-color: rgba(255,0,0,0.1);
+   border: 2px solid red;
+}
+
+.messageBox-info{
+   background-color: rgba(52,152,219,0.2);
+   border: 2px solid #3498DB;
+}
+
+.messageBox-success{
+   background-color: rgba(39,174,96,0.2);
+   border: 2px solid #27AE60;
+}
+
+.messageBox-warn{
+   background-color: rgba(243,156,18,0.2);
+   border: 2px solid #F39C12;
+}

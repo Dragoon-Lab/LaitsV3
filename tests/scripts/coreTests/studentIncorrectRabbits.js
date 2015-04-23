@@ -23,7 +23,7 @@ var sync = require('synchronize');
 // import wrapper for asynchronous functions
 var async = sync.asyncIt;
 
-describe("Test student mode:", function() {
+describe("Student mode with incorrect rabbits", function() {
 
     before(async(function (done) {
             dtest.openProblem(client,[["problem","rabbits"],["mode","STUDENT"],
