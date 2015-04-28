@@ -1,4 +1,4 @@
-/**
+/*
  *Dragoon Project
  *Arizona State University
  *(c) 2014, Arizona Board of Regents for and on behalf of Arizona State University
@@ -35,7 +35,7 @@ define([
 
 		initSchemaSession: function(){
 			array.forEach(this._schemas, function(schema){
-				this._session.logSchema(schema.ID, schema.difficulty);
+				this._session.logSchema(schema.schema_class, schema.difficulty);
 			}, this);
 		},
 
@@ -43,7 +43,7 @@ define([
 			this._schemas = this._model.student.getSchemas();
 			array.forEach(this._schemas, function(schema){
 				var resultJSON;
-				this._session.getSchemaApplication(schema.ID).then(function(result){
+				this._session.getSchemaApplication(schema.schema_class).then(function(result){
 					resultJSON = result;
 				});
 				resultJSON = json.parse(resultJSON);
@@ -83,7 +83,7 @@ define([
 		saveSchema: function(){
 			this._model.student.setSchemas(this._schemas);
 			array.forEach(this._schemas, function(schema){
-				this._session.updateSchemaApplication(schema.ID, schema.competence);
+				this._session.updateSchemaApplication(schema.schema_class, schema.competence);
 			}, this);
 		},
 	
