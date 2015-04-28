@@ -224,7 +224,9 @@
         "studentModelNodes": [],
         "schemas": [
             {
-                "ID": "exponential_transfer",
+                "ID": "schema1",
+                "name": "Exponential",
+                "schema_class": "exponential transfer",
                 "difficulty": {
                     "isolation": 0,
                     "cues": 0,
