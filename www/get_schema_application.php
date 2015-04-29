@@ -26,7 +26,7 @@ where
 	AND user = '".$user."' 
 	AND section = '".$section."' ".
 	(($problem != "")?$problemString:"")."
-ORDER BY time desc limit 1;";
+ORDER BY tid desc limit 1;";
 
 $result = $mysqli->query($query)
 	or trigger_error("Previous schema query failed ".$mysqli->error );
