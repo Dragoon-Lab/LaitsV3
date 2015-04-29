@@ -291,16 +291,17 @@ define([
         },
 
         checkIfNodeIsComplete: function(){
+            alert("checkIfCompleteisCalled");
             var thisModel = this;
             var modStatus = true;
             array.forEach(this.model.active.getNodes(), function (thisnode) {
-                if((thisModel.model.active.getUnits(thisnode.ID)==undefined) && (thisModel.model.given.getUnits(thisModel.model.active.getGivenID(thisnode.ID))!=undefined)&&(thisModel.model.given.getUnits(thisModel.model.active.getGivenID(thisnode.ID)))!=''){
-                    thisModel.dialogWidget.set("content", "<div>Not all node have been completed. For example, \"" + thisModel.model.active.getName(thisnode.ID) + "\" has units field undefined.</div>");
+                if(thisModel.model.active.getType(thisnode.ID)=="function" || thisModel.model.active.getType(thisnode.ID)=="accumulator"){
+                    thisModel.dialogWidget.set("content", "<div>Not all nodes have been completed. For example, \"" + thisModel.model.active.getName(thisnode.ID) + "\" is not yet fully defined.</div>");
                     modStatus = false;
                     return;
                 }
-                else if(thisModel.model.active.getType(thisnode.ID)=="function" || thisModel.model.active.getType(thisnode.ID)=="accumulator" || thisModel.model.active.getType(thisnode.ID)=="parameter"  ){
-                    thisModel.dialogWidget.set("content", "<div>Not all nodes have been completed. For example, \"" + thisModel.model.active.getName(thisnode.ID) + "\" is not yet fully defined.</div>");
+                else if(thisModel.model.active.getUnits(thisnode.ID)==undefined){
+                    thisModel.dialogWidget.set("content", "<div>Not all node have been completed. For example, \"" + thisModel.model.active.getName(thisnode.ID) + "\" has units field undefined.</div>");
                     modStatus = false;
                     return;
                 }
