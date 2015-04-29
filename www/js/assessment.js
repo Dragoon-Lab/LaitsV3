@@ -35,7 +35,7 @@ define([
 
 		initSchemaSession: function(){
 			array.forEach(this._schemas, function(schema){
-				this._session.logSchema(schema.schema_class, schema.difficulty);
+				this._session.logSchema(schema.schemaClass, schema.difficulty);
 			}, this);
 		},
 
@@ -43,7 +43,7 @@ define([
 			this._schemas = this._model.student.getSchemas();
 			array.forEach(this._schemas, function(schema){
 				var resultJSON;
-				this._session.getSchemaApplication(schema.schema_class).then(function(result){
+				this._session.getSchemaApplication(schema.schemaClass).then(function(result){
 					resultJSON = result;
 				});
 				resultJSON = json.parse(resultJSON);
@@ -80,10 +80,14 @@ define([
 			}
 		},
 	
-		saveSchema: function(){
+		saveSchema: function(/* string */nodeID){
+			var givenID = this._model.student.getDescriptionID(nodeID);
+
 			this._model.student.setSchemas(this._schemas);
 			array.forEach(this._schemas, function(schema){
-				this._session.updateSchemaApplication(schema.schema_class, schema.competence);
+				if(schema.competence.timeSpent > 0 && givenID && schema.nodes.indexOf(givenID) >= 0){
+					this._session.updateSchemaApplication(schema.schemaClass, schema.competence);
+				}
 			}, this);
 		},
 	
