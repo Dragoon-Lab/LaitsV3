@@ -142,7 +142,7 @@
 			{
 				"ID": "schema1",
                 "name": "Exponential",
-                "schema_class": "exponential transfer",
+                "schemaClass": "exponential_transfer",
 				"difficulty": {
 					"isolation": 0,
 					"cues": 0,
