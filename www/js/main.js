@@ -79,7 +79,6 @@ define([
     console.log("session is",session);
 	logging.setSession(session);  // Give logger message destination
 	session.loadProblem(query).then(function(solutionGraph){
-		
 		var givenModel = new model(query.m, query.p);
 		logging.session.log('open-problem', {problem : query.p});
 		if(solutionGraph){
@@ -94,6 +93,15 @@ define([
 			    	errorMessage.show();
 			    	throw Error("Model could not be loaded.");
 			    }
+			}
+		}else {
+			if(query.g && query.m === "AUTHOR"){
+				var messageHtml = "You have successfully created a new problem named <strong>"+ query.p +"</strong>.<br/> <br/> If you expected this problem to exist already, please double check the problem name and folder and try again.";
+				var infoMessage = new messageBox("errorMessageBox", "info", messageHtml);
+				infoMessage.show();
+			} else if(query.g){
+				var errorMessage = new messageBox("errorMessageBox", "error", "Problem not found.");
+				errorMessage.show();
 			}
 		}
 		/*
