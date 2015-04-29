@@ -126,7 +126,7 @@
             {
                 "ID": "schema1",
                 "name": "Linear",
-                "schema_class": "linear_transfer",
+                "schemaClass": "linear_transfer",
                 "difficulty": {
                     "isolation": 1,
                     "cues": 1,
@@ -141,7 +141,7 @@
                 }
             },
             {
-                "ID": "schema1",
+                "ID": "schema2",
                 "name": "Exponential",
                 "schemaClass": "exponential_transfer",
                 "difficulty": {
