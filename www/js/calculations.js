@@ -132,14 +132,17 @@ define([
 			// Summary:	 Find a solution
 			// Returns:	 an object of the form
 			//			{status: s, type: m, missingNode: n/soln: solution}
+			console.log("test");
+			console.log(isActive);
 		    var choice = isActive?this.active:this.given;
+		    console.log(givennode);
 		    var node = givennode.ID;
 		    var start = givennode.initial / 10;
 		    var stop = givennode.initial * 10;
 		    var step = (stop - start) / 10;
 		    var min = 0;
 		    var max = 0;
-
+		    console.log(start + ":" + stop + ":" + step);
 		    /*var val = choice.timeStep.parameters[node], min, max;
 				if(val==0){
 					transform = function(x){ return x; }; // identity function
@@ -234,7 +237,6 @@ define([
 			// Summary:	 Find a solution
 			// Returns:	 an object of the form
 			//			{status: s, type: m, missingNode: n/soln: solution}
-			console.log(plotVariables);
 		    var choice = isActive?this.active:this.given;
             /*
 			 Calculate solution by solving differential 
