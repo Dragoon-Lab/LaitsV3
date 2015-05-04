@@ -118,6 +118,8 @@ define([
 			}
 			this.resizeWindow();
 
+			var overlay = document.getElementById('loading');
+			overlay.style.display = "block";
 
 			//create content pane for displaying graph/table and sliders
 			this.dialogContent += "<div data-dojo-type= 'dijit/layout/ContentPane' style='overflow:visible; width:55%; float:left; height: 700px; background-color: #FFFFFF'>"

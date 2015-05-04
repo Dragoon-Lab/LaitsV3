@@ -650,6 +650,8 @@ define([
 						   );
 			});
 
+			var loading = document.getElementById('loadingOverlay');
+			loading.style.display = "none";
 		});
 	});
 });
