@@ -132,17 +132,13 @@ define([
 			// Summary:	 Find a solution
 			// Returns:	 an object of the form
 			//			{status: s, type: m, missingNode: n/soln: solution}
-			console.log("test");
-			console.log(isActive);
 		    var choice = isActive?this.active:this.given;
-		    console.log(givennode);
 		    var node = givennode.ID;
 		    var start = givennode.initial / 10;
 		    var stop = givennode.initial * 10;
 		    var step = (stop - start) / 10;
 		    var min = 0;
 		    var max = 0;
-		    console.log(start + ":" + stop + ":" + step);
 		    /*var val = choice.timeStep.parameters[node], min, max;
 				if(val==0){
 					transform = function(x){ return x; }; // identity function
@@ -168,8 +164,6 @@ define([
 			 */
 			try { // we try to run the method because there might be some nodes missing and an error is generated
 				var solution;
-				console.log(this.model.getIntegrationMethod());
-				console.log(choice.timeStep.parameters);
                 if(this.model.getIntegrationMethod() == "Midpoint Method")
 					solution = integrate.midpointMethod(
 					choice.timeStep, 
@@ -225,7 +219,6 @@ define([
 							}
 						});
 				}	
-				console.log(timeStep.parameters);
 				return {times: nodes, plotValues: plotValues};
 			}else{
 				return {status: 'solution', soln: solution};
@@ -472,9 +465,6 @@ define([
 				// this.createDom().
 				// Set width as number of characters.
 				this.dialogContent += "<input id=\"" + textBoxID[paramID] + "\" type=\"text\" size=10 value=\"" + sliderVars[paramID] + "\">";
-				console.log(sliderVars[paramID]);
-				console.log(sliderVars);
-				console.log(paramID);
 				units = this.model.active.getUnits(paramID);
 				if(units){
 					this.dialogContent += " " + units;
@@ -484,7 +474,7 @@ define([
 				sliderID[paramID] = this.sliderID + "_" + paramID;
 				this.dialogContent += "<div id='" + sliderID[paramID] + "'> " + "\</div>";
 			}
-			this.dialogContent += "</div>";
+			this.dialogContent += "</div></div>";
 			var dialogWidget = registry.byId("solution");
 			dialogWidget.set("title", this.model.getTaskName() + " - " + this.type);
 			// Attach contents of dialog box to DOM all at once
