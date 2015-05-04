@@ -175,11 +175,14 @@ define([
 
 			//text for correctness of solution
 			this.dialogContent += "<p>To reset sliders, close and reopen window</p><br>";
+
+			this.isCorrect = false;
 			if(this.mode != "AUTHOR"  && this.mode != "EDITOR")
 			{
 				if(this.model.active.matchesGivenSolutionAndCorrect())
 				{
 					this.dialogContent += "<font color='green'>Congratulations, your model's behavior matches the author's</font><br>";
+					this.isCorrect = true;
 				}
 				else
 				{
@@ -294,16 +297,27 @@ define([
 					if(this.mode != "AUTHOR"){
 						var givenID = this.model.active.getDescriptionID(id);
 					}
-					//plot chart for student node
-					charts[id].addSeries(
-						"Your solution",
-						this.formatSeriesForChart(activeSolution, k),
-						{stroke: "green"}
-					);
+					if(this.isCorrect || this.mode == "AUTHOR")
+					{
+						//plot chart for student node
+						charts[id].addSeries(
+							"Your solution",
+							this.formatSeriesForChart(activeSolution, k),
+							{stroke: "green"}
+						);
+					}
+					else
+					{
+						charts[id].addSeries(
+							"Your solution",
+							this.formatSeriesForChart(activeSolution, k),
+							{stroke: "red"}
+						);
+					}
 					if(this.mode != "AUTHOR"  && this.mode != "EDITOR" && this.given.plotVariables[k]){
 						charts[id].addSeries(
 							"Author's solution",
-							this.formatSeriesForChart(givenSolution, k), {stroke: "red"}
+							this.formatSeriesForChart(givenSolution, k), {stroke: "black"}
 						);
 					}
 					charts[id].render();
@@ -371,7 +385,7 @@ define([
 							chartsStatic[id].addSeries(
 								"Author's solution",
 								this.formatSeriesForChart(givenPlot, k), 
-								{stroke: "red"}
+								{stroke: "black"}
 							);
 						}
 						chartsStatic[id].render();
@@ -609,11 +623,22 @@ define([
 									max: obj.max,
 									title: this.labelString(id)
 									});
-							this.chart[id].updateSeries(
-								"Your solution",
-								this.formatSeriesForChart(activeSolution, k),
-								{stroke: "green"}
-							);
+							if(this.isCorrect)
+							{
+								this.chart[id].updateSeries(
+									"Your solution",
+									this.formatSeriesForChart(activeSolution, k),
+									{stroke: "green"}
+								);
+							}
+							else
+							{
+								this.chart[id].updateSeries(
+									"Your solution",
+									this.formatSeriesForChart(activeSolution, k),
+									{stroke: "red"}
+								);
+							}
 							this.chart[id].render();
 						
 					}, this);
