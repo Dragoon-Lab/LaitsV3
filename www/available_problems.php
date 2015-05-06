@@ -45,9 +45,9 @@ if(isset($_GET['group']))
 
 $query = "";
 if ($user != ""){
-  $query="select S.* from session S,solutions T  where S.section='$section' AND S.mode='AUTHOR' AND S.user='$user' AND S.session_id=T.session_id";
+  $query="select DISTINCT S.problem, S.group from session S,solutions T  where S.section='$section' AND S.mode='AUTHOR' AND S.user='$user' AND S.session_id=T.session_id";
 } else if($group != ""){
-  $query="select S.* from session S,solutions T  where S.section='$section' AND S.mode='AUTHOR' AND S.group='$group' AND S.session_id=T.session_id";
+  $query="select DISTINCT S.problem from session S,solutions T  where S.section='$section' AND S.mode='AUTHOR' AND S.group='$group' AND S.session_id=T.session_id";
 } else{
    $query="select S.* from session S,solutions T  where S.section='$section' AND S.mode='AUTHOR' AND S.session_id=T.session_id AND (T.share)";
 }
