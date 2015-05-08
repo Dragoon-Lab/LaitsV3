@@ -137,6 +137,7 @@ define([
 				this.dialogContent += "<div	 id='chart" + id + "'" + style + "></div>";
 				// Since the legend div is replaced, we cannot hide the legend here.
 				this.dialogContent += "<div class='legend' id='legend" + id + "'></div>";
+				this.dialogContent += "<font color='red' id='graphMessage" + id + "'></font>";
 			}, this);
 			//create tab for table
 			if(this.buttonClicked == "graph")
@@ -647,14 +648,20 @@ define([
 				{
 				//update and render the charts
 				var activeSolution = this.findSolution(true, this.active.plotVariables);
+					console.log(activeSolution);
 					array.forEach(this.active.plotVariables, function(id, k){
+							var inf = this.checkForInfinity(activeSolution.plotValues[k]);
+							if(inf)
+								dom.byId("graphMessage" + id).innerHTML = "This graph goes to infinity and may not display correct values";
+							else
+								dom.byId("graphMessage" + id).innerHTML = "";
 							this.chart[id].updateSeries(
 								"Your solution",
 								this.formatSeriesForChart(activeSolution, k),
 								{stroke: "green"}
 							);
 							this.chart[id].render();
-						
+							
 					}, this);
 				}
 				var paneText = "";
@@ -728,6 +735,19 @@ define([
 					}, this);
 				}
 			}
+		},
+		checkForInfinity: function(values)
+		{
+			var result = false;
+			array.forEach(values, function(value){
+				console.log(value);
+				console.log(isFinite(value));
+				if(!isFinite(value))
+				{
+					result = true;
+				}
+			}, this);
+			return result;
 		},
 
 		checkStaticVar: function(choice){	//true is active, false is given 		
