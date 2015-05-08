@@ -624,6 +624,10 @@ define([
 									max: obj.max,
 									title: this.labelString(id)
 									});
+							if(inf)
+								dom.byId("graphMessage" + id).innerHTML = "the values you have chosen caused the graph to go infinite";
+							else
+								dom.byId("graphMessage" + id).innerHTML = "";
 							if(this.isCorrect)
 							{
 								this.chart[id].updateSeries(
@@ -652,7 +656,7 @@ define([
 					array.forEach(this.active.plotVariables, function(id, k){
 							var inf = this.checkForInfinity(activeSolution.plotValues[k]);
 							if(inf)
-								dom.byId("graphMessage" + id).innerHTML = "This graph goes to infinity and may not display correct values";
+								dom.byId("graphMessage" + id).innerHTML = "the values you have chosen caused the graph to go infinite";
 							else
 								dom.byId("graphMessage" + id).innerHTML = "";
 							this.chart[id].updateSeries(
