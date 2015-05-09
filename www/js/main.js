@@ -707,7 +707,7 @@ define([
                   else{               
                       document.getElementById("t").innerHTML="Dragoon - "+query.g;
                   }
-            }
+                }
    			titleChange();
 
 			var loading = document.getElementById('loadingOverlay');
