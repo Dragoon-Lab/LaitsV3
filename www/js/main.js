@@ -694,6 +694,21 @@ define([
 							"height=400, width=600, toolbar =no, menubar=no, scrollbars=yes, resizable=no, location=no, status=no"
 						   );
 			});
+		/*
+		 If group_id(query.g) is not specified, this function set the title of index.html page to problem name(taskName), otherwise    		 
+		 set it to group_id.
+		*/
+        	function titleChange(){
+        	   var x=givenModel.getTaskName();
+                
+               	   if((query.g==undefined) ||( query.g==="")){
+                      document.getElementById("t").innerHTML="Dragoon - "+x;
+                  }
+                  else{               
+                      document.getElementById("t").innerHTML="Dragoon - "+query.g;
+                  }
+            }
+   			titleChange();
 
 			var loading = document.getElementById('loadingOverlay');
 			loading.style.display = "none";
