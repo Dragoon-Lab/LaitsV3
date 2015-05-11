@@ -694,6 +694,7 @@ define([
 							"height=400, width=600, toolbar =no, menubar=no, scrollbars=yes, resizable=no, location=no, status=no"
 						   );
 			});
+                        document.title.innerHTML="Dragoon - "+givenModel.getTaskName(); //set the title of index.html page to problem name(taskName)//set the title of index.html page to problem name(taskName)
 
 			var loading = document.getElementById('loadingOverlay');
 			loading.style.display = "none";
