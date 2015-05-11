@@ -17,11 +17,11 @@
     "taskDescription": [
       "Suppose a 100-liter barrel of oil is leaking at the rate of 2 liter per hour and the oil is accumulating on the floor of the warehouse where it is stored.  Let's model the first 10 hours of this leaking process.",
       "",
-      "To get started, create a parameter node to represent the amount of oil leaked per hour.  Its value should be 2, and the units should be "liters."",
+      "To get started, create a parameter node to represent the amount of oil leaked per hour.  Its value should be 2, and the units should be \"liters.\"",
       "",
-      "Next, create an accumulator node to represent the oil in the barrel.  It starts with 100 liters.  Its expression should be "- leak" because it loses 2 liter per hour. ",
+      "Next, create an accumulator node to represent the oil in the barrel.  It starts with 100 liters.  Its expression should be \"- leak\" because it loses 2 liter per hour. ",
       "",
-      "Now create an accumulator node to represent the oil on the floor.  It should start with 0 liters.  Its expression should be just "leak" because it gains 2 liters per hour.",
+      "Now create an accumulator node to represent the oil on the floor.  It should start with 0 liters.  Its expression should be just \"leak\" because it gains 2 liters per hour.",
       "",
       "Now graph the model.  You can look at the table too."
     ],
