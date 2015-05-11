@@ -1,0 +1,129 @@
+{
+  "task": {
+    "taskName": "intro problem 1",
+    "time": {
+      "start": 0,
+      "end": 20,
+      "step": 1,
+      "integrationMethod": "Eulers Method",
+      "units": "years"
+    },
+    "properties": {
+      
+    },
+    "image": {
+      
+    },
+    "taskDescription": [
+      "Let's construct the Dodo population model that was shown in the video you watched.  Start by constructing an accumulator node whose description is \"The number of Dodos in the Dodo population.\"  Enter 1000 as its initial value.  Enter \"- deaths\" into the expression box by clicking on the minus sign button and then selecting \"deaths\" from the inputs menu.  When done, click on the Check Expression button and then on the Done button.  ",
+      "",
+      "Now  click on the triangular node, and make it into a function node whose description is \"The number of Dodos that die each year.\"  Its expression should be \"death rate * population\"",
+      "",
+      "Now click on the new triangular node, and make it into a parameter node whose description is \"The fraction of Dodos that die each year.\"   Enter \"0.2\" as its value, and click Done.",
+      "",
+      "You now have a complete model.  You can drag the nodes around to make it prettier if you want.  ",
+      "",
+      "Click on the Show Graph button and observe how the Dodo population changes.  Try moving the sliders.  When you have closed the graph window, click on the Done button in the top of menu bar."
+    ],
+    "lessonsLearned": "",
+    "givenModelNodes": [
+      {
+        "ID": "id1",
+        "inputs": [
+          {
+            "ID": "id2",
+            "label": "-"
+          }
+        ],
+        "position": {
+          "x": 462,
+          "y": 145
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": {
+          
+        },
+        "name": "population",
+        "description": "The number of Dodos in the Dodo population",
+        "type": "accumulator",
+        "initial": 1000,
+        "equation": "-id2",
+        "genus": "required"
+      },
+      {
+        "ID": "id2",
+        "inputs": [
+          {
+            "ID": "id3",
+            "label": ""
+          },
+          {
+            "ID": "id1",
+            "label": ""
+          }
+        ],
+        "position": {
+          "x": 630,
+          "y": 139
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": {
+          
+        },
+        "name": "deaths",
+        "description": "The number of Dodos that die each year",
+        "type": "function",
+        "equation": "id3*id1",
+        "genus": "required"
+      },
+      {
+        "ID": "id3",
+        "inputs": [
+          
+        ],
+        "position": {
+          "x": 780.33093261719,
+          "y": 132.33096313477
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": {
+          
+        },
+        "name": "death rate",
+        "description": "The fraction of Dodos that die each year",
+        "equation": "",
+        "type": "parameter",
+        "parentNode": false,
+        "initial": 0.2,
+        "genus": "required"
+      }
+    ],
+    "studentModelNodes": [
+      
+    ],
+    "schemas": [
+      
+    ]
+  }
+}
