@@ -115,8 +115,21 @@
 	
 </head>
 
-<body class="claro">
-    <div id="main" data-dojo-type="dijit/layout/BorderContainer" gutters="false">
+    <div id="loadingOverlay" class="loadingOverlay pageOverlay" style = "top: 0;
+    left: 0;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 1001;
+    display: block;
+     background:  #fff url('//ajax.googleapis.com/ajax/libs/dojo/1.10.4/dijit/themes/claro/images/loadingAnimation.gif') no-repeat 10px 23px;"></div>
+    
+    <body class="claro" style = "top: 0;
+    left: 0;
+    position: fixed;
+    height: 100%;
+    width: 100%;">
+        <div id="main" data-dojo-type="dijit/layout/BorderContainer" gutters="false">
         <div data-dojo-type="dijit/MenuBar" id="menuBar" region="top" splitter="false">
              <button type="button" data-dojo-type="dijit/form/Button" id="createNodeButton">Create Node</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="graphButton">Graph</button>

@@ -27,10 +27,14 @@ In the project root directory, create a file `db_user_passsword`
 containing three lines containing the username, password, and 
 database name.
 
+On Windows, you'll need to install WAMP, XAMPP or another AMP kit first.
+
 ### Install Libraries ###
 
 In the root directory, enter `make install` to install the Javascript
 libraries.
+
+Windows doesn't come with make, but if you google "make for windows" you can download it from gnu.  After installing, either add make's path to your PATH variable or give the full path in the command line.  For best results, run within the powershell provided by GitHub for Windows.
 
 ### Run on local server ###
 
