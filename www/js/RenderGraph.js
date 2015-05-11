@@ -84,7 +84,7 @@ define([
 			 be calulated.
 
 			 To include optional nodes,
-			 one would need to order them using topologicalSort
+			 one would need to order them using topologicalSortgoo
 			 */
             var activeSolution = this.findSolution(true, this.active.plotVariables);
             if(activeSolution.status == "error" && activeSolution.type == "missing") {
