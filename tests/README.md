@@ -49,8 +49,14 @@ When you're done, you can shut down your selenium server by pointing your web br
 
 #Setup on OSX
 There are additional steps to setting this up on OSX.  For starters, OSX to come with a -pre version of node.  One of the modules used by the synchronize module only works on stable versions of node.  You'll need to install a node version manager such as [n](https://github.com/tj/n).  To install n, run:
+
   npm install -g n
-Once installed find the latest version of the even numbered release of node (e.g. 0.10.33) and install it.  Then run the makefile.
+
+Once installed find the latest version of the even numbered release of node (e.g. 0.10.33) and install it. 
+
+	n 0.10.33
+
+Then run the makefile.
 
 #Test Script List
 * shakedown.js - Test script of unit tests for dtestlib; run this to ensure everything is working before running other test files.  (Also provides an example of how to write a test script.)
