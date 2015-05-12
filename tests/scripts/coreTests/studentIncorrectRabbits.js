@@ -35,7 +35,7 @@ describe("Student mode with incorrect rabbits", function() {
         it("Should input description for node not in solution", async(function(){
             dtest.menuCreateNode(client);
             dtest.setNodeDescription(client, "The number of rabbits that die per year per rabbit");
-            //dtest.popupWindowPressOk(client);
+            dtest.popupWindowPressOk(client);
         }));
 
         it("Should have correct description color", async(function(){
@@ -65,10 +65,10 @@ describe("Student mode with incorrect rabbits", function() {
             dtest.setNodeExpression(client, "5");
             dtest.checkExpression(client);    
             dtest.popupWindowPressOk(client);
+            dtest.setNodeUnits(client, "1/year");
             dtest.setNodeExpression(client, "growth rate");
             dtest.checkExpression(client);
-            dtest.popupWindowPressOk(client);
-            dtest.setNodeUnits(client, "1/year");
+            dtest.popupWindowPressOk(client);            
             //dtest.popupWindowPressOk(client);
             dtest.setNodeUnits(client, "years");
             //dtest.popupWindowPressOk(client);
@@ -100,7 +100,7 @@ describe("Student mode with incorrect rabbits", function() {
     });
     
     after(function(done) {
-        client.end();
+        //client.end();
         done();
     });
 });
