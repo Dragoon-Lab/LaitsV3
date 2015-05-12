@@ -45,11 +45,28 @@ if(isset($_GET['group']))
 
 $query = "";
 if ($user != ""){
-  $query="select DISTINCT S.problem, S.group from session S,solutions T  where S.section='$section' AND S.mode='AUTHOR' AND S.user='$user' AND S.session_id=T.session_id";
+  $query = "SELECT DISTINCT S.problem, S.group FROM session S, solutions T WHERE S.section='$section' AND S.mode='AUTHOR' AND S.user='$user' AND S.session_id=T.session_id";
 } else if($group != ""){
-  $query="select DISTINCT S.problem from session S,solutions T  where S.section='$section' AND S.mode='AUTHOR' AND S.group='$group' AND S.session_id=T.session_id";
+  if($group == "public"){
+    //query to sort public problems by created date
+    $query = "SELECT S.problem, T.minTime FROM session S
+              INNER JOIN (
+                SELECT Sess.problem, Sess.group, MIN(Sess.time) as minTime
+                FROM session Sess
+                WHERE Sess.section='$section' AND Sess.mode='AUTHOR' AND Sess.group='$group'
+                GROUP BY Sess.problem ) T
+              ON S.problem = T.problem AND S.group = T.group AND S.time = T.minTime
+              ORDER BY T.minTime DESC";
+  }else{
+    //query to sort other problems by last accessed time
+    $query = "SELECT DISTINCT problem FROM (
+                SELECT S.problem, S.time FROM session S
+                WHERE S.section='$section' AND S.mode='AUTHOR' AND S.group='$group'
+                ORDER BY S.time DESC )
+              AS problems";
+  }
 } else{
-   $query="select S.* from session S,solutions T  where S.section='$section' AND S.mode='AUTHOR' AND S.session_id=T.session_id AND (T.share)";
+  $query = "SELECT S.* FROM session S,solutions T  WHERE S.section='$section' AND S.mode='AUTHOR' AND S.session_id=T.session_id AND (T.share)";
 }
 
 if($result = $mysqli->query($query)){
