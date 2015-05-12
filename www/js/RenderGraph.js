@@ -84,7 +84,7 @@ define([
 			 be calulated.
 
 			 To include optional nodes,
-			 one would need to order them using topologicalSort
+			 one would need to order them using topologicalSortgoo
 			 */
             var activeSolution = this.findSolution(true, this.active.plotVariables);
             if(activeSolution.status == "error" && activeSolution.type == "missing") {
@@ -133,7 +133,8 @@ define([
 				var show = this.model.active.getType(id) == "accumulator" || this.model.given.getParent(this.model.active.getGivenID(id));
 				var checked = show ? " checked='checked'" : "";
 				this.dialogContent += "<div><input id='sel" + id + "' data-dojo-type='dijit/form/CheckBox' class='show_graphs' thisid='" + id + "'" + checked + "/>" + " Show " + this.model.active.getName(id) + "</div>";
-				var style = show ? "" : " style='display: none;'";
+				var style = show ? "" : " style='display: none;'";				
+				this.dialogContent += "<font color='red' id='graphMessage" + id + "'></font>";
 				this.dialogContent += "<div	 id='chart" + id + "'" + style + "></div>";
 				// Since the legend div is replaced, we cannot hide the legend here.
 				this.dialogContent += "<div class='legend' id='legend" + id + "'></div>";
@@ -623,6 +624,10 @@ define([
 									max: obj.max,
 									title: this.labelString(id)
 									});
+							if(inf)
+								dom.byId("graphMessage" + id).innerHTML = "The values you have chosen caused the graph to go infinite. (See table.)";
+							else
+								dom.byId("graphMessage" + id).innerHTML = "";
 							if(this.isCorrect)
 							{
 								this.chart[id].updateSeries(
@@ -647,14 +652,20 @@ define([
 				{
 				//update and render the charts
 				var activeSolution = this.findSolution(true, this.active.plotVariables);
+					console.log(activeSolution);
 					array.forEach(this.active.plotVariables, function(id, k){
+							var inf = this.checkForInfinity(activeSolution.plotValues[k]);
+							if(inf)
+								dom.byId("graphMessage" + id).innerHTML = "the values you have chosen caused the graph to go infinite";
+							else
+								dom.byId("graphMessage" + id).innerHTML = "";
 							this.chart[id].updateSeries(
 								"Your solution",
 								this.formatSeriesForChart(activeSolution, k),
 								{stroke: "green"}
 							);
 							this.chart[id].render();
-						
+							
 					}, this);
 				}
 				var paneText = "";
@@ -728,6 +739,19 @@ define([
 					}, this);
 				}
 			}
+		},
+		checkForInfinity: function(values)
+		{
+			var result = false;
+			array.forEach(values, function(value){
+				console.log(value);
+				console.log(isFinite(value));
+				if(!isFinite(value))
+				{
+					result = true;
+				}
+			}, this);
+			return result;
 		},
 
 		checkStaticVar: function(choice){	//true is active, false is given 		
