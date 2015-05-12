@@ -138,6 +138,7 @@ define([
 		controllerObject.setState(state);
 
 		ready(function(){
+			document.title ="Dragoon - "+givenModel.getTaskName();
 			
 			//In TEST and EDITOR mode remove background color and border colors		 
 			if(controllerObject._mode == "TEST" || controllerObject._mode == "EDITOR"){
@@ -694,8 +695,7 @@ define([
 							"height=400, width=600, toolbar =no, menubar=no, scrollbars=yes, resizable=no, location=no, status=no"
 						   );
 			});
-                        document.title.innerHTML="Dragoon - "+givenModel.getTaskName(); //set the title of index.html page to problem name(taskName)//set the title of index.html page to problem name(taskName)
-
+			
 			var loading = document.getElementById('loadingOverlay');
 			loading.style.display = "none";
 		});
