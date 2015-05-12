@@ -138,7 +138,8 @@ define([
 		controllerObject.setState(state);
 
 		ready(function(){
-			document.title ="Dragoon - "+givenModel.getTaskName();
+			var taskString = givenModel.getTaskName();
+			document.title ="Dragoon" + ((taskString) ? " - " + taskString : "");
 			
 			//In TEST and EDITOR mode remove background color and border colors		 
 			if(controllerObject._mode == "TEST" || controllerObject._mode == "EDITOR"){
