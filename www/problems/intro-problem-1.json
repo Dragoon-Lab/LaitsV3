@@ -53,6 +53,7 @@
         "name": "population",
         "description": "The number of Dodos in the Dodo population",
         "type": "accumulator",
+        "parentNode": true,
         "initial": 1000,
         "equation": "-id2",
         "genus": "required"
