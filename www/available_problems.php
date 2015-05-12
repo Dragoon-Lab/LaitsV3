@@ -36,12 +36,12 @@ $user = "";
 $section ="";
 $group = "";
 //retrieve POST variables
-if(isset($_GET['section']))
-  $section = mysqli_real_escape_string($mysqli, $_GET['section']);
-if(isset($_GET['username']))
-  $user = mysqli_real_escape_string($mysqli, $_GET['username']);
-if(isset($_GET['group']))
-  $group = mysqli_real_escape_string($mysqli, $_GET['group']);
+if(isset($_GET['s']))
+  $section = mysqli_real_escape_string($mysqli, $_GET['s']);
+if(isset($_GET['u']))
+  $user = mysqli_real_escape_string($mysqli, $_GET['u']);
+if(isset($_GET['g']))
+  $group = mysqli_real_escape_string($mysqli, $_GET['g']);
 
 $query = "";
 if ($user != ""){
