@@ -133,11 +133,11 @@ define([
 				var show = this.model.active.getType(id) == "accumulator" || this.model.given.getParent(this.model.active.getGivenID(id));
 				var checked = show ? " checked='checked'" : "";
 				this.dialogContent += "<div><input id='sel" + id + "' data-dojo-type='dijit/form/CheckBox' class='show_graphs' thisid='" + id + "'" + checked + "/>" + " Show " + this.model.active.getName(id) + "</div>";
-				var style = show ? "" : " style='display: none;'";
+				var style = show ? "" : " style='display: none;'";				
+				this.dialogContent += "<font color='red' id='graphMessage" + id + "'></font>";
 				this.dialogContent += "<div	 id='chart" + id + "'" + style + "></div>";
 				// Since the legend div is replaced, we cannot hide the legend here.
 				this.dialogContent += "<div class='legend' id='legend" + id + "'></div>";
-				this.dialogContent += "<font color='red' id='graphMessage" + id + "'></font>";
 			}, this);
 			//create tab for table
 			if(this.buttonClicked == "graph")
@@ -625,7 +625,7 @@ define([
 									title: this.labelString(id)
 									});
 							if(inf)
-								dom.byId("graphMessage" + id).innerHTML = "the values you have chosen caused the graph to go infinite";
+								dom.byId("graphMessage" + id).innerHTML = "The values you have chosen caused the graph to go infinite. (See table.)";
 							else
 								dom.byId("graphMessage" + id).innerHTML = "";
 							if(this.isCorrect)
