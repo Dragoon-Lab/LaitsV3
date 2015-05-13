@@ -35,7 +35,7 @@ describe("Student mode with incorrect rabbits", function() {
         it("Should input description for node not in solution", async(function(){
             dtest.menuCreateNode(client);
             dtest.setNodeDescription(client, "The number of rabbits that die per year per rabbit");
-            dtest.popupWindowPressOk(client);
+            //dtest.popupWindowPressOk(client);
         }));
 
         it("Should have correct description color", async(function(){
@@ -48,7 +48,7 @@ describe("Student mode with incorrect rabbits", function() {
             dtest.waitTime(client, 300);
         }));
     });
-
+    
     describe("Should incorrectly fill nodes", function(){
         afterEach(async(function(){
             dtest.nodeEditorDone(client);
@@ -62,26 +62,28 @@ describe("Student mode with incorrect rabbits", function() {
             dtest.popupWindowPressOk(client);
             dtest.setNodeType(client, "Function");
             dtest.popupWindowPressOk(client);
-            dtest.setNodeUnits(client, "1/year");
-            dtest.popupWindowPressOk(client);
-            dtest.setNodeUnits(client, "years");
-            dtest.popupWindowPressOk(client);
-            dtest.setNodeExpression(client, "population");
+            dtest.setNodeExpression(client, "5");
             dtest.checkExpression(client);    
             dtest.popupWindowPressOk(client);
             dtest.setNodeExpression(client, "growth rate");
             dtest.checkExpression(client);
-            dtest.setNodeExpression(client, "growth rate + net growth");
-            dtest.checkExpression(client);
+            dtest.popupWindowPressOk(client);
+            dtest.setNodeUnits(client, "1/year");
+            //dtest.popupWindowPressOk(client);
+            dtest.setNodeUnits(client, "years");
+            //dtest.popupWindowPressOk(client);
+            dtest.setNodeInitialValue(client, 1);
+            dtest.setNodeInitialValue(client, 0);
+            
         }));
     
         it("Should partially incorrectly fill function - net growth", async(function(){
             dtest.openEditorForNode(client, "net growth");
             dtest.setNodeType(client, "Function");
+            dtest.setNodeExpression(client, "4");
+            dtest.checkExpression(client);            
             dtest.setNodeUnits(client, "rabbits/year");
-            dtest.setNodeExpression(client, "population");
-            dtest.checkExpression(client);
-            dtest.setNodeExpression(client, "growth rate*population");
+            dtest.setNodeExpression(client, "growth rate");
             dtest.checkExpression(client);
         }));
 
@@ -94,8 +96,9 @@ describe("Student mode with incorrect rabbits", function() {
             dtest.setNodeUnits(client, "years");
             dtest.setNodeUnits(client, "rabbits");
         }));
-    });
 
+    });
+    
     after(function(done) {
         client.end();
         done();
