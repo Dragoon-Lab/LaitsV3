@@ -609,13 +609,19 @@ define([
 					//update and render the charts
 					array.forEach(this.active.plotVariables, function(id, k){
 							// Calculate Min and Max values to plot on y axis based on given solution and your solution
-							var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
-							var givenObj = this.getMinMaxFromArray(givenSolution.plotValues[k]);				
-							if(givenObj.min < obj.min){
-								obj.min = givenObj.min;
-							}
-							if(givenObj.max > obj.max){
-								obj.max = givenObj.max;
+							
+							if(inf)
+								dom.byId("graphMessage" + id).innerHTML = "The values you have chosen caused the graph to go infinite. (See table.)";
+							else
+							{
+								dom.byId("graphMessage" + id).innerHTML = "";
+								var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
+								var givenObj = this.getMinMaxFromArray(givenSolution.plotValues[k]);				
+								if(givenObj.min < obj.min){
+									obj.min = givenObj.min;
+								}
+								if(givenObj.max > obj.max){
+									obj.max = givenObj.max;
 							}
 							//Redraw y axis based on new min and max values
 							this.chart[id].addAxis("y", {
@@ -624,10 +630,7 @@ define([
 									max: obj.max,
 									title: this.labelString(id)
 									});
-							if(inf)
-								dom.byId("graphMessage" + id).innerHTML = "The values you have chosen caused the graph to go infinite. (See table.)";
-							else
-								dom.byId("graphMessage" + id).innerHTML = "";
+							}
 							if(this.isCorrect)
 							{
 								this.chart[id].updateSeries(
@@ -653,12 +656,23 @@ define([
 				//update and render the charts
 				var activeSolution = this.findSolution(true, this.active.plotVariables);
 					console.log(activeSolution);
+
 					array.forEach(this.active.plotVariables, function(id, k){
+
 							var inf = this.checkForInfinity(activeSolution.plotValues[k]);
 							if(inf)
-								dom.byId("graphMessage" + id).innerHTML = "the values you have chosen caused the graph to go infinite";
+								dom.byId("graphMessage" + id).innerHTML = "The values you have chosen caused the graph to go infinite. (See table.)";
 							else
+							{
 								dom.byId("graphMessage" + id).innerHTML = "";
+								var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
+								this.chart[id].addAxis("y", {
+									vertical: true,
+									min: obj.min,
+									max: obj.max,
+									title: this.labelString(id)
+									});
+							}
 							this.chart[id].updateSeries(
 								"Your solution",
 								this.formatSeriesForChart(activeSolution, k),
