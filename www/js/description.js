@@ -151,7 +151,7 @@ define([
                 if(document.getElementById("authorDescDialog").style.display !== "none")
                 {
                     errordialogWidget = registry.byId("solution");
-                    errordialogWidget.set("title", "<div>'Problem Check Results'</div>");
+                    errordialogWidget.set("title", "<span>'Problem Check Results'</span>");
                     //check if there are any nodes at all
                     var nodes_exist = this.givenModel.active.getNodes().length;
                     if (nodes_exist) {
@@ -190,14 +190,14 @@ define([
                         }
                         else{
                             console.log("Empty problem");
-                            errordialogWidget.set("content", "<div>The problem is empty.</div>");
+                            errordialogWidget.set("content", "<div style='width: 200px;'>The problem is empty.</div>");
                             errordialogWidget.show();
                             check_for_problem = true;
                         }
                     //finally check if check for problems button couldn't find any new problems
                     if(!check_for_problem){
                         console.log("Problem seems fine, no warnings needed");
-                        errordialogWidget.set("content", "<div>No errors found.</div>");
+                        errordialogWidget.set("content", "<div style='width: 200px;'>No errors found.</div>");
                         errordialogWidget.show();
                     }
                 }
