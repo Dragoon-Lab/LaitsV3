@@ -612,7 +612,7 @@ define([
 					//update and render the charts
 					array.forEach(this.active.plotVariables, function(id, k){
 							// Calculate Min and Max values to plot on y axis based on given solution and your solution
-							
+							var inf = this.checkForInfinity(activeSolution.plotValues[k]);
 							if(inf)
 								dom.byId("graphMessage" + id).innerHTML = "The values you have chosen caused the graph to go infinite. (See table.)";
 							else
