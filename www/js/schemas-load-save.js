@@ -35,7 +35,7 @@ define([
 
 		getFileData: function(/* string */ fileName, /* path */ path){
 			path = path || this._path;
-			return xhr.post(path + fileName, {
+			return xhr.get(path + fileName, {
 				handleAs: "text",
 				sync: true
 			}).then(function(results){
