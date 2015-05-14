@@ -220,7 +220,6 @@ define([
 				tableTab = dom.byId("dijit_layout_TabContainer_" + count + "_tablist_TableTab");
 				staticTab = dom.byId("dijit_layout_TabContainer_" + count + "_tablist_StaticTab");
 			}
-			console.log(graphTab);
 			graphTab.addEventListener("click", function(){ 
 				console.log("graph tab clicked");
 				logger.session.log('ui-action', {
@@ -268,8 +267,6 @@ define([
 				content:paneText
 			}, "table");
 
-
-			console.log(activeSolution);
 
 			if(this.active.plotVariables.length > 0){ //we check the length of object, if there are nodes, then we proceed else give an error and return
 				array.forEach(this.active.plotVariables, function(id, k){
@@ -346,12 +343,12 @@ define([
 				var staticVar = this.checkStaticVar(true);
 				staticPlot = this.findStaticSolution(true, staticVar, this.active.plotVariables);	
 				givenPlot = this.findStaticSolution(true, staticVar, this.active.plotVariables);
-				console.log(givenPlot);
-				console.log(this.given.plotVariables);
+				//console.log(givenPlot);
+				//console.log(this.given.plotVariables);
 				if(this.active.plotVariables.length > 0){ //we check the length of object, if there are nodes, then we proceed else give an error and return
 					array.forEach(this.active.plotVariables, function(id, k){
 						var str = "chartStatic" + id;
-						console.log(str);
+						//console.log(str);
 						chartsStatic[id] = new Chart(str);
 						chartsStatic[id].addPlot("default", {
 							type: Lines,
@@ -492,7 +489,7 @@ define([
         store: stateStore,
         searchAttr: "name"
     }, "staticSelect");
-    	console.log(comboBox);
+    	//console.log(comboBox);
     	this.registerEventOnStaticChange(comboBox);
     	on(comboBox, "change", lang.hitch(this, function(){
 				this.renderStaticDialog();
@@ -601,7 +598,7 @@ define([
 		 * new values for student nodes are calculated
 		 */
 		renderDialog: function(calculationObj){
-				
+				console.log("rendering graph and table");
 				if(this.mode != "AUTHOR")
 				{
 					var activeSolution = this.findSolution(true, this.active.plotVariables);
@@ -609,7 +606,7 @@ define([
 					//update and render the charts
 					array.forEach(this.active.plotVariables, function(id, k){
 							// Calculate Min and Max values to plot on y axis based on given solution and your solution
-							var inf = this.checkForInfinity(activeSolution.plotValues[k]);
+							var inf = this.checkForInfinity(activeSolution.plotValues[k]); 
 							if(inf)
 								dom.byId("graphMessage" + id).innerHTML = "The values you have chosen caused the graph to go infinite. (See table.)";
 							else
@@ -655,7 +652,7 @@ define([
 				{
 				//update and render the charts
 				var activeSolution = this.findSolution(true, this.active.plotVariables);
-					console.log(activeSolution);
+					//console.log(activeSolution);
 
 					array.forEach(this.active.plotVariables, function(id, k){
 
@@ -692,8 +689,8 @@ define([
 		},
 
 		renderStaticDialog: function(){
-			console.log("render");
-			console.log(this.chartsStatic);
+			console.log("rendering static");
+			//console.log(this.chartsStatic);
 			if(this.isStatic)
 			{
 				if(this.mode != "AUTHOR")
@@ -722,8 +719,8 @@ define([
 									title: dom.byId("staticSelect").value,
 									titleOrientation: "away", titleGap: 5
 								});
-							console.log(id);
-							console.log(this.chartsStatic);
+							//console.log(id);
+							//console.log(this.chartsStatic);
 							this.chartsStatic[id].updateSeries(
 								"Your solution",
 								this.formatSeriesForChart(activeSolution, k),
@@ -758,8 +755,8 @@ define([
 		{
 			var result = false;
 			array.forEach(values, function(value){
-				console.log(value);
-				console.log(isFinite(value));
+				//console.log(value);
+				//console.log(isFinite(value));
 				if(!isFinite(value))
 				{
 					result = true;
@@ -772,8 +769,8 @@ define([
 			var parameters = this.checkForParameters(choice);
 			var result = parameters[0];
 			var staticSelect = dom.byId("staticSelect");
-			console.log(staticSelect.value);
-			console.log(parameters);
+			//console.log(staticSelect.value);
+			//console.log(parameters);
 
 
 			if(typeof parameters[0].description != 'undefined')
@@ -782,7 +779,7 @@ define([
 					
 					if(parameter.description == staticSelect.value)
 					{
-						console.log(parameter);
+						//console.log(parameter);
 						result = parameter;
 					}
 				}, this);
@@ -797,9 +794,9 @@ define([
 						tempResult = parameter;
 					}
 				}, this);
-				console.log(tempResult);
+				//console.log(tempResult);
 				array.forEach(parameters, function(parameter){
-					console.log(parameter);
+					//console.log(parameter);
 					if(parameter.descriptionID == tempResult.ID)
 					{
 						result = parameter;
@@ -881,7 +878,7 @@ define([
 			{
 				array.forEach(this.model.active.getNodes(), function(node)
 				{
-					console.log(node);
+					//console.log(node);
 					if(node.type == "parameter")
 					{
 						result.push(node);
@@ -892,7 +889,7 @@ define([
 			{
 				array.forEach(this.model.given.getNodes(), function(node)
 				{
-					console.log(node);
+					//console.log(node);
 					if(node.type == "parameter")
 					{
 						result.push(node);
