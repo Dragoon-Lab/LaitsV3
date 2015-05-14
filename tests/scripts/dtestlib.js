@@ -423,6 +423,7 @@ exports.setNodeName = function(client, nodeName){
 // Popup window funcitons
 
 exports.popupWindowPressOk = function(client){
+    wait(300);
     await(client.click('#OkButton',defer()));
     wait(200);
 }
@@ -640,6 +641,7 @@ exports.isNodeExpressionDisabled = function(client){
 
 exports.setNodeExpression = function(client,expression){
     await(client.setValue('#equationBox', expression, defer()));
+    await(client.click("#algebraic",defer()));
 }
 
 exports.expressionInsertInput = function(client){
@@ -670,7 +672,8 @@ exports.clearExpression = function(client){
 }
 
 exports.checkExpression = function(client){
-    await(client.click('span[id="equationDoneButton_label"]',defer()));
+    await(client.click('#equationDoneButton',defer()));
+    wait(1000);
 }
 
 
