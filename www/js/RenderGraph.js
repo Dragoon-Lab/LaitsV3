@@ -94,7 +94,6 @@ define([
 			}
 
 			this.isStatic = this.checkForStatic(activeSolution);
-			//xthis.isStatic = false;
 			this.staticVar = 0;
 			if(this.isStatic)
 			{
