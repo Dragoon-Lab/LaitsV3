@@ -9,8 +9,7 @@ available.
 
 ## Dragoon Install ##
 
-This document contains instructions for setting up a Dragoon server.
-These instructions are for the JavaScript version of Dragoon.
+This section contains instructions for setting up a Dragoon server after you have cloned the repo.
 
 ### Database Setup ###
 

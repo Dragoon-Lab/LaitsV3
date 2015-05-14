@@ -1,0 +1,4 @@
+# Ignore all jars
+*.jar
+# Except the one below (which should match the one the repo)
+!selenium-server-standalone-2.45.0.jar
