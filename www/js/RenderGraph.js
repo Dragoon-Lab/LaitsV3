@@ -94,7 +94,6 @@ define([
 			}
 
 			this.isStatic = this.checkForStatic(activeSolution);
-
 			this.staticVar = 0;
 			if(this.isStatic)
 			{
@@ -504,6 +503,9 @@ define([
 			var values = solution.plotValues;
 			var temp = 0;
 			var isStatic = true;
+			if(values.length == 0){
+				isStatic = false;
+			}
 			array.forEach(values, function(value)
 			{
 				temp = value[0];
