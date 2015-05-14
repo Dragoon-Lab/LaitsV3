@@ -142,6 +142,8 @@ define([
 		controllerObject.setState(state);
 
 		ready(function(){
+			var taskString = givenModel.getTaskName();
+			document.title ="Dragoon" + ((taskString) ? " - " + taskString : "");
 			
 			//In TEST and EDITOR mode remove background color and border colors		 
 			if(controllerObject._mode == "TEST" || controllerObject._mode == "EDITOR"){
@@ -698,7 +700,13 @@ define([
 							"height=400, width=600, toolbar =no, menubar=no, scrollbars=yes, resizable=no, location=no, status=no"
 						   );
 			});
+<<<<<<< HEAD
 
+=======
+			
+			var loading = document.getElementById('loadingOverlay');
+			loading.style.display = "none";
+>>>>>>> master
 		});
 	});
 });
