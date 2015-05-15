@@ -700,13 +700,6 @@ define([
 							"height=400, width=600, toolbar =no, menubar=no, scrollbars=yes, resizable=no, location=no, status=no"
 						   );
 			});
-<<<<<<< HEAD
-
-=======
-			
-			var loading = document.getElementById('loadingOverlay');
-			loading.style.display = "none";
->>>>>>> master
 		});
 	});
 });
