@@ -508,6 +508,27 @@ exports.setNodeDescription = function(client, description){
     }
 }
 
+//////////////////////////////////////////////////
+// Root node toggle
+
+//returns true for checked and false for unchecked
+exports.checkRootNode = function(client){
+    var result = await(client.getAttribute('#markRootNode','aria-checked' ,defer())); 
+    console.log(result);
+    if(result == 'true')
+        return true;
+    else
+        return false
+}
+
+//Set to true(checked) or set to false(unchecked) (defaults to setting to true)
+exports.clickRootNode = function(client){
+        await(client.click('#markRootNode', defer()));
+        return;
+}
+
+
+
 
 //////////////////////////////////////////////////
 // Node type
