@@ -59,7 +59,7 @@ exports.checkTableValues = function(name, col, values,dtest,client){
 
 exports.checkNodeValue = function(actual,expected,nodeName){
     assert(actual === expected,
-           "Description was \"" +  actual + "\" instead of \"" + 
+           "Value was \"" +  actual + "\" instead of \"" + 
 	   expected + "\" for node " + nodeName);
 }
 
@@ -133,3 +133,13 @@ exports.checkNodeValues = function(valuesToCheck, dtest, client)
                 "Expression color was " + expressionColor + " instead of " + values["expectedExpressionColor"] + " for node " + nodeName);
 	}
 }
+
+exports.popupContainsText = function(expectedText,dtest,client){
+	// Summary: checks if the right message text appears on a pop-up message in Dragoon
+	
+	// Could improve this by checking to see if a popup even exists first.
+	var text = dtest.popupWindowGetText(client);
+	assert(text.indexOf(expectedText) >= 0,"Message text was \"" + text + "\", could not find \"" + expectedText+"\"");
+}
+
+

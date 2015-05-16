@@ -79,6 +79,10 @@ define([
     console.log("session is",session);
 	logging.setSession(session);  // Give logger message destination
 	session.loadProblem(query).then(function(solutionGraph){
+		//removing the overlay as the actual computation does not take much time and it causes errors to stay hidden behind the overlay which continues infinitely.
+		var loading = document.getElementById('loadingOverlay');
+		loading.style.display = "none";
+
 		var givenModel = new model(query.m, query.p);
 		logging.session.log('open-problem', {problem : query.p});
 		if(solutionGraph){
@@ -696,9 +700,6 @@ define([
 							"height=400, width=600, toolbar =no, menubar=no, scrollbars=yes, resizable=no, location=no, status=no"
 						   );
 			});
-			
-			var loading = document.getElementById('loadingOverlay');
-			loading.style.display = "none";
 		});
 	});
 });
