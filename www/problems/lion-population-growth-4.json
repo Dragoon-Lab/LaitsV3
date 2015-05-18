@@ -1,0 +1,239 @@
+{
+  "task": {
+    "taskName": "lion population growth 4",
+    "time": {
+      "start": 1950,
+      "end": 1970,
+      "step": 1,
+      "integrationMethod": "Eulers Method",
+      "units": "years"
+    },
+    "properties": {
+      
+    },
+    "image": {
+      "URL": "http://blog.malamala.com/wp-content/uploads/2011/10/MalaMala-Styx-lion-pride.jpg"
+    },
+    "taskDescription": [
+      "The models you made in Levels 1, 2 and 3 predicted that the lion population would increase indefinitely.  Clearly, that wonu2019t happen because lions will starve to death where there are too many of them for the amount of grassland they occupy.  Ecologists use u201ccarrying capacityu201d to refer to the maximum population that can be supported by a given habitat.   The model below assumes that the death probability rises as population increases until the death probability equals the birth probability when the population equals the carrying capacity.  At that point, annual deaths equal annual births, so the population stops growing.",
+      "",
+      "Assumptions:",
+      "-- The lion population is 4 in the first year (1950).",
+      "-- Births and deaths are the only change in the population. Immigration and emigration do not occur.",
+      "-- The number of lion births each year is the lion birth probability times the lion population.",
+      "-- The probability of a lion giving birth during the year is 50%.",
+      "-- The number of lion deaths each year is the lion death probability times the lion population.",
+      "-- The lion death probability is the lion birth probability times (the lion population / the lion carrying capacity).",
+      "-- The lion carrying capacity is 65 (for lions living in Tanzania, Africa).",
+      "",
+      "",
+      " ",
+      "",
+      "",
+      ""
+    ],
+    "lessonsLearned": "",
+    "givenModelNodes": [
+      {
+        "ID": "id1",
+        "inputs": [
+          {
+            "ID": "id2",
+            "label": ""
+          },
+          {
+            "ID": "id3",
+            "label": "-"
+          }
+        ],
+        "position": {
+          "x": 649,
+          "y": 237
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 1
+        },
+        "status": {
+          
+        },
+        "name": "Lion Population",
+        "description": "The number of lions in the population",
+        "type": "accumulator",
+        "initial": 4,
+        "equation": "id2-id3",
+        "genus": "required",
+        "parentNode": true
+      },
+      {
+        "ID": "id2",
+        "inputs": [
+          {
+            "ID": "id1",
+            "label": ""
+          },
+          {
+            "ID": "id4",
+            "label": ""
+          }
+        ],
+        "position": {
+          "x": 498,
+          "y": 240
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 1
+        },
+        "status": {
+          
+        },
+        "name": "Lion Births",
+        "description": "The number of lions born each year",
+        "type": "function",
+        "equation": "id1*id4",
+        "genus": "required"
+      },
+      {
+        "ID": "id3",
+        "inputs": [
+          {
+            "ID": "id1",
+            "label": ""
+          },
+          {
+            "ID": "id5",
+            "label": ""
+          }
+        ],
+        "position": {
+          "x": 809,
+          "y": 234
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 1
+        },
+        "status": {
+          
+        },
+        "name": "Lion Deaths",
+        "description": "The number of lions that die each year",
+        "type": "function",
+        "equation": "id1*id5",
+        "genus": "required"
+      },
+      {
+        "ID": "id4",
+        "inputs": [
+          
+        ],
+        "position": {
+          "x": 394.33096313477,
+          "y": 70.330947875977
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 1
+        },
+        "status": {
+          
+        },
+        "name": "Lion Birth Probability",
+        "description": "The probability of a lion giving birth during the year",
+        "equation": "",
+        "type": "parameter",
+        "parentNode": false,
+        "initial": 0.5,
+        "genus": "required"
+      },
+      {
+        "ID": "id5",
+        "inputs": [
+          {
+            "ID": "id4",
+            "label": ""
+          },
+          {
+            "ID": "id1",
+            "label": ""
+          },
+          {
+            "ID": "id6",
+            "label": "/"
+          }
+        ],
+        "position": {
+          "x": 639,
+          "y": 87
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": {
+          
+        },
+        "name": "Lion Death Probability",
+        "genus": "required",
+        "description": "The probability of a lion dying during the year",
+        "type": "function",
+        "equation": "id4*(id1/id6)"
+      },
+      {
+        "ID": "id6",
+        "inputs": [
+          
+        ],
+        "position": {
+          "x": 861.33093261719,
+          "y": 69.330947875977
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": {
+          
+        },
+        "name": "Lion Carrying Capacity",
+        "description": "The number of lions the environment can support",
+        "equation": "",
+        "type": "parameter",
+        "parentNode": false,
+        "initial": 65,
+        "genus": "required"
+      }
+    ],
+    "studentModelNodes": [
+      
+    ],
+    "schemas": [
+      
+    ]
+  }
+}

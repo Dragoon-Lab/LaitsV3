@@ -1,0 +1,101 @@
+{
+  "task": {
+    "taskName": "lion population growth 1",
+    "time": {
+      "start": 1950,
+      "end": 1970,
+      "step": 1,
+      "integrationMethod": "Eulers Method",
+      "units": "years"
+    },
+    "properties": {
+      
+    },
+    "image": {
+      "URL": "http://upload.wikimedia.org/wikipedia/commons/7/73/Lion_waiting_in_Namibia.jpg"
+    },
+    "taskDescription": [
+      "Assumptions:",
+      "- The lion population is 4 in the first year (1950).",
+      "- Births are the only change in population. Deaths, immigration, and emigration do not occur.",
+      "- There are unlimited resources.",
+      "- The number of lion births each year is 3.",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "lessonsLearned": "",
+    "givenModelNodes": [
+      {
+        "ID": "id1",
+        "inputs": [
+          {
+            "ID": "id2",
+            "label": ""
+          }
+        ],
+        "position": {
+          "x": 400,
+          "y": 100
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": {
+          
+        },
+        "name": "Lion Population",
+        "description": "The number of lions in the population",
+        "type": "accumulator",
+        "initial": 4,
+        "parentNode": true,
+        "equation": "id2",
+        "genus": "required"
+      },
+      {
+        "ID": "id2",
+        "inputs": [
+          
+        ],
+        "position": {
+          "x": 500,
+          "y": 100
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": {
+          
+        },
+        "name": "Lion Births",
+        "description": "The number of lions born each year",
+        "equation": "",
+        "type": "parameter",
+        "parentNode": false,
+        "initial": 3,
+        "genus": "required"
+      }
+    ],
+    "studentModelNodes": [
+      
+    ],
+    "schemas": [
+      
+    ]
+  }
+}
