@@ -45,7 +45,7 @@ define([
 
 			this.assess.updateSchema(this.currentNodeTime, this.currentNodeErrors);
 			this.assess.dummy();
-			this.assess.saveSchema();
+			this.assess.saveSchema(nodeID);
 
 			this.resetNodeValues();
 		},

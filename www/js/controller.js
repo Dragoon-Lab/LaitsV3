@@ -237,7 +237,7 @@ define([
 				var crisisMessage = dom.byId('crisisMessage');
 				console.log("crisis alert message ", message);
 				crisisMessage.innerHTML = message;
-				this.show();
+				crisis.show();
 			};
 			on(registry.byId("OkButton"), "click", function(){
 				crisis.hide();
@@ -813,7 +813,7 @@ define([
 				this.logging.log("solution-step", {
 					type: "parse-error",
 					node: this._model.active.getName(this.currentID),
-					nodeID: this.curentID,
+					nodeID: this.currentID,
 					property: "equation",
 					value: inputEquation,
 					correctResult: this._model.given.getEquation(this.currentID),
@@ -964,6 +964,7 @@ define([
 				// console.log("************** equationAnalysis directives ", directives);
 
 				// Send to PM if all variables are known.
+				console.log(parse);
 				return parse;
 			}
 			return null;

@@ -213,18 +213,21 @@ define([
 				 and descriptions are distinct, if they are defined.
 				 */
 				var ids = {}, names = {}, descriptions = {};
+				var duplicateDescription = [];
+				var duplicateName = [];
 				array.forEach(this.given.getNodes(), function(node){
 					if(node.ID in ids){
 						throw new Error("Duplicate node id " + node.id);
 					}
 					if(node.name in names){
-						throw new Error("Duplicate node name \"" + node.name +
-								"\" for " + node.ID + " and " + names[node.name]);
+						duplicateName[node.name] = node.ID;
 					}
 					if(node.description in descriptions){
-						throw new Error("Duplicate node description \"" + node.description +
-								"\" for " + node.ID + " and " + descriptions[node.description]);
+						var duplicateNodeId = descriptions[node.description];
+						duplicateDescription[node.ID] = node.name;
+						duplicateDescription[duplicateNodeId] = this.given.getName(duplicateNodeId);			
 					}
+
 					ids[node.ID] = true;
 					if(node.name){
 						names[node.name] = node.ID;
@@ -247,6 +250,32 @@ define([
 				 Does not corretly handle case where student completes
 				 the model, deletes some nodes, and reopens the problem.
 				 */
+				var errorMessage = "";
+
+				if(Object.keys(duplicateName).length > 0){
+					var duplicateStr = "";
+					array.forEach(Object.keys(duplicateName), function(duplicate){
+			 		duplicateStr += duplicate + ", ";
+					});
+					duplicateStr = duplicateStr.substring(0, duplicateStr.length-2);
+
+					//throw error for duplicate names
+					errorMessage = "Multiple nodes have same names: <strong>"+ duplicateStr + "</strong>. Please change them to be unique.<br/><br/>";
+				}
+				if(Object.keys(duplicateDescription).length > 0){
+					var duplicateStr = "";
+					array.forEach(Object.keys(duplicateDescription), function(duplicate){
+						duplicateStr += duplicateDescription[duplicate] + ", ";
+					});
+					duplicateStr = duplicateStr.substring(0, duplicateStr.length-2);
+
+					//throw error for duplicate descriptions
+					errorMessage += "The following nodes have the duplicate descriptions: <strong>"+ duplicateStr + "</strong>. Please change them to be unique.";
+				}
+				if(errorMessage != ""){
+					throw new Error(errorMessage);
+				}
+
 				this.isCompleteFlag = this.matchesGivenSolution();
 			},
 
@@ -591,27 +620,61 @@ define([
 				var idMap = {};
 
 				var nodes = model.task.givenModelNodes;
+				
+				var currentGivenNodes = obj.model.task.givenModelNodes;
+				var isNewProblem = false;
+				if(currentGivenNodes.length == 0){
+					obj.model.task.givenModelNodes = nodes;
+					obj.model.task.schemas = model.task.schemas;
+					isNewProblem = true;
+				}
+
+				var currentSNodes = obj.model.task.studentModelNodes;
+				if(currentSNodes.length == 0 && isNewProblem){
+					obj.model.task.studentModelNodes = model.task.studentModelNodes;
+				}
+				
+				if(isNewProblem){
+					var index = 0;
+					array.forEach(nodes, function(node){
+						ids[index] = node.ID;
+						index++;
+					});
+
+					return ids;
+				}
 
 				//copy author nodes
 				array.forEach(nodes,function(node){
                		obj._updateNextXYPosition();
 					node.position = {x: obj.x, y: obj.y};
-					var nID = "id" + obj._ID; //replace old id with new ID
+					var newID = parseInt(node.ID.replace("id", "")) + shift;
+					var nID = "id" + newID; //replace old id with new ID
 					idMap[node.ID]=nID; //store old ID vs new ID
 					node.ID =nID;
-					node.name=node.name+obj._ID;
-					node.description=node.description+obj._ID;
+					
+					if(obj.active.getNodeIDByName(node.name)){
+						node.name=node.name+"_duplicate";
+					}
+					if(obj.active.getNodeIDByDescription(node.description)){
+						node.description=node.description+"_duplicate";
+					}
 					ids.push(node.ID);
+
 					/*trick to update equations with new ids */
 					if(node.equation){
 						var equation = node.equation;
-						var nEquation=equation.replace(/(\d+)+/g, function(match, number) {
-       							return parseInt(number)+shift;
+						console.log("sachin shift value "+ shift);
+						var nEquation=equation.replace(/(id\d+)+/g, function(match, str) {
+								var number = str.replace("id", "");
+       							return "id"+(parseInt(number)+shift);
        						});
 						//also update inputs for graph generation
 						for(i=0;i<node.inputs.length;i++){
 							node.inputs[i].ID=node.inputs[i].ID.replace(/\d+$/, function(n){ return parseInt(n)+shift });//shift = total nodes in old model
+
 						}
+
 						node.equation=nEquation;
 					}
 					obj._ID=obj._ID+1; //for next coming node
@@ -624,11 +687,12 @@ define([
 				array.forEach(snodes,function(node){
 					obj._updateNextXYPosition(true);
 					node.position = {x: obj.x, y: obj.y};
-					var nID = "id" + obj._ID; //replace old id with new ID
+					var newID = parseInt(node.ID.replace("id", "")) + shift;
+					var nID = "id" + newID; //replace old id with new ID
 					sIDMap[node.ID]=nID; //store old vs new StudentIDs
 					node.ID =nID;
-					node.name=node.name+obj._ID;
-					node.description=node.description+obj._ID;
+					//node.name=node.name+obj._ID;
+					//node.description=node.description+obj._ID;
 					node.descriptionID=idMap[node.descriptionID]; //new DescriptionID of Node
 					sids.push(node.ID);
 					obj._ID=obj._ID+1; //for next coming node
@@ -643,16 +707,15 @@ define([
 						var isExpressionValid = true;
 						var equation = snode.equation;
 						array.forEach(snode.inputs, lang.hitch(this, function(input){
-				   			  var studentNodeID = sIDMap[input.ID];
-					 		  if(studentNodeID){
-									inputs.push({ "ID": studentNodeID});
-									var regexp = "(" +input.ID +")([^0-9]?)";
-									var re = new RegExp(regexp);
-									equation = equation.replace(re, studentNodeID+"$2");
-								}
-								else{
-									isExpressionValid = false;
-								}
+				   			var studentNodeID = sIDMap[input.ID];
+					 		if(studentNodeID){
+								inputs.push({ "ID": studentNodeID});
+								var regexp = "(" +input.ID +")([^0-9]?)";
+								var re = new RegExp(regexp);
+								equation = equation.replace(re, studentNodeID+"$2");
+							}else{
+								isExpressionValid = false;
+							}
 						}));
 						if(isExpressionValid){
 							snode.inputs=inputs;

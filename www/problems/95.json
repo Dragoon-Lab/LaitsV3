@@ -124,7 +124,9 @@
         "studentModelNodes": [],
         "schemas": [
             {
-                "ID": "linear_transfer",
+                "ID": "schema1",
+                "name": "Linear",
+                "schemaClass": "linear_transfer",
                 "difficulty": {
                     "isolation": 1,
                     "cues": 1,
@@ -139,7 +141,9 @@
                 }
             },
             {
-                "ID": "exponential_transfer",
+                "ID": "schema2",
+                "name": "Exponential",
+                "schemaClass": "exponential_transfer",
                 "difficulty": {
                     "isolation": 1,
                     "cues": 1,

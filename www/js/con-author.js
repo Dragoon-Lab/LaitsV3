@@ -245,7 +245,8 @@ define([
 			var nameID = this._model.given.getNodeIDByName(name);
 			// If nameID is falsy give "null"; if it doesn't match, give "false"
 			this.applyDirectives(this.authorPM.process(nameID?!(nameID==this.currentID):null,'name',name, equation.isVariable(name)));
-
+			
+			var logObj = {};
 			if(!this._model.given.getNodeIDByName(name) && equation.isVariable(name)){
 				// check all nodes in the model for equations containing name of this node
 				// replace name of this node in equation with its ID
@@ -254,8 +255,34 @@ define([
 				//not required - because updateNodes() will add connections automatically
 				//this.setConnections(this._model.active.getInputs(this.currentID), this.currentID);
 				this.updateEquationLabels();
+				logObj = {
+					error: false
+				};
+			} else {
+				//logging the error case
+				logObj = {
+					error: true
+				};
+				if(this._model.given.getNodeIDByName(name)){
+					lang.mixin(logObj, {
+						message: "duplication"
+					});
+				} else if(equation.isVariable(name)){
+					lang.mixin(logObj, {
+						message: "parse"
+					});
+				}
 			}
 			this.enableDisableSetStudentNode();
+			
+			logObj = lang.mixin({
+				type: "solution-enter",
+				nodeID: this.currentID,
+				propoerty: "name",
+				node: name,
+				value: name
+			}, logObj);
+			this.logging.log('solution-step', logObj);
 		},
 
 		autocreateNodes: function(/** auto node id **/ id, /**variable name**/ variable){
@@ -285,6 +312,14 @@ define([
 				this._model.given.setGenus(this.currentID, kind);
 				this.applyDirectives(this. authorPM.process(this.currentID, "kind", kind));
 			}
+
+			this.logging.log('solution-step', {
+				type: "solution-enter",
+				nodeID: this.currentID,
+				property: "kind",
+				node: this._model.given.getName(this.currentID),
+				value: kind
+			});
 		},
 
 		handleDescription: function(description){
@@ -293,17 +328,35 @@ define([
 			var descriptionID = this._model.given.getNodeIDByDescription(description);
 			// If descriptionID is falsy give "null"; if it doesn't match, give "false"
 			this.applyDirectives(this.authorPM.process(descriptionID?!(descriptionID==this.currentID):null, "description", description));
+			
+			var logObj = {};
 
 			if(!this._model.active.getNodeIDByDescription(description)){
 				this._model.active.setDescription(this.currentID, description);
 				console.log("In AUTHOR mode. Description value is: " + description);
+				logObj = {
+					error: false
+				};
 			}else {
 				console.warn("In AUTHOR mode. Attempted to use description that already exists: " + description);
+				logObj = {
+					error: true,
+					message: "duplication"
+				};
 			}
 			if(this._forumparams){
 				// enable forum button and activate event
 				this.activateForumButton();
 			}
+			logObj = lang.mixin({
+				type: "solution-enter",
+				nodeID: this.currentID,
+				property: "description",
+				node: this._model.given.getName(this.currentID),
+				value: description
+			}, logObj);
+			
+			this.logging.log('solution-step', logObj);
 			this.enableDisableSetStudentNode();
 		},
 
@@ -311,6 +364,14 @@ define([
             // Summary: Sets the current node to be parent node
             console.log("********************* in handleRoot", root);
             this._model.given.setParent(this.currentID, root);
+
+			this.logging.log("solution-step", {
+				type: "solution-enter",
+				nodeID: this.currentID,
+				property: "root",
+				node: this._model.given.getName(this.currentID),
+				value: root
+			});
         },
 
 		handleSetStudentNode: function(checked){
@@ -404,6 +465,15 @@ define([
 			}
 			//update student node status
 			this.updateStatus("type", this._model.given.getType(this.currentID), type);
+			var valueFor = this.getModelType() == "given" ? "student-model": "author-model";
+			this.logging.log("solution-step", {
+				type: "solution-enter",
+				nodeID: this.currentID,
+				node: this._model.given.getName(this.currentID),
+				property: "type",
+				value: type,
+				usage: valueFor
+			});
 		},
 		
 		handleUnits: function(units){
@@ -420,6 +490,15 @@ define([
 			this.applyDirectives(this.authorPM.process(this.currentID, "units", units));
 			//update student node status
 			this.updateStatus("units", this._model.given.getUnits(this.currentID), units);
+			var valueFor = modelType == "given" ? "student-model": "author-model";
+			this.logging.log("solution-step", {
+				type: "solution-enter",
+				nodeID: this.currentID,
+				property: "units",
+				value: units,
+				node: this._model.given.getName(this.currentID),
+				usage: valueFor 
+			});
 		},
 		/*
 		 Handler for initial value input
@@ -428,6 +507,7 @@ define([
 			//IniFlag contains the status and initial value
 			var modelType = this.getModelType();
 			var IniFlag = typechecker.checkInitialValue(this.widgetMap.initial, this.lastInitial);
+			var logObj = {};
 			if(IniFlag.status){
 				// If the initial value is not a number or is unchanged from
 				// previous value we dont process
@@ -443,14 +523,26 @@ define([
 				}
 				//update student node status
 				this.updateStatus("initial", this._model.given.getInitial(this.currentID), newInitial);
+				logObj = {
+					error: false
+				};
 			}else if(IniFlag.errorType){
-				this.logging.log('solution-step', {
-					type: IniFlag.errorType,
-					node: this._model.active.getName(this.currentID),
-					property: "initial-value",
-					value: initial
-				});
+				logObj = {
+					error: true,
+					message: IniFlag.errorType
+				};
 			}
+			var valueFor = modelType == "given" ? "student-model": "author-model";
+			logObj = lang.mixin({
+				type: "solution-enter", 
+				node: this._model.active.getName(this.currentID),
+				nodeID: this.currentID,
+				property: "initial",
+				value: initial,
+				usage: valueFor					
+			}, logObj);
+
+			this.logging.log("solution-step", logObj);
 		},
 
 		handleInputs: function(name){
@@ -466,9 +558,15 @@ define([
 			var model = registry.byId("selectModel").value;
 			if(model && model == "correct"){
 				var directives = [];
+				var logObj = {};
 				var parse = this.equationAnalysis(directives, true);
 				if(parse){
 					directives = directives.concat(this.authorPM.process(this.currentID, "equation", parse));
+				} else {
+					logObj = {
+						error: true,
+						message: "parse error"
+					}
 				}
 				this.applyDirectives(directives);
 			}
@@ -522,8 +620,17 @@ define([
 					 this._model.student.setInputs(inputs, studentNodeID);
 					 this._model.student.setEquation(studentNodeID, "");
 				}
-
 			}
+			var valueFor = model == "given" ? "student-model": "author-model";
+			logObj = lang.mixin({	
+				type: "solution-enter",
+				nodeID: this.currentID,
+				node: this._model.given.getName(this.currentID),
+				property: "equation",
+				value: registry.byId(this.controlMap.equation).get("value"),
+				usage: valueFor
+			}, logObj);
+			this.logging.log("solution-step", logObj);
 		},
 		
 		handleGivenEquation: function(equation){
@@ -652,7 +759,14 @@ define([
 
 			//false value is set because while creating a name we are already checking for uniqueness and checking again while re-opening the node is not needed.
 			if(name){
-				this.applyDirectives(this.authorPM.process(false, "name", name, equation.isVariable(name)));
+				var nodes = this._model.given.getNodes();
+				var isDuplicateName = false;
+				array.forEach(nodes, lang.hitch(this, function(node){
+					if(node.name == this._model.given.getName(this.currentID) && node.ID != this.currentID)
+						isDuplicateName = true;
+				}));
+
+				this.applyDirectives(this.authorPM.process(isDuplicateName, "name", name, equation.isVariable(name)));
 			}
 			//color kind widget
 			if(this._model.given.getGenus(this.currentID) === '' || this._model.given.getGenus(this.currentID)){
@@ -661,7 +775,14 @@ define([
 			//color description widget
 			//uniqueness taken care of by the handler while adding a new value. So a false value sent.
 			if(this._model.given.getDescription(this.currentID)){
-				this.applyDirectives(this.authorPM.process(false, "description", this._model.given.getDescription(this.currentID)));
+				var nodes = this._model.given.getNodes();
+				var isDuplicateDescription = false;
+				array.forEach(nodes, lang.hitch(this, function(node){
+					if(node.description == this._model.given.getDescription(this.currentID) && node.ID != this.currentID)
+						isDuplicateDescription = true;
+				}));
+
+				this.applyDirectives(this.authorPM.process(isDuplicateDescription, "description", this._model.given.getDescription(this.currentID)));
 			}
 			//color units widget
 			var unitsChoice = this._model.given.getUnits(this.currentID);

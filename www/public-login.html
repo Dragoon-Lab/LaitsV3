@@ -104,8 +104,8 @@
         problemOptions.length = 0; // Delete existing options
 	for(var id in problemIndex[category]){
             var option = document.createElement("option");
-            option.value = id;
-            option.text = problemIndex[category][id];
+            option.text = id;
+            option.value = problemIndex[category][id];
             problemOptions.add(option);
         }
     };
@@ -169,7 +169,7 @@
                            <option>Mastering model construction: Problem Set 4</option>
                            <option>Mastering model construction: Problem Set 5</option>
                            <option>Ecosystem Population Dynamics</option>
-                           <option>Miscellaneous</option>
+                           <option selected="selected">Miscellaneous</option>
                            <option>Kinematics</option>
                         </select>
                     </div>

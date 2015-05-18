@@ -49,6 +49,7 @@
                 "description": "Number of males on the island",
                 "type": "accumulator",
                 "initial": 100,
+                "parentNode": true,
                 "equation": "id2-id3"
             },
             {
@@ -140,6 +141,7 @@
                 "description": "Number of females on the island",
                 "type": "accumulator",
                 "initial": 190,
+                "parentNode": true,
                 "equation": "id5-id6"
             },
             {

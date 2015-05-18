@@ -32,15 +32,24 @@ require "db-login.php";
 // connect to database
 $mysqli = mysqli_connect("localhost", $dbuser, $dbpass, $dbname)
   or trigger_error('Could not connect to database.',E_USER_ERROR);
-
+$user = "";
+$section ="";
+$group = "";
 //retrieve POST variables
-$section = mysqli_real_escape_string($mysqli, $_GET['section']);
-$user = mysqli_real_escape_string($mysqli, $_GET['username']);
+if(isset($_GET['s']))
+  $section = mysqli_real_escape_string($mysqli, $_GET['s']);
+if(isset($_GET['u']))
+  $user = mysqli_real_escape_string($mysqli, $_GET['u']);
+if(isset($_GET['g']))
+  $group = mysqli_real_escape_string($mysqli, $_GET['g']);
+
 $query = "";
-if ($user == ""){
-  $query="select S.* from session S,solutions T  where S.section='$section' AND S.mode='AUTHOR' AND S.session_id=T.session_id AND (T.share)";
-} else {
-  $query="select S.* from session S,solutions T  where S.section='$section' AND S.mode='AUTHOR' AND S.user='$user' AND S.session_id=T.session_id";
+if ($user != ""){
+  $query="select DISTINCT S.problem, S.group from session S,solutions T  where S.section='$section' AND S.mode='AUTHOR' AND S.user='$user' AND S.session_id=T.session_id";
+} else if($group != ""){
+  $query="select DISTINCT S.problem from session S,solutions T  where S.section='$section' AND S.mode='AUTHOR' AND S.group='$group' AND S.session_id=T.session_id";
+} else{
+   $query="select S.* from session S,solutions T  where S.section='$section' AND S.mode='AUTHOR' AND S.session_id=T.session_id AND (T.share)";
 }
 
 if($result = $mysqli->query($query)){

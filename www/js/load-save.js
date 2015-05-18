@@ -29,9 +29,12 @@
  **/
 
 define([
-	"dojo/_base/declare", "dojo/request/xhr", "dojo/_base/json",
-	"dojo/_base/lang"
-], function(declare, xhr, json, lang){
+	"dojo/_base/declare",
+	"dojo/request/xhr",
+	"dojo/_base/json",
+	"dojo/_base/lang",
+	"./message-box"
+], function(declare, xhr, json, lang, messageBox){
 	// Summary:
 	//			Loads and saves sessions and sets up logging
 	// Description:
@@ -107,15 +110,26 @@ define([
 			return xhr.get(this.path + "task_fetcher.php", {
 				query: params,
 				handleAs: "json"
-			}).then(function(model_object){	 // this makes loadProblem blocking?
+			}).then(lang.hitch(this, function(model_object){	 // this makes loadProblem blocking?
 				console.log("loadFromDB worked", model_object);
 				return model_object;
-			}, function(err){
+			}), lang.hitch(this, function(err){
 				this.clientLog("error", {
 					message: "load from DB error : "+err,
 					functionTag: 'loadProblem'
 				});
-			});
+				var message = "";
+				if(params.m == "AUTHOR"){
+					if(typeof params.g === "undefined"){
+						message = "Missing published JSON.";
+					}
+				}
+				else {
+					message = "Problem Not found."
+				}
+				var errorMessage = new messageBox("errorMessageBox", "error", message);
+				errorMessage.show();
+			}));
 		},
 		isProblemNameConflict: function(problemName, groupName) {
 			return xhr.post(this.path + "problems_conflict_checker.php", {
@@ -125,16 +139,15 @@ define([
 					problem: problemName
 				},
 				handleAs: "json"
-			}).then(function(reply){  // this makes blocking?
+			}).then(lang.hitch(this, function(reply){  // this makes blocking?
 				console.log("Got the conflict status ", reply);
 				return reply.isConflict;
-			}, function(err){
-				alert('error');
+			}), lang.hitch(this, function(err){
 				this.clientLog("error", {
 					message: "get problem conflict status : "+err,
 					functionTag: 'problemConflictChecker'
 				});
-			});
+			}));
 		},
 		saveAsProblem : function(model,problemName,groupName){
 			//update params to be passed
@@ -167,14 +180,14 @@ define([
 			}
 			xhr.post(this.path + "save_solution.php", {
 				data: object
-			}).then(function(reply){  // this makes saveProblem blocking?
+			}).then(lang.hitch(this, function(reply){  // this makes saveProblem blocking?
 				console.log("saveProblem worked: ", reply);
-			}, function(err){
+			}), lang.hitch(this, function(err){
 				this.clientLog("error", {
 					message: "save Problem error : "+err,
 					functionTag: 'saveProblem'
 				});
-			});
+			}));
 		},
 
 		publishProblem: function(model){
@@ -185,15 +198,15 @@ define([
 			return xhr.post(this.path + "publish_solution.php", {
 				data: object,
 				sync: true
-			}).then(function(reply){
+			}).then(lang.hitch(this, function(reply){
 				console.log("problem published: ", reply);
 				return reply;
-			}, function(err){
+			}), lang.hitch(this, function(err){
 				this.clientLog("error", {
 					message: "problem not published error: "+ err,
 					functionTag: "publishProblem"
 				});
-			});
+			}));
 		},
 
 		getTime: function(){
@@ -213,12 +226,12 @@ define([
 						x: rsessionId?rsessionId:this.sessionId,
 						id: this.counter++
 					}
-				}).then(function(reply){
+				}).then(lang.hitch(this, function(reply){
 					console.log("---------- logging " + method + ': ', p, " OK, reply: ", reply);
-				}, function(err){
+				}), lang.hitch(this, function(err){
 					console.error("---------- logging " + method + ': ', p, " error: ", err);
 					console.error("This should be sent to apache logs");
-				});
+				}));
 			}
 		},
 

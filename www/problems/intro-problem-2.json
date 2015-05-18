@@ -1,0 +1,130 @@
+{
+  "task": {
+    "taskName": "intro problem 2",
+    "time": {
+      "start": 0,
+      "end": 10,
+      "step": 1,
+      "integrationMethod": "Eulers Method",
+      "units": "hours"
+    },
+    "properties": {
+      
+    },
+    "image": {
+      
+    },
+    "taskDescription": [
+      "Suppose a 100-liter barrel of oil is leaking at the rate of 2 liter per hour and the oil is accumulating on the floor of the warehouse where it is stored.  Let's model the first 10 hours of this leaking process.",
+      "",
+      "To get started, create a parameter node to represent the amount of oil leaked per hour.  Its value should be 2, and the units should be \"liters.\"",
+      "",
+      "Next, create an accumulator node to represent the oil in the barrel.  It starts with 100 liters.  Its expression should be \"- leak\" because it loses 2 liter per hour. ",
+      "",
+      "Now create an accumulator node to represent the oil on the floor.  It should start with 0 liters.  Its expression should be just \"leak\" because it gains 2 liters per hour.",
+      "",
+      "Now graph the model.  You can look at the table too."
+    ],
+    "lessonsLearned": "",
+    "givenModelNodes": [
+      {
+        "ID": "id1",
+        "inputs": [
+          
+        ],
+        "position": {
+          "x": 621.33093261719,
+          "y": 142.33096313477
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": {
+          
+        },
+        "name": "leak",
+        "description": "Amount of oil leaked per hour",
+        "equation": "",
+        "type": "parameter",
+        "parentNode": false,
+        "initial": 2,
+        "units": "liters",
+        "genus": "required"
+      },
+      {
+        "ID": "id2",
+        "inputs": [
+          {
+            "ID": "id1",
+            "label": "-"
+          }
+        ],
+        "position": {
+          "x": 479,
+          "y": 153
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": {
+          
+        },
+        "name": "oil in barrel",
+        "description": "Amount of oil in the barrel",
+        "type": "accumulator",
+        "initial": 100,
+        "units": "liters",
+        "equation": "-id1",
+        "genus": "required",
+        "parentNode": true
+      },
+      {
+        "ID": "id3",
+        "inputs": [
+          {
+            "ID": "id1",
+            "label": ""
+          }
+        ],
+        "position": {
+          "x": 800,
+          "y": 161
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": {
+          
+        },
+        "name": "oil on floor",
+        "description": "The amount of oil on the floor",
+        "type": "accumulator",
+        "initial": 0,
+        "units": "liters",
+        "equation": "id1",
+        "genus": "required"
+      }
+    ],
+    "studentModelNodes": [
+      
+    ],
+    "schemas": [
+      
+    ]
+  }
+}

@@ -47,12 +47,13 @@ define([
 	"./createSlides",
 	"./lessons-learned",
 	"./schemas-author",
+	"./message-box",
 	"./tincan"
 ], function(
 		array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry, toolTip,
 		menu, loadSave, model,
 		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, equation, 
-		description, State, typechecker, slides, lessonsLearned, schemaAuthor, tincan
+		description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan
 ){
 	// Summary: 
 	//			Menu controller
@@ -78,11 +79,34 @@ define([
     console.log("session is",session);
 	logging.setSession(session);  // Give logger message destination
 	session.loadProblem(query).then(function(solutionGraph){
-		
+		//removing the overlay as the actual computation does not take much time and it causes errors to stay hidden behind the overlay which continues infinitely.
+		var loading = document.getElementById('loadingOverlay');
+		loading.style.display = "none";
+
 		var givenModel = new model(query.m, query.p);
 		logging.session.log('open-problem', {problem : query.p});
 		if(solutionGraph){
-			givenModel.loadModel(solutionGraph);
+			try{
+				givenModel.loadModel(solutionGraph);
+			}catch(error){
+				if(query.m == "AUTHOR"){
+					var errorMessage = new messageBox("errorMessageBox", "error", error.message);
+			    	errorMessage.show();
+			    }else {
+			    	var errorMessage = new messageBox("errorMessageBox", "error", "This problem could not be loaded. Please contact the problem's author.");
+			    	errorMessage.show();
+			    	throw Error("Model could not be loaded.");
+			    }
+			}
+		}else {
+			if(query.g && query.m === "AUTHOR"){
+				var messageHtml = "You have successfully created a new problem named <strong>"+ query.p +"</strong>.<br/> <br/> If you expected this problem to exist already, please double check the problem name and folder and try again.";
+				var infoMessage = new messageBox("errorMessageBox", "info", messageHtml);
+				infoMessage.show();
+			} else if(query.g){
+				var errorMessage = new messageBox("errorMessageBox", "error", "Problem not found.");
+				errorMessage.show();
+			}
 		}
 		/*
 		 start up controller
@@ -118,6 +142,8 @@ define([
 		controllerObject.setState(state);
 
 		ready(function(){
+			var taskString = givenModel.getTaskName();
+			document.title ="Dragoon" + ((taskString) ? " - " + taskString : "");
 			
 			//In TEST and EDITOR mode remove background color and border colors		 
 			if(controllerObject._mode == "TEST" || controllerObject._mode == "EDITOR"){
@@ -280,17 +306,19 @@ define([
 				}
 				session.saveProblem(givenModel.model);
 				//This section errors out in author mode
-                var descDirective=controllerObject._model.student.getStatusDirectives(controllerObject.currentID);
-                var directive = null;
-                for(i=0;i<descDirective.length;i++){
-                    if(descDirective[i].id=="description")
-                            directive=descDirective[i];
-                        
-                }
-                if(controllerObject._mode !== "TEST" && controllerObject._mode !== "EDITOR"){
-                	if(directive&&(directive.value=="incorrect" || directive.value=="premature"))
-                            drawModel.deleteNode(controllerObject.currentID);
-                }
+				if(controllerObject._mode !== "AUTHOR"){
+	                var descDirective=controllerObject._model.student.getStatusDirectives(controllerObject.currentID);
+	                var directive = null;
+	                for(i=0;i<descDirective.length;i++){
+	                    if(descDirective[i].id=="description")
+	                            directive=descDirective[i];
+	                        
+	                }
+	                if(controllerObject._mode !== "TEST" && controllerObject._mode !== "EDITOR"){
+	                	if(directive&&(directive.value=="incorrect" || directive.value=="premature"))
+	                            drawModel.deleteNode(controllerObject.currentID);
+	                }
+           		}
     		});
 			
 			// Wire up close button...
@@ -431,8 +459,8 @@ define([
 								var ids = givenModel.active.mergeNodes(solutionGraph);
 								//var snodes = solutionGraph.task.studentModelNodes;
 								//var sids = givenModel.active.mergeNodes(snodes,true);
+								givenModel.loadModel(givenModel.model);	
 								
-								session.saveProblem(givenModel.model);
 								//add merged nodes
 								array.forEach(ids,function(id){	
 									var node = 	givenModel.active.getNode(id);
@@ -443,10 +471,11 @@ define([
 									var node = 	givenModel.active.getNode(id);
 									drawModel.setConnections(node.inputs,dojo.byId(id));
 								},this);
+								session.saveProblem(givenModel.model); //moved the saving part to the end of the function call so that if anything breaks the broken model is not saved.
 								registry.byId("authorMergeDialog").hide();
 							}else{
 								console.log("Problem Not found");
-								alert("Problem Not found");
+								alert("Problem Not found, please check the problem name you have entered.");
 							}
                		 });
 				});
@@ -671,7 +700,6 @@ define([
 							"height=400, width=600, toolbar =no, menubar=no, scrollbars=yes, resizable=no, location=no, status=no"
 						   );
 			});
-
 		});
 	});
 });

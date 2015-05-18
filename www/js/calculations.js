@@ -128,18 +128,42 @@ define([
 			return timeStep;
 		},
 		
-		findSolution: function(isActive, plotVariables){ 
+		findStaticSolution: function(isActive, givennode, plotVariables){
 			// Summary:	 Find a solution
 			// Returns:	 an object of the form
 			//			{status: s, type: m, missingNode: n/soln: solution}
 		    var choice = isActive?this.active:this.given;
+		    var node = givennode.ID;
+		    var start = givennode.initial / 10;
+		    var stop = givennode.initial * 10;
+		    var step = (stop - start) / 10;
+		    var min = 0;
+		    var max = 0;
+		    /*var val = choice.timeStep.parameters[node], min, max;
+				if(val==0){
+					transform = function(x){ return x; }; // identity function
+					min = -1;
+					max = 1;
+				}else if(val>0){
+					// Range from 1/10 to 10 times the nominal value
+					// Use logarithmic scale for the slider.
+					transform = Math.exp;
+					val = Math.log(val);
+					min = val - Math.log(10);
+					max = val + Math.log(10);
+				}else{
+					transform = function(x){ return x; }; // identity function
+					min = 2*val;
+					max = -2*val;
+				}*/
+
+		    var time = this.model.getTime();
             /*
 			 Calculate solution by solving differential 
 			 equation for accumulator nodes
 			 */
 			try { // we try to run the method because there might be some nodes missing and an error is generated
 				var solution;
-				console.log(this.model.getIntegrationMethod());
                 if(this.model.getIntegrationMethod() == "Midpoint Method")
 					solution = integrate.midpointMethod(
 					choice.timeStep, 
@@ -167,6 +191,81 @@ define([
 				});
 				return {status: 'error', type: 'missing', missingNode: miss_node};
 			}
+			//console.log(solution);
+			/*
+			 Given a solution, create an array of values for the
+			 list of plot variables.  The list may include function nodes.
+			 */
+			 var step = 1;
+			var nodes = [];			 
+			if(plotVariables){
+				// If id is null, then make row null
+				var plotValues = array.map(plotVariables, function(x){
+					return x?[]:null;
+				});
+				var timeStep = choice.timeStep;
+				// Copy parameters object.
+				var variables = lang.mixin({}, timeStep.parameters);
+				for(var k = start; k < stop; k += step){
+						nodes.push(k);
+						variables[node] = k;
+						//variables = lang.mixin({}, parameters);
+						array.forEach(timeStep.functions, function(id){
+							variables[id] = timeStep.parse[id].evaluate(variables, time.start);
+						});
+						array.forEach(plotVariables, function(id, k){
+							if(id){
+								plotValues[k].push(variables[id]);
+							}
+						});
+				}	
+				return {times: nodes, plotValues: plotValues};
+			}else{
+				return {status: 'solution', soln: solution};
+			}
+
+		},
+
+		findSolution: function(isActive, plotVariables){ 
+			// Summary:	 Find a solution
+			// Returns:	 an object of the form
+			//			{status: s, type: m, missingNode: n/soln: solution}
+		    var choice = isActive?this.active:this.given;
+            /*
+			 Calculate solution by solving differential 
+			 equation for accumulator nodes
+			 */
+			try { // we try to run the method because there might be some nodes missing and an error is generated
+				var solution;
+				//console.log(this.model.getIntegrationMethod());
+				if(this.model.getIntegrationMethod() == "Midpoint Method")
+					solution = integrate.midpointMethod(
+					choice.timeStep, 
+					equation.evaluateTimeStep,
+					choice.initialValues, 
+					this.model.getTime());
+				else
+					solution = integrate.eulersMethod(
+					choice.timeStep, 
+					equation.evaluateTimeStep,
+					choice.initialValues, 
+					this.model.getTime());
+			}
+			catch(err){ // we catch the correspoding error here
+            	var if_id=err.message.substr(19).trim(); //In case the name is not generated and a node id is , we have to get the name from the active object for the user to understand
+				console.log("catch error",this.model.active.getName(if_id));  
+				if(this.model.active.getName(if_id)){
+					var miss_node=this.model.active.getName(if_id); // In case a node is incomplete
+				}else{
+					miss_node=if_id;
+				}
+				this._logging.clientLog("error", {
+					message:"graph/table created with missing node : "+miss_node,
+					functionTag : "findSolution"
+				});
+				return {status: 'error', type: 'missing', missingNode: miss_node};
+			}
+			//console.log(solution);
 			/*
 			 Given a solution, create an array of values for the
 			 list of plot variables.  The list may include function nodes.
@@ -225,9 +324,9 @@ define([
 				var input = dom.byId(index);
 				// Print slider value in box.
 				input.value = transform(slider.value).toPrecision(3);
-				console.log(this.model.student.getName(paramID));
-				console.log(this.mode);
-				console.log(this.active);
+				//console.log(this.model.student.getName(paramID));
+				//console.log(this.mode);
+				//console.log(this.active);
 				if(this.mode != "AUTHOR")
 				{
 					var logObj = lang.mixin({
@@ -297,6 +396,7 @@ define([
 				console.log("	   new solution", this.getTime());
 				//this function is specific to graph/table
 				this.renderDialog();
+				this.renderStaticDialog();
 				this._rendering = false;
 				console.log("	   new plot done", this.getTime());
 			}));
@@ -372,7 +472,7 @@ define([
 				sliderID[paramID] = this.sliderID + "_" + paramID;
 				this.dialogContent += "<div id='" + sliderID[paramID] + "'> " + "\</div>";
 			}
-			this.dialogContent += "</div>";
+			this.dialogContent += "</div></div>";
 			var dialogWidget = registry.byId("solution");
 			dialogWidget.set("title", this.model.getTaskName() + " - " + this.type);
 			// Attach contents of dialog box to DOM all at once
