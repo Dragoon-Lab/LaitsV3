@@ -12,9 +12,10 @@
       
     },
     "image": {
-      "URL": "http://www.livescience.com/images/i/000/037/153/original/zebra.jpg?1361831210"
+      "URL": "images/zebra-1.jpg"
     },
     "taskDescription": [
+      "Zebra Population Growth - Level 1",
       "Assumptions:",
       "- The zebra population is 20 in the first year (1950).",
       "- Births are the only change in the population. Deaths, immigration, and emigration do not occur.",

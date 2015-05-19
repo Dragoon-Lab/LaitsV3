@@ -12,9 +12,10 @@
       
     },
     "image": {
-      "URL": "http://i00.i.aliimg.com/wsphoto/v0/502845794/-font-b-Zebra-b-font-and-lions-Oil-font-b-Painting-b-font-wildlife-Animal.jpg"
+      "URL": "images/zebra-lion.jpg"
     },
     "taskDescription": [
+      "Zebra and Lions - Level 1",
       "When zebras and lions live in the same area, their populations are linked by predation.  The more animals, the more likely that they will run into each other, with fatal results for the zebras and food for the lions. ",
       "",
       "However, let's start by recreating the models of zebras and lions, with their capacity limitations.  We'll just assume predation doesn't exist.  You won't' get red/green feedback until you draw graphs, so you'll have to help each other out.",

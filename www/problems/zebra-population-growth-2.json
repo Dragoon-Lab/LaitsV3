@@ -12,9 +12,10 @@
       
     },
     "image": {
-      "URL": "http://cdn.cutestpaw.com/wp-content/uploads/2013/06/l-Baby-zebra.jpeg"
+      "URL": "images/zebra-2.jpg"
     },
     "taskDescription": [
+      "Zebra Population Growth - Level 2",
       "Assumptions:",
       "- The zebra population is 20 in the first year (1950).",
       "- Births are the only change in the population. Deaths, immigration, and emigration do not occur.",

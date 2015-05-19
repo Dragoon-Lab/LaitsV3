@@ -12,9 +12,10 @@
       
     },
     "image": {
-      "URL": "http://i00.i.aliimg.com/wsphoto/v0/502845794/-font-b-Zebra-b-font-and-lions-Oil-font-b-Painting-b-font-wildlife-Animal.jpg"
+      "URL": "images/zebra-lion.jpg"
     },
     "taskDescription": [
+      "Zebra and Lions - Level 2",
       "When zebras and lions live in the same area, their populations are linked by predation.  The more animals, the more likely that they will run into each other, with fatal results for the zebras.  However, the larger the area the animals range over, the less likely the animals are to run into each other.  Let's assume that the number of predation events is the number of zebras times the number of lions, divided by the size of the range.  Assuming there are initially 200 zebras and 20 lions, and the range is 100, the number of predation events during the first year is 200*20/100 = 40.  ",
       "",
       "The number of predation events per year affects zebras because there is, let's assume, a 45% chance of a zebra being killed in during a predation event.  If there are 40 predation events in the first year, then 18 zebras are killed.",
