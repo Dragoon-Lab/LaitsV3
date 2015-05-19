@@ -19,7 +19,7 @@
       "",
       "Now  click on the triangular node, and make it into a function node whose description is \"The number of Dodos that die each year.\"  Its expression should be \"death rate * population\"",
       "",
-      "Now click on the new triangular node, and make it into a parameter node whose description is "The fraction of Dodos that die each year."   Enter "0.2" as its value, and click Done.",
+      "Now click on the new triangular node, and make it into a parameter node whose description is \"The fraction of Dodos that die each year.\"   Enter \"0.2\" as its value, and click Done.",
       "",
       "You now have a complete model.  You can drag the nodes around to make it prettier if you want.  ",
       "",
@@ -53,6 +53,7 @@
         "name": "population",
         "description": "The number of Dodos in the Dodo population",
         "type": "accumulator",
+        "parentNode": true,
         "initial": 1000,
         "equation": "-id2",
         "genus": "required"

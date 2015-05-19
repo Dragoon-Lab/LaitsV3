@@ -320,8 +320,7 @@ exports.menuDone = function(client){
 // 3. Canvas functions
 
 // Node manipulation
-// This currently is by nodeId and not node name
-// If by node name is needed then an additional "findIdByNodeName" will be needed
+
 exports.openEditorForNode = function(client,nodeName){
     await(client.click('#id' + findIdbyName(client, nodeName),defer()));
     wait(100);
@@ -423,12 +422,18 @@ exports.setNodeName = function(client, nodeName){
 // Popup window funcitons
 
 exports.popupWindowPressOk = function(client){
+    wait(300);
     await(client.click('#OkButton',defer()));
     wait(200);
 }
 
-exports.popupWindowGetText = function(client){
-    console.warn("Not yet implemented!");
+exports.popupWindowGetText = function(client){    
+    return await(client.getText("#solution",defer()));    
+}
+
+exports.popupWindowPressCancel = function(client){
+    await(client.click('span[class="dijitDialogCloseIcon"]',defer()));
+    wait(200);
 }
 
 //////////////////////////////////////////////////
@@ -640,6 +645,7 @@ exports.isNodeExpressionDisabled = function(client){
 
 exports.setNodeExpression = function(client,expression){
     await(client.setValue('#equationBox', expression, defer()));
+    await(client.click("#algebraic",defer()));
 }
 
 exports.expressionInsertInput = function(client){
@@ -670,7 +676,8 @@ exports.clearExpression = function(client){
 }
 
 exports.checkExpression = function(client){
-    await(client.click('span[id="equationDoneButton_label"]',defer()));
+    await(client.click('#equationDoneButton',defer()));
+    wait(1000);
 }
 
 
@@ -782,7 +789,23 @@ exports.closeGraphAndTableWindow = function(client){
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-// 6.  Description & Times window functions
+// 6.  Problem & Times window functions
+
+exports.pressCheckProblemButton = function(client){
+    // Summary: clicks the "Check Problem" button
+    await(client.click("#authorProblemCheck",defer()));
+}
+
+exports.pressProblemAndTimesDone = function(client){
+    // Summary: clicks "done" on the problem & times window
+    await(client.click('#descCloseButton',defer()));
+    wait(200);
+}
+
+//exports.closeProblemAndTimesWindow = function(client){
+//    // Summary: closes the problem & times window
+//    await(client.click('span[class="dijitDialogCloseIcon"]',defer()));
+//}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 7.  "Save as..." window functions

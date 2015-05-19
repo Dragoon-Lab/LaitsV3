@@ -92,8 +92,10 @@ define([
     }
     console.log("session is",session);
 	logging.setSession(session);  // Give logger message destination
-
-    session.loadProblem(query).then(function(solutionGraph){
+	session.loadProblem(query).then(function(solutionGraph){
+		//removing the overlay as the actual computation does not take much time and it causes errors to stay hidden behind the overlay which continues infinitely.
+		var loading = document.getElementById('loadingOverlay');
+		loading.style.display = "none";
 		var givenModel = new model(query.m, query.p);
 		logging.session.log('open-problem', {problem : query.p});
         console.log("solution graph is",solutionGraph);
@@ -208,6 +210,8 @@ define([
 		controllerObject.setState(state);
 
 		ready(function(){
+			var taskString = givenModel.getTaskName();
+			document.title ="Dragoon" + ((taskString) ? " - " + taskString : "");
 			
 			//In TEST and EDITOR mode remove background color and border colors		 
 			if(controllerObject._mode == "TEST" || controllerObject._mode == "EDITOR"){
@@ -764,7 +768,6 @@ define([
 							"height=400, width=600, toolbar =no, menubar=no, scrollbars=yes, resizable=no, location=no, status=no"
 						   );
 			});
-
 		});
 	});
 });
