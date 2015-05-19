@@ -16,7 +16,7 @@
     },
     "taskDescription": [
       "Lion Population Growth - Level 4",
-      "The models you made in Levels 1, 2 and 3 predicted that the lion population would increase indefinitely.  Clearly, that wonu2019t happen because lions will starve to death where there are too many of them for the amount of grassland they occupy.  Ecologists use u201ccarrying capacityu201d to refer to the maximum population that can be supported by a given habitat.   The model below assumes that the death probability rises as population increases until the death probability equals the birth probability when the population equals the carrying capacity.  At that point, annual deaths equal annual births, so the population stops growing.",
+      "The models you made in Levels 1, 2 and 3 predicted that the lion population would increase indefinitely.  Clearly, that won't happen because lions will starve to death where there are too many of them for the amount of grassland they occupy.  Ecologists use \"carrying capacity\" to refer to the maximum population that can be supported by a given habitat.   The model below assumes that the death probability rises as population increases until the death probability equals the birth probability when the population equals the carrying capacity.  At that point, annual deaths equal annual births, so the population stops growing.",
       "",
       "Assumptions:",
       "-- The lion population is 4 in the first year (1950).",
