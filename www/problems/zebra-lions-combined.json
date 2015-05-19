@@ -20,7 +20,7 @@
       "",
       "The number of predation events per year affects zebras because there is, let's assume, a 45% chance of a zebra being killed in during a predation event.  If there are 40 predation events in the first year, then 18 zebras are killed.",
       "",
-      "The number of predation events also affects the lions.  The more zebra's killed per year, the larger the number of lions that can be fed that year. Modify your model so that the carrying capacity is u200bthe number of lions that are fed by each zebra times the number of zebra killed.  Assume each zebra feeds 0.8 lions.",
+      "The number of predation events also affects the lions.  The more zebra's killed per year, the larger the number of lions that can be fed that year. Modify your model so that the carrying capacity is the number of lions that are fed by each zebra times the number of zebra killed.  Assume each zebra feeds 0.8 lions.",
       "",
       "Let's assume that predation does *not* affect the birth probability of zebras (0.5), the birth probability of lions (0.5) and the deaths of zebras due to starvation.  Zebra starvation can be modeled using zebra carrying capacity (700) just as you did earlier.",
       "",
