@@ -77,12 +77,14 @@ define([
 	// Start up new session and get model object from server
 	var session = new loadSave(query);
     console.log("session is",session);
-	logging.setSession(session);  // Give logger message destination
+    logging.setSession(session);  // Give logger message destination
 	session.loadProblem(query).then(function(solutionGraph){
 		//removing the overlay as the actual computation does not take much time and it causes errors to stay hidden behind the overlay which continues infinitely.
 		var loading = document.getElementById('loadingOverlay');
 		loading.style.display = "none";
-
+        //browser warning message, displays browser name and version immediately after problem is loaded.
+        var errorMessage = new messageBox("errorMessageBox", "warn","You are using "+ session.browser.name+" version "+session.browser.version + ". Dragoon is known to work well in these (or higher) browser versions: Google Chrome v41 or laterSafari v8 or later Internet Explorer v11 or later");
+        errorMessage.show();
 		var givenModel = new model(query.m, query.p);
 		logging.session.log('open-problem', {problem : query.p});
 		if(solutionGraph){
