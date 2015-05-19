@@ -22,9 +22,9 @@
 
 define([
 	"dojo/aspect", "dojo/_base/array", "dojo/_base/declare", "dojo/_base/lang",
-	"dijit/registry", "dojo/dom", "dojo/ready",
+	"dijit/registry", "dojo/dom", "dojo/ready","dojo/dom-style",
 	"./model", "./wraptext", "./typechecker"
-], function(aspect, array, declare, lang, registry, dom, ready, model, wrapText, typechecker){
+], function(aspect, array, declare, lang, registry, dom, ready, domStyle, model, wrapText, typechecker){
 
 	// Summary: 
 	//			MVC for the description box in author mode
@@ -116,22 +116,40 @@ define([
                         return;
                     }
 
-                    //after it has passed all those checks we
-                    // do normal closeEditor routine and hide
-                    doHide.apply(myThis._descEditor);
-                    console.log("close description editor is being called");
-                    typechecker.closePops();
-                    var tin = dom.byId("authorSetDescription").value;
-                    myThis.givenModel.setTaskDescription(tin.split("\n"));
-                    if (ret_start_time.value) {
+                    if (! (typeof ret_start_time.value === "undefined")) {
                         myThis.timeObj.start = ret_start_time.value;
                     }
-                    if (ret_stop_time.value) {
+                    if (! (typeof ret_stop_time.value === "undefined")) {
                         myThis.timeObj.end = ret_stop_time.value;
                     }
-                    if (ret_step_time.value) {
+                    if (! (typeof ret_step_time.value === "undefined")) {
                         myThis.timeObj.step = ret_step_time.value;
                     }
+                    domStyle.set("start_end_errorbox","display","none");
+                    domStyle.set("timestep_errorbox1","display","none");
+                    domStyle.set("timestep_errorbox2","display","none");
+                    var time_step_max = myThis.timeObj.end-myThis.timeObj.start;
+                    errorDialogSpan = dom.byId("start_end_errorbox");
+                    if(!( (myThis.timeObj.start < myThis.timeObj.end) )){
+                        console.log("start time more than end time");
+                        domStyle.set(errorDialogSpan,"display","");
+                        return;
+                    }
+                    errorDialogSpan = dom.byId("timestep_errorbox1");
+                    if(!((myThis.timeObj.step > 0))){
+                        console.log("Time step is inappropriate");
+                        domStyle.set(errorDialogSpan,"display","");
+                        return;
+                    }
+                    errorDialogSpan = dom.byId("timestep_errorbox2");
+                    if(!((myThis.timeObj.step <= time_step_max))){
+                        console.log("Time step must fit within the start and end times");
+                        domStyle.set(errorDialogSpan,"display","");
+                        return;
+                    }
+                    domStyle.set(errorDialogSpan,"display","none");
+                    var tin = dom.byId("authorSetDescription").value;
+                    myThis.givenModel.setTaskDescription(tin.split("\n"));
                     myThis.timeObj.units = dom.byId("authorSetTimeStepUnits").value;
                     myThis.timeObj.integrationMethod = dom.byId("authorSetIntegrationMethod").value;
                     console.log("integration value" + dom.byId("authorSetIntegrationMethod").value);
@@ -140,6 +158,12 @@ define([
                     var url = dom.byId("authorSetImage").value;
                     myThis.givenModel.setImage(url ? {URL: url} : {});
                     myThis.showDescription();
+                    //after it has passed all those checks we
+                    // do normal closeEditor routine and hide
+                    doHide.apply(myThis._descEditor);
+                    console.log("close description editor is being called");
+                    typechecker.closePops();
+
                 };
             }));
             //for share bit checkbox

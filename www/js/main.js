@@ -130,37 +130,28 @@ define([
                     }
                     //check for completeness of all nodes
                     console.log("inside completeness verifying function");
-                    var hasCompleteness = false;
                     array.forEach(givenModel.given.getNodes(), function (node) {
                         console.log("node is", node, givenModel.given.isComplete(node.ID));
-                        if (givenModel.given.isComplete(node.ID)) {
-                            hasCompleteness = true;
-                        }
-                        else {
-                            hasCompleteness = false;
+                        if (!givenModel.given.isComplete(node.ID)) {
+                            throw new Error("Problem is Incomplete");
                         }
                     });
-                    if (!hasCompleteness) {
-                        //if not complete throw an error saying incomplete
-                        throw new Error("Problem is Incomplete");
-                    }
-
-                if (query.m === "COACHED") {
-                    //checks for root node if the mode is coached
-                    console.log("inside coached mode root verifying function");
-                    var hasParentFlag = false;
-                    array.forEach(givenModel.given.getNodes(), function (node) {
-                        console.log("node is", node);
-                        if (givenModel.given.getParent(node.ID)) {
-                            hasParentFlag = true;
-                        }
-                    });
-                    if (!hasParentFlag) {
+                    if (query.m === "COACHED") {
+                        //checks for root node if the mode is coached
+                        console.log("inside coached mode root verifying function");
+                        var hasParentFlag = false;
+                        array.forEach(givenModel.given.getNodes(), function (node) {
+                            console.log("node is", node);
+                            if (givenModel.given.getParent(node.ID)) {
+                                hasParentFlag = true;
+                            }
+                        });
+                        if (!hasParentFlag) {
                         // throw an error if root node is absent
                         throw new Error("Root Node Missing");
+                        }
                     }
-                }
-            }catch (error) {
+                }catch (error) {
                     var errorMessage = new messageBox("errorMessageBox", "error", error.message);
                     errorMessage.show();
                 }
