@@ -154,7 +154,7 @@ define([
 			{
 			this.dialogContent += "<div id='StaticTab' data-dojo-type='dijit/layout/ContentPane' style='overflow:visible' selected = true data-dojo-props='title:\"Static\"'>"
 
-			this.dialogContent += "<input id='staticSelect'>";
+			this.dialogContent += "<input id='staticSelect'/>";
 
 				array.forEach(this.active.plotVariables, function(id){
 					var show = this.model.active.getType(id) == "accumulator" || this.model.given.getParent(this.model.active.getGivenID(id));
@@ -167,7 +167,7 @@ define([
 				}, this);
 			}
 			//end divs for graph and table 
-			this.dialogContent += "</div></div>";
+			this.dialogContent += "</div></div></div>";
 
 			//create content pane for sliders
 			this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' style='overflow:visible; width:40%; float:right; height:700px; background-color: #FFFFFF'>";
@@ -192,7 +192,8 @@ define([
 						this.dialogContent += "<font color='red'>Your model does not match the author's.  You may have extra nodes in your model.</font><br>"
 					}
 					else{
-						this.dialogContent += "<font color='red'>Unfortunately, your model's behavior does not match the author's.</font><br>";
+						console.log(this.model.active);
+						this.dialogContent += "<font color='red'>Unfortunately, your model's behavior does not match the author's. Units</font><br>";
 					}					 
 				}
 			}
