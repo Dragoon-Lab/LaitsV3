@@ -163,7 +163,7 @@ define([
 					var style = show ? "" : " style='display: none;'";
 					this.dialogContent += "<div	 id='chartStatic" + id + "'" + style + "></div>";
 					// Since the legend div is replaced, we cannot hide the legend here.
-					this.dialogContent += "<div class='legend' id='legendStatic" + id + "'></div></div>";
+					this.dialogContent += "<div class='legend' id='legendStatic" + id + "'></div>";
 				}, this);
 			}
 			//end divs for graph and table 
@@ -701,6 +701,7 @@ define([
 					var activeSolution = this.findStaticSolution(true, staticVar, this.active.plotVariables);
 					//update and render the charts
 					array.forEach(this.active.plotVariables, function(id, k){
+
 							// Calculate Min and Max values to plot on y axis based on given solution and your solution
 							/*var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
 							var givenObj = this.getMinMaxFromArray(givenSolution.plotValues[k]);				
