@@ -87,9 +87,10 @@ define([
 			 one would need to order them using topologicalSortgoo
 			 */
             var activeSolution = this.findSolution(true, this.active.plotVariables);
+            console.log(activeSolution);
             if(activeSolution.status == "error" && activeSolution.type == "missing") {
 				// Return value from findSlution in calculation, returns an array and we check for status and any missing nodes
-				this.dialogWidget.set("content", "<div>Not all nodes have been completed. For example, \"" + activeSolution.missingNode + "\" is not yet fully defined.</div>"); //We show the error message like "A Node is Missing"
+				this.dialogWidget.set("content", "<div>Not all nodes have been completed. For example, \"" + activeSolution.missingNode + "\" is missing the \"" + activeSolution.missingField + "\" field.</div>"); //We show the error message like "A Node is Missing"
 				return;
 			}
 
