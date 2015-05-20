@@ -82,9 +82,15 @@ define([
 		//removing the overlay as the actual computation does not take much time and it causes errors to stay hidden behind the overlay which continues infinitely.
 		var loading = document.getElementById('loadingOverlay');
 		loading.style.display = "none";
-        //browser warning message, displays browser name and version immediately after problem is loaded.
-        var errorMessage = new messageBox("errorMessageBox", "warn","You are using "+ session.browser.name+" version "+session.browser.version + ". Dragoon is known to work well in these (or higher) browser versions: Google Chrome v41 or laterSafari v8 or later Internet Explorer v11 or later");
-        errorMessage.show();
+
+        //display warning message if not using the supported browser and version
+        var checkBrowser = session.browser.name;
+        var checkVersion = session.browser.version;
+        if((checkBrowser ==="Chrome" && checkVersion<41) || (checkBrowser==="Safari" && checkVersion<8)||(checkBrowser==="msie" && checkVersion<11)||(checkBrowser==="Firefox")||(checkBrowser==="Opera")){
+            var errorMessage = new messageBox("errorMessageBox", "warn","You are using "+ session.browser.name+" version "+session.browser.version + ". Dragoon is known to work well in these (or higher) browser versions: Google Chrome v41 or later Safari v8 or later Internet Explorer v11 or later");
+            errorMessage.show();
+        }
+
 		var givenModel = new model(query.m, query.p);
 		logging.session.log('open-problem', {problem : query.p});
 		if(solutionGraph){
