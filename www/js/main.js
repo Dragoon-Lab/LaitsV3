@@ -106,6 +106,15 @@ define([
 			    	throw Error("Model could not be loaded.");
 			    }
 			}
+			// If we are loading a published problem in author mode, prompt user to perform a save-as immediately
+			if(!query.g && query.m === "AUTHOR"){
+				var message='<strong>You must choose a name and folder for the new copy of this problem.</strong>';
+				var dialog=registry.byId("authorSaveDialog");
+				console.log('dialog content');
+				registry.byId("authorSaveProblem").set("value",query.p);
+				dom.byId("saveMessage").innerHTML=message;
+				dialog.show();
+			}
 		}else {
 			if(query.g && query.m === "AUTHOR"){
 				var messageHtml = "You have successfully created a new problem named <strong>"+ query.p +"</strong>.<br/> <br/> If you expected this problem to exist already, please double check the problem name and folder and try again.";
@@ -114,13 +123,6 @@ define([
 			} else if(query.g){
 				var errorMessage = new messageBox("errorMessageBox", "error", "Problem not found.");
 				errorMessage.show();
-			}else if(!query.g && query.m === "AUTHOR"){
-				var message='You must choose a name and folder for the new copy of this problem.';
-				var dialog=registry.byId("authorSaveDialog");
-				console.log('dialog content');
-				registry.byId("authorSaveProblem").set("value",query.p);
-				dom.byId("saveMessage").innerHTML=message;
-				dialog.show();
 			}
 		}
 		/*
