@@ -193,7 +193,7 @@ define([
 					}
 					else{
 						console.log(this.model.active);
-						this.dialogContent += "<font color='red'>Unfortunately, your model's behavior does not match the author's. Units</font><br>";
+						this.dialogContent += "<font color='red'>Unfortunately, your model's behavior does not match the author's.</font><br>";
 					}					 
 				}
 			}
