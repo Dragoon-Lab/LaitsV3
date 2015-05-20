@@ -73,7 +73,7 @@ define([
 		console.warn("Dragoon log files won't work since we can't set up a session.");
 		console.error("Function called without arguments");
 	}
-	
+		
 	// Start up new session and get model object from server
 	var session = new loadSave(query);
     console.log("session is",session);
@@ -114,6 +114,13 @@ define([
 			} else if(query.g){
 				var errorMessage = new messageBox("errorMessageBox", "error", "Problem not found.");
 				errorMessage.show();
+			}else if(!query.g && query.m === "AUTHOR"){
+				var message='You must choose a name and folder for the new copy of this problem.';
+				var dialog=registry.byId("authorSaveDialog");
+				console.log('dialog content');
+				registry.byId("authorSaveProblem").set("value",query.p);
+				dom.byId("saveMessage").innerHTML=message;
+				dialog.show();
 			}
 		}
 		/*
