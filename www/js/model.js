@@ -122,7 +122,7 @@ define([
 			collides: function(element)
 			{
 				if(!element.position){
-					return true;
+					return false;
 				}
 				var x = element.position.x;
 				var y = element.position.y;
