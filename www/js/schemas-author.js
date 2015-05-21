@@ -35,7 +35,7 @@ define([
 	"dijit/layout/ContentPane",
 	"dijit/form/RadioButton",
 	"./schemas-load-save"
-], function(declare, array, on, lang, dom, registry, json, domQuery, domList, html, domConstruct, text, accordion, content, radio, schemas){
+], function(declare, array, on, lang, dom, registry, json, domQuery, domList, html, domConstruct, textBox, accordion, content, radio, schemas){
 	return declare(null, {
 		nodesCount: 0,
 		maxNodes: 0, 
@@ -44,6 +44,7 @@ define([
 		_schemas: {},
 		_session:{},
 		currentNodes: [],
+		showFactors: false,
 
 		constructor: function(/* object */ model, /* object */ session){
 			this._model = model;
@@ -131,20 +132,27 @@ define([
 			on(phrasesWidget, "change", lang.hitch(this, function(){
 				this.handleDifficulty.apply(this, arguments);
 			}));
-
+			
 			var gotoButtonWidget = dom.byId("goToFactors");
-			on(gotoButtonWidget, "click", lang.hitch(this, function(){
-				this.initFactorsWidget();
-			}));
+			if(this.showFactors){
+				on(gotoButtonWidget, "click", lang.hitch(this, function(){
+					this.initFactorsWindow.apply(this, arguments);
+				}));
+				
+				var saveButtonWidget = dom.byId("saveSchema");
+				on(saveButtonWidget, "click", lang.hitch(this, function(){
+					this.saveSchema.apply(this, arguments);
+				}));
+			} else {
+				dom.byId("goToFactors").textContent = "Save";
+				on(gotoButtonWidget, "click", lang.hitch(this, function(){
+					this.saveSchema.apply(this, arguments);
+				}));
+			}
 
 			var resetButtonWidget = dom.byId("resetSchema");
 			on(resetButtonWidget, "click", lang.hitch(this, function(){
-				this.resetSchema();
-			}));
-
-			var saveButtonWidget = dom.byId("saveSchema");
-			on(saveButtonWidget, "click", lang.hitch(this, function(){
-				this.saveSchema();
+				this.resetSchema.apply(this, arguments);
 			}));
 		},
 
@@ -231,7 +239,11 @@ define([
 			this._session.saveProblem(this._model.model);
 			this.nodesCount = 0;
 			//close factor window
-			registry.byId("schemaFactorBox").hide();
+			if(this.showFactor){
+				registry.byId("schemaFactorBox").hide();
+			} else {
+				registry.byId("schemaAuthorBox").hide();
+			}
 		},
 
 		resetSchema: function(){
@@ -267,10 +279,10 @@ define([
 			});
 		},
 
-		initFactorHandler: function(id){
+		initFactorsHandler: function(id){
 			var spanWidget = dom.byId(id);
 
-			var children = spanWidget.children();
+			var children = spanWidget.children;
 			array.forEach(children, function(widget){	
 				on(widget, "blur", lang.hitch(this, function(){
 					return this.handleFactors.apply(this, arguments);
@@ -283,8 +295,8 @@ define([
 			var nodes = this.currentNodes;
 			array.forEach(nodes, function(id){
 				var node = this._model.given.getNode(id);
-				createInputDom(node);
-			});
+				this.createInputDom(node);
+			}, this);
 		},
 
 		getRate: function(node){
@@ -314,28 +326,32 @@ define([
 		},
 
 		createInputDom: function(node){
-			var id = node.ID;
+			var nodeID = node.ID;
 			var type = node.type;
 			var units = node.units;
 			
-			domConstruct.create
+			var nodeDIV = domConstruct.create("div", {
+				id: "factors_" + nodeID,
+				innerHTML: "<label>" + node.name + "</label>:&nbsp;<br/>",
+				className: "factorNode"
+			}, "fValues");
 
-			this.createInputBoxes(id, "description");
-			this.createInputBoxes(id, "type", "0.33", "guess");
+			this.createInputBoxes(nodeID, "description");
+			this.createInputBoxes(nodeID, "type", "0.33", "guess");
 
 			if(units != ""){
-				this.createInputBoxes(id, "units");
+				this.createInputBoxes(nodeID, "units");
 			}
 			switch(type){
 				case "accumulator":
-					this.createInputBoxes(id, "initial");
-					this.createInputBoxes(id, "equation");
+					this.createInputBoxes(nodeID, "initial");
+					this.createInputBoxes(nodeID, "equation");
 					break;
 				case "parameter":
-					this.createInputBoxes(id, "initial");
+					this.createInputBoxes(nodeID, "initial");
 					break;
 				case "function":
-					this.createInputBoxes(id, "equation");
+					this.createInputBoxes(nodeID, "equation");
 					break;
 				default:
 					break;
@@ -343,33 +359,36 @@ define([
 		},
 
 		createInputBoxes: function(nodeID, nodePart, value, valueBox){
-			var idString = nodeID + "_"+nodePart;
+			var idString = nodeID + "_" + nodePart;
+			var nodeDIV = "factors_" + nodeID;
 			var inputHolder = domConstruct.create("div", {
 				id: idString,
-				innerHTML: nodePart + ":&nbsp;",
-				className: fieldgroup
-			}, nodeID);
+				innerHTML: "<span class = fname_"+nodePart+">"+nodePart + ": </span>",
+				className: "factor_"+nodePart 
+			}, nodeDIV);
 			//span.innerHTML = nodePart+":&nbsp;";
 			var slipValue = (valueBox == "slip" || valueBox == "both")? value : "";
 			var guessValue = (valueBox == "guess" || valueBox == "both")? value : "";
+			var slipIDString = nodeID + "_" + nodePart + "_" + "slip";
+			var guessIDString = nodeID + "_" +nodePart + "_" + "guess";
 			var slipTextBox = new textBox({
 				name: "slip",
 				className: "slip",
-				id: nodePart,
+				id: slipIDString,
 				value: slipValue
 			});
 			
 			var guessTextBox = new textBox({
 				name: "guess",
 				className: "guess",
-				id: nodePart,
+				id: guessIDString,
 				value: guessValue
 			});
 
-			domConstruct.place(slipTextBox, idString);
-			domConstruct.place(guessTextBox, idString);
+			//domConstruct.place(inputHolder.domNode, nodeDIV);
+			domConstruct.place(slipTextBox.domNode, idString);
+			domConstruct.place(guessTextBox.domNode, idString);
 
-			domConstruct.place(idString, id);
 			this.initFactorsHandler(idString);
 		}
 	});
