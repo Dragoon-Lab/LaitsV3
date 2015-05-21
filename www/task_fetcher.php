@@ -86,10 +86,23 @@ EOT;
   }	
  }
 
+
 if(isset($_GET['u']) && isset($_GET['s']) && isset($_GET['m'])){
   $user = mysqli_real_escape_string($mysqli,$_GET['u']);
   $section = mysqli_real_escape_string($mysqli,$_GET['s']);
   $mode = $_GET['m'];  // only four choices
+
+  /*restart problem*/
+   $gs = isset($_GET['g'])?"= '$group'":'IS NULL';
+   if(isset($_GET['rp']) && $mode!="AUTHOR")
+   {
+        	$query = <<<EOT
+                Delete from solutions where session_id in ( select session_id from session where user='$user' AND problem='$shortProblemName' AND section='$section'  AND `group` $gs)
+EOT;
+        	$result=$mysqli->query($query) or trigger_error("Delete restart problem failed".$mysqli->error);
+   }
+  /*restart problem end*/
+
   if(isset($_GET['g']) && !$userPrecedence){
     //group takes precedence over user, quick fix for sustainability class
     $query = <<<EOT
