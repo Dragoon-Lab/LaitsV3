@@ -131,8 +131,8 @@ define([
                     //check for completeness of all nodes
                     console.log("inside completeness verifying function");
                     array.forEach(givenModel.given.getNodes(), function (node) {
-                        console.log("node is", node, givenModel.given.isComplete(node.ID));
-                        if (!givenModel.given.isComplete(node.ID)) {
+                        console.log("node is", node, givenModel.given.isComplete(node.ID,true));
+                        if (!givenModel.given.isComplete(node.ID,true)) {
                             throw new Error("Problem is Incomplete");
                         }
                     });

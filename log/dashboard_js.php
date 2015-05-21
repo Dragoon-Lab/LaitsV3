@@ -32,7 +32,8 @@
 	!empty($_REQUEST["s"])?($section = $_REQUEST["s"]):($section = 'login.html');
 	!empty($_REQUEST["m"])?($mode = $_REQUEST["m"]):$mode = 'STUDENT';
 	!empty($_REQUEST["u"])?($user = $_REQUEST["u"]):$user = '';
-	!empty($_REQUEST["p"])?($problem = $_REQUEST["p"]):$problem = '';
+	!empty($_REQUEST["p"])?($sproblem = $_REQUEST["p"]):$sproblem = '';
+	$problem = (strlen($sproblem) > 30) ? substr($sproblem, 0,30) : $sproblem;
 	!empty($_REQUEST["db_name"])?($dbname = $_REQUEST["db_name"]):'';
 	!empty($_REQUEST["db_user"])?($dbuser = $_REQUEST["db_user"]):'';
 	!empty($_REQUEST["db_name"])?($dbpass = $_REQUEST["db_password"]):'';
