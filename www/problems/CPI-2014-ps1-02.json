@@ -135,6 +135,25 @@
                 "equation": "id1 * id2"
             }
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [],
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "exponential_transfer",
+                "name": "Exponential",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id3, id2",
+                "difficulty": {
+                    "isolation": 0,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            }
+        ]
     }
 }
