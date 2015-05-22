@@ -11,10 +11,10 @@
         "properties": {},
         "image": {},
         "taskDescription": [
-            "Suppose a town of 5000 people is extremely unhappy with the country’s government.   Every day, there are about 500 meetings where two people discuss politics and their dissatisfaction with government.  A single terrorist comes to town with such a compelling message that every time he talks with another person, that person becomes a terrorist as well.  Moreover, the new terrorists have the same message, so they can recruit others.  Construct a model that shows how the number of terrorist and non-terrorists changes over the days.  You should assume that the two people who meet are randomly chosen from the population of 5001 individuals. "
+            "Suppose a town of 5000 people is extremely unhappy with the country\u2019s government.   Every day, there are about 500 meetings where two people discuss politics and their dissatisfaction with government.  A single terrorist comes to town with such a compelling message that every time he talks with another person, that person becomes a terrorist as well.  Moreover, the new terrorists have the same message, so they can recruit others.  Construct a model that shows how the number of terrorist and non-terrorists changes over the days.  You should assume that the two people who meet are randomly chosen from the population of 5001 individuals. "
         ],
         "lessonsLearned": [
-            "This system is an example of an epidemic process.  See the problem “epidemic” in the problem set “generic changes.”"
+            "This system is an example of an epidemic process.  See the problem \u201cepidemic\u201d in the problem set \u201cgeneric changes.\u201d"
         ],
         "slides": [
             {
@@ -24,12 +24,12 @@
             },
             {
                 "type": "image",
-                "value": "images/CPI/the_growth_of_terrorism_graph.jpg",
+                "value": "images\/CPI\/the_growth_of_terrorism_graph.jpg",
                 "title": "Author's graph for The growth of terrorism Problem"
             },
             {
                 "type": "image",
-                "value": "images/CPI/the_growth_of_terrorism_correctnodes.png",
+                "value": "images\/CPI\/the_growth_of_terrorism_correctnodes.png",
                 "title": "Author's solution for The growth of terrorism Problem"
             },
             {
@@ -136,7 +136,7 @@
                     },
                     {
                         "ID": "id5",
-                        "label": "/"
+                        "label": "\/"
                     }
                 ],
                 "position": {
@@ -155,14 +155,14 @@
                 "name": "Prob of terrorist in meeting",
                 "description": "Probability that one participant in the meeting is a terrorist",
                 "type": "function",
-                "equation": "id1/id5"
+                "equation": "id1\/id5"
             },
             {
                 "ID": "id5",
                 "inputs": [],
                 "position": {
-                    "x": 607.3309326171875,
-                    "y": 34.33095169067383
+                    "x": 607.33093261719,
+                    "y": 34.330951690674
                 },
                 "attemptCount": {
                     "description": 0,
@@ -188,7 +188,7 @@
                     },
                     {
                         "ID": "id5",
-                        "label": "/"
+                        "label": "\/"
                     }
                 ],
                 "position": {
@@ -207,14 +207,14 @@
                 "name": "Prob of nonterrorist",
                 "description": "Probability that one participant in the meeting is not a terrorist",
                 "type": "function",
-                "equation": "id3/id5"
+                "equation": "id3\/id5"
             },
             {
                 "ID": "id7",
                 "inputs": [],
                 "position": {
-                    "x": 655.3309326171875,
-                    "y": 370.3309631347656
+                    "x": 655.33093261719,
+                    "y": 370.33096313477
                 },
                 "attemptCount": {
                     "description": 0,
@@ -232,6 +232,25 @@
                 "initial": 500
             }
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [],
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "epidemic_transfer",
+                "name": "Epidemic",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id2, id1, id3, id4, id5, id6, id7",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 0
+                }
+            }
+        ]
     }
 }
