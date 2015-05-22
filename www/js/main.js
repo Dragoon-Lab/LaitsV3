@@ -48,12 +48,13 @@ define([
 	"./lessons-learned",
 	"./schemas-author",
 	"./message-box",
-	"./tincan"
+	"./tincan",
+	"dojo/store/Memory"
 ], function(
 		array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry, toolTip,
 		menu, loadSave, model,
 		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, equation, 
-		description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan
+		description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan, memory
 ){
 	// Summary: 
 	//			Menu controller
@@ -367,7 +368,7 @@ define([
 			 */
 			aspect.after(registry.byId('nodeeditor'), "hide", function(){
 				console.log("Calling session.saveProblem");
-				if(controllerObject._mode == "AUTHOR")
+   				if(controllerObject._mode == "AUTHOR")
 				{	
 					array.forEach(givenModel.model.task.givenModelNodes, function(node){
 						if(node.ID === controllerObject.currentID)
@@ -516,24 +517,42 @@ define([
                 // Rename button wiring
                 menu.add("saveButton", function(){
                     registry.byId("authorSaveDialog").show();
+                    var combo = registry.byId("authorSaveGroup");
+                    var arr=[{name: "Private("+query.u+")", id: "Private"},
+                              {name: "public", id: "Public"}];
+                    var m = new memory({data: arr});
+			        combo.set("store", m);
+			        combo.set("value","Private("+query.u+")")//setting the default
+
                 });
 
                 //authorMergeDialog
                 menu.add("mergeButton", function(){
                     registry.byId("authorMergeDialog").show();
+                    var combo = registry.byId("authorMergeGroup");
+                    var arr=[{name: "Private("+query.u+")", id: "Private"},
+					          {name: "Public", id: "Public"}
+					          //,{name:"Official Problems",id:"Official Problems"}
+					          ];
+					var m = new memory({data: arr});
+				    combo.set("store", m);
+					combo.set("value","Private("+query.u+")")//setting the default
+
              	});
 
 				on(registry.byId("mergeDialogButton"),"click",function(){
 					 var group = registry.byId("authorMergeGroup").value;
 					 var section = registry.byId("authorMergeSection").value;
 					 var problem = registry.byId("authorMergeProblem").value;
-
+					
 					 if(!problem || !section)
 					 	{
 					 		alert("Problem/Section can't be empty");
 					 		return;
 					 	}
-
+					 	if (group.split("(")[0]+"("=="Private("){
+					 	    	group=group.split(")")[0].substr(8);//Privte(username)=>username
+					        }
 					 var query = {g:group,m:"AUTHOR",s:section,p:problem};
                   	 session.loadProblem(query).then(function(solutionGraph){
 							console.log("Merge problem is loaded "+solutionGraph);
@@ -570,7 +589,7 @@ define([
 					var problemName = registry.byId("authorSaveProblem").value;
 					var groupName = registry.byId("authorSaveGroup").value;
 					var checkProblemName = new RegExp('^[A-Za-z0-9\-]+$');
-
+										
 					if(typeof problemName !== 'undefined' && problemName==''){
 						alert('Missing Problem Name');
 						return;
@@ -580,8 +599,12 @@ define([
 					}else if(problemName && problemName.length > 0 && problemName.length<=30 && checkProblemName.test(problemName)){
 						var checkHyphen = new RegExp('^[\-]+$');
 						if(!checkHyphen.test(problemName)){
+							if (groupName.split("(")[0]+"("=="Private("){
+					 	    	groupName=groupName.split(")")[0].substr(8);//Privte(username)=>username
+					        }
 							session.saveAsProblem(givenModel.model,problemName,groupName); 
-						} else{
+					    }
+					    else{
 							alert("Problem names must contain atleast one alphanumeric character.");
 							return;
 						}
