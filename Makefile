@@ -1,3 +1,4 @@
+SHELL=C:/Windows/System32/cmd.exe
 install:
 	@echo "You will need to create database using create-database.sql"
 	@echo "You will also need to create a \"db_user_password\" file."
