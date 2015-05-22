@@ -12,7 +12,7 @@
             "type": "Construct"
         },
         "image": {
-            "URL": "http://upload.wikimedia.org/wikipedia/commons/3/36/Venezia_acqua_alta_notte_2005_modificata.jpg"
+            "URL": "http:\/\/upload.wikimedia.org\/wikipedia\/commons\/3\/36\/Venezia_acqua_alta_notte_2005_modificata.jpg"
         },
         "taskDescription": [
             " Problem: The city of Venice in Italy is famous for its canals. The largest canal is 36,576 centimeters wide and on average the smaller canals are 3,810 centimeters wide. While the main form of transportation is via waterways, there are still a few streets and road that are mainly used by pedestrians. Unfortunately, like many coastal cities, Venice is sinking slowly. It sinks about 10 centimeters per decade. The elevation of most of the streets still in use is 300 centimeters above sea level. Goal: Graph the elevation above sea level of those streets for the next 10 decades."
@@ -28,12 +28,12 @@
             },
             {
                 "type": "image",
-                "value": "images/CPI/Venice_graphs.png",
+                "value": "images\/CPI\/Venice_graphs.png",
                 "title": "Author's graph for Infections Problem"
             },
             {
                 "type": "image",
-                "value": "images/CPI/Venice_correctnodes.png",
+                "value": "images\/CPI\/Venice_correctnodes.png",
                 "title": "Author's solution for Infections Problem"
             },
             {
@@ -47,8 +47,8 @@
                 "ID": "id1",
                 "inputs": [],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 841.33093261719,
+                    "y": 107.33095550537
                 },
                 "attemptCount": {
                     "description": 0,
@@ -70,8 +70,8 @@
                 "ID": "id2",
                 "inputs": [],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 551.33093261719,
+                    "y": 63.330951690674
                 },
                 "attemptCount": {
                     "description": 0,
@@ -93,8 +93,8 @@
                 "ID": "id3",
                 "inputs": [],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 718.33093261719,
+                    "y": 237.33094787598
                 },
                 "attemptCount": {
                     "description": 0,
@@ -119,8 +119,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 558,
+                    "y": 404
                 },
                 "attemptCount": {
                     "description": 0,
@@ -139,6 +139,25 @@
                 "equation": "- id3"
             }
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [],
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "linear_transfer",
+                "name": "Linear",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id3, id4",
+                "difficulty": {
+                    "isolation": 0,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            }
+        ]
     }
 }
