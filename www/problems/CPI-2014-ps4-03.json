@@ -11,7 +11,7 @@
         "properties": {},
         "image": {},
         "taskDescription": [
-            "On New Year's Eve in 1969, some teenagers released a large snowball, 0.5 meter in radius, from the top of a high hill overlooking the village swimming pool, which was closed for the season.  After 10 seconds, the snowball crashed through a chain link fence and into the village swimming pool.  Construct a model that shows how the snowball's weight changed using the following facts about this nefarious act of vandalism.  As the snowball started to roll down, it was initially turning at 1.0 revolution per second.  However, with each passing second, it's turning speed increased by 0.2 revolutions per second.  For instance, after 3 seconds, it was rotating at 1.6 revolutions per second.  As it rotated, snow clung to it, increasing its radius by 0.1 meters per revolution.  Thus, the snowball's radius also gradually increased per second as it thundered down the hill.  Any ball of radius R has a volume of 4.71225*R^3, where 4.71225 is 3π/2.  The weight of a ball is its volume times its density.  The density of the snowball was 210 kg per cubic meter.    "
+            "On New Year's Eve in 1969, some teenagers released a large snowball, 0.5 meter in radius, from the top of a high hill overlooking the village swimming pool, which was closed for the season.  After 10 seconds, the snowball crashed through a chain link fence and into the village swimming pool.  Construct a model that shows how the snowball's weight changed using the following facts about this nefarious act of vandalism.  As the snowball started to roll down, it was initially turning at 1.0 revolution per second.  However, with each passing second, it's turning speed increased by 0.2 revolutions per second.  For instance, after 3 seconds, it was rotating at 1.6 revolutions per second.  As it rotated, snow clung to it, increasing its radius by 0.1 meters per revolution.  Thus, the snowball's radius also gradually increased per second as it thundered down the hill.  Any ball of radius R has a volume of 4.71225*R^3, where 4.71225 is 3\u03c0\/2.  The weight of a ball is its volume times its density.  The density of the snowball was 210 kg per cubic meter.    "
         ],
         "lessonsLearned": [
             "This system is like the simple acceleration problem in problem set \"generic change\" in that one accumulator controls the gain of a second accumulator.  However, there are several extra math relationships."
@@ -24,12 +24,12 @@
             },
             {
                 "type": "image",
-                "value": "images/CPI/snowball_graph.jpg",
+                "value": "images\/CPI\/snowball_graph.jpg",
                 "title": "Author's graph for Snowball Problem"
             },
             {
                 "type": "image",
-                "value": "images/CPI/snowball_correctnodes.png",
+                "value": "images\/CPI\/snowball_correctnodes.png",
                 "title": "Author's solution for Snowball Problem"
             },
             {
@@ -66,14 +66,15 @@
                 "description": "The volume of the snowball",
                 "type": "function",
                 "equation": "(id2)*(id3^3)",
-                "units": "m^3"
+                "units": "m^3",
+                "genus": "required"
             },
             {
                 "ID": "id2",
                 "inputs": [],
                 "position": {
-                    "x": 858.3309326171875,
-                    "y": 337.3309631347656
+                    "x": 858.33093261719,
+                    "y": 337.33096313477
                 },
                 "attemptCount": {
                     "description": 0,
@@ -90,7 +91,7 @@
                 "type": "parameter",
                 "parentNode": false,
                 "initial": 4.71225,
-                "genus": ""
+                "genus": "required"
             },
             {
                 "ID": "id3",
@@ -118,7 +119,8 @@
                 "type": "accumulator",
                 "initial": 0.5,
                 "units": "m",
-                "equation": "id6"
+                "equation": "id6",
+                "genus": "required"
             },
             {
                 "ID": "id4",
@@ -155,8 +157,8 @@
                 "ID": "id5",
                 "inputs": [],
                 "position": {
-                    "x": 1028.3309326171875,
-                    "y": 224.33094787597656
+                    "x": 1028.3309326172,
+                    "y": 224.33094787598
                 },
                 "attemptCount": {
                     "description": 0,
@@ -173,7 +175,7 @@
                 "equation": "",
                 "parentNode": false,
                 "initial": 210,
-                "units": "kg/m^3"
+                "units": "kg\/m^3"
             },
             {
                 "ID": "id6",
@@ -204,7 +206,8 @@
                 "description": "The radius gained by the snowball each second",
                 "type": "function",
                 "units": "m",
-                "equation": "id7*id8"
+                "equation": "id7*id8",
+                "genus": "required"
             },
             {
                 "ID": "id7",
@@ -228,7 +231,8 @@
                 "type": "parameter",
                 "parentNode": false,
                 "initial": 0.1,
-                "units": "m"
+                "units": "m",
+                "genus": "required"
             },
             {
                 "ID": "id8",
@@ -256,7 +260,8 @@
                 "type": "accumulator",
                 "initial": 1,
                 "units": "rev per sec",
-                "equation": "id9"
+                "equation": "id9",
+                "genus": "required"
             },
             {
                 "ID": "id9",
@@ -286,8 +291,8 @@
                 "ID": "id10",
                 "inputs": [],
                 "position": {
-                    "x": 697.3309326171875,
-                    "y": 463.3309631347656
+                    "x": 697.33093261719,
+                    "y": 463.33096313477
                 },
                 "attemptCount": {
                     "description": 0,
@@ -311,8 +316,8 @@
                 "ID": "id11",
                 "inputs": [],
                 "position": {
-                    "x": 833.3309326171875,
-                    "y": 506.3309631347656
+                    "x": 833.33093261719,
+                    "y": 506.33096313477
                 },
                 "attemptCount": {
                     "description": 0,
@@ -335,8 +340,8 @@
                 "ID": "id12",
                 "inputs": [],
                 "position": {
-                    "x": 740.3309326171875,
-                    "y": 355.3309631347656
+                    "x": 740.33093261719,
+                    "y": 355.33096313477
                 },
                 "attemptCount": {
                     "description": 0,
@@ -356,6 +361,42 @@
                 "genus": "extra"
             }
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [],
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "linear_transfer",
+                "name": "Linear",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id8, id9",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema2",
+                "schemaClass": "accelerating_transfer",
+                "name": "Accelerating",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id2, id3, id4, id5, id6, id7, id8",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 0
+                }
+            }
+        ]
     }
 }

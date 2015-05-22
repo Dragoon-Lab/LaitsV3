@@ -24,12 +24,12 @@
             },
             {
                 "type": "image",
-                "value": "images/CPI/varmints_at_the_waterhole_graph.jpg",
+                "value": "images\/CPI\/varmints_at_the_waterhole_graph.jpg",
                 "title": "Author's graph for  Varmints at the waterhole Problem"
             },
             {
                 "type": "image",
-                "value": "images/CPI/varmints_at_the_waterhole_correctnodes.png",
+                "value": "images\/CPI\/varmints_at_the_waterhole_correctnodes.png",
                 "title": "Author's solution for Varmints at the waterhole Problem"
             },
             {
@@ -144,8 +144,8 @@
                     }
                 ],
                 "position": {
-                    "x": 511.3309631347656,
-                    "y": 49.33095169067383
+                    "x": 511.33096313477,
+                    "y": 49.330951690674
                 },
                 "attemptCount": {
                     "description": 0,
@@ -198,8 +198,8 @@
                 "ID": "id7",
                 "inputs": [],
                 "position": {
-                    "x": 925.3309326171875,
-                    "y": 398.3309631347656
+                    "x": 925.33093261719,
+                    "y": 398.33096313477
                 },
                 "attemptCount": {
                     "description": 0,
@@ -251,8 +251,8 @@
                 "ID": "id9",
                 "inputs": [],
                 "position": {
-                    "x": 985.3309326171875,
-                    "y": 257.3309326171875
+                    "x": 985.33093261719,
+                    "y": 257.33093261719
                 },
                 "attemptCount": {
                     "description": 0,
@@ -279,7 +279,7 @@
                     },
                     {
                         "ID": "id2",
-                        "label": "/"
+                        "label": "\/"
                     }
                 ],
                 "position": {
@@ -298,14 +298,14 @@
                 "name": "Water available per varmint",
                 "description": "Amount of water in the waterhole per varmint",
                 "type": "function",
-                "equation": "id6/id2"
+                "equation": "id6\/id2"
             },
             {
                 "ID": "id11",
                 "inputs": [],
                 "position": {
-                    "x": 912.3309326171875,
-                    "y": 148.33096313476562
+                    "x": 912.33093261719,
+                    "y": 148.33096313477
                 },
                 "attemptCount": {
                     "description": 0,
@@ -327,8 +327,8 @@
                 "ID": "id12",
                 "inputs": [],
                 "position": {
-                    "x": 989.3309326171875,
-                    "y": 59.33095169067383
+                    "x": 989.33093261719,
+                    "y": 59.330951690674
                 },
                 "attemptCount": {
                     "description": 0,
@@ -347,6 +347,42 @@
                 "initial": 0.3
             }
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [],
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "exponential_transfer",
+                "name": "Exponential",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id2, id3, id5",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema2",
+                "schemaClass": "exponential_transfer",
+                "name": "Exponential",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id2, id4, id11",
+                "difficulty": {
+                    "isolation": 0,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            }
+        ]
     }
 }
