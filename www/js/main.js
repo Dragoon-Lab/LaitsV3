@@ -165,15 +165,7 @@ define([
                     var errorMessage = new messageBox("errorMessageBox", "error", error.message);
                     errorMessage.show();
                 }
-            // If we are loading a published problem in author mode, prompt user to perform a save-as immediately
-            } else if(!query.g){
-				var message='<strong>You must choose a name and folder for the new copy of this problem.</strong>';
-				var dialog=registry.byId("authorSaveDialog");
-				console.log('dialog content');
-				registry.byId("authorSaveProblem").set("value",query.p);
-				dom.byId("saveMessage").innerHTML=message;
-				dialog.show();
-			}
+            }
         }else {
 			if(query.g && query.m === "AUTHOR"){
 				var messageHtml = "You have successfully created a new problem named <strong>"+ query.p +"</strong>.<br/> <br/> If you expected this problem to exist already, please double check the problem name and folder and try again.";
@@ -510,19 +502,20 @@ define([
 				});
 
 
-                // Rename button wiring
+                // Save As button wiring
                 menu.add("saveButton", function(){
                     registry.byId("authorSaveDialog").show();
-                    var combo = registry.byId("authorSaveGroup");
-                    var arr=[{name: "Private("+query.u+")", id: "Private"},
-                              {name: "public", id: "Public"}];
-                    var m = new memory({data: arr});
-			        combo.set("store", m);
-			        combo.set("value","Private("+query.u+")")//setting the default
-
                 });
+                // Set the default save as folder parameters
+                var saveGroupCombo = registry.byId("authorSaveGroup");
+                var saveGroupArr=[{name: "Private("+query.u+")", id: "Private"},
+                                  {name: "public", id: "Public"}];
+                var saveGroupMem = new memory({data: saveGroupArr});
+		        saveGroupCombo.set("store", saveGroupMem);
+		        saveGroupCombo.set("value","Private("+query.u+")")//default to private
 
-                //authorMergeDialog
+
+                // Merge button wiring
                 menu.add("mergeButton", function(){
                     registry.byId("authorMergeDialog").show();
                     var combo = registry.byId("authorMergeGroup");
@@ -802,6 +795,18 @@ define([
 							"height=400, width=600, toolbar =no, menubar=no, scrollbars=yes, resizable=no, location=no, status=no"
 						   );
 			});
+
+			// If we are loading a published problem in author mode, prompt user to perform a save-as immediately
+			console.log("reached 1: group " + query.g +" and mode "+query.m);
+            if(!query.g && query.m  === "AUTHOR"){
+            	console.log("")
+				var message='<strong>You must choose a name and folder for the new copy of this problem.</strong>';
+				var dialog=registry.byId("authorSaveDialog");
+				console.log('dialog content');
+				registry.byId("authorSaveProblem").set("value",query.p);
+				dom.byId("saveMessage").innerHTML=message;
+				dialog.show();
+			}
 		});
 	});
 });
