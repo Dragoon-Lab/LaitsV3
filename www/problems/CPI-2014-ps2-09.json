@@ -10,7 +10,7 @@
         },
         "properties": {},
         "image": {
-            "URL": "images/CPI/CPI-2014-ps2-09.jpg"
+            "URL": "images\/CPI\/CPI-2014-ps2-09.jpg"
         },
         "taskDescription": [
             "Consider two large rain barrels that are connected to each other by a hose. One barrel is higher than the other so water drains from it through the hose and into the lower barrel. The hose is attached to the higher barrel a little ways up the side so that there will always be 10 gallons in that barrel.  20% of the water above the hose of the higher barrel empties every minute into the lower barrel.   Meanwhile, the lower barrel is losing 30% of its water every minute though a hole in its bottom. The higher barrel starts out with 55 gallons and the lower barrel starts out empty.   Construct a model showing how the water in the two barrels changes."
@@ -26,12 +26,12 @@
             },
             {
                 "type": "image",
-                "value": "images/CPI/Cascading_barrels_graphs.jpg",
+                "value": "images\/CPI\/Cascading_barrels_graphs.jpg",
                 "title": "Author's graph for Infections Problem"
             },
             {
                 "type": "image",
-                "value": "images/CPI/Cascading_barrels_correctnodes.png",
+                "value": "images\/CPI\/Cascading_barrels_correctnodes.png",
                 "title": "Author's solution for Infections Problem"
             },
             {
@@ -39,7 +39,7 @@
                 "value": "lessons",
                 "title": "Lessons Learned"
             }
-        ],  
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",
@@ -167,8 +167,8 @@
                 "ID": "id5",
                 "inputs": [],
                 "position": {
-                    "x": 443.3309631347656,
-                    "y": 298.3309631347656
+                    "x": 443.33096313477,
+                    "y": 298.33096313477
                 },
                 "attemptCount": {
                     "description": 0,
@@ -221,8 +221,8 @@
                 "ID": "id7",
                 "inputs": [],
                 "position": {
-                    "x": 713.3309326171875,
-                    "y": 278.3309326171875
+                    "x": 713.33093261719,
+                    "y": 278.33093261719
                 },
                 "attemptCount": {
                     "description": 0,
@@ -262,6 +262,42 @@
                 "initial": 0.3
             }
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [],
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "goal_transfer",
+                "name": "Goal-seeking",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id2, id5, id1, id7, id6",
+                "difficulty": {
+                    "isolation": 0,
+                    "cues": 1,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema2",
+                "schemaClass": "exponential_transfer",
+                "name": "Exponential",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id3, id8, id4",
+                "difficulty": {
+                    "isolation": 0,
+                    "cues": 1,
+                    "phrases": 0
+                }
+            }
+        ]
     }
 }
