@@ -293,10 +293,15 @@ define([
                 "the URL of the image into this box.");
             makeTooltip('questionMarkLessons', "The 'Lessons Learned' message will display once the student has successfully replicated <br>" +
                                                "and graphed the author's model, providing an opportunity for retrospection.");
+            makeTooltip('integrationMethod', "Euler's method - Best for functions that occur every tick of the time frame <br>" +
+                                             "Midpoint - Best for continuous functions <br>");
 
             /*
              Connect node editor to "click with no move" events.
              */
+		/*
+			 Connect node editor to "click with no move" events.
+			 */
 			aspect.after(drawModel, "onClickNoMove", function(mover){
 				if(mover.mouseButton != 2) //check if not right click
 					controllerObject.showNodeEditor(mover.node.id);
