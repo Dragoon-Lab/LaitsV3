@@ -12,7 +12,7 @@
             "type": ""
         },
         "image": {
-            "URL": "images/CPI/CPI-2014-ps2-07.jpg"
+            "URL": "images\/CPI\/CPI-2014-ps2-07.jpg"
         },
         "taskDescription": [
             "Most toilets have a mechanism, shown above, that refills the water tank after a flush empties it.  Let's assume the mechanism is adjusted so that the water level is 13 inches when the tank is full.  A ball-shaped float detects the height of the water level in the tank.  When the float height is below 13 inches, the mechanism lets water into the tank.  The water flow is proportional to the distance between the float height and the float height when the tank is full.  In fact, for every inch that the float height is below the full height, the water flow is sufficient to raise the float 0.05 inch per second.   Assuming the tank starts with 0 water because the toilet has just been flushed, construct a model that shows how the water level changes each second."
@@ -28,12 +28,12 @@
             },
             {
                 "type": "image",
-                "value": "images/CPI/toilettank_graphs.jpg",
+                "value": "images\/CPI\/toilettank_graphs.jpg",
                 "title": "Author's graph for Infections Problem"
             },
             {
                 "type": "image",
-                "value": "images/CPI/toilettank_correctnodes.png",
+                "value": "images\/CPI\/toilettank_correctnodes.png",
                 "title": "Author's solution for Infections Problem"
             },
             {
@@ -51,8 +51,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 637,
+                    "y": 111
                 },
                 "attemptCount": {
                     "description": 0,
@@ -68,8 +68,9 @@
                 "parentNode": true,
                 "units": "",
                 "description": "The height of the water in the toilet tank",
-                "initial": null,
-                "equation": "id2"
+                "initial": 0,
+                "equation": "id2",
+                "genus": "required"
             },
             {
                 "ID": "id2",
@@ -105,8 +106,8 @@
                 "ID": "id3",
                 "inputs": [],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 486.33096313477,
+                    "y": 362.33096313477
                 },
                 "attemptCount": {
                     "description": 0,
@@ -135,8 +136,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 501,
+                    "y": 232
                 },
                 "attemptCount": {
                     "description": 0,
@@ -152,14 +153,15 @@
                 "parentNode": false,
                 "units": "",
                 "description": "The number of inches below full height of the water",
-                "equation": "id3 - id1"
+                "equation": "id3 - id1",
+                "genus": "required"
             },
             {
                 "ID": "id5",
                 "inputs": [],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 969.33093261719,
+                    "y": 293.33096313477
                 },
                 "attemptCount": {
                     "description": 0,
@@ -178,6 +180,25 @@
                 "initial": 0.05
             }
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [],
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "goal_transfer",
+                "name": "Goal-seeking",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id2, id3, id4, id5",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 0
+                }
+            }
+        ]
     }
 }
