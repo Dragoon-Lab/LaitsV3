@@ -63,7 +63,9 @@ define([
 	//			menu, buttons, controller
 	
 	console.log("load main.js");
-
+    //remove the loading division, now that the problem is being loaded
+    var loading = document.getElementById('loadingOverlay');
+    loading.style.display = "none";
 	// Get session parameters
 	var query = {};
 	if(window.location.search){
@@ -72,33 +74,106 @@ define([
 		console.warn("Should have method for logging this to Apache log files.");
 		console.warn("Dragoon log files won't work since we can't set up a session.");
 		console.error("Function called without arguments");
-	}
+        // show error message and exit
+        var errorMessage = new messageBox("errorMessageBox", "error", "Missing information, please recheck the query");
+        errorMessage.show();
+        throw Error("please retry, insufficient information");
+    }
 	
 	// Start up new session and get model object from server
-	var session = new loadSave(query);
+	try {
+        var session = new loadSave(query);
+    }
+    catch(error){
+        console.log("error appeared");
+        var errorMessage = new messageBox("errorMessageBox", "error", error.message);
+        errorMessage.show();
+        throw Error("problem in creating sessions");
+    }
     console.log("session is",session);
-	logging.setSession(session);  // Give logger message destination
+    logging.setSession(session);  // Give logger message destination
 	session.loadProblem(query).then(function(solutionGraph){
 		//removing the overlay as the actual computation does not take much time and it causes errors to stay hidden behind the overlay which continues infinitely.
 		var loading = document.getElementById('loadingOverlay');
 		loading.style.display = "none";
 
+        //display warning message if not using the supported browser and version
+        var checkBrowser = session.browser.name;
+        var checkVersion = session.browser.version;
+        if((checkBrowser ==="Chrome" && checkVersion<41) || (checkBrowser==="Safari" && checkVersion<8)||(checkBrowser==="msie" && checkVersion<11)||(checkBrowser==="Firefox")||(checkBrowser==="Opera")){
+            var errorMessage = new messageBox("errorMessageBox", "warn","You are using "+ session.browser.name+" version "+session.browser.version + ". Dragoon is known to work well in these (or higher) browser versions: Google Chrome v41 or later Safari v8 or later Internet Explorer v11 or later");
+            errorMessage.show();
+        }
+
 		var givenModel = new model(query.m, query.p);
 		logging.session.log('open-problem', {problem : query.p});
-		if(solutionGraph){
-			try{
-				givenModel.loadModel(solutionGraph);
-			}catch(error){
-				if(query.m == "AUTHOR"){
-					var errorMessage = new messageBox("errorMessageBox", "error", error.message);
-			    	errorMessage.show();
-			    }else {
-			    	var errorMessage = new messageBox("errorMessageBox", "error", "This problem could not be loaded. Please contact the problem's author.");
-			    	errorMessage.show();
-			    	throw Error("Model could not be loaded.");
-			    }
+        console.log("solution graph is",solutionGraph);
+		if(solutionGraph) {
+
+            try {
+                givenModel.loadModel(solutionGraph);
+            } catch (error) {
+                if (query.m == "AUTHOR") {
+                    var errorMessage = new messageBox("errorMessageBox", "error", error.message);
+                    errorMessage.show();
+                } else {
+                    var errorMessage = new messageBox("errorMessageBox", "error", "This problem could not be loaded. Please contact the problem's author.");
+                    errorMessage.show();
+                    throw Error("Model could not be loaded.");
+                }
+            }
+            // This version of code addresses loading errors in cases where problem is empty, incomplete or has no root node in coached mode
+            if (query.m !== "AUTHOR") {
+                //check if the problem is empty
+                try {
+                    console.log("checking for emptiness");
+                    var count = 0;
+                    array.forEach(givenModel.given.getNodes(), function (node) {
+                        //for each node increment the counter
+                        count++;
+                    });
+                    console.log("count of nodes is", count);
+                    if (count == 0) {
+                        //if count is zero we throw a error
+                        throw new Error("Problem is Empty");
+                    }
+                    //check for completeness of all nodes
+                    console.log("inside completeness verifying function");
+                    array.forEach(givenModel.given.getNodes(), function (node) {
+                        console.log("node is", node, givenModel.given.isComplete(node.ID,true));
+                        if (!givenModel.given.isComplete(node.ID,true)) {
+                            throw new Error("Problem is Incomplete");
+                        }
+                    });
+                    if (query.m === "COACHED") {
+                        //checks for root node if the mode is coached
+                        console.log("inside coached mode root verifying function");
+                        var hasParentFlag = false;
+                        array.forEach(givenModel.given.getNodes(), function (node) {
+                            console.log("node is", node);
+                            if (givenModel.given.getParent(node.ID)) {
+                                hasParentFlag = true;
+                            }
+                        });
+                        if (!hasParentFlag) {
+                        // throw an error if root node is absent
+                        throw new Error("Root Node Missing");
+                        }
+                    }
+                }catch (error) {
+                    var errorMessage = new messageBox("errorMessageBox", "error", error.message);
+                    errorMessage.show();
+                }
+            // If we are loading a published problem in author mode, prompt user to perform a save-as immediately
+            } else if(!query.g){
+				var message='<strong>You must choose a name and folder for the new copy of this problem.</strong>';
+				var dialog=registry.byId("authorSaveDialog");
+				console.log('dialog content');
+				registry.byId("authorSaveProblem").set("value",query.p);
+				dom.byId("saveMessage").innerHTML=message;
+				dialog.show();
 			}
-		}else {
+        }else {
 			if(query.g && query.m === "AUTHOR"){
 				var messageHtml = "You have successfully created a new problem named <strong>"+ query.p +"</strong>.<br/> <br/> If you expected this problem to exist already, please double check the problem name and folder and try again.";
 				var infoMessage = new messageBox("errorMessageBox", "info", messageHtml);

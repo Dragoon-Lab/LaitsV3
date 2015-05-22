@@ -191,11 +191,14 @@
 	  <div class="fieldgroup">
             <label for="authorSetTimeEnd">End Time:</label>
             <input id="authorSetTimeEnd" style="width:5em" value="10" data-dojo-type="dijit/form/TextBox"></input>
-	  </div>
+	        <div id="start_end_errorbox" style="border: 2px solid #ff0000; display: none;">Start time must be less than end time</div>
+      </div>
 	  <div class="fieldgroup">
             <label for="authorSetTimeStep">Time Step:</label>
             <input id="authorSetTimeStep" style="width:5em" value="1" data-dojo-type="dijit/form/TextBox"></input>
-	  </div>
+            <div id="timestep_errorbox1" style="border: 2px solid #ff0000; display: none;">Time step must be positive</div>
+            <div id="timestep_errorbox2" style="border: 2px solid #ff0000; display: none;">Time step must fit within the start and end times</div>
+      </div>
 	  <div class="fieldgroup">
             <label for="authorSetTimeStepUnits">Units:</label>
             <select data-dojo-type="dijit/form/ComboBox" id="authorSetTimeStepUnits" name="authorSetTimeStepUnits" class="timeStepAuthor">
@@ -252,6 +255,7 @@
         <div class="fieldgroup" aligh="right" id="authorSaveStatus">            
         </div>
         <div class="fieldgroup" align="left">Note: Any forum posts attached to this model will not be copied.</div>
+	<div id="saveMessage"></div>
         <div class="fieldgroup" align="right">
             <button id="saveCloseButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Save</button>
         </div>
