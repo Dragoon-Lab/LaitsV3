@@ -296,11 +296,7 @@ define([
                                                "and graphed the author's model, providing an opportunity for retrospection.");
             makeTooltip('integrationMethod', "Euler's method - Best for functions that occur every tick of the time frame <br>" +
                                              "Midpoint - Best for continuous functions <br>");
-
-            /*
-             Connect node editor to "click with no move" events.
-             */
-		/*
+			/*
 			 Connect node editor to "click with no move" events.
 			 */
 			aspect.after(drawModel, "onClickNoMove", function(mover){
