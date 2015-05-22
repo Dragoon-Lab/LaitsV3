@@ -154,7 +154,7 @@ define([
 			{
 			this.dialogContent += "<div id='StaticTab' data-dojo-type='dijit/layout/ContentPane' style='overflow:visible' selected = true data-dojo-props='title:\"Static\"'>"
 
-			this.dialogContent += "<input id='staticSelect'>";
+			this.dialogContent += "<input id='staticSelect'/>";
 
 				array.forEach(this.active.plotVariables, function(id){
 					var show = this.model.active.getType(id) == "accumulator" || this.model.given.getParent(this.model.active.getGivenID(id));
@@ -163,11 +163,11 @@ define([
 					var style = show ? "" : " style='display: none;'";
 					this.dialogContent += "<div	 id='chartStatic" + id + "'" + style + "></div>";
 					// Since the legend div is replaced, we cannot hide the legend here.
-					this.dialogContent += "<div class='legend' id='legendStatic" + id + "'></div></div>";
+					this.dialogContent += "<div class='legend' id='legendStatic" + id + "'></div>";
 				}, this);
 			}
 			//end divs for graph and table 
-			this.dialogContent += "</div></div>";
+			this.dialogContent += "</div></div></div>";
 
 			//create content pane for sliders
 			this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' style='overflow:visible; width:40%; float:right; height:700px; background-color: #FFFFFF'>";
@@ -192,6 +192,7 @@ define([
 						this.dialogContent += "<font color='red'>Your model does not match the author's.  You may have extra nodes in your model.</font><br>"
 					}
 					else{
+						console.log(this.model.active);
 						this.dialogContent += "<font color='red'>Unfortunately, your model's behavior does not match the author's.</font><br>";
 					}					 
 				}
@@ -701,6 +702,7 @@ define([
 					var activeSolution = this.findStaticSolution(true, staticVar, this.active.plotVariables);
 					//update and render the charts
 					array.forEach(this.active.plotVariables, function(id, k){
+
 							// Calculate Min and Max values to plot on y axis based on given solution and your solution
 							/*var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
 							var givenObj = this.getMinMaxFromArray(givenSolution.plotValues[k]);				

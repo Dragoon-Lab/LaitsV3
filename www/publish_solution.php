@@ -25,6 +25,7 @@ $name = "problems/".$name.".json";
 
 //writing to file
 $file = fopen($name, "w");
-fwrite($file, stripslashes($model));
+//fwrite($file, stripslashes($model));
+fwrite($file, $model);
 fclose($file);
 ?>

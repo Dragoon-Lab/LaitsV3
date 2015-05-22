@@ -91,11 +91,20 @@ define([
         throw Error("problem in creating sessions");
     }
     console.log("session is",session);
-	logging.setSession(session);  // Give logger message destination
+    logging.setSession(session);  // Give logger message destination
 	session.loadProblem(query).then(function(solutionGraph){
 		//removing the overlay as the actual computation does not take much time and it causes errors to stay hidden behind the overlay which continues infinitely.
 		var loading = document.getElementById('loadingOverlay');
 		loading.style.display = "none";
+
+        //display warning message if not using the supported browser and version
+        var checkBrowser = session.browser.name;
+        var checkVersion = session.browser.version;
+        if((checkBrowser ==="Chrome" && checkVersion<41) || (checkBrowser==="Safari" && checkVersion<8)||(checkBrowser==="msie" && checkVersion<11)||(checkBrowser==="Firefox")||(checkBrowser==="Opera")){
+            var errorMessage = new messageBox("errorMessageBox", "warn","You are using "+ session.browser.name+" version "+session.browser.version + ". Dragoon is known to work well in these (or higher) browser versions: Google Chrome v41 or later Safari v8 or later Internet Explorer v11 or later");
+            errorMessage.show();
+        }
+
 		var givenModel = new model(query.m, query.p);
 		logging.session.log('open-problem', {problem : query.p});
         console.log("solution graph is",solutionGraph);
@@ -155,8 +164,15 @@ define([
                     var errorMessage = new messageBox("errorMessageBox", "error", error.message);
                     errorMessage.show();
                 }
-            }
-
+            // If we are loading a published problem in author mode, prompt user to perform a save-as immediately
+            } else if(!query.g){
+				var message='<strong>You must choose a name and folder for the new copy of this problem.</strong>';
+				var dialog=registry.byId("authorSaveDialog");
+				console.log('dialog content');
+				registry.byId("authorSaveProblem").set("value",query.p);
+				dom.byId("saveMessage").innerHTML=message;
+				dialog.show();
+			}
         }else {
 			if(query.g && query.m === "AUTHOR"){
 				var messageHtml = "You have successfully created a new problem named <strong>"+ query.p +"</strong>.<br/> <br/> If you expected this problem to exist already, please double check the problem name and folder and try again.";
