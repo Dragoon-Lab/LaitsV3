@@ -233,7 +233,9 @@ define([
             makeTooltip('questionMarkURL', "If you wish to use an image from your computer, <br>" +
                 "you must first upload it to a website and then copy <br>" +
                 "the URL of the image into this box.");
-			/*
+	    makeTooltip('integrationMethod', "Euler's method - Best for functions that occur every tick of the time frame <br>" +
+                "Midpoint - Best for continuous functions <br>");
+		/*
 			 Connect node editor to "click with no move" events.
 			 */
 			aspect.after(drawModel, "onClickNoMove", function(mover){
