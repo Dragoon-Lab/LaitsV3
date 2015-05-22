@@ -277,7 +277,12 @@ define([
 			console.log("*******Student has chosen input", id, this);
 			// Should add name associated with id to equation
 			// at position of cursor or at the end.
+			
 			var expr = this._model.given.getName(id);
+			
+			// if user selected selectdefault selection [--select--] no action required, calling return on handler
+			if(expr === null) return;
+			
 			this.equationInsert(expr);
 			//restore to default  - creating select input as stateless
 			registry.byId(this.controlMap.inputs).set('value', 'defaultSelect', false);
