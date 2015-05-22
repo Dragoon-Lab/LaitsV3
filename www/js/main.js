@@ -545,7 +545,7 @@ define([
 					 		alert("Problem/Section can't be empty");
 					 		return;
 					 	}
-					 	if (group!="Public"){
+					 	if (group.split("(")[0]+"("=="Private("){
 					 	    	group=group.split(")")[0].substr(8);//Privte(username)=>username
 					        }
 					 var query = {g:group,m:"AUTHOR",s:section,p:problem};
@@ -594,7 +594,7 @@ define([
 					}else if(problemName && problemName.length > 0 && problemName.length<=30 && checkProblemName.test(problemName)){
 						var checkHyphen = new RegExp('^[\-]+$');
 						if(!checkHyphen.test(problemName)){
-							if (groupName!="Public"){
+							if (groupName.split("(")[0]+"("=="Private("){
 					 	    	groupName=groupName.split(")")[0].substr(8);//Privte(username)=>username
 					        }
 							session.saveAsProblem(givenModel.model,problemName,groupName); 
