@@ -292,7 +292,7 @@ define([
                 "you must first upload it to a website and then copy <br>" +
                 "the URL of the image into this box.");
             makeTooltip('questionMarkLessons', "The 'Lessons Learned' message will display once the student has successfully replicated <br>" +
-                "the author's model, providing an opportunity for retrospection.");
+                                               "and graphed the author's model, providing an opportunity for retrospection.");
 
             /*
              Connect node editor to "click with no move" events.
