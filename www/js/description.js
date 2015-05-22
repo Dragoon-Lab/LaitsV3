@@ -52,6 +52,9 @@ define([
 			dom.byId("authorSetTimeStepUnits").value = this.timeObj.units || "seconds";
 			dom.byId("authorSetIntegrationMethod").value = this.timeObj.integrationMethod || "Eulers Method";
 			dom.byId("authorSetImage").value = givenModel.getImageURL() || "";
+            dom.byId("authorSetLessonsLearned").value = this.serialize(
+                givenModel.getTaskLessonsLearned() ? givenModel.getTaskLessonsLearned() : ""
+            );
 			dom.byId("authorSetDescription").value = this.serialize(
 				givenModel.getTaskDescription() ? givenModel.getTaskDescription() : ""	
 			);
@@ -149,7 +152,9 @@ define([
                     }
                     domStyle.set(errorDialogSpan,"display","none");
                     var tin = dom.byId("authorSetDescription").value;
+                    var ll = dom.byId("authorSetLessonsLearned").value;
                     myThis.givenModel.setTaskDescription(tin.split("\n"));
+                    myThis.givenModel.setTaskLessonsLearned(ll.split("\n"));
                     myThis.timeObj.units = dom.byId("authorSetTimeStepUnits").value;
                     myThis.timeObj.integrationMethod = dom.byId("authorSetIntegrationMethod").value;
                     console.log("integration value" + dom.byId("authorSetIntegrationMethod").value);

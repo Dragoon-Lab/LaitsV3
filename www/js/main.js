@@ -275,9 +275,12 @@ define([
             makeTooltip('questionMarkURL', "If you wish to use an image from your computer, <br>" +
                 "you must first upload it to a website and then copy <br>" +
                 "the URL of the image into this box.");
-			/*
-			 Connect node editor to "click with no move" events.
-			 */
+            makeTooltip('questionMarkLessons', "The 'Lessons Learned' message will display once the student has successfully replicated <br>" +
+                "the author's model, providing an opportunity for retrospection.");
+
+            /*
+             Connect node editor to "click with no move" events.
+             */
 			aspect.after(drawModel, "onClickNoMove", function(mover){
 				if(mover.mouseButton != 2) //check if not right click
 					controllerObject.showNodeEditor(mover.node.id);

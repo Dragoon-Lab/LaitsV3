@@ -225,10 +225,17 @@
 			<input id="authorSetImage"/>
              <img id="questionMarkURL"  class="questionMark" src="images/questionmark.png"/>
 		</div>
+
 		<div class="fieldgroup">
 			<label for="authorSetDescription">Problem Statement:</label>
 			<textarea id="authorSetDescription" name="authorSetDescription" data-dojo-type="dijit/form/SimpleTextarea" value="Enter Description here..."></textarea>
 		</div>
+
+        <div class="fieldgroup">
+                <label for="authorSetLessonsLearned">Lessons Learned:</label>
+                <img id="questionMarkLessons"  class="questionMark" src="images/questionmark.png"/>
+                <textarea id="authorSetLessonsLearned" name="authorSetLessonsLearned" data-dojo-type="dijit/form/SimpleTextarea" value="Enter Lessons Learned here..."></textarea>
+        </div>
 		<div class="fieldgroup" style="visibility: hidden;">
 			<label for="authorProblemShare" title="Share this problem with students.">Share Problem:</label>
 			<input id="authorProblemShare" name="authorProblemShare" data-dojo-type="dijit/form/CheckBox" value="agreed" checked="false"/>
