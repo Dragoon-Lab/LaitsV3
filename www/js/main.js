@@ -520,55 +520,55 @@ define([
                     registry.byId("authorMergeDialog").show();
                     var combo = registry.byId("authorMergeGroup");
                     var arr=[{name: "Private("+query.u+")", id: "Private"},
-					          {name: "Public", id: "Public"}
-					          //,{name:"Official Problems",id:"Official Problems"}
+					          {name: "Public", id: "Public"},
+					          {name:"Official Problems",id:"Official Problems"}
 					          ];
 					var m = new memory({data: arr});
 				    combo.set("store", m);
 					combo.set("value","Private("+query.u+")")//setting the default
-
              	});
 
 				on(registry.byId("mergeDialogButton"),"click",function(){
-					 var group = registry.byId("authorMergeGroup").value;
-					 var section = registry.byId("authorMergeSection").value;
-					 var problem = registry.byId("authorMergeProblem").value;
-					
-					 if(!problem || !section)
-					 	{
-					 		alert("Problem/Section can't be empty");
-					 		return;
-					 	}
-					 	if (group.split("(")[0]+"("=="Private("){
-					 	    	group=group.split(")")[0].substr(8);//Privte(username)=>username
-					        }
-					 var query = {g:group,m:"AUTHOR",s:section,p:problem};
-                  	 session.loadProblem(query).then(function(solutionGraph){
-							console.log("Merge problem is loaded "+solutionGraph);
-							if(solutionGraph){
-								//var nodes = solutionGraph.task.givenModelNodes;
-								var ids = givenModel.active.mergeNodes(solutionGraph);
-								//var snodes = solutionGraph.task.studentModelNodes;
-								//var sids = givenModel.active.mergeNodes(snodes,true);
-								givenModel.loadModel(givenModel.model);	
-								
-								//add merged nodes
-								array.forEach(ids,function(id){	
-									var node = 	givenModel.active.getNode(id);
-									drawModel.addNode(node);	
-								},this);	
-								//set connections for merged nodes
-								array.forEach(ids,function(id){
-									var node = 	givenModel.active.getNode(id);
-									drawModel.setConnections(node.inputs,dojo.byId(id));
-								},this);
-								session.saveProblem(givenModel.model); //moved the saving part to the end of the function call so that if anything breaks the broken model is not saved.
-								registry.byId("authorMergeDialog").hide();
-							}else{
-								console.log("Problem Not found");
-								alert("Problem Not found, please check the problem name you have entered.");
-							}
-               		 });
+					var group = registry.byId("authorMergeGroup").value;
+					var section = registry.byId("authorMergeSection").value;
+					var problem = registry.byId("authorMergeProblem").value;
+					if(!problem){
+						alert("Problem field can't be empty");
+						return;
+					}
+					if (group.split("(")[0]+"("=="Private("){
+						group=group.split(")")[0].substr(8);//Private(username)=>username
+					} else if (group === "Official Problems"){
+						group=null;
+						section=null;
+					}
+					var query = {g:group,m:"AUTHOR",s:section,p:problem};
+                  	session.loadProblem(query).then(function(solutionGraph){
+						console.log("Merge problem is loaded "+solutionGraph);
+						if(solutionGraph){
+							//var nodes = solutionGraph.task.givenModelNodes;
+							var ids = givenModel.active.mergeNodes(solutionGraph);
+							//var snodes = solutionGraph.task.studentModelNodes;
+							//var sids = givenModel.active.mergeNodes(snodes,true);
+							givenModel.loadModel(givenModel.model);	
+							
+							//add merged nodes
+							array.forEach(ids,function(id){	
+								var node = 	givenModel.active.getNode(id);
+								drawModel.addNode(node);	
+							},this);	
+							//set connections for merged nodes
+							array.forEach(ids,function(id){
+								var node = 	givenModel.active.getNode(id);
+								drawModel.setConnections(node.inputs,dojo.byId(id));
+							},this);
+							session.saveProblem(givenModel.model); //moved the saving part to the end of the function call so that if anything breaks the broken model is not saved.
+							registry.byId("authorMergeDialog").hide();
+						}else{
+							console.log("Problem Not found");
+							alert("Problem Not found, please check the problem name you have entered.");
+						}
+               		});
 				});
 
 				//Author Save Dialog
