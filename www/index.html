@@ -191,11 +191,14 @@
 	  <div class="fieldgroup">
             <label for="authorSetTimeEnd">End Time:</label>
             <input id="authorSetTimeEnd" style="width:5em" value="10" data-dojo-type="dijit/form/TextBox"></input>
-	  </div>
+	        <div id="start_end_errorbox" style="border: 2px solid #ff0000; display: none;">Start time must be less than end time</div>
+      </div>
 	  <div class="fieldgroup">
             <label for="authorSetTimeStep">Time Step:</label>
             <input id="authorSetTimeStep" style="width:5em" value="1" data-dojo-type="dijit/form/TextBox"></input>
-	  </div>
+            <div id="timestep_errorbox1" style="border: 2px solid #ff0000; display: none;">Time step must be positive</div>
+            <div id="timestep_errorbox2" style="border: 2px solid #ff0000; display: none;">Time step must fit within the start and end times</div>
+      </div>
 	  <div class="fieldgroup">
             <label for="authorSetTimeStepUnits">Units:</label>
             <select data-dojo-type="dijit/form/ComboBox" id="authorSetTimeStepUnits" name="authorSetTimeStepUnits" class="timeStepAuthor">
@@ -215,17 +218,25 @@
             <select data-dojo-type="dijit/form/ComboBox" id="authorSetIntegrationMethod" name="authorSetIntegrationMethod" class="integrationMethodAuthor">
                 <option>Eulers Method</option>
                 <option>Midpoint Method</option>
-            </select>
+            </select> <img id="integrationMethod"  class="questionMark" src="images/questionmark.png"/>
+	
       </div>
 	  <div class="fieldgroup">
             <label for="authorSetImage">URL for Image:</label>
 			<input id="authorSetImage"/>
              <img id="questionMarkURL"  class="questionMark" src="images/questionmark.png"/>
 		</div>
+
 		<div class="fieldgroup">
 			<label for="authorSetDescription">Problem Statement:</label>
 			<textarea id="authorSetDescription" name="authorSetDescription" data-dojo-type="dijit/form/SimpleTextarea" value="Enter Description here..."></textarea>
 		</div>
+
+        <div class="fieldgroup">
+                <label for="authorSetLessonsLearned">Lessons Learned:</label>
+                <img id="questionMarkLessons"  class="questionMark" src="images/questionmark.png"/>
+                <textarea id="authorSetLessonsLearned" name="authorSetLessonsLearned" data-dojo-type="dijit/form/SimpleTextarea" value="Enter Lessons Learned here..."></textarea>
+        </div>
 		<div class="fieldgroup" style="visibility: hidden;">
 			<label for="authorProblemShare" title="Share this problem with students.">Share Problem:</label>
 			<input id="authorProblemShare" name="authorProblemShare" data-dojo-type="dijit/form/CheckBox" value="agreed" checked="false"/>
@@ -247,11 +258,13 @@
         </div>
         <div class="fieldgroup">
             <label for="authorSaveGroup" style="width:7em">Folder Name:</label>
-            <input id="authorSaveGroup" style="width:10em" value="0" data-dojo-type="dijit/form/TextBox"></input>
+            <select id="authorSaveGroup" style="width:10em" data-dojo-type="dijit/form/ComboBox">
+            </select>
         </div>
         <div class="fieldgroup" aligh="right" id="authorSaveStatus">            
         </div>
         <div class="fieldgroup" align="left">Note: Any forum posts attached to this model will not be copied.</div>
+	<div id="saveMessage"></div>
         <div class="fieldgroup" align="right">
             <button id="saveCloseButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Save</button>
         </div>
@@ -269,7 +282,8 @@
         </div>
         <div class="fieldgroup">
             <label for="authorMergeGroup" style="width:7em">Folder Name:</label>
-            <input id="authorMergeGroup" style="width:10em" value="" data-dojo-type="dijit/form/TextBox"></input>
+            <select id="authorMergeGroup" style="width:10em" data-dojo-type="dijit/form/ComboBox">
+            </select>
         </div>
          <div class="fieldgroup" align="left">Note: Any forum posts attached to the source model will not be copied.</div>        
         <div class="fieldgroup" align="right">
@@ -411,8 +425,9 @@
         </div>
         <div style="display:block">
             <div>&nbsp;</div>
+            <button id="closeButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon" style="float:right;">Done</button>
             <button id="deleteButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon" style="float:left;">Delete Node</button>
-		    <button id="closeButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon" style="float:right;">Done</button>
+		   
             <div>&nbsp;</div>
 		</div>
 	    </div>

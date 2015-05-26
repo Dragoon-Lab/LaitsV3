@@ -12,12 +12,12 @@
             "type": "Construct"
         },
         "image": {
-            "URL": "images/busyhospital.jpeg"
+            "URL": "images\/busyhospital.jpeg"
         },
         "taskDescription": [
             " Problem: A teaching hospital has just installed a cell-phone based workflow monitoring system, and the workflow seems to be working quite well. When a few more doctors are needed in the hospital, the system texts their cell phone and the doctors walk across the street from their offices to the hospital. When the hospital doesn't need as many doctors, the system sends some of them back to their offices where they can do their research, read email, etc. until the next time they are needed. The system is set so that the doctor-to-patient ratio is 1 to 8. That is, there are 0.125 doctors per patient. When the system was turned on, there were 80 patients in the hospital and 10 doctors present, so just the right ratio was in place at that instant. However, things change. The number of patients admitted (i.e., added) to the hospital is 10 per hour on average. The number of patients discharged from the hospital (i.e., sent home) depends on the number of doctors working at the time. In general, for each doctor working during an hour, 3 patients are discharged. Goal: Graph the number of doctors working in the hospital each hour for 10 hours. "
         ],
-        "lessonsLearned" : [
+        "lessonsLearned": [
             " This problem is tricky because it asks for doctors but patients is the accumulator.  It is also tricky because patients is almost a simple constant growth + exponential decay, except that the exponential decay is not proportional to the number of patients, but instead to the number of doctors."
         ],
         "slides": [
@@ -28,12 +28,12 @@
             },
             {
                 "type": "image",
-                "value": "images/CPI/Busy_hospital_graphs.jpg",
+                "value": "images\/CPI\/Busy_hospital_graphs.jpg",
                 "title": "Author's graph for Infections Problem"
             },
             {
                 "type": "image",
-                "value": "images/CPI/Busy_hospital_correctnodes.png",
+                "value": "images\/CPI\/Busy_hospital_correctnodes.png",
                 "title": "Author's solution for Infections Problem"
             },
             {
@@ -47,8 +47,8 @@
                 "ID": "id1",
                 "inputs": [],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 387.33096313477,
+                    "y": 161.33094787598
                 },
                 "attemptCount": {
                     "description": 0,
@@ -69,8 +69,8 @@
                 "ID": "id2",
                 "inputs": [],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 1003.3309326172,
+                    "y": 532.33093261719
                 },
                 "attemptCount": {
                     "description": 0,
@@ -92,8 +92,8 @@
                 "ID": "id3",
                 "inputs": [],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 758.33093261719,
+                    "y": 539.33093261719
                 },
                 "attemptCount": {
                     "description": 0,
@@ -115,8 +115,8 @@
                 "ID": "id4",
                 "inputs": [],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 899,
+                    "y": 568
                 },
                 "attemptCount": {
                     "description": 0,
@@ -138,8 +138,8 @@
                 "ID": "id5",
                 "inputs": [],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 868.33093261719,
+                    "y": 177.33094787598
                 },
                 "attemptCount": {
                     "description": 0,
@@ -160,8 +160,8 @@
                 "ID": "id6",
                 "inputs": [],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 699.33093261719,
+                    "y": 390.33096313477
                 },
                 "attemptCount": {
                     "description": 0,
@@ -189,8 +189,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 504,
+                    "y": 61
                 },
                 "attemptCount": {
                     "description": 0,
@@ -205,7 +205,8 @@
                 "parentNode": true,
                 "units": "",
                 "description": "The number of doctors in the hospital each hour",
-                "equation": "id9 * id1"
+                "equation": "id9 * id1",
+                "genus": "required"
             },
             {
                 "ID": "id8",
@@ -218,8 +219,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 550,
+                    "y": 277
                 },
                 "attemptCount": {
                     "description": 0,
@@ -234,7 +235,8 @@
                 "parentNode": false,
                 "units": "",
                 "description": "The number of patients discharged from the hospital each hour",
-                "equation": "id7 * id6"
+                "equation": "id7 * id6",
+                "genus": "required"
             },
             {
                 "ID": "id9",
@@ -247,8 +249,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 680,
+                    "y": 129
                 },
                 "attemptCount": {
                     "description": 0,
@@ -264,9 +266,46 @@
                 "units": "",
                 "description": "The number of patients in the hospital each hour",
                 "initial": 80,
-                "equation": "+ id5 - id8"
+                "equation": "+ id5 - id8",
+                "genus": "required"
             }
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [],
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "linear_transfer",
+                "name": "Linear",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id5, id9",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema2",
+                "schemaClass": "goal_transfer",
+                "name": "Goal-seeking",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id9, id8, id7, id1, id6",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            }
+        ]
     }
 }

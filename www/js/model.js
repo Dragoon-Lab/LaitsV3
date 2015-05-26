@@ -272,6 +272,7 @@ define([
 					//throw error for duplicate descriptions
 					errorMessage += "The following nodes have the duplicate descriptions: <strong>"+ duplicateStr + "</strong>. Please change them to be unique.";
 				}
+
 				if(errorMessage != ""){
 					throw new Error(errorMessage);
 				}
@@ -431,7 +432,10 @@ define([
 			setTaskDescription: function(/*string*/ description){
 				// Summary: set the task description
 				this.model.task.taskDescription = description;
-			}
+			},
+            setTaskLessonsLearned: function(/*string*/ lessonsLearned){
+                this.model.task.lessonsLearned = lessonsLearned;
+            }
 		};
 
 		/* 

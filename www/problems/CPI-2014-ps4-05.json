@@ -39,12 +39,12 @@
             },
             {
                 "type": "image",
-                "value": "images/CPI/running_out_of_poison_graph.jpg",
+                "value": "images\/CPI\/running_out_of_poison_graph.jpg",
                 "title": "Author's graph for  Running out of Poison Problem"
             },
             {
                 "type": "image",
-                "value": "images/CPI/running_out_of_poison_correctnodes.png",
+                "value": "images\/CPI\/running_out_of_poison_correctnodes.png",
                 "title": "Author's solution for Running out of Poison Problem"
             },
             {
@@ -109,14 +109,15 @@
                 "description": "The amount of poison sprayed each day",
                 "type": "function",
                 "units": "gallons",
-                "equation": "min(id3,id1)"
+                "equation": "min(id3,id1)",
+                "genus": "required"
             },
             {
                 "ID": "id3",
                 "inputs": [],
                 "position": {
-                    "x": 722.3309326171875,
-                    "y": 275.3309326171875
+                    "x": 722.33093261719,
+                    "y": 275.33093261719
                 },
                 "attemptCount": {
                     "description": 0,
@@ -199,8 +200,8 @@
                 "ID": "id6",
                 "inputs": [],
                 "position": {
-                    "x": 980.3309326171875,
-                    "y": 110.3309555053711
+                    "x": 980.33093261719,
+                    "y": 110.33095550537
                 },
                 "attemptCount": {
                     "description": 0,
@@ -245,14 +246,15 @@
                 "name": "Weeds killed",
                 "description": "Number of weeds killed each day",
                 "type": "function",
-                "equation": "id2*id8"
+                "equation": "id2*id8",
+                "genus": "required"
             },
             {
                 "ID": "id8",
                 "inputs": [],
                 "position": {
-                    "x": 442.3309631347656,
-                    "y": 103.3309555053711
+                    "x": 442.33096313477,
+                    "y": 103.33095550537
                 },
                 "attemptCount": {
                     "description": 0,
@@ -270,6 +272,59 @@
                 "initial": 250
             }
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [],
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "exponential_transfer",
+                "name": "Exponential",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id4, id5, id6",
+                "difficulty": {
+                    "isolation": 0,
+                    "cues": 0,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema2",
+                "schemaClass": "linear_transfer",
+                "name": "Linear",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id2, id3",
+                "difficulty": {
+                    "isolation": 0,
+                    "cues": 0,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema3",
+                "schemaClass": "accelerating_transfer",
+                "name": "Accelerating",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id4, id8, id7, id2",
+                "difficulty": {
+                    "isolation": 0,
+                    "cues": 0,
+                    "phrases": 1
+                }
+            }
+        ]
     }
 }

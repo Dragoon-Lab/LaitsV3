@@ -220,6 +220,59 @@
                 "initial": 0.5
             }
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [],
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "exponential_transfer",
+                "name": "Exponential",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id2, id5",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema2",
+                "schemaClass": "exponential_transfer",
+                "name": "Exponential",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id3, id6",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema3",
+                "schemaClass": "linear_transfer",
+                "name": "Linear",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id4",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 0
+                }
+            }
+        ]
     }
 }
