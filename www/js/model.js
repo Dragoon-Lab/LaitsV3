@@ -676,7 +676,7 @@ define([
 					/*trick to update equations with new ids */
 					if(node.equation){
 						var equation = node.equation;
-						console.log("sachin shift value "+ shift);
+						//console.log("sachin shift value "+ shift);
 						var nEquation=equation.replace(/(id\d+)+/g, function(match, str) {
 								var number = str.replace("id", "");
        							return "id"+(parseInt(number)+shift);

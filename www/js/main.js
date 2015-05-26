@@ -445,11 +445,12 @@ define([
 					 var section = registry.byId("authorMergeSection").value;
 					 var problem = registry.byId("authorMergeProblem").value;
 
-					 if(!problem || !section)
+					 if(!problem)
 					 	{
-					 		alert("Problem/Section can't be empty");
+					 		alert("Problem field can't be empty");
 					 		return;
 					 	}
+
 
 					 var query = {g:group,m:"AUTHOR",s:section,p:problem};
                   	 session.loadProblem(query).then(function(solutionGraph){

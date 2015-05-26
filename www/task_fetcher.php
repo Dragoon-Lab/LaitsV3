@@ -121,7 +121,7 @@ EOT;
      a matching published problem
 */
 
-if(isset($_GET['g']) && isset($_GET['s'])){
+if(isset($_GET['g']) && !empty($_GET['g']) && isset($_GET['s']) && !empty($_GET['s'])){
   /*
     If group and section are supplied, then look for 
     custom problem stored in database.
@@ -157,9 +157,12 @@ EOT;
   $host  = $_SERVER['HTTP_HOST'];
   $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
   // To support Java, one would need to switch this to xml
+  // To avoid forceful browsing, further santazing problem name 
+  // REGEX: Replace any character other than alphabat, number, underscore or hypen with underscore 
+  $problem = preg_replace('/[^A-Za-z0-9_\-]/', '_', $problem);
   $extra = 'problems/' . $problem . '.json';
   /* Redirect to a page relative to the current directory.
-     HTTP/1.1 requires an absolute URI as argument to Location. */
+     HTTP/1.1 requires an absolute URI as argument to Location. */ 
   header("Location: http://$host$uri/$extra");
 }
 mysqli_close($mysqli);
