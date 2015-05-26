@@ -197,32 +197,61 @@ define([
 			 list of plot variables.  The list may include function nodes.
 			 */
 			 var step = 1;
-			var nodes = [];			 
-			if(plotVariables){
-				// If id is null, then make row null
-				var plotValues = array.map(plotVariables, function(x){
-					return x?[]:null;
-				});
-				var timeStep = choice.timeStep;
-				// Copy parameters object.
-				var variables = lang.mixin({}, timeStep.parameters);
-				for(var k = start; k < stop; k += step){
-						nodes.push(k);
-						variables[node] = k;
-						//variables = lang.mixin({}, parameters);
-						array.forEach(timeStep.functions, function(id){
-							variables[id] = timeStep.parse[id].evaluate(variables, time.start);
-						});
-						array.forEach(plotVariables, function(id, k){
-							if(id){
-								plotValues[k].push(variables[id]);
-							}
-						});
-				}	
-				return {times: nodes, plotValues: plotValues};
-			}else{
-				return {status: 'solution', soln: solution};
+			var nodes = [];
+			try{			 
+				if(plotVariables){
+					// If id is null, then make row null
+					var plotValues = array.map(plotVariables, function(x){
+						return x?[]:null;
+					});
+					var timeStep = choice.timeStep;
+					// Copy parameters object.
+					var variables = lang.mixin({}, timeStep.parameters);
+					for(var k = start; k < stop; k += step){
+							nodes.push(k);
+							variables[node] = k;
+							//variables = lang.mixin({}, parameters);
+							array.forEach(timeStep.functions, function(id){
+								variables[id] = timeStep.parse[id].evaluate(variables, time.start);
+							});
+							array.forEach(plotVariables, function(id, k){
+								if(id){
+									plotValues[k].push(variables[id]);
+								}
+							});
+						}	
+					//return {times: nodes, plotValues: plotValues};
+				}else{
+					//return {status: 'solution', soln: solution};
+				}
 			}
+			catch(err){
+				/*var if_id=err.message.substr(19).trim(); //In case the name is not generated and a node id is , we have to get the name from the active object for the user to understand
+				console.log("catch error",this.model.active.getName(if_id));  
+				if(this.model.active.getName(if_id)){
+					var miss_node=this.model.active.getName(if_id); // In case a node is incomplete
+				}else{
+					miss_node=if_id;
+				}
+				this._logging.clientLog("error", {
+					message:"graph/table created with missing node : "+miss_node,
+					functionTag : "findSolution"
+				});*/
+				console.log("test");
+				this._logging.clientLog("error", {
+					message:"graph/table created with missing node : 1",
+					functionTag : "findSolution"
+				});
+				return {status: 'error', type: 'missing', missingNode: "unknown"};
+			}	
+			if(plotVariables)
+				{
+					return {times: nodes, plotValues: plotValues};
+				}
+				else
+				{
+					return {status: 'solution', soln: solution};
+				}
 
 		},
 
@@ -252,6 +281,7 @@ define([
 					this.model.getTime());
 			}
 			catch(err){ // we catch the correspoding error here
+				console.log(err);
             	var if_id=err.message.substr(19).trim(); //In case the name is not generated and a node id is , we have to get the name from the active object for the user to understand
 				console.log("catch error",this.model.active.getName(if_id));  
 				var miss_field;
@@ -262,19 +292,19 @@ define([
 					{
 						miss_field = "description";
 					}
-					if(miss_node_check.status.equation.disabled == false)
-					{
-						miss_field = "equation";
-					}
-					if(miss_node_check.status.initial.disabled == false)
-					{
-						miss_field = "initial";
-					}
-					if(miss_node_check.status.type.disabled == false)
+					else if(miss_node_check.status.type.disabled == false)
 					{
 						miss_field = "type";
 					}
-					if(miss_node_check.status.units.disabled == false)
+					else if(miss_node_check.status.equation.disabled == false)
+					{
+						miss_field = "equaion";
+					}
+					else if(miss_node_check.status.initial.disabled == false)
+					{
+						miss_field = "initial";
+					}
+					else if(miss_node_check.status.units.disabled == false)
 					{
 						miss_field = "units";
 					}

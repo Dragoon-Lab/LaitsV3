@@ -90,7 +90,14 @@ define([
             console.log(activeSolution);
             if(activeSolution.status == "error" && activeSolution.type == "missing") {
 				// Return value from findSlution in calculation, returns an array and we check for status and any missing nodes
+				console.log("hello");
 				this.dialogWidget.set("content", "<div>Not all nodes have been completed. For example, \"" + activeSolution.missingNode + "\" is missing the \"" + activeSolution.missingField + "\" field.</div>"); //We show the error message like "A Node is Missing"
+				return;
+			}
+			if(activeSolution.plotValues.length == 0)
+			{
+				console.log("hello");
+				this.dialogWidget.set("content", "<div>Please fill in some nodes before trying to graph</div>"); //We show the error message like "A Node is Missing"
 				return;
 			}
 
