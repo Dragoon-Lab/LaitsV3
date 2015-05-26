@@ -122,7 +122,7 @@ define([
 			collides: function(element)
 			{
 				if(!element.position){
-					return true;
+					return false;
 				}
 				var x = element.position.x;
 				var y = element.position.y;
@@ -272,6 +272,7 @@ define([
 					//throw error for duplicate descriptions
 					errorMessage += "The following nodes have the duplicate descriptions: <strong>"+ duplicateStr + "</strong>. Please change them to be unique.";
 				}
+
 				if(errorMessage != ""){
 					throw new Error(errorMessage);
 				}
@@ -431,7 +432,10 @@ define([
 			setTaskDescription: function(/*string*/ description){
 				// Summary: set the task description
 				this.model.task.taskDescription = description;
-			}
+			},
+            setTaskLessonsLearned: function(/*string*/ lessonsLearned){
+                this.model.task.lessonsLearned = lessonsLearned;
+            }
 		};
 
 		/* 
@@ -653,18 +657,30 @@ define([
 					idMap[node.ID]=nID; //store old ID vs new ID
 					node.ID =nID;
 					
+					//check for duplicates(if node with given name already present): 
+					//if true, calculate the properIds for the duplicate nodes 					
 					if(obj.active.getNodeIDByName(node.name)){
-						node.name=node.name+"_duplicate";
+						var name_duplicate_count = 1;
+						//iterate through all the nodes and evalute the duplicate count value
+						while(obj.active.getNodeIDByName(node.name + "_duplicate_" + name_duplicate_count)){
+							name_duplicate_count++;
+						}
+						node.name=node.name+"_duplicate_" + name_duplicate_count;
 					}
 					if(obj.active.getNodeIDByDescription(node.description)){
-						node.description=node.description+"_duplicate";
+						var desc_duplicate_count = 1;
+						//iterate through all the nodes and evalute the duplicate count value
+						while(obj.active.getNodeIDByDescription(node.description + "_duplicate_" + desc_duplicate_count)){
+							desc_duplicate_count++;
+						}
+						node.description=node.description + "_duplicate_" + desc_duplicate_count;
 					}
 					ids.push(node.ID);
 
 					/*trick to update equations with new ids */
 					if(node.equation){
 						var equation = node.equation;
-						console.log("sachin shift value "+ shift);
+						//console.log("sachin shift value "+ shift);
 						var nEquation=equation.replace(/(id\d+)+/g, function(match, str) {
 								var number = str.replace("id", "");
        							return "id"+(parseInt(number)+shift);

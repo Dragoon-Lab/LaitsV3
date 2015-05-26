@@ -24,12 +24,12 @@
             },
             {
                 "type": "image",
-                "value": "images/CPI/Strange_Retirement_Plan_graphs.jpg",
+                "value": "images\/CPI\/Strange_Retirement_Plan_graphs.jpg",
                 "title": "Author's graph for Infections Problem"
             },
             {
                 "type": "image",
-                "value": "images/CPI/Strange_Retirement_Plan_correctnodes.png",
+                "value": "images\/CPI\/Strange_Retirement_Plan_correctnodes.png",
                 "title": "Author's solution for Infections Problem"
             },
             {
@@ -128,8 +128,8 @@
                 "ID": "id4",
                 "inputs": [],
                 "position": {
-                    "x": 882.3309326171875,
-                    "y": 133.33096313476562
+                    "x": 882.33093261719,
+                    "y": 133.33096313477
                 },
                 "attemptCount": {
                     "description": 0,
@@ -147,6 +147,25 @@
                 "initial": 0.005
             }
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [],
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "accelerating_transfer",
+                "name": "Accelerating",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id2, id3, id4",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 0
+                }
+            }
+        ]
     }
 }

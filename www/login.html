@@ -26,6 +26,16 @@
         return true;
     }
 
+    //for restart problem
+    function handleRestartProblem(selected){	
+		if(selected.value=="AUTHOR")
+		{
+			document.getElementById('restartproblem').innerHTML='<label>N/A</label>';
+		}else
+		{
+			document.getElementById('restartproblem').innerHTML='<input name="rp" type="checkbox"/>';
+		}
+    }
     </script>
 
 </head>
@@ -47,13 +57,15 @@
 
                     <div class="fieldgroup">
                         <label for="mode">Mode: </label>
-                        <select name="m" id="mode">
+                        <select name="m" onchange="handleRestartProblem(this)" id="mode">
                             <option value="STUDENT">Immediate Feedback (Student)</option>
                             <option value="AUTHOR">Author</option>
                             <option value="COACHED">Coached</option>
                             <option value="TEST">Delayed Feedback (Test)</option>
                             <option value="EDITOR">No Feedback (Editor)</option>
                         </select>
+			<label for="restart-problem">Restart Problem :</label>
+			<div id="restartproblem"><input name="rp" type="checkbox"/></div>
                     </div>
 
                     <div class="fieldgroup">

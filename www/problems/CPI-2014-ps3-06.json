@@ -12,12 +12,12 @@
             "type": "Whole"
         },
         "image": {
-            "URL": "http://www.hongkonghustle.com/wp-content/photos/Billion_club_Hong_Kong_HK_O.jpg"
+            "URL": "http:\/\/www.hongkonghustle.com\/wp-content\/photos\/Billion_club_Hong_Kong_HK_O.jpg"
         },
         "taskDescription": [
             " Problem: Ever since the Metro Singles Club replaced their open mic karaoke night with cover bands at its parties, the membership in the club has been dropping steadily. That is having an impact on the all-important female to male ratio, which is defined as the number of women in the club divided by the number of men in the club. There are currently 100 men and 125 women in the club, so the total membership is initially 225 and the initial female to male ratio is 1.25. However, 6% of the men leave the club each month and 10% of the women leave the club each month. That is, although some men leave each month, even more women leave, at least initially. Goal: Graph the female to male ratio over a 12-month period."
         ],
-        "lessonsLearned" : [
+        "lessonsLearned": [
             " This system has two processes, and both are exponential decays.  The problem asks for the ratio of their accumulators."
         ],
         "slides": [
@@ -28,12 +28,12 @@
             },
             {
                 "type": "image",
-                "value": "images/CPI/Metro_Singles_Club_graphs.jpg",
+                "value": "images\/CPI\/Metro_Singles_Club_graphs.jpg",
                 "title": "Author's graph for Infections Problem"
             },
             {
                 "type": "image",
-                "value": "images/CPI/Metro_Singles_Club_correntnodes.png",
+                "value": "images\/CPI\/Metro_Singles_Club_correntnodes.png",
                 "title": "Author's solution for Infections Problem"
             },
             {
@@ -47,8 +47,8 @@
                 "ID": "id1",
                 "inputs": [],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 1275.3309326172,
+                    "y": 343.33096313477
                 },
                 "attemptCount": {
                     "description": 0,
@@ -69,8 +69,8 @@
                 "ID": "id2",
                 "inputs": [],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 766.33093261719,
+                    "y": 326.33096313477
                 },
                 "attemptCount": {
                     "description": 0,
@@ -91,8 +91,8 @@
                 "ID": "id3",
                 "inputs": [],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 682.33093261719,
+                    "y": 505.33096313477
                 },
                 "attemptCount": {
                     "description": 0,
@@ -114,8 +114,8 @@
                 "ID": "id4",
                 "inputs": [],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 933.33093261719,
+                    "y": 507.33096313477
                 },
                 "attemptCount": {
                     "description": 0,
@@ -141,8 +141,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 541,
+                    "y": 121
                 },
                 "attemptCount": {
                     "description": 0,
@@ -168,8 +168,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 1068,
+                    "y": 140
                 },
                 "attemptCount": {
                     "description": 0,
@@ -198,8 +198,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 1074,
+                    "y": 346
                 },
                 "attemptCount": {
                     "description": 0,
@@ -227,8 +227,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 543,
+                    "y": 336
                 },
                 "attemptCount": {
                     "description": 0,
@@ -256,8 +256,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 812,
+                    "y": 74
                 },
                 "attemptCount": {
                     "description": 0,
@@ -272,9 +272,45 @@
                 "parentNode": true,
                 "units": "",
                 "description": "The ratio of women in the club to men in the club",
-                "equation": "id6 / id5"
+                "equation": "id6 \/ id5"
             }
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [],
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "exponential_transfer",
+                "name": "Exponential",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id5, id2, id8",
+                "difficulty": {
+                    "isolation": 0,
+                    "cues": 1,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema2",
+                "schemaClass": "exponential_transfer",
+                "name": "Exponential",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id6, id7, id1",
+                "difficulty": {
+                    "isolation": 0,
+                    "cues": 1,
+                    "phrases": 0
+                }
+            }
+        ]
     }
 }

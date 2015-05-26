@@ -191,7 +191,7 @@ define([
 				});
 				return {status: 'error', type: 'missing', missingNode: miss_node};
 			}
-			console.log(solution);
+			//console.log(solution);
 			/*
 			 Given a solution, create an array of values for the
 			 list of plot variables.  The list may include function nodes.
@@ -237,10 +237,8 @@ define([
 			 */
 			try { // we try to run the method because there might be some nodes missing and an error is generated
 				var solution;
-				console.log(this.model.getIntegrationMethod());
-				console.log(choice.timeStep.parameters);
-				console.log(choice.timeStep.parameters.id0);
-                if(this.model.getIntegrationMethod() == "Midpoint Method")
+				//console.log(this.model.getIntegrationMethod());
+				if(this.model.getIntegrationMethod() == "Midpoint Method")
 					solution = integrate.midpointMethod(
 					choice.timeStep, 
 					equation.evaluateTimeStep,
@@ -267,7 +265,7 @@ define([
 				});
 				return {status: 'error', type: 'missing', missingNode: miss_node};
 			}
-			console.log(solution);
+			//console.log(solution);
 			/*
 			 Given a solution, create an array of values for the
 			 list of plot variables.  The list may include function nodes.
@@ -326,9 +324,9 @@ define([
 				var input = dom.byId(index);
 				// Print slider value in box.
 				input.value = transform(slider.value).toPrecision(3);
-				console.log(this.model.student.getName(paramID));
-				console.log(this.mode);
-				console.log(this.active);
+				//console.log(this.model.student.getName(paramID));
+				//console.log(this.mode);
+				//console.log(this.active);
 				if(this.mode != "AUTHOR")
 				{
 					var logObj = lang.mixin({
