@@ -159,6 +159,7 @@ define([
 			var sessionId = FNV1aHash(this.params.u+this.params.s)+'_'+new Date().getTime();
 			console.log("renaming problem session id :"+sessionId);
 			this.log("rename-problem",newParams,sessionId);
+			model.task.taskName=newParams.p;//Update the taskName
 			this.saveProblem(model,sessionId); //reuse saveProblem with new sessionId of renamed problem
 			var url = document.URL.replace("p="+this.params.p,"p="+newParams.p);
 			if (this.params.g === undefined) {
