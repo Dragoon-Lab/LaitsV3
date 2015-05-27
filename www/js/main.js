@@ -644,7 +644,9 @@ define([
 			//lessonsLearnedButton.set("disabled", true);
 			//Bind lessonsLearnedButton to the click event	
 			if(query.m == "STUDENT" || query.m == "COACHED"){
-				menu.add("lessonsLearnedButton", function(){
+				menu.add("lessonsLearnedButton", function(event){
+					// preventing default execution of click handler
+					event.preventDefault();
 					if(givenModel.isLessonLearnedShown == true){
 						contentMsg = givenModel.getTaskLessonsLearned();
 						lessonsLearned.displayLessonsLearned(contentMsg);
