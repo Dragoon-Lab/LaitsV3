@@ -810,12 +810,9 @@ define([
 			});
 
 			// If we are loading a published problem in author mode, prompt user to perform a save-as immediately
-			console.log("reached 1: group " + query.g +" and mode "+query.m);
             if(!query.g && query.m  === "AUTHOR"){
-            	console.log("")
 				var message='<strong>You must choose a name and folder for the new copy of this problem.</strong>';
 				var dialog=registry.byId("authorSaveDialog");
-				console.log('dialog content');
 				registry.byId("authorSaveProblem").set("value",query.p);
 				dom.byId("saveMessage").innerHTML=message;
 				dialog.show();
