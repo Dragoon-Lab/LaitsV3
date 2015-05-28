@@ -231,7 +231,7 @@ define([
 					return this.disableHandlers || this.handleGivenEquation.apply(this, arguments);
 			}));
 
-			this.handleErrorMessage(); //binds a function to Display Error message if expression is cleared.
+		    this.handleErrorMessage(); //binds a function to Display Error message if expression is cleared.
 		},
 		/*
 		 Handler for type selector
@@ -414,6 +414,7 @@ define([
 					registry.byId("selectModel").set('value',"correct");
 				}
 				else{
+                    console.log("handling model type");
 					this._model.active = this._model.student;
 					this.enableDisableFields(modelType);
 					this.getStudentNodeValues(this.currentID);
@@ -506,8 +507,20 @@ define([
 		handleInitial: function(initial){
 			//IniFlag contains the status and initial value
 			var modelType = this.getModelType();
-			var IniFlag = typechecker.checkInitialValue(this.widgetMap.initial, this.lastInitial);
-			var logObj = {};
+            var tempIni = dom.byId(this.widgetMap.initial);
+            var tempInival = tempIni.value.trim();
+            console.log("result",tempInival);
+            console.log("model",modelType);
+            var IniFlag = {status: undefined, value: undefined };
+            if(!((modelType === "given") && (tempInival == '') )){
+                console.log("typechecker is being called");
+                IniFlag = typechecker.checkInitialValue(this.widgetMap.initial, this.lastInitial);
+            }
+			else{
+            console.log("initial value empty case being called");
+            IniFlag  = {status: true, value: undefined};
+            }
+            var logObj = {};
 			if(IniFlag.status){
 				// If the initial value is not a number or is unchanged from
 				// previous value we dont process
@@ -516,6 +529,7 @@ define([
 				console.log("In AUTHOR mode. Initial value is: " + newInitial);
 				if(modelType == "given"){
 					var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
+                    console.log("values",studentNodeID, newInitial);
 					this._model.active.setInitial(studentNodeID, newInitial);
 				}
 				else{
@@ -909,10 +923,12 @@ define([
 					registry.byId(this.controlMap.equation).set("disabled", false);
 				}
 				var initial = this._model.student.getInitial(studentNodeID);
-				if(typeof initial !== "undefined" && initial != null)
-					registry.byId(this.controlMap.initial).set('value', initial);
 
-				var units = this._model.student.getUnits(studentNodeID);
+                if(typeof initial === "undefined" || initial == null)
+				    initial = '';
+                var res_temp = registry.byId(this.controlMap.initial).set('value', initial);
+
+                var units = this._model.student.getUnits(studentNodeID);
 				registry.byId(this.controlMap.units).set('value', units || "");
 
 				//Replace the studentNodeIDs by corrosponding names before setting the equation field
