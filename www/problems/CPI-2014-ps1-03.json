@@ -106,6 +106,25 @@
                 "equation": "- id1"
             }
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [],
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "linear_transfer",
+                "name": "Linear",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id2, id1",
+                "difficulty": {
+                    "isolation": 0,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            }
+        ]
     }
 }

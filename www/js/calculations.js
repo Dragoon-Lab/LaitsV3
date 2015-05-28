@@ -298,11 +298,11 @@ define([
 					}
 					else if(miss_node_check.status.equation.disabled == false)
 					{
-						miss_field = "equaion";
+						miss_field = "expression";
 					}
 					else if(miss_node_check.status.initial.disabled == false)
 					{
-						miss_field = "initial";
+						miss_field = "initial value";
 					}
 					else if(miss_node_check.status.units.disabled == false)
 					{

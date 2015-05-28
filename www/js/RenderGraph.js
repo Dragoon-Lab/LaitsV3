@@ -510,6 +510,9 @@ define([
 			var values = solution.plotValues;
 			var temp = 0;
 			var isStatic = true;
+			if(values.length == 0){
+				isStatic = false;
+			}
 			array.forEach(values, function(value)
 			{
 				temp = value[0];

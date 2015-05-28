@@ -196,6 +196,25 @@
                 "equation": "id2 - id1"
             }
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [],
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "equilibrating",
+                "name": "Equilibrating",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id2, id3, id4, id5",
+                "difficulty": {
+                    "isolation": 0,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            }
+        ]
     }
 }

@@ -1,0 +1,291 @@
+{
+  "task": {
+    "taskName": "lion population growth 3",
+    "time": {
+      "start": 1950,
+      "end": 1970,
+      "step": 1,
+      "integrationMethod": "Eulers Method",
+      "units": "years"
+    },
+    "properties": {
+      
+    },
+    "image": {
+      "URL": "images/lion-3.jpg"
+    },
+    "taskDescription": [
+      "Lion Population Growth - Level 3",
+      "- The lion population is 4 in the first year (1950).",
+      "- Births and deaths are the only change in the population. Immigration and emigration do not occur.",
+      "- The probability of a lion giving birth (birth rate) each year is 50%.",
+      "- The probability of a lion dying (death rate) each year is 10%.",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "lessonsLearned": "",
+    "givenModelNodes": [
+      {
+        "ID": "id1",
+        "inputs": [
+          {
+            "ID": "id2",
+            "label": ""
+          },
+          {
+            "ID": "id3",
+            "label": "-"
+          }
+        ],
+        "position": {
+          "x": 676,
+          "y": 205
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 1
+        },
+        "status": {
+          
+        },
+        "name": "Lion Population",
+        "description": "The number of lions in the population",
+        "type": "accumulator",
+        "initial": 4,
+        "equation": "id2-id3",
+        "genus": "required",
+        "parentNode": true
+      },
+      {
+        "ID": "id2",
+        "inputs": [
+          {
+            "ID": "id1",
+            "label": ""
+          },
+          {
+            "ID": "id4",
+            "label": ""
+          }
+        ],
+        "position": {
+          "x": 518,
+          "y": 199
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 1
+        },
+        "status": {
+          
+        },
+        "name": "Lion Births",
+        "description": "The number of lions born each year",
+        "type": "function",
+        "equation": "id1*id4",
+        "genus": "required"
+      },
+      {
+        "ID": "id3",
+        "inputs": [
+          {
+            "ID": "id1",
+            "label": ""
+          },
+          {
+            "ID": "id5",
+            "label": ""
+          }
+        ],
+        "position": {
+          "x": 870,
+          "y": 204
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": {
+          
+        },
+        "name": "Lion Deaths",
+        "type": "function",
+        "description": "The number of lions that die each year",
+        "equation": "id1*id5",
+        "genus": "required"
+      },
+      {
+        "ID": "id4",
+        "inputs": [
+          
+        ],
+        "position": {
+          "x": 384.33096313477,
+          "y": 69.330947875977
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 1
+        },
+        "status": {
+          
+        },
+        "name": "Lion Birth Probability",
+        "equation": "",
+        "type": "parameter",
+        "parentNode": false,
+        "description": "The probability of a lion giving birth during the year",
+        "initial": 0.5,
+        "genus": "required"
+      },
+      {
+        "ID": "id5",
+        "inputs": [
+          
+        ],
+        "position": {
+          "x": 762.33093261719,
+          "y": 40.330951690674
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": {
+          
+        },
+        "name": "Lion Death Probability",
+        "description": "The probability of a lion dying during the year",
+        "equation": "",
+        "type": "parameter",
+        "parentNode": false,
+        "initial": 0.1,
+        "genus": "required"
+      }
+    ],
+    "studentModelNodes": [
+      {
+        "ID": "id6",
+        "inputs": [
+          {
+            "ID": "id10"
+          }
+        ],
+        "position": {
+          "x": 676,
+          "y": 205
+        },
+        "status": {
+          "equation": {
+            "disabled": false,
+            "status": "incorrect"
+          },
+          "description": {
+            "disabled": true,
+            "status": "correct"
+          },
+          "type": {
+            "disabled": true,
+            "status": "correct"
+          },
+          "initial": {
+            "disabled": true,
+            "status": "correct"
+          }
+        },
+        "descriptionID": "id1",
+        "initial": 4,
+        "type": "accumulator",
+        "equation": "id10"
+      },
+      {
+        "ID": "id9",
+        "inputs": [
+          
+        ],
+        "position": {
+          "x": 384.33096313477,
+          "y": 69.330947875977
+        },
+        "status": {
+          "description": {
+            "disabled": true,
+            "status": "correct"
+          },
+          "type": {
+            "disabled": true,
+            "status": "correct"
+          },
+          "initial": {
+            "disabled": true,
+            "status": "correct"
+          }
+        },
+        "descriptionID": "id4",
+        "initial": 0.5,
+        "type": "parameter"
+      },
+      {
+        "ID": "id10",
+        "inputs": [
+          {
+            "ID": "id6"
+          },
+          {
+            "ID": "id9"
+          }
+        ],
+        "position": {
+          "x": 518,
+          "y": 199
+        },
+        "status": {
+          "equation": {
+            "disabled": true,
+            "status": "correct"
+          },
+          "description": {
+            "disabled": true,
+            "status": "correct"
+          },
+          "type": {
+            "disabled": true,
+            "status": "correct"
+          }
+        },
+        "descriptionID": "id2",
+        "type": "function",
+        "equation": "id6*id9"
+      }
+    ],
+    "schemas": [
+      
+    ]
+  }
+}

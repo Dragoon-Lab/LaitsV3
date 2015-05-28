@@ -11,8 +11,9 @@ var client = require('webdriverio').remote({
 });
 // import chai assertion library
 var assert = require('chai').assert;
-// import dragoon test library module
+// import dragoon test library modules
 var dtest = require('../dtestlib.js');
+var atest = require('../assertTestLib.js');
 // import sync library
 var sync = require('synchronize');
 // import wrapper for asynchronous functions
@@ -27,6 +28,16 @@ describe("Test author mode", function() {
                 ["group","autotest"]]);
     }));
 
+    describe("Testing check on empty problem", function(){
+        it("Should detect that the problem is empty", async(function(){
+            dtest.menuOpenAuthorOptions(client);
+            dtest.pressCheckProblemButton(client);
+            atest.popupContainsText("The problem is empty.",dtest,client);
+            dtest.popupWindowPressCancel(client);
+            dtest.pressProblemAndTimesDone(client);
+        }));
+    });
+    
     describe("Creating nodes", function(){
         afterEach(async(function(){
             dtest.nodeEditorDone(client);
@@ -100,7 +111,15 @@ describe("Test author mode", function() {
             assert(expression === expectedExpression,
                 "Expression was " + expression + "instead of \"" + expectedExpression + "\"");
         }));
-
+        /*  // need to add facilities for checking root node before this
+        it("Should detect that the problem is incomplete", async(function(){
+            dtest.menuOpenAuthorOptions(client);
+            dtest.pressCheckProblemButton(client);
+            atest.popupContainsText("The problem has one or more incomplete nodes.",dtest,client);
+            dtest.popupWindowPressCancel(client);
+            dtest.pressProblemAndTimesDone(client);
+        }));
+        */
         it("Should have correct function values", async(function(){
             dtest.openEditorForNode(client, "net growth");
 
@@ -150,6 +169,24 @@ describe("Test author mode", function() {
             assert(nodeUnits === expectedNodeUnits,
                 "Units were " + nodeUnits + " instead of \"" + expectedNodeUnits + "\"");
         }));
+        
+        it("Should detect that the problem has no root node", async(function(){
+            dtest.menuOpenAuthorOptions(client);
+            dtest.pressCheckProblemButton(client);
+            atest.popupContainsText("Please mark at least one accumulator or function as \'Root\'.",dtest,client);
+            dtest.popupWindowPressCancel(client);
+            dtest.pressProblemAndTimesDone(client);
+        }));
+
+        /*  // need to add facilities for checking root node and set it before enabling this
+        it("Should detect that the problem has no errors", async(function(){
+            dtest.menuOpenAuthorOptions(client);
+            dtest.pressCheckProblemButton(client);
+            atest.popupContainsText("No errors found.",dtest,client);
+            dtest.popupWindowPressCancel(client);
+            dtest.pressProblemAndTimesDone(client);
+        }));
+        */
     });
 
     describe("Checking graph/table window", function(){
