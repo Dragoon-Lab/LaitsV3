@@ -11,20 +11,8 @@
         "properties": {},
         "image": {},
         "taskDescription": [
-            "Suppose Mr. and Mrs. Walton start their retirement with $100,000 in their bank account. The interest rate is 5%, where \"interest rate\" refers to the proportion of the account's money that the bank deposits annually to the account (that is, the account earns simple interest, not compound interest).  For instance, in the first year, the bank would deposit $5,000, which is 5% of $100,000.  Meanwhile the Waltons annually withdraw $12,000 for living expenses.  Construct a model showing how the money in their account changes.",
-            "",
-            "Analysis:",
-            "* Process 1:  The bank adds money to the Walton's account",
-            "* Source 1:  irrelevant",
-            "* Destination 1:  the Walton's account",
-            "* Changing:  a proportion, 5%, of the destination changes state per year",
-            "",
-            "* Process 2: Waltons remove money from their account",
-            "* Source 2:  the Walton's account",
-            "* Destination 2: irrelevant",
-            "* Changing: a constant $12,000 changes state each year",
-            "",
-            "Implementation:  For process 1, see the problem \"proportional to destination\" in the problem set \"generic changes.\"    For process 2, see the problem \"constant\" in the problem set \"generic changes\""
+            "Suppose Mr. and Mrs. Walton start their retirement with $100,000 in their bank account. The interest rate is 5%, where “interest rate” refers to the proportion of the account’s money that thebank deposits annually to the account (that is, the account earns simple interest, not compound interest).  For instance, in the first year, the bank would deposit $5,000, which is 5% of $100,000.  Meanwhile the Waltons annually withdraw $12,000 for living expenses.  Construct a model showing how the money in their account changes.",
+            ""
         ],
         "lessonsLearned" : [
             "This model combines exponential growth and linear decay. If you play with the sliders, you will find that the curve is",
@@ -34,28 +22,6 @@
             "you get an exponential change. By the way, when do the Waltons run out of money? If you or your parents are close",
             "to retirement, you might want to determine the maximum the Waltons can withdraw annually so that they just run out",
             "after 20 years of retirement"
-        ],
-        "slides": [
-            {
-                "type": "text",
-                "value": "count",
-                "title": "Types of nodes in the model"
-            },
-            {
-                "type": "image",
-                "value": "images/CPI/retirement_graphs.jpg",
-                "title": "Author's graph for Retirement Problem"
-            },
-            {
-                "type": "image",
-                "value": "images/CPI/retirement_correctnodes.png",
-                "title": "Author's solution for Retirement Problem"
-            },
-            {
-                "type": "text",
-                "value": "lessons",
-                "title": "Lessons Learned"
-            }
         ],
         "givenModelNodes": [
             {
@@ -183,7 +149,7 @@
                 "nodes": "id1, id2, id4",
                 "difficulty": {
                     "isolation": 1,
-                    "cues": 0,
+                    "cues": 1,
                     "phrases": 0
                 }
             },
@@ -200,7 +166,7 @@
                 "nodes": "id1, id3",
                 "difficulty": {
                     "isolation": 1,
-                    "cues": 0,
+                    "cues": 1,
                     "phrases": 0
                 }
             }

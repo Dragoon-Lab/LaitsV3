@@ -218,7 +218,8 @@
             <select data-dojo-type="dijit/form/ComboBox" id="authorSetIntegrationMethod" name="authorSetIntegrationMethod" class="integrationMethodAuthor">
                 <option>Eulers Method</option>
                 <option>Midpoint Method</option>
-            </select>
+            </select> <img id="integrationMethod"  class="questionMark" src="images/questionmark.png"/>
+	
       </div>
 	  <div class="fieldgroup">
             <label for="authorSetImage">URL for Image:</label>
@@ -257,7 +258,8 @@
         </div>
         <div class="fieldgroup">
             <label for="authorSaveGroup" style="width:7em">Folder Name:</label>
-            <input id="authorSaveGroup" style="width:10em" value="0" data-dojo-type="dijit/form/TextBox"></input>
+            <select id="authorSaveGroup" style="width:10em" data-dojo-type="dijit/form/ComboBox">
+            </select>
         </div>
         <div class="fieldgroup" aligh="right" id="authorSaveStatus">            
         </div>
@@ -280,7 +282,8 @@
         </div>
         <div class="fieldgroup">
             <label for="authorMergeGroup" style="width:7em">Folder Name:</label>
-            <input id="authorMergeGroup" style="width:10em" value="" data-dojo-type="dijit/form/TextBox"></input>
+            <select id="authorMergeGroup" style="width:10em" data-dojo-type="dijit/form/ComboBox">
+            </select>
         </div>
          <div class="fieldgroup" align="left">Note: Any forum posts attached to the source model will not be copied.</div>        
         <div class="fieldgroup" align="right">
@@ -422,8 +425,9 @@
         </div>
         <div style="display:block">
             <div>&nbsp;</div>
+            <button id="closeButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon" style="float:right;">Done</button>
             <button id="deleteButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon" style="float:left;">Delete Node</button>
-		    <button id="closeButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon" style="float:right;">Done</button>
+		   
             <div>&nbsp;</div>
 		</div>
 	    </div>

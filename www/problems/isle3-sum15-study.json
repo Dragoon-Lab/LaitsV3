@@ -1,58 +1,46 @@
 {
     "task": {
-        "taskName": "Accelerating Evaporation",
+        "taskName": "Isle Royale - Moose population 3",
         "time": {
-            "start": 0,
-            "end": 20,
+            "start": 1900,
+            "end": 1949,
             "step": 1,
-            "units": "hours",
-            "integrationMethod": "Eulers Method"
+            "units": "Years"
         },
         "properties": {
             "phase": "",
-            "type": ""
+            "type": "debug"
         },
-        "image": {},
+        "image": {
+            "URL": "images/moose_60.png"
+        },
         "taskDescription": [
-            " The sun heats some water, adding 3 units of thermal energy per hour.  The evaporation of water is a function of the thermal energy of the water.  In particular, if the thermal energy of the water is T, then the percentage of water evaporated during an hour is T*1%.  Assuming that the initial thermal energy is 0 and the initial water level is 1000, construct a model that shows how the water level changes over 20 hours. ",
-            ""
+            "Assumptions:",
+            " * The moose population is 20 in the first year (1900).",
+            " * Births and deaths are the only change in the population. Immigration and emigration do not occur.",
+            " * The probability of a moose giving birth each year is 20%.",
+            " * The probability of a moose dying each year is 5%."
         ],
         "lessonsLearned": [
-            " This system has two processes.  The increase in thermal energy is linear growth.  The evaporation of water doesn't match any of our simple change processes exactly.  It is similar to both exponential growth and acceleration. "
-        ],
-        "slides": [
-            {
-                "type": "text",
-                "value": "count",
-                "title": "Types of nodes in the model"
-            },
-            {
-                "type": "image",
-                "value": "images\/CPI\/Accelerating_evaporation_graphs.jpg",
-                "title": "Author's graph for Infections Problem"
-            },
-            {
-                "type": "image",
-                "value": "images\/CPI\/Accelerating_evaporation_correctnodes.png",
-                "title": "Author's solution for Infections Problem"
-            },
-            {
-                "type": "text",
-                "value": "lessons",
-                "title": "Lessons Learned"
-            }
+            "This model combines exponential growth and exponential decay. If you play with the sliders, you\"ll see that regardless",
+            "of the values of the parameters, the graph is always an exponential curve. (You will need to type in a high initial value",
+            "for the moose population (e.g. 20000) in order to see what happens when death rate is larger than birth rate.) Thus, if",
+            "you combine two or more exponential changes, you get an exponential change."
         ],
         "givenModelNodes": [
             {
                 "ID": "id1",
                 "inputs": [
                     {
+                        "ID": "id4"
+                    },
+                    {
                         "ID": "id5"
                     }
                 ],
                 "position": {
-                    "x": 754,
-                    "y": 336
+                    "x": 400,
+                    "y": 100
                 },
                 "attemptCount": {
                     "description": 0,
@@ -62,24 +50,20 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "water level",
+                "name": "moose population",
                 "type": "accumulator",
                 "parentNode": true,
                 "units": "",
-                "description": "The water level",
-                "initial": 1000,
-                "equation": "- id5"
+                "description": "The number of moose in the population",
+                "initial": 20,
+                "equation": "id4-id5"
             },
             {
                 "ID": "id2",
-                "inputs": [
-                    {
-                        "ID": "id3"
-                    }
-                ],
+                "inputs": [],
                 "position": {
-                    "x": 427,
-                    "y": 420
+                    "x": 400,
+                    "y": 100
                 },
                 "attemptCount": {
                     "description": 0,
@@ -89,13 +73,12 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "thermal energy",
-                "type": "accumulator",
+                "name": "moose birth probability",
+                "type": "parameter",
                 "parentNode": false,
                 "units": "",
-                "description": "The amount of thermal energy of the water each hour",
-                "initial": 0,
-                "equation": "id3"
+                "description": "The probability of a moose giving birth during the year",
+                "initial": 0.2
             },
             {
                 "ID": "id3",
@@ -112,19 +95,26 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "thermal increase",
+                "name": "moose death probability",
                 "type": "parameter",
                 "parentNode": false,
                 "units": "",
-                "description": "The amount of thermal energy added to the water per hour",
-                "initial": 3
+                "description": "The probability of a moose dying during the year",
+                "initial": 0.05
             },
             {
                 "ID": "id4",
-                "inputs": [],
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    },
+                    {
+                        "ID": "id2"
+                    }
+                ],
                 "position": {
-                    "x": 649.33093261719,
-                    "y": 141.33096313477
+                    "x": 400,
+                    "y": 100
                 },
                 "attemptCount": {
                     "description": 0,
@@ -134,29 +124,26 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "energy evaporation factor",
-                "type": "parameter",
+                "name": "moose births",
+                "type": "function",
                 "parentNode": false,
                 "units": "",
-                "description": "The evaporation rate (water lost per hour) per unit of thermal energy",
-                "initial": 0.01
+                "description": "The number of moose born each year",
+                "equation": "id1 * id2"
             },
             {
                 "ID": "id5",
                 "inputs": [
                     {
-                        "ID": "id4"
-                    },
-                    {
-                        "ID": "id2"
-                    },
-                    {
                         "ID": "id1"
+                    },
+                    {
+                        "ID": "id3"
                     }
                 ],
                 "position": {
-                    "x": 540,
-                    "y": 328
+                    "x": 400,
+                    "y": 100
                 },
                 "attemptCount": {
                     "description": 0,
@@ -166,49 +153,48 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "water evaporated",
+                "name": "moose deaths",
                 "type": "function",
                 "parentNode": false,
                 "units": "",
-                "description": "The amount of water evaporated during an hour",
-                "equation": "id1 * id2 * id4",
-                "genus": "required"
+                "description": "The number of moose that die each year",
+                "equation": "id1 * id3"
             }
         ],
         "studentModelNodes": [],
         "schemas": [
             {
                 "ID": "schema1",
-                "schemaClass": "linear_transfer",
-                "name": "Linear",
+                "schemaClass": "exponential_transfer",
+                "name": "Exponential",
                 "competence": {
                     "errors": 0,
                     "total": 0,
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id2, id3",
+                "nodes": "id1, id2, id4",
                 "difficulty": {
-                    "isolation": 0,
+                    "isolation": 1,
                     "cues": 1,
                     "phrases": 0
                 }
             },
             {
                 "ID": "schema2",
-                "schemaClass": "accelerating_transfer",
-                "name": "Accelerating",
+                "schemaClass": "exponential_transfer",
+                "name": "Exponential",
                 "competence": {
                     "errors": 0,
                     "total": 0,
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id2, id5, id4, id1",
+                "nodes": "id1, id3, id5",
                 "difficulty": {
-                    "isolation": 0,
+                    "isolation": 1,
                     "cues": 1,
-                    "phrases": 1
+                    "phrases": 0
                 }
             }
         ]
