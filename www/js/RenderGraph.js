@@ -91,7 +91,7 @@ define([
             if(activeSolution.status == "error" && activeSolution.type == "missing") {
 				// Return value from findSlution in calculation, returns an array and we check for status and any missing nodes
 				console.log("hello");
-				this.dialogWidget.set("content", "<div>Not all nodes have been completed. For example, \"" + activeSolution.missingNode + "\" is missing the \"" + activeSolution.missingField + "\" field.</div>"); //We show the error message like "A Node is Missing"
+				this.dialogWidget.set("content", this.generateErrorMessage(activeSolution)); //We show the error message like "A Node is Missing"
 				return;
 			}
 			if(activeSolution.plotValues.length == 0)
@@ -337,7 +337,7 @@ define([
                 var modStatus = true;
                 array.forEach(this.model.active.getNodes(), function (thisnode) {
                     if(thisModel.model.active.getType(thisnode.ID)=="function" || thisModel.model.active.getType(thisnode.ID)=="accumulator"){
-                        thisModel.dialogWidget.set("content", "<div>Not all nodes have been completed. For example, \"" + thisModel.model.active.getName(thisnode.ID) + "\" is not yet fully defined.</div>");
+                        thisModel.dialogWidget.set("content", this.generateErrorMessage(thisModel.model.active.getName(thisnode.ID));
                         modStatus = false;
                         return;
                     }
@@ -523,6 +523,11 @@ define([
 				});
 			});
 			return isStatic;
+		},
+
+		generateErrorMessage: function(solution)
+		{
+			return "content", "<div>Not all nodes have been completed. For example, " + solution.missingNode + " is missing the "+ solution.missingField + " field.</div>"; //We show the error message like "A Node is Missing"
 		},
 
 		registerEventOnStaticChange: function(){
