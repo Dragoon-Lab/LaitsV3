@@ -49,12 +49,13 @@ define([
 	"./schemas-author",
 	"./message-box",
 	"./tincan",
+	"dojo/store/Memory",
 	"dojo/_base/event"
 ], function(
 		array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry, toolTip,
 		menu, loadSave, model,
 		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, equation, 
-		description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan, event
+		description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan, memory, event
 ){
 	// Summary: 
 	//			Menu controller
@@ -64,7 +65,9 @@ define([
 	//			menu, buttons, controller
 	
 	console.log("load main.js");
-
+    //remove the loading division, now that the problem is being loaded
+    var loading = document.getElementById('loadingOverlay');
+    loading.style.display = "none";
 	// Get session parameters
 	var query = {};
 	if(window.location.search){
@@ -73,33 +76,98 @@ define([
 		console.warn("Should have method for logging this to Apache log files.");
 		console.warn("Dragoon log files won't work since we can't set up a session.");
 		console.error("Function called without arguments");
-	}
+        // show error message and exit
+        var errorMessage = new messageBox("errorMessageBox", "error", "Missing information, please recheck the query");
+        errorMessage.show();
+        throw Error("please retry, insufficient information");
+    }
 	
 	// Start up new session and get model object from server
-	var session = new loadSave(query);
+	try {
+        var session = new loadSave(query);
+    }
+    catch(error){
+        console.log("error appeared");
+        var errorMessage = new messageBox("errorMessageBox", "error", error.message);
+        errorMessage.show();
+        throw Error("problem in creating sessions");
+    }
     console.log("session is",session);
-	logging.setSession(session);  // Give logger message destination
+    logging.setSession(session);  // Give logger message destination
 	session.loadProblem(query).then(function(solutionGraph){
 		//removing the overlay as the actual computation does not take much time and it causes errors to stay hidden behind the overlay which continues infinitely.
 		var loading = document.getElementById('loadingOverlay');
 		loading.style.display = "none";
 
+        //display warning message if not using the supported browser and version
+        var checkBrowser = session.browser.name;
+        var checkVersion = session.browser.version;
+        if((checkBrowser ==="Chrome" && checkVersion<41) || (checkBrowser==="Safari" && checkVersion<8)||(checkBrowser==="msie" && checkVersion<11)||(checkBrowser==="Firefox")||(checkBrowser==="Opera")){
+            var errorMessage = new messageBox("errorMessageBox", "warn","You are using "+ session.browser.name+" version "+session.browser.version + ". Dragoon is known to work well in these (or higher) browser versions: Google Chrome v41 or later Safari v8 or later Internet Explorer v11 or later");
+            errorMessage.show();
+        }
+
 		var givenModel = new model(query.m, query.p);
 		logging.session.log('open-problem', {problem : query.p});
-		if(solutionGraph){
-			try{
-				givenModel.loadModel(solutionGraph);
-			}catch(error){
-				if(query.m == "AUTHOR"){
-					var errorMessage = new messageBox("errorMessageBox", "error", error.message);
-			    	errorMessage.show();
-			    }else {
-			    	var errorMessage = new messageBox("errorMessageBox", "error", "This problem could not be loaded. Please contact the problem's author.");
-			    	errorMessage.show();
-			    	throw Error("Model could not be loaded.");
-			    }
-			}
-		}else {
+        console.log("solution graph is",solutionGraph);
+		if(solutionGraph) {
+
+            try {
+                givenModel.loadModel(solutionGraph);
+            } catch (error) {
+                if (query.m == "AUTHOR") {
+                    var errorMessage = new messageBox("errorMessageBox", "error", error.message);
+                    errorMessage.show();
+                } else {
+                    var errorMessage = new messageBox("errorMessageBox", "error", "This problem could not be loaded. Please contact the problem's author.");
+                    errorMessage.show();
+                    throw Error("Model could not be loaded.");
+                }
+            }
+            // This version of code addresses loading errors in cases where problem is empty, incomplete or has no root node in coached mode
+            if (query.m !== "AUTHOR") {
+                //check if the problem is empty
+                try {
+                    console.log("checking for emptiness");
+                    var count = 0;
+                    array.forEach(givenModel.given.getNodes(), function (node) {
+                        //for each node increment the counter
+                        count++;
+                    });
+                    console.log("count of nodes is", count);
+                    if (count == 0) {
+                        //if count is zero we throw a error
+                        throw new Error("Problem is Empty");
+                    }
+                    //check for completeness of all nodes
+                    console.log("inside completeness verifying function");
+                    array.forEach(givenModel.given.getNodes(), function (node) {
+                        console.log("node is", node, givenModel.given.isComplete(node.ID,true));
+                        if (!givenModel.given.isComplete(node.ID,true)) {
+                            throw new Error("Problem is Incomplete");
+                        }
+                    });
+                    if (query.m === "COACHED") {
+                        //checks for root node if the mode is coached
+                        console.log("inside coached mode root verifying function");
+                        var hasParentFlag = false;
+                        array.forEach(givenModel.given.getNodes(), function (node) {
+                            console.log("node is", node);
+                            if (givenModel.given.getParent(node.ID)) {
+                                hasParentFlag = true;
+                            }
+                        });
+                        if (!hasParentFlag) {
+                        // throw an error if root node is absent
+                        throw new Error("Root Node Missing");
+                        }
+                    }
+                }catch (error) {
+                    var errorMessage = new messageBox("errorMessageBox", "error", error.message);
+                    errorMessage.show();
+                }
+            }
+        }else {
 			if(query.g && query.m === "AUTHOR"){
 				var messageHtml = "You have successfully created a new problem named <strong>"+ query.p +"</strong>.<br/> <br/> If you expected this problem to exist already, please double check the problem name and folder and try again.";
 				var infoMessage = new messageBox("errorMessageBox", "info", messageHtml);
@@ -190,7 +258,6 @@ define([
 
 			/* add "Create Node" button to menu */
 			menu.add("createNodeButton", function(e){
-		
 				event.stop(e);
 				if(controllerObject.checkDonenessMessage && 
 				   controllerObject.checkDonenessMessage()){
@@ -218,6 +285,10 @@ define([
             makeTooltip('questionMarkURL', "If you wish to use an image from your computer, <br>" +
                 "you must first upload it to a website and then copy <br>" +
                 "the URL of the image into this box.");
+            makeTooltip('questionMarkLessons', "The 'Lessons Learned' message will display once the student has successfully replicated <br>" +
+                                               "and graphed the author's model, providing an opportunity for retrospection.");
+            makeTooltip('integrationMethod', "Euler's method - Best for functions that occur every tick of the time frame <br>" +
+                                             "Midpoint - Best for continuous functions <br>");
 			/*
 			 Connect node editor to "click with no move" events.
 			 */
@@ -286,7 +357,7 @@ define([
 			 */
 			aspect.after(registry.byId('nodeeditor'), "hide", function(){
 				console.log("Calling session.saveProblem");
-				if(controllerObject._mode == "AUTHOR")
+   				if(controllerObject._mode == "AUTHOR")
 				{	
 					array.forEach(givenModel.model.task.givenModelNodes, function(node){
 						if(node.ID === controllerObject.currentID)
@@ -435,59 +506,75 @@ define([
 				});
 
 
-                // Rename button wiring
+                // Save As button wiring
                 menu.add("saveButton", function(e){
 					event.stop(e);
                     registry.byId("authorSaveDialog").show();
                 });
+                // Set the default save as folder parameters
+                var saveGroupCombo = registry.byId("authorSaveGroup");
+                var saveGroupArr=[{name: "Private("+query.u+")", id: "Private"},
+                                  {name: "public", id: "Public"}];
+                var saveGroupMem = new memory({data: saveGroupArr});
+		        saveGroupCombo.set("store", saveGroupMem);
+		        saveGroupCombo.set("value","Private("+query.u+")")//default to private
 
-                //authorMergeDialog
+
+                // Merge button wiring
                 menu.add("mergeButton", function(e){
-					
 					event.stop(e);
-					console.error("MergeButton");
                     registry.byId("authorMergeDialog").show();
+                    var combo = registry.byId("authorMergeGroup");
+                    var arr=[{name: "Private("+query.u+")", id: "Private"},
+					          {name: "Public", id: "Public"},
+					          {name:"Official Problems",id:"Official Problems"}
+					          ];
+					var m = new memory({data: arr});
+				    combo.set("store", m);
+					combo.set("value","Private("+query.u+")")//setting the default
              	});
 
 				on(registry.byId("mergeDialogButton"),"click",function(){
-					 var group = registry.byId("authorMergeGroup").value;
-					 var section = registry.byId("authorMergeSection").value;
-					 var problem = registry.byId("authorMergeProblem").value;
-
-					 if(!problem)
-					 	{
-					 		alert("Problem field can't be empty");
-					 		return;
-					 	}
-
-
-					 var query = {g:group,m:"AUTHOR",s:section,p:problem};
-                  	 session.loadProblem(query).then(function(solutionGraph){
-							console.log("Merge problem is loaded "+solutionGraph);
-							if(solutionGraph){
-								//var nodes = solutionGraph.task.givenModelNodes;
-								var ids = givenModel.active.mergeNodes(solutionGraph);
-								//var snodes = solutionGraph.task.studentModelNodes;
-								//var sids = givenModel.active.mergeNodes(snodes,true);
-								givenModel.loadModel(givenModel.model);	
-								
-								//add merged nodes
-								array.forEach(ids,function(id){	
-									var node = 	givenModel.active.getNode(id);
-									drawModel.addNode(node);	
-								},this);	
-								//set connections for merged nodes
-								array.forEach(ids,function(id){
-									var node = 	givenModel.active.getNode(id);
-									drawModel.setConnections(node.inputs,dojo.byId(id));
-								},this);
-								session.saveProblem(givenModel.model); //moved the saving part to the end of the function call so that if anything breaks the broken model is not saved.
-								registry.byId("authorMergeDialog").hide();
-							}else{
-								console.log("Problem Not found");
-								alert("Problem Not found, please check the problem name you have entered.");
-							}
-               		 });
+					var group = registry.byId("authorMergeGroup").value;
+					var section = registry.byId("authorMergeSection").value;
+					var problem = registry.byId("authorMergeProblem").value;
+					if(!problem){
+						alert("Problem field can't be empty");
+						return;
+					}
+					if (group.split("(")[0]+"("=="Private("){
+						group=group.split(")")[0].substr(8);//Private(username)=>username
+					} else if (group === "Official Problems"){
+						group=null;
+						section=null;
+					}
+					var query = {g:group,m:"AUTHOR",s:section,p:problem};
+                  	session.loadProblem(query).then(function(solutionGraph){
+						console.log("Merge problem is loaded "+solutionGraph);
+						if(solutionGraph){
+							//var nodes = solutionGraph.task.givenModelNodes;
+							var ids = givenModel.active.mergeNodes(solutionGraph);
+							//var snodes = solutionGraph.task.studentModelNodes;
+							//var sids = givenModel.active.mergeNodes(snodes,true);
+							givenModel.loadModel(givenModel.model);	
+							
+							//add merged nodes
+							array.forEach(ids,function(id){	
+								var node = 	givenModel.active.getNode(id);
+								drawModel.addNode(node);	
+							},this);	
+							//set connections for merged nodes
+							array.forEach(ids,function(id){
+								var node = 	givenModel.active.getNode(id);
+								drawModel.setConnections(node.inputs,dojo.byId(id));
+							},this);
+							session.saveProblem(givenModel.model); //moved the saving part to the end of the function call so that if anything breaks the broken model is not saved.
+							registry.byId("authorMergeDialog").hide();
+						}else{
+							console.log("Problem Not found");
+							alert("Problem Not found, please check the problem name you have entered.");
+						}
+               		});
 				});
 
 				//Author Save Dialog
@@ -497,7 +584,7 @@ define([
 					var problemName = registry.byId("authorSaveProblem").value;
 					var groupName = registry.byId("authorSaveGroup").value;
 					var checkProblemName = new RegExp('^[A-Za-z0-9\-]+$');
-
+										
 					if(typeof problemName !== 'undefined' && problemName==''){
 						alert('Missing Problem Name');
 						return;
@@ -507,8 +594,12 @@ define([
 					}else if(problemName && problemName.length > 0 && problemName.length<=30 && checkProblemName.test(problemName)){
 						var checkHyphen = new RegExp('^[\-]+$');
 						if(!checkHyphen.test(problemName)){
+							if (groupName.split("(")[0]+"("=="Private("){
+					 	    	groupName=groupName.split(")")[0].substr(8);//Privte(username)=>username
+					        }
 							session.saveAsProblem(givenModel.model,problemName,groupName); 
-						} else{
+					    }
+					    else{
 							alert("Problem names must contain atleast one alphanumeric character.");
 							return;
 						}
@@ -657,9 +748,9 @@ define([
 			//lessonsLearnedButton.set("disabled", true);
 			//Bind lessonsLearnedButton to the click event	
 			if(query.m == "STUDENT" || query.m == "COACHED"){
-				menu.add("lessonsLearnedButton", function(event){
+				menu.add("lessonsLearnedButton", function(e){
 					// preventing default execution of click handler
-					event.preventDefault();
+					event.stop(e);
 					console.log("inside handler");
 					if(givenModel.isLessonLearnedShown == true){
 						contentMsg = givenModel.getTaskLessonsLearned();
@@ -718,6 +809,14 @@ define([
 						   );
 			});
 
+			// If we are loading a published problem in author mode, prompt user to perform a save-as immediately
+            if(!query.g && query.m  === "AUTHOR"){
+				var message='<strong>You must choose a name and folder for the new copy of this problem.</strong>';
+				var dialog=registry.byId("authorSaveDialog");
+				registry.byId("authorSaveProblem").set("value",query.p);
+				dom.byId("saveMessage").innerHTML=message;
+				dialog.show();
+			}
 
 		});
 
