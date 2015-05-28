@@ -297,7 +297,8 @@ define([
 						vertical: true, // min: obj.min, max: obj.max,
 						title: this.labelString(id),
 						min: obj.min,
-						max:obj.max
+						max:obj.max,
+						labelFunc: this.formatAxes
 						});
 
 					if(this.mode != "AUTHOR"){
@@ -631,11 +632,14 @@ define([
 							//Redraw y axis based on new min and max values
 							this.chart[id].addAxis("y", {
 									vertical: true,
+									fixed: false,
 									min: obj.min,
-									max: obj.max,
+									max: obj.max,									
+									labelFunc: this.formatAxes,
 									title: this.labelString(id)
 									});
 							}
+							console.log(this.chart);
 							if(this.isCorrect)
 							{
 								this.chart[id].updateSeries(
@@ -673,11 +677,14 @@ define([
 								var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
 								this.chart[id].addAxis("y", {
 									vertical: true,
+									natural: false,
 									min: obj.min,
 									max: obj.max,
+									labelFunc: this.formatAxes,
 									title: this.labelString(id)
 									});
 							}
+
 							this.chart[id].updateSeries(
 								"Your solution",
 								this.formatSeriesForChart(activeSolution, k),
@@ -906,6 +913,14 @@ define([
 				}, this);
 			}
 			return result;
+		},
+
+		formatAxes: function(text, value, precision){
+			console.log(text, value, precision);
+			if(value > 10000)
+				return Number(text).toExponential();
+			else
+				return text;
 		}
 	});
 });
