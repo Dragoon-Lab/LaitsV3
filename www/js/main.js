@@ -477,13 +477,12 @@ define([
 					if(w == true){
 						var request_promise = session.publishProblem(givenModel.model);
 						var responseWidget = dom.byId("publishResponse");
-						request_promise.then(function(response_status){
-							console.log(response_status);							
-							if(response_status){
+						request_promise.then(function(response_status){						
+							if(response_status.status && response_status.status == "done"){
 								responseWidget.innerHTML = "Your problem has been successfully published";
 								style.set(responseWidget, "color", "green");
 							} else {
-								responseWidget.innerHTML = "Connection Error: Could not publish the problem";
+								responseWidget.innerHTML = response_status.error;
 								style.set(responseWidget, "color", "red");
 							}
 							style.set(responseWidget, "display", "block");
