@@ -49,12 +49,13 @@ define([
 	"./schemas-author",
 	"./message-box",
 	"./tincan",
-	"dojo/store/Memory"
+	"dojo/store/Memory",
+	"dojo/_base/event"
 ], function(
 		array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry, toolTip,
 		menu, loadSave, model,
 		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, equation, 
-		description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan, memory
+		description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan, memory, event
 ){
 	// Summary: 
 	//			Menu controller
@@ -256,8 +257,8 @@ define([
 		    }
 
 			/* add "Create Node" button to menu */
-			menu.add("createNodeButton", function(event){
-				event.preventDefault();
+			menu.add("createNodeButton", function(e){
+				event.stop(e);
 				if(controllerObject.checkDonenessMessage && 
 				   controllerObject.checkDonenessMessage()){
 					return;
@@ -415,8 +416,8 @@ define([
 				var forumBut=registry.byId("forumButton");
 				forumBut.set("disabled", false);
                 //For redirecting to the forum from forum button click on header, only incase enabled
-                menu.add("forumButton",function(event){
-					event.preventDefault();
+                menu.add("forumButton",function(e){
+					event.stop(e);
                     //  Some portion of this function body should be moved to forum.js, Bug #2424
                     console.log("clicked on main forum button");
                     controllerObject.logging.log('ui-action', {
@@ -452,8 +453,8 @@ define([
 				db.set("disabled", false);
 
 				// Description button wiring
-				menu.add("descButton", function(event){
-					event.preventDefault();
+				menu.add("descButton", function(e){
+					event.stop(e);
 					style.set(dom.byId("publishResponse"), "display", "none");
 					//Display publish problem button on devel and localhost
 					if(window.location.hostname === "localhost" ||
@@ -499,16 +500,15 @@ define([
 				});
 
 				var schema = new schemaAuthor(givenModel, session);
-				menu.add("schemaButton", function(event){
-					event.preventDefault();
-					event.preventDefault();
+				menu.add("schemaButton", function(e){
+					event.stop(e);
 					schema.showSchemaWindow();
 				});
 
 
                 // Save As button wiring
-                menu.add("saveButton", function(event){
-					event.preventDefault();
+                menu.add("saveButton", function(e){
+					event.stop(e);
                     registry.byId("authorSaveDialog").show();
                 });
                 // Set the default save as folder parameters
@@ -521,8 +521,8 @@ define([
 
 
                 // Merge button wiring
-                menu.add("mergeButton", function(event){
-					event.preventDefault();
+                menu.add("mergeButton", function(e){
+					event.stop(e);
                     registry.byId("authorMergeDialog").show();
                     var combo = registry.byId("authorMergeGroup");
                     var arr=[{name: "Private("+query.u+")", id: "Private"},
@@ -645,8 +645,8 @@ define([
 					var sb = registry.byId("slidesButton");
 					sb.set("disabled", false);
 					var createSlides = new slides(givenModel);
-					menu.add("slidesButton", function(event){
-						event.preventDefault();
+					menu.add("slidesButton", function(e){
+						event.stop(e);
 						createSlides.show();
 						createSlides.log(controllerObject.logging);
 					});
@@ -672,8 +672,8 @@ define([
 			 */
 			
 			// show graph when button clicked
-			menu.add("graphButton", function(event){
-				event.preventDefault();
+			menu.add("graphButton", function(e){
+				event.stop(e);
 				console.debug("button clicked");
 				// instantiate graph object
 				var buttonClicked = "graph";
@@ -691,8 +691,8 @@ define([
 
 			
 			// show table when button clicked
-			menu.add("tableButton", function(event){
-				event.preventDefault();
+			menu.add("tableButton", function(e){
+				event.stop(e);
 				console.debug("table button clicked");
 				var buttonClicked = "table";
 				var table = new Graph(givenModel, query.m, session, buttonClicked);
@@ -715,8 +715,8 @@ define([
                 //session.saveProblem(givenModel.model);
             });
 
-			menu.add("doneButton", function(event){
-				event.preventDefault();
+			menu.add("doneButton", function(e){
+				event.stop(e);
 				console.debug("done button is clicked");
 			var problemComplete = givenModel.matchesGivenSolution();
 				
@@ -748,9 +748,9 @@ define([
 			//lessonsLearnedButton.set("disabled", true);
 			//Bind lessonsLearnedButton to the click event	
 			if(query.m == "STUDENT" || query.m == "COACHED"){
-				menu.add("lessonsLearnedButton", function(event){
+				menu.add("lessonsLearnedButton", function(e){
 					// preventing default execution of click handler
-					event.preventDefault();
+					event.stop(e);
 					console.log("inside handler");
 					if(givenModel.isLessonLearnedShown == true){
 						contentMsg = givenModel.getTaskLessonsLearned();
