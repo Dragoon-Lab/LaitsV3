@@ -477,18 +477,20 @@ define([
 					var w = confirm("Are you sure you want to publish the problem");
 					var response = "There was some error while publishing the problem.";
 					if(w == true){
-						session.publishProblem(givenModel.model).then(function(reply){
-							response = "The problem has been successfully published.";
-						});
-					
+						var request_promise = session.publishProblem(givenModel.model);
 						var responseWidget = dom.byId("publishResponse");
-						responseWidget.innerHTML = response;
-						if(response.indexOf("error") >=0){
-							style.set(responseWidget, "color", "red");
-						} else {
-							style.set(responseWidget, "color", "green");
-						}
-						style.set(responseWidget, "display", "block");
+						request_promise.then(function(response_status){
+							console.log(response_status);							
+							if(response_status){
+								responseWidget.innerHTML = "Your problem has been successfully published";
+								style.set(responseWidget, "color", "green");
+							} else {
+								responseWidget.innerHTML = "Connection Error: Could not publish the problem";
+								style.set(responseWidget, "color", "red");
+							}
+							style.set(responseWidget, "display", "block");
+						});
+			
 					}
 				});				
 
@@ -720,14 +722,28 @@ define([
 			menu.add("doneButton", function(e){
 				event.stop(e);
 				console.debug("done button is clicked");
-			var problemComplete = givenModel.matchesGivenSolution();
 				
-				var promise = controllerObject.logging.log('close-problem', {
-				type: "menu-choice", 
-					name: "done-button", 
-					problemComplete: problemComplete
-				});
+				var problemComplete = givenModel.matchesGivenSolution();
 				
+				
+				// if in preview mode , Logging is not required:
+				if(controllerObject.logging.doLogging)
+					controllerObject.logging.log('close-problem', {
+					type: "menu-choice", 
+						name: "done-button", 
+						problemComplete: problemComplete
+					}).then(function(){
+						 if(window.history.length == 1)
+	                        window.close();
+	                     else
+	                     	window.history.back();
+					});
+				else {
+					if(window.history.length == 1)
+	                        window.close();
+	                else
+	                     	window.history.back();
+				}
 				var searchPattern = new RegExp('^pal3', 'i'); 
 				if(query.m != "AUTHOR" && searchPattern.test(query.s)){ // check if session name starts with pal
 					var tc = new tincan(givenModel, controllerObject._assessment,session, palTopicIndex);
@@ -736,13 +752,6 @@ define([
 					//Send Statements
 					tc.sendStatements();
 				}
-
-				promise.then(function(){
-					 if(window.history.length == 1)
-                                                window.close();
-                                        else
-                                                window.history.back();
-				});
 			});
 
 			//Disable the lessonsLearnedButton
