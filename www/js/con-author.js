@@ -294,8 +294,6 @@ define([
 			this._model.active.setName(id, variable);
 			// update Node labels upon exit
 			this.updateNodeLabel(id);
-			//make connection
-			this.setConnection(id, this.currentID);
 		 },
 
 		handleKind: function(kind){
@@ -569,6 +567,7 @@ define([
 					}
 				}
 				this.applyDirectives(directives);
+				this.createExpressionNodes(parse, true); 
 			}
 			else if(model && model =="given"){
 				var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
