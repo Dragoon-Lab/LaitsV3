@@ -437,6 +437,8 @@ define([
 				//inside controller
 				controllerObject.setForum(query);
 			}
+			var menuButtons=[];//This array is used later to called the setSelected function for all the buttons in the menu abr
+		        menuButtons.push("createNodeButton","graphButton","tableButton","forumButton","schemaButton","descButton","saveButton","mergeButton","previewButton","slidesButton","lessonsLearnedButton","doneButton");
 			// Also used in image loading below.
 			var descObj = new description(givenModel);
 			if(query.m == "AUTHOR"){
@@ -487,7 +489,7 @@ define([
 						}
 						style.set(responseWidget, "display", "block");
 					}
-				});
+				});				
 
 				on(registry.byId("previewButton"),"click",function(){
 					var user = query.u;
@@ -817,6 +819,16 @@ define([
 				dom.byId("saveMessage").innerHTML=message;
 				dialog.show();
 			}
+
+			/*This is a work-around for getting a button to work inside a MenuBar.
+		 	Otherwise, there is a superfluous error message.
+		 	*/
+			array.forEach(menuButtons,function(menuButton){
+				registry.byId(menuButton)._setSelected = function(arg){
+				console.log(menuButton+" _setSelected called with ", arg);
+				console.log(menuButtons+"in "+query.m);
+			    }			    
+			});
 
 		});
 
