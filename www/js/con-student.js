@@ -137,8 +137,8 @@ define([
 		},
 
 		//  should be moved to a function in controller.js
-		autocreateNodes:function(/** auto node id **/ id, /**variable name**/ variable){
-			console.log("auto creating nodes student controller");
+		updateInputNode:function(/** auto node id **/ id, /**variable name**/ variable){
+			console.log("updating nodes student controller");
 			//getDescriptionID using variable name
 			var descID = this._model.given.getNodeIDByName(variable);
 			var directives = this._PM.processAnswer(id, 'description', descID, this._model.given.getName(descID));

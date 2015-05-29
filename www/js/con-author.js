@@ -285,8 +285,8 @@ define([
 			this.logging.log('solution-step', logObj);
 		},
 
-		autocreateNodes: function(/** auto node id **/ id, /**variable name**/ variable){
-			console.log("auto creating nodes in author controller");
+		updateInputNode: function(/** auto node id **/ id, /**variable name**/ variable){
+			console.log("updating nodes in author controller");
 			//update the name for nodeid
 			// BvdS:  when we set the name we don't send to author PM
 			// since there is nothing to update in the node editor since

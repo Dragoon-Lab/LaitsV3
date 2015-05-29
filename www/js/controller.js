@@ -833,7 +833,7 @@ define([
 
 			*/
 			if(parse){
-				var autocreateNodesList = [];
+				var inputNodesList = [];
 				var cancelUpdate = false;
 				//getDescriptionID is present only in student mode. So in author mode it will give an identity function. This is a work around in case when its in author mode at that time the given model is the actual model. So descriptionID etc are not available. 
 				var mapID = this._model.active.getDescriptionID || function(x){ return x; };
@@ -906,13 +906,14 @@ define([
 						if(subID){
 							// console.log("	   substituting ", variable, " -> ", studentID);
 							parse.substitute(variable, subID);
+							inputNodesList.push({ "id": subID, "variable":variable});
 						}else if(autocreationFlag){
 							//create node
 							var id = this._model.active.addNode();
 							this.addNode(this._model.active.getNode(id));
 							this.setNodeDescription(id, variable);
-							//this.autocreateNodes(id, variable);
-							autocreateNodesList.push({ "id": id, "variable":variable});
+
+							inputNodesList.push({ "id": id, "variable":variable});
 							//get Node ID and substitute in equation
 							var subID2 = unMapID.call(this._model.active, givenID||id);
 							parse.substitute(variable, subID2); //this should handle createInputs and connections to automatic node
@@ -976,8 +977,8 @@ define([
 				this.setConnections(this._model.active.getInputs(this.currentID), this.currentID);
 				// console.log("************** equationAnalysis directives ", directives);
 
-				array.forEach(autocreateNodesList, lang.hitch(this, function(node){
-					this.autocreateNodes(node.id, node.variable);
+				array.forEach(inputNodesList, lang.hitch(this, function(node){
+					this.updateInputNode(node.id, node.variable);
 				}));
 
 				// Send to PM if all variables are known.
