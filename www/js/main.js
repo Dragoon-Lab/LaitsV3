@@ -834,8 +834,7 @@ define([
 		 	*/
 			array.forEach(menuButtons,function(menuButton){
 				registry.byId(menuButton)._setSelected = function(arg){
-				console.log(menuButton+" _setSelected called with ", arg);
-				console.log(menuButtons+"in "+query.m);
+				console.log(menuButton+" _setSelected called with ", arg);				
 			    }			    
 			});
 
