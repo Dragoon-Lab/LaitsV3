@@ -204,7 +204,7 @@ define([
 				// handling server side error propogation
 				if(reply === "done") return { status : "done"};
 				else if(JSON.parse(reply).error) return { error : JSON.parse(reply).error };
-				else return { error : "Something bad has something! Please try again later."};
+				else return { error : "Something bad has happened! Please try again later."};
 			}), lang.hitch(this, function(err){
 				// handling connection/ network errors
 				this.clientLog("error", {
