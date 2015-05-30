@@ -819,15 +819,6 @@ define([
 						   );
 			});
 
-			// If we are loading a published problem in author mode, prompt user to perform a save-as immediately
-            if(!query.g && query.m  === "AUTHOR"){
-				var message='<strong>You must choose a name and folder for the new copy of this problem.</strong>';
-				var dialog=registry.byId("authorSaveDialog");
-				registry.byId("authorSaveProblem").set("value",query.p);
-				dom.byId("saveMessage").innerHTML=message;
-				dialog.show();
-			}
-
 			/*This is a work-around for getting a button to work inside a MenuBar.
 		 	Otherwise, there is a superfluous error message.
 		 	*/
@@ -836,6 +827,15 @@ define([
 				console.log(menuButton+" _setSelected called with ", arg);				
 			    }			    
 			});
+
+			// If we are loading a published problem in author mode, prompt user to perform a save-as immediately
+            if(!query.g && query.m  === "AUTHOR"){
+				var message='<strong>You must choose a name and folder for the new copy of this problem.</strong>';
+				var dialog=registry.byId("authorSaveDialog");
+				registry.byId("authorSaveProblem").set("value",query.p);
+				dom.byId("saveMessage").innerHTML=message;
+				dialog.show();
+			}
 
 		});
 
