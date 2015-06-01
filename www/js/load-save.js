@@ -170,24 +170,26 @@ define([
 		},
 		saveProblem: function(model,newSessionID){
 			// Summary: saves the string held in this.saveData in the database.
-			var object = {
-				sg: json.toJson(model.task),
-				x: newSessionID?newSessionID:this.sessionId
-			};
-			if("share" in model){
-				// Database Boolean
-				object.share = model.share?1:0;
+			if(this.doLogging){
+				var object = {
+					sg: json.toJson(model.task),
+					x: newSessionID?newSessionID:this.sessionId
+				};
+				if("share" in model){
+					// Database Boolean
+					object.share = model.share?1:0;
+				}
+				xhr.post(this.path + "save_solution.php", {
+					data: object
+				}).then(lang.hitch(this, function(reply){  // this makes saveProblem blocking?
+					console.log("saveProblem worked: ", reply);
+				}), lang.hitch(this, function(err){
+					this.clientLog("error", {
+						message: "save Problem error : "+err,
+						functionTag: 'saveProblem'
+					});
+				}));
 			}
-			xhr.post(this.path + "save_solution.php", {
-				data: object
-			}).then(lang.hitch(this, function(reply){  // this makes saveProblem blocking?
-				console.log("saveProblem worked: ", reply);
-			}), lang.hitch(this, function(err){
-				this.clientLog("error", {
-					message: "save Problem error : "+err,
-					functionTag: 'saveProblem'
-				});
-			}));
 		},
 
 		publishProblem: function(model){
