@@ -122,6 +122,15 @@ width: 12em;
 }
 
 #authorDescDialog #authorSetDescription{
+    width: 98%;
+    height: 10ex;
+    border:solid black 1px;
+    padding:2px;
+    margin-right:2px;
+
+}
+#authorDescDialog #authorSetLessonsLearned{
+    width: 98%;
     height: 10ex;
     border:solid black 1px;
     padding:2px;

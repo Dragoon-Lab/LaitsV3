@@ -202,12 +202,19 @@ define([
 				sync: true
 			}).then(lang.hitch(this, function(reply){
 				console.log("problem published: ", reply);
-				return reply;
+				// if success or promise is resolved: return this value to next promise
+				// handling server side error propogation
+				if(reply === "done") return { status : "done"};
+				else if(JSON.parse(reply).error) return { error : JSON.parse(reply).error };
+				else return { error : "Something bad has happened! Please try again later."};
 			}), lang.hitch(this, function(err){
+				// handling connection/ network errors
 				this.clientLog("error", {
 					message: "problem not published error: "+ err,
 					functionTag: "publishProblem"
 				});
+				// if error occurred or promise is rejected: return this value to next promise
+				return { error : "Connection Error: problem could not be published at the moment"}
 			}));
 		},
 
@@ -220,7 +227,7 @@ define([
 			// Add time to log message (allowing override).
 			if(this.doLogging){
 				var p = lang.mixin({time: this.getTime()}, params);
-
+				
 				return xhr.post(this.path + "logger.php", {
 					data: {
 						method: method,
