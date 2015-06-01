@@ -438,10 +438,12 @@ define([
 			this.setUserType(subMode);
 			this.showCorrectAnswer = true;
 			this.showFeedback = true;
+
 			if(mode === "TEST" || mode === "EDITOR"){
 				this.showCorrectAnswer = false;
 				this.showFeedback = false;
 			}
+
 		},
 		matchingID: null,
 		logging: null,
@@ -554,7 +556,7 @@ define([
 						});
 					}else if(this.model.isNodeVisible(studentID, answer)){
 							interpretation = "redundant";
-					}else if(this.model.isParentNode(answer) || this.model.isNodesParentVisible(studentID, answer)){
+					}else if(this.model.isParentNode(answer) || (this.model.isNodesParentVisible(studentID, answer) && !this.checkPremature(studentID))){
 						interpretation = "optimal";
 					}else if(this.model.student.getNodes().length === 0){
 						interpretation = "notTopLevel";
@@ -804,29 +806,56 @@ define([
 			return false;
 		},
 
-	notifyCompleteness : function (model){
-		if(!model.isCompleteFlag && model.matchesGivenSolution()){
-			model.isCompleteFlag = true;
-			
-			var logObj = lang.mixin({
-				type : "completeness-check",
-				problemComplete: model.isCompleteFlag
-			}, logObj);
-			this.logging.log('solution-step', logObj);
+		notifyCompleteness : function (model){
+			if(!model.isCompleteFlag && model.matchesGivenSolution()){
+				model.isCompleteFlag = true;
 
-			record.increment("problemCompleted", 1);
-			if(this.showFeedback){
-				// Number of problems to show the hint upon completion
-				if(record.getLocal("problemCompleted") < 3 ){
-					return	[{
-					id: "crisisAlert",
-					attribute: "open",
-					value: 'You have completed your model. Click on "Graph" or "Table" to see what the solution looks like'
-					}];
+				var logObj = lang.mixin({
+					type : "completeness-check",
+					problemComplete: model.isCompleteFlag
+				}, logObj);
+				this.logging.log('solution-step', logObj);
+
+				record.increment("problemCompleted", 1);
+				if(this.showFeedback){
+					// Number of problems to show the hint upon completion
+					if(record.getLocal("problemCompleted") < 3 ){
+						return	[{
+						id: "crisisAlert",
+						attribute: "open",
+						value: 'You have completed your model. Click on "Graph" or "Table" to see what the solution looks like'
+						}];
+					}
 				}
 			}
+			return [];
+		},
+
+		checkPremature: function(nodeID){
+			//return false for other modes
+			if(this.mode !== "COACHED"){
+				return false;
+			}
+			//Check premature for COACHED mode
+			if(!this.model.active.getDescriptionID(nodeID)){
+				return false;
+			}
+			else if (this.model.isParentNode(this.model.active.getDescriptionID(nodeID))){
+				return false;
+			}
+			var isPremature = true;
+			array.some(this.model.active.getNodes(), lang.hitch(this, function(node){
+				if(node.inputs.length > 0){
+					var isInputNode = array.some(node.inputs, lang.hitch(this, function(input){
+						if(input.ID == nodeID && this.model.student.getCorrectness(node.ID) !== "incorrect") return true;
+					}));
+				}
+				if(isInputNode){
+					isPremature = false;
+					return true;
+				}
+			}));
+			return isPremature;
 		}
-		return [];
-	}
 	});
 });
