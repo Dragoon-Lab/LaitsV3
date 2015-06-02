@@ -507,23 +507,45 @@ define([
         handleInitial: function(initial){
             //IniFlag contains the status and initial value
             var modelType = this.getModelType();
-            var IniFlag = typechecker.checkInitialValue(this.widgetMap.initial, this.lastInitial);
+            var tempIni = dom.byId(this.widgetMap.initial);
+            var tempInival = tempIni.value.trim();
+            console.log("result",tempInival);
+            console.log("model",modelType);
+            var IniFlag = {status: undefined, value: undefined };
+            if(!((modelType === "given") && (tempInival == '') )){
+                console.log("typechecker is being called");
+                IniFlag = typechecker.checkInitialValue(this.widgetMap.initial, this.lastInitial);
+            }
+            else{
+                console.log("initial value empty case being called");
+                IniFlag  = {status: true, value: undefined};
+            }
             var logObj = {};
+            console.log("current status of initial flag is",IniFlag.value);
             if(IniFlag.status){
                 // If the initial value is not a number or is unchanged from
                 // previous value we dont process
                 var newInitial = IniFlag.value;
                 this.applyDirectives(this.authorPM.process(this.currentID, "initial", newInitial, true));
                 console.log("In AUTHOR mode. Initial value is: " + newInitial);
+                var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
+                console.log("student node id is", studentNodeID);
+                var studNodeInitial = this._model.student.getInitial(studentNodeID);
                 if(modelType == "given"){
-                    var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
+                    //if the model type is given , the last initial value is the new student model value
+                    //which in this case is second parameter
                     this._model.active.setInitial(studentNodeID, newInitial);
+                    this.updateStatus("initial", this._model.given.getInitial(this.currentID), newInitial);
                 }
                 else{
                     this._model.active.setInitial(this.currentID, newInitial);
+                    //if the model type is not given , the last initial value is the new author model value
+                    //which in this case is first parameter
+                    //if(studentNodeID)
+                    this.updateStatus("initial", newInitial, studNodeInitial);
+
                 }
                 //update student node status
-                this.updateStatus("initial", this._model.given.getInitial(this.currentID), newInitial);
                 logObj = {
                     error: false
                 };
