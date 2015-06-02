@@ -87,9 +87,17 @@ define([
 			 one would need to order them using topologicalSortgoo
 			 */
             var activeSolution = this.findSolution(true, this.active.plotVariables);
+            console.log(activeSolution);
             if(activeSolution.status == "error" && activeSolution.type == "missing") {
 				// Return value from findSlution in calculation, returns an array and we check for status and any missing nodes
-				this.dialogWidget.set("content", "<div>Not all nodes have been completed. For example, \"" + activeSolution.missingNode + "\" is not yet fully defined.</div>"); //We show the error message like "A Node is Missing"
+				console.log("hello");
+				this.dialogWidget.set("content", this.generateErrorMessage(activeSolution)); //We show the error message like "A Node is Missing"
+				return;
+			}
+			if(activeSolution.plotValues.length == 0)
+			{
+				console.log("hello");
+				this.dialogWidget.set("content", "<div>Please fill in some nodes before trying to graph</div>"); //We show the error message like "A Node is Missing"
 				return;
 			}
 
@@ -289,7 +297,8 @@ define([
 						vertical: true, // min: obj.min, max: obj.max,
 						title: this.labelString(id),
 						min: obj.min,
-						max:obj.max
+						max:obj.max,
+						labelFunc: this.formatAxes
 						});
 
 					if(this.mode != "AUTHOR"){
@@ -328,7 +337,7 @@ define([
                 var modStatus = true;
                 array.forEach(this.model.active.getNodes(), function (thisnode) {
                     if(thisModel.model.active.getType(thisnode.ID)=="function" || thisModel.model.active.getType(thisnode.ID)=="accumulator"){
-                        thisModel.dialogWidget.set("content", "<div>Not all nodes have been completed. For example, \"" + thisModel.model.active.getName(thisnode.ID) + "\" is not yet fully defined.</div>");
+                        thisModel.dialogWidget.set("content", this.generateErrorMessage(thisModel.model.active.getName(thisnode.ID)));
                         modStatus = false;
                         return;
                     }
@@ -519,6 +528,13 @@ define([
 			return isStatic;
 		},
 
+		generateErrorMessage: function(solution)
+		{
+			return "content", "<div>Not all nodes have been completed. For example, "
+			       + solution.missingNode + " has an empty "+ solution.missingField +
+			       " field.</div>";
+		},
+
 		registerEventOnStaticChange: function(){
 			
 			
@@ -626,11 +642,14 @@ define([
 							//Redraw y axis based on new min and max values
 							this.chart[id].addAxis("y", {
 									vertical: true,
+									fixed: false,
 									min: obj.min,
-									max: obj.max,
+									max: obj.max,									
+									labelFunc: this.formatAxes,
 									title: this.labelString(id)
 									});
 							}
+							console.log(this.chart);
 							if(this.isCorrect)
 							{
 								this.chart[id].updateSeries(
@@ -668,11 +687,14 @@ define([
 								var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
 								this.chart[id].addAxis("y", {
 									vertical: true,
+									natural: false,
 									min: obj.min,
 									max: obj.max,
+									labelFunc: this.formatAxes,
 									title: this.labelString(id)
 									});
 							}
+
 							this.chart[id].updateSeries(
 								"Your solution",
 								this.formatSeriesForChart(activeSolution, k),
@@ -901,6 +923,14 @@ define([
 				}, this);
 			}
 			return result;
+		},
+
+		formatAxes: function(text, value, precision){
+			console.log(text, value, precision);
+			if(value > 10000)
+				return Number(text).toExponential();
+			else
+				return text;
 		}
 	});
 });

@@ -754,6 +754,8 @@ define([
 			if(this.structured.ops.length == 0) {
 				var equationWidget = registry.byId("equationBox");
 				equationWidget.set("value", "");
+				var givenEquationWidget = registry.byId("givenEquationBox");//if value of selectModel was equal to "given"
+				givenEquationWidget.set("value", "");
 				dom.byId("equationText").innerHTML = "";
 			}
 			else {
