@@ -478,16 +478,19 @@ define([
             console.log("**************** in handleUnits ", units);
             // Summary: Sets the units of the current node.
             var modelType = this.getModelType();
+            this.applyDirectives(this.authorPM.process(this.currentID, "units", units));
+            var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
+
             if(modelType == "given"){
-                var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
                 this._model.active.setUnits(studentNodeID, units);
+                this.updateStatus("units", this._model.given.getUnits(this.currentID), units);
             }
             else{
                 this._model.active.setUnits(this.currentID, units);
+                this.updateStatus("units", units, this._model.student.getUnits(studentNodeID));
             }
-            this.applyDirectives(this.authorPM.process(this.currentID, "units", units));
+
             //update student node status
-            this.updateStatus("units", this._model.given.getUnits(this.currentID), units);
             var valueFor = modelType == "given" ? "student-model": "author-model";
             this.logging.log("solution-step", {
                 type: "solution-enter",
