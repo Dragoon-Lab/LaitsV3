@@ -337,7 +337,7 @@ define([
                 var modStatus = true;
                 array.forEach(this.model.active.getNodes(), function (thisnode) {
                     if(thisModel.model.active.getType(thisnode.ID)=="function" || thisModel.model.active.getType(thisnode.ID)=="accumulator"){
-                        thisModel.dialogWidget.set("content", this.generateErrorMessage(thisModel.model.active.getName(thisnode.ID));
+                        thisModel.dialogWidget.set("content", this.generateErrorMessage(thisModel.model.active.getName(thisnode.ID)));
                         modStatus = false;
                         return;
                     }
@@ -932,11 +932,13 @@ define([
 		},
 
 		formatAxes: function(text, value, precision){
-			console.log(text, value, precision);
-			if(value > 10000)
-				return Number(text).toPrecision(3).toExponential();
-			else
+			if(value > 10000){
+				console.log(value.toPrecision(3));
+				return value.toPrecision(3);
+			}
+			else{
 				return text;
+			}
 		}
 	});
 });
