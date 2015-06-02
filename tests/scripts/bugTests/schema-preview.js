@@ -61,17 +61,18 @@ function wait(milliseconds)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Replace this example test with your own:
+var originalTab = "";
 
-describe("Regression test for schema preview bug", function() {
+describe("Schema preview bug", function() {
 
     before(async(function (done) {
             dtest.openProblem(client,[["problem","rabbits"],["mode","AUTHOR"],
                                       ["section","regression-testing"]]);
     }));
 
-    describe("Test for broken preview in problem with schemas", function(){                
-        it("Should close the save as dialog", async(function(){            
+    describe("Test for broken preview in problem with schemas", function(){
+        it("Should close the save as dialog", async(function(){
+            originalTab = dtest.getCurrentTabId(client);
             dtest.closeSaveAsWindow(client);
         }));
 
@@ -79,11 +80,12 @@ describe("Regression test for schema preview bug", function() {
             dtest.menuOpenPreview(client);
         }));
 
-        it("Should close the preview on hitting the done button", async(function(){
+        it("Should close the preview on hitting the done button", async(function(){            
             dtest.menuDone(client);
         }));
 
         it("Should return to author tab", async(function(){
+            dtest.switchTab(client,originalTab);
             dtest.menuOpenAuthorOptions(client);
             dtest.pressCheckProblemButton(client);
         })); 

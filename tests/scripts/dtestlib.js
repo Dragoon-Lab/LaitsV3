@@ -256,6 +256,15 @@ exports.changeClient = function (client, newClient)
     client.end();
     await(newClient.init().url(url.value, defer()));
 }
+
+exports.getCurrentTabId = function(client){
+    return await(client.getCurrentTabId(client,defer()));
+}
+
+exports.switchTab = function(client,tabId){
+    await(client.switchTab(tabId,defer()));
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 2. Menu bar functions
 
@@ -335,8 +344,11 @@ exports.menuOpenLessonsLearned = function(client){
 }
 
 exports.menuDone = function(client){
-    await(client.waitForVisible('#doneButton',defer()));
-    await(client.click('#doneButton',defer()));
+    await(client.waitForExist('#doneButton_label',defer()));
+    //console.log("current tab before wait: "+ await(client.getCurrentTabId(client,defer())) );
+    await(client.waitForVisible('#doneButton_label',defer()));
+    //console.log("current tab after wait: "+ await(client.getCurrentTabId(client,defer())) );
+    await(client.click('#doneButton_label',defer()));
 }
 
 
