@@ -1,3 +1,4 @@
+/* global define */
 /**
  *Dragoon Project
  *Arizona State University
@@ -284,8 +285,8 @@ define([
             this.logging.log('solution-step', logObj);
         },
 
-        autocreateNodes: function(/** auto node id **/ id, /**variable name**/ variable){
-            console.log("auto creating nodes in author controller");
+        updateInputNode: function(/** auto node id **/ id, /**variable name**/ variable){
+            console.log("updating nodes in author controller");
             //update the name for nodeid
             // BvdS:  when we set the name we don't send to author PM
             // since there is nothing to update in the node editor since
@@ -293,8 +294,6 @@ define([
             this._model.active.setName(id, variable);
             // update Node labels upon exit
             this.updateNodeLabel(id);
-            //make connection
-            this.setConnection(id, this.currentID);
         },
 
         handleKind: function(kind){
@@ -413,7 +412,6 @@ define([
                     registry.byId("selectModel").set('value',"correct");
                 }
                 else{
-                    console.log("handling model type");
                     this._model.active = this._model.student;
                     this.enableDisableFields(modelType);
                     this.getStudentNodeValues(this.currentID);
@@ -480,19 +478,16 @@ define([
             console.log("**************** in handleUnits ", units);
             // Summary: Sets the units of the current node.
             var modelType = this.getModelType();
-            this.applyDirectives(this.authorPM.process(this.currentID, "units", units));
-            var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
-
             if(modelType == "given"){
+                var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
                 this._model.active.setUnits(studentNodeID, units);
-                this.updateStatus("units", this._model.given.getUnits(this.currentID), units);
             }
             else{
                 this._model.active.setUnits(this.currentID, units);
-                this.updateStatus("units", units, this._model.student.getUnits(studentNodeID));
             }
-
+            this.applyDirectives(this.authorPM.process(this.currentID, "units", units));
             //update student node status
+            this.updateStatus("units", this._model.given.getUnits(this.currentID), units);
             var valueFor = modelType == "given" ? "student-model": "author-model";
             this.logging.log("solution-step", {
                 type: "solution-enter",
@@ -509,45 +504,23 @@ define([
         handleInitial: function(initial){
             //IniFlag contains the status and initial value
             var modelType = this.getModelType();
-            var tempIni = dom.byId(this.widgetMap.initial);
-            var tempInival = tempIni.value.trim();
-            console.log("result",tempInival);
-            console.log("model",modelType);
-            var IniFlag = {status: undefined, value: undefined };
-            if(!((modelType === "given") && (tempInival == '') )){
-                console.log("typechecker is being called");
-                IniFlag = typechecker.checkInitialValue(this.widgetMap.initial, this.lastInitial);
-            }
-            else{
-                console.log("initial value empty case being called");
-                IniFlag  = {status: true, value: undefined};
-            }
+            var IniFlag = typechecker.checkInitialValue(this.widgetMap.initial, this.lastInitial);
             var logObj = {};
-            console.log("current status of initial flag is",IniFlag.value);
             if(IniFlag.status){
                 // If the initial value is not a number or is unchanged from
                 // previous value we dont process
                 var newInitial = IniFlag.value;
                 this.applyDirectives(this.authorPM.process(this.currentID, "initial", newInitial, true));
                 console.log("In AUTHOR mode. Initial value is: " + newInitial);
-                var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
-                console.log("student node id is", studentNodeID);
-                var studNodeInitial = this._model.student.getInitial(studentNodeID);
                 if(modelType == "given"){
-                    //if the model type is given , the last initial value is the new student model value
-                    //which in this case is second parameter
+                    var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
                     this._model.active.setInitial(studentNodeID, newInitial);
-                    this.updateStatus("initial", this._model.given.getInitial(this.currentID), newInitial);
                 }
                 else{
                     this._model.active.setInitial(this.currentID, newInitial);
-                    //if the model type is not given , the last initial value is the new author model value
-                    //which in this case is first parameter
-                    //if(studentNodeID)
-                        this.updateStatus("initial", newInitial, studNodeInitial);
-
                 }
                 //update student node status
+                this.updateStatus("initial", this._model.given.getInitial(this.currentID), newInitial);
                 logObj = {
                     error: false
                 };
@@ -594,6 +567,7 @@ define([
                     }
                 }
                 this.applyDirectives(directives);
+                this.createExpressionNodes(parse, true);
             }
             else if(model && model =="given"){
                 var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
@@ -934,10 +908,8 @@ define([
                     registry.byId(this.controlMap.equation).set("disabled", false);
                 }
                 var initial = this._model.student.getInitial(studentNodeID);
-
-                if(typeof initial === "undefined" || initial == null)
-                    initial = '';
-                var res_temp = registry.byId(this.controlMap.initial).set('value', initial);
+                if(typeof initial !== "undefined" && initial != null)
+                    registry.byId(this.controlMap.initial).set('value', initial);
 
                 var units = this._model.student.getUnits(studentNodeID);
                 registry.byId(this.controlMap.units).set('value', units || "");
@@ -996,15 +968,12 @@ define([
         },
         updateStatus: function(/*String*/control, /*String*/correctValue, /*String*/newValue){
             //Summary: Updates the status of the student model nodes
-            console.log("update status called",correctValue,newValue);
             var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
             if(studentNodeID != null){
                 if(newValue != correctValue){ //If given value not same as correct Value
-                    console.log("if given value not same as correct value");
                     this._model.student.setStatus(studentNodeID, control , {"disabled": false,"status":"incorrect"});
                 }
                 else{
-                    console.log("if given value same as correct value");
                     this._model.student.setStatus(studentNodeID, control, {"disabled": true,"status":"correct"});
                 }
             }

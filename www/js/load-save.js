@@ -159,7 +159,6 @@ define([
 			var sessionId = FNV1aHash(this.params.u+this.params.s)+'_'+new Date().getTime();
 			console.log("renaming problem session id :"+sessionId);
 			this.log("rename-problem",newParams,sessionId);
-			model.task.taskName=newParams.p;//Update the taskName
 			this.saveProblem(model,sessionId); //reuse saveProblem with new sessionId of renamed problem
 			var url = document.URL.replace("p="+this.params.p,"p="+newParams.p);
 			if (this.params.g === undefined) {
@@ -171,24 +170,26 @@ define([
 		},
 		saveProblem: function(model,newSessionID){
 			// Summary: saves the string held in this.saveData in the database.
-			var object = {
-				sg: json.toJson(model.task),
-				x: newSessionID?newSessionID:this.sessionId
-			};
-			if("share" in model){
-				// Database Boolean
-				object.share = model.share?1:0;
+			if(this.doLogging){
+				var object = {
+					sg: json.toJson(model.task),
+					x: newSessionID?newSessionID:this.sessionId
+				};
+				if("share" in model){
+					// Database Boolean
+					object.share = model.share?1:0;
+				}
+				xhr.post(this.path + "save_solution.php", {
+					data: object
+				}).then(lang.hitch(this, function(reply){  // this makes saveProblem blocking?
+					console.log("saveProblem worked: ", reply);
+				}), lang.hitch(this, function(err){
+					this.clientLog("error", {
+						message: "save Problem error : "+err,
+						functionTag: 'saveProblem'
+					});
+				}));
 			}
-			xhr.post(this.path + "save_solution.php", {
-				data: object
-			}).then(lang.hitch(this, function(reply){  // this makes saveProblem blocking?
-				console.log("saveProblem worked: ", reply);
-			}), lang.hitch(this, function(err){
-				this.clientLog("error", {
-					message: "save Problem error : "+err,
-					functionTag: 'saveProblem'
-				});
-			}));
 		},
 
 		publishProblem: function(model){
@@ -201,12 +202,19 @@ define([
 				sync: true
 			}).then(lang.hitch(this, function(reply){
 				console.log("problem published: ", reply);
-				return reply;
+				// if success or promise is resolved: return this value to next promise
+				// handling server side error propogation
+				if(reply === "done") return { status : "done"};
+				else if(JSON.parse(reply).error) return { error : JSON.parse(reply).error };
+				else return { error : "Something bad has happened! Please try again later."};
 			}), lang.hitch(this, function(err){
+				// handling connection/ network errors
 				this.clientLog("error", {
 					message: "problem not published error: "+ err,
 					functionTag: "publishProblem"
 				});
+				// if error occurred or promise is rejected: return this value to next promise
+				return { error : "Connection Error: problem could not be published at the moment"}
 			}));
 		},
 
@@ -219,7 +227,7 @@ define([
 			// Add time to log message (allowing override).
 			if(this.doLogging){
 				var p = lang.mixin({time: this.getTime()}, params);
-
+				
 				return xhr.post(this.path + "logger.php", {
 					data: {
 						method: method,

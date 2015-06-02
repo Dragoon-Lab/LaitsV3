@@ -44,9 +44,9 @@ define([
 			 inside a MenuBar.
 			 Otherwise, there is a superfluous error message.
 			 */
-			registry.byId(button)._setSelected = function(arg){
-				console.log("_setSelected called with ", arg);
-			};
+			// registry.byId(button)._setSelected = function(arg){
+			// 	console.log("_setSelected called with ", arg);
+			// };
 			on(o, 'click', handler,{
 				cancelable : true
 			});

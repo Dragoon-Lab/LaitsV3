@@ -754,6 +754,8 @@ define([
 			if(this.structured.ops.length == 0) {
 				var equationWidget = registry.byId("equationBox");
 				equationWidget.set("value", "");
+				var givenEquationWidget = registry.byId("givenEquationBox");//if value of selectModel was equal to "given"
+				givenEquationWidget.set("value", "");
 				dom.byId("equationText").innerHTML = "";
 			}
 			else {
@@ -781,15 +783,6 @@ define([
 			 If the parse fails:
 			 * send a warning message, and
 			 * log attempt (the PM does not handle syntax errors).
-			 
-			 If the parse succeeds:
-			 * substitute in student id for variable names (when possible),
-			 * save to model,
-			 * update inputs,
-			 * update the associated connections in the graph, and
-			 * send the equation to the PM. **Done**
-			 * Handle the reply from the PM. **Done**
-			 * If the reply contains an update to the equation, the model should also be updated.
 			 
 			 Note: the model module may do some of these things automatically.
 			 
@@ -822,6 +815,27 @@ define([
 				});
 			}
 			if(parse){
+				return parse;
+			}
+			return null;
+		},
+
+		createExpressionNodes: function(parse, ignoreUnknownTest){
+			/*
+			 Create Expression nodes if equation is valid and parsed sucessfully.
+
+			 If the parse succeeds:
+			 * substitute in student id for variable names (when possible),
+			 * save to model,
+			 * update inputs,
+			 * update the associated connections in the graph, and
+			 * send the equation to the PM. **Done**
+			 * Handle the reply from the PM. **Done**
+			 * If the reply contains an update to the equation, the model should also be updated.
+
+			*/
+			if(parse){
+				var inputNodesList = [];
 				var cancelUpdate = false;
 				//getDescriptionID is present only in student mode. So in author mode it will give an identity function. This is a work around in case when its in author mode at that time the given model is the actual model. So descriptionID etc are not available. 
 				var mapID = this._model.active.getDescriptionID || function(x){ return x; };
@@ -894,11 +908,14 @@ define([
 						if(subID){
 							// console.log("	   substituting ", variable, " -> ", studentID);
 							parse.substitute(variable, subID);
+							inputNodesList.push({ "id": subID, "variable":variable});
 						}else if(autocreationFlag){
 							//create node
 							var id = this._model.active.addNode();
 							this.addNode(this._model.active.getNode(id));
-							this.autocreateNodes(id, variable);
+							this.setNodeDescription(id, variable);
+
+							inputNodesList.push({ "id": id, "variable":variable});
 							//get Node ID and substitute in equation
 							var subID2 = unMapID.call(this._model.active, givenID||id);
 							parse.substitute(variable, subID2); //this should handle createInputs and connections to automatic node
@@ -940,7 +957,6 @@ define([
 				if (cancelUpdate){
 					return null;
 				}
-
 				// Expression now is written in terms of student IDs, when possible.
 				// Save with explicit parentheses for all binary operations.
 				var parsedEquation = parse.toString(true);
@@ -963,11 +979,16 @@ define([
 				this.setConnections(this._model.active.getInputs(this.currentID), this.currentID);
 				// console.log("************** equationAnalysis directives ", directives);
 
+				array.forEach(inputNodesList, lang.hitch(this, function(node){
+					this.updateInputNode(node.id, node.variable);
+				}));
+
 				// Send to PM if all variables are known.
 				console.log(parse);
-				return parse;
 			}
-			return null;
+		},
+		// Stub to setting description for auto craeted nodes.
+		setNodeDescription: function(id, variable){
 		},
 		// Stub to connect logging to record bad parse.
 		badParse: function(inputEquation){

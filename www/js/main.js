@@ -438,6 +438,8 @@ define([
 				//inside controller
 				controllerObject.setForum(query);
 			}
+			var menuButtons=[];//This array is used later to called the setSelected function for all the buttons in the menu abr
+		        menuButtons.push("createNodeButton","graphButton","tableButton","forumButton","schemaButton","descButton","saveButton","mergeButton","previewButton","slidesButton","lessonsLearnedButton","doneButton");
 			// Also used in image loading below.
 			var descObj = new description(givenModel);
 			if(query.m == "AUTHOR"){
@@ -475,20 +477,21 @@ define([
 					var w = confirm("Are you sure you want to publish the problem");
 					var response = "There was some error while publishing the problem.";
 					if(w == true){
-						session.publishProblem(givenModel.model).then(function(reply){
-							response = "The problem has been successfully published.";
-						});
-					
+						var request_promise = session.publishProblem(givenModel.model);
 						var responseWidget = dom.byId("publishResponse");
-						responseWidget.innerHTML = response;
-						if(response.indexOf("error") >=0){
-							style.set(responseWidget, "color", "red");
-						} else {
-							style.set(responseWidget, "color", "green");
-						}
-						style.set(responseWidget, "display", "block");
+						request_promise.then(function(response_status){						
+							if(response_status.status && response_status.status == "done"){
+								responseWidget.innerHTML = "Your problem has been successfully published";
+								style.set(responseWidget, "color", "green");
+							} else {
+								responseWidget.innerHTML = response_status.error;
+								style.set(responseWidget, "color", "red");
+							}
+							style.set(responseWidget, "display", "block");
+						});
+			
 					}
-				});
+				});				
 
 				on(registry.byId("previewButton"),"click",function(){
 					var user = query.u;
@@ -718,14 +721,28 @@ define([
 			menu.add("doneButton", function(e){
 				event.stop(e);
 				console.debug("done button is clicked");
-			var problemComplete = givenModel.matchesGivenSolution();
 				
-				var promise = controllerObject.logging.log('close-problem', {
-				type: "menu-choice", 
-					name: "done-button", 
-					problemComplete: problemComplete
-				});
+				var problemComplete = givenModel.matchesGivenSolution();
 				
+				
+				// if in preview mode , Logging is not required:
+				if(controllerObject.logging.doLogging)
+					controllerObject.logging.log('close-problem', {
+					type: "menu-choice", 
+						name: "done-button", 
+						problemComplete: problemComplete
+					}).then(function(){
+						 if(window.history.length == 1)
+	                        window.close();
+	                     else
+	                     	window.history.back();
+					});
+				else {
+					if(window.history.length == 1)
+	                        window.close();
+	                else
+	                     	window.history.back();
+				}
 				var searchPattern = new RegExp('^pal3', 'i'); 
 				if(query.m != "AUTHOR" && searchPattern.test(query.s)){ // check if session name starts with pal
 					var tc = new tincan(givenModel, controllerObject._assessment,session, palTopicIndex);
@@ -734,13 +751,6 @@ define([
 					//Send Statements
 					tc.sendStatements();
 				}
-
-				promise.then(function(){
-					 if(window.history.length == 1)
-                                                window.close();
-                                        else
-                                                window.history.back();
-				});
 			});
 
 			//Disable the lessonsLearnedButton
@@ -807,6 +817,15 @@ define([
 				window.open("math-probs.html","newwindow",
 							"height=400, width=600, toolbar =no, menubar=no, scrollbars=yes, resizable=no, location=no, status=no"
 						   );
+			});
+
+			/*This is a work-around for getting a button to work inside a MenuBar.
+		 	Otherwise, there is a superfluous error message.
+		 	*/
+			array.forEach(menuButtons,function(menuButton){
+				registry.byId(menuButton)._setSelected = function(arg){
+				console.log(menuButton+" _setSelected called with ", arg);				
+			    }			    
 			});
 
 			// If we are loading a published problem in author mode, prompt user to perform a save-as immediately
