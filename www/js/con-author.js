@@ -420,7 +420,9 @@ define([
 		},
 		
 		handleType: function(type){
-			if(this.getModelType() == "correct"){
+            console.log("modeltype",this.getModelType());
+            var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
+            if(this.getModelType() == "correct"){
 				// Summary: Sets the type of the current node.
 				console.log("****** AUTHOR has chosen type ", type, this);
 				this.applyDirectives(this.authorPM.process(this.currentID,'type', type));
@@ -433,10 +435,10 @@ define([
 					type = "";
 				}
 				this.updateType(type);
-			}
+                this.updateStatus("type", type,  this._model.student.getType(studentNodeID));
+            }
 			else if(this.getModelType() == "given"){
 				this.controlMap.equation = "givenEquationBox";
-				var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
 				this._model.active.setType(studentNodeID, type);
 				if(type == "function"){
 					if(this._model.active.getInitial(studentNodeID) === "number"){
@@ -460,9 +462,10 @@ define([
 					registry.byId(this.controlMap.equation).set("disabled", false);
 					registry.byId(this.controlMap.equation).set("disabled", false);
 				}
-			}
+                this.updateStatus("type", this._model.given.getType(this.currentID), type);
+            }
 			//update student node status
-			this.updateStatus("type", this._model.given.getType(this.currentID), type);
+
 			var valueFor = this.getModelType() == "given" ? "student-model": "author-model";
 			this.logging.log("solution-step", {
 				type: "solution-enter",
