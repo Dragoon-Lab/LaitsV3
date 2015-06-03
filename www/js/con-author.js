@@ -150,7 +150,10 @@ define([
 					break;
 
 				case "equation":
-					if(value){
+					if(validInput === false){
+						returnObj.push({id:"equation", attribute:"status", value:"incorrect"});
+					}
+					else if(value){
 						returnObj.push({id:"equation", attribute:"status", value:"entered"});
 					} else {
 						returnObj.push({id:"equation", attribute:"status", value:""});
@@ -822,9 +825,13 @@ define([
 			if(typeof this._model.given.getInitial(this.currentID) === "number"){
 				this.applyDirectives(this.authorPM.process(this.currentID, 'initial', this._model.given.getInitial(this.currentID), true));
 			}
-			//color units widget
+			//color Equation widget
 			if(this._model.given.getEquation(this.currentID)){
-				this.applyDirectives(this.authorPM.process(this.currentID, 'initial', this._model.given.getInitial(this.currentID), true));
+				if(this._model.given.getStatus(this.currentID, "equation") && this._model.given.getStatus(this.currentID, "equation").status == "incorrect"){
+					this.applyDirectives(this.authorPM.process(this.currentID, 'equation', this._model.given.getEquation(this.currentID), false));
+				}else{
+					this.applyDirectives(this.authorPM.process(this.currentID, 'equation', this._model.given.getEquation(this.currentID), true));
+				}
 			}
 			var type = this._model.given.getType(this.currentID);
 			//color type widget
@@ -836,12 +843,18 @@ define([
 					this.applyDirectives([{id:"initial", attribute:"status", value:"entered"}]);
 			}
 			if(type && type != 'parameter'){
-				if(this._model.given.getEquation(this.currentID))
+				if(this._model.given.getEquation(this.currentID) && this._model.given.getStatus(this.currentID, "equation").status != "incorrect")
 					this.applyDirectives([{id:"equation", attribute:"status", value:"entered"}]);
 			}
 		},
-		updateModelStatus: function(desc){
+		updateModelStatus: function(desc, id){
 			//stub for updateModelStatus
+			id = id || this.currentID;
+			if(this.validStatus[desc.attribute]){
+				var opt = this._model.given.getStatus(id, desc.id) ? this._model.given.getStatus(id, desc.id) : {};
+				opt[desc.attribute] = desc.value;
+				this._model.given.setStatus(id, desc.id, opt);
+			}
 		},
 
 		getModelType: function(){
