@@ -420,7 +420,9 @@ define([
 		},
 		
 		handleType: function(type){
-			if(this.getModelType() == "correct"){
+            console.log("modeltype",this.getModelType());
+            var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
+            if(this.getModelType() == "correct"){
 				// Summary: Sets the type of the current node.
 				console.log("****** AUTHOR has chosen type ", type, this);
 				this.applyDirectives(this.authorPM.process(this.currentID,'type', type));
@@ -433,10 +435,10 @@ define([
 					type = "";
 				}
 				this.updateType(type);
-			}
+                this.updateStatus("type", type,  this._model.student.getType(studentNodeID));
+            }
 			else if(this.getModelType() == "given"){
 				this.controlMap.equation = "givenEquationBox";
-				var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
 				this._model.active.setType(studentNodeID, type);
 				if(type == "function"){
 					if(this._model.active.getInitial(studentNodeID) === "number"){
@@ -452,17 +454,20 @@ define([
 					var equationNode = registry.byId(this.controlMap.equation);
 					equationNode.set("value", "");
 					this._model.active.setEquation(studentNodeID, '');
+                    registry.byId(this.controlMap.initial).set("disabled", false);
 					registry.byId(this.controlMap.inputs).set("disabled", true);
 					registry.byId(this.controlMap.equation).set("disabled", true);
 				}
 				if(type == "accumulator"){
-					registry.byId(this.controlMap.inputs).set("disabled", false);
+                    registry.byId(this.controlMap.initial).set("disabled", false);
+                    registry.byId(this.controlMap.inputs).set("disabled", false);
 					registry.byId(this.controlMap.equation).set("disabled", false);
 					registry.byId(this.controlMap.equation).set("disabled", false);
 				}
-			}
+                this.updateStatus("type", this._model.given.getType(this.currentID), type);
+            }
 			//update student node status
-			this.updateStatus("type", this._model.given.getType(this.currentID), type);
+
 			var valueFor = this.getModelType() == "given" ? "student-model": "author-model";
 			this.logging.log("solution-step", {
 				type: "solution-enter",
@@ -473,21 +478,24 @@ define([
 				usage: valueFor
 			});
 		},
-		
+
 		handleUnits: function(units){
 			console.log("**************** in handleUnits ", units);
 			// Summary: Sets the units of the current node.
 			var modelType = this.getModelType();
+			this.applyDirectives(this.authorPM.process(this.currentID, "units", units));
+			var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
+
 			if(modelType == "given"){
-				var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
 				this._model.active.setUnits(studentNodeID, units);
+				this.updateStatus("units", this._model.given.getUnits(this.currentID), units);
 			}
 			else{
 				this._model.active.setUnits(this.currentID, units);
+				this.updateStatus("units", units, this._model.student.getUnits(studentNodeID));
 			}
-			this.applyDirectives(this.authorPM.process(this.currentID, "units", units));
+
 			//update student node status
-			this.updateStatus("units", this._model.given.getUnits(this.currentID), units);
 			var valueFor = modelType == "given" ? "student-model": "author-model";
 			this.logging.log("solution-step", {
 				type: "solution-enter",
@@ -495,7 +503,7 @@ define([
 				property: "units",
 				value: units,
 				node: this._model.given.getName(this.currentID),
-				usage: valueFor 
+				usage: valueFor
 			});
 		},
 		/*
@@ -504,23 +512,45 @@ define([
 		handleInitial: function(initial){
 			//IniFlag contains the status and initial value
 			var modelType = this.getModelType();
-			var IniFlag = typechecker.checkInitialValue(this.widgetMap.initial, this.lastInitial);
+			var tempIni = dom.byId(this.widgetMap.initial);
+			var tempInival = tempIni.value.trim();
+			console.log("result",tempInival);
+			console.log("model",modelType);
+			var IniFlag = {status: undefined, value: undefined };
+			if(!((modelType === "given") && (tempInival == '') )){
+				console.log("typechecker is being called");
+				IniFlag = typechecker.checkInitialValue(this.widgetMap.initial, this.lastInitial);
+			}
+			else{
+				console.log("initial value empty case being called");
+				IniFlag  = {status: true, value: undefined};
+			}
 			var logObj = {};
+			console.log("current status of initial flag is",IniFlag.value);
 			if(IniFlag.status){
 				// If the initial value is not a number or is unchanged from
 				// previous value we dont process
 				var newInitial = IniFlag.value;
 				this.applyDirectives(this.authorPM.process(this.currentID, "initial", newInitial, true));
 				console.log("In AUTHOR mode. Initial value is: " + newInitial);
+				var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
+				console.log("student node id is", studentNodeID);
+				var studNodeInitial = this._model.student.getInitial(studentNodeID);
 				if(modelType == "given"){
-					var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
+					//if the model type is given , the last initial value is the new student model value
+					//which in this case is second parameter
 					this._model.active.setInitial(studentNodeID, newInitial);
+					this.updateStatus("initial", this._model.given.getInitial(this.currentID), newInitial);
 				}
 				else{
 					this._model.active.setInitial(this.currentID, newInitial);
+					//if the model type is not given , the last initial value is the new author model value
+					//which in this case is first parameter
+					//if(studentNodeID)
+					this.updateStatus("initial", newInitial, studNodeInitial);
+
 				}
 				//update student node status
-				this.updateStatus("initial", this._model.given.getInitial(this.currentID), newInitial);
 				logObj = {
 					error: false
 				};
@@ -532,12 +562,12 @@ define([
 			}
 			var valueFor = modelType == "given" ? "student-model": "author-model";
 			logObj = lang.mixin({
-				type: "solution-enter", 
+				type: "solution-enter",
 				node: this._model.active.getName(this.currentID),
 				nodeID: this.currentID,
 				property: "initial",
 				value: initial,
-				usage: valueFor					
+				usage: valueFor
 			}, logObj);
 
 			this.logging.log("solution-step", logObj);
