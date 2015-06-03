@@ -454,11 +454,13 @@ define([
 					var equationNode = registry.byId(this.controlMap.equation);
 					equationNode.set("value", "");
 					this._model.active.setEquation(studentNodeID, '');
+                    registry.byId(this.controlMap.initial).set("disabled", false);
 					registry.byId(this.controlMap.inputs).set("disabled", true);
 					registry.byId(this.controlMap.equation).set("disabled", true);
 				}
 				if(type == "accumulator"){
-					registry.byId(this.controlMap.inputs).set("disabled", false);
+                    registry.byId(this.controlMap.initial).set("disabled", false);
+                    registry.byId(this.controlMap.inputs).set("disabled", false);
 					registry.byId(this.controlMap.equation).set("disabled", false);
 					registry.byId(this.controlMap.equation).set("disabled", false);
 				}
