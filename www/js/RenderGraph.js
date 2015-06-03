@@ -532,6 +532,17 @@ define([
 
 		disableStaticSlider: function()
 		{
+			var staticVar = this.checkStaticVar(true);
+			var id = staticVar.ID;
+			var parameters = this.checkForParameters();
+			array.forEach(parameters, function(parameter){
+				dom.byId("labelGraph_" + parameter.ID).style.display = "initial";			
+				dom.byId("textGraph_" + parameter.ID).style.display = "initial";			
+				dom.byId("sliderGraph_" + parameter.ID).style.display = "initial";
+			});
+			dom.byId("labelGraph_" +id).style.display = "none";			
+			dom.byId("textGraph_" + id).style.display = "none";			
+			dom.byId("sliderGraph_" + id).style.display = "none";
 
 		},
 
@@ -654,7 +665,6 @@ define([
 									title: this.labelString(id)
 									});
 							}
-							console.log(this.chart);
 							if(this.isCorrect)
 							{
 								this.chart[id].updateSeries(
@@ -933,7 +943,6 @@ define([
 
 		formatAxes: function(text, value, precision){
 			if(value > 10000){
-				console.log(value.toPrecision(3));
 				return value.toPrecision(3);
 			}
 			else{
