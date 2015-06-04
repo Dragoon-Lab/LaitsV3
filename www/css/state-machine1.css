@@ -134,7 +134,7 @@
 .parameter {
     width: 60px;
     height: 60px;
-    margin: 23px 0 0 30px;
+    /*margin: 23px 0 0 30px;*/
     z-index:20; position:absolute;
     /* Rotate */
     -webkit-transform: rotate(-45deg);

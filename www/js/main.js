@@ -325,13 +325,13 @@ define([
 						node.style.top = topLimit+"px";  // BUG: This needs to correct for scroll
 					}
 				}
-				givenModel.active.setPosition(mover.node.id, {"x": g.x, "y": g.y});
+				givenModel.active.setPosition(mover.node.id, {"x": g.x, "y": g.y+scrollTop});
 
 				//Update position for student node
 				if(controllerObject._mode == "AUTHOR"){
 					var studentNodeID = givenModel.student.getNodeIDFor(mover.node.id);
 					if(typeof studentNodeID !== "undefined" && studentNodeID != null ){
-						givenModel.student.setPosition(studentNodeID, {"x": g.x, "y": g.y});
+						givenModel.student.setPosition(studentNodeID, {"x": g.x, "y": g.y+scrollTop});
 					}
 				}
 				// It would be more efficient if we only saved the changed node.
