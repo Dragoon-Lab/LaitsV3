@@ -48,17 +48,6 @@ var sync = require('synchronize');
 // import wrapper for asynchronous functions
 var async = sync.asyncIt;
 
-function wait(milliseconds)
-{
-  var start = new Date().getTime();
-  for (var i = 0; i < 1e30; i++) {
-    if ((new Date().getTime() - start) > milliseconds){
-      break;
-    }
-  }
-  throw new Error("wait ended early");
-}
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 var originalTab = "";
