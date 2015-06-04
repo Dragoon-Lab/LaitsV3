@@ -190,7 +190,7 @@ define([
                         var newModel = this.givenModel;
                         //checking for incomplete nodes
                         array.forEach(this.givenModel.active.getNodes(), function (node) {
-                            if (!newModel.active.isComplete(node.ID,true)) {
+                            if (!newModel.active.isComplete(node.ID)) {
                                 errordialogWidget.set("content", "<div>The problem has one or more incomplete nodes.</div>");
                                 check_for_problem = true;
                                 errordialogWidget.show();
