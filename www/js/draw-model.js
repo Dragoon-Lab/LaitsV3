@@ -212,6 +212,10 @@ define([
 		addNode: function(/*object*/ node){
 
 			var type = node.type || "triangle";
+			var mx=0, my=0, offsetTop=30.975
+			if (type=="parameter") {
+			 mx=-13.66903;	 my=-13.64405;
+			}
 			console.log("------- Adding element to canvas, id = ", node.ID, ", class = ", type);
 			// Add div to drawing
 			console.log("	   --> setting position for vertex : "+ node.ID +" position: x"+node.position.x+"  y:"+node.position.y);
@@ -223,14 +227,15 @@ define([
 				id: node.ID,
 				"class": type,
 				style: {
-					left: node.position.x +'px', 
-					top: node.position.y +'px',
+					left: node.position.x-mx+'px', 
+					top: node.position.y-offsetTop-my+'px',
 					border: colorBorder.border,
 					'box-shadow': colorBorder.boxShadow,
 					backgroundColor: colorBorder.backgroundColor
 				},
 				innerHTML: nodeName
 			},"statemachine-demo");
+			console.log("node created",vertex);
 			//domConstruct.place(vertex, "statemachine-demo");
 
 			//add menu to delete or we can iterate over all node.IDs and do following
