@@ -491,19 +491,21 @@ define([
 			{
 				stateStore.put({id:node.description, name:node.description});
 			});
-    var comboBox = new ComboBox({
-        id: "staticSelect",
-        name: "state",
-        value: staticNodes[0].description,
-        store: stateStore,
-        searchAttr: "name"
-    }, "staticSelect");
-    	//console.log(comboBox);
-    	this.registerEventOnStaticChange(comboBox);
-    	on(comboBox, "change", lang.hitch(this, function(){
-				this.renderStaticDialog();
-			}));
-		},
+    		var comboBox = new ComboBox({
+        	id: "staticSelect",
+	        name: "state",
+	        value: staticNodes[0].description,
+	        store: stateStore,
+	        searchAttr: "name"
+	    	}, "staticSelect");
+	    	//console.log(comboBox);	    	
+			this.disableStaticSlider();
+	    	this.registerEventOnStaticChange(comboBox);
+	    	on(comboBox, "change", lang.hitch(this, function(){
+					this.renderStaticDialog();
+					this.disableStaticSlider();
+				}));
+			},
 
 		checkForStatic: function(solution)
 		{
@@ -526,6 +528,22 @@ define([
 				});
 			});
 			return isStatic;
+		},
+
+		disableStaticSlider: function()
+		{
+			var staticVar = this.checkStaticVar(true);
+			var id = staticVar.ID;
+			var parameters = this.checkForParameters();
+			array.forEach(parameters, function(parameter){
+				dom.byId("labelGraph_" + parameter.ID).style.display = "initial";			
+				dom.byId("textGraph_" + parameter.ID).style.display = "initial";			
+				dom.byId("sliderGraph_" + parameter.ID).style.display = "initial";
+			});
+			dom.byId("labelGraph_" +id).style.display = "none";			
+			dom.byId("textGraph_" + id).style.display = "none";			
+			dom.byId("sliderGraph_" + id).style.display = "none";
+
 		},
 
 		generateErrorMessage: function(solution)
@@ -649,7 +667,6 @@ define([
 									title: this.labelString(id)
 									});
 							}
-							console.log(this.chart);
 							if(this.isCorrect)
 							{
 								this.chart[id].updateSeries(
@@ -721,6 +738,7 @@ define([
 				if(this.mode != "AUTHOR")
 				{
 					var staticVar = this.checkStaticVar(true);
+
 					var activeSolution = this.findStaticSolution(true, staticVar, this.active.plotVariables);
 					//update and render the charts
 					array.forEach(this.active.plotVariables, function(id, k){
@@ -926,11 +944,12 @@ define([
 		},
 
 		formatAxes: function(text, value, precision){
-			console.log(text, value, precision);
-			if(value > 10000)
-				return Number(text).toExponential();
-			else
+			if(value > 10000){
+				return value.toPrecision(3);
+			}
+			else{
 				return text;
+			}
 		}
 	});
 });
