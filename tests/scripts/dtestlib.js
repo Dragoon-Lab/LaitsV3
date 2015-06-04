@@ -256,63 +256,99 @@ exports.changeClient = function (client, newClient)
     client.end();
     await(newClient.init().url(url.value, defer()));
 }
+
+exports.getCurrentTabId = function(client){
+    return await(client.getCurrentTabId(client,defer()));
+}
+
+exports.switchTab = function(client,tabId){
+    await(client.switchTab(tabId,defer()));
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 2. Menu bar functions
 
-exports.menuCreateNode = function(client){  
+exports.menuCreateNode = function(client){
+    await(client.waitForVisible('span[id="createNodeButton_label"]',defer()));    
     await(client.click('span[id="createNodeButton_label"]',defer()));
     wait(200);
 }
 
 exports.menuOpenGraph = function(client){
+    await(client.waitForVisible('#graphButton',defer()));    
     await(client.click('#graphButton',defer()));
 }
 
 exports.menuOpenTable = function(client){
+    await(client.waitForVisible('#tableButton',defer()));
     await(client.click('#tableButton',defer()));
 }
 
 exports.menuOpenForum = function(client){
+    await(client.waitForVisible('#forumButton',defer()));
     await(client.click('#forumButton',defer()));
 }
 
 exports.menuOpenAuthorOptions = function(client){
+    await(client.waitForVisible('#descButton',defer()));
     await(client.click('#descButton',defer()));
 }
 
 exports.menuOpenSaveAs = function(client){
+    await(client.waitForVisible('#saveButton',defer()));
     await(client.click('#saveButton',defer()));
 }
 
 exports.menuOpenPreview = function(client){
+    await(client.waitForVisible('#previewButton',defer()));
+    var oldTabs = await(client.getTabIds(client,defer()));
+    //console.log("Old tabs: "+oldTabs);
     await(client.click('#previewButton',defer()));
+    var newTabs = await(client.getTabIds(client,defer()));
+    //console.log("New tabs: "+newTabs);
+    for (var i = 0; i < newTabs.length; i++){
+        //console.log("index of tab "+newTabs[i]+" is "+oldTabs.indexOf(newTabs[i]));
+        if (oldTabs.indexOf(newTabs[i]) == -1){
+            //console.log("New tab found: "+newTabs[i]);
+            await(client.switchTab(newTabs[i],defer()));
+        }
+    }
 }
 
 exports.menuOpenHints = function(client){
+    await(client.waitForVisible('#descButton',defer()));
     await(client.click('#descButton',defer()));
 }
 
 exports.menuOpenHelpIntroduction = function(client){
+    await(client.waitForVisible('#dijit_PopupMenuBarItem_0_text',defer()));
     await(client.click('#dijit_PopupMenuBarItem_0_text',defer()));
     await(client.click('#menuIntroText',defer()));
 }
 
 exports.menuOpenHelpIntroVideo = function(client){
+    await(client.waitForVisible('#dijit_PopupMenuBarItem_0_text',defer()));
     await(client.click('#dijit_PopupMenuBarItem_0_text',defer()));
     await(client.click('#menuIntroVideo',defer()));
 }
 
 exports.menuOpenHelpMathFunctions = function(client){
+    await(client.waitForVisible('#dijit_PopupMenuBarItem_0_text',defer()));
     await(client.click('#dijit_PopupMenuBarItem_0_text',defer()));
     await(client.click('#menuMathFunctions',defer()));
 }
 
 exports.menuOpenLessonsLearned = function(client){
+    await(client.waitForVisible('#lessonsLearnedButton',defer()));
     await(client.click('#lessonsLearnedButton',defer()));
 }
 
 exports.menuDone = function(client){
-    await(client.click('#doneButton',defer()));
+    await(client.waitForExist('#doneButton_label',defer()));
+    //console.log("current tab before wait: "+ await(client.getCurrentTabId(client,defer())) );
+    await(client.waitForVisible('#doneButton_label',defer()));
+    //console.log("current tab after wait: "+ await(client.getCurrentTabId(client,defer())) );
+    await(client.click('#doneButton_label',defer()));
 }
 
 
@@ -508,6 +544,27 @@ exports.setNodeDescription = function(client, description){
     }
 }
 
+//////////////////////////////////////////////////
+// Root node toggle
+
+//returns true for checked and false for unchecked
+exports.checkRootNode = function(client){
+    var result = await(client.getAttribute('#markRootNode','aria-checked' ,defer())); 
+    console.log(result);
+    if(result == 'true')
+        return true;
+    else
+        return false
+}
+
+//Set to true(checked) or set to false(unchecked) (defaults to setting to true)
+exports.clickRootNode = function(client){
+        await(client.click('#markRootNode', defer()));
+        return;
+}
+
+
+
 
 //////////////////////////////////////////////////
 // Node type
@@ -698,8 +755,8 @@ exports.nodeEditorDone = function(client){
 }
 
 exports.closeNodeEditor = function(client){
-    // Summary: Closes node editor using the "x"
-    await(client.click('span[class="dijitDialogCloseIcon"]',defer()));
+    // Summary: Closes node editor using the "x"    
+    await(client.click("#nodeeditor > div.dijitDialogTitleBar > span.dijitDialogCloseIcon",defer()));
 }
 
 exports.nodeEditorDelete = function(client){
@@ -785,7 +842,9 @@ exports.tableGetValue = function(client,row,column){
 
 exports.closeGraphAndTableWindow = function(client){
     // Summary: closes the graph/table window
-    await(client.click('span[class="dijitDialogCloseIcon"]',defer()));
+    await(
+        client.click('#solution > div.dijitDialogTitleBar.dijitAlignTop > span.dijitDialogCloseIcon'
+                    ,defer()));
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -802,13 +861,22 @@ exports.pressProblemAndTimesDone = function(client){
     wait(200);
 }
 
-//exports.closeProblemAndTimesWindow = function(client){
-//    // Summary: closes the problem & times window
-//    await(client.click('span[class="dijitDialogCloseIcon"]',defer()));
-//}
+exports.closeProblemAndTimesWindow = function(client){
+    // Summary: closes the problem & times window
+    await(
+        client.click(
+            '#authorDescDialog > div.dijitDialogTitleBar.dijitAlignTop > span.dijitDialogCloseIcon',
+            defer()));
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 7.  "Save as..." window functions
+
+exports.closeSaveAsWindow = function(client){
+    // Summary: closes the save as window    
+    await(client.click("#authorSaveDialog > div.dijitDialogTitleBar > span.dijitDialogCloseIcon",
+            defer()));
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 8.  Hint slides window functions
