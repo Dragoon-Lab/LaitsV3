@@ -301,9 +301,14 @@ define([
 			var targetId = attr.get(destination, "id");
 			var parse = this._givenModel.getEquation(targetId), isSum, isProduct;
 			if(parse){
-				parse = equation.parse(parse);
-				isSum = equation.isSum(parse);
-				isProduct = equation.isProduct(parse);
+				try{
+					parse = equation.parse(parse);
+					isSum = equation.isSum(parse);
+					isProduct = equation.isProduct(parse);
+				}
+				catch(err){
+					console.log("Parse Error" + err);
+				}
 			}
 
 			array.forEach(this._instance.getConnections(), function(connection){
@@ -348,9 +353,13 @@ define([
 			array.forEach(destinations, function(destination){
 				var parse = this._givenModel.getEquation(destination), isSum, isProduct;
 				if(parse){
-					parse=equation.parse(parse);
-					isSum=equation.isSum(parse);
-					isProduct=equation.isProduct(parse);
+					try{
+						parse=equation.parse(parse);
+						isSum=equation.isSum(parse);
+						isProduct=equation.isProduct(parse);
+					}catch(err){
+						console.log("Parse Error" + err);
+					}
 				}
 
 				//check for call from student mode
