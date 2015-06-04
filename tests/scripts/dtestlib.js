@@ -77,6 +77,7 @@ function findIdbyName(client, nodeName){
     }
     return result;
 }
+
 function findDropDownByName(client, name){
     var notFound = true;
     var counter = 0;
@@ -95,6 +96,21 @@ function findDropDownByName(client, name){
         counter++;
     }
     return result;
+}
+
+function selectDropdownValue(client,dropDownID,value){
+    await(client.waitForVisible(dropDownID,defer()));
+    await(client.click(dropDownID, defer()));
+    await(client.waitForVisible(dropDownID+'_menu', defer()));
+    var number = findDropDownByName(client, value);
+    if(number != null)
+    {
+        await(client.click('#dijit_MenuItem_' + number, defer()));
+    }
+    else
+    {
+        await(client.click(dropDownID, defer()));
+    }
 }
 
 function wait(milliseconds)
@@ -346,7 +362,7 @@ exports.menuOpenLessonsLearned = function(client){
 exports.menuDone = function(client){
     await(client.waitForExist('#doneButton_label',defer()));
     //console.log("current tab before wait: "+ await(client.getCurrentTabId(client,defer())) );
-    await(client.waitForVisible('#doneButton_label',defer()));
+    await(client.waitForVisible('#doneButton_label',5000,defer()));
     //console.log("current tab after wait: "+ await(client.getCurrentTabId(client,defer())) );
     await(client.click('#doneButton_label',defer()));
 }
@@ -414,20 +430,22 @@ exports.getNodeInteriorText = function(client,nodeName){
 
 
 
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 4. Node editor window functions -- these require an open node!!
 
 // TODO: add getters for disabled state and color for all applicable boxes
 
 //////////////////////////////////////////////////
-//Show in student model
+// Show in student model (author mode only)
 
 exports.getShownInStudentModel = function(client){
     console.warn("Not yet implemented.");
 }
 
 exports.setShownInStudentModel = function(client, shown){
-    console.warn("Not yet implemented.");
+    await(client.waitForVisible('#setStudentNode',defer()));    
+    await(client.click('#setStudentNode',defer()));
 }
 
 //Select model
@@ -435,8 +453,12 @@ exports.getSelectModel = function(client){
     console.warn("Not yet implemented.");
 }
 
-exports.setSelectModel = function(client){
-    console.warn("Not yet implemented.");
+exports.selectAuthorsModel = function(client){
+    selectDropdownValue(client,'#selectModel',"Author\'s Values");
+}
+
+exports.selectStudentModel = function(client){
+    selectDropdownValue(client,'#selectModel',"Initial Student Values");
 }
 
 //////////////////////////////////////////////////
@@ -473,14 +495,15 @@ exports.popupWindowPressCancel = function(client){
 }
 
 //////////////////////////////////////////////////
-//Kind of quantity
+// Kind of quantity
 
 exports.getKindOfQuantity = function(client){
     console.warn("Not yet implemented.");
 }
 
 exports.setKindOfQuantity = function(client, type){
-    await(client.click('#selectKind', defer()));
+    selectDropdownValue(client,"#selectKind",type);
+    /*await(client.click('#selectKind', defer()));
     wait(100);
     await(client.waitForVisible('#selectKind_menu', defer()));
     var number = findDropDownByName(client, type);
@@ -491,7 +514,7 @@ exports.setKindOfQuantity = function(client, type){
     else
     {
         await(client.click('#selectKind', defer()));
-    }
+    }*/
 }
 
 //////////////////////////////////////////////////
@@ -525,7 +548,8 @@ exports.isNodeDescriptionDisabled = function(client){
 exports.setNodeDescription = function(client, description){
     if(await(client.isVisible('#selectDescription',defer())))
     {
-        await(client.click('#selectDescription', defer()));
+        selectDropdownValue(client,"#selectDescription",description);
+        /*await(client.click('#selectDescription', defer()));
         //await(client.click('#selectDescription', defer()));
         await(client.waitForVisible('#selectDescription_menu', defer()));
         var number = findDropDownByName(client, description);
@@ -536,7 +560,7 @@ exports.setNodeDescription = function(client, description){
         else
         {
             await(client.click('#selectDescription', defer()));
-        }
+        }*/
     }
     else
     {
@@ -588,7 +612,8 @@ exports.isNodeTypeDisabled = function(client){
 }
 
 exports.setNodeType = function(client,type){
-    await(client.click('#typeId', defer()));
+    selectDropdownValue(client,'#typeId',type);
+    /*await(client.click('#typeId', defer()));
     await(client.waitForVisible('#typeId_menu', defer()));
     var number = findDropDownByName(client, type);
     if(number != null)
@@ -598,7 +623,7 @@ exports.setNodeType = function(client,type){
     else
     {
         await(client.click('#selectKind', defer()));
-    }
+    }*/
 }
 
 //////////////////////////////////////////////////
@@ -656,7 +681,8 @@ exports.setNodeUnits = function(client,units){
     try{
         if(await(client.isVisible('#selectUnits',defer())))
         {
-            await(client.click('#selectUnits', defer()));
+            selectDropdownValue(client,'#selectUnits',units);
+            /*await(client.click('#selectUnits', defer()));
             await(client.waitForVisible('#selectUnits_menu', defer()));
             var number = findDropDownByName(client, units);
             if(number != null)
@@ -666,7 +692,7 @@ exports.setNodeUnits = function(client,units){
             else
             {
                 await(client.click('#selectUnits', defer()));
-            }
+            }*/
         }
         else
         {
