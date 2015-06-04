@@ -48,37 +48,48 @@ var sync = require('synchronize');
 // import wrapper for asynchronous functions
 var async = sync.asyncIt;
 
+function getDate(){
+    var date = new Date();
+    var dd = date.getDate();
+    var mm = date.getMonth()+1;
+    var yyyy = date.getFullYear();
+    var seconds = date.getTime()/1000;
+
+    date = mm+'/'+dd+'/'+yyyy+'/'+seconds;
+    return date;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var originalTab = "";
+var username = "";
+describe("Parse error crash on load bug", function() {
 
-describe("Schema preview bug", function() {
-
-    before(async(function (done) {
-            dtest.openProblem(client,[["problem","rabbits"],["mode","AUTHOR"],
-                                      ["section","regression-testing"]]);
+    it("should open rabbits", async(function(){
+      dtest.openProblem(client,[["problem","rabbits"],["mode","STUDENT"],
+                                ["section","regression-testing"]]);
+      username = dtest.getCurrentUsername(client);      
     }));
 
-    describe("Test for broken preview in problem with schemas", function(){
-        it("Should close the save as dialog", async(function(){
-            originalTab = dtest.getCurrentTabId(client);
-            dtest.closeSaveAsWindow(client);
-        }));
+    it("should create a faulty expression", async(function(){
+        dtest.menuCreateNode(client);
+        dtest.setNodeDescription(client, "The number of rabbits in the population");
+        dtest.popupWindowPressOk(client);
+        dtest.setNodeType(client, "Accumulator");
+        dtest.popupWindowPressOk(client);
+        dtest.setNodeExpression(client, "net growth+");
+        dtest.checkExpression(client);
+        dtest.nodeEditorDone(client);
+        dtest.menuDone(client);
+    }));
 
-        it("Should open the preview", async(function(){
-            dtest.menuOpenPreview(client);
-        }));
-
-        it("Should close the preview on hitting the done button", async(function(){            
-            dtest.menuDone(client);
-        }));
-
-        it("Should return to author tab", async(function(){
-            dtest.switchTab(client,originalTab);
-            dtest.menuOpenAuthorOptions(client);
-            dtest.pressCheckProblemButton(client);
-        })); 
-    });
+    it("should re-open the problem successfully", async(function(){
+      dtest.openProblem(client,[["problem","rabbits"],["mode","STUDENT"],
+                                ["section","regression-testing"],["user",username]]);
+      dtest.openEditorForNode(client,"population");
+      atest.checkNodeValues([["expectedExpression","net growth+"],
+                             ["expectedExpressionColor","red"]],dtest,client);
+      dtest.nodeEditorDone(client);
+    }));
 
     after(function(done) {
         client.end();

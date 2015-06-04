@@ -237,7 +237,11 @@ exports.openProblem = function(client,parameters){
     var url = urlRoot + '?' + user + section + problem + mode + nodeEditorMode + group + logging +
               "&c=Continue";
 
-    await(client.init().url(url,defer()));
+    if(await(client.session(defer())) === undefined){
+        await(client.init().url(url,defer()));
+    } else {
+        await(client.url(url,defer()));
+    }
 }
 
 //Test Functions
@@ -279,6 +283,12 @@ exports.getCurrentTabId = function(client){
 
 exports.switchTab = function(client,tabId){
     await(client.switchTab(tabId,defer()));
+}
+
+exports.getCurrentUsername = function(client){
+    // returns the username from the URL parameter (assumes there is a parameter after u=)
+    var url = client.url(defer()).requestHandler.fullRequestOptions.body;
+    return url.split('u=')[1].split('&')[0];
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
