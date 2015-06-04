@@ -227,7 +227,7 @@ define([
 				id: node.ID,
 				"class": type,
 				style: {
-					left: node.position.x-mx+'px', 
+					left: node.position.x-mx+'px',
 					top: node.position.y-offsetTop-my+'px',
 					border: colorBorder.border,
 					'box-shadow': colorBorder.boxShadow,
@@ -235,7 +235,6 @@ define([
 				},
 				innerHTML: nodeName
 			},"statemachine-demo");
-			console.log("node created",vertex);
 			//domConstruct.place(vertex, "statemachine-demo");
 
 			//add menu to delete or we can iterate over all node.IDs and do following
