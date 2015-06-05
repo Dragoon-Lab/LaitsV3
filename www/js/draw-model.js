@@ -148,7 +148,7 @@ define([
 		colorNodeBorder: function(/*Object*/ nodeID, updateNode){
 			var type = this._givenModel.getNode(nodeID).type;
 
-			var isComplete = this._givenModel.isComplete(nodeID, true)?'solid':'dashed';
+			var isComplete = this._givenModel.isComplete(nodeID)?'solid':'dashed';
 			var colorMap = {
 				correct: "green",
 				incorrect: "#FF8080",
@@ -212,6 +212,10 @@ define([
 		addNode: function(/*object*/ node){
 
 			var type = node.type || "triangle";
+			var mx=0, my=0, offsetTop=30.975
+			if (type=="parameter") {
+			 mx=-13.66903;	 my=-13.64405;
+			}
 			console.log("------- Adding element to canvas, id = ", node.ID, ", class = ", type);
 			// Add div to drawing
 			console.log("	   --> setting position for vertex : "+ node.ID +" position: x"+node.position.x+"  y:"+node.position.y);
@@ -223,8 +227,8 @@ define([
 				id: node.ID,
 				"class": type,
 				style: {
-					left: node.position.x +'px', 
-					top: node.position.y +'px',
+					left: node.position.x-mx+'px',
+					top: node.position.y-offsetTop-my+'px',
 					border: colorBorder.border,
 					'box-shadow': colorBorder.boxShadow,
 					backgroundColor: colorBorder.backgroundColor
@@ -297,9 +301,14 @@ define([
 			var targetId = attr.get(destination, "id");
 			var parse = this._givenModel.getEquation(targetId), isSum, isProduct;
 			if(parse){
-				parse = equation.parse(parse);
-				isSum = equation.isSum(parse);
-				isProduct = equation.isProduct(parse);
+				try{
+					parse = equation.parse(parse);
+					isSum = equation.isSum(parse);
+					isProduct = equation.isProduct(parse);
+				}
+				catch(err){
+					console.log("Parse Error" + err);
+				}
 			}
 
 			array.forEach(this._instance.getConnections(), function(connection){
@@ -344,9 +353,13 @@ define([
 			array.forEach(destinations, function(destination){
 				var parse = this._givenModel.getEquation(destination), isSum, isProduct;
 				if(parse){
-					parse=equation.parse(parse);
-					isSum=equation.isSum(parse);
-					isProduct=equation.isProduct(parse);
+					try{
+						parse=equation.parse(parse);
+						isSum=equation.isSum(parse);
+						isProduct=equation.isProduct(parse);
+					}catch(err){
+						console.log("Parse Error" + err);
+					}
 				}
 
 				//check for call from student mode

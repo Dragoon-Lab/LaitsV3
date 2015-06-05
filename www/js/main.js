@@ -142,8 +142,8 @@ define([
                     //check for completeness of all nodes
                     console.log("inside completeness verifying function");
                     array.forEach(givenModel.given.getNodes(), function (node) {
-                        console.log("node is", node, givenModel.given.isComplete(node.ID,true));
-                        if (!givenModel.given.isComplete(node.ID,true)) {
+                        console.log("node is", node, givenModel.given.isComplete(node.ID));
+                        if (!givenModel.given.isComplete(node.ID)) {
                             throw new Error("Problem is Incomplete");
                         }
                     });
@@ -325,13 +325,13 @@ define([
 						node.style.top = topLimit+"px";  // BUG: This needs to correct for scroll
 					}
 				}
-				givenModel.active.setPosition(mover.node.id, {"x": g.x, "y": g.y});
+				givenModel.active.setPosition(mover.node.id, {"x": g.x, "y": g.y+scrollTop});
 
 				//Update position for student node
 				if(controllerObject._mode == "AUTHOR"){
 					var studentNodeID = givenModel.student.getNodeIDFor(mover.node.id);
 					if(typeof studentNodeID !== "undefined" && studentNodeID != null ){
-						givenModel.student.setPosition(studentNodeID, {"x": g.x, "y": g.y});
+						givenModel.student.setPosition(studentNodeID, {"x": g.x, "y": g.y+scrollTop});
 					}
 				}
 				// It would be more efficient if we only saved the changed node.
@@ -371,7 +371,7 @@ define([
 						}
 					}, this);
 					if(typeof controllerObject._model.active.getType(controllerObject.currentID) !== "undefined"){
-						var isComplete = givenModel.given.isComplete(controllerObject.currentID, true)?'solid':'dashed';
+						var isComplete = givenModel.given.isComplete(controllerObject.currentID)?'solid':'dashed';
 						var borderColor = "3px "+isComplete+" gray";
 						style.set(controllerObject.currentID, 'border', borderColor);
 						style.set(controllerObject.currentID, 'backgroundColor', "white");
