@@ -79,10 +79,10 @@ describe("Parse error crash on load bug", function() {
         dtest.setNodeExpression(client, "net growth+");
         dtest.checkExpression(client);
         dtest.nodeEditorDone(client);
-        dtest.menuDone(client);
     }));
 
     it("should re-open the problem successfully", async(function(){
+      console.log("entering next problem");
       dtest.openProblem(client,[["problem","rabbits"],["mode","STUDENT"],
                                 ["section","regression-testing"],["user",username]]);
       dtest.openEditorForNode(client,"population");
