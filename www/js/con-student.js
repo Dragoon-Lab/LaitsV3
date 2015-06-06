@@ -279,6 +279,7 @@ define([
 			if(!isDemo){
 				this.createExpressionNodes(parse, false);
 			}
+			return directives;
 		},
 
 		equationSet: function(value){

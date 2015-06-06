@@ -136,11 +136,16 @@ define([
 				return function(){
 					var equation = registry.byId("equationBox");
 					if(equation.value && !myThis.equationEntered){
-						//Crisis alert popup if equation not checked
-						myThis.applyDirectives([{
-							id: "crisisAlert", attribute:
-							"open", value: "Your expression has not been checked!  Go back and check your expression to verify it is correct, or delete the expression, before closing the node editor."
-						}]);
+						var directives = myThis.equationDoneHandler();
+						var isAlertShown = array.some(directives, function(directive){
+							if(directive.id === 'crisisAlert'){
+								return true;
+							}
+						});
+						if(!isAlertShown) {
+							doHide.apply(myThis._nodeEditor);
+							myThis.closeEditor.call(myThis);
+						}
 					}
 					else if(myThis._mode == "AUTHOR" && registry.byId("selectModel").value == "given"){
 						var equation = registry.byId("givenEquationBox");
