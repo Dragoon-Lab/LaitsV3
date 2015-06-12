@@ -75,7 +75,6 @@ describe("Test author mode", function() {
             dtest.openEditorForNode(client, "growth rate");
             dtest.waitTime(100);         
             dtest.setNodeDescription(client, "The number of additional rabbits per year per rabbit");
-            //dtest.setNodeInitialValue(client, 0.3);
             dtest.setKindOfQuantity(client, "in model & required");
             dtest.setNodeType(client, "Parameter");
             dtest.setNodeUnits(client, "1/year");
@@ -146,15 +145,7 @@ describe("Test author mode", function() {
             assert(expression === expectedExpression,
                 "Expression was " + expression + "instead of \"" + expectedExpression + "\"");
         }));
-        /*  // need to add facilities for checking root node before this
-        it("Should detect that the problem is incomplete", async(function(){
-            dtest.menuOpenAuthorOptions(client);
-            dtest.pressCheckProblemButton(client);
-            atest.popupContainsText("The problem has one or more incomplete nodes.",dtest,client);
-            dtest.popupWindowPressCancel(client);
-            dtest.pressProblemAndTimesDone(client);
-        }));
-        */
+
         it("Should have correct function values", async(function(){
             dtest.openEditorForNode(client, "net growth");
 
