@@ -222,6 +222,7 @@ exports.openProblem = function(client,parameters){
               "&c=Continue";
 
     await(client.init().url(url,defer()));
+    client.windowHandleMaximize();
 }
 
 //Test Functions
