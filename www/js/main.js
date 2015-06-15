@@ -768,6 +768,14 @@ define([
 					}		
 				});
 			}
+			if(query.m == "STUDENT"){
+				style.set(registry.byId('forumButton').domNode, "display", "none");
+				style.set(registry.byId('schemaButton').domNode, "display", "none");
+				style.set(registry.byId('descButton').domNode, "display", "none");
+				style.set(registry.byId('saveButton').domNode, "display", "none");
+				style.set(registry.byId('mergeButton').domNode, "display", "none");
+				style.set(registry.byId('previewButton').domNode, "display", "none");
+			}
             /*
              Add link to intro video
              */
