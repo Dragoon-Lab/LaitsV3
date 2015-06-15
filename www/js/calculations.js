@@ -510,7 +510,7 @@ define([
 				//create label for name of a textbox
 				//create input for a textbox
 				//create div for embedding a slider
-				this.dialogContent += "<label>" + labelText + " = " + "</label>";
+				this.dialogContent += "<label id=\"labelGraph_" + paramID + "\">" + labelText + " = " + "</label>";
 				// The input element does not have an end tag so we can't use
 				// this.createDom().
 				// Set width as number of characters.

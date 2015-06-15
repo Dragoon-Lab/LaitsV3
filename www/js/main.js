@@ -142,8 +142,8 @@ define([
                     //check for completeness of all nodes
                     console.log("inside completeness verifying function");
                     array.forEach(givenModel.given.getNodes(), function (node) {
-                        console.log("node is", node, givenModel.given.isComplete(node.ID,true));
-                        if (!givenModel.given.isComplete(node.ID,true)) {
+                        console.log("node is", node, givenModel.given.isComplete(node.ID));
+                        if (!givenModel.given.isComplete(node.ID)) {
                             throw new Error("Problem is Incomplete");
                         }
                     });
@@ -325,13 +325,13 @@ define([
 						node.style.top = topLimit+"px";  // BUG: This needs to correct for scroll
 					}
 				}
-				givenModel.active.setPosition(mover.node.id, {"x": g.x, "y": g.y});
+				givenModel.active.setPosition(mover.node.id, {"x": g.x, "y": g.y+scrollTop});
 
 				//Update position for student node
 				if(controllerObject._mode == "AUTHOR"){
 					var studentNodeID = givenModel.student.getNodeIDFor(mover.node.id);
 					if(typeof studentNodeID !== "undefined" && studentNodeID != null ){
-						givenModel.student.setPosition(studentNodeID, {"x": g.x, "y": g.y});
+						givenModel.student.setPosition(studentNodeID, {"x": g.x, "y": g.y+scrollTop});
 					}
 				}
 				// It would be more efficient if we only saved the changed node.
@@ -371,7 +371,7 @@ define([
 						}
 					}, this);
 					if(typeof controllerObject._model.active.getType(controllerObject.currentID) !== "undefined"){
-						var isComplete = givenModel.given.isComplete(controllerObject.currentID, true)?'solid':'dashed';
+						var isComplete = givenModel.given.isComplete(controllerObject.currentID)?'solid':'dashed';
 						var borderColor = "3px "+isComplete+" gray";
 						style.set(controllerObject.currentID, 'border', borderColor);
 						style.set(controllerObject.currentID, 'backgroundColor', "white");
@@ -479,13 +479,12 @@ define([
 					if(w == true){
 						var request_promise = session.publishProblem(givenModel.model);
 						var responseWidget = dom.byId("publishResponse");
-						request_promise.then(function(response_status){
-							console.log(response_status);							
-							if(response_status){
+						request_promise.then(function(response_status){						
+							if(response_status.status && response_status.status == "done"){
 								responseWidget.innerHTML = "Your problem has been successfully published";
 								style.set(responseWidget, "color", "green");
 							} else {
-								responseWidget.innerHTML = "Connection Error: Could not publish the problem";
+								responseWidget.innerHTML = response_status.error;
 								style.set(responseWidget, "color", "red");
 							}
 							style.set(responseWidget, "display", "block");
@@ -820,6 +819,15 @@ define([
 						   );
 			});
 
+			/*This is a work-around for getting a button to work inside a MenuBar.
+		 	Otherwise, there is a superfluous error message.
+		 	*/
+			array.forEach(menuButtons,function(menuButton){
+				registry.byId(menuButton)._setSelected = function(arg){
+				console.log(menuButton+" _setSelected called with ", arg);				
+			    }			    
+			});
+
 			// If we are loading a published problem in author mode, prompt user to perform a save-as immediately
             if(!query.g && query.m  === "AUTHOR"){
 				var message='<strong>You must choose a name and folder for the new copy of this problem.</strong>';
@@ -828,16 +836,6 @@ define([
 				dom.byId("saveMessage").innerHTML=message;
 				dialog.show();
 			}
-
-			/*This is a work-around for getting a button to work inside a MenuBar.
-		 	Otherwise, there is a superfluous error message.
-		 	*/
-			array.forEach(menuButtons,function(menuButton){
-				registry.byId(menuButton)._setSelected = function(arg){
-				console.log(menuButton+" _setSelected called with ", arg);
-				console.log(menuButtons+"in "+query.m);
-			    }			    
-			});
 
 		});
 
