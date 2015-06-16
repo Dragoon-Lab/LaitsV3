@@ -15,11 +15,12 @@ $model = $_REQUEST["sg"];
 
 try{
 	$modelArray = json_decode($model, true);
-	$completeModel = "{\"task\": $model}";
+	$completeModel = "{ task : $model}";	
 	$model = json_format($completeModel); // convert messy JSON to pretty JSON
 }
 catch(Exception $e){
-	echo "{ \"error\":\"".$e->e=getMessage(). "\"}";
+	echo "{ \"error\":\"".$e->getMessage(). "\"}";
+	exit(1);
 	// we need to log the error to the server log file	
 }	
 try {
