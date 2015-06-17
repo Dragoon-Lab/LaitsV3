@@ -29,6 +29,12 @@ describe("Test math functions:", function() {
                                       ["logging","True"]]);
     }));
 
+    describe("opening problem", function(){
+        it("Should close the save as dialog", async(function(){            
+            dtest.closeSaveAsWindow(client);
+        }));
+    });
+
     describe("checking table values:", function(){
         afterEach(async(function(){
             dtest.closeGraphAndTableWindow(client);

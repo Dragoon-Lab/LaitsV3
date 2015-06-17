@@ -378,7 +378,7 @@ define([
 				// Include all nodes that belong in the solution.
 				// Additionally we only include nodes that are complete,
 				// except for units.
-				if((!node.genus || node.genus === "required") && model.isComplete(node.ID, true)){ 
+				if((!node.genus || node.genus === "required") && model.isComplete(node.ID)){
 					switch(node.type){
 					case "parameter":
 						// No equation to parse

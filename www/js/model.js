@@ -895,7 +895,7 @@ define([
 				// Summary: tracks student progress (correct, incorrect) on a given node;
 				this.getNode(id).status[part] = status;
 			},
-			isComplete: function(/*string*/ id, /*bool*/ unitsOptional){
+			isComplete: function(/*string*/ id){
 				// Summary: Test whether a node is completely filled out, correct or not
 				// Returns a boolean
 				// id: the node id
@@ -909,20 +909,29 @@ define([
 				//	 2.	 Just units
 				//	 3.	 Optional quantity (needs name and description)
 				var node = this.getNode(id);
-				var initialEntered = node.type && node.type == "function" || node.initial != null;
+                var unitsOptional = true;
+                var initialEntered = node.type && node.type == "function" || node.initial != null;
+                var toReturn = '';
 				var equationEntered = node.type && node.type == "parameter" || node.equation;
-				if(!node.genus || node.genus == "required" || node.genus == "allowed" || node.genus == "preferred"){
-					return  node.name && node.description &&
+                console.log("checking the node being studies",node,initialEntered,equationEntered);
+                if(!node.genus || node.genus == "required" || node.genus == "allowed" || node.genus == "preferred"){
+					 toReturn = node.name && node.description &&
 							node.type && (initialEntered || typeof initialEntered === "number") &&
 							(unitsOptional || node.units) &&
 							equationEntered;
 				}else if(node.genus == "initialValue"){
-					return node.genus && node.name && node.description;
+					toReturn = node.genus && node.name && node.description;
 				}else{
-					return node.genus != "defaultSelect" && ((node.name && node.description) ||
+					toReturn = node.genus != "defaultSelect" && ((node.name && node.description) ||
 							node.units);
 				}
-			}
+			    if(toReturn) {
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
 		}, both);
 
 		obj.solution = lang.mixin({
@@ -1168,10 +1177,16 @@ define([
 				var hasUnits = node.descriptionID && obj.given.getUnits(node.descriptionID);
 				var initialEntered = node.type && node.type == "function" || node.initial != null;
 				var equationEntered = node.type && node.type == "parameter" || node.equation;
-				return node.descriptionID && node.type &&
+				var toReturn = node.descriptionID && node.type &&
 						initialEntered && (!hasUnits || node.units) &&
 						equationEntered;
-			}
+			    if(toReturn){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
 		}, both);
 
 		// Execute the constructor

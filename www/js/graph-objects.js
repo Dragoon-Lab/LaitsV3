@@ -49,10 +49,14 @@ define([
 			var parse = model.getEquation(nodeId);
 			var parameter =	 '';
 			if(parse){
-				parse=expression.parse(parse);
-				// May want to change symbols to "sum" and "product"
-                parameter = expression.isSum(parse)&&expression.isProduct(parse)?'':expression.isSum(parse)?'+':expression.isProduct(parse)?'*':'';
-				parameter = '<strong style="font-size:18px">'+parameter+'</strong>';
+				try{
+					parse=expression.parse(parse);
+					// May want to change symbols to "sum" and "product"
+					parameter = expression.isSum(parse)&&expression.isProduct(parse)?'':expression.isSum(parse)?'+':expression.isProduct(parse)?'*':'';
+					parameter = '<strong style="font-size:18px">'+parameter+'</strong>';
+				}catch(err){
+					console.log("Parse Error" + err);
+				}
 			}
 			var initialValue = typeof(model.getInitial(nodeId)) === "number"? model.getInitial(nodeId) : '';
             
