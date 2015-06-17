@@ -805,8 +805,13 @@ define([
 				parse = expression.parse(inputEquation);
 			}catch(err){
 				console.log("Parser error: ", err);
+				console.log(err.message);
+				console.log(err.Error);
 				this._model.active.setEquation(this.currentID, inputEquation);
-				directives.push({id: 'message', attribute: 'append', value: 'Incorrect equation syntax.'});
+				if(err.message.includes("unexpected variable"))
+					directives.push({id: 'message', attribute: 'append', value: 'The value entered for the equation is incorrect'});
+				else
+					directives.push({id: 'message', attribute: 'append', value: 'Incorrect equation syntax.'});
 				directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
 				this.logging.log("solution-step", {
 					type: "parse-error",
