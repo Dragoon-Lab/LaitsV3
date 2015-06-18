@@ -104,7 +104,15 @@ define([
         var checkVersion = session.browser.version;
         if((checkBrowser ==="Chrome" && checkVersion<41) || (checkBrowser==="Safari" && checkVersion<8)||(checkBrowser==="msie" && checkVersion<11)||(checkBrowser==="Firefox")||(checkBrowser==="Opera")){
             var errorMessage = new messageBox("errorMessageBox", "warn","You are using "+ session.browser.name+" version "+session.browser.version + ". Dragoon is known to work well in these (or higher) browser versions: Google Chrome v41 or later Safari v8 or later Internet Explorer v11 or later");
-            errorMessage.show();
+            // adding close callback to update the state for browser message
+			var compatibiltyState = new State(query.u, query.s, "action");
+			errorMessage.addCallback(function(){				
+				compatibiltyState.put("browserCompatibility", "ack");
+			});
+			compatibiltyState.get("browserCompatibility").then(function(res) {
+				if(!res) errorMessage.show(); 
+			});
+			
         }
 
 		var givenModel = new model(query.m, query.p);
