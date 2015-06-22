@@ -331,10 +331,7 @@ define([
 							this.formatSeriesForChart(givenSolution, k), {stroke: "black"}
 						);
 					}
-					console.log(obj.max-obj.min);
-					console.log(Math.pow(10,-15));
-					console.log((obj.max - obj.min) < (Math.pow(10,-15)));
-					if(obj.max - obj.min > (Math.pow(10,-15)) || (obj.max - obj.min === 0))
+					if(obj.max - obj.min > (Math.pow(10,-16)) || (obj.max - obj.min === 0))
 					{
 						charts[id].render();
 					}
