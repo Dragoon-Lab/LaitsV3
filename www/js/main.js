@@ -289,6 +289,13 @@ define([
                                                "and graphed the author's model, providing an opportunity for retrospection.");
             makeTooltip('integrationMethod', "Euler's method - Best for functions that occur every tick of the time frame <br>" +
                                              "Midpoint - Best for continuous functions <br>");
+			makeTooltip('descriptionQuestionMark', " The quantity computed by the node ");
+			makeTooltip('typeQuestionMark', "<strong>Parameters</strong> represent fixed quantities that never change.<br>"+
+				"<strong>Accumulators</strong> represent a quantity that accumulates the values of its inputs over time.<br>"+
+			"<strong>Functions</strong> represent a value that is directly related to the values of its inputs, without regard to its <br>own previous value.");
+			makeTooltip('inputsQuestionMark', "Select a node name to quickly insert it into the expression.");
+			makeTooltip('expressionBoxQuestionMark', "Determines the value of the quantity. Additional math functions are available in the help menu");
+			makeTooltip('authorDescriptionQuestionMark', "The quantity computed by the node");
 			/*
 			 Connect node editor to "click with no move" events.
 			 */

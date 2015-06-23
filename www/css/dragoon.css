@@ -64,6 +64,16 @@ html, body, #main{
 .sameedit .fieldgroup > * {
     display:inline-block;
     vertical-align:top
+
+}
+
+.sameedit .fieldgroup > span{
+    text-align: right;
+    width: 14ex;
+}
+.sameedit .fieldgroup > span label{
+    vertical-align:top
+
 }
 
 .sameedit .fieldgroup > label:first-child {
@@ -71,7 +81,8 @@ html, body, #main{
 }
 
 .questionMark{
-    width:4%;
+    width:21px;
+    margin: -4px;
 }
 
 .sameedit #equationText {
