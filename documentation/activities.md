@@ -38,6 +38,7 @@ All nodes which the author marked as "in model" and "optional" (?) will appear o
     * The new value for this timestep (i.e. the initial value + value of expression); initially blank
     * The units
   * Clicking on the node opens the node editor with all fields disabled and filled in with author's values except for a new field called "current value" which the student must fill in.
+    * We will need to either allow expressions or some rounding factor or some other scaffolding so that students do not get the answer wrong because they rounded differently than the system.
   * The expression field is always given, however it will be hidden initially and may be revealed by clicking on it.
   * After the current value is filled in:
     * The node border becomes solid, and depending on the feedback mode may become colored as well.
