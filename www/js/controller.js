@@ -767,7 +767,7 @@ define([
 				var widget = registry.byId(this.controlMap.equation);
 				this.structured.pop();
 			}
-		},
+		}, 
 
 		//Enables the Forum Button in node editor
 		//Also uses the forum module to activate the event button click
