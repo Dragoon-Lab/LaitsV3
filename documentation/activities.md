@@ -44,16 +44,16 @@ All nodes which the author marked as "in model" and "optional" (?) will appear o
     * Arrows leaving that node will be highlighted (depending on the feedback mode ?)
 
 When all nodes have been given the correct values, a completion message window appears.  
-* "You have computed all of the values for <time> of <total time student is required to execute>.  Click ok to advance to the next timestep."
+* "You have computed all of the values for `<time>` of `<total time student is required to execute>`.  Click ok to advance to the next timestep."
 * On advancing, the values are cleared from the functions and accumulators and they return to having grey dashed borders.  The initial values in the accumulators are replaced with the value the student computed in the previous timestep.
-* When the final desired timestep has been completed, the message becomes "You have computed all of the required values for time <time>.  Now Dragoon will do the rest for you.  Click 'Graph' to see the results."
+* When the final desired timestep has been completed, the message becomes "You have computed all of the required values for time `<time>`.  Now Dragoon will do the rest for you.  Click 'Graph' to see the results."
 
 The start and end time will be given to the system at the start of the problem, so the instructor may decide how many iterations the student will work through, rather than the author.
   
 #### Feedback Modes
 
 ### Automated Execution Activity
-This activity is similar to the aforementioned Execution Activity, but
+This activity is similar to the aforementioned Execution Activity, but instead of opening the node editor and entering the value for each node, the student simply clicks on the node and Dragoon displays the expression and fills in the value for the student.  It is intended primarily for demonstration purposes.
 #### Pedagogical Goals
 * To demonstrate how Dragoon computes values at each timestep
 #### Workflow
