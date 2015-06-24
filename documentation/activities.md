@@ -2,6 +2,8 @@
 
 Activities are various ways of interacting with a Dragoon model for various pedagogical goals.  In the past, model construction has been the primary method of instruction, with model exploration being done secondarily, using the sliders in the graph window.  Activities will allow a single authored model to be used in multiple ways, chosen at the start of the activity.
 
+Activities are orthogonal to [feedback modes](major-modes.md).  The differences and interactions between Activities and Modes is documented in the architecture section [below](activities.md#relationship-between-activities-and-modes).
+
 ## Overview of the Activities
 Dragoon will support the following activities:
 * Construction Activity
@@ -9,8 +11,6 @@ Dragoon will support the following activities:
 * Automated Execution Activity
 * Up and Down Activity
 * Automated Up and Down Activity
-
-### Relationship Between Activities and Modes
 
 ### Construction Activity
 The construction activity is identical to traditional Dragoon problems.  Construction activities can be done in author mode, or any of the student modes.
@@ -76,9 +76,9 @@ This section gives an outline of the coding method we will follow to implement a
 To visualize this we can imagine activities and modes to laid out on grid like structure. See the image:
 ![Alt Interaction of Activity and Modes](activity_modes.jpg "Interaction of Activities and Modes")
 
-Now, Dragoon can be used in n X m ways where `n` is number of activities and `m` are number of modes. To add another new activity we will add just another line in the grid in that direction. Thus code changes have to be in a similar manner as well. There are a few activities which wont be available in all the modes and we will stop that from happening using `activities-parameters.js`.
+Now, Dragoon can be used in n X m ways where `n` is number of activities and `m` are number of modes. To add another new activity we will add just another line in the grid in that direction. Thus code changes have to be in a similar manner as well. There are a few modes which wont be available in all the activities and we will stop that from happening using `activities-parameters.js`.  
 
-Now lets see the proper changes that we need to make to specific parts of dragoon. The basic coding methodology will be to make Dragoon plug and play. What sort of parameters that we have for activity and mode interaction will define how Dragoon interface will change. One important thing here is we need to automate all this, that is we need the minimal changes to the model. So for certain activities we might need to copy the given nodes to student nodes with appropriate changes.
+Now lets see the proper changes that we need to make to specific parts of dragoon. The basic coding methodology will be to make Dragoon activities and modes modular. The parameters given for activity and mode will define how the Dragoon interface will change. One important thing here is we want to make minimal changes to the model (in part for backwards-compatibility).  That is, ideally we will be able to open any existing models for use with the new activities.  For certain activities we might need to copy the given nodes to student nodes with appropriate changes at load time.
 
 * Changes to model - The exact new parameters that we need to add for each activity will be updated in [Model JSON file](json-format.md). For all the new parameters we will need getter and setters as well as model related changes in both Author and Student mode as per the requirement.
 * Changes to controller - To give Dragoon modularised approach we will need to make a lot of code changes in the controller. Each field should be updated to be handled with a parameter. If that parameter is switched off then that field will not be visible in Node editor. These parameters will come from ui-parameters.js. 
