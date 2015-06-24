@@ -10,7 +10,7 @@ Dragoon will support the following activities:
 * Up and Down Activity
 * Automated Up and Down Activity
 
-### Relationship between activities and modes
+### Relationship Between Activities and Modes
 
 ### Construction Activity
 The construction activity is identical to traditional Dragoon problems.  Construction activities can be done in author mode, or any of the student modes.
@@ -53,7 +53,9 @@ The start and end time will be given to the system at the start of the problem, 
 #### Feedback Modes
 
 ### Automated Execution Activity
+This activity is similar to the aforementioned Execution Activity, but
 #### Pedagogical Goals
+* To demonstrate how Dragoon computes values at each timestep
 #### Workflow
 #### Feedback Modes
 
