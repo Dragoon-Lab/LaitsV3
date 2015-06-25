@@ -185,10 +185,6 @@ define([
 				}else{
 					miss_node=if_id;
 				}
-				this._logging.clientLog("error", {
-					message:"graph/table created with missing node : "+miss_node,
-					functionTag : "findSolution"
-				});
 				return {status: 'error', type: 'missing', missingNode: miss_node};
 			}
 			//console.log(solution);
@@ -311,10 +307,6 @@ define([
 				}else{
 					miss_node=if_id;
 				}
-				this._logging.clientLog("error", {
-					message:"graph/table created with missing node : "+miss_node,
-					functionTag : "findSolution"
-				});
 				return {status: 'error', type: 'missing', missingNode: miss_node, missingField: miss_field};
 			}
 			//console.log(solution);
