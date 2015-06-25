@@ -31,6 +31,8 @@ define([
 	"dojo/ready",
 	'dijit/registry',
     "dijit/Tooltip",
+	"dijit/TooltipDialog",
+	"dijit/popup",
 	"./menu",
 	"./load-save",
 	"./model",
@@ -52,7 +54,7 @@ define([
 	"dojo/store/Memory",
 	"dojo/_base/event"
 ], function(
-		array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry, toolTip,
+		array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry, toolTip, tooltipDialog, popup,
 		menu, loadSave, model,
 		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, equation, 
 		description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan, memory, event
@@ -347,6 +349,36 @@ define([
 						 lang.hitch(drawModel, drawModel.setConnections), true);
 			aspect.after(controllerObject, 'setConnection',
                                                  lang.hitch(drawModel, drawModel.setConnection), true);
+
+			aspect.after(drawModel, 'onPrettifyComplete', function(){
+				var prettifyConfirmDialog = new tooltipDialog({
+					style: "width: 300px;",
+					content: '<p>Your model is prettified. Keep Changes?</p>'+
+					' <button type="button" data-dojo-type="dijit/form/Button" id="savePrettify">Yes</button>'+
+					' <button type="button" data-dojo-type="dijit/form/Button" id="undoPrettify">No</button>',
+					onShow: function(){
+						on(dojo.byId('undoPrettify'), 'click', function(e){
+							event.stop(e);
+							popup.close(prettifyConfirmDialog);
+							prettifyConfirmDialog.destroyRecursive();
+							drawModel.undoPrettify();
+							session.saveProblem(givenModel.model);
+							registry.byId("prettifyButton").set("disabled", false);
+						});
+						on(dojo.byId('savePrettify'), 'click', function(e){
+							event.stop(e);
+							popup.close(prettifyConfirmDialog);
+							session.saveProblem(givenModel.model);
+							prettifyConfirmDialog.destroyRecursive();
+							registry.byId("prettifyButton").set("disabled", false);
+						});
+					}
+				});
+				popup.open({
+					popup: prettifyConfirmDialog,
+					around: dom.byId('prettifyButton')
+				});
+			});
 			 /*
 			 Autosave on close window
 			 It would be more efficient if we only saved the changed node.
@@ -439,7 +471,7 @@ define([
 				controllerObject.setForum(query);
 			}
 			var menuButtons=[];//This array is used later to called the setSelected function for all the buttons in the menu abr
-		        menuButtons.push("createNodeButton","graphButton","tableButton","forumButton","schemaButton","descButton","saveButton","mergeButton","previewButton","slidesButton","lessonsLearnedButton","doneButton");
+		        menuButtons.push("createNodeButton","graphButton","tableButton","forumButton","schemaButton","descButton","saveButton","mergeButton","previewButton","slidesButton","lessonsLearnedButton","doneButton", "prettifyButton");
 			// Also used in image loading below.
 			var descObj = new description(givenModel);
 			if(query.m == "AUTHOR"){
@@ -743,7 +775,7 @@ define([
 	                else
 	                     	window.history.back();
 				}
-				var searchPattern = new RegExp('^pal3', 'i'); 
+				var searchPattern = new RegExp('^pal3', 'i');
 				if(query.m != "AUTHOR" && searchPattern.test(query.s)){ // check if session name starts with pal
 					var tc = new tincan(givenModel, controllerObject._assessment,session, palTopicIndex);
 					//Connect to learning record store
@@ -768,9 +800,18 @@ define([
 					}		
 				});
 			}
-            /*
-             Add link to intro video
-             */
+
+
+			menu.add("prettifyButton", function(e){
+				event.stop(e);
+				registry.byId("prettifyButton").set("disabled", true);
+				console.log("Pretify---------------");
+				drawModel.prettify();
+			});
+
+			/*
+			 Add link to intro video
+			 */
             var video = dom.byId("menuIntroText");
             on(video, "click", function(){
                 controllerObject.logging.log('ui-action', {
