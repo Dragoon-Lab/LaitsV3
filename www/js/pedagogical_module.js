@@ -703,6 +703,15 @@ define([
 
 				console.assert(actionTable[interpretation], "processAnswer() interpretation '" + interpretation + "' not in table ", actionTable);
 				actionTable[interpretation][this.userType](returnObj, nodePart);
+				//add help message for unary minus
+				var nodeType= this.model.given.getType(givenID);
+				if (interpretation==='secondFailure' && nodeType=="accumulator" && nodePart=="equation"){
+					if(answer[0]="-" && answer.slice(1,answer.length).search(/-|\+|\*|\//)<0){
+						returnObj.pop();
+						returnObj.push({id: "message", attribute: "append", value: "Note that "+answer.slice(1,answer.length)+" is decreasing. If a quantity decreases with time, then its change is negative."});
+						disable(returnObj, "enableRemaining", false)
+			        }	
+			    }
 				currentStatus = this.model.given.getStatus(givenID, nodePart); //get current status set in given model
 				if(currentStatus !== "correct" && currentStatus !== "demo"){
 					this.model.given.setAttemptCount(givenID, nodePart, this.model.given.getAttemptCount(givenID, nodePart) + 1);
