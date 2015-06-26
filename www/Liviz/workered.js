@@ -50,7 +50,7 @@ DEALINGS IN THE SOFTWARE.
 		progressView.renderLabel(progressView.g, true, "Prettifying...");
 		progressView.show();
 		
-		dotWorker = new Worker("./js/Liviz/main.js?v=2");
+		dotWorker = new Worker("./Liviz/main.js?v=2");
 		setupMessageHandler(dotWorker);
 		stopGo = new WorkerStopGo.Controller(dotWorker,
 			function(){ // stopGo ready
