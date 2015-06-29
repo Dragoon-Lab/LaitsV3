@@ -62,7 +62,7 @@ This activity is similar to the aforementioned Execution Activity, but instead o
 #### Workflow
 #### Feedback Modes
 
-### Up and Down Activity
+### Tweak Activity
 #### Pedagogical Goals
 #### Workflow
 #### Feedback Modes
