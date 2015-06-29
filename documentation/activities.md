@@ -39,6 +39,7 @@ All nodes which the author marked as "in model" and "optional" (?) will appear o
     * The units
   * Clicking on the node opens the node editor with all fields disabled and filled in with author's values except for a new field called "current value" which the student must select.
     * We will need to dynamically generate three incorrect choices along with the correct answer provided by the author.
+    * One pool of distractors to daw from would be the set of other numbers in the model (e.g. parameter values or accumulator initial values) as those are often what students will guess.
     * Later we may allow authors to choose their own set of answers.
   * The expression field is always given, however it will be hidden initially and may be revealed by clicking on it.
   * After the current value is filled in:
