@@ -25,10 +25,11 @@ function json_format($json)
     $len = strlen($json); 
 	$notSkip = true;
 
-    for($c = 0; $c < $len; $c++) 
+    for($c = 0; $c < $len ; $c++) 
     { 
         $char = $json[$c];
-		$nextChar = $json[$c+1];
+		if(!($c+1 == $len))
+			$nextChar = $json[$c+1];
 		if($notSkip){
 			switch($char) 
 			{ 
