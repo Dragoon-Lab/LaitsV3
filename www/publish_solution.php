@@ -15,7 +15,7 @@ $model = $_REQUEST["sg"];
 
 try{
 	$modelArray = json_decode($model, true);
-	$completeModel = "{ task : $model}";	
+	$completeModel = '{ "task" : ' . $model .'}';	
 	$model = json_format($completeModel); // convert messy JSON to pretty JSON
 }
 catch(Exception $e){
@@ -24,6 +24,7 @@ catch(Exception $e){
 	// we need to log the error to the server log file	
 }	
 try {
+
 	$name = $modelArray["taskName"];
 	$name = str_replace(" ", "-", $name);
 	$name = "problems/".$name.".json";
