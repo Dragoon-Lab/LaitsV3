@@ -1,3 +1,16 @@
+Skip to content
+This repository  
+Pull requests
+Issues
+Gist
+ @goberflunk
+ Unwatch 19
+  Star 7
+ Fork 5Dragoon-Lab/LaitsV3
+ branch: master  LaitsV3/www/js/controller.js
+@goberflunkgoberflunk 6 days ago removed extra errors being logged and changed conditional statement d…
+13 contributors @bvds @pradeephrish @sachingrover211 @riteshsamala @avaneeshd @reidjoiner @haoxuanwu @mtiwari4 @bhosaledipak @goberflunk @jonwetzel @jingxianfeng @bshahrok
+RawBlameHistory     1196 lines (1067 sloc)  43.71 kB
 /**
  *Dragoon Project
  *Arizona State University
@@ -205,7 +218,6 @@ define([
              If the status is set for equationBox, we also need to set
              the status for equationText.  Since equationText is not a widget,
              we need to set it explicitly.
-
              Adding a watch method to the equationBox didn't work.
              */
             aspect.after(registry.byId(this.controlMap.equation), "_setStatusAttr",
@@ -402,7 +414,6 @@ define([
              The lang.hitch sets the scope to the current scope
              and then the handler is only called when disableHandlers
              is false.
-
              We could write a function to attach the handlers?
              */
             
@@ -833,7 +844,6 @@ define([
         createExpressionNodes: function(parse, ignoreUnknownTest){
             /*
              Create Expression nodes if equation is valid and parsed sucessfully.
-
              If the parse succeeds:
              * substitute in student id for variable names (when possible),
              * save to model,
@@ -842,7 +852,6 @@ define([
              * send the equation to the PM. **Done**
              * Handle the reply from the PM. **Done**
              * If the reply contains an update to the equation, the model should also be updated.
-
             */
             if(parse){
                 var inputNodesList = [];
@@ -1135,7 +1144,6 @@ define([
         /*
          Take a list of directives and apply them to the Node Editor,
          updating the model and updating the graph.
-
          The format for directives is defined in documentation/node-editor.md
          */
         applyDirectives: function(directives, noModelUpdate){
@@ -1193,3 +1201,5 @@ define([
 
     });
 });
+Status API Training Shop Blog About Help
+© 2015 GitHub, Inc. Terms Privacy Security Contact
