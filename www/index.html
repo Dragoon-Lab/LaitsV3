@@ -318,18 +318,27 @@
 	            <option value='irrelevant'>not in model or problem statement</option>
 	        </select>
 	    </div>
-            <div id="descriptionControlStudent" class="fieldgroup">
-	        <label for="selectDescription">Description</label>
+           <div id="descriptionControlStudent" class="fieldgroup">
+                <span>
+                    <img id="descriptionQuestionMark"  class="questionMark" src="images/questionmark.png"/>
+                    <label for="selectDescription">Description</label>
+                </span>
                 <select id="selectDescription" data-dojo-type="dijit/form/Select">
                     <option value='defaultSelect'>--Select--</option>
                 </select>
 	    </div>
             <div id="descriptionControlAuthor" class="fieldgroup" style="display:none">
-	        <label for="setDescription">Description</label>
+	              <span>
+                      <img id="authorDescriptionQuestionMark"  class="questionMark" src="images/questionmark.png"/>
+	         <label for="setDescription">Description</label>
+                  </span>
                 <input id="setDescription" data-dojo-type="dijit/form/ComboBox">
 	    </div>
             <div class="fieldgroup">
-                <label for="typeId">Type</label>
+                <span>
+                    <img id="typeQuestionMark"  class="questionMark" src="images/questionmark.png"/>
+                    <label for="typeId">Type</label>
+                </span>
                 <select id="typeId" data-dojo-type="dijit/form/Select">
                     <option value='defaultSelect'>--Select--</option>
                     <option value="parameter">Parameter</option>
@@ -341,7 +350,7 @@
                 <label id="selectUnitsControl">
 		            Units
                     <select id="selectUnits" data-dojo-type="dijit/form/Select">
-                        <option value='defaultSelect'>--Select--</option>
+                        <option value='defaultSelect'>No Units</option>
                     </select>
 		       </label>
                <div id="setUnitsControl" style="display: none">
@@ -358,7 +367,10 @@
                 <img id="questionMarkRoot"  class="questionMark" src="images/questionmark.png"/>
             </div>
             <div class="fieldgroup" id="algebraic">
-	        <label>Inputs</label>
+                <span>
+                    <img id="inputsQuestionMark"  class="questionMark" src="images/questionmark.png"/>
+                    <label>Inputs</label>
+                </span>
             <div class="vertical">
                 <div id="inputControlStudent">
                     <select id="nodeInputs" data-dojo-type="dijit/form/Select">
@@ -379,7 +391,7 @@
 		</div>
 	    </div>
 	    <div class="fieldgroup" id="structured">
-	        <label>Inputs</label>
+            <label>Inputs</label>
 	        <div class="vertical">
 		    <div class="horizontal">
                         <button id="sumButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Sum</button>
@@ -400,7 +412,10 @@
 		</div>
 	    </div>
             <div class="fieldgroup">
-	        <label for="equationBox">Expression</label>
+                 <span>
+                     <img id="expressionBoxQuestionMark"  class="questionMark" src="images/questionmark.png"/>
+                     <label for="equationBox">Expression</label>
+                 </span>
                 <div class="vertical">
                     <div id="equationLabel"></div>
                     <textarea id="equationBox" rows=2 cols=30 data-dojo-type="dijit/form/SimpleTextarea"></textarea>
