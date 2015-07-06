@@ -65,7 +65,9 @@ define([
 			"A node already exists for that quantity.  If you want to edit it, click on it."
 		],
 		premature: [
-			"The node you are trying to create is Premature. Please follow the Target Node Strategy."
+			"Although the quantity you've picked is in the author's model, you should follow the Target Node Strategy, which says you should start by defining a node for a quantity that the problem asks you to graph or focus on, then define nodes for its inputs, and then define nodes for their inputs, etc.  That way, every node you create is an input to some node.",
+			"Please follow the Target Node Strategy.  That is, finish any incomplete node (triangle or dashed border) or, if there are no incomplete nodes, select a quantity the problem asks you to graph or focus on.",
+			"It is too soon to work on this node.  Please follow the Target Node Strategy."
 		],
 		notTopLevel: [
 			"Blue means that quantity isn’t one that the problem statement asks you to graph.  Although this quantity will eventually be in your model, you should follow the Target Node Strategy, which says you should first define a node for a top level goal quantity.",
