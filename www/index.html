@@ -1,13 +1,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>        
+<head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Dragoon</title>
     <script type = "text/javascript" src = "version.js"></script>
-    <script src="js/tincan/tincan-min.js"></script>
+    <script src="tincan/tincan-min.js"></script>
     <script type="text/javascript">
         var version = "";
-        
+
         if(window.location.hostname == "dragoon.asu.edu"){
 			version = getVersion();  // Get version from version.js
         }else{
@@ -37,7 +37,7 @@
 	};
 	if(dojoConfig.isDebug){
 	    document.write('<link href="css/dragoon.css?'+ version+'" rel="stylesheet" />');
-            document.write('<scr'+'ipt src="dojo/dojo.js"></scr'+'ipt>'); 
+            document.write('<scr'+'ipt src="dojo/dojo.js"></scr'+'ipt>');
 	} else {
 	    document.write('<link href="release/css/dragoon.css?'+ version+'"  rel="stylesheet" />');
 	    document.write('<scr'+'ipt src="release/dojo/dojo.js"></scr'+'ipt>');
@@ -57,18 +57,18 @@
 			"dijit/Dialog",
 			"dijit/MenuBar", "dijit/PopupMenuBarItem",
 			"dijit/layout/BorderContainer", "dijit/MenuItem",
-			"dijit/form/Select", 
+            "dijit/form/Select",
 			"dijit/form/Button", "dijit/form/CheckBox", "dijit/form/TextBox",
 			"dijit/form/ComboBox", "dijit/form/Textarea",
 			"dijit/form/SimpleTextarea", "dijit/Menu",
-			"dijit/layout/ContentPane", 
+			"dijit/layout/ContentPane",
 			"dragoon/menu", // Wire up menus
 			"dragoon" // Load up Dragoon itself
-        ]);	
+        ]);
     </script>
 
 
-    <!-- jsPlumb Libs Start Here -->		
+    <!-- jsPlumb Libs Start Here -->
     <!-- Once AMD is correctly implemented in jsPlumb, these should go away -->
 
     <script type="text/javascript">
@@ -83,7 +83,7 @@
             // main jsplumb engine 
             "jsPlumb/jsPlumb",
             // endpoint 
-            "jsPlumb/endpoint", 
+            "jsPlumb/endpoint",
             // connection 
             "jsPlumb/connection",
             // anchors 
@@ -102,17 +102,17 @@
             // canvas renderer 
             "jsPlumb/renderers-canvas",
             // vml renderer 
-            "jsPlumb/renderers-vml",            
+            "jsPlumb/renderers-vml",
             // jquery jsPlumb adapter 
             "jsPlumb/dojo-adapter",
             // Dojo interface layer
             "demo/demo-helper-dojo"
         ]);
-    </script>		
+    </script>
 
     <!-- jsPlumb Libs End Here -->
-	
-	
+
+
 </head>
 
     <div id="loadingOverlay" class="loadingOverlay pageOverlay" style = "top: 0;
@@ -125,7 +125,7 @@
     background:  #fff url('images/DragoonMountains.png') no-repeat;
     background-position: center;
     background-color: #d9baa3;"></div>
-    
+
     <body class="claro" style = "top: 0;
     left: 0;
     position: fixed;
@@ -143,6 +143,7 @@
              <button type="button" data-dojo-type="dijit/form/Button" id="mergeButton" disabled="true">Merge </button>
 			 <button type="button" data-dojo-type="dijit/form/Button" id="previewButton" disabled="true">Preview</button>
 			 <button type="button" data-dojo-type="dijit/form/Button" id="slidesButton" disabled="true">Hints</button>
+            <button type="button" data-dojo-type="dijit/form/Button" id="prettifyButton">Prettify</button>
 	     <div data-dojo-type="dijit/PopupMenuBarItem">
                  <span>Help</span>
 		 <div data-dojo-type="dijit/Menu" id="menuHelp">
@@ -162,14 +163,14 @@
 		 <canvas id="myCanvas" height = "800" width="800"></canvas>
 		<div class="demo statemachine-demo" id="statemachine-demo">
 		</div>
-				
+
 		<!-- Putting jsPlumb-stuff for demo  end-->
         </div>
 
 	<!-- Dialog showing plot or table of solution  -->
         <div class="claro dijitLayoutContainer dijitDialog" id="solution" data-dojo-type="dijit.Dialog" style="background-color: #FFFFFF">
 	</div>
-	
+
 	<!-- Dialog showing lessonsLearned  -->
         <div class="claro" id="lesson" data-dojo-type="dijit.Dialog">
 	</div>
@@ -219,7 +220,7 @@
                 <option>Eulers Method</option>
                 <option>Midpoint Method</option>
             </select> <img id="integrationMethod"  class="questionMark" src="images/questionmark.png"/>
-	
+
       </div>
 	  <div class="fieldgroup">
             <label for="authorSetImage">URL for Image:</label>
@@ -261,7 +262,7 @@
             <select id="authorSaveGroup" style="width:10em" data-dojo-type="dijit/form/ComboBox">
             </select>
         </div>
-        <div class="fieldgroup" aligh="right" id="authorSaveStatus">            
+        <div class="fieldgroup" aligh="right" id="authorSaveStatus">
         </div>
         <div class="fieldgroup" align="left">Note: Any forum posts attached to this model will not be copied.</div>
 	<div id="saveMessage"></div>
@@ -285,7 +286,7 @@
             <select id="authorMergeGroup" style="width:10em" data-dojo-type="dijit/form/ComboBox">
             </select>
         </div>
-         <div class="fieldgroup" align="left">Note: Any forum posts attached to the source model will not be copied.</div>        
+         <div class="fieldgroup" align="left">Note: Any forum posts attached to the source model will not be copied.</div>
         <div class="fieldgroup" align="right">
             <button id="mergeDialogButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Merge</button>
         </div>
@@ -302,7 +303,7 @@
                 <select id="selectModel" data-dojo-type="dijit/form/Select">
 	            <option value='correct' selected>Author's Values</option>
 				<option value='given'>Initial Student Values</option>
-	            
+
 	        </select>
 		   </div>
 		   <div id="nameControl" class="fieldgroup" style="display:none">
@@ -317,18 +318,27 @@
 	            <option value='irrelevant'>not in model or problem statement</option>
 	        </select>
 	    </div>
-            <div id="descriptionControlStudent" class="fieldgroup">
-	        <label for="selectDescription">Description</label>
+           <div id="descriptionControlStudent" class="fieldgroup">
+                <span>
+                    <img id="descriptionQuestionMark"  class="questionMark" src="images/questionmark.png"/>
+                    <label for="selectDescription">Description</label>
+                </span>
                 <select id="selectDescription" data-dojo-type="dijit/form/Select">
                     <option value='defaultSelect'>--Select--</option>
                 </select>
 	    </div>
             <div id="descriptionControlAuthor" class="fieldgroup" style="display:none">
-	        <label for="setDescription">Description</label>
+	              <span>
+                      <img id="authorDescriptionQuestionMark"  class="questionMark" src="images/questionmark.png"/>
+	         <label for="setDescription">Description</label>
+                  </span>
                 <input id="setDescription" data-dojo-type="dijit/form/ComboBox">
 	    </div>
             <div class="fieldgroup">
-                <label for="typeId">Type</label>
+                <span>
+                    <img id="typeQuestionMark"  class="questionMark" src="images/questionmark.png"/>
+                    <label for="typeId">Type</label>
+                </span>
                 <select id="typeId" data-dojo-type="dijit/form/Select">
                     <option value='defaultSelect'>--Select--</option>
                     <option value="parameter">Parameter</option>
@@ -340,7 +350,7 @@
                 <label id="selectUnitsControl">
 		            Units
                     <select id="selectUnits" data-dojo-type="dijit/form/Select">
-                        <option value='defaultSelect'>--Select--</option>
+                        <option value='defaultSelect'>No Units</option>
                     </select>
 		       </label>
                <div id="setUnitsControl" style="display: none">
@@ -357,7 +367,10 @@
                 <img id="questionMarkRoot"  class="questionMark" src="images/questionmark.png"/>
             </div>
             <div class="fieldgroup" id="algebraic">
-	        <label>Inputs</label>
+                <span>
+                    <img id="inputsQuestionMark"  class="questionMark" src="images/questionmark.png"/>
+                    <label>Inputs</label>
+                </span>
             <div class="vertical">
                 <div id="inputControlStudent">
                     <select id="nodeInputs" data-dojo-type="dijit/form/Select">
@@ -378,7 +391,7 @@
 		</div>
 	    </div>
 	    <div class="fieldgroup" id="structured">
-	        <label>Inputs</label>
+            <label>Inputs</label>
 	        <div class="vertical">
 		    <div class="horizontal">
                         <button id="sumButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Sum</button>
@@ -399,7 +412,10 @@
 		</div>
 	    </div>
             <div class="fieldgroup">
-	        <label for="equationBox">Expression</label>
+                 <span>
+                     <img id="expressionBoxQuestionMark"  class="questionMark" src="images/questionmark.png"/>
+                     <label for="equationBox">Expression</label>
+                 </span>
                 <div class="vertical">
                     <div id="equationLabel"></div>
                     <textarea id="equationBox" rows=2 cols=30 data-dojo-type="dijit/form/SimpleTextarea"></textarea>
@@ -408,7 +424,7 @@
 	            <div id="equationText"></div>
                     <!--<div id="timeStepLabel"></div>-->
                 </div>
-                <div class="buttonBox">	    
+                <div class="buttonBox">
 	            <button id="undoButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Undo</button>
                     <button id="equationDoneButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Check Expression</button>
 	        </div>
@@ -427,14 +443,14 @@
             <div>&nbsp;</div>
             <button id="closeButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon" style="float:right;">Done</button>
             <button id="deleteButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon" style="float:left;">Delete Node</button>
-		   
+
             <div>&nbsp;</div>
 		</div>
 	    </div>
 	</div> <!-- end of node editor -->
         <!-- Putting Node-Editor stuff for demo  end -->
 
-	
+
 	<div class="claro slides" id="slidesBox" data-dojo-type="dijit/Dialog" title="Hints">
 		<div id="buttons">
 		    <button id="prevSlide" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Previous Slide</button>
@@ -486,6 +502,13 @@
 		</div>
 	</div> <!-- div for schema factor values -->
 				
-    </div>  <!-- main -->			
+    </div>  <!-- main -->
+
+        <!-- import liviz -->
+        <script type="text/javascript" src="Liviz/global-util.js?v=2"></script>
+        <script type="text/javascript" src="Liviz/workered.js?v=2"></script>
+        <script type="text/javascript" src="Liviz/progress-view.js?v=2"></script>
+        <script type="text/javascript" src="Liviz/progress-model.js?v=2"></script>
+        <script type="text/javascript" src="Liviz/stopgo.js?v=2"></script>
 </body>
 </html>

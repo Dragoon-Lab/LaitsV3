@@ -26,6 +26,7 @@ Here are the major components of the design:
 * [Saving State](state.md)
 * [Teacher Dashboard](dashboard.md)
 * [Problem Indexing](problem_index.md)
+* [Activities](activities.md)
 
 
 ## Code Review process ##
