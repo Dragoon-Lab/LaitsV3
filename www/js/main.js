@@ -107,10 +107,11 @@ define([
             // adding close callback to update the state for browser message
 			var compatibiltyState = new State(query.u, query.s, "action");
 			errorMessage.addCallback(function(){				
-				compatibiltyState.put("browserCompatibility", "ack");
+				compatibiltyState.put("browserCompatibility", "ack_" + getVersion());
 			});
 			compatibiltyState.get("browserCompatibility").then(function(res) {
-				if(!res) errorMessage.show(); 
+				
+				if(!(res && res == "ack_" + getVersion())) errorMessage.show(); 
 			});
 			
         }
