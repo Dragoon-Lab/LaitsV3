@@ -223,6 +223,16 @@ define([
 			var taskString = givenModel.getTaskName();
 			document.title ="Dragoon" + ((taskString) ? " - " + taskString : "");
 			
+			//update the menu bar//
+			if(query.m != "STUDENT"){
+				style.set(registry.byId('forumButton').domNode, "display", "inline-block");
+				style.set(registry.byId('schemaButton').domNode, "display", "inline-block");
+				style.set(registry.byId('descButton').domNode, "display", "inline-block");
+				style.set(registry.byId('saveButton').domNode, "display", "inline-block");
+				style.set(registry.byId('mergeButton').domNode, "display", "inline-block");
+				style.set(registry.byId('previewButton').domNode, "display", "inline-block");
+			}
+			
 			//In TEST and EDITOR mode remove background color and border colors		 
 			if(controllerObject._mode == "TEST" || controllerObject._mode == "EDITOR"){
 				showColor = false;
@@ -777,14 +787,7 @@ define([
 					}		
 				});
 			}
-			if(query.m == "STUDENT"){
-				style.set(registry.byId('forumButton').domNode, "display", "none");
-				style.set(registry.byId('schemaButton').domNode, "display", "none");
-				style.set(registry.byId('descButton').domNode, "display", "none");
-				style.set(registry.byId('saveButton').domNode, "display", "none");
-				style.set(registry.byId('mergeButton').domNode, "display", "none");
-				style.set(registry.byId('previewButton').domNode, "display", "none");
-			}
+
             /*
              Add link to intro video
              */
