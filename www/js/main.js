@@ -109,10 +109,11 @@ define([
             // adding close callback to update the state for browser message
 			var compatibiltyState = new State(query.u, query.s, "action");
 			errorMessage.addCallback(function(){				
-				compatibiltyState.put("browserCompatibility", "ack");
+				compatibiltyState.put("browserCompatibility", "ack_" + getVersion());
 			});
 			compatibiltyState.get("browserCompatibility").then(function(res) {
-				if(!res) errorMessage.show(); 
+				
+				if(!(res && res == "ack_" + getVersion())) errorMessage.show(); 
 			});
 			
         }
@@ -223,6 +224,15 @@ define([
 		ready(function(){
 			var taskString = givenModel.getTaskName();
 			document.title ="Dragoon" + ((taskString) ? " - " + taskString : "");
+			
+			//update the menu bar//
+			if(query.m == "AUTHOR"){
+				style.set(registry.byId('schemaButton').domNode, "display", "inline-block");
+				style.set(registry.byId('descButton').domNode, "display", "inline-block");
+				style.set(registry.byId('saveButton').domNode, "display", "inline-block");
+				style.set(registry.byId('mergeButton').domNode, "display", "inline-block");
+				style.set(registry.byId('previewButton').domNode, "display", "inline-block");
+			}
 			
 			//In TEST and EDITOR mode remove background color and border colors		 
 			if(controllerObject._mode == "TEST" || controllerObject._mode == "EDITOR"){
@@ -823,13 +833,6 @@ define([
 				drawModel.prettify();
 			});
 
-			if(query.m != "AUTHOR"){
-				style.set(registry.byId('schemaButton').domNode, "display", "none");
-				style.set(registry.byId('descButton').domNode, "display", "none");
-				style.set(registry.byId('saveButton').domNode, "display", "none");
-				style.set(registry.byId('mergeButton').domNode, "display", "none");
-				style.set(registry.byId('previewButton').domNode, "display", "none");
-			}
             /*
              Add link to intro video
              */
