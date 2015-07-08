@@ -281,12 +281,18 @@ define([
 
 					var str = "chart" + id;
 					charts[id] = new Chart(str);
-					charts[id].addPlot("default", {
-						type: Lines,
+					charts[id].addPlot("grid", {
+						type: Grid,
 						// Do not include markers if there are too
 						// many plot points.  It looks ugly and slows down
 						// plotting significantly.
-						markers: activeSolution.times.length < 25
+						hMajorLines: true, 
+						hMinorLines: false,
+						vMajorLines: true,
+						vMinorLines: false,
+						majorHLine: { color: "gray", width: 1 },
+         				majorVLine: { color: "gray", width: 1 }
+						//markers: activeSolution.times.length < 25
 						});
 					charts[id].addAxis("x", {
 						title: this.labelString(),
@@ -371,12 +377,18 @@ define([
 						var str = "chartStatic" + id;
 						//console.log(str);
 						chartsStatic[id] = new Chart(str);
-						chartsStatic[id].addPlot("default", {
-							type: Lines,
+						chartsStatic[id].addPlot("grid", {
+							type: Grid,
+							hMajorLines: true, 
+							hMinorLines: false,
+							vMajorLines: true,
+							vMinorLines: false,
+							majorHLine: { color: "gray", width: 1 },
+         					majorVLine: { color: "gray", width: 1 }
 							// Do not include markers if there are too
 							// many plot points.  It looks ugly and slows down
 							// plotting significantly.
-							markers: staticPlot.times.length < 25
+							//markers: staticPlot.times.length < 25
 							});
 						chartsStatic[id].addAxis("x", {
 							title: dom.byId("staticSelect").value,
