@@ -50,12 +50,13 @@ define([
 	"./message-box",
 	"./tincan",
 	"dojo/store/Memory",
-	"dojo/_base/event"
+	"dojo/_base/event",
+	"./ui-parameter"
 ], function(
 		array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry, toolTip,
 		menu, loadSave, model,
 		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, equation, 
-		description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan, memory, event
+		description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan, memory, event, UI
 ){
 	// Summary: 
 	//			Menu controller
@@ -104,12 +105,25 @@ define([
         var checkVersion = session.browser.version;
         if((checkBrowser ==="Chrome" && checkVersion<41) || (checkBrowser==="Safari" && checkVersion<8)||(checkBrowser==="msie" && checkVersion<11)||(checkBrowser==="Firefox")||(checkBrowser==="Opera")){
             var errorMessage = new messageBox("errorMessageBox", "warn","You are using "+ session.browser.name+" version "+session.browser.version + ". Dragoon is known to work well in these (or higher) browser versions: Google Chrome v41 or later Safari v8 or later Internet Explorer v11 or later");
-            errorMessage.show();
+            // adding close callback to update the state for browser message
+			var compatibiltyState = new State(query.u, query.s, "action");
+			errorMessage.addCallback(function(){				
+				compatibiltyState.put("browserCompatibility", "ack");
+			});
+			compatibiltyState.get("browserCompatibility").then(function(res) {
+				if(!res) errorMessage.show(); 
+			});
+			
         }
 
 		var givenModel = new model(query.m, query.p);
 		logging.session.log('open-problem', {problem : query.p});
         console.log("solution graph is",solutionGraph);
+		
+		// get the UI state for the given state and activity
+		var ui_config = new UI(query.m , "construction");
+		console.info("UI Parameters created:",ui_config);
+		
 		if(solutionGraph) {
 
             try {
@@ -214,14 +228,17 @@ define([
 			var taskString = givenModel.getTaskName();
 			document.title ="Dragoon" + ((taskString) ? " - " + taskString : "");
 			
+			
+			
 			//In TEST and EDITOR mode remove background color and border colors		 
-			if(controllerObject._mode == "TEST" || controllerObject._mode == "EDITOR"){
+			// old code without ui_config parameters
+			/*if(controllerObject._mode == "TEST" || controllerObject._mode == "EDITOR"){
 				showColor = false;
 			}else{
 				showColor = true;
-			}
-
-			var drawModel = new drawmodel(givenModel.active, showColor);
+			}*/
+			
+			var drawModel = new drawmodel(givenModel.active, ui_config.get("showColor"));
 			drawModel.setLogging(session);
 
 			// Wire up drawing new node
@@ -371,9 +388,11 @@ define([
 						}
 					}, this);
 					if(typeof controllerObject._model.active.getType(controllerObject.currentID) !== "undefined"){
-						var isComplete = givenModel.given.isComplete(controllerObject.currentID)?'solid':'dashed';
-						var borderColor = "3px "+isComplete+" gray";
-						style.set(controllerObject.currentID, 'border', borderColor);
+						var isComplete = givenModel.given.isComplete(controllerObject.currentID)?ui_config.get('nodeBorderCompleteStyle'):ui_config.get('nodeBorderInCompleteStyle');
+						console.log(ui_config.get('nodeBorderSize'));
+						var borderStyle = ui_config.get('nodeBorderSize') + isComplete+ ui_config.get('nodeBorderCompleteColor');
+						console.info("borderStyle:", borderStyle);
+						style.set(controllerObject.currentID, 'border', borderStyle);
 						style.set(controllerObject.currentID, 'backgroundColor', "white");
 					}
 				}
@@ -767,6 +786,14 @@ define([
 						lessonsLearned.displayLessonsLearned(contentMsg);
 					}		
 				});
+			}
+			if(query.m == "STUDENT"){
+				style.set(registry.byId('forumButton').domNode, "display", "none");
+				style.set(registry.byId('schemaButton').domNode, "display", "none");
+				style.set(registry.byId('descButton').domNode, "display", "none");
+				style.set(registry.byId('saveButton').domNode, "display", "none");
+				style.set(registry.byId('mergeButton').domNode, "display", "none");
+				style.set(registry.byId('previewButton').domNode, "display", "none");
 			}
             /*
              Add link to intro video
