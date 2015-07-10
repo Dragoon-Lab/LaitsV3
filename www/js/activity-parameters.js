@@ -156,11 +156,14 @@ define([
 				//Node
 				allowDeleteNode: false,
 				allowEditNode: false,
-				targetNodeStrategy:false,
 
 				//Feedback
 				showHints:false,
 				showFeedback:false,
+				showCorrectAnswer:false,
+				targetNodeStrategy:false,
+
+				disableFieldOnCorrectAnswer: false,
 
 				//Node Editor
 				enable:[
@@ -173,10 +176,10 @@ define([
 				allowSliders:false,
 				plotAuthorSolution:false,
 
-				//Node Click Behaviour
+				//Node Click Behavior
 				showNodeEditor:true,
 
-				//Problem Open Behaviour
+				//Problem Open Behavior
 				promptSaveAs:false
 			},
 
