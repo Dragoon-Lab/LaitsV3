@@ -49,25 +49,29 @@ define([
 	"./schemas-author",
 	"./message-box",
 	"./tincan",
+	"./activity-parameters",
 	"dojo/store/Memory",
 	"dojo/_base/event"
 ], function(
 		array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry, toolTip,
-		menu, loadSave, model,
-		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, equation, 
-		description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan, memory, event
-){
-	// Summary: 
-	//			Menu controller
-	// Description:
-	//			Acts as the controller for the buttons on the menu
-	// Tags:
-	//			menu, buttons, controller
-	
+		menu, loadSave, model, Graph, Table, controlStudent, controlAuthor, drawmodel, logging, equation,
+		description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan,
+		activityParameters, memory, event){
+
+	/*  Summary:
+	 *			Menu controller
+	 *  Description:
+	 *			Acts as the controller for the buttons on the menu
+	 *  Tags:
+	 *			menu, buttons, controller
+	 */
+
 	console.log("load main.js");
+
     //remove the loading division, now that the problem is being loaded
     var loading = document.getElementById('loadingOverlay');
     loading.style.display = "none";
+
 	// Get session parameters
 	var query = {};
 	if(window.location.search){
@@ -92,26 +96,47 @@ define([
         errorMessage.show();
         throw Error("problem in creating sessions");
     }
+
+	//Load Activity Parameters
+	try{
+		activity_config  = new activityParameters(query.m, "construction");
+		console.log("ACTIVITY PARAMS", activity_config);
+	}catch(error){
+		throw Error("problem in creating activity configurations");
+	}
+
     console.log("session is",session);
     logging.setSession(session);  // Give logger message destination
 	session.loadProblem(query).then(function(solutionGraph){
-		//removing the overlay as the actual computation does not take much time and it causes errors to stay hidden behind the overlay which continues infinitely.
+
+		/*
+		 * removing the overlay as the actual computation does not take much time
+		 * and it causes errors to stay hidden behind the overlay which continues infinitely.
+		 */
+
 		var loading = document.getElementById('loadingOverlay');
 		loading.style.display = "none";
 
         //display warning message if not using the supported browser and version
         var checkBrowser = session.browser.name;
         var checkVersion = session.browser.version;
-        if((checkBrowser ==="Chrome" && checkVersion<41) || (checkBrowser==="Safari" && checkVersion<8)||(checkBrowser==="msie" && checkVersion<11)||(checkBrowser==="Firefox")||(checkBrowser==="Opera")){
-            var errorMessage = new messageBox("errorMessageBox", "warn","You are using "+ session.browser.name+" version "+session.browser.version + ". Dragoon is known to work well in these (or higher) browser versions: Google Chrome v41 or later Safari v8 or later Internet Explorer v11 or later");
+        if((checkBrowser ==="Chrome" && checkVersion<41) ||
+			(checkBrowser==="Safari" && checkVersion<8)||
+			(checkBrowser==="msie" && checkVersion<11)||
+			(checkBrowser==="Firefox")||
+			(checkBrowser==="Opera")){
+            var errorMessage = new messageBox("errorMessageBox", "warn","You are using " +
+				session.browser.name+" version " +session.browser.version +
+				". Dragoon is known to work well in these (or higher) browser versions: " +
+				"Google Chrome v41 or later Safari v8 or later Internet Explorer v11 or later");
             errorMessage.show();
         }
 
 		var givenModel = new model(query.m, query.p);
 		logging.session.log('open-problem', {problem : query.p});
         console.log("solution graph is",solutionGraph);
-		if(solutionGraph) {
 
+		if(solutionGraph) {
             try {
                 givenModel.loadModel(solutionGraph);
             } catch (error) {
@@ -124,6 +149,7 @@ define([
                     throw Error("Model could not be loaded.");
                 }
             }
+
             // This version of code addresses loading errors in cases where problem is empty, incomplete or has no root node in coached mode
             if (query.m !== "AUTHOR") {
                 //check if the problem is empty
@@ -167,9 +193,11 @@ define([
                     errorMessage.show();
                 }
             }
-        }else {
+        } else {
 			if(query.g && query.m === "AUTHOR"){
-				var messageHtml = "You have successfully created a new problem named <strong>"+ query.p +"</strong>.<br/> <br/> If you expected this problem to exist already, please double check the problem name and folder and try again.";
+				var messageHtml = "You have successfully created a new problem named <strong>"+ query.p
+					+ "</strong>.<br/> <br/> If you expected this problem to exist already,"+
+					" please double check the problem name and folder and try again.";
 				var infoMessage = new messageBox("errorMessageBox", "info", messageHtml);
 				infoMessage.show();
 			} else if(query.g){
@@ -177,19 +205,23 @@ define([
 				errorMessage.show();
 			}
 		}
+
 		/*
-		 start up controller
+		 * start up controller
 		 */
-		
-		/* 
-		 The sub-mode of STUDENT mode can be either "feedback" or "power"
-		 This is eventually supposed to be supplied by the student model.
-		 In the mean time, allow it as a GET parameter.
+
+		/*
+		 * The sub-mode of STUDENT mode can be either "feedback" or "power"
+		 * This is eventually supposed to be supplied by the student model.
+		 * In the mean time, allow it as a GET parameter.
 		 */
 		var subMode = query.sm || "feedback";
+
 		/* In principle, we could load just one controller or the other. */
-		var controllerObject = query.m == 'AUTHOR' ? new controlAuthor(query.m, subMode, givenModel, query.is) :
-				new controlStudent(query.m, subMode, givenModel, query.is);
+
+		var controllerObject = query.m == 'AUTHOR' ?
+			new controlAuthor(query.m, subMode, givenModel, query.is, activity_config) :
+			new controlStudent(query.m, subMode, givenModel, query.is, activity_config);
 		
 		//setting up logging for different modules.
 		if(controllerObject._PM){
@@ -202,8 +234,9 @@ define([
 		equation.setLogging(session);
 		
 		/*
-		 Create state object
+		 * Create state object
 		 */
+
 		var state = new State(query.u, query.s, "action");
 		state.get("isLessonLearnedShown").then(function(reply) {
 			givenModel.setLessonLearned(reply);
@@ -213,7 +246,24 @@ define([
 		ready(function(){
 			var taskString = givenModel.getTaskName();
 			document.title ="Dragoon" + ((taskString) ? " - " + taskString : "");
-			
+
+			//GET problem-topic index for PAL problems
+			palTopicIndex = "";
+			var searchPattern = new RegExp('^pal3', 'i');
+			if(query.m != "AUTHOR" && searchPattern.test(query.s)){
+				var xhrArgs = {
+					url: "problems/PAL3-problem-topics.json",
+					handleAs: "json",
+					load: function(data){
+						palTopicIndex = data;
+					},
+					error: function(error){
+						console.log("error retrieving file name");
+					}
+				}
+				dojo.xhrGet(xhrArgs);
+			}
+
 			//In TEST and EDITOR mode remove background color and border colors		 
 			if(controllerObject._mode == "TEST" || controllerObject._mode == "EDITOR"){
 				showColor = false;
@@ -221,7 +271,7 @@ define([
 				showColor = true;
 			}
 
-			var drawModel = new drawmodel(givenModel.active, showColor);
+			var drawModel = new drawmodel(givenModel.active, showColor, activity_config);
 			drawModel.setLogging(session);
 
 			// Wire up drawing new node
@@ -234,71 +284,25 @@ define([
 				session.saveProblem(givenModel.model);
 			});
 
-			// When the node editor controller wants to update node style, inform
-			// the controller for the drawing su
+			/*
+			 * When the node editor controller wants to update node style, inform
+			 * the controller for the drawing su
+			 */
 			aspect.after(controllerObject, "colorNodeBorder",
 						 lang.hitch(drawModel, drawModel.colorNodeBorder), 
 						 true);
-			//GET problem-topic index for PAL problems
-			palTopicIndex = "";
-			var searchPattern = new RegExp('^pal3', 'i');
-				if(query.m != "AUTHOR" && searchPattern.test(query.s)){
-				var xhrArgs = {
-		            url: "problems/PAL3-problem-topics.json",
-		            handleAs: "json",
-		            load: function(data){
-						palTopicIndex = data;
-		            },
-					error: function(error){
-						console.log("error retrieving file name");
-					}
-		        }
-		        dojo.xhrGet(xhrArgs);
-		    }
-
-			/* add "Create Node" button to menu */
-			menu.add("createNodeButton", function(e){
-				event.stop(e);
-				if(controllerObject.checkDonenessMessage && 
-				   controllerObject.checkDonenessMessage()){
-					return;
-				}
-				
-				var id = givenModel.active.addNode();
-				controllerObject.logging.log('ui-action', {type: "menu-choice", name: "create-node"});
-				drawModel.addNode(givenModel.active.getNode(id));		
-				controllerObject.showNodeEditor(id);
-			});
-
-            // Show tips for Root in node modifier and Share Bit in Description and Time
-            var makeTooltip  = function(id,content){
-                new toolTip({
-                    connectId: [id],
-                    label: content
-                });
-            };
-            makeTooltip('questionMarkRoot',"When running in COACHED mode, the system will guide the student through <br>" +
-                "the construction of the model beginning with this node, then proceeding with <br>" +
-                "this node's inputs, then their inputs, and so forth until the model is complete.");
-			makeTooltip('questionMarkShare', "When checked, your problem appears in the list <br>" +
-                "of custom problems for other users to solve.");
-            makeTooltip('questionMarkURL', "If you wish to use an image from your computer, <br>" +
-                "you must first upload it to a website and then copy <br>" +
-                "the URL of the image into this box.");
-            makeTooltip('questionMarkLessons', "The 'Lessons Learned' message will display once the student has successfully replicated <br>" +
-                                               "and graphed the author's model, providing an opportunity for retrospection.");
-            makeTooltip('integrationMethod', "Euler's method - Best for functions that occur every tick of the time frame <br>" +
-                                             "Midpoint - Best for continuous functions <br>");
 			/*
-			 Connect node editor to "click with no move" events.
+			 * Connect node editor to "click with no move" events.
 			 */
 			aspect.after(drawModel, "onClickNoMove", function(mover){
-				if(mover.mouseButton != 2) //check if not right click
-					controllerObject.showNodeEditor(mover.node.id);
+				if(activity_config.get("showNodeEditor")){
+					if(mover.mouseButton != 2) //check if not right click
+						controllerObject.showNodeEditor(mover.node.id);
+				}
 			}, true);
-			
-			/* 
-			 After moving node, save coordinates to model, and autosave
+
+			/*
+			 * After moving node, save coordinates to model, and autosave
 			 */
 			aspect.after(drawModel, "onClickMoved", function(mover){
 				var g = geometry.position(mover.node, true);  // take into account scrolling
@@ -312,12 +316,12 @@ define([
 					g.x = widthLimit;
 					node.style.left = widthLimit+"px";
 				}
-					
+
 				if(g.x < 0) {
 					g.x = 0;
 					node.style.left = "0px";
 				}
-					
+
 				if((g.y + scrollTop) < topLimit){
 					//check if bounds inside
 					if(g.y < topLimit) { // BUG: this g.y should be absolute coordinates instead
@@ -337,134 +341,65 @@ define([
 				// It would be more efficient if we only saved the changed node.
 				session.saveProblem(givenModel.model);	 // Autosave to server
 			}, true);
-			
+
 			/*
-			 Add connection when inputs are updated
+			 * Add connection when inputs are updated
 			 */
 			aspect.after(controllerObject, 'addQuantity',
-					lang.hitch(drawModel, drawModel.addQuantity), true);
+				lang.hitch(drawModel, drawModel.addQuantity), true);
 			aspect.after(controllerObject, 'setConnections',
-						 lang.hitch(drawModel, drawModel.setConnections), true);
+				lang.hitch(drawModel, drawModel.setConnections), true);
 			aspect.after(controllerObject, 'setConnection',
-                                                 lang.hitch(drawModel, drawModel.setConnection), true);
-			 /*
-			 Autosave on close window
-			 It would be more efficient if we only saved the changed node.
-			 
-			 Connecting to controllerObject.closeEditor causes a race condition
-			 with code in controllerObject._setUpNodeEditor that wires up closeEditor.
-			 Instead, we connect directly to the widget.
-			 */
-			aspect.after(registry.byId('nodeeditor'), "hide", function(){
-				console.log("Calling session.saveProblem");
-   				if(controllerObject._mode == "AUTHOR")
-				{	
-					array.forEach(givenModel.model.task.givenModelNodes, function(node){
-						if(node.ID === controllerObject.currentID)
-						{
-							console.log(node.description);
-							if(node.description === "" || node.description == null)
-							{
-								console.log("Changing description to match name");
-								node.description = node.name;
-							}
-						}
-					}, this);
-					if(typeof controllerObject._model.active.getType(controllerObject.currentID) !== "undefined"){
-						var isComplete = givenModel.given.isComplete(controllerObject.currentID)?'solid':'dashed';
-						var borderColor = "3px "+isComplete+" gray";
-						style.set(controllerObject.currentID, 'border', borderColor);
-						style.set(controllerObject.currentID, 'backgroundColor', "white");
-					}
-				}
-				session.saveProblem(givenModel.model);
-				//This section errors out in author mode
-				if(controllerObject._mode !== "AUTHOR"){
-	                var descDirective=controllerObject._model.student.getStatusDirectives(controllerObject.currentID);
-	                var directive = null;
-	                for(i=0;i<descDirective.length;i++){
-	                    if(descDirective[i].id=="description")
-	                            directive=descDirective[i];
-	                        
-	                }
-	                if(controllerObject._mode !== "TEST" && controllerObject._mode !== "EDITOR"){
-	                	if(directive&&(directive.value=="incorrect" || directive.value=="premature"))
-	                            drawModel.deleteNode(controllerObject.currentID);
-	                }
-           		}
-    		});
-			
-			// Wire up close button...
-			// This will trigger the above session.saveProblem()
-			on(registry.byId("closeButton"), "click", function(){
-				registry.byId("nodeeditor").hide();
-			});
+				lang.hitch(drawModel, drawModel.setConnection), true);
 
-			on(registry.byId("deleteButton"), "click", function(){
-				//delete node from model and remove from display
-				drawModel.deleteNode(controllerObject.currentID);
-				registry.byId("nodeeditor").hide();
-			});
+			//Remove nodes from student model(if added) when author deletes the node from given model
 			if(controllerObject._mode == "AUTHOR"){
-				aspect.after(drawModel, "deleteNode",
-							 lang.hitch(controllerObject, controllerObject.removeStudentNode), true);
+				aspect.after(drawModel,
+					"deleteNode",
+					lang.hitch(controllerObject, controllerObject.removeStudentNode),
+					true);
 			}
 
-			// checks if forumurl is present
-			if(query.f && query.fe=="true") {
-				//Enable the forum button in the menu
-				var forumBut=registry.byId("forumButton");
-				forumBut.set("disabled", false);
-                //For redirecting to the forum from forum button click on header, only incase enabled
-                menu.add("forumButton",function(e){
-					event.stop(e);
-                    //  Some portion of this function body should be moved to forum.js, Bug #2424
-                    console.log("clicked on main forum button");
-                    controllerObject.logging.log('ui-action', {
-                        type: "menu-forum-button",
-                        name: "forum"
-                    });
-                    var prob_name=givenModel.getTaskName();
-                    console.log("problem name is ", prob_name);
-                    // "newwindow": the pop-out window name, not required, could be empty
-                    // "height" and "width": pop-out window size
-                    // Other properties could be changed as the value of yes or no
-                    //
-                    // The parameters should be escaped, Bug #2423
-                    // Should add logging, Bug #2424
-                    window.open(query.f+"?&n="+prob_name+"&s="+query.s+"&fid="+query.fid+"&sid="+query.sid, "_blank" );
-                });
-				//setter function used for setting forum parameters
-				//inside controller
-				controllerObject.setForum(query);
-			}
-			var menuButtons=[];//This array is used later to called the setSelected function for all the buttons in the menu abr
-		        menuButtons.push("createNodeButton","graphButton","tableButton","forumButton","schemaButton","descButton","saveButton","mergeButton","previewButton","slidesButton","lessonsLearnedButton","doneButton");
 			// Also used in image loading below.
 			var descObj = new description(givenModel);
-			if(query.m == "AUTHOR"){
-				var db = registry.byId("descButton");
-				db.set("disabled", false);
-                db = registry.byId("saveButton");
-                db.set("disabled", false);
-                db = registry.byId("mergeButton");
-                db.set("disabled", false);
-				db = registry.byId("previewButton");
-				db.set("disabled", false);
-				db = registry.byId("schemaButton");
-				db.set("disabled", false);
 
+			// Render image description on canvas
+			descObj.showDescription();
+
+			if(activity_config.get("allowCreateNode")){
+				var createNodeButton = registry.byId("createNodeButton");
+				createNodeButton.set("disabled", false);
+
+				/* add "Create Node" button to menu */
+				menu.add("createNodeButton", function(e){
+					event.stop(e);
+					if(controllerObject.checkDonenessMessage &&
+						controllerObject.checkDonenessMessage()){
+						return;
+					}
+
+					var id = givenModel.active.addNode();
+					controllerObject.logging.log('ui-action', {type: "menu-choice", name: "create-node"});
+					drawModel.addNode(givenModel.active.getNode(id));
+					controllerObject.showNodeEditor(id);
+				});
+			}
+
+			if(activity_config.get("allowProblemTimes")){
+				var descButton = registry.byId("descButton");
+				descButton.set("disabled", false);
 				// Description button wiring
 				menu.add("descButton", function(e){
 					event.stop(e);
 					style.set(dom.byId("publishResponse"), "display", "none");
 					//Display publish problem button on devel and localhost
 					if(window.location.hostname === "localhost" ||
-					   window.location.pathname.indexOf("/devel/") === 0){
+						window.location.pathname.indexOf("/devel/") === 0){
 						style.set(registry.byId("problemPublishButton").domNode, "display", "inline");
 					}
 					registry.byId("authorDescDialog").show();
 				});
+
 				aspect.after(registry.byId('authorDescDialog'), "hide", function(){
 					console.log("Saving Description/Timestep edits");
 					session.saveProblem(givenModel.model);
@@ -479,7 +414,7 @@ define([
 					if(w == true){
 						var request_promise = session.publishProblem(givenModel.model);
 						var responseWidget = dom.byId("publishResponse");
-						request_promise.then(function(response_status){						
+						request_promise.then(function(response_status){
 							if(response_status.status && response_status.status == "done"){
 								responseWidget.innerHTML = "Your problem has been successfully published";
 								style.set(responseWidget, "color", "green");
@@ -489,10 +424,117 @@ define([
 							}
 							style.set(responseWidget, "display", "block");
 						});
-			
-					}
-				});				
 
+					}
+				});
+
+				// Show tips for Root in node modifier and Share Bit in Description and Time
+				var makeTooltip  = function(id,content){
+					new toolTip({
+						connectId: [id],
+						label: content
+					});
+				};
+				makeTooltip('questionMarkRoot',"When running in COACHED mode, the system will guide the student through <br>" +
+					"the construction of the model beginning with this node, then proceeding with <br>" +
+					"this node's inputs, then their inputs, and so forth until the model is complete.");
+				makeTooltip('questionMarkShare', "When checked, your problem appears in the list <br>" +
+					"of custom problems for other users to solve.");
+				makeTooltip('questionMarkURL', "If you wish to use an image from your computer, <br>" +
+					"you must first upload it to a website and then copy <br>" +
+					"the URL of the image into this box.");
+				makeTooltip('questionMarkLessons', "The 'Lessons Learned' message will display once the student has successfully replicated <br>" +
+					"and graphed the author's model, providing an opportunity for retrospection.");
+				makeTooltip('integrationMethod', "Euler's method - Best for functions that occur every tick of the time frame <br>" +
+					"Midpoint - Best for continuous functions <br>");
+
+			}
+
+			if(activity_config.get("allowSaveAs")){
+
+				var saveButton = registry.byId("saveButton");
+				saveButton.set("disabled", false);
+
+				// Save As button wiring
+				menu.add("saveButton", function(e){
+					event.stop(e);
+					registry.byId("authorSaveDialog").show();
+				});
+
+				// Set the default save as folder parameters
+				var saveGroupCombo = registry.byId("authorSaveGroup");
+				var saveGroupArr=[{name: "Private("+query.u+")", id: "Private"},
+					{name: "public", id: "Public"}];
+				var saveGroupMem = new memory({data: saveGroupArr});
+				saveGroupCombo.set("store", saveGroupMem);
+				saveGroupCombo.set("value","Private("+query.u+")")//default to private
+
+				//Author Save Dialog
+				on(registry.byId("saveCloseButton"), "click", function(){
+					console.log("Rename and Save Problem edits");
+					// Save problem
+					var problemName = registry.byId("authorSaveProblem").value;
+					var groupName = registry.byId("authorSaveGroup").value;
+					var checkProblemName = new RegExp('^[A-Za-z0-9\-]+$');
+
+					if(typeof problemName !== 'undefined' && problemName==''){
+						alert('Missing Problem Name');
+						return;
+					}else if(typeof groupName!=='undefined' && groupName==''){
+						alert('Missing Group Name');
+						return;
+					}else if(problemName && problemName.length > 0 && problemName.length<=30 && checkProblemName.test(problemName)){
+						var checkHyphen = new RegExp('^[\-]+$');
+						if(!checkHyphen.test(problemName)){
+							if (groupName.split("(")[0]+"("=="Private("){
+								groupName=groupName.split(")")[0].substr(8);//Privte(username)=>username
+							}
+							session.saveAsProblem(givenModel.model,problemName,groupName);
+						}
+						else{
+							alert("Problem names must contain atleast one alphanumeric character.");
+							return;
+						}
+					}else{
+						alert("Problem names must be between 1 and 30 characters, and may only include alphanumeric characters and the \"-\" symbol");
+						return;
+					}
+
+				});
+
+				//Author Save Dialog - check for name conflict on losing focus
+				//from textboxes of Rename dialog
+				on(registry.byId("authorSaveProblem"), "blur", function() {
+					var problemName = registry.byId("authorSaveProblem").value;
+					var groupName = registry.byId("authorSaveGroup").value;
+					session.isProblemNameConflict(problemName,groupName).then(function(isConflict) {
+						if(isConflict) {
+							registry.byId("saveCloseButton").set("disabled",true);
+							registry.byId("saveCloseButton").set("title","Problem name conflict");
+						} else {
+							registry.byId("saveCloseButton").set("disabled",false);
+							registry.byId("saveCloseButton").set("title","Problem name doesn't conflict");
+						}
+					});
+				});
+				on(registry.byId("authorSaveGroup"), "blur", function() {
+					var problemName = registry.byId("authorSaveProblem").value;
+					var groupName = registry.byId("authorSaveGroup").value;
+					session.isProblemNameConflict(problemName,groupName).then(function(isConflict) {
+						if(isConflict) {
+							registry.byId("saveCloseButton").set("disabled",true);
+							registry.byId("saveCloseButton").set("title","Problem name conflict");
+						} else {
+							registry.byId("saveCloseButton").set("disabled",false);
+							registry.byId("saveCloseButton").set("title","Problem name doesn't conflict");
+						}
+					});
+				});
+			}
+
+			if(activity_config.get("allowPreview")){
+				var previewButton = registry.byId("previewButton");
+				previewButton.set("disabled", false);
 				on(registry.byId("previewButton"),"click",function(){
 					var user = query.u;
 					var timestamp = new Date().getTime();
@@ -501,41 +543,35 @@ define([
 					url=url+"&l=false";
 					window.open(url.replace("m=AUTHOR","m=STUDENT"),"newwindow");
 				});
+			}
+
+			if(activity_config.get("allowCreateSchema")){
+				var schemaButton = registry.byId("schemaButton");
+				schemaButton.set("disabled", false);
 
 				var schema = new schemaAuthor(givenModel, session);
 				menu.add("schemaButton", function(e){
 					event.stop(e);
 					schema.showSchemaWindow();
 				});
+			}
 
-
-                // Save As button wiring
-                menu.add("saveButton", function(e){
+			if(activity_config.get("allowMerge")){
+				var mergeButton = registry.byId("mergeButton");
+				mergeButton.set("disabled", false);
+				// Merge button wiring
+				menu.add("mergeButton", function(e){
 					event.stop(e);
-                    registry.byId("authorSaveDialog").show();
-                });
-                // Set the default save as folder parameters
-                var saveGroupCombo = registry.byId("authorSaveGroup");
-                var saveGroupArr=[{name: "Private("+query.u+")", id: "Private"},
-                                  {name: "public", id: "Public"}];
-                var saveGroupMem = new memory({data: saveGroupArr});
-		        saveGroupCombo.set("store", saveGroupMem);
-		        saveGroupCombo.set("value","Private("+query.u+")")//default to private
-
-
-                // Merge button wiring
-                menu.add("mergeButton", function(e){
-					event.stop(e);
-                    registry.byId("authorMergeDialog").show();
-                    var combo = registry.byId("authorMergeGroup");
-                    var arr=[{name: "Private("+query.u+")", id: "Private"},
-					          {name: "Public", id: "Public"},
-					          {name:"Official Problems",id:"Official Problems"}
-					          ];
+					registry.byId("authorMergeDialog").show();
+					var combo = registry.byId("authorMergeGroup");
+					var arr=[{name: "Private("+query.u+")", id: "Private"},
+						{name: "Public", id: "Public"},
+						{name:"Official Problems",id:"Official Problems"}
+					];
 					var m = new memory({data: arr});
-				    combo.set("store", m);
+					combo.set("store", m);
 					combo.set("value","Private("+query.u+")")//setting the default
-             	});
+				});
 
 				on(registry.byId("mergeDialogButton"),"click",function(){
 					var group = registry.byId("authorMergeGroup").value;
@@ -552,20 +588,20 @@ define([
 						section=null;
 					}
 					var query = {g:group,m:"AUTHOR",s:section,p:problem};
-                  	session.loadProblem(query).then(function(solutionGraph){
+					session.loadProblem(query).then(function(solutionGraph){
 						console.log("Merge problem is loaded "+solutionGraph);
 						if(solutionGraph){
 							//var nodes = solutionGraph.task.givenModelNodes;
 							var ids = givenModel.active.mergeNodes(solutionGraph);
 							//var snodes = solutionGraph.task.studentModelNodes;
 							//var sids = givenModel.active.mergeNodes(snodes,true);
-							givenModel.loadModel(givenModel.model);	
-							
+							givenModel.loadModel(givenModel.model);
+
 							//add merged nodes
-							array.forEach(ids,function(id){	
+							array.forEach(ids,function(id){
 								var node = 	givenModel.active.getNode(id);
-								drawModel.addNode(node);	
-							},this);	
+								drawModel.addNode(node);
+							},this);
 							//set connections for merged nodes
 							array.forEach(ids,function(id){
 								var node = 	givenModel.active.getNode(id);
@@ -577,73 +613,11 @@ define([
 							console.log("Problem Not found");
 							alert("Problem Not found, please check the problem name you have entered.");
 						}
-               		});
+					});
 				});
-
-				//Author Save Dialog
-                on(registry.byId("saveCloseButton"), "click", function(){
-                    console.log("Rename and Save Problem edits");
-                    // Save problem
-					var problemName = registry.byId("authorSaveProblem").value;
-					var groupName = registry.byId("authorSaveGroup").value;
-					var checkProblemName = new RegExp('^[A-Za-z0-9\-]+$');
-										
-					if(typeof problemName !== 'undefined' && problemName==''){
-						alert('Missing Problem Name');
-						return;
-					}else if(typeof groupName!=='undefined' && groupName==''){	
-						alert('Missing Group Name');
-						return;
-					}else if(problemName && problemName.length > 0 && problemName.length<=30 && checkProblemName.test(problemName)){
-						var checkHyphen = new RegExp('^[\-]+$');
-						if(!checkHyphen.test(problemName)){
-							if (groupName.split("(")[0]+"("=="Private("){
-					 	    	groupName=groupName.split(")")[0].substr(8);//Privte(username)=>username
-					        }
-							session.saveAsProblem(givenModel.model,problemName,groupName); 
-					    }
-					    else{
-							alert("Problem names must contain atleast one alphanumeric character.");
-							return;
-						}
-					}else{
-						alert("Problem names must be between 1 and 30 characters, and may only include alphanumeric characters and the \"-\" symbol");
-						return;
-					}
-
-                });
-                
-                //Author Save Dialog - check for name conflict on losing focus
-                //from textboxes of Rename dialog
-    			on(registry.byId("authorSaveProblem"), "blur", function() {
-    				var problemName = registry.byId("authorSaveProblem").value;
-    				var groupName = registry.byId("authorSaveGroup").value;    				
-    				session.isProblemNameConflict(problemName,groupName).then(function(isConflict) {
-    					if(isConflict) {    					
-    						registry.byId("saveCloseButton").set("disabled",true);
-    						registry.byId("saveCloseButton").set("title","Problem name conflict");
-    					} else {    						
-    						registry.byId("saveCloseButton").set("disabled",false);
-    						registry.byId("saveCloseButton").set("title","Problem name doesn't conflict");
-    					}
-    				});    				
-    			});
-    			on(registry.byId("authorSaveGroup"), "blur", function() {
-    				var problemName = registry.byId("authorSaveProblem").value;
-    				var groupName = registry.byId("authorSaveGroup").value;
-    				session.isProblemNameConflict(problemName,groupName).then(function(isConflict) {
-    					if(isConflict) {    						
-    						registry.byId("saveCloseButton").set("disabled",true);
-    						registry.byId("saveCloseButton").set("title","Problem name conflict");
-    					} else {    					
-    						registry.byId("saveCloseButton").set("disabled",false);
-    						registry.byId("saveCloseButton").set("title","Problem name doesn't conflict");
-    					}
-    				});
-    			});
 			}
 
-			if(query.m == "EDITOR"){
+			if(activity_config.get("allowHints")){
 				if(givenModel.model.task.slides){
 					var sb = registry.byId("slidesButton");
 					sb.set("disabled", false);
@@ -653,12 +627,12 @@ define([
 						createSlides.show();
 						createSlides.log(controllerObject.logging);
 					});
-					
+
 					on(registry.byId("prevSlide"), "click", function(){
 						createSlides.changeSlides("prev");
 						createSlides.log(controllerObject.logging);
 					});
-										
+
 					on(registry.byId("nextSlide"), "click", function(){
 						createSlides.changeSlides("next");
 						createSlides.log(controllerObject.logging);
@@ -666,84 +640,241 @@ define([
 				}
 			}
 
-			// Render image description on canvas
-			descObj.showDescription();
+			if(activity_config.get("allowGraph")){
+				var graphButton = registry.byId("graphButton");
+				graphButton.set("disabled", false);
+
+				// show graph when button clicked
+				menu.add("graphButton", function(e){
+					event.stop(e);
+					console.debug("button clicked");
+					// instantiate graph object
+					var buttonClicked = "graph";
+					var graph = new Graph(givenModel, query.m, session, buttonClicked);
+					graph.setStateGraph(state);
+					var problemComplete = givenModel.matchesGivenSolution();
+
+					graph._logging.log('ui-action', {
+						type: "menu-choice",
+						name: "graph-button",
+						problemComplete: problemComplete
+					});
+					graph.show();
+				});
+
+				//the solution div which shows graph/table when closed
+				//should disable all the pop ups
+				aspect.after(registry.byId('solution'), "hide", function(){
+					console.log("Calling graph/table to be closed");
+					controllerObject.logging.log('ui-action', {
+						type: "menu-choice",
+						name: "graph-closed"
+					});
+					typechecker.closePops();
+				});
+			}
+
+			if(activity_config.get("allowTable")){
+				var tableButton = registry.byId("tableButton");
+				tableButton.set("disabled", false);
+
+				// show table when button clicked
+				menu.add("tableButton", function(e){
+					event.stop(e);
+					console.debug("table button clicked");
+					var buttonClicked = "table";
+					var table = new Graph(givenModel, query.m, session, buttonClicked);
+					table.setStateGraph(state);
+					table._logging.log('ui-action', {
+						type: "menu-choice",
+						name: "table-button"
+					});
+					table.show();
+				});
+			}
+
+			if(activity_config.get("allowForum")){
+				// checks if forumurl is present
+				if(query.f && query.fe=="true") {
+					//Enable the forum button in the menu
+					var forumBut = registry.byId("forumButton");
+					forumBut.set("disabled", false);
+					//For redirecting to the forum from forum button click on header, only incase enabled
+					menu.add("forumButton",function(e){
+						event.stop(e);
+						//  Some portion of this function body should be moved to forum.js, Bug #2424
+						console.log("clicked on main forum button");
+						controllerObject.logging.log('ui-action', {
+							type: "menu-forum-button",
+							name: "forum"
+						});
+						var prob_name=givenModel.getTaskName();
+						console.log("problem name is ", prob_name);
+						window.open(query.f+"?&n="+prob_name+"&s="+query.s+"&fid="+query.fid+"&sid="+query.sid, "_blank" );
+					});
+					//setter function used for setting forum parameters
+					//inside controller
+					controllerObject.setForum(query);
+				}
+			}
+
+			if(activity_config.get("allowLessonsLearned")){
+
+				//Disable the lessonsLearnedButton
+				//var lessonsLearnedButton = registry.byId("lessonsLearnedButton");
+				//lessonsLearnedButton.set("disabled", true);
+				//Bind lessonsLearnedButton to the click event
+
+				menu.add("lessonsLearnedButton", function(e){
+					// preventing default execution of click handler
+					event.stop(e);
+					console.log("inside handler");
+					if(givenModel.isLessonLearnedShown == true){
+						contentMsg = givenModel.getTaskLessonsLearned();
+						lessonsLearned.displayLessonsLearned(contentMsg);
+					}
+				});
+			}
+
+			if(activity_config.get("allowHelp")){
+				/*
+				 Add link to intro video
+				 */
+				var video = dom.byId("menuIntroText");
+				on(video, "click", function(){
+					controllerObject.logging.log('ui-action', {
+						type: "menu-choice",
+						name: "introduction"
+					});
+					// "newwindow": the pop-out window name, not required, could be empty
+					// "height" and "width": pop-out window size
+					// Other properties could be changed as the value of yes or no
+					window.open("http://dragoon.asu.edu","newwindow",
+						"toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
+					);
+				});
+
+				/*
+				 Add link to list of math functions
+				 */
+				var math_func = dom.byId("menuMathFunctions");
+				on(math_func, "click", function(){
+					controllerObject.logging.log('ui-action', {
+						type: "menu-choice",
+						name: "math-functions"
+					});
+					// "newwindow": the pop-out window name, not required, could be empty
+					// "height" and "width": pop-out window size
+					// Other properties could be changed as the value of yes or no
+					window.open("math-probs.html","newwindow",
+						"height=400, width=600, toolbar =no, menubar=no, scrollbars=yes, resizable=no, location=no, status=no"
+					);
+				});
+
+			}
+
+			if(activity_config.get("promptSaveAs")){
+				// If we are loading a published problem in author mode, prompt user to perform a save-as immediately
+				if(!query.g) {
+					var message = '<strong>You must choose a name and folder for the new copy of this problem.</strong>';
+					var dialog = registry.byId("authorSaveDialog");
+					registry.byId("authorSaveProblem").set("value", query.p);
+					dom.byId("saveMessage").innerHTML = message;
+					dialog.show();
+				}
+			}
+
+			if(activity_config.get("showNodeEditor")){
+				// Wire up close button...
+				// This will trigger the above session.saveProblem()
+				on(registry.byId("closeButton"), "click", function(){
+					registry.byId("nodeeditor").hide();
+				});
+
+				if(activity_config.get("allowDeleteNode")) {
+					on(registry.byId("deleteButton"), "click", function () {
+						//delete node from model and remove from display
+						drawModel.deleteNode(controllerObject.currentID);
+						registry.byId("nodeeditor").hide();
+					});
+				}
+
+				/*
+				 Autosave on close window
+				 It would be more efficient if we only saved the changed node.
+
+				 Connecting to controllerObject.closeEditor causes a race condition
+				 with code in controllerObject._setUpNodeEditor that wires up closeEditor.
+				 Instead, we connect directly to the widget.
+				 */
+				aspect.after(registry.byId('nodeeditor'), "hide", function(){
+					console.log("Calling session.saveProblem");
+					if(controllerObject._mode == "AUTHOR")
+					{
+						array.forEach(givenModel.model.task.givenModelNodes, function(node){
+							if(node.ID === controllerObject.currentID)
+							{
+								console.log(node.description);
+								if(node.description === "" || node.description == null)
+								{
+									console.log("Changing description to match name");
+									node.description = node.name;
+								}
+							}
+						}, this);
+						if(typeof controllerObject._model.active.getType(controllerObject.currentID) !== "undefined"){
+							var isComplete = givenModel.given.isComplete(controllerObject.currentID)?'solid':'dashed';
+							var borderColor = "3px "+isComplete+" gray";
+							style.set(controllerObject.currentID, 'border', borderColor);
+							style.set(controllerObject.currentID, 'backgroundColor', "white");
+						}
+					}
+					session.saveProblem(givenModel.model);
+					//This section errors out in author mode
+					if(controllerObject._mode !== "AUTHOR"){
+						var descDirective=controllerObject._model.student.getStatusDirectives(controllerObject.currentID);
+						var directive = null;
+						for(i=0;i<descDirective.length;i++){
+							if(descDirective[i].id=="description")
+								directive=descDirective[i];
+
+						}
+						if(controllerObject._mode !== "TEST" && controllerObject._mode !== "EDITOR"){
+							if(directive&&(directive.value=="incorrect" || directive.value=="premature"))
+								drawModel.deleteNode(controllerObject.currentID);
+						}
+					}
+				});
+			}
 
 			/*
-			 Make model solution plot using dummy data. 
-			 This should be put in its own module.
+			 * Add Done Button to Menu
 			 */
-			
-			// show graph when button clicked
-			menu.add("graphButton", function(e){
-				event.stop(e);
-				console.debug("button clicked");
-				// instantiate graph object
-				var buttonClicked = "graph";
-				var graph = new Graph(givenModel, query.m, session, buttonClicked);
-				graph.setStateGraph(state);
-				var problemComplete = givenModel.matchesGivenSolution();
-				
-				graph._logging.log('ui-action', {
-					type: "menu-choice", 
-					name: "graph-button", 
-					problemComplete: problemComplete
-				});
-				graph.show();
-			});
-
-			
-			// show table when button clicked
-			menu.add("tableButton", function(e){
-				event.stop(e);
-				console.debug("table button clicked");
-				var buttonClicked = "table";
-				var table = new Graph(givenModel, query.m, session, buttonClicked);
-				table.setStateGraph(state);
-				table._logging.log('ui-action', {
-					type: "menu-choice", 
-					name: "table-button"
-				});
-				table.show();
-			});
-            //the solution div which shows graph/table when closed
-            //should disable all the pop ups
-            aspect.after(registry.byId('solution'), "hide", function(){
-                console.log("Calling graph/table to be closed");
-                controllerObject.logging.log('ui-action', {
-                    type: "menu-choice",
-                    name: "graph-closed"
-                });
-                typechecker.closePops();
-                //session.saveProblem(givenModel.model);
-            });
-
 			menu.add("doneButton", function(e){
 				event.stop(e);
 				console.debug("done button is clicked");
-				
 				var problemComplete = givenModel.matchesGivenSolution();
-				
-				
+
 				// if in preview mode , Logging is not required:
 				if(controllerObject.logging.doLogging)
 					controllerObject.logging.log('close-problem', {
-					type: "menu-choice", 
-						name: "done-button", 
+						type: "menu-choice",
+						name: "done-button",
 						problemComplete: problemComplete
 					}).then(function(){
-						 if(window.history.length == 1)
-	                        window.close();
-	                     else
-	                     	window.history.back();
+						if(window.history.length == 1)
+							window.close();
+						else
+							window.history.back();
 					});
 				else {
 					if(window.history.length == 1)
-	                        window.close();
-	                else
-	                     	window.history.back();
+						window.close();
+					else
+						window.history.back();
 				}
-				var searchPattern = new RegExp('^pal3', 'i'); 
+
+				var searchPattern = new RegExp('^pal3', 'i');
 				if(query.m != "AUTHOR" && searchPattern.test(query.s)){ // check if session name starts with pal
 					var tc = new tincan(givenModel, controllerObject._assessment,session, palTopicIndex);
 					//Connect to learning record store
@@ -753,92 +884,22 @@ define([
 				}
 			});
 
-			//Disable the lessonsLearnedButton
-			//var lessonsLearnedButton = registry.byId("lessonsLearnedButton");   
-			//lessonsLearnedButton.set("disabled", true);
-			//Bind lessonsLearnedButton to the click event	
-			if(query.m == "STUDENT" || query.m == "COACHED"){
-				menu.add("lessonsLearnedButton", function(e){
-					// preventing default execution of click handler
-					event.stop(e);
-					console.log("inside handler");
-					if(givenModel.isLessonLearnedShown == true){
-						contentMsg = givenModel.getTaskLessonsLearned();
-						lessonsLearned.displayLessonsLearned(contentMsg);
-					}		
-				});
-			}
-            /*
-             Add link to intro video
-             */
-            var video = dom.byId("menuIntroText");
-            on(video, "click", function(){
-                controllerObject.logging.log('ui-action', {
-                    type: "menu-choice",
-                    name: "introduction"
-                });
-                // "newwindow": the pop-out window name, not required, could be empty
-                // "height" and "width": pop-out window size
-                // Other properties could be changed as the value of yes or no
-                window.open("http://dragoon.asu.edu","newwindow",
-                    "toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
-                );
-            });
-
-            /*
-			 Add link to intro video
-			 */
-			var video = dom.byId("menuIntroVideo");
-			on(video, "click", function(){
-				controllerObject.logging.log('ui-action', {
-					type: "menu-choice", 
-					name: "intro-video"
-				});
-				// "newwindow": the pop-out window name, not required, could be empty
-				// "height" and "width": pop-out window size
-				// Other properties could be changed as the value of yes or no
-				window.open("https://www.youtube.com/watch_popup?v=Pll8iyDzcUs","newwindow",
-							"height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
-						   );
-			});
-
+			//This array is used later to called the setSelected function for all the buttons in the menu bar
+			var menuButtons=[];
+			menuButtons.push("createNodeButton","graphButton","tableButton","forumButton",
+				"schemaButton","descButton","saveButton","mergeButton",
+				"previewButton","slidesButton","lessonsLearnedButton","doneButton");
 			/*
-             Add link to list of math functions
-             */
-			var math_func = dom.byId("menuMathFunctions");
-			on(math_func, "click", function(){
-				controllerObject.logging.log('ui-action', {
-					type: "menu-choice",
-					name: "math-functions"
-				});
-				// "newwindow": the pop-out window name, not required, could be empty
-				// "height" and "width": pop-out window size
-				// Other properties could be changed as the value of yes or no
-				window.open("math-probs.html","newwindow",
-							"height=400, width=600, toolbar =no, menubar=no, scrollbars=yes, resizable=no, location=no, status=no"
-						   );
-			});
-
-			/*This is a work-around for getting a button to work inside a MenuBar.
-		 	Otherwise, there is a superfluous error message.
-		 	*/
+			 * This is a work-around for getting a button to work inside a MenuBar.
+		 	 * Otherwise, there is a superfluous error message.
+		 	 */
 			array.forEach(menuButtons,function(menuButton){
 				registry.byId(menuButton)._setSelected = function(arg){
 				console.log(menuButton+" _setSelected called with ", arg);				
 			    }			    
 			});
 
-			// If we are loading a published problem in author mode, prompt user to perform a save-as immediately
-            if(!query.g && query.m  === "AUTHOR"){
-				var message='<strong>You must choose a name and folder for the new copy of this problem.</strong>';
-				var dialog=registry.byId("authorSaveDialog");
-				registry.byId("authorSaveProblem").set("value",query.p);
-				dom.byId("saveMessage").innerHTML=message;
-				dialog.show();
-			}
-
 		});
 
 	});
-
 });
