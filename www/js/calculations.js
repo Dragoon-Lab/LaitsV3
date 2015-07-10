@@ -1,4 +1,4 @@
-/* global define */
+c /* global define */
 /**
  *Dragoon Project
  *Arizona State University
