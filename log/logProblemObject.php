@@ -16,6 +16,7 @@
 		public $errorRatio;
 		public $slides = array();
 		public $nodes = array();
+		public $sessions = array();
 
 		function getNodeFromName($checkName){
 			$allNodes = $this->nodes; // BvdS:  my editor complained about this line, but it wouldn't tell me what was wrong
@@ -52,6 +53,17 @@
 			}
 			return $resultNode;
 		}
+	}
+
+	Class Session{
+		public $timeStamp;
+		public $isProblemChanged;
+		public $isGraphOpened;
+		public $time;
+		public $lastLogTime;
+		//public $isGraphManipulated;
+		public $graphs = array();
+		public $nodesChanged = array();
 	}
 
 	class Node{
@@ -93,9 +105,19 @@
 
 	class Property{
 		public $name;
-		public $time;
+		public $sessionTimeStamp;
+		public $time = 0;
 		public $correctValue;
 		public $status = array();
 		public $answers = array();
+		public $values = array();
+	}
+
+	class Action{
+		public $startTime;
+		public $sessionStamp;
+		public $endTime;
+		public $actionTime;
+		public $value;
 	}
 ?>
