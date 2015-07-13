@@ -31,6 +31,7 @@ define([
 	'dojo/_base/declare', 
 	"dojo/_base/lang",
 	"dojo/dom",
+
 	"dojo/ready",
 	'dijit/registry',
 	'./controller',
@@ -185,6 +186,17 @@ define([
 			}
 		},
 
+		explanationHandler:function(){
+			var givenID=this._model.student.getGivenID(this.currentID);
+			editorWidget = registry.byId("editorContent");			
+			editorWidget.set('value',this._model.given.getExplanation(givenID)); // load the explanation in the editor
+			editorWidget.set('disabled','true');
+			var toolWidget=registry.byId("dijit_Toolbar_0");
+			var cancelButtonWidget=registry.byId("cancelEditorButton");
+		    cancelButtonWidget.domNode.style.display="none";// Hide the cancel button
+			toolWidget.domNode.style.display="none"; // Hide the toolbar
+		},
+
 		handleType: function(type){
 			console.log("****** Student has chosen type ", type, this);
 			if(type == 'defaultSelect')
@@ -192,6 +204,7 @@ define([
 			this.updateType(type);
 			this.applyDirectives(this._PM.processAnswer(this.currentID, 'type', type));
 		},
+		
 		typeSet: function(value){
 			this.updateType(value);
 		},
@@ -230,7 +243,7 @@ define([
 
 		/*
 		*	 handle event on inputs box
-		* */
+		*/
 		handleInputs: function(id){
 			//check if id is  not select else return
 

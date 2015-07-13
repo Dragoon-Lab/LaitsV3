@@ -55,13 +55,15 @@
 		require([
 			"dojo/parser",
 			"dijit/Dialog",
+             "dijit/Editor",
+            "dijit/_editor/plugins/LinkDialog",
 			"dijit/MenuBar", "dijit/PopupMenuBarItem",
 			"dijit/layout/BorderContainer", "dijit/MenuItem",
-            "dijit/form/Select",
+            "dijit/form/Select", "dijit/form/Textarea",
 			"dijit/form/Button", "dijit/form/CheckBox", "dijit/form/TextBox",
-			"dijit/form/ComboBox", "dijit/form/Textarea",
+			"dijit/form/ComboBox", "dijit/form/Textarea", "dijit/form/RadioButton",
 			"dijit/form/SimpleTextarea", "dijit/Menu",
-			"dijit/layout/ContentPane",
+			"dijit/layout/ContentPane", "dijit/registry",
 			"dragoon/menu", // Wire up menus
 			"dragoon" // Load up Dragoon itself
         ]);
@@ -111,7 +113,6 @@
     </script>
 
     <!-- jsPlumb Libs End Here -->
-
 
 </head>
 
@@ -377,6 +378,33 @@
                         <button id="divideButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">/</button>
 		    </div>
 		</div>
+       <!--  Trial place for explanation button -->
+            <div data-dojo-type="dijit/Dialog" data-dojo-id="myFormDialog" title="Editor">
+
+                <div class="dijitDialogPaneContentArea" data-dojo-attach-point="name">
+                    <label id="editorLabel" for="name" style="display:none"><b>Insert your explanation below: </b></p> </label>
+                    <input id="editorInput" type="hidden" name="editorContent" data-dojo-attach-point="name" style="display:none"/>
+                    <div  id="editorContent" dojoType="dijit/Editor" readonly="readonly" 
+                       height="200px"
+                       extraPlugins=" ['createLink', 'unlink', 'insertImage'] " >                   
+                    </div>   
+                </div>               
+
+                <div class="dijitDialogPaneActionBar">
+                    <button data-dojo-type="dijit/form/Button" type="submit" onClick="return myFormDialog.isValid();" >
+                     OK
+                    </button>
+                    <button id="cancelEditorButton"data-dojo-type="dijit/form/Button" type="button" onClick="myFormDialog.hide()">
+                     Cancel
+                    </button>
+                </div>
+        </div>
+
+        <button id="explanationButton" data-dojo-type="dijit/form/Button" type="button" onclick="myFormDialog.show()" style="margin-left: 20px;">
+        Explanation
+        </button>
+        <!--  End of explanation part --> 
+           
 	    </div>
 	    <div class="fieldgroup" id="structured">
 	        <label>Inputs</label>

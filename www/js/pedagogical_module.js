@@ -584,6 +584,7 @@ define([
 					interpret(this.model.given.getUnits(givenID));
 					break;
 				case "equation":
+				var nb=check.areEquivalent(givenID, this.model, answer);
 					interpret(check.areEquivalent(givenID, this.model, answer));
 					break;
 			}
