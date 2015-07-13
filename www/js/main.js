@@ -51,12 +51,13 @@ define([
 	"./tincan",
 	"./activity-parameters",
 	"dojo/store/Memory",
-	"dojo/_base/event"
+	"dojo/_base/event",
+	"./ui-parameter"
 ], function(
 		array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry, toolTip,
 		menu, loadSave, model, Graph, Table, controlStudent, controlAuthor, drawmodel, logging, equation,
 		description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan,
-		activityParameters, memory, event){
+		activityParameters, memory, event, UI){
 
 	/*  Summary:
 	 *			Menu controller
@@ -65,7 +66,6 @@ define([
 	 *  Tags:
 	 *			menu, buttons, controller
 	 */
-
 	console.log("load main.js");
 
     //remove the loading division, now that the problem is being loaded
@@ -120,6 +120,7 @@ define([
         //display warning message if not using the supported browser and version
         var checkBrowser = session.browser.name;
         var checkVersion = session.browser.version;
+
         if((checkBrowser ==="Chrome" && checkVersion<41) ||
 			(checkBrowser==="Safari" && checkVersion<8)||
 			(checkBrowser==="msie" && checkVersion<11)||
@@ -135,6 +136,10 @@ define([
 		var givenModel = new model(query.m, query.p);
 		logging.session.log('open-problem', {problem : query.p});
         console.log("solution graph is",solutionGraph);
+
+		// get the UI state for the given state and activity
+		var ui_config = new UI(query.m , "construction");
+		console.info("UI Parameters created:",ui_config);
 
 		if(solutionGraph) {
             try {
@@ -263,15 +268,8 @@ define([
 				}
 				dojo.xhrGet(xhrArgs);
 			}
-
-			//In TEST and EDITOR mode remove background color and border colors		 
-			if(controllerObject._mode == "TEST" || controllerObject._mode == "EDITOR"){
-				showColor = false;
-			}else{
-				showColor = true;
-			}
-
-			var drawModel = new drawmodel(givenModel.active, showColor, activity_config);
+			
+			var drawModel = new drawmodel(givenModel.active, ui_config.get("showColor"));
 			drawModel.setLogging(session);
 
 			// Wire up drawing new node
@@ -351,6 +349,60 @@ define([
 				lang.hitch(drawModel, drawModel.setConnections), true);
 			aspect.after(controllerObject, 'setConnection',
 				lang.hitch(drawModel, drawModel.setConnection), true);
+			 /*
+			 Autosave on close window
+			 It would be more efficient if we only saved the changed node.
+			 
+			 Connecting to controllerObject.closeEditor causes a race condition
+			 with code in controllerObject._setUpNodeEditor that wires up closeEditor.
+			 Instead, we connect directly to the widget.
+			 */
+			aspect.after(registry.byId('nodeeditor'), "hide", function(){
+				console.log("Calling session.saveProblem");
+   				if(controllerObject._mode == "AUTHOR")
+				{	
+					array.forEach(givenModel.model.task.givenModelNodes, function(node){
+						if(node.ID === controllerObject.currentID)
+						{
+							console.log(node.description);
+							if(node.description === "" || node.description == null)
+							{
+								console.log("Changing description to match name");
+								node.description = node.name;
+							}
+						}
+					}, this);
+					if(typeof controllerObject._model.active.getType(controllerObject.currentID) !== "undefined"){
+						var isComplete = givenModel.given.isComplete(controllerObject.currentID)?ui_config.get('nodeBorderCompleteStyle'):ui_config.get('nodeBorderInCompleteStyle');
+						console.log(ui_config.get('nodeBorderSize'));
+						var borderStyle = ui_config.get('nodeBorderSize') + isComplete+ ui_config.get('nodeBorderCompleteColor');
+						console.info("borderStyle:", borderStyle);
+						style.set(controllerObject.currentID, 'border', borderStyle);
+						style.set(controllerObject.currentID, 'backgroundColor', "white");
+					}
+				}
+				session.saveProblem(givenModel.model);
+				//This section errors out in author mode
+				if(controllerObject._mode !== "AUTHOR"){
+	                var descDirective=controllerObject._model.student.getStatusDirectives(controllerObject.currentID);
+	                var directive = null;
+	                for(i=0;i<descDirective.length;i++){
+	                    if(descDirective[i].id=="description")
+	                            directive=descDirective[i];
+	                        
+	                }
+	                if(controllerObject._mode !== "TEST" && controllerObject._mode !== "EDITOR"){
+	                	if(directive&&(directive.value=="incorrect" || directive.value=="premature"))
+	                            drawModel.deleteNode(controllerObject.currentID);
+	                }
+           		}
+    		});
+			
+			// Wire up close button...
+			// This will trigger the above session.saveProblem()
+			on(registry.byId("closeButton"), "click", function(){
+				registry.byId("nodeeditor").hide();
+			});
 
 			//Remove nodes from student model(if added) when author deletes the node from given model
 			if(controllerObject._mode == "AUTHOR"){
@@ -889,6 +941,15 @@ define([
 			menuButtons.push("createNodeButton","graphButton","tableButton","forumButton",
 				"schemaButton","descButton","saveButton","mergeButton",
 				"previewButton","slidesButton","lessonsLearnedButton","doneButton");
+
+			if(query.m == "STUDENT"){
+				style.set(registry.byId('forumButton').domNode, "display", "none");
+				style.set(registry.byId('schemaButton').domNode, "display", "none");
+				style.set(registry.byId('descButton').domNode, "display", "none");
+				style.set(registry.byId('saveButton').domNode, "display", "none");
+				style.set(registry.byId('mergeButton').domNode, "display", "none");
+				style.set(registry.byId('previewButton').domNode, "display", "none");
+			}
 			/*
 			 * This is a work-around for getting a button to work inside a MenuBar.
 		 	 * Otherwise, there is a superfluous error message.
