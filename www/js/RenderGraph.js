@@ -96,7 +96,6 @@ define([
 			}
 			if(activeSolution.plotValues.length == 0)
 			{
-				console.log("hello");
 				this.dialogWidget.set("content", "<div>Please fill in some nodes before trying to graph</div>"); //We show the error message like "A Node is Missing"
 				return;
 			}
@@ -182,7 +181,7 @@ define([
 			this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' style='overflow:auto'>";
 
 			//text for correctness of solution
-			this.dialogContent += "<p>To reset sliders, close and reopen window</p><br>";
+			this.dialogContent += "<p id= 'solutionMessage'>To reset sliders, close and reopen window</p><br>";
 
 			this.isCorrect = false;
 			if(this.mode != "AUTHOR"  && this.mode != "EDITOR")
@@ -200,7 +199,6 @@ define([
 						this.dialogContent += "<font color='red'>Your model does not match the author's.  You may have extra nodes in your model.</font><br>"
 					}
 					else{
-						console.log(this.model.active);
 						this.dialogContent += "<font color='red'>Unfortunately, your model's behavior does not match the author's.</font><br>";
 					}					 
 				}
@@ -215,7 +213,6 @@ define([
 			//plot sliders
 
 			this.createSliderAndDialogObject();	
-
 
 
 			var graphTab = null;
@@ -252,6 +249,7 @@ define([
 				staticTab.style.border = "thin solid black";
 				this.createComboBox(staticNodes);
 			}
+
 			var charts = {};
 			var chartsStatic = {};
 			var legends = {};
@@ -276,16 +274,25 @@ define([
 			}, "table");
 
 
+
 			if(this.active.plotVariables.length > 0){ //we check the length of object, if there are nodes, then we proceed else give an error and return
+				
 				array.forEach(this.active.plotVariables, function(id, k){
+
 					var str = "chart" + id;
 					charts[id] = new Chart(str);
-					charts[id].addPlot("default", {
-						type: Lines,
+					charts[id].addPlot("grid", {
+						type: Grid,
 						// Do not include markers if there are too
 						// many plot points.  It looks ugly and slows down
 						// plotting significantly.
-						markers: activeSolution.times.length < 25
+						hMajorLines: true, 
+						hMinorLines: false,
+						vMajorLines: true,
+						vMinorLines: false,
+						majorHLine: { color: "gray", width: 1 },
+         				majorVLine: { color: "gray", width: 1 }
+						//markers: activeSolution.times.length < 25
 						});
 					charts[id].addAxis("x", {
 						title: this.labelString(),
@@ -304,6 +311,7 @@ define([
 					if(this.mode != "AUTHOR"){
 						var givenID = this.model.active.getDescriptionID(id);
 					}
+
 					if(this.isCorrect || this.mode == "AUTHOR")
 					{
 						//plot chart for student node
@@ -321,18 +329,28 @@ define([
 							{stroke: "red"}
 						);
 					}
+
 					if(this.mode != "AUTHOR"  && this.mode != "EDITOR" && this.given.plotVariables[k]){
+						
 						charts[id].addSeries(
 							"Author's solution",
 							this.formatSeriesForChart(givenSolution, k), {stroke: "black"}
 						);
 					}
-					charts[id].render();
+					if(obj.max - obj.min > (Math.pow(10,-16)) || (obj.max - obj.min === 0))
+					{
+						charts[id].render();
+					}
+					else
+					{
+						dom.byId("solutionMessage").innerHTML = "Unable to graph, please increase the number of timesteps";
+					}
 					legends[id] = new Legend({chart: charts[id]}, "legend" + id);
 
 				}, this);
+			
 			} else {
-                //Now it is possible that there might be incomplete nodes which are not listed in active plot variables
+                //Now it is possible that there might be incomplete nodes which are not listed in active plot plotVariables
                 var thisModel = this;
                 var modStatus = true;
                 array.forEach(this.model.active.getNodes(), function (thisnode) {
@@ -359,12 +377,18 @@ define([
 						var str = "chartStatic" + id;
 						//console.log(str);
 						chartsStatic[id] = new Chart(str);
-						chartsStatic[id].addPlot("default", {
-							type: Lines,
+						chartsStatic[id].addPlot("grid", {
+							type: Grid,
+							hMajorLines: true, 
+							hMinorLines: false,
+							vMajorLines: true,
+							vMinorLines: false,
+							majorHLine: { color: "gray", width: 1 },
+         					majorVLine: { color: "gray", width: 1 }
 							// Do not include markers if there are too
 							// many plot points.  It looks ugly and slows down
 							// plotting significantly.
-							markers: staticPlot.times.length < 25
+							//markers: staticPlot.times.length < 25
 							});
 						chartsStatic[id].addAxis("x", {
 							title: dom.byId("staticSelect").value,
@@ -439,6 +463,7 @@ define([
 					}
 				});
 			}, this);
+
 			if(this.isStatic)
 			{
 				array.forEach(this.active.plotVariables, function(id){

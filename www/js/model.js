@@ -516,6 +516,10 @@ define([
 				});
 				return outputs;
 			},
+			getPosition: function(/*string*/ id){
+				// Summary: return current position of the node.
+				return this.getNode(id).position;
+			},
 			getSchemas: function(){
 				return obj.model.task.schemas;
 			},

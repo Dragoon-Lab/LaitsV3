@@ -136,11 +136,16 @@ define([
 				return function(){
 					var equation = registry.byId("equationBox");
 					if(equation.value && !myThis.equationEntered){
-						//Crisis alert popup if equation not checked
-						myThis.applyDirectives([{
-							id: "crisisAlert", attribute:
-							"open", value: "Your expression has not been checked!  Go back and check your expression to verify it is correct, or delete the expression, before closing the node editor."
-						}]);
+						var directives = myThis.equationDoneHandler();
+						var isAlertShown = array.some(directives, function(directive){
+							if(directive.id === 'crisisAlert'){
+								return true;
+							}
+						});
+						if(!isAlertShown) {
+							doHide.apply(myThis._nodeEditor);
+							myThis.closeEditor.call(myThis);
+						}
 					}
 					else if(myThis._mode == "AUTHOR" && registry.byId("selectModel").value == "given"){
 						var equation = registry.byId("givenEquationBox");
@@ -762,7 +767,7 @@ define([
 				var widget = registry.byId(this.controlMap.equation);
 				this.structured.pop();
 			}
-		},
+		}, 
 
 		//Enables the Forum Button in node editor
 		//Also uses the forum module to activate the event button click
@@ -800,8 +805,13 @@ define([
 				parse = expression.parse(inputEquation);
 			}catch(err){
 				console.log("Parser error: ", err);
+				console.log(err.message);
+				console.log(err.Error);
 				this._model.active.setEquation(this.currentID, inputEquation);
-				directives.push({id: 'message', attribute: 'append', value: 'Incorrect equation syntax.'});
+				if(err.message.includes("unexpected variable"))
+					directives.push({id: 'message', attribute: 'append', value: 'The value entered for the equation is incorrect'});
+				else
+					directives.push({id: 'message', attribute: 'append', value: 'Incorrect equation syntax.'});
 				directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
 				this.logging.log("solution-step", {
 					type: "parse-error",

@@ -43,6 +43,7 @@ define([
 		_messageBox: null,
 		_type: "error",
 		_message: null,
+		_callback: null,
 		
 		constructor: function(/* String */ container, /* String */ type, /* String */ message){
 		//	container: Id of the container 
@@ -85,6 +86,7 @@ define([
               				},
 					    };
 					    dojo.fadeOut(fadeArgs).play();
+						if(_callback && typeof _callback == "function") _callback();
 					    handler.remove();
 			    	});
 
@@ -101,6 +103,9 @@ define([
 		hide: function(){
 			//Hide MessageBox
 			style.set(_messageBox, "display", "none");
+		},
+		addCallback : function(fn){
+			_callback = fn;	
 		},
 	});
 });

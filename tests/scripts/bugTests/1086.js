@@ -20,8 +20,8 @@
  */
 
 /*
-  Regression test for bug:
-  https://trello.com/c/fhw9i1Bd/1080-some-problems-with-schemas-error-out-when-previewing
+  Regression test for bug trello card 1086
+  https://trello.com/c/10opKdc7/1086-autocreated-node-is-marked-premature-after-yellow-expression
 */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -47,37 +47,39 @@ var atest = require('../assertTestLib.js');
 var sync = require('synchronize');
 // import wrapper for asynchronous functions
 var async = sync.asyncIt;
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var originalTab = "";
-
-describe("Schema preview bug", function() {
+describe("Regression test for trello card #1086", function() {
 
     before(async(function (done) {
-            dtest.openProblem(client,[["problem","rabbits"],["mode","AUTHOR"],
-                                      ["section","regression-testing"]]);
+            dtest.openProblem(client,[["problem","CPI-2014-ps2-07"],["mode","STUDENT"],
+                                      ["section","regression-testing"],
+                                      ["logging","true"]]);
     }));
 
-    describe("Test for broken preview in problem with schemas", function(){
-        it("Should close the save as dialog", async(function(){
-            originalTab = dtest.getCurrentTabId(client);
-            dtest.closeSaveAsWindow(client);
+    describe("Create float heigh node with yellow expression", function(){
+        it("The value of hardwood choice should turn red", async(function(){
+            dtest.menuCreateNode(client);
+            dtest.setNodeDescription(client, "The height of the water in the toilet tank");
+            dtest.popupWindowPressOk(client);
+            dtest.setNodeType(client,"Accumulator");
+            dtest.popupWindowPressOk(client);
+            dtest.setNodeInitialValue(client,0);
+            dtest.setNodeExpression(client,"flow per inch");
+            dtest.checkExpression(client);
+            dtest.popupWindowPressOk(client);
+            dtest.setNodeExpression(client,"flow per inch+full height");
+            dtest.checkExpression(client);
+            dtest.popupWindowPressOk(client);
+            atest.checkNodeValues([["expectedExpressionColor", "yellow"]],dtest,client);
+            dtest.nodeEditorDone(client);
         }));
-
-        it("Should open the preview", async(function(){
-            dtest.menuOpenPreview(client);
+        it("The resultant water flow node should not be premature", async(function(){
+            dtest.openEditorForNode(client,"water flow");
+            atest.checkNodeValues([["expectedDescriptionColor", "green"]],dtest,client);
+            dtest.setNodeType(client,"Function");
+            dtest.nodeEditorDone(client);
         }));
-
-        it("Should close the preview on hitting the done button", async(function(){            
-            dtest.menuDone(client);
-        }));
-
-        it("Should return to author tab", async(function(){
-            dtest.switchTab(client,originalTab);
-            dtest.menuOpenAuthorOptions(client);
-            dtest.pressCheckProblemButton(client);
-        })); 
     });
 
     after(function(done) {
