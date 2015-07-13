@@ -33,11 +33,13 @@
 		function getIndex($nodeName){
 			$allNodes = $this->nodes;
 			$i = 0;
-			foreach($allNodes as $node){
-				if($nodeName == $node->name || strpos($node->id, $nodeName) !== false){
-					return $i;
+			if($nodeName != null || $nodeName != ""){
+				foreach($allNodes as $node){
+					if($nodeName == $node->name || strpos($node->id, $nodeName) !== false){
+						return $i;
+					}
+					$i += 1;
 				}
-				$i += 1;
 			}
 			return -1;
 		}
@@ -57,13 +59,13 @@
 
 	Class Session{
 		public $timeStamp;
-		public $isProblemChanged;
-		public $isGraphOpened;
-		public $time;
-		public $lastLogTime;
+		public $isProblemChanged = false; //tells if node was changed in this session
+		public $isGraphOpened = false; //tells if graph was opened during this session. 
+		public $time; // this is session time, which is equivalent to last logging time - wasted time
+		public $lastLogTime; // last log message time to know absolute time as well
 		//public $isGraphManipulated;
-		public $graphs = array();
-		public $nodesChanged = array();
+		public $graphs = array(); // holds graph actions details of this session
+		public $nodesChanged = array(); // holds the nodes that have been changed in the session
 	}
 
 	class Node{
@@ -113,6 +115,10 @@
 		public $values = array();
 	}
 
+	/* this is the object for two UI actions uptill now
+	* Graph/Table UI actions - value = true/false when graph has been changed
+	* Property enterning of node - value = property value that was added. For each value entering there is one action.
+	*/
 	class Action{
 		public $startTime;
 		public $sessionStamp;

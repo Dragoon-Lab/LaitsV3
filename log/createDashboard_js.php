@@ -74,14 +74,14 @@
 				(!empty($mode)?$modeString:"").
 			"ORDER BY user asc, problem asc, time asc, tid asc;";
 		//	$queryString = "SELECT tid, mode, session.session_id, user, problem, time, method, message, `group` from session JOIN step ON session.session_id = step.session_id where method != 'client-message' AND mode != 'AUTHOR' AND user = 'cdluna' AND problem LIKE '%ps3-0%' ORDER BY user asc, problem asc, tid asc;";
-			//echo $queryString;
+		//	echo $queryString;
 
 			return $queryString;
 		}
 
 		function parseMessages($result){
 			$resetVariables = true;
-			$sessionTime; $outOfFocusTime; $timeWasted; $focustTime; $runningSessionTime;
+			$sessionTime; $outOfFocusTime; $timeWasted; $focustTime; $runningSessionTime; $runningOutOfFocusTime;
 			$oldRow; $method; $oldMessage; $newMessage;
 			$row; $oldSession; $newSession;
 			$upObject; $currentNode = null;//up stands for user-problem
@@ -103,7 +103,7 @@
 				$first = false;
 				if($resetVariables){
 					$sessionTime = 0; $outOfFocusTime = 0; $timeWasted=0; $focusTime = 0; $propertyStartTime = 0;
-					$runningSessionTime = 0;
+					$runningSessionTime = 0; $runningOutOfFocusTime = 0;
 					$inFocus = true;
 					$problemReOpen = 1;
 					$upObject = new UserProblemObject ();
@@ -123,6 +123,7 @@
 					$slidesOpen = false;
 					$slides = array();
 					$currentSession = new Session();
+					$currentSession->timeStamp = $row['time'];
 					$currentAction;
 				}
 				$resetVariables = false;
@@ -145,14 +146,16 @@
 						$timeSkip = true;
 						//array_push($objectArray, $upObject);
 					}
-					$currentSession->time = $runningSessionTime;
-					array_push($upObject->sessions, $currentSession);
+					$currentSession->time = $runningSessionTime - $runningOutOfFocusTime;
+										array_push($upObject->sessions, $currentSession);
 					$currentSession = new Session();
 					$currentSession->timeStamp = $row['time'];
 					$runningSessionTime = 0;
+					$runningOutOfFocusTime = 0;
 				}
 				
-				$session->lastLogTime = $newMessage['time'];
+				//echo print_r($row)."<br/>";
+				$currentSession->lastLogTime = $newMessage['time'];
 				//echo "row -> ".json_encode($row)." <- ".$upObject->sessionRunning." <br/>";
 				$stepTime = $newMessage['time'] - $oldMessage['time'];
 				//echo $newMessage['time']." - ".$oldMessage['time']." = ".$stepTime."<br/>";	
@@ -162,8 +165,10 @@
 				
 				if(!($inFocus) && $method == "window-focus" && $newMessage['type'] == "out-of-focus"){
 					$outOfFocusTime += $stepTime;
+					$runningOutOfFocusTime += $stepTime;
 				} else if(!($inFocus) && $method != "window-focus" && !($timeSkip)){
 					$outOfFocusTime += $stepTime;
+					$runningOutOfFocusTime += $stepTime;
 					$inFocus = true;
 				}
 				if(!$timeSkip){
@@ -171,7 +176,7 @@
 					$sessionTime += $stepTime;
 					$runningSessionTime += $stepTime;
 				}
-				$
+				
 				//echo "out of focus ".$outOfFocusTime." step ".$stepTime." session ".$sessionTime." wasted ".$timeWasted."<br/>";
 				if($slidesOpen && $slideIndex > 0){
 					//added because there is no close slides log message.
@@ -222,6 +227,7 @@
 							$currentSession->isGraphOpened = true;
 						}else if($name === "graph-closed"){
 							if($currentAction != null){
+								$currentAction->endTime = $newMessage['time'];
 								$currentAction->actionTime = $newMessage['time'] - $graphActionStart;
 								array_push($currentSession->graphs, $currentAction);
 								$currentAction = null;
@@ -230,7 +236,7 @@
 							$upObject->problemComplete = $newMessage['problemComplete'];
 							$upObject->sessionRunning = false;
 						}
-					} else ($type === "solution-manipulation"){
+					}else if($type === "solution-manipulation"){
 						//this is the case when the student checks whether a graph has been changed or table has been changed
 						if($currentAction == null || !isset($currentAction)){
 							$currentAction = new Action();
@@ -304,6 +310,7 @@
 								$currentNode->id = $newMessage['nodeID'];
 								$currentNode->openTimes = 1;
 								$currentNode->nodeExist = true;
+								$currentNode->name = $newMessage['node'];
 							}
 							//otherwise auto created node with the property of description was created.
 						} else {
@@ -505,69 +512,92 @@
 					} else if($type === "solution-enter"){
 						//this is for the author mode
 						//I need to pick up a property and add its values and push it to a node. There is no correctness check in author mode.
-						$currentSession->isProblemChanged = true;
-						if(!(in_array($newMessage['node'], $currentSession->nodesChanged)){
-							array_push($currentSession->nodesChanged, $newMessage['node']);
+						$propertyName = "";
+						if(array_key_exists("propoerty", $newMessage)){
+							$propertyName = $newMessage['propoerty'];
+						} else {
+							$propertyName = $newMessage['property'];
 						}
-						if($currentNode == null || !(isset($currentNode))){
-							$currentNode = $upObject->getNodeFromName($newMessage['node']);
-							if($currentNode == null){
+						if((array_key_exists("error", $newMessage) && $newMessage['error'] == false) || !array_key_exists("error", $newMessage)){
+							$currentSession->isProblemChanged = true;
+							if(array_key_exists("node", $newMessage) && !(in_array($newMessage['node'], $currentSession->nodesChanged))){
+								array_push($currentSession->nodesChanged, $newMessage['node']);
+							}
+							if($currentNode == null || !(isset($currentNode))){
+								$currentNode = $upObject->getNodeFromName($newMessage['node']);
+								if($currentNode == null){
+									$currentNode = new Node();
+									$currentNode->id = $newMessage['nodeID'];
+									$currentNode->name = $newMessage['node'];
+									$currentNode->nodeExist = true;
+									$currentNode->openTimes = 1;
+								}
+							} else if((array_key_exists("node", $newMessage) && $currentNode->name != $newMessage['node']) ||(array_key_exists("nodeID", $newMessage) && strpos($newMessage['nodeID'], $currentNode->id) !== false)){
+								//else if condition makes sure that currentNode is the one that is changed in the currentRow. This has fail safe overload for the missing row messages
+								if($currentNode->name == "" || $currentNode->name == null){
+									if(array_key_exists("node", $newMessage))
+										$currentNode->name = $newMessage['node'];
+									else if(array_key_exists("node", $oldMessage) && ($newMessage['nodeID'] == $oldMessage['nodeID']))
+										$currentNode->name = $oldMessage['node'];
+								}
+								$index = $upObject->getIndex($currentNode->name);
+								if($index < 0){
+									array_push($upObject->nodes, $currentNode);
+								} else {
+									$upObject->nodes[$index] = $currentNode;
+								}
 								$currentNode = new Node();
 								$currentNode->id = $newMessage['nodeID'];
-								$currentNode->name = $newMessage['node'];
+								$currentNode->name = array_key_exists("node", $newMessage)?$newMessage['node']: "";
 								$currentNode->nodeExist = true;
 								$currentNode->openTimes = 1;
 							}
-						} else if($currentNode->name != $newMessage['node']){
-							$index = $upObject->getNodeIndex($currentNode->name);
-							if($index < 0){
-								array_push($upObject->nodes, $currentNode);
+							//echo json_encode($row)."<br\>";
+							if($currentProperty == null || !isset($currentProperty)){
+								//echo json_encode($currentNode)."<br\>";
+								$tempProperty = $currentNode->getPropertyFromName($newMessage['node']);
+								if($tempProperty == null){
+									$currentProperty = new Property();
+								} else {
+									$currentProperty = $tempProperty;
+									$tempProperty = null;
+								}
 							} else {
-								$upObject->nodes[$index] = $currentNode);
+								if($currentProperty->name != $propertyName){
+									//$currentProperty->time = $oldMessage['time'] - $propertyStartTime;
+									//$propertyStartTime = $oldMessage['time'];
+									array_push($currentNode->properties, $currentProperty);
+									$currentProperty = new Property();
+								}
 							}
-							$currentNode = new Node();
-							$currentNode->id = $newMessage['nodeID'];
-							$currentNode->name = $newMessage['node'];
-							$currentNode->nodeExist = true;
-							$currentNode->openTimes = 1;
-						}
-						if($currentProperty == null || !isset($currentProperty)){
-							$tempProperty = $currentNode->getPropertyFromName($newMessage['name']);
-							if($tempProperty == null){
-								$currentProperty = new Property();
-							} else {
-								$currentProperty = $tempProperty;
-								$tempProperty = null;
-							}
-						} else {
-							if($currentProperty->name != $newMessage['property']){
-								//$currentProperty->time = $oldMessage['time'] - $propertyStartTime;
-								//$propertyStartTime = $oldMessage['time'];
-								array_push($currentNode->properties, $currentProperty);
-								$currentProperty = new Property();
-							}
-						}
 
-						$currentProperty->sesstionTimeStamp = $row['time'];
-						$currentProperty->name = $newMessage['property'];
-						$currentProperty->time = $currentProperty->time + $stepTime;
-						array_push($currentProperty->answers, $newMessage['value'];
+							$currentProperty->sessionTimeStamp = $row['time'];
+							$currentProperty->name = $propertyName;
+							$currentProperty->time = $currentProperty->time + $stepTime;
+							if(array_key_exists("value", $newMessage)){
+								array_push($currentProperty->answers, $newMessage['value']);
+							} else {
+								array_push($currentProperty->answers, true);
+							}
 						
-						//current row is one action by the user in this case. So setting the time step for that.
-						$currentAction = new Action();
-						$currentAction->startTime = $newMessage['time'];
-						$currentAction->sessionStamp = $row['time'];
-						$currentAction->endTime = $oldMessage['time'];
-						$current->value = $newMessage['value'];
-						$currentAction->actionTime= $stepTime;
-						array_push($currentProperty->values, $currentAction);
-						$currentAction = null;
+							//current row is one action by the user in this case. So setting the time step for that.
+							$currentAction = new Action();
+							$currentAction->endTime = $newMessage['time'];
+							$currentAction->sessionStamp = $row['time'];
+							$currentAction->startTime = $oldMessage['time'];
+							$currentAction->value = array_key_exists('value', $newMessage)?$newMessage['value']:true;
+							$currentAction->actionTime= $stepTime;
+							//echo "Action -> ".print_r($currentAction)."<br/>";
+							array_push($currentProperty->values, $currentAction);
+							$currentAction = null;
+						}
 					}
 				} else if($method === "window-focus"){
 					$type = $newMessage['type'];
 					if($newMessage['time'] > 1 && $type === "in-focus" && !($inFocus)){
 						//window came back in focus
 						$outOfFocusTime += $stepTime; // as previous message will be for out of focus.
+						$runningOutOfFocusTime += $stepTime;
 						$inFocus = true;
 					} else if($type === "out-of-focus"){
 						$inFocus = false;
