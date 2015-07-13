@@ -1,6 +1,6 @@
 {
     "task": {
-        "taskName": "full wave rectifier",
+        "taskName": "Full wave rectifier",
         "time": {
             "start": 0,
             "end": 0.02,

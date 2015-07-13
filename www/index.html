@@ -137,13 +137,13 @@
              <button type="button" data-dojo-type="dijit/form/Button" id="graphButton">Graph</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="tableButton">Table</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="forumButton" disabled="true">Forum</button>
-             <button type="button" data-dojo-type="dijit/form/Button" id="schemaButton" disabled="true">Create Schema</button>
-             <button type="button" data-dojo-type="dijit/form/Button" id="descButton" disabled="true">Problem &amp; Times</button>
-             <button type="button" data-dojo-type="dijit/form/Button" id="saveButton" disabled="true">Save As</button>
-             <button type="button" data-dojo-type="dijit/form/Button" id="mergeButton" disabled="true">Merge </button>
-			 <button type="button" data-dojo-type="dijit/form/Button" id="previewButton" disabled="true">Preview</button>
-			 <button type="button" data-dojo-type="dijit/form/Button" id="slidesButton" disabled="true">Hints</button>
-            <button type="button" data-dojo-type="dijit/form/Button" id="prettifyButton">Prettify</button>
+             <button type="button" data-dojo-type="dijit/form/Button" id="schemaButton" disabled="true" style="display: none">Create Schema</button>
+             <button type="button" data-dojo-type="dijit/form/Button" id="descButton" disabled="true" style="display: none">Problem &amp; Times</button>
+             <button type="button" data-dojo-type="dijit/form/Button" id="saveButton" disabled="true" style="display: none">Save As</button>
+             <button type="button" data-dojo-type="dijit/form/Button" id="mergeButton" disabled="true" style="display: none">Merge </button>
+             <button type="button" data-dojo-type="dijit/form/Button" id="previewButton" disabled="true" style="display: none">Preview</button>
+             <button type="button" data-dojo-type="dijit/form/Button" id="slidesButton" disabled="true" style="display: none">Hints</button>
+             <button type="button" data-dojo-type="dijit/form/Button" id="prettifyButton">Prettify</button>
 	     <div data-dojo-type="dijit/PopupMenuBarItem">
                  <span>Help</span>
 		 <div data-dojo-type="dijit/Menu" id="menuHelp">
@@ -184,23 +184,8 @@
         <!-- Putting crisis-Alert Dialog stuff end -->
 
             <!--  authorSetDescription, authorSetTimeStart, authorSetTimeEnd, authorSetTimeStep, authorSetTimeStepUnits, authorSetImage) -->
-        <div class="claro sameedit" data-dojo-type="dijit/Dialog" id="authorDescDialog" title="Edit Times, Image, and Problem Statement">
-	  <div class="fieldgroup">
-	    <label for="authorSetTimeStart">Start Time:</label>
-                <input id="authorSetTimeStart" style="width:5em" value="0" data-dojo-type="dijit/form/TextBox"></input>
-	  </div>
-	  <div class="fieldgroup">
-            <label for="authorSetTimeEnd">End Time:</label>
-            <input id="authorSetTimeEnd" style="width:5em" value="10" data-dojo-type="dijit/form/TextBox"></input>
-	        <div id="start_end_errorbox" style="border: 2px solid #ff0000; display: none;">Start time must be less than end time</div>
-      </div>
-	  <div class="fieldgroup">
-            <label for="authorSetTimeStep">Time Step:</label>
-            <input id="authorSetTimeStep" style="width:5em" value="1" data-dojo-type="dijit/form/TextBox"></input>
-            <div id="timestep_errorbox1" style="border: 2px solid #ff0000; display: none;">Time step must be positive</div>
-            <div id="timestep_errorbox2" style="border: 2px solid #ff0000; display: none;">Time step must fit within the start and end times</div>
-      </div>
-	  <div class="fieldgroup">
+        <div class="claro sameedit" data-dojo-type="dijit/Dialog" id="authorDescDialog" title="Edit Times, Image, and Problem Statement">        
+      <div class="fieldgroup">
             <label for="authorSetTimeStepUnits">Units:</label>
             <select data-dojo-type="dijit/form/ComboBox" id="authorSetTimeStepUnits" name="authorSetTimeStepUnits" class="timeStepAuthor">
               <option>microseconds</option>
@@ -213,7 +198,19 @@
               <option>months</option>
               <option>years</option>
             </select>
+      </div>
+	  <div class="fieldgroup">
+	    <label for="authorSetTimeStart">Start Time:</label>
+                <input id="authorSetTimeStart" style="width:5em" value="0" data-dojo-type="dijit/form/TextBox"></input>
+        <div id="timeStartUnits">seconds</div>
 	  </div>
+	  <div class="fieldgroup">
+            <label for="authorSetTimeEnd">End Time:</label>
+            <input id="authorSetTimeEnd" style="width:5em" value="10" data-dojo-type="dijit/form/TextBox"></input>
+            <div id="timeEndUnits">seconds</div>
+	        <div id="start_end_errorbox" style="border: 2px solid #ff0000; display: none;">Start time must be less than end time</div>
+
+      </div>
       <div class="fieldgroup">
             <label for="authorSetIntegrationMethod">Integration Method:</label>
             <select data-dojo-type="dijit/form/ComboBox" id="authorSetIntegrationMethod" name="authorSetIntegrationMethod" class="integrationMethodAuthor">
