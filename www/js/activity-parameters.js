@@ -67,6 +67,7 @@ define([
 
 					showHints: true,
 					showFeedback: true,
+					showCorrectAnswer:true,
 
 					enable:[
 					],
@@ -85,10 +86,11 @@ define([
 					allowLessonLearned:true,
 					allowDeleteNode: true,
 					allowEditNode: true,
-					targetNodeStrategy: true,
 
 					showHints: true,
 					showFeedback: true,
+					showCorrectAnswer:true,
+					targetNodeStrategy:true,
 
 					enable:[
 					],
@@ -108,6 +110,7 @@ define([
 					allowDeleteNode: true,
 					allowEditNode: true,
 
+					showFeedback: true,
 					enable:[
 					],
 

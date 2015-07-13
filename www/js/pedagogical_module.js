@@ -432,18 +432,11 @@ define([
 	 * 
 	 *****/
 	return declare(null, {
-		constructor: function(/*string*/ mode, /*string*/ subMode, /*model.js object*/ model){
+		constructor: function(/*string*/ mode, /*string*/ subMode, /*model.js object*/ model, /* Activity Config*/ activityConfig){
 			this.model = model;
 			this.mode = mode;
+			this.activityConfig = activityConfig;
 			this.setUserType(subMode);
-			this.showCorrectAnswer = true;
-			this.showFeedback = true;
-
-			if(mode === "TEST" || mode === "EDITOR"){
-				this.showCorrectAnswer = false;
-				this.showFeedback = false;
-			}
-
 		},
 		matchingID: null,
 		logging: null,
@@ -522,7 +515,7 @@ define([
 			// Tags: Private
 			var interpretation = null;
 			var model = this.model; //needed for anonymous function in the interpret variable.
-			var showCorrectAnswer = this.showCorrectAnswer;
+			var showCorrectAnswer = this.activityConfig.get("showCorrectAnswer");
 			// Retrieves the givenID for the matching given model node
 			var givenID = this.model.student.getDescriptionID(studentID);
 
@@ -806,11 +799,11 @@ define([
 
 		checkDoneness: function(model){
 			if(this.mode == "COACHED" && model.areRequiredNodesVisible()){
-		return [{
-					id: "crisisAlert", 
-			attribute: "open", 
-			value: "You have already created all the necessary nodes. You might want to click on \"Graph\" or \"Table\""
-		}];
+			return [{
+				id: "crisisAlert",
+				attribute: "open",
+				value: "You have already created all the necessary nodes. You might want to click on \"Graph\" or \"Table\""
+			}];
 			} 
 			return false;
 		},
@@ -826,7 +819,7 @@ define([
 				this.logging.log('solution-step', logObj);
 
 				record.increment("problemCompleted", 1);
-				if(this.showFeedback){
+				if(this.activityConfig.get("showFeedback")){
 					// Number of problems to show the hint upon completion
 					if(record.getLocal("problemCompleted") < 3 ){
 						return	[{
@@ -842,7 +835,7 @@ define([
 
 		checkPremature: function(nodeID){
 			//return false for other modes
-			if(this.mode !== "COACHED"){
+			if(!this.activityConfig.get("targetNodeStrategy")){
 				return false;
 			}
 			//Check premature for COACHED mode
