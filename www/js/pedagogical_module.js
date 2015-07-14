@@ -290,9 +290,12 @@ define([
 		}
 	};
 
-	var actionTable = {
+	var nodeEditorActionTable = {
 		// Summary: This table is used for determining the proper response to a student's answers in the 
 		//		remaining sections (see 'Pedagogical_Module.docx' in the documentation)
+
+		//		Node Editor action table will be used for any activity that uses existing node editor.
+		//		All the actions remain same, only add additional field(s) in _getInterpretation and _enableNext
 		correct: {
 			COACHED: function(obj, part){
 				state(obj, part, "correct");
@@ -393,6 +396,9 @@ define([
 		}
 	};
 
+	/*
+	 * Add additional tables for activities that does not use node editor.
+	 */
 	//Declare variable for accessing state.js module
 	var record = null;
 
@@ -694,8 +700,8 @@ define([
 			}else{
 				givenID = this.model.student.getDescriptionID(id);
 
-				console.assert(actionTable[interpretation], "processAnswer() interpretation '" + interpretation + "' not in table ", actionTable);
-				actionTable[interpretation][this.userType](returnObj, nodePart);
+				console.assert(nodeEditorActionTable[interpretation], "processAnswer() interpretation '" + interpretation + "' not in table ", nodeEditorActionTable);
+				nodeEditorActionTable[interpretation][this.userType](returnObj, nodePart);
 				//add help message for unary minus
 				var nodeType= this.model.given.getType(givenID);
 				if (interpretation==='secondFailure' && nodeType=="accumulator" && nodePart=="equation"){
