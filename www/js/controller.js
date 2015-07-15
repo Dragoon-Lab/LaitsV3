@@ -114,7 +114,8 @@ define([
 		genericControlMap: {
 			type: "typeId",
 			initial: "initialValue",
-			equation: "equationBox"
+			equation: "equationBox",
+			explanation:"explanationButton"
 		},
 		// A list of all widgets.  (The constructor mixes this with controlMap)
 		widgetMap: {
@@ -488,7 +489,7 @@ define([
 
 			// For each button 'name', assume there is an associated widget in the HTML
 			// with id 'nameButton' and associated handler 'nameHandler' below.
-			var buttons = ["plus", "minus", "times", "divide", "undo", "equationDone", "sum", "product"];
+			var buttons = ["plus", "minus", "times", "divide", "undo", "equationDone", "sum", "product","explanation"];
 			array.forEach(buttons, function(button){
 				var w = registry.byId(button + 'Button');
 				if(!w){
@@ -767,8 +768,7 @@ define([
 				var widget = registry.byId(this.controlMap.equation);
 				this.structured.pop();
 			}
-		}, 
-
+		},
 		//Enables the Forum Button in node editor
 		//Also uses the forum module to activate the event button click
 		activateForumButton: function(){

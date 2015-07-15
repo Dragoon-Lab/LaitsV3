@@ -200,14 +200,17 @@ define([
 			console.log("++++++++ Setting AUTHOR format in Node Editor.");
 			style.set('nameControl', 'display', 'block');
 			style.set('descriptionControlStudent', 'display', 'none');
-			style.set('descriptionControlAuthor', 'display', 'block');
+			style.set('descriptionControlAuthor', 'display', 'inline-block');
 			style.set('selectUnitsControl', 'display', 'none');
 			style.set('setUnitsControl', 'display', 'inline');
             style.set('setRootNode', 'display', 'block')
 			style.set('inputControlAuthor', 'display', 'block');
 			style.set('inputControlStudent', 'display', 'none');
 			style.set('studentModelControl', 'display', 'inline-block');
+			style.set('editorLabel', 'display', 'block');
+			style.set('cancelEditorButton', 'display', 'block');
 		},
+		
 		initAuthorHandles: function(){
 			var name = registry.byId(this.controlMap.name);
 			name.on('Change', lang.hitch(this, function(){
@@ -233,6 +236,11 @@ define([
 			givenEquation.on('Change', lang.hitch(this, function(){
 					return this.disableHandlers || this.handleGivenEquation.apply(this, arguments);
 			}));
+		   editorWidget = registry.byId("editorContent");
+			editorWidget.on('Change', lang.hitch(this, function(){
+				return this.disableHandlers || this.handleEditor.apply(this, arguments);
+		    }));
+		   
 
 			this.handleErrorMessage(); //binds a function to Display Error message if expression is cleared.
 		},
@@ -358,7 +366,23 @@ define([
 			this.logging.log('solution-step', logObj);
 			this.enableDisableSetStudentNode();
 		},
-
+		
+		explanationHandler:function(){ 
+			editorWidget.set('value',this._model.given.getExplanation(this.currentID)); 			
+		},
+      
+        handleEditor: function(editorContent){
+			console.log("**************** in handleEditor ", editorContent);
+			this._model.given.setExplanation(this.currentID, editorContent);
+ 			//consol.log('submitted w/args:\n' + dojo.toJson(editorContent, true));         
+			this.logging.log('solution-step', {
+				type: "solution-enter",
+				nodeID: this.currentID,
+				property: "editor",
+				node: this._model.given.getName(this.currentID),
+				value: editorContent
+			});
+		},
         handleRoot: function(root){
             // Summary: Sets the current node to be parent node
             console.log("********************* in handleRoot", root);

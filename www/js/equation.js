@@ -47,7 +47,7 @@ define([
 		 *		testing the expressions with values assigned to the variables
 		 **/
 		
-		areEquivalent: function(/*string*/ id, /*object*/ model, /*string*/ studentEquation){
+		areEquivalent: function(/*string*/ id, /*object*/ model, /*string*/ studentEquation){debugger;
 			//Summary: For a given model node id, checks the correctness of the student equation.
 			//
 			var d = new Date();
@@ -86,6 +86,10 @@ define([
 
 			var flag = Math.abs(studentResult - givenResult) <= 10e-10 * Math.abs(studentResult + givenResult);
 
+			if(!isFinite(studentResult)){// Handel devide by zero in student mode
+				flag=false;
+			}
+
 			if(givenEqn.indexOf("max") >= 0 || givenEqn.indexOf("min") >= 0){
 				var index = 0;
 				var nodes = Object.keys(valsCopy);
@@ -119,7 +123,7 @@ define([
 		},
 
 		getEquationValue: function(/* math parser object */ parse, /*model object*/ model, values, /* string */ active, /* float */ seed, /* float */ time){
-			var id;
+			var id;debugger;
 			var solutionVals = {};
 			array.forEach(parse.variables(), function(variable){
 				// console.log("	==== evaluating given variable ", variable);
