@@ -154,6 +154,14 @@ width: 12em;
     width: 15ex;
 }
 
+.claro .dijitDisabled .dijitEditorIFrame,
+.claro .dijitDisabled .dijitEditorIFrameContainer{
+  background-color: #FFFFFF !important; /*override claro Editor and keep the explanation dialog box background-color white when disabled*/
+}
+.claro .dijitEditorIFrame{/*adding resizing ability to the explanation dialog box*/
+   resize:both;
+}
+
 /*
             plots and tables 
 */

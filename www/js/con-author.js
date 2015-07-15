@@ -200,7 +200,7 @@ define([
 			console.log("++++++++ Setting AUTHOR format in Node Editor.");
 			style.set('nameControl', 'display', 'block');
 			style.set('descriptionControlStudent', 'display', 'none');
-			style.set('descriptionControlAuthor', 'display', 'block');
+			style.set('descriptionControlAuthor', 'display', 'inline-block');
 			style.set('selectUnitsControl', 'display', 'none');
 			style.set('setUnitsControl', 'display', 'inline');
             style.set('setRootNode', 'display', 'block')

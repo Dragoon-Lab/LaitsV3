@@ -114,7 +114,8 @@ define([
 		genericControlMap: {
 			type: "typeId",
 			initial: "initialValue",
-			equation: "equationBox"
+			equation: "equationBox",
+			explanation:"explanationButton"
 		},
 		// A list of all widgets.  (The constructor mixes this with controlMap)
 		widgetMap: {
