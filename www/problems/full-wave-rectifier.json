@@ -101,7 +101,7 @@
                 "description": "AC voltage supply",
                 "type": "function",
                 "units": "volts",
-                "equation": "(id1*0.5)*sinewave(id2,0)"
+                "equation": "(id1*0.5)*sinewave(1/id2,0)"
             },
             {
                 "ID": "id5",
