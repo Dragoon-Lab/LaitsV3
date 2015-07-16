@@ -489,7 +489,7 @@ define([
 			},
 			getExplanation: function(/*string*/ id){
 				var node = this.getNode(id);
-				return node && node.explanation;
+				return (typeof node.explanation==="undefined")?"":(node && node.explanation);
 			},
 			getEachNodeUnitbyID: function(){
 				//summary: returns key/value pair of node-id/unit
