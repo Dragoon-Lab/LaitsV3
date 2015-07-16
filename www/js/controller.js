@@ -476,7 +476,6 @@ define([
 				return this.disableHandlers || this.handleEquation.apply(this, arguments);
 			}));
 
-
 			// When the equation box is enabled/disabled, do the same for
 			// the inputs widgets.
 			array.forEach(["nodeInputs", "positiveInputs", "negativeInputs"], function(input){
@@ -509,8 +508,10 @@ define([
 				/*	When the equation box is enabled/disabled also do the same
 				 for this button */
 				equationWidget.watch("disabled", function(attr, oldValue, newValue){
-					// console.log("************* " + (newValue?"dis":"en") + "able " + button);
-					w.set("disabled", newValue);
+					if (w.id!=="explanationButton") {
+						// console.log("************* " + (newValue?"dis":"en") + "able " + button);
+						w.set("disabled", newValue);
+					}
 				});
 			}, this);
 
@@ -1143,7 +1144,6 @@ define([
 			array.forEach(directives, function(directive) {
 				if(!noModelUpdate)
 					this.updateModelStatus(directive);
-
 				if (this.widgetMap[directive.id]) {
 					var w = registry.byId(this.widgetMap[directive.id]);
 					if (directive.attribute == 'value') {
