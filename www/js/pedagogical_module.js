@@ -700,7 +700,7 @@ define([
 						}
 						if(returnObj[i].attribute=="disabled" && returnObj[i].id=="type" && returnObj[i].value==false){
 							var content=this.model.given.getExplanation(givenID);
-							if(content!=="" && this.mode !== "AUTHOR")
+							if(typeof content !== "undefined" && content!=="" && this.mode !== "AUTHOR")
 								returnObj.push({id: "explanation", attribute: "disabled", value: false});
 						}
 				
