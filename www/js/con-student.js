@@ -189,7 +189,7 @@ define([
 		explanationHandler:function(){
 			var givenID=this._model.student.getGivenID(this.currentID);
 			var editorWidget = registry.byId("editorContent");
-			var content=this._model.given.getExplanation(givenID);			
+			var content=this._model.given.getExplanation(givenID);
 			editorWidget.set('value',content); // load the explanation in the editor
 			editorWidget.set('disabled','true');
 			var toolWidget=registry.byId("dijit_Toolbar_0");
