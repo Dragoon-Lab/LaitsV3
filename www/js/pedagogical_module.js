@@ -107,30 +107,25 @@ define([
 				message(obj, part, "correct");
 				disable(obj, part, true);
 				disable(obj, "type", false);
-				disable(obj, "explanation", false);
 			},
 			feedback: function(obj, part){
 				state(obj, part, "correct");
 				message(obj, part, "correct");
 				disable(obj, part, true);
 				disable(obj, "type", false);
-				disable(obj, "explanation", false);
 			},
 			power: function(obj, part){
 				state(obj, part, "correct");
 				disable(obj, part, true);
 				disable(obj, "type", false);
-				disable(obj, "explanation", false);
 			},
 			TEST: function(obj, part){
 				state(obj, part, "correct");
 				disable(obj, "type", false);
-				disable(obj, "explanation", false);
 			},
 			EDITOR: function(obj, part){
 				state(obj, part, "correct");
 				disable(obj, "type", false);
-				disable(obj, "explanation", false);
 			}
 		},
 		notTopLevel: {
@@ -143,23 +138,19 @@ define([
 				message(obj, part, "correct");
 				disable(obj, part, true);
 				disable(obj, "type", false);
-				disable(obj, "explanation", false);
 			},
 			power: function(obj, part){
 				state(obj, part, "correct");
 				disable(obj, part, true);
 				disable(obj, "type", false);
-				disable(obj, "explanation", false);
 			},
 			TEST: function(obj, part){
 				state(obj, part, "correct");
 				disable(obj, "type", false);
-				disable(obj, "explanation", false);
 			},
 			EDITOR: function(obj, part){
 				state(obj, part, "correct");
 				disable(obj, "type", false);
-				disable(obj, "explanation", false);
 			}
 		},
 		premature: {
@@ -172,23 +163,19 @@ define([
 				message(obj, part, "correct");
 				disable(obj, part, true);
 				disable(obj, "type", false);
-				disable(obj, "explanation", false);
 			},
 			power: function(obj, part){
 				state(obj, part, "correct");
 				disable(obj, part, true);
 				disable(obj, "type", false);
-				disable(obj, "explanation", false);
 			},
 			TEST: function(obj, part){
 				state(obj, part, "correct");
 				disable(obj, "type", false);
-				disable(obj, "explanation", false);
 			},
 			EDITOR: function(obj, part){
 				state(obj, part, "correct");
 				disable(obj, "type", false);
-				disable(obj, "explanation", false);
 			}
 		},
 		initialValue: {
@@ -206,12 +193,10 @@ define([
 			TEST: function(obj, part){
 				state(obj, part, "incorrect");
 				disable(obj, "type", false);
-				disable(obj, "explanation", false);
 			},
 			EDITOR: function(obj, part){
 				state(obj, part, "incorrect");
 				disable(obj, "type", false);
-				disable(obj, "explanation", false);
 			}
 		},
 		extra: {
@@ -229,12 +214,10 @@ define([
 			TEST: function(obj, part){
 				state(obj, part, "incorrect");
 				disable(obj, "type", false);
-				disable(obj, "explanation", false);
 			},
 			EDITOR: function(obj, part){
 				state(obj, part, "incorrect");
 				disable(obj, "type", false);
-				disable(obj, "explanation", false);
 			}
 		},
 		irrelevant: {
@@ -252,12 +235,10 @@ define([
 			TEST: function(obj, part){
 				state(obj, part, "incorrect");
 				disable(obj, "type", false);
-				disable(obj, "explanation", false);
 			},
 			EDITOR: function(obj, part){
 				state(obj, part, "incorrect");
 				disable(obj, "type", false);
-				disable(obj, "explanation", false);
 			}
 		},
 		redundant: {
@@ -276,12 +257,10 @@ define([
 			TEST: function(obj, part){
 				state(obj, part, "incorrect");
 				disable(obj, "type", false);
-				disable(obj, "explanation", false);
 			},
 			EDITOR: function(obj, part){
 				state(obj, part, "incorrect");
 				disable(obj, "type", false);
-				disable(obj, "explanation", false);
 			}
 		},
 		lastFailure: {
@@ -290,30 +269,25 @@ define([
 				message(obj, part, "lastFailure2");
 				disable(obj, part, true);
 				disable(obj, "type", false);
-				disable(obj, "explanation", false);
 			},
 			feedback: function(obj, part){
 				state(obj, part, "demo");
 				message(obj, part, "lastFailure2");
 				disable(obj, part, true);
 				disable(obj, "type", false);
-				disable(obj, "explanation", false);
 			},
 			power: function(obj, part){
 				state(obj, part, "demo");
 				disable(obj, part, true);
 				disable(obj, "type", false);
-				disable(obj, "explanation", false);
 			},
 			TEST: function(obj, part){
 				state(obj, part, "incorrect");
 				disable(obj, "type", false);
-				disable(obj, "explanation", false);
 			},
 			EDITOR: function(obj, part){
 				state(obj, part, "incorrect");
 				disable(obj, "type", false);
-				disable(obj, "explanation", false);
 			}
 		}
 	};
@@ -706,7 +680,7 @@ define([
 				if(answer){
 					givenID = answer;
 					descriptionTable[interpretation][this.userType](returnObj, nodePart);
-					for(var i = 0; i < returnObj.length; i++)
+					for(var i = 0; i < returnObj.length; i++){
 						if(returnObj[i].value === "correct" || returnObj[i].value === "demo"){
 							currentStatus = this.model.given.getStatus(givenID, nodePart); //get current status set in given model
 							if(currentStatus !== "correct" && currentStatus !== "demo"){
@@ -724,6 +698,14 @@ define([
 								updateStatus(returnObj, this.model);
 							this.descriptionCounter = 0;
 						}
+						if(returnObj[i].attribute=="disabled" && returnObj[i].id=="type" && returnObj[i].value==false){
+							var content=this.model.given.getExplanation(givenID);
+							if(content!=="" && this.mode !== "AUTHOR")
+								returnObj.push({id: "explanation", attribute: "disabled", value: false});
+						}
+				
+					}	
+
 				}
 				// Process answers for all other node types
 			}else{
@@ -819,7 +801,7 @@ define([
 			 For now, do not enable/disable inputs.	 
 			 See Trello card https://trello.com/c/mpd2Ivjd
 			 */
-			var controls = ["type", "initial", "units", "equation"];
+			var controls = ["type", "initial", "units", "equation","explanation"];
 			var directives = array.map(controls, function(control){
 				return {id: control, attribute: "disabled", value: true};
 			});

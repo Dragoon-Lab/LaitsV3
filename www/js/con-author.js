@@ -236,7 +236,7 @@ define([
 			givenEquation.on('Change', lang.hitch(this, function(){
 					return this.disableHandlers || this.handleGivenEquation.apply(this, arguments);
 			}));
-		   editorWidget = registry.byId("editorContent");
+		    var editorWidget = registry.byId("editorContent");
 			editorWidget.on('Change', lang.hitch(this, function(){
 				return this.disableHandlers || this.handleEditor.apply(this, arguments);
 		    }));
@@ -368,6 +368,7 @@ define([
 		},
 		
 		explanationHandler:function(){ 
+			var editorWidget = registry.byId("editorContent");
 			editorWidget.set('value',this._model.given.getExplanation(this.currentID)); 			
 		},
       
@@ -444,7 +445,7 @@ define([
 			}
 		},
 		
-		handleType: function(type){            
+		handleType: function(type){    
             var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
             if(this.getModelType() == "correct"){
 				// Summary: Sets the type of the current node.				
