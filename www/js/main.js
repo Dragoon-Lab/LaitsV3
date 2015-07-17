@@ -50,12 +50,14 @@ define([
 	"./message-box",
 	"./tincan",
 	"dojo/store/Memory",
-	"dojo/_base/event"
+	"dojo/_base/event",
+	"dijit/Dialog",
+	"./image-box"
 ], function(
 		array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry, toolTip,
 		menu, loadSave, model,
 		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, equation, 
-		description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan, memory, event
+		description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan, memory, event, Dialog, ImageBox
 ){
 	// Summary: 
 	//			Menu controller
@@ -119,6 +121,8 @@ define([
 		var givenModel = new model(query.m, query.p);
 		logging.session.log('open-problem', {problem : query.p});
         console.log("solution graph is",solutionGraph);
+
+		
 		if(solutionGraph) {
 
             try {
@@ -223,16 +227,18 @@ define([
 			var taskString = givenModel.getTaskName();
 			document.title ="Dragoon" + ((taskString) ? " - " + taskString : "");
 			
+
 			//update the menu bar//
-			if(query.m != "STUDENT"){
+			if(query.m == "AUTHOR"){
 				style.set(registry.byId('forumButton').domNode, "display", "inline-block");
 				style.set(registry.byId('schemaButton').domNode, "display", "inline-block");
 				style.set(registry.byId('descButton').domNode, "display", "inline-block");
 				style.set(registry.byId('saveButton').domNode, "display", "inline-block");
 				style.set(registry.byId('mergeButton').domNode, "display", "inline-block");
 				style.set(registry.byId('previewButton').domNode, "display", "inline-block");
+				style.set(registry.byId('imageButton').domNode, "display", "inline-block");
 			}
-			
+
 			//In TEST and EDITOR mode remove background color and border colors		 
 			if(controllerObject._mode == "TEST" || controllerObject._mode == "EDITOR"){
 				showColor = false;
@@ -242,17 +248,45 @@ define([
 
 			var drawModel = new drawmodel(givenModel.active, showColor);
 			drawModel.setLogging(session);
-
+			
+			
+			
+			
 			// Wire up drawing new node
 			aspect.after(controllerObject, "addNode",
 						 lang.hitch(drawModel, drawModel.addNode),
 						 true);
-
+			
+			// add mouse enter and mouse leave event for every new node	
+			var iBoxController = new ImageBox(givenModel.getImageURL(), givenModel);
+			iBoxController.initNodeMouseEvents();		 
+			
+			aspect.after(drawModel, "addNode", function(vertex){
+				var context = iBoxController;
+				console.log("AddNode Called", vertex);
+				var target = document.getElementById(vertex.ID);
+				if(!target) return;
+				target.addEventListener('mouseenter', function(event){
+					
+					if(context.imageMarked) return;
+					var nodeId = event.srcElement["id"];					
+					if(nodeId) iBoxController.markImage(nodeId);
+					context.imageMarked = true;
+				});
+				target.addEventListener('mouseleave', function(event){
+					if(!context.imageMarked) return;	
+					iBoxController.clear();
+					context.imageMarked = false;
+				});
+				
+			}, true);
+						 
 			// Wire up send to server
 			aspect.after(drawModel, "updater", function(){
 				session.saveProblem(givenModel.model);
 			});
-
+			
+			
 			// When the node editor controller wants to update node style, inform
 			// the controller for the drawing su
 			aspect.after(controllerObject, "colorNodeBorder",
@@ -472,7 +506,8 @@ define([
 				db.set("disabled", false);
 				db = registry.byId("schemaButton");
 				db.set("disabled", false);
-
+				db = registry.byId("imageButton");
+				db.set("disabled", false);
 				// Description button wiring
 				menu.add("descButton", function(e){
 					event.stop(e);
@@ -660,6 +695,76 @@ define([
     					}
     				});
     			});
+				
+				
+				//var image = solutionGraph.task.image;
+				//console.log("Model Obj", givenModel, givenModel.active);
+				//debugger;
+				var imgMarker = new ImageBox(givenModel.getImageURL(), givenModel);
+				imgMarker.initMarkImageDialog(controllerObject);
+
+			
+				on(registry.byId('markImageAdd'), "click", function(event){
+					event.preventDefault();
+					imgMarker.addMark();
+				});
+				on(registry.byId('markImageRemove'), "click", function(event){
+					event.preventDefault();
+					imgMarker.removeMap();
+				});
+				on(registry.byId('markImageClear'), "click", function(event){
+					event.preventDefault();
+					imgMarker.clear();
+				});
+				on(registry.byId('markImageDone'),'click', function(event){
+					event.preventDefault();
+					imgMarker.saveMarks();
+					registry.byId("markImageBox").hide();
+				});
+				on(registry.byId('markImageCancel'),'click', function(event){
+					event.preventDefault();
+					registry.byId("markImageBox").hide();
+				});
+				// code for image marker button
+				on(registry.byId("imageButton"), "click", function(event){
+					event.preventDefault();
+					
+					//display the box
+					//if currentID present , update the savedmarks from the model
+					registry.byId('savedMark').getOptions().every(function(ele, idx, array){
+						registry.byId('savedMark').removeOption(ele);
+						return true;
+					});
+					//registry.byId('savedMark').dropDown.destory();
+					imgMarker.clear();
+					
+					var savedMarks = givenModel.active.getImageMarks(controllerObject.currentID);
+					console.log("saved marks for node", controllerObject.currentID, savedMarks);
+					if(savedMarks)
+						savedMarks.every(function(ele, idx, array){
+							console.log("Trying to add mark", ele);
+							var mark = {
+								value : ele,
+								label : ele,
+								selected : false								
+							}
+							console.log(mark);
+							registry.byId("savedMark").addOption(mark);
+							return true;
+						});
+					registry.byId("markImageBox").show();
+					//imgMarker.showGrid(true);
+				});
+				//debugger;
+				
+				// aspect code is not working as supposed
+				/*aspect.after(drawModel, "onMouseHover", function(id){
+					console.log("source", id);
+				});
+				aspect.after(drawModel, "onMouseOut", function(id){
+					console.log("source", id);
+				}, true);*/
+				
 			}
 
 			if(query.m == "EDITOR"){
