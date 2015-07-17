@@ -680,7 +680,7 @@ define([
 				if(answer){
 					givenID = answer;
 					descriptionTable[interpretation][this.userType](returnObj, nodePart);
-					for(var i = 0; i < returnObj.length; i++)
+					for(var i = 0; i < returnObj.length; i++){
 						if(returnObj[i].value === "correct" || returnObj[i].value === "demo"){
 							currentStatus = this.model.given.getStatus(givenID, nodePart); //get current status set in given model
 							if(currentStatus !== "correct" && currentStatus !== "demo"){
@@ -698,6 +698,14 @@ define([
 								updateStatus(returnObj, this.model);
 							this.descriptionCounter = 0;
 						}
+						if(returnObj[i].attribute=="disabled" && returnObj[i].id=="type" && returnObj[i].value==false){
+							var content=this.model.given.getExplanation(givenID);
+							if(typeof content !== "undefined" && content!=="" && this.mode !== "AUTHOR")
+								returnObj.push({id: "explanation", attribute: "disabled", value: false});
+						}
+				
+					}	
+
 				}
 				// Process answers for all other node types
 			}else{
@@ -708,7 +716,7 @@ define([
 				//add help message for unary minus
 				var nodeType= this.model.given.getType(givenID);
 				if (interpretation==='secondFailure' && nodeType=="accumulator" && nodePart=="equation"){
-					if(answer[0]="-" && answer.slice(1,answer.length).search(/-|\+|\*|\//)<0){
+					if(answer[0]=="-" && answer.slice(1,answer.length).search(/-|\+|\*|\//)<0){
 						returnObj.pop();
 						returnObj.push({id: "message", attribute: "append", value: "Note that "+answer.slice(1,answer.length)+" is decreasing. If a quantity decreases with time, then its change is negative."});
 						disable(returnObj, "enableRemaining", false)
@@ -793,7 +801,7 @@ define([
 			 For now, do not enable/disable inputs.	 
 			 See Trello card https://trello.com/c/mpd2Ivjd
 			 */
-			var controls = ["type", "initial", "units", "equation"];
+			var controls = ["type", "initial", "units", "equation","explanation"];
 			var directives = array.map(controls, function(control){
 				return {id: control, attribute: "disabled", value: true};
 			});

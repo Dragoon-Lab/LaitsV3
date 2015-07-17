@@ -487,6 +487,10 @@ define([
 			getUnits: function(/*string*/ id){
 				return this.getNode(id).units;
 			},
+			getExplanation: function(/*string*/ id){
+				var node = this.getNode(id);
+				return (typeof node.explanation==="undefined")?"":(node && node.explanation);
+			},
 			getEachNodeUnitbyID: function(){
 				//summary: returns key/value pair of node-id/unit
 				var unitList = {};
@@ -855,6 +859,9 @@ define([
 			},
 			setDescription: function(/*string*/ id, /*string*/ description){
 				this.getNode(id).description = description.trim();
+			},
+			setExplanation: function(/*string*/ id, /*string*/ content){
+				this.getNode(id).explanation = content;
 			},
 			setParent: function(/*string*/ id, /*bool*/ parent){
 				this.getNode(id).parentNode = parent;

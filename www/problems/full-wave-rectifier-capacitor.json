@@ -44,7 +44,7 @@
                 "genus": "required",
                 "type": "function",
                 "units": "volts",
-                "equation": "id2*sinewave(60,0)"
+                "equation": "id2*sinewave(1/60,0)"
             },
             {
                 "ID": "id2",

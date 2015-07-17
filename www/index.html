@@ -55,13 +55,15 @@
 		require([
 			"dojo/parser",
 			"dijit/Dialog",
+             "dijit/Editor",
+            "dijit/_editor/plugins/LinkDialog",
 			"dijit/MenuBar", "dijit/PopupMenuBarItem",
 			"dijit/layout/BorderContainer", "dijit/MenuItem",
-            "dijit/form/Select",
+            "dijit/form/Select", "dijit/form/Textarea",
 			"dijit/form/Button", "dijit/form/CheckBox", "dijit/form/TextBox",
-			"dijit/form/ComboBox", "dijit/form/Textarea",
+			"dijit/form/ComboBox", "dijit/form/Textarea", "dijit/form/RadioButton",
 			"dijit/form/SimpleTextarea", "dijit/Menu",
-			"dijit/layout/ContentPane",
+			"dijit/layout/ContentPane", "dijit/registry",
 			"dragoon/menu", // Wire up menus
 			"dragoon" // Load up Dragoon itself
         ]);
@@ -111,7 +113,6 @@
     </script>
 
     <!-- jsPlumb Libs End Here -->
-
 
 </head>
 
@@ -315,6 +316,7 @@
 	            <option value='irrelevant'>not in model or problem statement</option>
 	        </select>
 	    </div>
+        <div class="fieldgroup">
            <div id="descriptionControlStudent" class="fieldgroup">
                 <span>
                     <img id="descriptionQuestionMark"  class="questionMark" src="images/questionmark.png"/>
@@ -331,6 +333,34 @@
                   </span>
                 <input id="setDescription" data-dojo-type="dijit/form/ComboBox">
 	    </div>
+          <!-- Explanation button -->
+            <div data-dojo-type="dijit/Dialog" data-dojo-id="myFormDialog" title="Explanation">
+
+                <div class="dijitDialogPaneContentArea" data-dojo-attach-point="name">
+                    <label id="editorLabel" for="name" style="display:none"><b>Insert your explanation below: </b></label>
+                    <input id="editorInput" type="hidden" name="editorContent" data-dojo-attach-point="name" style="display:none"/>
+                    <div  id="editorContent" dojoType="dijit/Editor" 
+                       height="200px" 
+                       extraPlugins=" ['createLink', 'unlink', 'insertImage'] " >                   
+                    </div>   
+                </div>               
+
+                <div class="dijitDialogPaneActionBar">
+                    <button data-dojo-type="dijit/form/Button" type="submit" onClick="return myFormDialog.isValid();" >
+                     OK
+                    </button>
+                    <button id="cancelEditorButton"data-dojo-type="dijit/form/Button" type="button" onClick="myFormDialog.hide()">
+                     Cancel
+                    </button>
+                </div>
+        </div>
+
+          <button id="explanationButton" data-dojo-type="dijit/form/Button" type="button" iconClass="dijitNoIcon" onclick="myFormDialog.show()" style="margin: 10px 80px 10px 10px; width: 10px;">
+        Explanation
+        </button>
+        <!--  End of explanation part --> 
+      
+        </div>
             <div class="fieldgroup">
                 <span>
                     <img id="typeQuestionMark"  class="questionMark" src="images/questionmark.png"/>
@@ -385,7 +415,8 @@
                         <button id="timesButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">*</button>
                         <button id="divideButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">/</button>
 		    </div>
-		</div>
+		</div>   
+           
 	    </div>
 	    <div class="fieldgroup" id="structured">
             <label>Inputs</label>

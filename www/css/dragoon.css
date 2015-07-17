@@ -11,7 +11,10 @@
 @import url("../dijit/themes/claro/Dialog.css");
 @import url("../dijit/themes/claro/document.css");
 @import url("state-machine1.css");
-
+/*For styling the rich text editor*/
+@import url("../dijit/themes/claro/Toolbar.css");
+@import url("../dijit/themes/claro/Editor.css");
+@import url("../dijit/icons/editorIcons.css");
 
 html, body, #main{
 	width:100%;	/* make the body expand to fill the visible window */
@@ -149,6 +152,15 @@ width: 12em;
 }
 #authorDescDialog .timeStepAuthor{
     width: 15ex;
+}
+
+.claro .dijitDisabled .dijitEditorIFrame,
+.claro .dijitDisabled .dijitEditorIFrameContainer{
+  background-color: #FFFFFF !important; /*override claro Editor and keep the explanation dialog box background-color white when disabled*/
+  color: black !important; 
+}
+.claro .dijitEditorIFrame{/*adding resizing ability to the explanation dialog box*/
+   resize:both;
 }
 
 /*

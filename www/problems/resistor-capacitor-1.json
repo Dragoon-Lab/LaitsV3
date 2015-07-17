@@ -13,7 +13,7 @@
             "URL": "http://onlinephys.com/rc_circuit.gif"
         },
         "taskDescription": [
-            "Model a 500 ohm resistor in series with a 0.003 farad capacitor and a battery-switch combination that delivers either 5 volts or a short.  You are given nodes that use sinewave(60,0) to represent the switch being closed from 0 to 5 seconds and then open from 6 to 10 seconds.  Graph the voltage across the capacitor.",
+            "Model a 500 ohm resistor in series with a 0.003 farad capacitor and a battery-switch combination that delivers either 5 volts or a short.  You are given nodes that use sinewave(1/60,0) to represent the switch being closed from 0 to 5 seconds and then open from 6 to 10 seconds.  Graph the voltage across the capacitor.",
             "",
             "",
             ""
@@ -250,7 +250,7 @@
                 "description": "Voltage from battery-switch combination",
                 "type": "function",
                 "units": "volts",
-                "equation": "id8*sinewave(60,0)"
+                "equation": "id8*sinewave(1/60,0)"
             }
         ],
         "studentModelNodes": [
@@ -316,7 +316,7 @@
                 "descriptionID": "id9",
                 "units": "volts",
                 "type": "function",
-                "equation": "id10*sinewave(60,0)"
+                "equation": "id10*sinewave(1/60,0)"
             }
         ],
         "schemas": [
