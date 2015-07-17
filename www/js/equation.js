@@ -47,7 +47,7 @@ define([
 		 *		testing the expressions with values assigned to the variables
 		 **/
 		
-		areEquivalent: function(/*string*/ id, /*object*/ model, /*string*/ studentEquation){debugger;
+		areEquivalent: function(/*string*/ id, /*object*/ model, /*string*/ studentEquation){
 			//Summary: For a given model node id, checks the correctness of the student equation.
 			//
 			var d = new Date();
@@ -123,7 +123,7 @@ define([
 		},
 
 		getEquationValue: function(/* math parser object */ parse, /*model object*/ model, values, /* string */ active, /* float */ seed, /* float */ time){
-			var id;debugger;
+			var id;
 			var solutionVals = {};
 			array.forEach(parse.variables(), function(variable){
 				// console.log("	==== evaluating given variable ", variable);
