@@ -560,7 +560,7 @@ define([
 		{
 			var staticVar = this.checkStaticVar(true);
 			var id = staticVar.ID;
-			var parameters = this.checkForParameters();
+			var parameters = this.checkForParameters(true);
 			array.forEach(parameters, function(parameter){
 				dom.byId("labelGraph_" + parameter.ID).style.display = "initial";			
 				dom.byId("textGraph_" + parameter.ID).style.display = "initial";			
