@@ -27,7 +27,7 @@
 define([
 	"dojo/_base/array", "dojo/_base/declare",
 	"dojo/_base/lang", "dojo/on", 'dojo/dom-attr',
-	"dijit/registry",
+	"dijit/registry", "dijit/form/ComboBox", "dojo/store/Memory",
 	"dojox/charting/Chart",
 	"dojox/charting/axis2d/Default",
 	"dojox/charting/plot2d/Lines",
@@ -38,11 +38,11 @@ define([
 	"dijit/_base",
 	"dijit/layout/ContentPane",
 	"dojo/dom",
+	"./integrate",
 	"dijit/layout/TabContainer",
 	"dojo/parser",
-	
 	"dojo/domReady!"
-], function(array, declare, lang, on, domAttr, registry, Chart, Default, Lines, Grid, Legend, calculations, logger, base, contentPane, dom){
+], function(array, declare, lang, on, domAttr, registry, ComboBox, Memory, Chart, Default, Lines, Grid, Legend, calculations, logger, base, contentPane, dom, integrate){
 
 	// The calculations constructor is loaded before the RenderGraph constructor
 	return declare(calculations, {
@@ -76,23 +76,41 @@ define([
 			/* List of variables to plot: Include functions */
 			this.active.plotVariables = this.active.timeStep.xvars.concat(
 				this.active.timeStep.functions);
+
 			/*
 			 Match list of given model variables.
 			 If the given model node is not part of the given solution,
-			 set variable to null to indicate that it should not
+		 set variable to null to indicate that it should not
 			 be calulated.
 
 			 To include optional nodes,
-			 one would need to order them using topologicalSort
+			 one would need to order them using topologicalSortgoo
 			 */
-            console.log("length of active plot variables",this.active.plotVariables.length);
             var activeSolution = this.findSolution(true, this.active.plotVariables);
+            console.log(activeSolution);
             if(activeSolution.status == "error" && activeSolution.type == "missing") {
 				// Return value from findSlution in calculation, returns an array and we check for status and any missing nodes
-				this.dialogWidget.set("content", "<div>Not all nodes have been completed. For example, \"" + activeSolution.missingNode + "\" is not yet fully defined.</div>"); //We show the error message like "A Node is Missing"
+				this.dialogWidget.set("content", this.generateErrorMessage(activeSolution)); //We show the error message like "A Node is Missing"
+				return;
+			}
+			//Checks if there are graphable nodes (only applicable in author mode)
+			if(activeSolution.plotValues.length == 0)
+			{
+				this.dialogWidget.set("content", "<div>Please fill in some nodes before trying to graph</div>"); //We show the error message like "A Node is Missing"
 				return;
 			}
 
+			//checks if the solution is a static solution
+			this.isStatic = this.checkForStatic(activeSolution);
+			this.staticVar = 0;
+			//If solution is static, brings up the statis plot
+			if(this.isStatic)
+			{
+				staticNodes = this.checkForParameters();
+				var staticPlot = this.findStaticSolution(true, staticNodes[this.staticVar], this.active.plotVariables);
+			}
+
+			//Checks if the mode is not in author mode, if not in author mode, find the "given" solution
 			if(this.mode != "AUTHOR"){
 				//check for author mode. Here we need to create just one graph.
 				this.given.plotVariables = array.map(this.active.plotVariables, function(id){
@@ -105,8 +123,13 @@ define([
 				}, this);
 				// Calculate solutions
 				var givenSolution = this.findSolution(false, this.given.plotVariables);
+				if(this.isStatic)
+				{
+					var staticGiven = this.findStaticSolution(false, staticNodes[this.staticVar], this.active.plotVariables);
+				}
 			}
 			this.resizeWindow();
+
 
 
 			//create content pane for displaying graph/table and sliders
@@ -115,35 +138,65 @@ define([
 			this.dialogContent += "<div data-dojo-type='dijit/layout/TabContainer' style='overflow:visible; height:700px; width:501px;'>"
 			//create tab for graph and fill it
 			this.dialogContent += "<div id='GraphTab' data-dojo-type='dijit/layout/ContentPane' style='overflow:auto; ' data-dojo-props='title:\"Graph\"'>";
+			//Create graph divs along with their error message
 			array.forEach(this.active.plotVariables, function(id){
 				var show = this.model.active.getType(id) == "accumulator" || this.model.given.getParent(this.model.active.getGivenID(id));
 				var checked = show ? " checked='checked'" : "";
 				this.dialogContent += "<div><input id='sel" + id + "' data-dojo-type='dijit/form/CheckBox' class='show_graphs' thisid='" + id + "'" + checked + "/>" + " Show " + this.model.active.getName(id) + "</div>";
 				var style = show ? "" : " style='display: none;'";
+				//graph error message				
+				this.dialogContent += "<font color='red' id='graphMessage" + id + "'></font>";
 				this.dialogContent += "<div	 id='chart" + id + "'" + style + "></div>";
 				// Since the legend div is replaced, we cannot hide the legend here.
 				this.dialogContent += "<div class='legend' id='legend" + id + "'></div>";
 			}, this);
-			//create tab for table
+			//create tab for table, chose to have it selected or not based on the button clicked by user
 			if(this.buttonClicked == "graph")
 				this.dialogContent += "</div><div id='TableTab' data-dojo-type='dijit/layout/ContentPane' style='overflow:visible' data-dojo-props='title:\"Table\"'>"
 			if(this.buttonClicked == "table")
 				this.dialogContent += "</div><div id='TableTab' data-dojo-type='dijit/layout/ContentPane' style='overflow:visible' selected = true data-dojo-props='title:\"Table\"'>"
 			//Render table here
-			this.dialogContent += "<div id='table' stlye='overflow:visible'></div>";
+			this.dialogContent += "<div id='table' stlye='overflow:visible'></div></div>";
+
+
+
+
+			//add static tab if solution is static
+			if(this.isStatic)
+			{
+			this.dialogContent += "<div id='StaticTab' data-dojo-type='dijit/layout/ContentPane' style='overflow:visible' selected = true data-dojo-props='title:\"Static\"'>"
+
+			this.dialogContent += "<input id='staticSelect'/>";
+
+				array.forEach(this.active.plotVariables, function(id){
+					var show = this.model.active.getType(id) == "accumulator" || this.model.given.getParent(this.model.active.getGivenID(id));
+					var checked = show ? " checked='checked'" : "";
+					this.dialogContent += "<div><input id='selStatic" + id + "' data-dojo-type='dijit/form/CheckBox' class='show_graphs' thisid='" + id + "'" + checked + "/>" + " Show " + this.model.active.getName(id) + "</div>";
+					var style = show ? "" : " style='display: none;'";
+					this.dialogContent += "<div	 id='chartStatic" + id + "'" + style + "></div>";
+					// Since the legend div is replaced, we cannot hide the legend here.
+					this.dialogContent += "<div class='legend' id='legendStatic" + id + "'></div>";
+				}, this);
+			}
 
 			//end divs for graph and table 
-			this.dialogContent += "</div></div></div>"
+			this.dialogContent += "</div></div></div>";
 
 			//create content pane for sliders
-			this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' style='overflow:auto; width:40%; float:right; height: 100%; background-color: #FFFFFF'>";
+			this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' style='overflow:visible; width:40%; float:right; height:700px; background-color: #FFFFFF'>";
+			this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' style='overflow:auto'>";
+
 			//text for correctness of solution
-			this.dialogContent += "<p>To reset sliders, close and reopen window</p><br>";
+			this.dialogContent += "<p id= 'solutionMessage'>To reset sliders, close and reopen window</p><br>";
+
+			this.isCorrect = false;
+			//check if the sollution is correct or not
 			if(this.mode != "AUTHOR"  && this.mode != "EDITOR")
 			{
 				if(this.model.active.matchesGivenSolutionAndCorrect())
 				{
 					this.dialogContent += "<font color='green'>Congratulations, your model's behavior matches the author's</font><br>";
+					this.isCorrect = true;
 				}
 				else
 				{
@@ -157,9 +210,10 @@ define([
 					}					 
 				}
 			}
+			//format solution
 			this.plotVariables = this.active.timeStep.xvars.concat(
 				this.active.timeStep.functions);
-			console.log(this.checkForNan());
+			//checks for errors in the solution
 			if(this.mode === "AUTHOR" && this.checkForNan())
 			{
 				this.dialogContent += "<font color='red' id = 'errorText'>The solution contains imaginary or overflowed numbers</font><br>";
@@ -169,13 +223,18 @@ define([
 
 			this.createSliderAndDialogObject();	
 
+			//finds the tabs and adds logging for tabs being clicked and makes a border for the tabs
 			var graphTab = null;
+			var tableTab = null;
+			var staticTab = null;
 			var count = -1;
 			while(graphTab == null){
 				count++;
-				graphTab = dom.byId("GraphTab");
+				graphTab = dom.byId("dijit_layout_TabContainer_" + count + "_tablist_GraphTab");
+				tableTab = dom.byId("dijit_layout_TabContainer_" + count + "_tablist_TableTab");
+				staticTab = dom.byId("dijit_layout_TabContainer_" + count + "_tablist_StaticTab");
 			}
-			var tableTab = dom.byId("TableTab");
+			//logging listeners 
 			graphTab.addEventListener("click", function(){ 
 				console.log("graph tab clicked");
 				logger.session.log('ui-action', {
@@ -191,19 +250,26 @@ define([
 				});
 			});
 
+			//adds borders
 			graphTab.style.border = "thin solid black";
 			tableTab.style.border = "thin solid black";
 
+			if(this.isStatic)
+			{
+				staticTab.style.border = "thin solid black";
+				this.createComboBox(staticNodes);
+			}
 
 			var charts = {};
+			var chartsStatic = {};
 			var legends = {};
+			var legendsStatic = {};
 			var paneText="";
 			
-			//graphTabTitle.style.borderWidth = "3px";
-
-			/* List of variables to plot: Include functions */
 			
-			if(this.plotVariables.length>0){ //we check the length of object, if there are nodes , then we proceed else give an error and return
+			//adds pane text to the table tab
+			
+			if(this.plotVariables.length>0){ 
 				paneText += this.initTable();
 				paneText += this.setTableHeader();
 				paneText += this.setTableContent();
@@ -217,16 +283,25 @@ define([
 			}, "table");
 
 
+			//puts in the data for the graphs
 			if(this.active.plotVariables.length > 0){ //we check the length of object, if there are nodes, then we proceed else give an error and return
+				
 				array.forEach(this.active.plotVariables, function(id, k){
+
 					var str = "chart" + id;
 					charts[id] = new Chart(str);
-					charts[id].addPlot("default", {
-						type: Lines,
+					charts[id].addPlot("grid", {
+						type: Grid,
 						// Do not include markers if there are too
 						// many plot points.  It looks ugly and slows down
 						// plotting significantly.
-						markers: activeSolution.times.length < 25
+						hMajorLines: true, 
+						hMinorLines: false,
+						vMajorLines: true,
+						vMinorLines: false,
+						majorHLine: { color: "gray", width: 1 },
+         				majorVLine: { color: "gray", width: 1 }
+						//markers: activeSolution.times.length < 25
 						});
 					charts[id].addAxis("x", {
 						title: this.labelString(),
@@ -238,35 +313,58 @@ define([
 						vertical: true, // min: obj.min, max: obj.max,
 						title: this.labelString(id),
 						min: obj.min,
-						max:obj.max
+						max:obj.max,
+						labelFunc: this.formatAxes
 						});
 
 					if(this.mode != "AUTHOR"){
 						var givenID = this.model.active.getDescriptionID(id);
 					}
-					//plot chart for student node
-					charts[id].addSeries(
-						"Your solution",
-						this.formatSeriesForChart(activeSolution, k),
-						{stroke: "green"}
-					);
-					if(this.mode != "AUTHOR"  && this.mode != "EDITOR" && this.given.plotVariables[k]){
+
+					if(this.isCorrect || this.mode == "AUTHOR")
+					{
+						//plot chart for student node
 						charts[id].addSeries(
-							"Author's solution",
-							this.formatSeriesForChart(givenSolution, k), {stroke: "red"}
+							"Your solution",
+							this.formatSeriesForChart(activeSolution, k),
+							{stroke: "green"}
 						);
 					}
-					charts[id].render();
+					else
+					{
+						charts[id].addSeries(
+							"Your solution",
+							this.formatSeriesForChart(activeSolution, k),
+							{stroke: "red"}
+						);
+					}
+
+					if(this.mode != "AUTHOR"  && this.mode != "EDITOR" && this.given.plotVariables[k]){
+						
+						charts[id].addSeries(
+							"Author's solution",
+							this.formatSeriesForChart(givenSolution, k), {stroke: "black"}
+						);
+					}
+					if(obj.max - obj.min > (Math.pow(10,-16)) || (obj.max - obj.min === 0))
+					{
+						charts[id].render();
+					}
+					else
+					{
+						dom.byId("solutionMessage").innerHTML = "Unable to graph, please increase the number of timesteps";
+					}
 					legends[id] = new Legend({chart: charts[id]}, "legend" + id);
 
 				}, this);
+			
 			} else {
-                //Now it is possible that there might be incomplete nodes which are not listed in active plot variables
+                //Now it is possible that there might be incomplete nodes which are not listed in active plot plotVariables
                 var thisModel = this;
                 var modStatus = true;
                 array.forEach(this.model.active.getNodes(), function (thisnode) {
                     if(thisModel.model.active.getType(thisnode.ID)=="function" || thisModel.model.active.getType(thisnode.ID)=="accumulator"){
-                        thisModel.dialogWidget.set("content", "<div>Not all nodes have been completed. For example, \"" + thisModel.model.active.getName(thisnode.ID) + "\" is not yet fully defined.</div>");
+                        thisModel.dialogWidget.set("content", this.generateErrorMessage(thisModel.model.active.getName(thisnode.ID)));
                         modStatus = false;
                         return;
                     }
@@ -274,6 +372,84 @@ define([
                 if(modStatus)
 				    this.dialogWidget.set("content", "<div>There isn't anything to plot. Try adding some accumulator or function nodes.</div>"); //Error telling there are no nodes and graph cant be rendered
 			}
+
+			//puts in data for the static graphs
+			if(this.isStatic)
+			{
+				var staticVar = this.checkStaticVar(true);
+				staticPlot = this.findStaticSolution(true, staticVar, this.active.plotVariables);	
+				givenPlot = this.findStaticSolution(true, staticVar, this.active.plotVariables);
+				//console.log(givenPlot);
+				//console.log(this.given.plotVariables);
+				if(this.active.plotVariables.length > 0){ //we check the length of object, if there are nodes, then we proceed else give an error and return
+					array.forEach(this.active.plotVariables, function(id, k){
+						var str = "chartStatic" + id;
+						//console.log(str);
+						chartsStatic[id] = new Chart(str);
+						chartsStatic[id].addPlot("grid", {
+							type: Grid,
+							hMajorLines: true, 
+							hMinorLines: false,
+							vMajorLines: true,
+							vMinorLines: false,
+							majorHLine: { color: "gray", width: 1 },
+         					majorVLine: { color: "gray", width: 1 }
+							// Do not include markers if there are too
+							// many plot points.  It looks ugly and slows down
+							// plotting significantly.
+							//markers: staticPlot.times.length < 25
+							});
+						chartsStatic[id].addAxis("x", {
+							title: dom.byId("staticSelect").value,
+							titleOrientation: "away", titleGap: 5
+							});
+
+						var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
+						chartsStatic[id].addAxis("y", {
+							vertical: true, // min: obj.min, max: obj.max,
+							title: this.labelString(id),
+							min: obj.min,
+							max:obj.max
+							});
+
+						if(this.mode != "AUTHOR"){
+							var givenID = this.model.active.getDescriptionID(id);
+						}
+						//plot chart for student node
+						chartsStatic[id].addSeries(
+							"Your solution",
+							this.formatSeriesForChart(staticPlot, k),
+							{stroke: "green"}
+						);
+						if(this.mode != "AUTHOR"  && this.mode != "EDITOR" && this.given.plotVariables[k]){
+							chartsStatic[id].addSeries(
+								"Author's solution",
+								this.formatSeriesForChart(givenPlot, k), 
+								{stroke: "black"}
+							);
+						}
+						chartsStatic[id].render();
+						legendsStatic[id] = new Legend({chart: charts[id]}, "legendStatic" + id);
+
+					}, this);
+				} /*else {
+	                //Now it is possible that there might be incomplete nodes which are not listed in active plot variables
+	                var thisModel = this;
+	                var modStatus = true;
+	                array.forEach(this.model.active.getNodes(), function (thisnode) {
+	                    if(thisModel.model.active.getType(thisnode.ID)=="function" || thisModel.model.active.getType(thisnode.ID)=="accumulator"){
+	                        thisModel.dialogWidget.set("content", "<div>Not all nodes have been completed. For example, \"" + thisModel.model.active.getName(thisnode.ID) + "\" is not yet fully defined.</div>");
+	                        modStatus = false;
+	                        return;
+	                    }
+	                });
+	                if(modStatus)
+					    this.dialogWidget.set("content", "<div>There isn't anything to plot. Try adding some accumulator or function nodes.</div>"); //Error telling there are no nodes and graph cant be rendered
+				}*/
+
+				this.chartsStatic = chartsStatic;
+			}
+
 			this.chart = charts;
 
 			// The following loop makes sure legends of function node graphs are not visible initially
@@ -296,7 +472,30 @@ define([
 					}
 				});
 			}, this);
+			//does the same for for static graphs
+			if(this.isStatic)
+			{
+				array.forEach(this.active.plotVariables, function(id){
+					if(this.model.active.getType(id) == "function"){
+						var leg_style = { display: "none" };
+						var k = domAttr.set("legendStatic" + id, "style", leg_style);
+					}
+					var check = registry.byId("selStatic" + id);
+					check.on("Change", function(checked){
+						if(checked) {
+							domAttr.remove("chartStatic" + id, "style");
+							domAttr.remove("legendStatic" + id, "style");
+						}else{
+							var obj = { display: "none" };
+							domAttr.set("chartStatic" + id, "style", obj);
+							domAttr.set("legendStatic" + id, "style", obj);
+						}
+					});
+				}, this);
+				}
 			this.resizeWindow();
+
+
 		},
 
 		/*
@@ -309,8 +508,77 @@ define([
 			});
 		},
 
-		doLayout: function()
-		{},
+		//creates the dropdown menu for the static window
+		createComboBox: function(staticNodes){
+			var stateStore = new Memory();
+
+			array.forEach(staticNodes, function(node)
+			{
+				stateStore.put({id:node.description, name:node.description});
+			});
+    		var comboBox = new ComboBox({
+        	id: "staticSelect",
+	        name: "state",
+	        value: staticNodes[0].description,
+	        store: stateStore,
+	        searchAttr: "name"
+	    	}, "staticSelect");
+	    	//console.log(comboBox);	    	
+			this.disableStaticSlider();
+	    	on(comboBox, "change", lang.hitch(this, function(){
+					this.renderStaticDialog();
+					this.disableStaticSlider();
+				}));
+			},
+
+		//checks if the solution is static
+		checkForStatic: function(solution)
+		{
+			var values = solution.plotValues;
+			var temp = 0;
+			var isStatic = true;
+			if(values.length == 0){
+				isStatic = false;
+			}
+			array.forEach(values, function(value)
+			{
+				temp = value[0];
+				array.forEach(value, function(num)
+				{
+					if(num !== temp)
+					{
+						isStatic = false;
+					}
+					temp = num;
+				});
+			});
+			return isStatic;
+		},
+
+		//hides the slider for the variable that is selected
+		disableStaticSlider: function()
+		{
+			var staticVar = this.checkStaticVar(true);
+			var id = staticVar.ID;
+			var parameters = this.checkForParameters(true);
+			array.forEach(parameters, function(parameter){
+				dom.byId("labelGraph_" + parameter.ID).style.display = "initial";			
+				dom.byId("textGraph_" + parameter.ID).style.display = "initial";			
+				dom.byId("sliderGraph_" + parameter.ID).style.display = "initial";
+			});
+			dom.byId("labelGraph_" +id).style.display = "none";			
+			dom.byId("textGraph_" + id).style.display = "none";			
+			dom.byId("sliderGraph_" + id).style.display = "none";
+
+		},
+
+		//helper method for error messages
+		generateErrorMessage: function(solution)
+		{
+			return "content", "<div>Not all nodes have been completed. For example, "
+			       + solution.missingNode + " has an empty "+ solution.missingField +
+			       " field.</div>";
+		},
 
 		resizeWindow: function(){
 			console.log("resizing window");
@@ -386,7 +654,7 @@ define([
 		 * new values for student nodes are calculated
 		 */
 		renderDialog: function(calculationObj){
-				
+				console.log("rendering graph and table");
 				if(this.mode != "AUTHOR")
 				{
 					var activeSolution = this.findSolution(true, this.active.plotVariables);
@@ -394,7 +662,109 @@ define([
 					//update and render the charts
 					array.forEach(this.active.plotVariables, function(id, k){
 							// Calculate Min and Max values to plot on y axis based on given solution and your solution
-							var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
+							var inf = this.checkForInfinity(activeSolution.plotValues[k]); 
+							if(inf)
+								dom.byId("graphMessage" + id).innerHTML = "The values you have chosen caused the graph to go infinite. (See table.)";
+							else
+							{
+								dom.byId("graphMessage" + id).innerHTML = "";
+								var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
+								var givenObj = this.getMinMaxFromArray(givenSolution.plotValues[k]);				
+								if(givenObj.min < obj.min){
+									obj.min = givenObj.min;
+								}
+								if(givenObj.max > obj.max){
+									obj.max = givenObj.max;
+							}
+							//Redraw y axis based on new min and max values
+							this.chart[id].addAxis("y", {
+									vertical: true,
+									fixed: false,
+									min: obj.min,
+									max: obj.max,									
+									labelFunc: this.formatAxes,
+									title: this.labelString(id)
+									});
+							}
+							if(this.isCorrect)
+							{
+								this.chart[id].updateSeries(
+									"Your solution",
+									this.formatSeriesForChart(activeSolution, k),
+									{stroke: "green"}
+								);
+							}
+							else
+							{
+								this.chart[id].updateSeries(
+									"Your solution",
+									this.formatSeriesForChart(activeSolution, k),
+									{stroke: "red"}
+								);
+							}
+							this.chart[id].render();
+						
+					}, this);
+				}
+				else
+				{
+				//update and render the charts
+				var activeSolution = this.findSolution(true, this.active.plotVariables);
+					//console.log(activeSolution);
+
+					array.forEach(this.active.plotVariables, function(id, k){
+
+							var inf = this.checkForInfinity(activeSolution.plotValues[k]);
+							if(inf)
+								dom.byId("graphMessage" + id).innerHTML = "The values you have chosen caused the graph to go infinite. (See table.)";
+							else
+							{
+								dom.byId("graphMessage" + id).innerHTML = "";
+								var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
+								this.chart[id].addAxis("y", {
+									vertical: true,
+									natural: false,
+									min: obj.min,
+									max: obj.max,
+									labelFunc: this.formatAxes,
+									title: this.labelString(id)
+									});
+							}
+
+							this.chart[id].updateSeries(
+								"Your solution",
+								this.formatSeriesForChart(activeSolution, k),
+								{stroke: "green"}
+							);
+							this.chart[id].render();
+							
+					}, this);
+				}
+				var paneText = "";
+				paneText += this.initTable();
+				paneText += this.setTableHeader();
+				paneText += this.setTableContent();
+				paneText += this.closeTable();
+				
+				this.contentPane.setContent(paneText);
+		},
+
+		//changes the static graph when sliders or dropdown change
+		renderStaticDialog: function(){
+			console.log("rendering static");
+			//console.log(this.chartsStatic);
+			if(this.isStatic)
+			{
+				if(this.mode != "AUTHOR")
+				{
+					var staticVar = this.checkStaticVar(true);
+
+					var activeSolution = this.findStaticSolution(true, staticVar, this.active.plotVariables);
+					//update and render the charts
+					array.forEach(this.active.plotVariables, function(id, k){
+
+							// Calculate Min and Max values to plot on y axis based on given solution and your solution
+							/*var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
 							var givenObj = this.getMinMaxFromArray(givenSolution.plotValues[k]);				
 							if(givenObj.min < obj.min){
 								obj.min = givenObj.min;
@@ -408,38 +778,101 @@ define([
 									min: obj.min,
 									max: obj.max,
 									title: this.labelString(id)
-									});
-							this.chart[id].updateSeries(
+									});*/
+							this.chartsStatic[id].addAxis("x", {
+									title: dom.byId("staticSelect").value,
+									titleOrientation: "away", titleGap: 5
+								});
+							//console.log(id);
+							//console.log(this.chartsStatic);
+							this.chartsStatic[id].updateSeries(
 								"Your solution",
 								this.formatSeriesForChart(activeSolution, k),
 								{stroke: "green"}
 							);
-							this.chart[id].render();
+							this.chartsStatic[id].render();
 						
 					}, this);
 				}
 				else
 				{
 				//update and render the charts
-				var activeSolution = this.findSolution(true, this.active.plotVariables);
+					var staticVar = this.checkStaticVar(true);
+					var staticPlot = this.findStaticSolution(true, staticVar, this.active.plotVariables);
 					array.forEach(this.active.plotVariables, function(id, k){
-							this.chart[id].updateSeries(
+							this.chartsStatic[id].addAxis("x", {
+									title: dom.byId("staticSelect").value,
+									titleOrientation: "away", titleGap: 5
+								});
+							this.chartsStatic[id].updateSeries(
 								"Your solution",
-								this.formatSeriesForChart(activeSolution, k),
+								this.formatSeriesForChart(staticPlot, k),
 								{stroke: "green"}
 							);
-							this.chart[id].render();
+							this.chartsStatic[id].render();
 						
 					}, this);
 				}
-				var paneText = "";
-				paneText += this.initTable();
-				paneText += this.setTableHeader();
-				paneText += this.setTableContent();
-				paneText += this.closeTable();
-				
-				this.contentPane.setContent(paneText);
+			}
 		},
+
+		//checks if the solution goes to infinity at any point
+		checkForInfinity: function(values)
+		{
+			var result = false;
+			array.forEach(values, function(value){
+				//console.log(value);
+				//console.log(isFinite(value));
+				if(!isFinite(value))
+				{
+					result = true;
+				}
+			}, this);
+			return result;
+		},
+
+		//checks for which variables are static
+		checkStaticVar: function(choice){	//true is active, false is given 		
+			var parameters = this.checkForParameters(choice);
+			var result = parameters[0];
+			var staticSelect = dom.byId("staticSelect");
+			//console.log(staticSelect.value);
+			//console.log(parameters);
+
+
+			if(typeof parameters[0].description != 'undefined')
+			{
+				array.forEach(parameters, function(parameter){
+					
+					if(parameter.description == staticSelect.value)
+					{
+						//console.log(parameter);
+						result = parameter;
+					}
+				}, this);
+			}
+			else
+			{
+				var givenParameters = this.checkForParameters(false);
+				var tempResult = givenParameters[0];
+				array.forEach(givenParameters, function(parameter){					
+					if(parameter.description == staticSelect.value)
+					{
+						tempResult = parameter;
+					}
+				}, this);
+				//console.log(tempResult);
+				array.forEach(parameters, function(parameter){
+					//console.log(parameter);
+					if(parameter.descriptionID == tempResult.ID)
+					{
+						result = parameter;
+					}
+				}, this);
+			}
+			return result;
+		}, 
+
 		initTable: function(){
 			return "<div style='overflow:visible' align='center'>" + "<table class='solution' style='overflow:visible'>";
 		},
@@ -492,6 +925,7 @@ define([
 			return tableString;
 		},
 
+		//checks if any part of the solution is not a number ie imaginary
 		checkForNan: function(){
 			var solution = this.findSolution(true, this.plotVariables);
 			var nan = false;
@@ -504,6 +938,44 @@ define([
 				});
 			}
 			return nan;
+		},
+
+		//checks for what parrameters are a in a solution
+		checkForParameters: function(choice){ //true is active, false is given 
+			var result = [];
+			if(choice === true)
+			{
+				array.forEach(this.model.active.getNodes(), function(node)
+				{
+					//console.log(node);
+					if(node.type == "parameter")
+					{
+						result.push(node);
+					}
+				}, this);
+			}
+			else
+			{
+				array.forEach(this.model.given.getNodes(), function(node)
+				{
+					//console.log(node);
+					if(node.type == "parameter")
+					{
+						result.push(node);
+					}
+				}, this);
+			}
+			return result;
+		},
+
+		//helper function for axes
+		formatAxes: function(text, value, precision){
+			if(value > 10000){
+				return value.toPrecision(3);
+			}
+			else{
+				return text;
+			}
 		}
 	});
 });

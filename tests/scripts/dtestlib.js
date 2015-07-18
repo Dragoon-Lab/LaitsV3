@@ -77,6 +77,7 @@ function findIdbyName(client, nodeName){
     }
     return result;
 }
+
 function findDropDownByName(client, name){
     var notFound = true;
     var counter = 0;
@@ -95,6 +96,21 @@ function findDropDownByName(client, name){
         counter++;
     }
     return result;
+}
+
+function selectDropdownValue(client,dropDownID,value){
+    await(client.waitForVisible(dropDownID,defer()));
+    await(client.click(dropDownID, defer()));
+    await(client.waitForVisible(dropDownID+'_menu', defer()));
+    var number = findDropDownByName(client, value);
+    if(number != null)
+    {
+        await(client.click('#dijit_MenuItem_' + number, defer()));
+    }
+    else
+    {
+        await(client.click(dropDownID, defer()));
+    }
 }
 
 function wait(milliseconds)
@@ -221,7 +237,11 @@ exports.openProblem = function(client,parameters){
     var url = urlRoot + '?' + user + section + problem + mode + nodeEditorMode + group + logging +
               "&c=Continue";
 
-    await(client.init().url(url,defer()));
+    if(await(client.session(defer())) === undefined){
+        await(client.init().url(url,defer()));
+    } else {
+        await(client.url(url,defer()));
+    }
 }
 
 //Test Functions
@@ -256,63 +276,105 @@ exports.changeClient = function (client, newClient)
     client.end();
     await(newClient.init().url(url.value, defer()));
 }
+
+exports.getCurrentTabId = function(client){
+    return await(client.getCurrentTabId(client,defer()));
+}
+
+exports.switchTab = function(client,tabId){
+    await(client.switchTab(tabId,defer()));
+}
+
+exports.getCurrentUsername = function(client){
+    // returns the username from the URL parameter (assumes there is a parameter after u=)
+    var url = client.url(defer()).requestHandler.fullRequestOptions.body;
+    return url.split('u=')[1].split('&')[0];
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 2. Menu bar functions
 
-exports.menuCreateNode = function(client){  
+exports.menuCreateNode = function(client){
+    await(client.waitForVisible('span[id="createNodeButton_label"]',defer()));    
     await(client.click('span[id="createNodeButton_label"]',defer()));
     wait(200);
 }
 
 exports.menuOpenGraph = function(client){
+    await(client.waitForVisible('#graphButton',defer()));    
     await(client.click('#graphButton',defer()));
 }
 
 exports.menuOpenTable = function(client){
+    await(client.waitForVisible('#tableButton',defer()));
     await(client.click('#tableButton',defer()));
 }
 
 exports.menuOpenForum = function(client){
+    await(client.waitForVisible('#forumButton',defer()));
     await(client.click('#forumButton',defer()));
 }
 
 exports.menuOpenAuthorOptions = function(client){
+    await(client.waitForVisible('#descButton',defer()));
     await(client.click('#descButton',defer()));
 }
 
 exports.menuOpenSaveAs = function(client){
+    await(client.waitForVisible('#saveButton',defer()));
     await(client.click('#saveButton',defer()));
 }
 
 exports.menuOpenPreview = function(client){
+    await(client.waitForVisible('#previewButton',defer()));
+    var oldTabs = await(client.getTabIds(client,defer()));
+    //console.log("Old tabs: "+oldTabs);
     await(client.click('#previewButton',defer()));
+    var newTabs = await(client.getTabIds(client,defer()));
+    //console.log("New tabs: "+newTabs);
+    for (var i = 0; i < newTabs.length; i++){
+        //console.log("index of tab "+newTabs[i]+" is "+oldTabs.indexOf(newTabs[i]));
+        if (oldTabs.indexOf(newTabs[i]) == -1){
+            //console.log("New tab found: "+newTabs[i]);
+            await(client.switchTab(newTabs[i],defer()));
+        }
+    }
 }
 
 exports.menuOpenHints = function(client){
+    await(client.waitForVisible('#descButton',defer()));
     await(client.click('#descButton',defer()));
 }
 
 exports.menuOpenHelpIntroduction = function(client){
+    await(client.waitForVisible('#dijit_PopupMenuBarItem_0_text',defer()));
     await(client.click('#dijit_PopupMenuBarItem_0_text',defer()));
     await(client.click('#menuIntroText',defer()));
 }
 
 exports.menuOpenHelpIntroVideo = function(client){
+    await(client.waitForVisible('#dijit_PopupMenuBarItem_0_text',defer()));
     await(client.click('#dijit_PopupMenuBarItem_0_text',defer()));
     await(client.click('#menuIntroVideo',defer()));
 }
 
 exports.menuOpenHelpMathFunctions = function(client){
+    await(client.waitForVisible('#dijit_PopupMenuBarItem_0_text',defer()));
     await(client.click('#dijit_PopupMenuBarItem_0_text',defer()));
     await(client.click('#menuMathFunctions',defer()));
 }
 
 exports.menuOpenLessonsLearned = function(client){
+    await(client.waitForVisible('#lessonsLearnedButton',defer()));
     await(client.click('#lessonsLearnedButton',defer()));
 }
 
 exports.menuDone = function(client){
-    await(client.click('#doneButton',defer()));
+    await(client.waitForExist('#doneButton_label',defer()));
+    //console.log("current tab before wait: "+ await(client.getCurrentTabId(client,defer())) );
+    await(client.waitForVisible('#doneButton_label',5000,defer()));
+    //console.log("current tab after wait: "+ await(client.getCurrentTabId(client,defer())) );
+    await(client.click('#doneButton_label',defer()));
 }
 
 
@@ -320,8 +382,7 @@ exports.menuDone = function(client){
 // 3. Canvas functions
 
 // Node manipulation
-// This currently is by nodeId and not node name
-// If by node name is needed then an additional "findIdByNodeName" will be needed
+
 exports.openEditorForNode = function(client,nodeName){
     await(client.click('#id' + findIdbyName(client, nodeName),defer()));
     wait(100);
@@ -379,20 +440,22 @@ exports.getNodeInteriorText = function(client,nodeName){
 
 
 
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 4. Node editor window functions -- these require an open node!!
 
 // TODO: add getters for disabled state and color for all applicable boxes
 
 //////////////////////////////////////////////////
-//Show in student model
+// Show in student model (author mode only)
 
 exports.getShownInStudentModel = function(client){
     console.warn("Not yet implemented.");
 }
 
 exports.setShownInStudentModel = function(client, shown){
-    console.warn("Not yet implemented.");
+    await(client.waitForVisible('#setStudentNode',defer()));    
+    await(client.click('#setStudentNode',defer()));
 }
 
 //Select model
@@ -400,8 +463,12 @@ exports.getSelectModel = function(client){
     console.warn("Not yet implemented.");
 }
 
-exports.setSelectModel = function(client){
-    console.warn("Not yet implemented.");
+exports.selectAuthorsModel = function(client){
+    selectDropdownValue(client,'#selectModel',"Author\'s Values");
+}
+
+exports.selectStudentModel = function(client){
+    selectDropdownValue(client,'#selectModel',"Initial Student Values");
 }
 
 //////////////////////////////////////////////////
@@ -423,23 +490,30 @@ exports.setNodeName = function(client, nodeName){
 // Popup window funcitons
 
 exports.popupWindowPressOk = function(client){
+    wait(300);
     await(client.click('#OkButton',defer()));
     wait(200);
 }
 
-exports.popupWindowGetText = function(client){
-    console.warn("Not yet implemented!");
+exports.popupWindowGetText = function(client){    
+    return await(client.getText("#solution",defer()));    
+}
+
+exports.popupWindowPressCancel = function(client){
+    await(client.click('span[class="dijitDialogCloseIcon"]',defer()));
+    wait(200);
 }
 
 //////////////////////////////////////////////////
-//Kind of quantity
+// Kind of quantity
 
 exports.getKindOfQuantity = function(client){
     console.warn("Not yet implemented.");
 }
 
 exports.setKindOfQuantity = function(client, type){
-    await(client.click('#selectKind', defer()));
+    selectDropdownValue(client,"#selectKind",type);
+    /*await(client.click('#selectKind', defer()));
     wait(100);
     await(client.waitForVisible('#selectKind_menu', defer()));
     var number = findDropDownByName(client, type);
@@ -450,7 +524,7 @@ exports.setKindOfQuantity = function(client, type){
     else
     {
         await(client.click('#selectKind', defer()));
-    }
+    }*/
 }
 
 //////////////////////////////////////////////////
@@ -484,7 +558,8 @@ exports.isNodeDescriptionDisabled = function(client){
 exports.setNodeDescription = function(client, description){
     if(await(client.isVisible('#selectDescription',defer())))
     {
-        await(client.click('#selectDescription', defer()));
+        selectDropdownValue(client,"#selectDescription",description);
+        /*await(client.click('#selectDescription', defer()));
         //await(client.click('#selectDescription', defer()));
         await(client.waitForVisible('#selectDescription_menu', defer()));
         var number = findDropDownByName(client, description);
@@ -495,13 +570,34 @@ exports.setNodeDescription = function(client, description){
         else
         {
             await(client.click('#selectDescription', defer()));
-        }
+        }*/
     }
     else
     {
         await(client.setValue('#setDescription', description, defer()));
     }
 }
+
+//////////////////////////////////////////////////
+// Root node toggle
+
+//returns true for checked and false for unchecked
+exports.checkRootNode = function(client){
+    var result = await(client.getAttribute('#markRootNode','aria-checked' ,defer())); 
+    console.log(result);
+    if(result == 'true')
+        return true;
+    else
+        return false
+}
+
+//Set to true(checked) or set to false(unchecked) (defaults to setting to true)
+exports.clickRootNode = function(client){
+        await(client.click('#markRootNode', defer()));
+        return;
+}
+
+
 
 
 //////////////////////////////////////////////////
@@ -526,7 +622,8 @@ exports.isNodeTypeDisabled = function(client){
 }
 
 exports.setNodeType = function(client,type){
-    await(client.click('#typeId', defer()));
+    selectDropdownValue(client,'#typeId',type);
+    /*await(client.click('#typeId', defer()));
     await(client.waitForVisible('#typeId_menu', defer()));
     var number = findDropDownByName(client, type);
     if(number != null)
@@ -536,7 +633,7 @@ exports.setNodeType = function(client,type){
     else
     {
         await(client.click('#selectKind', defer()));
-    }
+    }*/
 }
 
 //////////////////////////////////////////////////
@@ -594,7 +691,8 @@ exports.setNodeUnits = function(client,units){
     try{
         if(await(client.isVisible('#selectUnits',defer())))
         {
-            await(client.click('#selectUnits', defer()));
+            selectDropdownValue(client,'#selectUnits',units);
+            /*await(client.click('#selectUnits', defer()));
             await(client.waitForVisible('#selectUnits_menu', defer()));
             var number = findDropDownByName(client, units);
             if(number != null)
@@ -604,7 +702,7 @@ exports.setNodeUnits = function(client,units){
             else
             {
                 await(client.click('#selectUnits', defer()));
-            }
+            }*/
         }
         else
         {
@@ -640,6 +738,7 @@ exports.isNodeExpressionDisabled = function(client){
 
 exports.setNodeExpression = function(client,expression){
     await(client.setValue('#equationBox', expression, defer()));
+    await(client.click("#algebraic",defer()));
 }
 
 exports.expressionInsertInput = function(client){
@@ -670,7 +769,8 @@ exports.clearExpression = function(client){
 }
 
 exports.checkExpression = function(client){
-    await(client.click('span[id="equationDoneButton_label"]',defer()));
+    await(client.click('#equationDoneButton',defer()));
+    wait(1000);
 }
 
 
@@ -691,8 +791,8 @@ exports.nodeEditorDone = function(client){
 }
 
 exports.closeNodeEditor = function(client){
-    // Summary: Closes node editor using the "x"
-    await(client.click('span[class="dijitDialogCloseIcon"]',defer()));
+    // Summary: Closes node editor using the "x"    
+    await(client.click("#nodeeditor > div.dijitDialogTitleBar > span.dijitDialogCloseIcon",defer()));
 }
 
 exports.nodeEditorDelete = function(client){
@@ -778,14 +878,41 @@ exports.tableGetValue = function(client,row,column){
 
 exports.closeGraphAndTableWindow = function(client){
     // Summary: closes the graph/table window
-    await(client.click('span[class="dijitDialogCloseIcon"]',defer()));
+    await(
+        client.click('#solution > div.dijitDialogTitleBar.dijitAlignTop > span.dijitDialogCloseIcon'
+                    ,defer()));
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-// 6.  Description & Times window functions
+// 6.  Problem & Times window functions
+
+exports.pressCheckProblemButton = function(client){
+    // Summary: clicks the "Check Problem" button
+    await(client.click("#authorProblemCheck",defer()));
+}
+
+exports.pressProblemAndTimesDone = function(client){
+    // Summary: clicks "done" on the problem & times window
+    await(client.click('#descCloseButton',defer()));
+    wait(200);
+}
+
+exports.closeProblemAndTimesWindow = function(client){
+    // Summary: closes the problem & times window
+    await(
+        client.click(
+            '#authorDescDialog > div.dijitDialogTitleBar.dijitAlignTop > span.dijitDialogCloseIcon',
+            defer()));
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 7.  "Save as..." window functions
+
+exports.closeSaveAsWindow = function(client){
+    // Summary: closes the save as window    
+    await(client.click("#authorSaveDialog > div.dijitDialogTitleBar > span.dijitDialogCloseIcon",
+            defer()));
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 8.  Hint slides window functions

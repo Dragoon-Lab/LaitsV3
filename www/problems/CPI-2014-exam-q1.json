@@ -41,7 +41,9 @@
                 "description": "The size of the amoeba population each hour",
                 "type": "accumulator",
                 "initial": 100,
-                "equation": "id2"
+                "equation": "id2",
+                "parentNode": true,
+                "genus": "required"
             },
             {
                 "ID": "id2",

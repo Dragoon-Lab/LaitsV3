@@ -21,7 +21,7 @@
             "* Destination: Infected students",
             "* Changing:  The number of students that change state is the product of the number of meetings times the probability that a meeting will have a healthy student and an infected student.",
             "",
-            "Implementation: See image or the problem &apos;epidemic&apos; in the problem set &apos;generic changes&apos;.",
+            "Implementation: See image or the problem 'epidemic' in the problem set 'generic changes'.",
             "Note that your solution may need to differ from the one shown, although it",
             "should be mathematically equivalent.  There are often multiple equivalent ways",
             "to express a model."
@@ -249,6 +249,25 @@
                 "equation": "(id6*id4)*id5"
             }
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [],
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "epidemic_transfer",
+                "name": "Epidemic",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id2, id3, id4, id5, id6, id7",
+                "difficulty": {
+                    "isolation": 0,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            }
+        ]
     }
 }

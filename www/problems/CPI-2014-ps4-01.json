@@ -11,10 +11,11 @@
         "properties": {},
         "image": {},
         "taskDescription": [
-            "Suppose a 10 kg shell is shot from a super gun straight up with an initial velocity of 6 miles per second.  Measured from the center of the earth, its initial position is 3960 miles, which is the radius of the earth.  The shell’s distance from the center of the earth increases according to the shell’s velocity.   But the velocity itself changes.  It is decreased by the acceleration due to earth’s gravity. And the acceleration decreases, too!  In compliance with Newton’s law of gravitation, the acceleration is K/d^2 where d is the distance of the shell from the center of the earth and K is 95501.  Assuming that air friction is negligible and the mass of the earth is 6e24 kg, construct a model showing the distance of the shell from earth over 10000 seconds.  Using the sliders, show that with initial velocity of 6, the shell falls back to earth, but with an initial velocity of 7, it escapes."
+            "Suppose a 10 kg shell is shot from a super gun straight up with an initial velocity of 6 miles per second.  Measured from the center of the earth, its initial position is 3960 miles, which is the radius of the earth.  The shell\u2019s distance from the center of the earth increases according to the shell\u2019s velocity.   But the velocity itself changes.  It is decreased by the acceleration due to earth\u2019s gravity. And the acceleration decreases, too!  In compliance with Newton\u2019s law of gravitation, the acceleration is K\/d^2 where d is the distance of the shell from the center of the earth and K is 95501.  Assuming that air friction is negligible and the mass of the earth is 6e24 kg, construct a model showing the distance of the shell from earth over 10000 seconds.  Using the sliders, show that with initial velocity of 6, the shell falls back to earth, but with an initial velocity of 7, it escapes.",
+            ""
         ],
         "lessonsLearned": [
-            "This is like the simple acceleration problem in \"generic changes\" problem set, except that the acceleration is not constant.  The numbers in this problem are accurate, by the way.  The escape velocity for earth is 6.96 miles/second, which is 33 times the speed of sound and several times the muzzle velocity of a rifle bullet.  At this speed, air friction is not at all negligible.  Objects would burn up or be torn apart by atmospheric drag."
+            "This is like the simple acceleration problem in \"generic changes\" problem set, except that the acceleration is not constant.  The numbers in this problem are accurate, by the way.  The escape velocity for earth is 6.96 miles\/second, which is 33 times the speed of sound and several times the muzzle velocity of a rifle bullet.  At this speed, air friction is not at all negligible.  Objects would burn up or be torn apart by atmospheric drag."
         ],
         "slides": [
             {
@@ -24,12 +25,12 @@
             },
             {
                 "type": "image",
-                "value": "images/CPI/super_gun_graphs.jpg",
+                "value": "images\/CPI\/super_gun_graphs.jpg",
                 "title": "Author's graph for Super gun Problem"
             },
             {
                 "type": "image",
-                "value": "images/CPI/super_gun_correctnodes.png",
+                "value": "images\/CPI\/super_gun_correctnodes.png",
                 "title": "Author's solution for Super Gun Problem"
             },
             {
@@ -92,7 +93,7 @@
                 "description": "Velocity of the shell each second",
                 "type": "accumulator",
                 "initial": 6,
-                "units": "miles/sec",
+                "units": "miles\/sec",
                 "equation": "-id3"
             },
             {
@@ -121,15 +122,16 @@
                 "name": "Acceleration downward",
                 "description": "Acceleration downward of the shell",
                 "type": "function",
-                "units": "miles/sec/sed",
-                "equation": "id4/(id1^2)"
+                "units": "miles\/sec\/sed",
+                "equation": "id4\/(id1^2)",
+                "genus": "required"
             },
             {
                 "ID": "id4",
                 "inputs": [],
                 "position": {
-                    "x": 851.3309326171875,
-                    "y": 154.33096313476562
+                    "x": 851.33093261719,
+                    "y": 154.33096313477
                 },
                 "attemptCount": {
                     "description": 0,
@@ -151,8 +153,8 @@
                 "ID": "id5",
                 "inputs": [],
                 "position": {
-                    "x": 474.3309631347656,
-                    "y": 278.3309326171875
+                    "x": 474.33096313477,
+                    "y": 278.33093261719
                 },
                 "attemptCount": {
                     "description": 0,
@@ -176,8 +178,8 @@
                 "ID": "id6",
                 "inputs": [],
                 "position": {
-                    "x": 754.3309326171875,
-                    "y": 294.3309631347656
+                    "x": 754.33093261719,
+                    "y": 294.33096313477
                 },
                 "attemptCount": {
                     "description": 0,
@@ -193,11 +195,30 @@
                 "equation": "",
                 "type": "parameter",
                 "parentNode": false,
-                "initial": 6e+24,
+                "initial": 6.0e+24,
                 "units": "kg",
                 "genus": "extra"
             }
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [],
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "accelerating_transfer",
+                "name": "Accelerating",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id2, id3, id4",
+                "difficulty": {
+                    "isolation": 0,
+                    "cues": 1,
+                    "phrases": 0
+                }
+            }
+        ]
     }
 }

@@ -29,9 +29,12 @@
  **/
 
 define([
-	"dojo/_base/declare", "dojo/request/xhr", "dojo/_base/json",
-	"dojo/_base/lang"
-], function(declare, xhr, json, lang){
+	"dojo/_base/declare",
+	"dojo/request/xhr",
+	"dojo/_base/json",
+	"dojo/_base/lang",
+	"./message-box"
+], function(declare, xhr, json, lang, messageBox){
 	// Summary:
 	//			Loads and saves sessions and sets up logging
 	// Description:
@@ -56,6 +59,25 @@ define([
 		return Number(hash).toString(16);
 	};
 
+	var sayswho = (function(){
+	    var ua= navigator.userAgent, tem, 
+	    M= ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+	    if(/trident/i.test(M[1])){
+	        tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
+	        return 'IE '+(tem[1] || '');
+	    }
+	    if(M[1]=== 'Chrome'){
+	        tem= ua.match(/\bOPR\/(\d+)/)
+	        if(tem!= null) return 'Opera '+tem[1];
+	    }
+	    M= M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+	    if((tem= ua.match(/version\/(\d+)/i))!= null) M.splice(1, 1, tem[1]);
+	    return {
+			name: M[0],
+			version: M[1]
+		};
+	});
+
 	return declare(null, {
 
 		// The constructor creates a session and sets the sessionId
@@ -77,7 +99,8 @@ define([
 
 			// Create a session
 			this.log("start-session", params);
-
+			this.browser = sayswho();
+			console.log("browser = ", this.browser.name, " version = ", this.browser.version);
 		},
 
 		loadProblem: function(/*object*/ params){
@@ -87,15 +110,26 @@ define([
 			return xhr.get(this.path + "task_fetcher.php", {
 				query: params,
 				handleAs: "json"
-			}).then(function(model_object){	 // this makes loadProblem blocking?
+			}).then(lang.hitch(this, function(model_object){	 // this makes loadProblem blocking?
 				console.log("loadFromDB worked", model_object);
 				return model_object;
-			}, function(err){
+			}), lang.hitch(this, function(err){
 				this.clientLog("error", {
 					message: "load from DB error : "+err,
 					functionTag: 'loadProblem'
 				});
-			});
+				var message = "";
+				if(params.m == "AUTHOR"){
+					if(typeof params.g === "undefined"){
+						message = "Missing published JSON.";
+					}
+				}
+				else {
+					message = "Problem Not found."
+				}
+				var errorMessage = new messageBox("errorMessageBox", "error", message);
+				errorMessage.show();
+			}));
 		},
 		isProblemNameConflict: function(problemName, groupName) {
 			return xhr.post(this.path + "problems_conflict_checker.php", {
@@ -105,16 +139,15 @@ define([
 					problem: problemName
 				},
 				handleAs: "json"
-			}).then(function(reply){  // this makes blocking?
+			}).then(lang.hitch(this, function(reply){  // this makes blocking?
 				console.log("Got the conflict status ", reply);
 				return reply.isConflict;
-			}, function(err){
-				alert('error');
+			}), lang.hitch(this, function(err){
 				this.clientLog("error", {
 					message: "get problem conflict status : "+err,
 					functionTag: 'problemConflictChecker'
 				});
-			});
+			}));
 		},
 		saveAsProblem : function(model,problemName,groupName){
 			//update params to be passed
@@ -126,8 +159,9 @@ define([
 			var sessionId = FNV1aHash(this.params.u+this.params.s)+'_'+new Date().getTime();
 			console.log("renaming problem session id :"+sessionId);
 			this.log("rename-problem",newParams,sessionId);
+			model.task.taskName=newParams.p;//Update the taskName
 			this.saveProblem(model,sessionId); //reuse saveProblem with new sessionId of renamed problem
-			var url = document.URL.replace("p="+this.params.p,"p="+newParams.p);
+			var url = document.URL.replace("p="+this.params.p.replace(" ","%20"),"p="+newParams.p);
 			if (this.params.g === undefined) {
 				url = url + "&g=" + newParams.g;
 			} else {
@@ -137,24 +171,26 @@ define([
 		},
 		saveProblem: function(model,newSessionID){
 			// Summary: saves the string held in this.saveData in the database.
-			var object = {
-				sg: json.toJson(model.task),
-				x: newSessionID?newSessionID:this.sessionId
-			};
-			if("share" in model){
-				// Database Boolean
-				object.share = model.share?1:0;
+			if(this.doLogging){
+				var object = {
+					sg: json.toJson(model.task),
+					x: newSessionID?newSessionID:this.sessionId
+				};
+				if("share" in model){
+					// Database Boolean
+					object.share = model.share?1:0;
+				}
+				xhr.post(this.path + "save_solution.php", {
+					data: object
+				}).then(lang.hitch(this, function(reply){  // this makes saveProblem blocking?
+					console.log("saveProblem worked: ", reply);
+				}), lang.hitch(this, function(err){
+					this.clientLog("error", {
+						message: "save Problem error : "+err,
+						functionTag: 'saveProblem'
+					});
+				}));
 			}
-			xhr.post(this.path + "save_solution.php", {
-				data: object
-			}).then(function(reply){  // this makes saveProblem blocking?
-				console.log("saveProblem worked: ", reply);
-			}, function(err){
-				this.clientLog("error", {
-					message: "save Problem error : "+err,
-					functionTag: 'saveProblem'
-				});
-			});
 		},
 
 		publishProblem: function(model){
@@ -165,15 +201,22 @@ define([
 			return xhr.post(this.path + "publish_solution.php", {
 				data: object,
 				sync: true
-			}).then(function(reply){
+			}).then(lang.hitch(this, function(reply){
 				console.log("problem published: ", reply);
-				return reply;
-			}, function(err){
+				// if success or promise is resolved: return this value to next promise
+				// handling server side error propogation
+				if(reply === "done") return { status : "done"};
+				else if(JSON.parse(reply).error) return { error : JSON.parse(reply).error };
+				else return { error : "Something bad has happened! Please try again later."};
+			}), lang.hitch(this, function(err){
+				// handling connection/ network errors
 				this.clientLog("error", {
 					message: "problem not published error: "+ err,
 					functionTag: "publishProblem"
 				});
-			});
+				// if error occurred or promise is rejected: return this value to next promise
+				return { error : "Connection Error: problem could not be published at the moment"}
+			}));
 		},
 
 		getTime: function(){
@@ -185,7 +228,7 @@ define([
 			// Add time to log message (allowing override).
 			if(this.doLogging){
 				var p = lang.mixin({time: this.getTime()}, params);
-
+				
 				return xhr.post(this.path + "logger.php", {
 					data: {
 						method: method,
@@ -193,12 +236,12 @@ define([
 						x: rsessionId?rsessionId:this.sessionId,
 						id: this.counter++
 					}
-				}).then(function(reply){
+				}).then(lang.hitch(this, function(reply){
 					console.log("---------- logging " + method + ': ', p, " OK, reply: ", reply);
-				}, function(err){
+				}), lang.hitch(this, function(err){
 					console.error("---------- logging " + method + ': ', p, " error: ", err);
 					console.error("This should be sent to apache logs");
-				});
+				}));
 			}
 		},
 

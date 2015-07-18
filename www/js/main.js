@@ -31,6 +31,8 @@ define([
 	"dojo/ready",
 	'dijit/registry',
     "dijit/Tooltip",
+	"dijit/TooltipDialog",
+	"dijit/popup",
 	"./menu",
 	"./load-save",
 	"./model",
@@ -47,12 +49,15 @@ define([
 	"./createSlides",
 	"./lessons-learned",
 	"./schemas-author",
-	"./tincan"
+	"./message-box",
+	"./tincan",
+	"dojo/store/Memory",
+	"dojo/_base/event"
 ], function(
-		array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry, toolTip,
+		array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry, toolTip, tooltipDialog, popup,
 		menu, loadSave, model,
 		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, equation, 
-		description, State, typechecker, slides, lessonsLearned, schemaAuthor, tincan
+		description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan, memory, event
 ){
 	// Summary: 
 	//			Menu controller
@@ -62,7 +67,9 @@ define([
 	//			menu, buttons, controller
 	
 	console.log("load main.js");
-
+    //remove the loading division, now that the problem is being loaded
+    var loading = document.getElementById('loadingOverlay');
+    loading.style.display = "none";
 	// Get session parameters
 	var query = {};
 	if(window.location.search){
@@ -71,18 +78,115 @@ define([
 		console.warn("Should have method for logging this to Apache log files.");
 		console.warn("Dragoon log files won't work since we can't set up a session.");
 		console.error("Function called without arguments");
-	}
+        // show error message and exit
+        var errorMessage = new messageBox("errorMessageBox", "error", "Missing information, please recheck the query");
+        errorMessage.show();
+        throw Error("please retry, insufficient information");
+    }
 	
 	// Start up new session and get model object from server
-	var session = new loadSave(query);
+	try {
+        var session = new loadSave(query);
+    }
+    catch(error){
+        console.log("error appeared");
+        var errorMessage = new messageBox("errorMessageBox", "error", error.message);
+        errorMessage.show();
+        throw Error("problem in creating sessions");
+    }
     console.log("session is",session);
-	logging.setSession(session);  // Give logger message destination
+    logging.setSession(session);  // Give logger message destination
 	session.loadProblem(query).then(function(solutionGraph){
-		
+		//removing the overlay as the actual computation does not take much time and it causes errors to stay hidden behind the overlay which continues infinitely.
+		var loading = document.getElementById('loadingOverlay');
+		loading.style.display = "none";
+
+        //display warning message if not using the supported browser and version
+        var checkBrowser = session.browser.name;
+        var checkVersion = session.browser.version;
+        if((checkBrowser ==="Chrome" && checkVersion<41) || (checkBrowser==="Safari" && checkVersion<8)||(checkBrowser==="msie" && checkVersion<11)||(checkBrowser==="Firefox")||(checkBrowser==="Opera")){
+            var errorMessage = new messageBox("errorMessageBox", "warn","You are using "+ session.browser.name+" version "+session.browser.version + ". Dragoon is known to work well in these (or higher) browser versions: Google Chrome v41 or later Safari v8 or later Internet Explorer v11 or later");
+            // adding close callback to update the state for browser message
+			var compatibiltyState = new State(query.u, query.s, "action");
+			errorMessage.addCallback(function(){				
+				compatibiltyState.put("browserCompatibility", "ack_" + getVersion());
+			});
+			compatibiltyState.get("browserCompatibility").then(function(res) {
+				
+				if(!(res && res == "ack_" + getVersion())) errorMessage.show(); 
+			});
+			
+        }
+
 		var givenModel = new model(query.m, query.p);
 		logging.session.log('open-problem', {problem : query.p});
-		if(solutionGraph){
-			givenModel.loadModel(solutionGraph);
+        console.log("solution graph is",solutionGraph);
+		if(solutionGraph) {
+
+            try {
+                givenModel.loadModel(solutionGraph);
+            } catch (error) {
+                if (query.m == "AUTHOR") {
+                    var errorMessage = new messageBox("errorMessageBox", "error", error.message);
+                    errorMessage.show();
+                } else {
+                    var errorMessage = new messageBox("errorMessageBox", "error", "This problem could not be loaded. Please contact the problem's author.");
+                    errorMessage.show();
+                    throw Error("Model could not be loaded.");
+                }
+            }
+            // This version of code addresses loading errors in cases where problem is empty, incomplete or has no root node in coached mode
+            if (query.m !== "AUTHOR") {
+                //check if the problem is empty
+                try {
+                    console.log("checking for emptiness");
+                    var count = 0;
+                    array.forEach(givenModel.given.getNodes(), function (node) {
+                        //for each node increment the counter
+                        count++;
+                    });
+                    console.log("count of nodes is", count);
+                    if (count == 0) {
+                        //if count is zero we throw a error
+                        throw new Error("Problem is Empty");
+                    }
+                    //check for completeness of all nodes
+                    console.log("inside completeness verifying function");
+                    array.forEach(givenModel.given.getNodes(), function (node) {
+                        console.log("node is", node, givenModel.given.isComplete(node.ID));
+                        if (!givenModel.given.isComplete(node.ID)) {
+                            throw new Error("Problem is Incomplete");
+                        }
+                    });
+                    if (query.m === "COACHED") {
+                        //checks for root node if the mode is coached
+                        console.log("inside coached mode root verifying function");
+                        var hasParentFlag = false;
+                        array.forEach(givenModel.given.getNodes(), function (node) {
+                            console.log("node is", node);
+                            if (givenModel.given.getParent(node.ID)) {
+                                hasParentFlag = true;
+                            }
+                        });
+                        if (!hasParentFlag) {
+                        // throw an error if root node is absent
+                        throw new Error("Root Node Missing");
+                        }
+                    }
+                }catch (error) {
+                    var errorMessage = new messageBox("errorMessageBox", "error", error.message);
+                    errorMessage.show();
+                }
+            }
+        }else {
+			if(query.g && query.m === "AUTHOR"){
+				var messageHtml = "You have successfully created a new problem named <strong>"+ query.p +"</strong>.<br/> <br/> If you expected this problem to exist already, please double check the problem name and folder and try again.";
+				var infoMessage = new messageBox("errorMessageBox", "info", messageHtml);
+				infoMessage.show();
+			} else if(query.g){
+				var errorMessage = new messageBox("errorMessageBox", "error", "Problem not found.");
+				errorMessage.show();
+			}
 		}
 		/*
 		 start up controller
@@ -118,6 +222,17 @@ define([
 		controllerObject.setState(state);
 
 		ready(function(){
+			var taskString = givenModel.getTaskName();
+			document.title ="Dragoon" + ((taskString) ? " - " + taskString : "");
+			
+			//update the menu bar//
+			if(query.m == "AUTHOR"){
+				style.set(registry.byId('schemaButton').domNode, "display", "inline-block");
+				style.set(registry.byId('descButton').domNode, "display", "inline-block");
+				style.set(registry.byId('saveButton').domNode, "display", "inline-block");
+				style.set(registry.byId('mergeButton').domNode, "display", "inline-block");
+				style.set(registry.byId('previewButton').domNode, "display", "inline-block");
+			}
 			
 			//In TEST and EDITOR mode remove background color and border colors		 
 			if(controllerObject._mode == "TEST" || controllerObject._mode == "EDITOR"){
@@ -162,8 +277,8 @@ define([
 		    }
 
 			/* add "Create Node" button to menu */
-			menu.add("createNodeButton", function(){
-
+			menu.add("createNodeButton", function(e){
+				event.stop(e);
 				if(controllerObject.checkDonenessMessage && 
 				   controllerObject.checkDonenessMessage()){
 					return;
@@ -190,6 +305,17 @@ define([
             makeTooltip('questionMarkURL', "If you wish to use an image from your computer, <br>" +
                 "you must first upload it to a website and then copy <br>" +
                 "the URL of the image into this box.");
+            makeTooltip('questionMarkLessons', "The 'Lessons Learned' message will display once the student has successfully replicated <br>" +
+                                               "and graphed the author's model, providing an opportunity for retrospection.");
+            makeTooltip('integrationMethod', "Euler's method - Best for functions that occur every tick of the time frame <br>" +
+                                             "Midpoint - Best for continuous functions <br>");
+			makeTooltip('descriptionQuestionMark', " The quantity computed by the node ");
+			makeTooltip('typeQuestionMark', "<strong>Parameters</strong> represent fixed quantities that never change.<br>"+
+				"<strong>Accumulators</strong> represent a quantity that accumulates the values of its inputs over time.<br>"+
+			"<strong>Functions</strong> represent a value that is directly related to the values of its inputs, without regard to its <br>own previous value.");
+			makeTooltip('inputsQuestionMark', "Select a node name to quickly insert it into the expression.");
+			makeTooltip('expressionBoxQuestionMark', "Determines the value of the quantity. Additional math functions are available in the help menu");
+			makeTooltip('authorDescriptionQuestionMark', "The quantity computed by the node");
 			/*
 			 Connect node editor to "click with no move" events.
 			 */
@@ -226,7 +352,15 @@ define([
 						node.style.top = topLimit+"px";  // BUG: This needs to correct for scroll
 					}
 				}
-				givenModel.active.setPosition(mover.node.id, {"x": g.x, "y": g.y});
+				givenModel.active.setPosition(mover.node.id, {"x": g.x, "y": g.y+scrollTop});
+
+				//Update position for student node
+				if(controllerObject._mode == "AUTHOR"){
+					var studentNodeID = givenModel.student.getNodeIDFor(mover.node.id);
+					if(typeof studentNodeID !== "undefined" && studentNodeID != null ){
+						givenModel.student.setPosition(studentNodeID, {"x": g.x, "y": g.y+scrollTop});
+					}
+				}
 				// It would be more efficient if we only saved the changed node.
 				session.saveProblem(givenModel.model);	 // Autosave to server
 			}, true);
@@ -240,6 +374,36 @@ define([
 						 lang.hitch(drawModel, drawModel.setConnections), true);
 			aspect.after(controllerObject, 'setConnection',
                                                  lang.hitch(drawModel, drawModel.setConnection), true);
+
+			aspect.after(drawModel, 'onPrettifyComplete', function(){
+				var prettifyConfirmDialog = new tooltipDialog({
+					style: "width: 300px;",
+					content: '<p>Your model is prettified. Keep Changes?</p>'+
+					' <button type="button" data-dojo-type="dijit/form/Button" id="savePrettify">Yes</button>'+
+					' <button type="button" data-dojo-type="dijit/form/Button" id="undoPrettify">No</button>',
+					onShow: function(){
+						on(dojo.byId('undoPrettify'), 'click', function(e){
+							event.stop(e);
+							popup.close(prettifyConfirmDialog);
+							prettifyConfirmDialog.destroyRecursive();
+							drawModel.undoPrettify();
+							session.saveProblem(givenModel.model);
+							registry.byId("prettifyButton").set("disabled", false);
+						});
+						on(dojo.byId('savePrettify'), 'click', function(e){
+							event.stop(e);
+							popup.close(prettifyConfirmDialog);
+							session.saveProblem(givenModel.model);
+							prettifyConfirmDialog.destroyRecursive();
+							registry.byId("prettifyButton").set("disabled", false);
+						});
+					}
+				});
+				popup.open({
+					popup: prettifyConfirmDialog,
+					around: dom.byId('prettifyButton')
+				});
+			});
 			 /*
 			 Autosave on close window
 			 It would be more efficient if we only saved the changed node.
@@ -250,7 +414,7 @@ define([
 			 */
 			aspect.after(registry.byId('nodeeditor'), "hide", function(){
 				console.log("Calling session.saveProblem");
-				if(controllerObject._mode == "AUTHOR")
+   				if(controllerObject._mode == "AUTHOR")
 				{	
 					array.forEach(givenModel.model.task.givenModelNodes, function(node){
 						if(node.ID === controllerObject.currentID)
@@ -263,24 +427,28 @@ define([
 							}
 						}
 					}, this);
-					var isComplete = givenModel.given.isComplete(controllerObject.currentID, true)?'solid':'dashed';
-					var borderColor = "3px "+isComplete+" gray";
-					style.set(controllerObject.currentID, 'border', borderColor);
-					style.set(controllerObject.currentID, 'backgroundColor', "white");
+					if(typeof controllerObject._model.active.getType(controllerObject.currentID) !== "undefined"){
+						var isComplete = givenModel.given.isComplete(controllerObject.currentID)?'solid':'dashed';
+						var borderColor = "3px "+isComplete+" gray";
+						style.set(controllerObject.currentID, 'border', borderColor);
+						style.set(controllerObject.currentID, 'backgroundColor', "white");
+					}
 				}
 				session.saveProblem(givenModel.model);
 				//This section errors out in author mode
-                var descDirective=controllerObject._model.student.getStatusDirectives(controllerObject.currentID);
-                var directive = null;
-                for(i=0;i<descDirective.length;i++){
-                    if(descDirective[i].id=="description")
-                            directive=descDirective[i];
-                        
-                }
-                if(controllerObject._mode !== "TEST" && controllerObject._mode !== "EDITOR"){
-                	if(directive&&(directive.value=="incorrect" || directive.value=="premature"))
-                            drawModel.deleteNode(controllerObject.currentID);
-                }
+				if(controllerObject._mode !== "AUTHOR"){
+	                var descDirective=controllerObject._model.student.getStatusDirectives(controllerObject.currentID);
+	                var directive = null;
+	                for(i=0;i<descDirective.length;i++){
+	                    if(descDirective[i].id=="description")
+	                            directive=descDirective[i];
+	                        
+	                }
+	                if(controllerObject._mode !== "TEST" && controllerObject._mode !== "EDITOR"){
+	                	if(directive&&(directive.value=="incorrect" || directive.value=="premature"))
+	                            drawModel.deleteNode(controllerObject.currentID);
+	                }
+           		}
     		});
 			
 			// Wire up close button...
@@ -305,7 +473,8 @@ define([
 				var forumBut=registry.byId("forumButton");
 				forumBut.set("disabled", false);
                 //For redirecting to the forum from forum button click on header, only incase enabled
-                menu.add("forumButton",function(){
+                menu.add("forumButton",function(e){
+					event.stop(e);
                     //  Some portion of this function body should be moved to forum.js, Bug #2424
                     console.log("clicked on main forum button");
                     controllerObject.logging.log('ui-action', {
@@ -320,14 +489,14 @@ define([
                     //
                     // The parameters should be escaped, Bug #2423
                     // Should add logging, Bug #2424
-                    window.open(query.f+"?&n="+prob_name+"&s="+query.s+"&fid="+query.fid+"&sid="+query.sid,"newwindow",
-                        "height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
-                    );
+                    window.open(query.f+"?&n="+prob_name+"&s="+query.s+"&fid="+query.fid+"&sid="+query.sid, "_blank" );
                 });
 				//setter function used for setting forum parameters
 				//inside controller
 				controllerObject.setForum(query);
 			}
+			var menuButtons=[];//This array is used later to called the setSelected function for all the buttons in the menu abr
+		        menuButtons.push("createNodeButton","graphButton","tableButton","forumButton","schemaButton","descButton","saveButton","mergeButton","previewButton","slidesButton","lessonsLearnedButton","doneButton", "prettifyButton");
 			// Also used in image loading below.
 			var descObj = new description(givenModel);
 			if(query.m == "AUTHOR"){
@@ -343,7 +512,8 @@ define([
 				db.set("disabled", false);
 
 				// Description button wiring
-				menu.add("descButton", function(){
+				menu.add("descButton", function(e){
+					event.stop(e);
 					style.set(dom.byId("publishResponse"), "display", "none");
 					//Display publish problem button on devel and localhost
 					if(window.location.hostname === "localhost" ||
@@ -364,20 +534,21 @@ define([
 					var w = confirm("Are you sure you want to publish the problem");
 					var response = "There was some error while publishing the problem.";
 					if(w == true){
-						session.publishProblem(givenModel.model).then(function(reply){
-							response = "The problem has been successfully published.";
-						});
-					
+						var request_promise = session.publishProblem(givenModel.model);
 						var responseWidget = dom.byId("publishResponse");
-						responseWidget.innerHTML = response;
-						if(response.indexOf("error") >=0){
-							style.set(responseWidget, "color", "red");
-						} else {
-							style.set(responseWidget, "color", "green");
-						}
-						style.set(responseWidget, "display", "block");
+						request_promise.then(function(response_status){						
+							if(response_status.status && response_status.status == "done"){
+								responseWidget.innerHTML = "Your problem has been successfully published";
+								style.set(responseWidget, "color", "green");
+							} else {
+								responseWidget.innerHTML = response_status.error;
+								style.set(responseWidget, "color", "red");
+							}
+							style.set(responseWidget, "display", "block");
+						});
+			
 					}
-				});
+				});				
 
 				on(registry.byId("previewButton"),"click",function(){
 					var user = query.u;
@@ -389,58 +560,81 @@ define([
 				});
 
 				var schema = new schemaAuthor(givenModel, session);
-				menu.add("schemaButton", function(){
+				menu.add("schemaButton", function(e){
+					event.stop(e);
 					schema.showSchemaWindow();
 				});
 
 
-                // Rename button wiring
-                menu.add("saveButton", function(){
+                // Save As button wiring
+                menu.add("saveButton", function(e){
+					event.stop(e);
                     registry.byId("authorSaveDialog").show();
                 });
+                // Set the default save as folder parameters
+                var saveGroupCombo = registry.byId("authorSaveGroup");
+                var saveGroupArr=[{name: "Private("+query.u+")", id: "Private"},
+                                  {name: "public", id: "Public"}];
+                var saveGroupMem = new memory({data: saveGroupArr});
+		        saveGroupCombo.set("store", saveGroupMem);
+		        saveGroupCombo.set("value","Private("+query.u+")")//default to private
 
-                //authorMergeDialog
-                menu.add("mergeButton", function(){
+
+                // Merge button wiring
+                menu.add("mergeButton", function(e){
+					event.stop(e);
                     registry.byId("authorMergeDialog").show();
+                    var combo = registry.byId("authorMergeGroup");
+                    var arr=[{name: "Private("+query.u+")", id: "Private"},
+					          {name: "Public", id: "Public"},
+					          {name:"Official Problems",id:"Official Problems"}
+					          ];
+					var m = new memory({data: arr});
+				    combo.set("store", m);
+					combo.set("value","Private("+query.u+")")//setting the default
              	});
 
 				on(registry.byId("mergeDialogButton"),"click",function(){
-					 var group = registry.byId("authorMergeGroup").value;
-					 var section = registry.byId("authorMergeSection").value;
-					 var problem = registry.byId("authorMergeProblem").value;
-
-					 if(!problem || !section)
-					 	{
-					 		alert("Problem/Section can't be empty");
-					 		return;
-					 	}
-
-					 var query = {g:group,m:"AUTHOR",s:section,p:problem};
-                  	 session.loadProblem(query).then(function(solutionGraph){
-							console.log("Merge problem is loaded "+solutionGraph);
-							if(solutionGraph){
-								//var nodes = solutionGraph.task.givenModelNodes;
-								var ids = givenModel.active.mergeNodes(solutionGraph);
-								//var snodes = solutionGraph.task.studentModelNodes;
-								//var sids = givenModel.active.mergeNodes(snodes,true);
-								
-								session.saveProblem(givenModel.model);
-								//add merged nodes
-								array.forEach(ids,function(id){	
-									var node = 	givenModel.active.getNode(id);
-									drawModel.addNode(node);	
-								},this);	
-								//set connections for merged nodes
-								array.forEach(ids,function(id){
-									var node = 	givenModel.active.getNode(id);
-									drawModel.setConnections(node.inputs,dojo.byId(id));
-								},this);
-								registry.byId("authorMergeDialog").hide();
-							}else{
-								console.log("Problem Not found");
-								alert("Problem Not found");
-							}
-               		 });
+					var group = registry.byId("authorMergeGroup").value;
+					var section = registry.byId("authorMergeSection").value;
+					var problem = registry.byId("authorMergeProblem").value;
+					if(!problem){
+						alert("Problem field can't be empty");
+						return;
+					}
+					if (group.split("(")[0]+"("=="Private("){
+						group=group.split(")")[0].substr(8);//Private(username)=>username
+					} else if (group === "Official Problems"){
+						group=null;
+						section=null;
+					}
+					var query = {g:group,m:"AUTHOR",s:section,p:problem};
+                  	session.loadProblem(query).then(function(solutionGraph){
+						console.log("Merge problem is loaded "+solutionGraph);
+						if(solutionGraph){
+							//var nodes = solutionGraph.task.givenModelNodes;
+							var ids = givenModel.active.mergeNodes(solutionGraph);
+							//var snodes = solutionGraph.task.studentModelNodes;
+							//var sids = givenModel.active.mergeNodes(snodes,true);
+							givenModel.loadModel(givenModel.model);	
+							
+							//add merged nodes
+							array.forEach(ids,function(id){	
+								var node = 	givenModel.active.getNode(id);
+								drawModel.addNode(node);	
+							},this);	
+							//set connections for merged nodes
+							array.forEach(ids,function(id){
+								var node = 	givenModel.active.getNode(id);
+								drawModel.setConnections(node.inputs,dojo.byId(id));
+							},this);
+							session.saveProblem(givenModel.model); //moved the saving part to the end of the function call so that if anything breaks the broken model is not saved.
+							registry.byId("authorMergeDialog").hide();
+						}else{
+							console.log("Problem Not found");
+							alert("Problem Not found, please check the problem name you have entered.");
+						}
+               		});
 				});
 
 				//Author Save Dialog
@@ -449,11 +643,31 @@ define([
                     // Save problem
 					var problemName = registry.byId("authorSaveProblem").value;
 					var groupName = registry.byId("authorSaveGroup").value;
-					if(problemName&&problemName=='' || groupName&&groupName==''){
-						alert('Missing input ');
-						return; 
+					var checkProblemName = new RegExp('^[A-Za-z0-9\-]+$');
+										
+					if(typeof problemName !== 'undefined' && problemName==''){
+						alert('Missing Problem Name');
+						return;
+					}else if(typeof groupName!=='undefined' && groupName==''){	
+						alert('Missing Group Name');
+						return;
+					}else if(problemName && problemName.length > 0 && problemName.length<=30 && checkProblemName.test(problemName)){
+						var checkHyphen = new RegExp('^[\-]+$');
+						if(!checkHyphen.test(problemName)){
+							if (groupName.split("(")[0]+"("=="Private("){
+					 	    	groupName=groupName.split(")")[0].substr(8);//Privte(username)=>username
+					        }
+							session.saveAsProblem(givenModel.model,problemName,groupName); 
+					    }
+					    else{
+							alert("Problem names must contain atleast one alphanumeric character.");
+							return;
+						}
+					}else{
+						alert("Problem names must be between 1 and 30 characters, and may only include alphanumeric characters and the \"-\" symbol");
+						return;
 					}
-					session.saveAsProblem(givenModel.model,problemName,groupName);                    
+
                 });
                 
                 //Author Save Dialog - check for name conflict on losing focus
@@ -491,7 +705,8 @@ define([
 					var sb = registry.byId("slidesButton");
 					sb.set("disabled", false);
 					var createSlides = new slides(givenModel);
-					menu.add("slidesButton", function(){
+					menu.add("slidesButton", function(e){
+						event.stop(e);
 						createSlides.show();
 						createSlides.log(controllerObject.logging);
 					});
@@ -517,7 +732,8 @@ define([
 			 */
 			
 			// show graph when button clicked
-			menu.add("graphButton", function(){
+			menu.add("graphButton", function(e){
+				event.stop(e);
 				console.debug("button clicked");
 				// instantiate graph object
 				var buttonClicked = "graph";
@@ -535,7 +751,8 @@ define([
 
 			
 			// show table when button clicked
-			menu.add("tableButton", function(){
+			menu.add("tableButton", function(e){
+				event.stop(e);
 				console.debug("table button clicked");
 				var buttonClicked = "table";
 				var table = new Graph(givenModel, query.m, session, buttonClicked);
@@ -558,17 +775,32 @@ define([
                 //session.saveProblem(givenModel.model);
             });
 
-			menu.add("doneButton", function(){
+			menu.add("doneButton", function(e){
+				event.stop(e);
 				console.debug("done button is clicked");
-			var problemComplete = givenModel.matchesGivenSolution();
 				
-				var promise = controllerObject.logging.log('close-problem', {
-				type: "menu-choice", 
-					name: "done-button", 
-					problemComplete: problemComplete
-				});
+				var problemComplete = givenModel.matchesGivenSolution();
 				
-				var searchPattern = new RegExp('^pal3', 'i'); 
+				
+				// if in preview mode , Logging is not required:
+				if(controllerObject.logging.doLogging)
+					controllerObject.logging.log('close-problem', {
+					type: "menu-choice", 
+						name: "done-button", 
+						problemComplete: problemComplete
+					}).then(function(){
+						 if(window.history.length == 1)
+	                        window.close();
+	                     else
+	                     	window.history.back();
+					});
+				else {
+					if(window.history.length == 1)
+	                        window.close();
+	                else
+	                     	window.history.back();
+				}
+				var searchPattern = new RegExp('^pal3', 'i');
 				if(query.m != "AUTHOR" && searchPattern.test(query.s)){ // check if session name starts with pal
 					var tc = new tincan(givenModel, controllerObject._assessment,session, palTopicIndex);
 					//Connect to learning record store
@@ -576,13 +808,6 @@ define([
 					//Send Statements
 					tc.sendStatements();
 				}
-
-				promise.then(function(){
-					 if(window.history.length == 1)
-                                                window.close();
-                                        else
-                                                window.history.back();
-				});
 			});
 
 			//Disable the lessonsLearnedButton
@@ -590,13 +815,24 @@ define([
 			//lessonsLearnedButton.set("disabled", true);
 			//Bind lessonsLearnedButton to the click event	
 			if(query.m == "STUDENT" || query.m == "COACHED"){
-				menu.add("lessonsLearnedButton", function(){
+				menu.add("lessonsLearnedButton", function(e){
+					// preventing default execution of click handler
+					event.stop(e);
+					console.log("inside handler");
 					if(givenModel.isLessonLearnedShown == true){
 						contentMsg = givenModel.getTaskLessonsLearned();
 						lessonsLearned.displayLessonsLearned(contentMsg);
 					}		
 				});
 			}
+
+			menu.add("prettifyButton", function(e){
+				event.stop(e);
+				registry.byId("prettifyButton").set("disabled", true);
+				console.log("Pretify---------------");
+				drawModel.prettify();
+			});
+
             /*
              Add link to intro video
              */
@@ -648,6 +884,26 @@ define([
 						   );
 			});
 
+			/*This is a work-around for getting a button to work inside a MenuBar.
+		 	Otherwise, there is a superfluous error message.
+		 	*/
+			array.forEach(menuButtons,function(menuButton){
+				registry.byId(menuButton)._setSelected = function(arg){
+				console.log(menuButton+" _setSelected called with ", arg);				
+			    }			    
+			});
+
+			// If we are loading a published problem in author mode, prompt user to perform a save-as immediately
+            if(!query.g && query.m  === "AUTHOR"){
+				var message='<strong>You must choose a name and folder for the new copy of this problem.</strong>';
+				var dialog=registry.byId("authorSaveDialog");
+				registry.byId("authorSaveProblem").set("value",query.p);
+				dom.byId("saveMessage").innerHTML=message;
+				dialog.show();
+			}
+
 		});
+
 	});
+
 });

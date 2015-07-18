@@ -35,7 +35,7 @@ define([
 
 		getFileData: function(/* string */ fileName, /* path */ path){
 			path = path || this._path;
-			return xhr.post(path + fileName, {
+			return xhr.get(path + fileName, {
 				handleAs: "text",
 				sync: true
 			}).then(function(results){
@@ -90,20 +90,22 @@ define([
 		updateSchemaApplication: function(/* string */ schema, /* object */ competence){
 			//sets the schema application score for a student
 			//need PHP file for this to add to the database.
-			var obj = {
-				schema_id: schema,
-				x: this._session.sessionId,
-				competence: json.toJson(competence),
-				count: this.count++
-			};
+			if(this._session.doLogging){
+				var obj = {
+					schema_id: schema,
+					x: this._session.sessionId,
+					competence: json.toJson(competence),
+					count: this.count++
+				};
 			
-			xhr.post(this._path + "save_schema_application.php", {
-				data: obj
-			}).then(function(reply){
-				console.log("schema values were updated successfully");
-			}, function(err){
-				console.error("schema value were not saved", err);
-			});
+				xhr.post(this._path + "save_schema_application.php", {
+					data: obj
+				}).then(function(reply){
+					console.log("schema values were updated successfully");
+				}, function(err){
+					console.error("schema value were not saved", err);
+				});
+			}
 		},
 
 		getSchemaApplication: function(/* string */ schemaID){
@@ -129,21 +131,23 @@ define([
 		},
 
 		logSchema: function(/* string */ schemaID, /* object */ diff){
-			var obj = {
-				x: this._session.sessionId,
-				schema_id: schemaID,
-				difficulty: json.toJson(diff)
-			};
+			if(this._session.doLogging){
+				var obj = {
+					x: this._session.sessionId,
+					schema_id: schemaID,
+					difficulty: json.toJson(diff)
+				};
 
-			return xhr.post(this._path + "save_schema_session.php", {
-				data: obj
-			}).then(function(reply){
-				console.log("schema session saved");
-				return reply
-			}, function(err){
-				console.error("schema session initiation failed : "+err);
-				throw err;
-			});
+				return xhr.post(this._path + "save_schema_session.php", {
+					data: obj
+				}).then(function(reply){
+					console.log("schema session saved");
+					return reply
+				}, function(err){
+					console.error("schema session initiation failed : "+err);
+					throw err;
+				});
+			}
 		}
 	});
 });

@@ -11,8 +11,9 @@ var client = require('webdriverio').remote({
 });
 // import chai assertion library
 var assert = require('chai').assert;
-// import dragoon test library module
+// import dragoon test library modules
 var dtest = require('../dtestlib.js');
+var atest = require('../assertTestLib.js');
 // import sync library
 var sync = require('synchronize');
 // import wrapper for asynchronous functions
@@ -27,6 +28,16 @@ describe("Test author mode", function() {
                 ["group","autotest"]]);
     }));
 
+    describe("Testing check on empty problem", function(){
+        it("Should detect that the problem is empty", async(function(){
+            dtest.menuOpenAuthorOptions(client);
+            dtest.pressCheckProblemButton(client);
+            atest.popupContainsText("The problem is empty.",dtest,client);
+            dtest.popupWindowPressCancel(client);
+            dtest.pressProblemAndTimesDone(client);
+        }));
+    });
+    
     describe("Creating nodes", function(){
         afterEach(async(function(){
             dtest.nodeEditorDone(client);
@@ -55,15 +66,15 @@ describe("Test author mode", function() {
             dtest.setNodeUnits(client, "rabbits/year");
             dtest.setNodeType(client, "Function");
             dtest.setNodeExpression(client, "growth rate*population");
+            dtest.clickRootNode(client);
             dtest.checkExpression(client);
             dtest.checkExpression(client);
         }));
 
-        it("Should fill in parameter node - growth rate", async(function(){
+        it("Should fill in parameter node - growth rate (incomplete)", async(function(){
             dtest.openEditorForNode(client, "growth rate");
             dtest.waitTime(100);         
             dtest.setNodeDescription(client, "The number of additional rabbits per year per rabbit");
-            dtest.setNodeInitialValue(client, 0.3);
             dtest.setKindOfQuantity(client, "in model & required");
             dtest.setNodeType(client, "Parameter");
             dtest.setNodeUnits(client, "1/year");
@@ -72,6 +83,40 @@ describe("Test author mode", function() {
     });
 
     describe("Checking Nodes:", function(){
+        it("Should detect that the nodes are incomplete", async(function(){
+            dtest.menuOpenAuthorOptions(client);
+            dtest.pressCheckProblemButton(client);
+            atest.popupContainsText("The problem has one or more incomplete nodes.",dtest,client);
+            dtest.popupWindowPressCancel(client);
+            dtest.pressProblemAndTimesDone(client);
+        }));
+
+        it("Should fill in parameter and uncheck root node", async(function(){
+            dtest.openEditorForNode(client, "growth rate");
+            dtest.waitTime(100);  
+            dtest.setNodeInitialValue(client, 0.3);
+            dtest.nodeEditorDone(client);
+            dtest.openEditorForNode(client, "net growth");
+            dtest.waitTime(100);  
+            dtest.clickRootNode(client);
+            dtest.nodeEditorDone(client);
+        }));
+
+        it("Should detect that the problem has no root node", async(function(){
+            dtest.menuOpenAuthorOptions(client);
+            dtest.pressCheckProblemButton(client);
+            atest.popupContainsText("Please mark at least one accumulator or function as \'Root\'.",dtest,client);
+            dtest.popupWindowPressCancel(client);
+            dtest.pressProblemAndTimesDone(client);
+        }));
+
+        it("Should turn the root node on again", async(function(){
+            dtest.openEditorForNode(client, "net growth");
+            dtest.waitTime(100);  
+            dtest.clickRootNode(client);
+            dtest.nodeEditorDone(client);
+        }));
+
         it("Should have correct Accumulator values", async(function(){
             dtest.openEditorForNode(client, "population");
 
@@ -149,6 +194,16 @@ describe("Test author mode", function() {
                 "Initial value was " + initialValue + " instead of \"" + expectedInitialValue + "\"");
             assert(nodeUnits === expectedNodeUnits,
                 "Units were " + nodeUnits + " instead of \"" + expectedNodeUnits + "\"");
+        }));
+        
+        
+
+        it("Should detect that the problem has no errors", async(function(){
+            dtest.menuOpenAuthorOptions(client);
+            dtest.pressCheckProblemButton(client);
+            atest.popupContainsText("No errors found.",dtest,client);
+            dtest.popupWindowPressCancel(client);
+            dtest.pressProblemAndTimesDone(client);
         }));
     });
 

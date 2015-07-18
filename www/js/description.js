@@ -22,9 +22,9 @@
 
 define([
 	"dojo/aspect", "dojo/_base/array", "dojo/_base/declare", "dojo/_base/lang",
-	"dijit/registry", "dojo/dom", "dojo/ready",
+	"dijit/registry", "dojo/dom", "dojo/ready","dojo/dom-style",
 	"./model", "./wraptext", "./typechecker"
-], function(aspect, array, declare, lang, registry, dom, ready, model, wrapText, typechecker){
+], function(aspect, array, declare, lang, registry, dom, ready, domStyle, model, wrapText, typechecker){
 
 	// Summary: 
 	//			MVC for the description box in author mode
@@ -46,12 +46,15 @@ define([
 			dom.byId("authorSetTimeEnd").value = this.timeObj.end;
 			this.lastStopTime = {value: this.timeObj.end};
 
-			dom.byId("authorSetTimeStep").value = this.timeObj.step;
+			//dom.byId("authorSetTimeStep").value = this.timeObj.step;
 			this.lastStepTime = {value: this.timeObj.step};
 
 			dom.byId("authorSetTimeStepUnits").value = this.timeObj.units || "seconds";
 			dom.byId("authorSetIntegrationMethod").value = this.timeObj.integrationMethod || "Eulers Method";
 			dom.byId("authorSetImage").value = givenModel.getImageURL() || "";
+            dom.byId("authorSetLessonsLearned").value = this.serialize(
+                givenModel.getTaskLessonsLearned() ? givenModel.getTaskLessonsLearned() : ""
+            );
 			dom.byId("authorSetDescription").value = this.serialize(
 				givenModel.getTaskDescription() ? givenModel.getTaskDescription() : ""	
 			);
@@ -66,7 +69,9 @@ define([
             //for authorSetTimeStop
             var descWidgetStop = registry.byId('authorSetTimeEnd');
             //for authorSetTimeStep
-            var descWidgetStep = registry.byId('authorSetTimeStep');
+            //var descWidgetStep = registry.byId('authorSetTimeStep');
+            //for authorSetTimeStepUnits
+            var descWidgetUnit = registry.byId('authorSetTimeStepUnits');
             // Set checkbox for sharing
             registry.byId("authorProblemShare").attr("value", this.givenModel.getShare());
 
@@ -87,13 +92,17 @@ define([
                 }
             }));
             //for  time step field
-            descWidgetStep.on("change", lang.hitch(this, function () {
+            /*descWidgetStep.on("change", lang.hitch(this, function () {
                 var ret_step_time = typechecker.checkInitialValue('authorSetTimeStep', this.lastStepTime);
                 if (ret_step_time.value) {
                     this.timeObj.step = ret_step_time.value;
                 }
+            }));*/
+            descWidgetUnit.on("change", lang.hitch(this, function(){
+                console.log(registry.byId('timeStartUnits'));
+                dom.byId('timeStartUnits').innerHTML = descWidgetUnit.value;
+                dom.byId('timeEndUnits').innerHTML = descWidgetUnit.value;
             }));
-
             this._descEditor = registry.byId('authorDescDialog');
             aspect.around(this._descEditor, "hide", lang.hitch(this, function (doHide) {
                 var myThis = this;
@@ -111,27 +120,47 @@ define([
                         return;
                     }
 
-                    var ret_step_time = typechecker.checkInitialValue('authorSetTimeStep', myThis.lastStepTime);
+                    var ret_step_time = 1;
                     if (ret_step_time.errorType) {
                         return;
                     }
 
-                    //after it has passed all those checks we
-                    // do normal closeEditor routine and hide
-                    doHide.apply(myThis._descEditor);
-                    console.log("close description editor is being called");
-                    typechecker.closePops();
-                    var tin = dom.byId("authorSetDescription").value;
-                    myThis.givenModel.setTaskDescription(tin.split("\n"));
-                    if (ret_start_time.value) {
+                    if (! (typeof ret_start_time.value === "undefined")) {
                         myThis.timeObj.start = ret_start_time.value;
                     }
-                    if (ret_stop_time.value) {
+                    if (! (typeof ret_stop_time.value === "undefined")) {
                         myThis.timeObj.end = ret_stop_time.value;
                     }
-                    if (ret_step_time.value) {
+                    if (! (typeof ret_step_time.value === "undefined")) {
                         myThis.timeObj.step = ret_step_time.value;
                     }
+                    domStyle.set("start_end_errorbox","display","none");
+                    //domStyle.set("timestep_errorbox1","display","none");
+                    //domStyle.set("timestep_errorbox2","display","none");
+                    var time_step_max = myThis.timeObj.end-myThis.timeObj.start;
+                    errorDialogSpan = dom.byId("start_end_errorbox");
+                    if(!( (myThis.timeObj.start < myThis.timeObj.end) )){
+                        console.log("start time more than end time");
+                        domStyle.set(errorDialogSpan,"display","");
+                        return;
+                    }
+                    /*errorDialogSpan = dom.byId("timestep_errorbox1");
+                    if(!((myThis.timeObj.step > 0))){
+                        console.log("Time step is inappropriate");
+                        domStyle.set(errorDialogSpan,"display","");
+                        return;
+                    }
+                    errorDialogSpan = dom.byId("timestep_errorbox2");
+                    if(!((myThis.timeObj.step <= time_step_max))){
+                        console.log("Time step must fit within the start and end times");
+                        domStyle.set(errorDialogSpan,"display","");
+                        return;
+                    }*/
+                    domStyle.set(errorDialogSpan,"display","none");
+                    var tin = dom.byId("authorSetDescription").value;
+                    var ll = dom.byId("authorSetLessonsLearned").value;
+                    myThis.givenModel.setTaskDescription(tin.split("\n"));
+                    myThis.givenModel.setTaskLessonsLearned(ll.split("\n"));
                     myThis.timeObj.units = dom.byId("authorSetTimeStepUnits").value;
                     myThis.timeObj.integrationMethod = dom.byId("authorSetIntegrationMethod").value;
                     console.log("integration value" + dom.byId("authorSetIntegrationMethod").value);
@@ -140,73 +169,71 @@ define([
                     var url = dom.byId("authorSetImage").value;
                     myThis.givenModel.setImage(url ? {URL: url} : {});
                     myThis.showDescription();
+                    //after it has passed all those checks we
+                    // do normal closeEditor routine and hide
+                    doHide.apply(myThis._descEditor);
+                    console.log("close description editor is being called");
+                    typechecker.closePops();
+
                 };
             }));
             //for share bit checkbox
-            var descShareBit = registry.byId("authorProblemShare");
-            console.log("descShareBit",descShareBit);
-            descShareBit.on("Change", lang.hitch(this, function (checked) {
-                //when change event is fired, check if the author wants to share the problem or un share,
-                //if he tries to share , then verify completeness and root node existence
+            var descCheckButton = registry.byId("authorProblemCheck");
+            console.log("descCheckButton",descCheckButton);
+            descCheckButton.on("Click", lang.hitch(this, function (checked) {
+                //when click event is fired, check if there are any issues with till authored problem
+                //if yes alert the issue , else alert every thing is fine just for informational purposes
                 if(document.getElementById("authorDescDialog").style.display !== "none")
                 {
-                    if (checked) {
-                        errordialogWidget = registry.byId("solution");
-                        //check if there are any nodes at all
-                        var nodes_exist = this.givenModel.active.getNodes().length;
-                        if (nodes_exist) {
-                            console.log("nodes exist");
-                            var newModel = this.givenModel;
-                            var check_comp = true;
-                            array.forEach(this.givenModel.active.getNodes(), function (node) {
-                                if (!newModel.active.isComplete(node.ID,true)) {
-                                    errordialogWidget.set("content", "<div>please complete the model before you share</div>");
-                                    errordialogWidget.show();
-                                    newModel.setShare(false);
-                                    descShareBit.set("checked", false);
-                                    check_comp = false;
-                                    console.log("problem is incomplete");
-                                    return;
+                    errordialogWidget = registry.byId("solution");
+                    errordialogWidget.set("title", "<span>'Problem Check Results'</span>");
+                    //check if there are any nodes at all
+                    var nodes_exist = this.givenModel.active.getNodes().length;
+                    if (nodes_exist) {
+                        // we define check_for_problem variable to finally alert if problem is fine
+                        var check_for_problem = false;
+                        console.log("nodes exist");
+                        var newModel = this.givenModel;
+                        //checking for incomplete nodes
+                        array.forEach(this.givenModel.active.getNodes(), function (node) {
+                            if (!newModel.active.isComplete(node.ID)) {
+                                errordialogWidget.set("content", "<div>The problem has one or more incomplete nodes.</div>");
+                                check_for_problem = true;
+                                errordialogWidget.show();
+                                console.log("problem is incomplete");
+                                return;
                                 }
                                 console.log("next node");
                             });
 
-                            console.log("return value", check_comp);
-                            //if the check_comp flag is false, that is any node is incomplete just return
-                            if (!check_comp) return;
-                            //if not continue to check for root node
-                            //only functions and accumalators are root nodes
-                            console.log("problem is complete checking for root node");
-                            var check_parent=false;
-                            array.forEach(newModel.active.getNodes(), function (node) {
-                                console.log("new model type is", newModel.active.getType(node.ID));
-                                if(newModel.active.getNode(node.ID).parentNode){
-                                    check_parent=true;
-                                    console.log("problem has a root node");
-                                    return;
+                        var check_parent=false;
+                        array.forEach(newModel.active.getNodes(), function (node) {
+                            console.log("new model type is", newModel.active.getType(node.ID));
+                            if(newModel.active.getNode(node.ID).parentNode){
+                                check_parent=true;
+                                console.log("problem has a root node");
+                                return;
                                 }
                             });
 
-                            if(check_parent)
-                                newModel.setShare(true);
-                            else {
+                            if(!check_parent){
                                 console.log("No Root");
-                                errordialogWidget.set("content", "<div>Please make sure there is a root node</div>");
+                                errordialogWidget.set("content", "<div>Please mark at least one accumulator or function as 'Root'.</div>");
                                 errordialogWidget.show();
-                                newModel.setShare(false);
-                                descShareBit.set("checked", false);
+                                check_for_problem = true;
                             }
                         }
                         else{
                             console.log("Empty problem");
-                            errordialogWidget.set("content", "<div>cannot share an empty problem</div>");
+                            errordialogWidget.set("content", "<div style='width: 200px;'>The problem is empty.</div>");
                             errordialogWidget.show();
-                            this.givenModel.setShare(false);
-                            descShareBit.set("checked", false);
+                            check_for_problem = true;
                         }
-                    }
-                    else{ // the author wants to unshare, no matter about conditions just set share bit to false
-                        this.givenModel.setShare(false);
+                    //finally check if check for problems button couldn't find any new problems
+                    if(!check_for_problem){
+                        console.log("Problem seems fine, no warnings needed");
+                        errordialogWidget.set("content", "<div style='width: 200px;'>No errors found.</div>");
+                        errordialogWidget.show();
                     }
                 }
             }));
@@ -228,7 +255,6 @@ define([
 		},
 
 		showDescription: function(){
-
 			var canvas = dom.byId('myCanvas');
 			var context = canvas.getContext('2d');
 			context.clearRect(0,0,canvas.width, canvas.height);

@@ -1,0 +1,196 @@
+{
+  "task": {
+    "taskName": "lion population growth 2",
+    "time": {
+      "start": 1950,
+      "end": 1970,
+      "step": 1,
+      "integrationMethod": "Eulers Method",
+      "units": "years"
+    },
+    "properties": {
+      
+    },
+    "image": {
+      "URL": "images/lion-2.jpg"
+    },
+    "taskDescription": [
+      "Lion Population Growth - Level 2",
+      "- The lion population is 4 in the first year (1950).",
+      "- Births are the only change in the population. Deaths, immigration, and emigration do not occur.",
+      "- The number of lion births each year is the lion population times the probability of a lion giving birth (birth rate) during the year.",
+      "- The probability of a lion giving birth during the year is 50%.",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "lessonsLearned": "",
+    "givenModelNodes": [
+      {
+        "ID": "id1",
+        "inputs": [
+          {
+            "ID": "id2",
+            "label": ""
+          }
+        ],
+        "position": {
+          "x": 400,
+          "y": 100
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 1
+        },
+        "status": {
+          
+        },
+        "name": "Lion Population",
+        "description": "The number of lions in the population",
+        "type": "accumulator",
+        "initial": 4,
+        "equation": "id2",
+        "genus": "required",
+        "parentNode": true
+      },
+      {
+        "ID": "id2",
+        "inputs": [
+          {
+            "ID": "id1",
+            "label": ""
+          },
+          {
+            "ID": "id3",
+            "label": ""
+          }
+        ],
+        "position": {
+          "x": 530.33093261719,
+          "y": 158.33096313477
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 1
+        },
+        "status": {
+          
+        },
+        "name": "Lion Births",
+        "description": "The number of lions born each year",
+        "equation": "id1*id3",
+        "type": "function",
+        "parentNode": false,
+        "initial": "",
+        "genus": "required"
+      },
+      {
+        "ID": "id3",
+        "inputs": [
+          
+        ],
+        "position": {
+          "x": 658.33093261719,
+          "y": 155.33096313477
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": {
+          
+        },
+        "name": "Lion Birth Probability",
+        "description": "The probability of a lion giving birth during the year",
+        "equation": "",
+        "type": "parameter",
+        "parentNode": false,
+        "initial": 0.5,
+        "genus": "required"
+      }
+    ],
+    "studentModelNodes": [
+      {
+        "ID": "id4",
+        "inputs": [
+          {
+            "ID": "id5"
+          }
+        ],
+        "position": {
+          "x": 400,
+          "y": 100
+        },
+        "status": {
+          "equation": {
+            "disabled": false,
+            "status": "correct"
+          },
+          "description": {
+            "disabled": true,
+            "status": "correct"
+          },
+          "type": {
+            "disabled": true,
+            "status": "correct"
+          },
+          "initial": {
+            "disabled": true,
+            "status": "correct"
+          }
+        },
+        "descriptionID": "id1",
+        "initial": 4,
+        "type": "accumulator",
+        "equation": "id5"
+      },
+      {
+        "ID": "id5",
+        "inputs": [
+          
+        ],
+        "position": {
+          "x": 530.33093261719,
+          "y": 158.33096313477
+        },
+        "status": {
+          "equation": {
+            "disabled": false,
+            "status": "incorrect"
+          },
+          "description": {
+            "disabled": true,
+            "status": "correct"
+          },
+          "type": {
+            "disabled": false,
+            "status": "incorrect"
+          }
+        },
+        "descriptionID": "id2",
+        "initial": "",
+        "type": "parameter",
+        "equation": ""
+      }
+    ],
+    "schemas": [
+      
+    ]
+  }
+}

@@ -9,28 +9,32 @@ available.
 
 ## Dragoon Install ##
 
-This document contains instructions for setting up a Dragoon server.
-These instructions are for the JavaScript version of Dragoon.
+This section contains instructions for setting up a Dragoon server after you have cloned the repo.
 
 ### Database Setup ###
 
 Create the database using the script `create-database.sql`.  First enter mysql as root:
 
     $ mysql -u root -p
-When prompted, enter the root password you created for mysql, not the root password for your machine.  Then create your new database and run the script.  You can use the following commands:
+When prompted, enter the root password you created for mysql, not the root password for your machine.  Then create your new database and run the script. Two scripts are available in the same folder.  You can use the following commands:
 
     mysql> create database <your database name>;
     mysql> use <your database name>;
     mysql> source create-database.sql;
+	mysql> source create-schema-database.sql;
 
 In the project root directory, create a file `db_user_passsword`
 containing three lines containing the username, password, and 
 database name.
 
+On Windows, you'll need to install WAMP, XAMPP or another AMP kit first. You will also need to install cygwin or git for windows and then use the provided git shell for the next step. 
+
 ### Install Libraries ###
 
 In the root directory, enter `make install` to install the Javascript
 libraries.
+
+Windows doesn't come with make, but if you google "make for windows" you can download it from gnu.  After installing, either add make's path to your PATH variable or give the full path in the command line. For best results, run within the powershell provided by GitHub for Windows.
 
 ### Run on local server ###
 

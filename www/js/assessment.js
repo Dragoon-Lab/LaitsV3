@@ -46,6 +46,7 @@ define([
 				this._session.getSchemaApplication(schema.schemaClass).then(function(result){
 					resultJSON = result;
 				});
+				
 				resultJSON = json.parse(resultJSON);
 				if(resultJSON.competence){
 					schema.competence = resultJSON.competence;

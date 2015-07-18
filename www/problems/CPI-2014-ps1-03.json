@@ -25,7 +25,7 @@
             "Implementation: See image, or see the problem \"constant\" in the problem set \"generic changes\"."
             ],
         "lessonsLearned": [
-            "The graph of the quantity \"Jared&apos;s weight\" is a straight line headed downward, so this quantity is said to exhibit \"linear",
+            "The graph of the quantity \"Jared's weight\" is a straight line headed downward, so this quantity is said to exhibit \"linear",
             "decay.\" Many different models can have quantities that exhibit linear decay, but the simplest such model is exactly like",
             "the one you just constructed: An accumulator with a parameter as a negated input.",
             "Notice the small circle with a minus sign inside it. This indicates that the input is negated. Thus, just by looking at the",
@@ -106,6 +106,25 @@
                 "equation": "- id1"
             }
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [],
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "linear_transfer",
+                "name": "Linear",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id2, id1",
+                "difficulty": {
+                    "isolation": 0,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            }
+        ]
     }
 }

@@ -17,7 +17,7 @@
         "taskDescription": [
             "In the Highland Games, male athletes use one hand to throw a heavy weight over a bar set at increasing heights.",
             "Suppose an athlete launches the weight from a height of 1.2 m with an upward velocity of 8.5 m/s. As with all",
-            "objects near Earth, the weight&apos;s acceleration is -9.8 m/s/s. That is, every second the object&apos;s upward velocity has -9.8",
+            "objects near Earth, the weight's acceleration is -9.8 m/s/s. That is, every second the object's upward velocity has -9.8",
             "subtracted from it, which means the velocity gets smaller, and eventually becomes negative, which means that the",
             "weight moves downward. Construct a model that shows how the height of the weight changes.",
             "* Process: the height of the weight changes",
@@ -135,6 +135,25 @@
                 "equation": "id2"
             }
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [],
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "accelerating_transfer",
+                "name": "Accelerating",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id2, id3",
+                "difficulty": {
+                    "isolation": 0,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            }
+        ]
     }
 }

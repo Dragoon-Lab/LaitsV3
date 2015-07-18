@@ -23,8 +23,8 @@
              "* Source: irrelevant",
              "* Destination: Moose population",
              "* Changing: a proportion, 20%, of the destination changes state each year",
-             "Implementation: See image, but change names and numbers. Or see the problem â€œproportional to destinationâ€� in the",
-             "problem set â€œgeneric changes.â€�"
+             "Implementation: See image, but change names and numbers. Or see the problem proportional to destination in the",
+             "problem set generic changes."
         ],
         "lessonsLearned": [
              "The graph of \"moose population\" increases slowly at first and then gets steeper. The graph fits an exponential function,",
@@ -135,6 +135,25 @@
                 "equation": "id1 * id2"
             }
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [],
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "exponential_transfer",
+                "name": "Exponential",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id3, id2",
+                "difficulty": {
+                    "isolation": 0,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            }
+        ]
     }
 }

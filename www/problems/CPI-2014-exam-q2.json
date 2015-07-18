@@ -15,7 +15,8 @@
         ],
         "lessonsLearned": "",
         "givenModelNodes": [
-            {"ID": "id1",
+            {
+                "ID": "id1",
                 "inputs": [
                     {
                         "ID": "id2",
@@ -45,6 +46,7 @@
                 "initial": 10,
                 "equation": "id2-id3",
                 "units": "mg",
+                "parentNode": true,
                 "genus": ""
             },
             {
@@ -139,14 +141,15 @@
                 "type": "accumulator",
                 "initial": 50,
                 "equation": "id3-id2",
+                "parentNode": true,
                 "units": "mg"
             },
             {
                 "ID": "id6",
                 "inputs": [],
                 "position": {
-                    "x": 737.3309326171875,
-                    "y": 61.33095169067383
+                    "x": 737.33093261719,
+                    "y": 61.330951690674
                 },
                 "attemptCount": {
                     "description": 0,
@@ -168,8 +171,8 @@
                 "ID": "id7",
                 "inputs": [],
                 "position": {
-                    "x": 430.3309631347656,
-                    "y": 294.3309631347656
+                    "x": 430.33096313477,
+                    "y": 294.33096313477
                 },
                 "attemptCount": {
                     "description": 0,
@@ -191,8 +194,8 @@
                 "ID": "id9",
                 "inputs": [],
                 "position": {
-                    "x": 700.3309326171875,
-                    "y": 291.3309631347656
+                    "x": 700.33093261719,
+                    "y": 291.33096313477
                 },
                 "attemptCount": {
                     "description": 0,
@@ -213,6 +216,76 @@
                 "genus": "extra"
             }
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [],
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "exponential_transfer",
+                "name": "Exponential",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id3, id7",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema2",
+                "schemaClass": "exponential_transfer",
+                "name": "Exponential",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id5, id2, id6",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema3",
+                "schemaClass": "accelerating_transfer",
+                "name": "Accelerating",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id5, id3, id7, id1",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema4",
+                "schemaClass": "accelerating_transfer",
+                "name": "Accelerating",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id2, id6, id5",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            }
+        ]
     }
 }

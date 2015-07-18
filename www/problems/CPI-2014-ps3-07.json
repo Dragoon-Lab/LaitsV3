@@ -5,20 +5,20 @@
             "start": 0,
             "end": 20,
             "step": 1,
-            "units": "hours"
+            "units": "hours",
+            "integrationMethod": "Eulers Method"
         },
         "properties": {
             "phase": "",
             "type": ""
         },
-        "image": {
-            "URL": ""
-        },
+        "image": {},
         "taskDescription": [
-            " The sun heats some water, adding 3 units of thermal energy per hour.  The evaporation of water is a function of the thermal energy of the water.  In particular, if the thermal energy of the water is T, then the percentage of water evaporated during an hour is T*1%.  Assuming that the initial thermal energy is 0 and the initial water level is 1000, construct a model that shows how the water level changes over 20 hours. "
+            " The sun heats some water, adding 3 units of thermal energy per hour.  The evaporation of water is a function of the thermal energy of the water.  In particular, if the thermal energy of the water is T, then the percentage of water evaporated during an hour is T*1%.  Assuming that the initial thermal energy is 0 and the initial water level is 1000, construct a model that shows how the water level changes over 20 hours. ",
+            ""
         ],
-        "lessonsLearned" : [
-            " This system has two processes.  The increase in thermal energy is linear growth.  The evaporation of water doesn&apos;t match any of our simple change processes exactly.  It is similar to both exponential growth and acceleration. "
+        "lessonsLearned": [
+            " This system has two processes.  The increase in thermal energy is linear growth.  The evaporation of water doesn't match any of our simple change processes exactly.  It is similar to both exponential growth and acceleration. "
         ],
         "slides": [
             {
@@ -28,12 +28,12 @@
             },
             {
                 "type": "image",
-                "value": "images/CPI/Accelerating_evaporation_graphs.jpg",
+                "value": "images\/CPI\/Accelerating_evaporation_graphs.jpg",
                 "title": "Author's graph for Infections Problem"
             },
             {
                 "type": "image",
-                "value": "images/CPI/Accelerating_evaporation_correctnodes.png",
+                "value": "images\/CPI\/Accelerating_evaporation_correctnodes.png",
                 "title": "Author's solution for Infections Problem"
             },
             {
@@ -51,8 +51,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 754,
+                    "y": 336
                 },
                 "attemptCount": {
                     "description": 0,
@@ -78,8 +78,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 427,
+                    "y": 420
                 },
                 "attemptCount": {
                     "description": 0,
@@ -123,8 +123,8 @@
                 "ID": "id4",
                 "inputs": [],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 649.33093261719,
+                    "y": 141.33096313477
                 },
                 "attemptCount": {
                     "description": 0,
@@ -155,8 +155,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 540,
+                    "y": 328
                 },
                 "attemptCount": {
                     "description": 0,
@@ -171,9 +171,46 @@
                 "parentNode": false,
                 "units": "",
                 "description": "The amount of water evaporated during an hour",
-                "equation": "id1 * id2 * id4"
+                "equation": "id1 * id2 * id4",
+                "genus": "required"
             }
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [],
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "linear_transfer",
+                "name": "Linear",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id2, id3",
+                "difficulty": {
+                    "isolation": 0,
+                    "cues": 1,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema2",
+                "schemaClass": "accelerating_transfer",
+                "name": "Accelerating",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id2, id5, id4, id1",
+                "difficulty": {
+                    "isolation": 0,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            }
+        ]
     }
 }

@@ -49,6 +49,7 @@
                 "description": "Number of males on the island",
                 "type": "accumulator",
                 "initial": 100,
+                "parentNode": true,
                 "equation": "id2-id3"
             },
             {
@@ -112,7 +113,7 @@
                 "equation": "(id8*id9)*id9"
             },
             {
-               "ID": "id4",
+                "ID": "id4",
                 "inputs": [
                     {
                         "ID": "id5",
@@ -140,6 +141,7 @@
                 "description": "Number of females on the island",
                 "type": "accumulator",
                 "initial": 190,
+                "parentNode": true,
                 "equation": "id5-id6"
             },
             {
@@ -206,8 +208,8 @@
                 "ID": "id7",
                 "inputs": [],
                 "position": {
-                    "x": 717.3309326171875,
-                    "y": 73.33094787597656
+                    "x": 717.33093261719,
+                    "y": 73.330947875977
                 },
                 "attemptCount": {
                     "description": 0,
@@ -234,7 +236,7 @@
                     },
                     {
                         "ID": "id15",
-                        "label": "/"
+                        "label": "\/"
                     }
                 ],
                 "position": {
@@ -257,7 +259,7 @@
                 "name": "meetings",
                 "description": "Number of meetings per year",
                 "type": "function",
-                "equation": "id14/id15"
+                "equation": "id14\/id15"
             },
             {
                 "ID": "id9",
@@ -268,7 +270,7 @@
                     },
                     {
                         "ID": "id14",
-                        "label": "/"
+                        "label": "\/"
                     }
                 ],
                 "position": {
@@ -287,7 +289,7 @@
                 "name": "chance of male in meeting",
                 "description": "Change of a male being one of the participants in a meeting",
                 "type": "function",
-                "equation": "id1/id14"
+                "equation": "id1\/id14"
             },
             {
                 "ID": "id10",
@@ -327,8 +329,8 @@
                 "ID": "id11",
                 "inputs": [],
                 "position": {
-                    "x": 508.3309631347656,
-                    "y": 525.3309326171875
+                    "x": 508.33096313477,
+                    "y": 525.33093261719
                 },
                 "attemptCount": {
                     "description": 0,
@@ -355,7 +357,7 @@
                     },
                     {
                         "ID": "id14",
-                        "label": "/"
+                        "label": "\/"
                     }
                 ],
                 "position": {
@@ -374,7 +376,7 @@
                 "name": "chance of female in meeting",
                 "description": "Chance of a female being one of the participants in a meeting",
                 "type": "function",
-                "equation": "id4/id14"
+                "equation": "id4\/id14"
             },
             {
                 "ID": "id13",
@@ -435,8 +437,8 @@
                 "ID": "id15",
                 "inputs": [],
                 "position": {
-                    "x": 672.3309326171875,
-                    "y": 529.3309326171875
+                    "x": 672.33093261719,
+                    "y": 529.33093261719
                 },
                 "attemptCount": {
                     "description": 0,
@@ -455,6 +457,42 @@
                 "initial": 2
             }
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [],
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "exponential_transfer",
+                "name": "Exponential",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id4, id6, id7",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema2",
+                "schemaClass": "epidemic_transfer",
+                "name": "Epidemic",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id4, id2, id11, id10, id8, id14, id9, id12, id13, id5",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            }
+        ]
     }
 }

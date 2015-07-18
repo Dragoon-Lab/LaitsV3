@@ -11,7 +11,7 @@
  *
  *Dragoon is distributed in the hope that it will be useful,
  *but WITHOUT ANY WARRANTY; without even the implied warranty of
- *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
  *GNU Lesser General Public License for more details.
  *
  *You should have received a copy of the GNU Lesser General Public License
@@ -122,7 +122,7 @@ define([
 			collides: function(element)
 			{
 				if(!element.position){
-					return true;
+					return false;
 				}
 				var x = element.position.x;
 				var y = element.position.y;
@@ -213,18 +213,21 @@ define([
 				 and descriptions are distinct, if they are defined.
 				 */
 				var ids = {}, names = {}, descriptions = {};
+				var duplicateDescription = [];
+				var duplicateName = [];
 				array.forEach(this.given.getNodes(), function(node){
 					if(node.ID in ids){
 						throw new Error("Duplicate node id " + node.id);
 					}
 					if(node.name in names){
-						throw new Error("Duplicate node name \"" + node.name +
-								"\" for " + node.ID + " and " + names[node.name]);
+						duplicateName[node.name] = node.ID;
 					}
 					if(node.description in descriptions){
-						throw new Error("Duplicate node description \"" + node.description +
-								"\" for " + node.ID + " and " + descriptions[node.description]);
+						var duplicateNodeId = descriptions[node.description];
+						duplicateDescription[node.ID] = node.name;
+						duplicateDescription[duplicateNodeId] = this.given.getName(duplicateNodeId);			
 					}
+
 					ids[node.ID] = true;
 					if(node.name){
 						names[node.name] = node.ID;
@@ -247,6 +250,33 @@ define([
 				 Does not corretly handle case where student completes
 				 the model, deletes some nodes, and reopens the problem.
 				 */
+				var errorMessage = "";
+
+				if(Object.keys(duplicateName).length > 0){
+					var duplicateStr = "";
+					array.forEach(Object.keys(duplicateName), function(duplicate){
+			 		duplicateStr += duplicate + ", ";
+					});
+					duplicateStr = duplicateStr.substring(0, duplicateStr.length-2);
+
+					//throw error for duplicate names
+					errorMessage = "Multiple nodes have same names: <strong>"+ duplicateStr + "</strong>. Please change them to be unique.<br/><br/>";
+				}
+				if(Object.keys(duplicateDescription).length > 0){
+					var duplicateStr = "";
+					array.forEach(Object.keys(duplicateDescription), function(duplicate){
+						duplicateStr += duplicateDescription[duplicate] + ", ";
+					});
+					duplicateStr = duplicateStr.substring(0, duplicateStr.length-2);
+
+					//throw error for duplicate descriptions
+					errorMessage += "The following nodes have the duplicate descriptions: <strong>"+ duplicateStr + "</strong>. Please change them to be unique.";
+				}
+
+				if(errorMessage != ""){
+					throw new Error(errorMessage);
+				}
+
 				this.isCompleteFlag = this.matchesGivenSolution();
 			},
 
@@ -402,7 +432,10 @@ define([
 			setTaskDescription: function(/*string*/ description){
 				// Summary: set the task description
 				this.model.task.taskDescription = description;
-			}
+			},
+            setTaskLessonsLearned: function(/*string*/ lessonsLearned){
+                this.model.task.lessonsLearned = lessonsLearned;
+            }
 		};
 
 		/* 
@@ -454,6 +487,10 @@ define([
 			getUnits: function(/*string*/ id){
 				return this.getNode(id).units;
 			},
+			getExplanation: function(/*string*/ id){
+				var node = this.getNode(id);
+				return (typeof node.explanation==="undefined")?"":(node && node.explanation);
+			},
 			getEachNodeUnitbyID: function(){
 				//summary: returns key/value pair of node-id/unit
 				var unitList = {};
@@ -482,6 +519,10 @@ define([
 					}
 				});
 				return outputs;
+			},
+			getPosition: function(/*string*/ id){
+				// Summary: return current position of the node.
+				return this.getNode(id).position;
 			},
 			getSchemas: function(){
 				return obj.model.task.schemas;
@@ -574,6 +615,7 @@ define([
 						values:{}
 					},
 					nodes: "",
+					rates: {},
 					difficulty: {
 						isolation: 1,
 						cues: 1,
@@ -591,27 +633,73 @@ define([
 				var idMap = {};
 
 				var nodes = model.task.givenModelNodes;
+				
+				var currentGivenNodes = obj.model.task.givenModelNodes;
+				var isNewProblem = false;
+				if(currentGivenNodes.length == 0){
+					obj.model.task.givenModelNodes = nodes;
+					obj.model.task.schemas = model.task.schemas;
+					isNewProblem = true;
+				}
+
+				var currentSNodes = obj.model.task.studentModelNodes;
+				if(currentSNodes.length == 0 && isNewProblem){
+					obj.model.task.studentModelNodes = model.task.studentModelNodes;
+				}
+				
+				if(isNewProblem){
+					var index = 0;
+					array.forEach(nodes, function(node){
+						ids[index] = node.ID;
+						index++;
+					});
+
+					return ids;
+				}
 
 				//copy author nodes
 				array.forEach(nodes,function(node){
                		obj._updateNextXYPosition();
 					node.position = {x: obj.x, y: obj.y};
-					var nID = "id" + obj._ID; //replace old id with new ID
+					var newID = parseInt(node.ID.replace("id", "")) + shift;
+					var nID = "id" + newID; //replace old id with new ID
 					idMap[node.ID]=nID; //store old ID vs new ID
 					node.ID =nID;
-					node.name=node.name+obj._ID;
-					node.description=node.description+obj._ID;
+					
+					//check for duplicates(if node with given name already present): 
+					//if true, calculate the properIds for the duplicate nodes 					
+					if(obj.active.getNodeIDByName(node.name)){
+						var name_duplicate_count = 1;
+						//iterate through all the nodes and evalute the duplicate count value
+						while(obj.active.getNodeIDByName(node.name + "_duplicate_" + name_duplicate_count)){
+							name_duplicate_count++;
+						}
+						node.name=node.name+"_duplicate_" + name_duplicate_count;
+					}
+					if(obj.active.getNodeIDByDescription(node.description)){
+						var desc_duplicate_count = 1;
+						//iterate through all the nodes and evalute the duplicate count value
+						while(obj.active.getNodeIDByDescription(node.description + "_duplicate_" + desc_duplicate_count)){
+							desc_duplicate_count++;
+						}
+						node.description=node.description + "_duplicate_" + desc_duplicate_count;
+					}
 					ids.push(node.ID);
+
 					/*trick to update equations with new ids */
 					if(node.equation){
 						var equation = node.equation;
-						var nEquation=equation.replace(/(\d+)+/g, function(match, number) {
-       							return parseInt(number)+shift;
+						//console.log("sachin shift value "+ shift);
+						var nEquation=equation.replace(/(id\d+)+/g, function(match, str) {
+								var number = str.replace("id", "");
+       							return "id"+(parseInt(number)+shift);
        						});
 						//also update inputs for graph generation
 						for(i=0;i<node.inputs.length;i++){
 							node.inputs[i].ID=node.inputs[i].ID.replace(/\d+$/, function(n){ return parseInt(n)+shift });//shift = total nodes in old model
+
 						}
+
 						node.equation=nEquation;
 					}
 					obj._ID=obj._ID+1; //for next coming node
@@ -624,11 +712,12 @@ define([
 				array.forEach(snodes,function(node){
 					obj._updateNextXYPosition(true);
 					node.position = {x: obj.x, y: obj.y};
-					var nID = "id" + obj._ID; //replace old id with new ID
+					var newID = parseInt(node.ID.replace("id", "")) + shift;
+					var nID = "id" + newID; //replace old id with new ID
 					sIDMap[node.ID]=nID; //store old vs new StudentIDs
 					node.ID =nID;
-					node.name=node.name+obj._ID;
-					node.description=node.description+obj._ID;
+					//node.name=node.name+obj._ID;
+					//node.description=node.description+obj._ID;
 					node.descriptionID=idMap[node.descriptionID]; //new DescriptionID of Node
 					sids.push(node.ID);
 					obj._ID=obj._ID+1; //for next coming node
@@ -643,16 +732,15 @@ define([
 						var isExpressionValid = true;
 						var equation = snode.equation;
 						array.forEach(snode.inputs, lang.hitch(this, function(input){
-				   			  var studentNodeID = sIDMap[input.ID];
-					 		  if(studentNodeID){
-									inputs.push({ "ID": studentNodeID});
-									var regexp = "(" +input.ID +")([^0-9]?)";
-									var re = new RegExp(regexp);
-									equation = equation.replace(re, studentNodeID+"$2");
-								}
-								else{
-									isExpressionValid = false;
-								}
+				   			var studentNodeID = sIDMap[input.ID];
+					 		if(studentNodeID){
+								inputs.push({ "ID": studentNodeID});
+								var regexp = "(" +input.ID +")([^0-9]?)";
+								var re = new RegExp(regexp);
+								equation = equation.replace(re, studentNodeID+"$2");
+							}else{
+								isExpressionValid = false;
+							}
 						}));
 						if(isExpressionValid){
 							snode.inputs=inputs;
@@ -772,6 +860,9 @@ define([
 			setDescription: function(/*string*/ id, /*string*/ description){
 				this.getNode(id).description = description.trim();
 			},
+			setExplanation: function(/*string*/ id, /*string*/ content){
+				this.getNode(id).explanation = content;
+			},
 			setParent: function(/*string*/ id, /*bool*/ parent){
 				this.getNode(id).parentNode = parent;
 			},
@@ -815,7 +906,7 @@ define([
 				// Summary: tracks student progress (correct, incorrect) on a given node;
 				this.getNode(id).status[part] = status;
 			},
-			isComplete: function(/*string*/ id, /*bool*/ unitsOptional){
+			isComplete: function(/*string*/ id){
 				// Summary: Test whether a node is completely filled out, correct or not
 				// Returns a boolean
 				// id: the node id
@@ -829,20 +920,29 @@ define([
 				//	 2.	 Just units
 				//	 3.	 Optional quantity (needs name and description)
 				var node = this.getNode(id);
-				var initialEntered = node.type && node.type == "function" || node.initial != null;
+                var unitsOptional = true;
+                var initialEntered = node.type && node.type == "function" || node.initial != null;
+                var toReturn = '';
 				var equationEntered = node.type && node.type == "parameter" || node.equation;
-				if(!node.genus || node.genus == "required" || node.genus == "allowed" || node.genus == "preferred"){
-					return  node.name && node.description &&
+                console.log("checking the node being studies",node,initialEntered,equationEntered);
+                if(!node.genus || node.genus == "required" || node.genus == "allowed" || node.genus == "preferred"){
+					 toReturn = node.name && node.description &&
 							node.type && (initialEntered || typeof initialEntered === "number") &&
 							(unitsOptional || node.units) &&
 							equationEntered;
 				}else if(node.genus == "initialValue"){
-					return node.genus && node.name && node.description;
+					toReturn = node.genus && node.name && node.description;
 				}else{
-					return node.genus != "defaultSelect" && ((node.name && node.description) ||
+					toReturn = node.genus != "defaultSelect" && ((node.name && node.description) ||
 							node.units);
 				}
-			}
+			    if(toReturn) {
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
 		}, both);
 
 		obj.solution = lang.mixin({
@@ -1088,10 +1188,16 @@ define([
 				var hasUnits = node.descriptionID && obj.given.getUnits(node.descriptionID);
 				var initialEntered = node.type && node.type == "function" || node.initial != null;
 				var equationEntered = node.type && node.type == "parameter" || node.equation;
-				return node.descriptionID && node.type &&
+				var toReturn = node.descriptionID && node.type &&
 						initialEntered && (!hasUnits || node.units) &&
 						equationEntered;
-			}
+			    if(toReturn){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
 		}, both);
 
 		// Execute the constructor

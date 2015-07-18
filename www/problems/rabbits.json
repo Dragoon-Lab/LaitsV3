@@ -34,6 +34,7 @@
                 "initial": 24,
                 "equation": "id2",
                 "description": "The number of rabbits in the population",
+                "explanation":"",
                 "attemptCount": {
                     "description": 0,
                     "type": 0,
@@ -54,6 +55,7 @@
                 "initial": null,
                 "equation": "id1 * id3",
                 "description": "The number of additional rabbits each year",
+                "explanation":"",
                 "attemptCount": {
                     "description": 0,
                     "type": 0,
@@ -73,6 +75,7 @@
                 "inputs": [],
                 "initial": 0.3,
                 "description": "The number of additional rabbits per year per rabbit",
+                "explanation":"",
                 "attemptCount": {
                     "description": 0,
                     "type": 0,
@@ -92,6 +95,7 @@
                 "inputs": [],
                 "initial": 120,
                 "description": "The number of rabbits in the population during the second year",
+                "explanation":"",
                 "attemptCount": {
                     "description": 0,
                     "type": 0,
@@ -105,6 +109,7 @@
                 "ID": "id8",
                 "name": "birth rate",
                 "description": "The number of rabbits born per year per rabbit",
+                "explanation":"",
                 "units": "1/year",
                 "genus": "irrelevant",
                 "attemptCount": {
@@ -123,6 +128,7 @@
                 "ID": "id9",
                 "name": "death rate",
                 "description": "The number of rabbits that die per year per rabbit",
+                "explanation":"",
                 "units": "1/year",
                 "genus": "irrelevant",
                 "attemptCount": {

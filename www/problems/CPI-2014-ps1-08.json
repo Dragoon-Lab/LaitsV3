@@ -13,12 +13,12 @@
             "URL": "images/CPI/CPI-2014-ps1-08.jpg"
         },
         "taskDescription": [
-            "The human body tries to keep its temperature close to 98.6 degrees, which is called the set point of this system.  If the body temperature is below the set point (98.6 degrees), then the body shivers and makes other changes in order to increase its temperature.  If the body temperature is above the set point, the body sweats and makes other changes in order to lower its temperature.  The amount of change in the body temperature per minute is proportional to the how far the body&apos;s temperature is from the set point.  That is, when you are really hot, you sweat a lot and cool down faster than when you are only a little hot.  Construct a model of the body&apos;s temperature regulation that shows how the temperature changes each minute.  Use degrees as the unit of temperature.   Assume the body&apos;s initial temperature is 105 degrees, and that the body is able to reduce the difference between the set point and the body temperature by 50% each minute.",
+            "The human body tries to keep its temperature close to 98.6 degrees, which is called the set point of this system.  If the body temperature is below the set point (98.6 degrees), then the body shivers and makes other changes in order to increase its temperature.  If the body temperature is above the set point, the body sweats and makes other changes in order to lower its temperature.  The amount of change in the body temperature per minute is proportional to the how far the body's temperature is from the set point.  That is, when you are really hot, you sweat a lot and cool down faster than when you are only a little hot.  Construct a model of the body's temperature regulation that shows how the temperature changes each minute.  Use degrees as the unit of temperature.   Assume the body's initial temperature is 105 degrees, and that the body is able to reduce the difference between the set point and the body temperature by 50% each minute.",
             "",
             "Analysis:",
             "* Process:  The body temperature converges on the set point",
             "* Source: Irrelevant",
-            "* Destination:  the body&apos;s current temperature",
+            "* Destination:  the body's current temperature",
             "* Changing: a proportion, 50%, of the difference between the set point and the destination changes state each minute.",
             "",
             "Implementation:  See the image, or the problem \" propor to set point minus destination\" in the problem set \"generic changes\"."
@@ -27,7 +27,7 @@
             "Body temperature exhibits a behavior called \"goal seeking\" or \"homeostasis.\" When a quantity is above or below its set",
             "point, the system causes the quantity to change toward the set point. The convergence is usually exponential, as it is in",
             "this example, but it can be linear. Homeostatic subsystems are common in both natural and engineered systems. For",
-            "instance, your body regulates blood sugar, and the speed control on your car regulates the car&apos;s speed."
+            "instance, your body regulates blood sugar, and the speed control on your car regulates the car's speed."
         ],
         "slides": [
             {
@@ -189,6 +189,25 @@
                 "initial": 0.5
             }
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [],
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "goal_transfer",
+                "name": "Goal-seeking",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id2, id4, id3, id5",
+                "difficulty": {
+                    "isolation": 0,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            }
+        ]
     }
 }
