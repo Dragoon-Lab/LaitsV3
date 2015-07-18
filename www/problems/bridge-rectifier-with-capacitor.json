@@ -1,6 +1,6 @@
 {
     "task": {
-        "taskName": "full wave rectifier with capacitor",
+        "taskName": "bridge rectifier with capacitor",
         "time": {
             "start": 1,
             "end": 6000,
