@@ -134,7 +134,121 @@ define([
 
 					allowSliders: true
 				}
-			}
+			},
+            incremental: {
+                AUTHOR:{
+                    allowCreateNode:true,
+                    allowGraph:true,
+                    allowTable:true,
+                    allowForum:true,
+                    allowCreateSchema:true,
+                    allowProblemTimes:true,
+                    allowSaveAs:true,
+                    allowMerge:true,
+                    allowPreview:true,
+                    allowPrettify:true,
+                    allowHelp: true,
+
+                    allowDeleteNode: true,
+                    allowEditNode: true,
+
+                    showHints: true,
+                    showFeedback: true,
+
+                    enable:[
+                    ],
+
+                    allowSliders: true,
+
+                    promptSaveAs:true,
+                    initializeStudentModel : true
+                },
+
+                STUDENT:{
+                    allowCreateNode:true,
+                    allowGraph:true,
+                    allowTable:true,
+                    allowForum:true,
+                    allowPrettify:true,
+                    allowHelp: true,
+                    allowLessonLearned:true,
+                    allowDeleteNode: true,
+                    allowEditNode: true,
+
+                    showHints: true,
+                    showFeedback: true,
+                    showCorrectAnswer:true,
+
+                    enable:[
+                    ],
+
+                    allowSliders: true,
+                    plotAuthorSolution:true,
+                    initializeStudentModel : true
+                },
+
+                COACHED:{
+                    allowCreateNode:true,
+                    allowGraph:true,
+                    allowTable:true,
+                    allowForum:true,
+                    allowPrettify:true,
+                    allowHelp: true,
+                    allowLessonLearned:true,
+                    allowDeleteNode: true,
+                    allowEditNode: true,
+
+                    showHints: true,
+                    showFeedback: true,
+                    showCorrectAnswer:true,
+                    targetNodeStrategy:true,
+
+                    enable:[
+                    ],
+
+                    allowSliders: true,
+                    plotAuthorSolution:true,
+                    initializeStudentModel : true
+                },
+
+                TEST:{
+                    allowCreateNode:true,
+                    allowGraph:true,
+                    allowTable:true,
+                    allowForum:true,
+                    allowPrettify:true,
+                    allowHelp: true,
+
+                    allowDeleteNode: true,
+                    allowEditNode: true,
+
+                    showFeedback: true,
+                    enable:[
+                    ],
+
+                    allowSliders: true,
+                    plotAuthorSolution:true,
+                    initializeStudentModel : true
+                },
+
+                EDITOR:{
+                    allowCreateNode:true,
+                    allowGraph:true,
+                    allowTable:true,
+                    allowForum:true,
+                    allowPrettify:true,
+                    allowHelp: true,
+                    allowHints:true,
+                    allowDeleteNode: true,
+                    allowEditNode: true,
+
+                    enable:[
+                    ],
+
+                    allowSliders: true,
+                    initializeStudentModel : true
+                }
+            }
 		};
 
 		var config = {
@@ -183,7 +297,11 @@ define([
 				showNodeEditor:true,
 
 				//Problem Open Behavior
-				promptSaveAs:false
+				promptSaveAs:false,
+
+                //Model
+                initializeStudentModel : false
+
 			},
 
 			constructor: function(/*string*/ mode, /*string*/ activity){

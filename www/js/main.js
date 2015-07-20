@@ -85,8 +85,16 @@ define([
         errorMessage.show();
         throw Error("please retry, insufficient information");
     }
-	
-	// Start up new session and get model object from server
+    //Load Activity Parameters
+    //query.a gives the input activity through url
+    try{
+        activity_config  = new activityParameters(query.m, query.a);
+        console.log("ACTIVITY PARAMS", activity_config);
+    }catch(error){
+        throw Error("problem in creating activity configurations");
+    }
+
+    // Start up new session and get model object from server
 	try {
         var session = new loadSave(query);
     }
@@ -97,13 +105,6 @@ define([
         throw Error("problem in creating sessions");
     }
 
-	//Load Activity Parameters
-	try{
-		activity_config  = new activityParameters(query.m, "construction");
-		console.log("ACTIVITY PARAMS", activity_config);
-	}catch(error){
-		throw Error("problem in creating activity configurations");
-	}
 
     console.log("session is",session);
     logging.setSession(session);  // Give logger message destination
@@ -138,10 +139,15 @@ define([
         console.log("solution graph is",solutionGraph);
 
 		// get the UI state for the given state and activity
-		var ui_config = new UI(query.m , "construction");
+		var ui_config = new UI(query.m , query.a);
 		console.info("UI Parameters created:",ui_config);
+        console.log("sm ini ?",activity_config);
 
 		if(solutionGraph) {
+            if(activity_config.get("initializeStudentModel")){
+                console.log("student model being initialized");
+                givenModel.initializeStudentModel(solutionGraph);
+            }
             try {
                 givenModel.loadModel(solutionGraph);
             } catch (error) {
