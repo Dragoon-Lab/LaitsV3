@@ -90,25 +90,27 @@ define([
             console.log(activeSolution);
             if(activeSolution.status == "error" && activeSolution.type == "missing") {
 				// Return value from findSlution in calculation, returns an array and we check for status and any missing nodes
-				console.log("hello");
 				this.dialogWidget.set("content", this.generateErrorMessage(activeSolution)); //We show the error message like "A Node is Missing"
 				return;
 			}
+			//Checks if there are graphable nodes (only applicable in author mode)
 			if(activeSolution.plotValues.length == 0)
 			{
-				console.log("hello");
 				this.dialogWidget.set("content", "<div>Please fill in some nodes before trying to graph</div>"); //We show the error message like "A Node is Missing"
 				return;
 			}
 
+			//checks if the solution is a static solution
 			this.isStatic = this.checkForStatic(activeSolution);
 			this.staticVar = 0;
+			//If solution is static, brings up the statis plot
 			if(this.isStatic)
 			{
 				staticNodes = this.checkForParameters();
 				var staticPlot = this.findStaticSolution(true, staticNodes[this.staticVar], this.active.plotVariables);
 			}
 
+			//Checks if the mode is not in author mode, if not in author mode, find the "given" solution
 			if(this.mode != "AUTHOR"){
 				//check for author mode. Here we need to create just one graph.
 				this.given.plotVariables = array.map(this.active.plotVariables, function(id){
@@ -136,17 +138,19 @@ define([
 			this.dialogContent += "<div data-dojo-type='dijit/layout/TabContainer' style='overflow:visible; height:700px; width:501px;'>"
 			//create tab for graph and fill it
 			this.dialogContent += "<div id='GraphTab' data-dojo-type='dijit/layout/ContentPane' style='overflow:auto; ' data-dojo-props='title:\"Graph\"'>";
+			//Create graph divs along with their error message
 			array.forEach(this.active.plotVariables, function(id){
 				var show = this.model.active.getType(id) == "accumulator" || this.model.given.getParent(this.model.active.getGivenID(id));
 				var checked = show ? " checked='checked'" : "";
 				this.dialogContent += "<div><input id='sel" + id + "' data-dojo-type='dijit/form/CheckBox' class='show_graphs' thisid='" + id + "'" + checked + "/>" + " Show " + this.model.active.getName(id) + "</div>";
-				var style = show ? "" : " style='display: none;'";				
+				var style = show ? "" : " style='display: none;'";
+				//graph error message				
 				this.dialogContent += "<font color='red' id='graphMessage" + id + "'></font>";
 				this.dialogContent += "<div	 id='chart" + id + "'" + style + "></div>";
 				// Since the legend div is replaced, we cannot hide the legend here.
 				this.dialogContent += "<div class='legend' id='legend" + id + "'></div>";
 			}, this);
-			//create tab for table
+			//create tab for table, chose to have it selected or not based on the button clicked by user
 			if(this.buttonClicked == "graph")
 				this.dialogContent += "</div><div id='TableTab' data-dojo-type='dijit/layout/ContentPane' style='overflow:visible' data-dojo-props='title:\"Table\"'>"
 			if(this.buttonClicked == "table")
@@ -157,7 +161,7 @@ define([
 
 
 
-
+			//add static tab if solution is static
 			if(this.isStatic)
 			{
 			this.dialogContent += "<div id='StaticTab' data-dojo-type='dijit/layout/ContentPane' style='overflow:visible' selected = true data-dojo-props='title:\"Static\"'>"
@@ -174,6 +178,7 @@ define([
 					this.dialogContent += "<div class='legend' id='legendStatic" + id + "'></div>";
 				}, this);
 			}
+
 			//end divs for graph and table 
 			this.dialogContent += "</div></div></div>";
 
@@ -182,9 +187,10 @@ define([
 			this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' style='overflow:auto'>";
 
 			//text for correctness of solution
-			this.dialogContent += "<p>To reset sliders, close and reopen window</p><br>";
+			this.dialogContent += "<p id= 'solutionMessage'>To reset sliders, close and reopen window</p><br>";
 
 			this.isCorrect = false;
+			//check if the sollution is correct or not
 			if(this.mode != "AUTHOR"  && this.mode != "EDITOR")
 			{
 				if(this.model.active.matchesGivenSolutionAndCorrect())
@@ -200,13 +206,14 @@ define([
 						this.dialogContent += "<font color='red'>Your model does not match the author's.  You may have extra nodes in your model.</font><br>"
 					}
 					else{
-						console.log(this.model.active);
 						this.dialogContent += "<font color='red'>Unfortunately, your model's behavior does not match the author's.</font><br>";
 					}					 
 				}
 			}
+			//format solution
 			this.plotVariables = this.active.timeStep.xvars.concat(
 				this.active.timeStep.functions);
+			//checks for errors in the solution
 			if(this.mode === "AUTHOR" && this.checkForNan())
 			{
 				this.dialogContent += "<font color='red' id = 'errorText'>The solution contains imaginary or overflowed numbers</font><br>";
@@ -216,8 +223,7 @@ define([
 
 			this.createSliderAndDialogObject();	
 
-
-
+			//finds the tabs and adds logging for tabs being clicked and makes a border for the tabs
 			var graphTab = null;
 			var tableTab = null;
 			var staticTab = null;
@@ -228,6 +234,7 @@ define([
 				tableTab = dom.byId("dijit_layout_TabContainer_" + count + "_tablist_TableTab");
 				staticTab = dom.byId("dijit_layout_TabContainer_" + count + "_tablist_StaticTab");
 			}
+			//logging listeners 
 			graphTab.addEventListener("click", function(){ 
 				console.log("graph tab clicked");
 				logger.session.log('ui-action', {
@@ -243,7 +250,7 @@ define([
 				});
 			});
 
-
+			//adds borders
 			graphTab.style.border = "thin solid black";
 			tableTab.style.border = "thin solid black";
 
@@ -252,17 +259,17 @@ define([
 				staticTab.style.border = "thin solid black";
 				this.createComboBox(staticNodes);
 			}
+
 			var charts = {};
 			var chartsStatic = {};
 			var legends = {};
 			var legendsStatic = {};
 			var paneText="";
 			
-			//graphTabTitle.style.borderWidth = "3px";
-
-			/* List of variables to plot: Include functions */
 			
-			if(this.plotVariables.length>0){ //we check the length of object, if there are nodes , then we proceed else give an error and return
+			//adds pane text to the table tab
+			
+			if(this.plotVariables.length>0){ 
 				paneText += this.initTable();
 				paneText += this.setTableHeader();
 				paneText += this.setTableContent();
@@ -276,16 +283,25 @@ define([
 			}, "table");
 
 
+			//puts in the data for the graphs
 			if(this.active.plotVariables.length > 0){ //we check the length of object, if there are nodes, then we proceed else give an error and return
+				
 				array.forEach(this.active.plotVariables, function(id, k){
+
 					var str = "chart" + id;
 					charts[id] = new Chart(str);
-					charts[id].addPlot("default", {
-						type: Lines,
+					charts[id].addPlot("grid", {
+						type: Grid,
 						// Do not include markers if there are too
 						// many plot points.  It looks ugly and slows down
 						// plotting significantly.
-						markers: activeSolution.times.length < 25
+						hMajorLines: true, 
+						hMinorLines: false,
+						vMajorLines: true,
+						vMinorLines: false,
+						majorHLine: { color: "gray", width: 1 },
+         				majorVLine: { color: "gray", width: 1 }
+						//markers: activeSolution.times.length < 25
 						});
 					charts[id].addAxis("x", {
 						title: this.labelString(),
@@ -304,6 +320,7 @@ define([
 					if(this.mode != "AUTHOR"){
 						var givenID = this.model.active.getDescriptionID(id);
 					}
+
 					if(this.isCorrect || this.mode == "AUTHOR")
 					{
 						//plot chart for student node
@@ -321,18 +338,28 @@ define([
 							{stroke: "red"}
 						);
 					}
+
 					if(this.mode != "AUTHOR"  && this.mode != "EDITOR" && this.given.plotVariables[k]){
+						
 						charts[id].addSeries(
 							"Author's solution",
 							this.formatSeriesForChart(givenSolution, k), {stroke: "black"}
 						);
 					}
-					charts[id].render();
+					if(obj.max - obj.min > (Math.pow(10,-16)) || (obj.max - obj.min === 0))
+					{
+						charts[id].render();
+					}
+					else
+					{
+						dom.byId("solutionMessage").innerHTML = "Unable to graph, please increase the number of timesteps";
+					}
 					legends[id] = new Legend({chart: charts[id]}, "legend" + id);
 
 				}, this);
+			
 			} else {
-                //Now it is possible that there might be incomplete nodes which are not listed in active plot variables
+                //Now it is possible that there might be incomplete nodes which are not listed in active plot plotVariables
                 var thisModel = this;
                 var modStatus = true;
                 array.forEach(this.model.active.getNodes(), function (thisnode) {
@@ -346,7 +373,7 @@ define([
 				    this.dialogWidget.set("content", "<div>There isn't anything to plot. Try adding some accumulator or function nodes.</div>"); //Error telling there are no nodes and graph cant be rendered
 			}
 
-
+			//puts in data for the static graphs
 			if(this.isStatic)
 			{
 				var staticVar = this.checkStaticVar(true);
@@ -359,12 +386,18 @@ define([
 						var str = "chartStatic" + id;
 						//console.log(str);
 						chartsStatic[id] = new Chart(str);
-						chartsStatic[id].addPlot("default", {
-							type: Lines,
+						chartsStatic[id].addPlot("grid", {
+							type: Grid,
+							hMajorLines: true, 
+							hMinorLines: false,
+							vMajorLines: true,
+							vMinorLines: false,
+							majorHLine: { color: "gray", width: 1 },
+         					majorVLine: { color: "gray", width: 1 }
 							// Do not include markers if there are too
 							// many plot points.  It looks ugly and slows down
 							// plotting significantly.
-							markers: staticPlot.times.length < 25
+							//markers: staticPlot.times.length < 25
 							});
 						chartsStatic[id].addAxis("x", {
 							title: dom.byId("staticSelect").value,
@@ -439,6 +472,7 @@ define([
 					}
 				});
 			}, this);
+			//does the same for for static graphs
 			if(this.isStatic)
 			{
 				array.forEach(this.active.plotVariables, function(id){
@@ -474,17 +508,8 @@ define([
 			});
 		},
 
+		//creates the dropdown menu for the static window
 		createComboBox: function(staticNodes){
-			/*var tempData = [];
-			var temp = {id:1, name:1};
-			console.log(staticNodes);
-			array.forEach(staticNodes, function(node)
-			{
-				temp.id = node.description;
-				temp.name = node.description;
-				tempData.add(temp);
-			});
-			console.log(tempData);*/
 			var stateStore = new Memory();
 
 			array.forEach(staticNodes, function(node)
@@ -500,13 +525,13 @@ define([
 	    	}, "staticSelect");
 	    	//console.log(comboBox);	    	
 			this.disableStaticSlider();
-	    	this.registerEventOnStaticChange(comboBox);
 	    	on(comboBox, "change", lang.hitch(this, function(){
 					this.renderStaticDialog();
 					this.disableStaticSlider();
 				}));
 			},
 
+		//checks if the solution is static
 		checkForStatic: function(solution)
 		{
 			var values = solution.plotValues;
@@ -530,11 +555,12 @@ define([
 			return isStatic;
 		},
 
+		//hides the slider for the variable that is selected
 		disableStaticSlider: function()
 		{
 			var staticVar = this.checkStaticVar(true);
 			var id = staticVar.ID;
-			var parameters = this.checkForParameters();
+			var parameters = this.checkForParameters(true);
 			array.forEach(parameters, function(parameter){
 				dom.byId("labelGraph_" + parameter.ID).style.display = "initial";			
 				dom.byId("textGraph_" + parameter.ID).style.display = "initial";			
@@ -546,20 +572,13 @@ define([
 
 		},
 
+		//helper method for error messages
 		generateErrorMessage: function(solution)
 		{
 			return "content", "<div>Not all nodes have been completed. For example, "
 			       + solution.missingNode + " has an empty "+ solution.missingField +
 			       " field.</div>";
 		},
-
-		registerEventOnStaticChange: function(){
-			
-			
-		},
-
-		doLayout: function()
-		{},
 
 		resizeWindow: function(){
 			console.log("resizing window");
@@ -730,6 +749,7 @@ define([
 				this.contentPane.setContent(paneText);
 		},
 
+		//changes the static graph when sliders or dropdown change
 		renderStaticDialog: function(){
 			console.log("rendering static");
 			//console.log(this.chartsStatic);
@@ -795,6 +815,8 @@ define([
 				}
 			}
 		},
+
+		//checks if the solution goes to infinity at any point
 		checkForInfinity: function(values)
 		{
 			var result = false;
@@ -809,6 +831,7 @@ define([
 			return result;
 		},
 
+		//checks for which variables are static
 		checkStaticVar: function(choice){	//true is active, false is given 		
 			var parameters = this.checkForParameters(choice);
 			var result = parameters[0];
@@ -902,6 +925,7 @@ define([
 			return tableString;
 		},
 
+		//checks if any part of the solution is not a number ie imaginary
 		checkForNan: function(){
 			var solution = this.findSolution(true, this.plotVariables);
 			var nan = false;
@@ -916,6 +940,7 @@ define([
 			return nan;
 		},
 
+		//checks for what parrameters are a in a solution
 		checkForParameters: function(choice){ //true is active, false is given 
 			var result = [];
 			if(choice === true)
@@ -943,6 +968,7 @@ define([
 			return result;
 		},
 
+		//helper function for axes
 		formatAxes: function(text, value, precision){
 			if(value > 10000){
 				return value.toPrecision(3);

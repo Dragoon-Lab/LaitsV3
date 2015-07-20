@@ -11,7 +11,7 @@
  *
  *Dragoon is distributed in the hope that it will be useful,
  *but WITHOUT ANY WARRANTY; without even the implied warranty of
- *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
  *GNU Lesser General Public License for more details.
  *
  *You should have received a copy of the GNU Lesser General Public License
@@ -487,6 +487,10 @@ define([
 			getUnits: function(/*string*/ id){
 				return this.getNode(id).units;
 			},
+			getExplanation: function(/*string*/ id){
+				var node = this.getNode(id);
+				return (typeof node.explanation==="undefined")?"":(node && node.explanation);
+			},
 			getEachNodeUnitbyID: function(){
 				//summary: returns key/value pair of node-id/unit
 				var unitList = {};
@@ -515,6 +519,10 @@ define([
 					}
 				});
 				return outputs;
+			},
+			getPosition: function(/*string*/ id){
+				// Summary: return current position of the node.
+				return this.getNode(id).position;
 			},
 			getSchemas: function(){
 				return obj.model.task.schemas;
@@ -622,6 +630,7 @@ define([
 						values:{}
 					},
 					nodes: "",
+					rates: {},
 					difficulty: {
 						isolation: 1,
 						cues: 1,
@@ -865,6 +874,9 @@ define([
 			},
 			setDescription: function(/*string*/ id, /*string*/ description){
 				this.getNode(id).description = description.trim();
+			},
+			setExplanation: function(/*string*/ id, /*string*/ content){
+				this.getNode(id).explanation = content;
 			},
 			setParent: function(/*string*/ id, /*bool*/ parent){
 				this.getNode(id).parentNode = parent;

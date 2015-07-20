@@ -46,5 +46,9 @@ catch(Exception $e){
 //echo stripslashes($model);
 //echo "</pre>";
 
-
+//writing to file
+$file = fopen($name, "w");
+//fwrite($file, stripslashes($model));
+fwrite($file, $model);
+fclose($file);
 ?>

@@ -237,9 +237,11 @@ exports.openProblem = function(client,parameters){
     var url = urlRoot + '?' + user + section + problem + mode + nodeEditorMode + group + logging +
               "&c=Continue";
 
-    await(client.init().url(url,defer()));
-    client.windowHandleMaximize();
-
+    if(await(client.session(defer())) === undefined){
+        await(client.init().url(url,defer()));
+    } else {
+        await(client.url(url,defer()));
+    }
 }
 
 //Test Functions

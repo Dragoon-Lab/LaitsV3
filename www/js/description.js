@@ -46,7 +46,7 @@ define([
 			dom.byId("authorSetTimeEnd").value = this.timeObj.end;
 			this.lastStopTime = {value: this.timeObj.end};
 
-			dom.byId("authorSetTimeStep").value = this.timeObj.step;
+			//dom.byId("authorSetTimeStep").value = this.timeObj.step;
 			this.lastStepTime = {value: this.timeObj.step};
 
 			dom.byId("authorSetTimeStepUnits").value = this.timeObj.units || "seconds";
@@ -69,7 +69,9 @@ define([
             //for authorSetTimeStop
             var descWidgetStop = registry.byId('authorSetTimeEnd');
             //for authorSetTimeStep
-            var descWidgetStep = registry.byId('authorSetTimeStep');
+            //var descWidgetStep = registry.byId('authorSetTimeStep');
+            //for authorSetTimeStepUnits
+            var descWidgetUnit = registry.byId('authorSetTimeStepUnits');
             // Set checkbox for sharing
             registry.byId("authorProblemShare").attr("value", this.givenModel.getShare());
 
@@ -90,13 +92,17 @@ define([
                 }
             }));
             //for  time step field
-            descWidgetStep.on("change", lang.hitch(this, function () {
+            /*descWidgetStep.on("change", lang.hitch(this, function () {
                 var ret_step_time = typechecker.checkInitialValue('authorSetTimeStep', this.lastStepTime);
                 if (ret_step_time.value) {
                     this.timeObj.step = ret_step_time.value;
                 }
+            }));*/
+            descWidgetUnit.on("change", lang.hitch(this, function(){
+                console.log(registry.byId('timeStartUnits'));
+                dom.byId('timeStartUnits').innerHTML = descWidgetUnit.value;
+                dom.byId('timeEndUnits').innerHTML = descWidgetUnit.value;
             }));
-
             this._descEditor = registry.byId('authorDescDialog');
             aspect.around(this._descEditor, "hide", lang.hitch(this, function (doHide) {
                 var myThis = this;
@@ -114,7 +120,7 @@ define([
                         return;
                     }
 
-                    var ret_step_time = typechecker.checkInitialValue('authorSetTimeStep', myThis.lastStepTime);
+                    var ret_step_time = 1;
                     if (ret_step_time.errorType) {
                         return;
                     }
@@ -129,8 +135,8 @@ define([
                         myThis.timeObj.step = ret_step_time.value;
                     }
                     domStyle.set("start_end_errorbox","display","none");
-                    domStyle.set("timestep_errorbox1","display","none");
-                    domStyle.set("timestep_errorbox2","display","none");
+                    //domStyle.set("timestep_errorbox1","display","none");
+                    //domStyle.set("timestep_errorbox2","display","none");
                     var time_step_max = myThis.timeObj.end-myThis.timeObj.start;
                     errorDialogSpan = dom.byId("start_end_errorbox");
                     if(!( (myThis.timeObj.start < myThis.timeObj.end) )){
@@ -138,7 +144,7 @@ define([
                         domStyle.set(errorDialogSpan,"display","");
                         return;
                     }
-                    errorDialogSpan = dom.byId("timestep_errorbox1");
+                    /*errorDialogSpan = dom.byId("timestep_errorbox1");
                     if(!((myThis.timeObj.step > 0))){
                         console.log("Time step is inappropriate");
                         domStyle.set(errorDialogSpan,"display","");
@@ -149,7 +155,7 @@ define([
                         console.log("Time step must fit within the start and end times");
                         domStyle.set(errorDialogSpan,"display","");
                         return;
-                    }
+                    }*/
                     domStyle.set(errorDialogSpan,"display","none");
                     var tin = dom.byId("authorSetDescription").value;
                     var ll = dom.byId("authorSetLessonsLearned").value;

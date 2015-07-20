@@ -31,6 +31,8 @@ define([
 	"dojo/ready",
 	'dijit/registry',
     "dijit/Tooltip",
+	"dijit/TooltipDialog",
+	"dijit/popup",
 	"./menu",
 	"./load-save",
 	"./model",
@@ -54,7 +56,7 @@ define([
 	"dijit/Dialog",
 	"./image-box"
 ], function(
-		array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry, toolTip,
+		array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry, toolTip, tooltipDialog, popup,
 		menu, loadSave, model,
 		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, equation, 
 		description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan, memory, event, Dialog, ImageBox
@@ -342,6 +344,13 @@ define([
                                                "and graphed the author's model, providing an opportunity for retrospection.");
             makeTooltip('integrationMethod', "Euler's method - Best for functions that occur every tick of the time frame <br>" +
                                              "Midpoint - Best for continuous functions <br>");
+			makeTooltip('descriptionQuestionMark', " The quantity computed by the node ");
+			makeTooltip('typeQuestionMark', "<strong>Parameters</strong> represent fixed quantities that never change.<br>"+
+				"<strong>Accumulators</strong> represent a quantity that accumulates the values of its inputs over time.<br>"+
+			"<strong>Functions</strong> represent a value that is directly related to the values of its inputs, without regard to its <br>own previous value.");
+			makeTooltip('inputsQuestionMark', "Select a node name to quickly insert it into the expression.");
+			makeTooltip('expressionBoxQuestionMark', "Determines the value of the quantity. Additional math functions are available in the help menu");
+			makeTooltip('authorDescriptionQuestionMark', "The quantity computed by the node");
 			/*
 			 Connect node editor to "click with no move" events.
 			 */
@@ -400,6 +409,36 @@ define([
 						 lang.hitch(drawModel, drawModel.setConnections), true);
 			aspect.after(controllerObject, 'setConnection',
                                                  lang.hitch(drawModel, drawModel.setConnection), true);
+
+			aspect.after(drawModel, 'onPrettifyComplete', function(){
+				var prettifyConfirmDialog = new tooltipDialog({
+					style: "width: 300px;",
+					content: '<p>Your model is prettified. Keep Changes?</p>'+
+					' <button type="button" data-dojo-type="dijit/form/Button" id="savePrettify">Yes</button>'+
+					' <button type="button" data-dojo-type="dijit/form/Button" id="undoPrettify">No</button>',
+					onShow: function(){
+						on(dojo.byId('undoPrettify'), 'click', function(e){
+							event.stop(e);
+							popup.close(prettifyConfirmDialog);
+							prettifyConfirmDialog.destroyRecursive();
+							drawModel.undoPrettify();
+							session.saveProblem(givenModel.model);
+							registry.byId("prettifyButton").set("disabled", false);
+						});
+						on(dojo.byId('savePrettify'), 'click', function(e){
+							event.stop(e);
+							popup.close(prettifyConfirmDialog);
+							session.saveProblem(givenModel.model);
+							prettifyConfirmDialog.destroyRecursive();
+							registry.byId("prettifyButton").set("disabled", false);
+						});
+					}
+				});
+				popup.open({
+					popup: prettifyConfirmDialog,
+					around: dom.byId('prettifyButton')
+				});
+			});
 			 /*
 			 Autosave on close window
 			 It would be more efficient if we only saved the changed node.
@@ -492,7 +531,7 @@ define([
 				controllerObject.setForum(query);
 			}
 			var menuButtons=[];//This array is used later to called the setSelected function for all the buttons in the menu abr
-		        menuButtons.push("createNodeButton","graphButton","tableButton","forumButton","schemaButton","descButton","saveButton","mergeButton","previewButton","slidesButton","lessonsLearnedButton","doneButton");
+		        menuButtons.push("createNodeButton","graphButton","tableButton","forumButton","schemaButton","descButton","saveButton","mergeButton","previewButton","slidesButton","lessonsLearnedButton","doneButton", "prettifyButton");
 			// Also used in image loading below.
 			var descObj = new description(givenModel);
 			if(query.m == "AUTHOR"){
@@ -867,7 +906,7 @@ define([
 	                else
 	                     	window.history.back();
 				}
-				var searchPattern = new RegExp('^pal3', 'i'); 
+				var searchPattern = new RegExp('^pal3', 'i');
 				if(query.m != "AUTHOR" && searchPattern.test(query.s)){ // check if session name starts with pal
 					var tc = new tincan(givenModel, controllerObject._assessment,session, palTopicIndex);
 					//Connect to learning record store
@@ -892,6 +931,13 @@ define([
 					}		
 				});
 			}
+
+			menu.add("prettifyButton", function(e){
+				event.stop(e);
+				registry.byId("prettifyButton").set("disabled", true);
+				console.log("Pretify---------------");
+				drawModel.prettify();
+			});
 
             /*
              Add link to intro video
