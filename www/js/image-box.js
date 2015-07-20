@@ -33,15 +33,20 @@ define([
 ], function(dom, ready, mouse, domConstruct, domClass, domStyle, registry, on){
 	
 	var ImageControl = function(url, Model){		
-		this.url = url;
-
+		
+		
 		this.model =  Model;
 		this.mainImage = "myCanvas";
+		this.imageNode = null;
 		this.imageId = "markImageCanvas";
-		var img = new Image();
-		img.src = this.url;
-		
-		this.imageNode = img;	
+		this.url = null;
+		if(url) {
+			this.url = url;			
+			var img = new Image();
+			img.src = this.url;
+			this.imageNode = img;	
+		}
+	
 		// declare state variables
 		this._mainImageTainted = false;
 		this.canvasTopOffset = 0;
@@ -89,7 +94,13 @@ define([
 		})
 	}
 	ImageControl.prototype.initMarkImageDialog = function(controllerObj){
-		
+		// imageNode is not yet set and image is added to the model
+		if(!this.url) {
+			this.url = this.model.getImageURL();			
+			var img = new Image();
+			img.src = this.url;
+			this.imageNode = img;	
+		}
 		this.controller = controllerObj;
 		this.ctx = document.getElementById(this.imageId).getContext("2d");
 		var c = this; 
@@ -170,6 +181,16 @@ define([
 		});
 	},
 	ImageControl.prototype.markImage = function(/**string */ nodeId){
+		//debugger;
+		// check if there is no image in the model
+		if(!this.model.getImageURL()) return;
+		// if there is a image in the model and yet not initialized in the Image Box
+		if(!this.url) {
+			this.url = this.model.getImageURL();			
+			var img = new Image();
+			img.src = this.url;
+			this.imageNode = img;	
+		}
 		// set main image tainted with marks
 		var context = this;
 		this.canvasTopOffset = 20;
@@ -204,6 +225,7 @@ define([
 		
 	} 
 	ImageControl.prototype.clear = function(){
+		if(!this.model.getImageURL()) return; 
 		
 		var context = this;
 		if(!context.ctx) context.ctx = document.getElementById(this.imageId).getContext("2d");

@@ -203,6 +203,7 @@ define([
 		 */
 		var subMode = query.sm || "feedback";
 		/* In principle, we could load just one controller or the other. */
+		
 		var controllerObject = query.m == 'AUTHOR' ? new controlAuthor(query.m, subMode, givenModel, query.is) :
 				new controlStudent(query.m, subMode, givenModel, query.is);
 		
@@ -229,6 +230,8 @@ define([
 			var taskString = givenModel.getTaskName();
 			document.title ="Dragoon" + ((taskString) ? " - " + taskString : "");
 			
+			//configuring DOM UI 
+			style.set(registry.byId('imageButton').domNode, "display", "none");
 
 			//update the menu bar//
 			if(query.m == "AUTHOR"){
@@ -323,6 +326,11 @@ define([
 				controllerObject.logging.log('ui-action', {type: "menu-choice", name: "create-node"});
 				drawModel.addNode(givenModel.active.getNode(id));		
 				controllerObject.showNodeEditor(id);
+				
+				if(givenModel.getImageURL())
+					registry.byId('imageButton').set('disabled', false);
+				else 
+					registry.byId('imageButton').set('disabled', true);
 			});
 
             // Show tips for Root in node modifier and Share Bit in Description and Time
@@ -357,6 +365,10 @@ define([
 			aspect.after(drawModel, "onClickNoMove", function(mover){
 				if(mover.mouseButton != 2) //check if not right click
 					controllerObject.showNodeEditor(mover.node.id);
+					if(givenModel.getImageURL())
+						registry.byId('imageButton').set('disabled', false);
+					else 
+						registry.byId('imageButton').set('disabled', true);
 			}, true);
 			
 			/* 
@@ -534,6 +546,7 @@ define([
 		        menuButtons.push("createNodeButton","graphButton","tableButton","forumButton","schemaButton","descButton","saveButton","mergeButton","previewButton","slidesButton","lessonsLearnedButton","doneButton", "prettifyButton");
 			// Also used in image loading below.
 			var descObj = new description(givenModel);
+			
 			if(query.m == "AUTHOR"){
 				var db = registry.byId("descButton");
 				db.set("disabled", false);
@@ -545,8 +558,7 @@ define([
 				db.set("disabled", false);
 				db = registry.byId("schemaButton");
 				db.set("disabled", false);
-				db = registry.byId("imageButton");
-				db.set("disabled", false);
+				
 				// Description button wiring
 				menu.add("descButton", function(e){
 					event.stop(e);
@@ -767,7 +779,8 @@ define([
 				// code for image marker button
 				on(registry.byId("imageButton"), "click", function(event){
 					event.preventDefault();
-					
+					// check if image is initialilzed in ImageBox, if it was not initialized before, initialize it nw
+					if(!imgMarker.url) imgMarker.initMarkImageDialog(controllerObject);
 					//display the box
 					//if currentID present , update the savedmarks from the model
 					registry.byId('savedMark').getOptions().every(function(ele, idx, array){
