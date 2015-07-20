@@ -101,6 +101,7 @@ define([
 			var node = document.getElementById(c.imageId);
 			node.width = c.imageNode.width; node.height = c.imageNode.height;
 		}
+		registry.byId('markImageClear').set('disabled', true);
 		setTimeout(function(){		
 			c.ctx.drawImage(c.imageNode, 0,0);	
 		}, 0)
@@ -165,6 +166,7 @@ define([
 				document.addEventListener('click',offFocusHandler);
 			}
 			registry.byId('newMark').set('value', context.startX + " , " +context.startY + " , " + context.selectedWidth + " , " + context.selectedHeight);
+			registry.byId('markImageClear').set('disabled', false);
 			this.mouseUp = false;
 			this.mouseDown = false;
 		});
@@ -199,7 +201,8 @@ define([
 		mark.selected = false;
 		console.log(mark);
 		registry.byId('savedMark').addOption(mark);
-		
+		this.clear();
+		registry.byId('markImageClear').set('disabled', true);
 		
 	} 
 	ImageControl.prototype.clear = function(){
@@ -262,10 +265,10 @@ define([
 	}
 	ImageControl.prototype.removeMap = function(){
 		var selected = registry.byId('savedMark').get('value');
-		//if(!selected) return;
-		console.log(selected);
+		if(!selected) return;
+		console.log(selected, "removed");
 		registry.byId('savedMark').removeOption(selected);
-		console.log(typeof registry.byId('savedMark').removeOption);
+		
 	}
 
 	return ImageControl;
