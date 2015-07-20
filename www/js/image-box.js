@@ -32,16 +32,14 @@ define([
 	"dojo/on"
 ], function(dom, ready, mouse, domConstruct, domClass, domStyle, registry, on){
 	
-	var ImageControl = function(url, Model){
-		/**patching the url in case its null with rabbits */
-		if(!url) url = "images/rabbit.jpeg";
+	var ImageControl = function(url, Model){		
 		this.url = url;
 
 		this.model =  Model;
 		this.mainImage = "myCanvas";
 		this.imageId = "markImageCanvas";
 		var img = new Image();
-		img.src = this.url;	
+		img.src = this.url;
 		
 		this.imageNode = img;	
 		// declare state variables
