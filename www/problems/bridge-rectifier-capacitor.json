@@ -1,23 +1,34 @@
 {
     "task": {
-        "taskName": "Full wave rectifier with smoothing capacitor",
+        "taskName": "bridge-rectifier-capacitor",
         "time": {
-            "start": 0,
-            "end": 0.02,
-            "step": 0.0003,
+            "start": 1,
+            "end": 6000,
+            "step": 1,
             "integrationMethod": "Eulers Method",
-            "units": "seconds"
+            "units": "milliseconds"
         },
         "properties": {},
         "image": {
-            "URL": "http://i.stack.imgur.com/BLGnf.gif"
+            "URL": "http:\/\/i.stack.imgur.com\/BLGnf.gif"
         },
         "taskDescription": [
-            "Model a full wave rectifier with a 5 voltage AC power supply, a 5000 ohm load and a 0.1 farad smoothing capacitor.  Graph the output voltage.  This model is buggy.  The changes to the accumulator seem to be divided by the size of the time step.",
+            "Model a full wave rectifier with a 5 voltage AC power supply, a 5000 ohm load and a 0.1 farad smoothing capacitor.  Graph the output voltage.  You have been given nodes that model the AC voltage source.",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
             "",
             ""
         ],
-        "lessonsLearned": "",
+        "lessonsLearned": [
+            "",
+            "",
+            "",
+            ""
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",
@@ -27,8 +38,8 @@
                     }
                 ],
                 "position": {
-                    "x": 499.9999694824219,
-                    "y": 101.98863220214844
+                    "x": 497,
+                    "y": 313
                 },
                 "attemptCount": {
                     "description": 0,
@@ -38,20 +49,50 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                },
                 "name": "AC voltage source",
                 "description": "alternating current voltage source",
                 "genus": "required",
                 "type": "function",
                 "units": "volts",
-                "equation": "id2*sinewave(1/60,0)"
+                "equation": "id2*sinewave(0.02,0)"
             },
             {
                 "ID": "id2",
                 "inputs": [],
                 "position": {
-                    "x": 354.4410705566406,
-                    "y": 76.4297103881836
+                    "x": 460.33096313477,
+                    "y": 112.33095550537
                 },
                 "attemptCount": {
                     "description": 0,
@@ -59,7 +100,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "Max voltage",
@@ -79,8 +120,8 @@
                     }
                 ],
                 "position": {
-                    "x": 567.9971313476562,
-                    "y": 205.9801025390625
+                    "x": 571,
+                    "y": 436
                 },
                 "attemptCount": {
                     "description": 0,
@@ -106,8 +147,8 @@
                     }
                 ],
                 "position": {
-                    "x": 415.9942932128906,
-                    "y": 214.9857940673828
+                    "x": 422,
+                    "y": 432
                 },
                 "attemptCount": {
                     "description": 0,
@@ -138,8 +179,8 @@
                     }
                 ],
                 "position": {
-                    "x": 497.99713134765625,
-                    "y": 304.98577880859375
+                    "x": 499,
+                    "y": 612
                 },
                 "attemptCount": {
                     "description": 0,
@@ -149,7 +190,37 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                },
                 "name": "Lumpy positive voltage",
                 "genus": "required",
                 "description": "AC voltage with negative peaks flipped over",
@@ -170,8 +241,8 @@
                     }
                 ],
                 "position": {
-                    "x": 657.9971313476562,
-                    "y": 128.99147033691406
+                    "x": 791,
+                    "y": 454
                 },
                 "attemptCount": {
                     "description": 0,
@@ -202,8 +273,8 @@
                     }
                 ],
                 "position": {
-                    "x": 655,
-                    "y": 301.9886169433594
+                    "x": 645,
+                    "y": 717
                 },
                 "attemptCount": {
                     "description": 0,
@@ -230,12 +301,12 @@
                     },
                     {
                         "ID": "id10",
-                        "label": "/"
+                        "label": "\/"
                     }
                 ],
                 "position": {
-                    "x": 776.9885864257812,
-                    "y": 116.98863220214844
+                    "x": 728,
+                    "y": 317
                 },
                 "attemptCount": {
                     "description": 0,
@@ -251,7 +322,7 @@
                 "genus": "required",
                 "type": "function",
                 "units": "volts",
-                "equation": "id9/id10"
+                "equation": "id9\/id10"
             },
             {
                 "ID": "id9",
@@ -262,12 +333,12 @@
                     },
                     {
                         "ID": "id11",
-                        "label": "/"
+                        "label": "\/"
                     }
                 ],
                 "position": {
-                    "x": 760.9942626953125,
-                    "y": 280.9801025390625
+                    "x": 891,
+                    "y": 321
                 },
                 "attemptCount": {
                     "description": 0,
@@ -283,14 +354,14 @@
                 "genus": "required",
                 "type": "function",
                 "units": "amps",
-                "equation": "id6/id11"
+                "equation": "id6\/id11"
             },
             {
                 "ID": "id10",
                 "inputs": [],
                 "position": {
-                    "x": 879.4410400390625,
-                    "y": 105.42118835449219
+                    "x": 717.33093261719,
+                    "y": 111.33095550537
                 },
                 "attemptCount": {
                     "description": 0,
@@ -314,8 +385,8 @@
                 "ID": "id11",
                 "inputs": [],
                 "position": {
-                    "x": 886.4439086914062,
-                    "y": 270.42120361328125
+                    "x": 882.33093261719,
+                    "y": 112.33095550537
                 },
                 "attemptCount": {
                     "description": 0,
@@ -336,91 +407,175 @@
                 "units": "ohms"
             }
         ],
-        "studentModelNodes": [],
+        "studentModelNodes": [
+            {
+                "ID": "id12",
+                "inputs": [],
+                "position": {
+                    "x": 497,
+                    "y": 313
+                },
+                "status": {
+                    "equation": {
+                        "disabled": false,
+                        "status": "incorrect"
+                    },
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id1",
+                "units": "volts",
+                "type": "function",
+                "equation": ""
+            },
+            {
+                "ID": "id13",
+                "inputs": [],
+                "position": {
+                    "x": 460.33096313477,
+                    "y": 112.33095550537
+                },
+                "status": {
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id2",
+                "initial": 5,
+                "units": "volts",
+                "type": "parameter"
+            }
+        ],
         "schemas": [
             {
                 "ID": "schema1",
-                "schemaClass": "capacitor",
-                "name" : "Capacitor",
+                "schemaClass": "Capacitor Behavior",
+                "name": "Capacitor Behavior",
                 "competence": {
                     "errors": 0,
                     "total": 0,
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id6, id9, id8, id10",
+                "nodes": "id7, id8, id10, id6",
+                "rates": {},
                 "difficulty": {
                     "isolation": 1,
-                    "cues": 0,
-                    "phrases": 0
+                    "cues": 1,
+                    "phrases": 1
                 }
             },
             {
                 "ID": "schema2",
-                "schemaClass": "alternating_voltage_generator",
-                "name" : "Alternating voltage generator",
+                "schemaClass": "Resistor Behavior",
+                "name": "Resistor Behavior",
                 "competence": {
                     "errors": 0,
                     "total": 0,
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id1, id2",
+                "nodes": "id11, id9",
+                "rates": {},
                 "difficulty": {
                     "isolation": 1,
-                    "cues": 0,
-                    "phrases": 0
+                    "cues": 1,
+                    "phrases": 1
                 }
             },
             {
                 "ID": "schema3",
-                "schemaClass": "full_wave_rectifier",
-                "name" : "Full wave rectifier",
+                "schemaClass": "Bridge Rectifier Behavior",
+                "name": "Bridge Rectifier Behavior",
                 "competence": {
                     "errors": 0,
                     "total": 0,
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id1, id3, id4, id5",
+                "nodes": "id1, id4, id3, id5",
+                "rates": {},
                 "difficulty": {
                     "isolation": 1,
-                    "cues": 0,
-                    "phrases": 0
+                    "cues": 1,
+                    "phrases": 1
                 }
             },
             {
                 "ID": "schema4",
-                "schemaClass": "ohms_law",
-                "name" : "Ohms law",
+                "schemaClass": "Diode Behavior-Reverse",
+                "name": "Diode Behavior-Reverse",
                 "competence": {
                     "errors": 0,
                     "total": 0,
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id6, id9, id11",
+                "nodes": "id1, id4",
+                "rates": {},
                 "difficulty": {
                     "isolation": 1,
-                    "cues": 0,
-                    "phrases": 0
+                    "cues": 1,
+                    "phrases": 1
                 }
             },
             {
                 "ID": "schema5",
-                "schemaClass": "smoothing_capacitor_for_full_wave",
-                "name" : "Smoothing capacitor for a full wave rectifier",
+                "schemaClass": "Diode Behavior-Forward",
+                "name": "Diode Behavior-Forward",
                 "competence": {
                     "errors": 0,
                     "total": 0,
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id5, id7, id6, id9, id10",
+                "nodes": "id1, id3",
+                "rates": {},
                 "difficulty": {
                     "isolation": 1,
-                    "cues": 0,
-                    "phrases": 0
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema6",
+                "schemaClass": "Bridge Rectifier with Capacitor",
+                "name": "Bridge Rectifier with Capacitor",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id4, id3, id5, id7, id6, id8, id9, id10, id11",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
                 }
             }
         ]

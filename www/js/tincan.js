@@ -61,7 +61,7 @@ define([
 			this.tincan = new TinCan ({
 			    	recordStores: [
 			            {
-			                endpoint:"http://ec2-54-68-99-213.us-west-2.compute.amazonaws.com/data/xAPI/", 
+			                endpoint:"http://pal3.ict.usc.edu/php/SubmitResourceScore.php",
 			                username: "0ed3c15d57b33439145ed2684c1ba09b48a33410",
 			                password: "feb46eec5cdedce5553550318ff93ea9b48ea69a",
 			                allowFail: false
@@ -86,10 +86,10 @@ define([
 
 		sendStatements : function(){
 			//send statement to learning record store.
-			var baseURL = 'https://s3-us-west-1.amazonaws.com/ictpal3/'
+			var baseURL = 'http://pal3.ict.usc.edu/lrs/';
+			var api_key = "feb46eec5cdedce5553550318ff93ea9b48ea69a";
 			var statement = {};
 			var assesmentScore = this._assessment.getAssessmentScore("dummy");
-			var successFactor = this._assessment.getSuccessFactor();
 
 			var username = this._session.params.u;
 			var email = username;
@@ -106,7 +106,7 @@ define([
 					        "mbox": "mailto:" + email
 				    	};
 			statement.verb = {
-					        "id": baseURL + "Completed.html",
+					        "id": baseURL + "verbs/" + "Completed.html",
 					        "display": {
 					            "en-US": "Completed"
 					        }
@@ -114,9 +114,9 @@ define([
 			
 			statement['object'] = {
 							"objectType": "Activity",
-							"id" : baseURL + this._session.params.p + ".html",
+							"id" : baseURL+ "activities/"+ this._model.getTaskName(),
 					        "definition": {
-					            "name": { "en-US": this._session.params.p }
+					            "name": { "en-US": this._model.getTaskName() }
 					        }
 						  };			
 			
@@ -125,9 +125,9 @@ define([
 			array.forEach(schemas, lang.hitch(this, function(schema){ 
 				statement.context = {
 						"contextActivities": {
-				           "parent": [{
+				           "category": [{
 				                "objectType": "Activity",
-				                "id": baseURL + schema.schemaClass + ".html",
+				                "id": baseURL + "activities/" + schema.name ,
 				                "definition": {
 				                    "name": {
 				                        "en-US": schema.name
@@ -136,7 +136,7 @@ define([
 				            }],
 				            "grouping": [{
 				                "objectType": "Activity",
-				                "id": baseURL + schema.schemaClass + ".html",
+				                "id": baseURL + "activities/" + topic,
 				                "definition": {
 				                    "name": {
 				                        "en-US": topic
@@ -154,16 +154,40 @@ define([
 			            "scaled": assesmentScore[schema.name]
 			        },
 			        "extensions":{
-			        	 "https://s3-us-west-1.amazonaws.com/ictpal3/successFactor" : successFactor
+						"http://pal3.ict.usc.edu/lrs/extensions/passive": false,
+						"http://pal3.ict.usc.edu/lrs/extensions/xp": "20",
+						"http://pal3.ict.usc.edu/lrs/extensions/exploreLevel": 0.9
 			        }
 		    	};
+				var stmt = new TinCan.Statement({
+					actor : statement.actor,
+					verb : statement.verb,
+					object: statement.object,
+					result: statement.result,
+					context : statement.context
+				},false);
 
+				//Add object and remove target from Statement
+				stmt.object = stmt.target;
+				delete stmt.target;
+				console.log("Sending Statement: ", stmt);
 
-		    	console.log("Sending Statement: ", statement);
-		    	//Send statement to LRS
-		    	this.tincan.sendStatement(statement);
+				//Send statement to LRS
+				dojo.xhrPost({
+					url:'http://pal3.ict.usc.edu/php/SubmitResourceScore.php',
+					postData:"json="+ JSON.stringify(stmt) + "&api_key="+ api_key,
+					handleAs:'text',
+					sync:true,
+					load: function(response){
+						console.log(response);
+					},
+					error: function(err){
+						console.log(err);
+					}
+				});
 			}));
 		},
+
 		isoDuration: function(milliseconds) {
    			var d = new Date(milliseconds);
    			return 'P' + 'T' + d.getUTCHours() + 'H' + d.getUTCMinutes() + 'M' + d.getUTCSeconds() +'S';

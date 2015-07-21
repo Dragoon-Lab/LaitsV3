@@ -31,6 +31,8 @@ define([
 	"dojo/ready",
 	'dijit/registry',
     "dijit/Tooltip",
+	"dijit/TooltipDialog",
+	"dijit/popup",
 	"./menu",
 	"./load-save",
 	"./model",
@@ -54,7 +56,7 @@ define([
 	"dojo/_base/event",
 	"./ui-parameter"
 ], function(
-		array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry, toolTip,
+		array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry, toolTip, tooltipDialog, popup,
 		menu, loadSave, model, Graph, Table, controlStudent, controlAuthor, drawmodel, logging, equation,
 		description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan,
 		activityParameters, memory, event, UI){
@@ -66,6 +68,7 @@ define([
 	 *  Tags:
 	 *			menu, buttons, controller
 	 */
+	
 	console.log("load main.js");
 
     //remove the loading division, now that the problem is being loaded
@@ -121,17 +124,23 @@ define([
         //display warning message if not using the supported browser and version
         var checkBrowser = session.browser.name;
         var checkVersion = session.browser.version;
-
         if((checkBrowser ==="Chrome" && checkVersion<41) ||
-			(checkBrowser==="Safari" && checkVersion<8)||
-			(checkBrowser==="msie" && checkVersion<11)||
-			(checkBrowser==="Firefox")||
-			(checkBrowser==="Opera")){
-            var errorMessage = new messageBox("errorMessageBox", "warn","You are using " +
-				session.browser.name+" version " +session.browser.version +
-				". Dragoon is known to work well in these (or higher) browser versions: " +
-				"Google Chrome v41 or later Safari v8 or later Internet Explorer v11 or later");
-            errorMessage.show();
+           (checkBrowser==="Safari" && checkVersion<8) ||
+           (checkBrowser==="msie" && checkVersion<11) ||
+           (checkBrowser==="Firefox") || (checkBrowser==="Opera")){
+            var errorMessage = new messageBox("errorMessageBox", "warn","You are using "+ session.browser.name+
+                " version "+session.browser.version + 
+                ". Dragoon is known to work well in these (or higher) browser versions: Google Chrome v41 or later Safari v8 or later Internet Explorer v11 or later");
+            // adding close callback to update the state for browser message
+			var compatibiltyState = new State(query.u, query.s, "action");
+			errorMessage.addCallback(function(){				
+				compatibiltyState.put("browserCompatibility", "ack_" + getVersion());
+			});
+			compatibiltyState.get("browserCompatibility").then(function(res) {				
+				if(!(res && res == "ack_" + getVersion())){
+					errorMessage.show();
+				}
+			});
         }
 
 		var givenModel = new model(query.m, query.p);
@@ -257,6 +266,24 @@ define([
 		ready(function(){
 			var taskString = givenModel.getTaskName();
 			document.title ="Dragoon" + ((taskString) ? " - " + taskString : "");
+			// TODO: TEST THESE
+			/*
+			//update the menu bar//
+			if(query.m == "AUTHOR"){
+				style.set(registry.byId('schemaButton').domNode, "display", "inline-block");
+				style.set(registry.byId('descButton').domNode, "display", "inline-block");
+				style.set(registry.byId('saveButton').domNode, "display", "inline-block");
+				style.set(registry.byId('mergeButton').domNode, "display", "inline-block");
+				style.set(registry.byId('previewButton').domNode, "display", "inline-block");
+			}
+			
+			//In TEST and EDITOR mode remove background color and border colors		 
+			if(controllerObject._mode == "TEST" || controllerObject._mode == "EDITOR"){
+				showColor = false;
+			}else{
+				showColor = true;
+			}*/
+
 
 			//GET problem-topic index for PAL problems
 			palTopicIndex = "";
@@ -295,6 +322,7 @@ define([
 			aspect.after(controllerObject, "colorNodeBorder",
 						 lang.hitch(drawModel, drawModel.colorNodeBorder), 
 						 true);
+
 			/*
 			 * Connect node editor to "click with no move" events.
 			 */
@@ -355,6 +383,36 @@ define([
 				lang.hitch(drawModel, drawModel.setConnections), true);
 			aspect.after(controllerObject, 'setConnection',
 				lang.hitch(drawModel, drawModel.setConnection), true);
+			aspect.after(drawModel, 'onPrettifyComplete', function(){
+				var prettifyConfirmDialog = new tooltipDialog({
+					style: "width: 300px;",
+					content: '<p>Your model is prettified. Keep Changes?</p>'+
+					' <button type="button" data-dojo-type="dijit/form/Button" id="savePrettify">Yes</button>'+
+					' <button type="button" data-dojo-type="dijit/form/Button" id="undoPrettify">No</button>',
+					onShow: function(){
+						on(dojo.byId('undoPrettify'), 'click', function(e){
+							event.stop(e);
+							popup.close(prettifyConfirmDialog);
+							prettifyConfirmDialog.destroyRecursive();
+							drawModel.undoPrettify();
+							session.saveProblem(givenModel.model);
+							registry.byId("prettifyButton").set("disabled", false);
+						});
+						on(dojo.byId('savePrettify'), 'click', function(e){
+							event.stop(e);
+							popup.close(prettifyConfirmDialog);
+							session.saveProblem(givenModel.model);
+							prettifyConfirmDialog.destroyRecursive();
+							registry.byId("prettifyButton").set("disabled", false);
+						});
+					}
+				});
+				popup.open({
+					popup: prettifyConfirmDialog,
+					around: dom.byId('prettifyButton')
+				});
+			});
+
 			 /*
 			 Autosave on close window
 			 It would be more efficient if we only saved the changed node.
@@ -505,7 +563,13 @@ define([
 					"and graphed the author's model, providing an opportunity for retrospection.");
 				makeTooltip('integrationMethod', "Euler's method - Best for functions that occur every tick of the time frame <br>" +
 					"Midpoint - Best for continuous functions <br>");
-
+				makeTooltip('descriptionQuestionMark', " The quantity computed by the node ");
+				makeTooltip('typeQuestionMark', "<strong>Parameters</strong> represent fixed quantities that never change.<br>"+
+					"<strong>Accumulators</strong> represent a quantity that accumulates the values of its inputs over time.<br>"+
+					"<strong>Functions</strong> represent a value that is directly related to the values of its inputs, without regard to its <br>own previous value.");
+				makeTooltip('inputsQuestionMark', "Select a node name to quickly insert it into the expression.");
+				makeTooltip('expressionBoxQuestionMark', "Determines the value of the quantity. Additional math functions are available in the help menu");
+				makeTooltip('authorDescriptionQuestionMark', "The quantity computed by the node");
 			}
 
 			if(activity_config.get("allowSaveAs")){
@@ -813,6 +877,23 @@ define([
 				});
 
 				/*
+			 	 Add link to intro video
+			 	 */
+				var video = dom.byId("menuIntroVideo");
+				on(video, "click", function(){
+					controllerObject.logging.log('ui-action', {
+						type: "menu-choice", 
+						name: "intro-video"
+					});
+					// "newwindow": the pop-out window name, not required, could be empty
+					// "height" and "width": pop-out window size
+					// Other properties could be changed as the value of yes or no
+					window.open("https://www.youtube.com/watch_popup?v=Pll8iyDzcUs","newwindow",
+								"height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
+							   );
+				});
+
+				/*
 				 Add link to list of math functions
 				 */
 				var math_func = dom.byId("menuMathFunctions");
@@ -956,6 +1037,14 @@ define([
 				style.set(registry.byId('mergeButton').domNode, "display", "none");
 				style.set(registry.byId('previewButton').domNode, "display", "none");
 			}
+
+			menu.add("prettifyButton", function(e){
+				event.stop(e);
+				registry.byId("prettifyButton").set("disabled", true);
+				console.log("Pretify---------------");
+				drawModel.prettify();
+			});
+
 			/*
 			 * This is a work-around for getting a button to work inside a MenuBar.
 		 	 * Otherwise, there is a superfluous error message.

@@ -66,7 +66,7 @@ describe("Student mode with incorrect rabbits", function() {
             dtest.checkExpression(client);    
             dtest.popupWindowPressOk(client);
             dtest.setNodeUnits(client, "1/year");
-            dtest.setNodeExpression(client, "growth rate");
+            dtest.setNodeExpression(client, "growth rate/0");
             dtest.checkExpression(client);
             dtest.popupWindowPressOk(client);            
             //dtest.popupWindowPressOk(client);

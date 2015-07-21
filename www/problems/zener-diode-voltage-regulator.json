@@ -1,6 +1,6 @@
 {
     "task": {
-        "taskName": "zener diode voltage regulator",
+        "taskName": "Zener diode voltage regulator",
         "time": {
             "start": 0,
             "end": 120,
@@ -253,7 +253,7 @@
                 "genus": "required",
                 "type": "function",
                 "units": "volts",
-                "equation": "20+sinewave(id11,0)"
+                "equation": "20+sinewave(1/id11,0)"
             },
             {
                 "ID": "id9",

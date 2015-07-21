@@ -28,12 +28,13 @@ define([
 	"dojo/dom-attr", 
 	"dojo/dom-construct", 
 	"dojo/dom-style",
+	"dojo/query",
 	"dijit/Menu", 
 	"dijit/MenuItem",
 	"./equation",
 	"./graph-objects", 
 	"jsPlumb/jsPlumb"
-], function(array, declare, lang, attr, domConstruct, domStyle, Menu, MenuItem, equation, graphObjects){
+], function(array, declare, lang, attr, domConstruct, domStyle, query, Menu, MenuItem, equation, graphObjects){
 	// Summary: 
 	//			MVC for the canvas
 	// Description:
@@ -424,6 +425,59 @@ define([
 
 		setLogging: function(/*string*/ logging){
 			this._logging = logging;
+		},
+
+		prettify: function(){
+			//Save old positions
+			this.oldNodePositions =[];
+			var i =0;
+			array.forEach(this._givenModel.getNodes(), lang.hitch(this, function (node) {
+				this.oldNodePositions[i]= this._givenModel.getPosition(node.ID);
+				this.oldNodePositions[i].name = node.ID;
+				i++;
+			}));
+
+			//Generate a structure of the graph required by Liviz library
+			var structure = " digraph chargraph { \n graph[overlap_scaling=1, sep=1,  overlap=prism, splines=line]; \n";
+			var nodes = query(".parameter");
+			nodes = nodes.concat(query(".accumulator"));
+			nodes = nodes.concat(query(".triangle"));
+			nodes = nodes.concat(query(".function"));
+
+			var edges = this._instance.getAllConnections();
+			for (var i = 0; i < edges.length; i++) {
+				var c = edges[i];
+				//g.setEdge(c.source.id,c.target.id );
+				structure += c.source.id+"->"+ c.target.id+"\n";
+			}
+			structure += "}";
+
+			//call liviz library to calculate node positions
+			w_launch(structure, this);
+		},
+
+		undoPrettify: function(){
+			//Undo Prettify Effect
+			array.forEach(this.oldNodePositions, function(nodePos){
+				var node = dojo.byId(nodePos.name);
+				node.style.left= nodePos.x + "px";
+				node.style.top = nodePos.y + "px";
+			});
+			for(var i=0; i<this.oldNodePositions.length; i++){
+				this._givenModel.setPosition(this.oldNodePositions[i].name, {"x": this.oldNodePositions[i].x, "y":this.oldNodePositions[i].y});
+			}
+			this._instance.repaintEverything();
+			this._instance.repaintEverything();
+			this.oldNodePositions = [];
+		},
+
+		onPrettifyComplete: function(nodePosition){
+			//Called from Liviz on completing node positioning
+			for(var i=0; i<nodePosition.length; i++){
+				this._givenModel.setPosition(nodePosition[i].name, {"x": nodePosition[i].x, "y":nodePosition[i].y});
+			}
+			this._instance.repaintEverything();
+			this._instance.repaintEverything();
 		}
 
 	});
