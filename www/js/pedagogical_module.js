@@ -292,12 +292,9 @@ define([
 		}
 	};
 
-	var nodeEditorActionTable = {
+	var actionTable = {
 		// Summary: This table is used for determining the proper response to a student's answers in the 
 		//		remaining sections (see 'Pedagogical_Module.docx' in the documentation)
-
-		//		Node Editor action table will be used for any activity that uses existing node editor.
-		//		All the actions remain same, only add additional field(s) in _getInterpretation and _enableNext
 		correct: {
 			COACHED: function(obj, part){
 				state(obj, part, "correct");
@@ -321,7 +318,12 @@ define([
 			EDITOR: function(obj, part){
 				state(obj, part, "correct");
 				disable(obj, "enableRemaining", false);
+			},
+			TWEEK : function(obj, part){
+				state(obj, part, "correct");
+				disable(obj, part, true);
 			}
+			
 		},
 		firstFailure: {
 			COACHED: function(obj, part){
@@ -342,6 +344,9 @@ define([
 			EDITOR: function(obj, part){
 				state(obj, part, "incorrect");
 				disable(obj, "enableRemaining", false);
+			},
+			TWEEK : function(obj, part){
+				state(obj, part, "incorrect");
 			}
 		},
 		secondFailure: {
@@ -367,6 +372,10 @@ define([
 			EDITOR: function(obj, part){
 				state(obj, part, "incorrect");
 				disable(obj, "enableRemaining", false);
+			},
+			TWEEK : function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, part, true);
 			}
 		},
 		anotherFailure: {
@@ -398,9 +407,6 @@ define([
 		}
 	};
 
-	/*
-	 * Add additional tables for activities that does not use node editor.
-	 */
 	//Declare variable for accessing state.js module
 	var record = null;
 
@@ -409,6 +415,7 @@ define([
 	 *		statuses and messages to the return object array.
 	 *****/
 	function state(/*object*/ obj, /*string*/ nodePart, /*string*/ status){
+	
 		obj.push({id: nodePart, attribute: "status", value: status});
 		if(status==="premature"){
 			obj.push({id: nodePart, attribute: "value", value: ""});
@@ -416,6 +423,7 @@ define([
 	}
 	
 	function message(/*object*/ obj, /*string*/ nodePart, /*string*/ status){
+	
 		var hintSequence = hints[status];
 		if(record.getLocal(status) < hintSequence.length){
 			var counter = record.getLocal(status);
@@ -440,12 +448,18 @@ define([
 	 * 
 	 *****/
 	return declare(null, {
-		constructor: function(/*string*/ mode, /*string*/ subMode, /*model.js object*/ model, /* Activity Config*/ activityConfig){
+		constructor: function(/*string*/ mode, /*string*/ subMode, /*model.js object*/ model){
 			this.model = model;
 			this.mode = mode;
-			this.activityConfig = activityConfig;
-			this.showCorrectAnswer = this.activityConfig.get("showCorrectAnswer");
 			this.setUserType(subMode);
+			this.showCorrectAnswer = true;
+			this.showFeedback = true;
+			
+			if(mode === "TEST" || mode === "EDITOR"){
+				this.showCorrectAnswer = false;
+				this.showFeedback = false;
+			}
+
 		},
 		matchingID: null,
 		logging: null,
@@ -460,6 +474,7 @@ define([
 			//		the node
 			//
 			// Tags: Private
+	
 			var nodeType = "";
 			if(this.showCorrectAnswer){ //For Other modes get node type from given model
 			  	nodeType = this.model.given.getType(givenNodeID); 
@@ -519,6 +534,7 @@ define([
 			}
 		},
 		_getInterpretation: function(/*string*/ studentID, /*string*/ nodePart, /*string | object*/ answer){
+		
 			// Summary: Returns the interpretation of a given answer (correct, incorrect, etc.)
 			//
 			// Tags: Private
@@ -533,7 +549,7 @@ define([
 				if(answer === correctAnswer || correctAnswer === true){
 					interpretation = "correct";
 				}else{
-					if(showCorrectAnswer){
+					if(showCorrectAnswer === true){
 						if(model.given.getAttemptCount(givenID, nodePart) > 0)
 							interpretation = "secondFailure";
 						else
@@ -588,6 +604,12 @@ define([
 				case "equation":
 					interpret(check.areEquivalent(givenID, this.model, answer));
 					break;
+				case "node":	
+					//fetch the corrent answer into interpret
+					//=======================================
+					//remove after debugging and integration
+					interpretation = "secondFailure";
+					//=======================================
 			}
 			/* 
 			 This is an example of logging via direct function calls
@@ -601,6 +623,7 @@ define([
 		 *****/
 	
 		setState: function(/*state.js object*/ State){
+	
 			record = State;
 			for(var hint in hints){
 			record.init(hint, 0);
@@ -618,31 +641,46 @@ define([
 			//		of the node editor should be active.
 			//
 			// Tags: Private
+			debugger;
 			var interpretation = this._getInterpretation(id, nodePart, answer);
 			var returnObj = [], currentStatus;
 			var givenID;  // ID of the correct node, if it exists
 			var solutionGiven = false;			
 			// Send correct answer to controller if status will be set to 'demo'
 			if(interpretation === "lastFailure" || interpretation === "secondFailure"){
+				//=======================================
+				//remove after debugging and integration
+				if(nodePart == "node") answer = "increment";
+				else
+				//=======================================
 				answer = this.model.student.getCorrectAnswer(id, nodePart);
 				// In case of an equation, we need to substitute variablenames in for the IDs.
 				if(nodePart == "equation"){
 					answer = check.convert(this.model.given, answer);
 				}
+				
 				if(answer == null){
 					if(nodePart === "description"){
 						returnObj.push({id: "message", attribute: "append", value: "You have already created all the necessary nodes."});
 					}else
 						console.error("Unexpected null from model.getCorrectAnswer().");
 				}else{
-					returnObj.push({id: nodePart, attribute: "value", value: answer});
-					solutionGiven = true;
+					if(nodePart == "node"){
+						returnObj.push({id: id, attribute: "value", value: answer});
+						solutionGiven = true;
+					}
+					else{
+						returnObj.push({id: nodePart, attribute: "value", value: answer});
+						solutionGiven = true;
+					}
+					
 				}
 			}
 
 
 			// Local function that updates the status if it is not already set to "correct" or "demo"
 			var updateStatus = function(returnObj, model){
+				debugger;
 				returnObj.forEach(function(i){
 					if(i.attribute === "status"){
 						if(i.value === "correct"){
@@ -710,9 +748,13 @@ define([
 				// Process answers for all other node types
 			}else{
 				givenID = this.model.student.getDescriptionID(id);
-
-				console.assert(nodeEditorActionTable[interpretation], "processAnswer() interpretation '" + interpretation + "' not in table ", nodeEditorActionTable);
-				nodeEditorActionTable[interpretation][this.userType](returnObj, nodePart);
+				//=============================
+				//remove after debugging and integration
+				if(nodePart == "node") givenID = id;
+				
+				//=============================
+				console.assert(actionTable[interpretation], "processAnswer() interpretation '" + interpretation + "' not in table ", actionTable);
+				actionTable[interpretation][this.userType](returnObj, nodePart);
 				//add help message for unary minus
 				var nodeType= this.model.given.getType(givenID);
 				if (interpretation==='secondFailure' && nodeType=="accumulator" && nodePart=="equation"){
@@ -722,6 +764,7 @@ define([
 						disable(returnObj, "enableRemaining", false)
 			        }	
 			    }
+				// dont know how it is working
 				currentStatus = this.model.given.getStatus(givenID, nodePart); //get current status set in given model
 				if(currentStatus !== "correct" && currentStatus !== "demo"){
 					this.model.given.setAttemptCount(givenID, nodePart, this.model.given.getAttemptCount(givenID, nodePart) + 1);
@@ -815,17 +858,19 @@ define([
 		},
 
 		checkDoneness: function(model){
+			
 			if(this.mode == "COACHED" && model.areRequiredNodesVisible()){
-			return [{
-				id: "crisisAlert",
-				attribute: "open",
-				value: "You have already created all the necessary nodes. You might want to click on \"Graph\" or \"Table\""
-			}];
+		return [{
+					id: "crisisAlert", 
+			attribute: "open", 
+			value: "You have already created all the necessary nodes. You might want to click on \"Graph\" or \"Table\""
+		}];
 			} 
 			return false;
 		},
 
 		notifyCompleteness : function (model){
+		
 			if(!model.isCompleteFlag && model.matchesGivenSolution()){
 				model.isCompleteFlag = true;
 
@@ -836,7 +881,7 @@ define([
 				this.logging.log('solution-step', logObj);
 
 				record.increment("problemCompleted", 1);
-				if(this.activityConfig.get("showFeedback")){
+				if(this.showFeedback){
 					// Number of problems to show the hint upon completion
 					if(record.getLocal("problemCompleted") < 3 ){
 						return	[{
@@ -851,8 +896,9 @@ define([
 		},
 
 		checkPremature: function(nodeID){
+		
 			//return false for other modes
-			if(!this.activityConfig.get("targetNodeStrategy")){
+			if(this.mode !== "COACHED"){
 				return false;
 			}
 			//Check premature for COACHED mode
