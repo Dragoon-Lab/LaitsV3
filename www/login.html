@@ -67,7 +67,16 @@
 			<label for="restart-problem">Restart Problem :</label>
 			<div id="restartproblem"><input name="rp" type="checkbox"/></div>
                     </div>
-
+					<div class="fieldgroup">
+                        <label for="activity">Activity: </label>
+                        <select name="a" id="activity">
+                            <option value="construction">Construction</option>
+                            <option value="incremental">Incremental</option>
+                            <!--<option value="COACHED">Coached</option>
+                            <option value="TEST">Delayed Feedback (Test)</option>
+                            <option value="EDITOR">No Feedback (Editor)</option>-->
+                        </select>
+					</div>
                     <div class="fieldgroup">
 		        <label>Student submode:</label> &nbsp; &nbsp; &nbsp;
                         <input type="radio" id="fb" name="sm" value="feedback"  checked="checked" style="float:none">

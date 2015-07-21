@@ -92,8 +92,9 @@ define([
     }
     //Load Activity Parameters
     //query.a gives the input activity through url
+	var activity_config;
     try{
-        activity_config  = new activityParameters(query.m, query.a);
+        activity_config = new activityParameters(query.m, query.a);
         console.log("ACTIVITY PARAMS", activity_config);
     }catch(error){
         throw Error("problem in creating activity configurations");
@@ -449,55 +450,6 @@ define([
 					around: dom.byId('prettifyButton')
 				});
 			});
-
-			 /*
-			 Autosave on close window
-			 It would be more efficient if we only saved the changed node.
-			 
-			 Connecting to controllerObject.closeEditor causes a race condition
-			 with code in controllerObject._setUpNodeEditor that wires up closeEditor.
-			 Instead, we connect directly to the widget.
-			 */
-			aspect.after(registry.byId('nodeeditor'), "hide", function(){
-				console.log("Calling session.saveProblem");
-   				if(controllerObject._mode == "AUTHOR")
-				{	
-					array.forEach(givenModel.model.task.givenModelNodes, function(node){
-						if(node.ID === controllerObject.currentID)
-						{
-							console.log(node.description);
-							if(node.description === "" || node.description == null)
-							{
-								console.log("Changing description to match name");
-								node.description = node.name;
-							}
-						}
-					}, this);
-					if(typeof controllerObject._model.active.getType(controllerObject.currentID) !== "undefined"){
-						var isComplete = givenModel.given.isComplete(controllerObject.currentID)?ui_config.get('nodeBorderCompleteStyle'):ui_config.get('nodeBorderInCompleteStyle');
-						console.log(ui_config.get('nodeBorderSize'));
-						var borderStyle = ui_config.get('nodeBorderSize') + isComplete+ ui_config.get('nodeBorderCompleteColor');
-						console.info("borderStyle:", borderStyle);
-						style.set(controllerObject.currentID, 'border', borderStyle);
-						style.set(controllerObject.currentID, 'backgroundColor', "white");
-					}
-				}
-				session.saveProblem(givenModel.model);
-				//This section errors out in author mode
-				if(controllerObject._mode !== "AUTHOR"){
-	                var descDirective=controllerObject._model.student.getStatusDirectives(controllerObject.currentID);
-	                var directive = null;
-	                for(i=0;i<descDirective.length;i++){
-	                    if(descDirective[i].id=="description")
-	                            directive=descDirective[i];
-	                        
-	                }
-	                if(controllerObject._mode !== "TEST" && controllerObject._mode !== "EDITOR"){
-	                	if(directive&&(directive.value=="incorrect" || directive.value=="premature"))
-	                            drawModel.deleteNode(controllerObject.currentID);
-	                }
-           		}
-    		});
 			
 			// Wire up close button...
 			// This will trigger the above session.saveProblem()
@@ -1076,9 +1028,10 @@ define([
 							}
 						}, this);
 						if(typeof controllerObject._model.active.getType(controllerObject.currentID) !== "undefined"){
-							var isComplete = givenModel.given.isComplete(controllerObject.currentID)?'solid':'dashed';
-							var borderColor = "3px "+isComplete+" gray";
-							style.set(controllerObject.currentID, 'border', borderColor);
+							var isComplete = givenModel.given.isComplete(controllerObject.currentID)?ui_config.get('nodeBorderCompleteStyle'):ui_config.get('nodeBorderInCompleteStyle');
+							//var borderColor = "3px "+isComplete+" gray";
+							var borderStyle = ui_config.get('nodeBorderSize') + isComplete+ ui_config.get('nodeBorderCompleteColor');
+							style.set(controllerObject.currentID, 'border', borderStyle);
 							style.set(controllerObject.currentID, 'backgroundColor', "white");
 						}
 					}
