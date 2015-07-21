@@ -421,16 +421,16 @@ define([
 
 		initIncrementalPopup: function(){
 			var that = this;
-			var incButtons = ["Increase", "Decrease", "Constant", "Unknown"];
+			var incButtons = ["Increase", "Decrease", "Stays-Same", "Unknown"];
 			this.isShown = false;
 			this._incrementalPopup = registry.byId("incrementalPopup");
-			this._incrementalPopup.onShow = function() {
+			this._incrementalPopup.onShow = function(){
 				incButtons.forEach(function (item) {
 					var btn = registry.byId(item + "Button");
 					var handler = on(btn, "click", function (e) {
 						e.stopPropagation();
 						//Set in the model
-
+						that._model.active.setTweakDirection(that.currentID, item);
 						//Update Node Label
 						that.updateNodeLabel(that.currentID);
 						popup.close(this._incrementalPopup);
@@ -440,18 +440,19 @@ define([
 
 				on(document.body, "click", function(e){
 					if(that.isShown) {
-						//popup.close(this._incrementalPopup);
-						//that.isShown = false;
+
 					}
 				});
 			};
 
 			var showEquationButton = registry.byId("EquationButton");
+
 			on(showEquationButton,"click", function(){
+				popup.close(this._incrementalPopup);
 				that.applyDirectives([{
 					id: "crisisAlert",
 					attribute: "open",
-					value: that._model.active.getEquation(that.currentID) //expression.convert(that._model, that._model.active.getEquation(that.currentID))
+					value: expression.convert(that._model.active, that._model.active.getEquation(that.currentID))
 				}]);
 			});
 

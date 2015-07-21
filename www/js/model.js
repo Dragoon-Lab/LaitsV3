@@ -608,6 +608,9 @@ define([
 				if(!node["imageMarks"]) return [];
 				else return node["imageMarks"];
 			},
+			getTweakDirection: function(/*string*/ id){
+				return this.getNode(id).tweakDirection ;
+			},
 			setSchemas: function(/* object */ schemas){
 				obj.model.task.schemas = schemas;
 			},
@@ -902,9 +905,6 @@ define([
 			},
 			getStatus: function(/*string*/ id, /*string*/ nodePart){
 				return this.getNode(id).status[nodePart];
-			},
-			getTweakDirection: function(/*string*/ id){
-				return this.getNode(id).tweakDirection ;
 			},
 			getParent: function(/*string*/ id){
 				return this.getNode(id).parentNode;
@@ -1213,6 +1213,7 @@ define([
 				update("equation");
 				return bestStatus;
 			},
+
 			matchesGivenSolutionAndCorrect: function() {
 				// Summary: Returns True if (1) matchesGivenSolution is true and (2) if all nodes that are part of the
 				// solution have correctness of "demo" or "correct"
