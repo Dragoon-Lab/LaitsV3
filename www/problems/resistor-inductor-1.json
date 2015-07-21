@@ -1,6 +1,6 @@
 {
     "task": {
-        "taskName": "resistor inductor 1",
+        "taskName": "RL series circuits",
         "time": {
             "start": 0,
             "end": 0.1,
@@ -163,7 +163,7 @@
                 "genus": "required",
                 "type": "function",
                 "units": "voltage",
-                "equation": "id8*sinewave(60,0)"
+                "equation": "id8*sinewave(1/60,0)"
             },
             {
                 "ID": "id6",
@@ -311,7 +311,7 @@
                 "descriptionID": "id5",
                 "units": "voltage",
                 "type": "function",
-                "equation": "id9*sinewave(60,0)"
+                "equation": "id9*sinewave(1/60,0)"
             }
         ],
         "schemas": [

@@ -22,9 +22,9 @@
 
 define([
 	"dojo/aspect", "dojo/_base/array", "dojo/_base/declare", "dojo/_base/lang",
-	"dijit/registry", "dojo/dom", "dojo/ready",
+	"dijit/registry", "dojo/dom", "dojo/ready","dojo/dom-style",
 	"./model", "./wraptext", "./typechecker"
-], function(aspect, array, declare, lang, registry, dom, ready, model, wrapText, typechecker){
+], function(aspect, array, declare, lang, registry, dom, ready, domStyle, model, wrapText, typechecker){
 
 	// Summary: 
 	//			MVC for the description box in author mode
@@ -46,12 +46,15 @@ define([
 			dom.byId("authorSetTimeEnd").value = this.timeObj.end;
 			this.lastStopTime = {value: this.timeObj.end};
 
-			dom.byId("authorSetTimeStep").value = this.timeObj.step;
+			//dom.byId("authorSetTimeStep").value = this.timeObj.step;
 			this.lastStepTime = {value: this.timeObj.step};
 
 			dom.byId("authorSetTimeStepUnits").value = this.timeObj.units || "seconds";
 			dom.byId("authorSetIntegrationMethod").value = this.timeObj.integrationMethod || "Eulers Method";
 			dom.byId("authorSetImage").value = givenModel.getImageURL() || "";
+            dom.byId("authorSetLessonsLearned").value = this.serialize(
+                givenModel.getTaskLessonsLearned() ? givenModel.getTaskLessonsLearned() : ""
+            );
 			dom.byId("authorSetDescription").value = this.serialize(
 				givenModel.getTaskDescription() ? givenModel.getTaskDescription() : ""	
 			);
@@ -66,7 +69,9 @@ define([
             //for authorSetTimeStop
             var descWidgetStop = registry.byId('authorSetTimeEnd');
             //for authorSetTimeStep
-            var descWidgetStep = registry.byId('authorSetTimeStep');
+            //var descWidgetStep = registry.byId('authorSetTimeStep');
+            //for authorSetTimeStepUnits
+            var descWidgetUnit = registry.byId('authorSetTimeStepUnits');
             // Set checkbox for sharing
             registry.byId("authorProblemShare").attr("value", this.givenModel.getShare());
 
@@ -87,13 +92,17 @@ define([
                 }
             }));
             //for  time step field
-            descWidgetStep.on("change", lang.hitch(this, function () {
+            /*descWidgetStep.on("change", lang.hitch(this, function () {
                 var ret_step_time = typechecker.checkInitialValue('authorSetTimeStep', this.lastStepTime);
                 if (ret_step_time.value) {
                     this.timeObj.step = ret_step_time.value;
                 }
+            }));*/
+            descWidgetUnit.on("change", lang.hitch(this, function(){
+                console.log(registry.byId('timeStartUnits'));
+                dom.byId('timeStartUnits').innerHTML = descWidgetUnit.value;
+                dom.byId('timeEndUnits').innerHTML = descWidgetUnit.value;
             }));
-
             this._descEditor = registry.byId('authorDescDialog');
             aspect.around(this._descEditor, "hide", lang.hitch(this, function (doHide) {
                 var myThis = this;
@@ -111,27 +120,47 @@ define([
                         return;
                     }
 
-                    var ret_step_time = typechecker.checkInitialValue('authorSetTimeStep', myThis.lastStepTime);
+                    var ret_step_time = 1;
                     if (ret_step_time.errorType) {
                         return;
                     }
 
-                    //after it has passed all those checks we
-                    // do normal closeEditor routine and hide
-                    doHide.apply(myThis._descEditor);
-                    console.log("close description editor is being called");
-                    typechecker.closePops();
-                    var tin = dom.byId("authorSetDescription").value;
-                    myThis.givenModel.setTaskDescription(tin.split("\n"));
-                    if (ret_start_time.value) {
+                    if (! (typeof ret_start_time.value === "undefined")) {
                         myThis.timeObj.start = ret_start_time.value;
                     }
-                    if (ret_stop_time.value) {
+                    if (! (typeof ret_stop_time.value === "undefined")) {
                         myThis.timeObj.end = ret_stop_time.value;
                     }
-                    if (ret_step_time.value) {
+                    if (! (typeof ret_step_time.value === "undefined")) {
                         myThis.timeObj.step = ret_step_time.value;
                     }
+                    domStyle.set("start_end_errorbox","display","none");
+                    //domStyle.set("timestep_errorbox1","display","none");
+                    //domStyle.set("timestep_errorbox2","display","none");
+                    var time_step_max = myThis.timeObj.end-myThis.timeObj.start;
+                    errorDialogSpan = dom.byId("start_end_errorbox");
+                    if(!( (myThis.timeObj.start < myThis.timeObj.end) )){
+                        console.log("start time more than end time");
+                        domStyle.set(errorDialogSpan,"display","");
+                        return;
+                    }
+                    /*errorDialogSpan = dom.byId("timestep_errorbox1");
+                    if(!((myThis.timeObj.step > 0))){
+                        console.log("Time step is inappropriate");
+                        domStyle.set(errorDialogSpan,"display","");
+                        return;
+                    }
+                    errorDialogSpan = dom.byId("timestep_errorbox2");
+                    if(!((myThis.timeObj.step <= time_step_max))){
+                        console.log("Time step must fit within the start and end times");
+                        domStyle.set(errorDialogSpan,"display","");
+                        return;
+                    }*/
+                    domStyle.set(errorDialogSpan,"display","none");
+                    var tin = dom.byId("authorSetDescription").value;
+                    var ll = dom.byId("authorSetLessonsLearned").value;
+                    myThis.givenModel.setTaskDescription(tin.split("\n"));
+                    myThis.givenModel.setTaskLessonsLearned(ll.split("\n"));
                     myThis.timeObj.units = dom.byId("authorSetTimeStepUnits").value;
                     myThis.timeObj.integrationMethod = dom.byId("authorSetIntegrationMethod").value;
                     console.log("integration value" + dom.byId("authorSetIntegrationMethod").value);
@@ -140,6 +169,12 @@ define([
                     var url = dom.byId("authorSetImage").value;
                     myThis.givenModel.setImage(url ? {URL: url} : {});
                     myThis.showDescription();
+                    //after it has passed all those checks we
+                    // do normal closeEditor routine and hide
+                    doHide.apply(myThis._descEditor);
+                    console.log("close description editor is being called");
+                    typechecker.closePops();
+
                 };
             }));
             //for share bit checkbox
@@ -161,7 +196,7 @@ define([
                         var newModel = this.givenModel;
                         //checking for incomplete nodes
                         array.forEach(this.givenModel.active.getNodes(), function (node) {
-                            if (!newModel.active.isComplete(node.ID,true)) {
+                            if (!newModel.active.isComplete(node.ID)) {
                                 errordialogWidget.set("content", "<div>The problem has one or more incomplete nodes.</div>");
                                 check_for_problem = true;
                                 errordialogWidget.show();

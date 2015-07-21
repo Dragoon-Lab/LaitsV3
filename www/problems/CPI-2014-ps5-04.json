@@ -27,12 +27,12 @@
             },
             {
                 "type": "image",
-                "value": "images/CPI/arms_race_graph.jpg",
+                "value": "images\/CPI\/arms_race_graph.jpg",
                 "title": "Author's graph for arms race Problem"
             },
             {
                 "type": "image",
-                "value": "images/CPI/arms_race_correctnodes.png",
+                "value": "images\/CPI\/arms_race_correctnodes.png",
                 "title": "Author's solution for arms race Problem"
             },
             {
@@ -59,8 +59,8 @@
                     }
                 ],
                 "position": {
-                    "x": 722,
-                    "y": 133
+                    "x": 615,
+                    "y": 193
                 },
                 "attemptCount": {
                     "description": 0,
@@ -111,8 +111,8 @@
                 "ID": "id3",
                 "inputs": [],
                 "position": {
-                    "x": 952.3309326171875,
-                    "y": 123.3309555053711
+                    "x": 952.33093261719,
+                    "y": 123.33095550537
                 },
                 "attemptCount": {
                     "description": 0,
@@ -164,8 +164,8 @@
                 "ID": "id5",
                 "inputs": [],
                 "position": {
-                    "x": 885.3309326171875,
-                    "y": 24.330951690673828
+                    "x": 885.33093261719,
+                    "y": 24.330951690674
                 },
                 "attemptCount": {
                     "description": 0,
@@ -252,8 +252,8 @@
                 "ID": "id8",
                 "inputs": [],
                 "position": {
-                    "x": 955.3309326171875,
-                    "y": 273.3309326171875
+                    "x": 955.33093261719,
+                    "y": 273.33093261719
                 },
                 "attemptCount": {
                     "description": 0,
@@ -305,8 +305,8 @@
                 "ID": "id10",
                 "inputs": [],
                 "position": {
-                    "x": 443.3309631347656,
-                    "y": 279.3309326171875
+                    "x": 443.33096313477,
+                    "y": 279.33093261719
                 },
                 "attemptCount": {
                     "description": 0,
@@ -328,8 +328,8 @@
                 "ID": "id11",
                 "inputs": [],
                 "position": {
-                    "x": 440.3309631347656,
-                    "y": 118.3309555053711
+                    "x": 440.33096313477,
+                    "y": 118.33095550537
                 },
                 "attemptCount": {
                     "description": 0,
@@ -351,8 +351,8 @@
                 "ID": "id12",
                 "inputs": [],
                 "position": {
-                    "x": 798.3309326171875,
-                    "y": 415.3309631347656
+                    "x": 798.33093261719,
+                    "y": 415.33096313477
                 },
                 "attemptCount": {
                     "description": 0,
@@ -371,6 +371,110 @@
                 "parentNode": false
             }
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [],
+        "schemas": [
+            {
+                "ID": "schema2",
+                "schemaClass": "exponential_transfer",
+                "name": "Exponential",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id2, id3",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema3",
+                "schemaClass": "",
+                "name": "",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id6, id7, id8",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema4",
+                "schemaClass": "linear_transfer",
+                "name": "Linear",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id5",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema5",
+                "schemaClass": "",
+                "name": "",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id6, id12",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema6",
+                "schemaClass": "accelerating_transfer",
+                "name": "Accelerating",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id4, id6, id12, id11",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema7",
+                "schemaClass": "accelerating_transfer",
+                "name": "Accelerating",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id6, id9, id10, id1, id5",
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            }
+        ]
     }
 }

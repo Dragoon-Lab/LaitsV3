@@ -114,7 +114,8 @@ define([
 		genericControlMap: {
 			type: "typeId",
 			initial: "initialValue",
-			equation: "equationBox"
+			equation: "equationBox",
+			explanation:"explanationButton"
 		},
 		// A list of all widgets.  (The constructor mixes this with controlMap)
 		widgetMap: {
@@ -136,11 +137,16 @@ define([
 				return function(){
 					var equation = registry.byId("equationBox");
 					if(equation.value && !myThis.equationEntered){
-						//Crisis alert popup if equation not checked
-						myThis.applyDirectives([{
-							id: "crisisAlert", attribute:
-							"open", value: "Your expression has not been checked!  Go back and check your expression to verify it is correct, or delete the expression, before closing the node editor."
-						}]);
+						var directives = myThis.equationDoneHandler();
+						var isAlertShown = array.some(directives, function(directive){
+							if(directive.id === 'crisisAlert'){
+								return true;
+							}
+						});
+						if(!isAlertShown) {
+							doHide.apply(myThis._nodeEditor);
+							myThis.closeEditor.call(myThis);
+						}
 					}
 					else if(myThis._mode == "AUTHOR" && registry.byId("selectModel").value == "given"){
 						var equation = registry.byId("givenEquationBox");
@@ -358,7 +364,7 @@ define([
 			
 			if(this._mode == "EDITOR" || this._mode == "TEST"){
 			    if(typeof this._model.active.getType(this.currentID) !== "undefined"){
-					var isComplete = this._model.active.isComplete(this.currentID, true)?'solid':'dashed';
+					var isComplete = this._model.active.isComplete(this.currentID)?'solid':'dashed';
 					var borderColor = "3px "+isComplete+" gray";
 					var boxshadow = 'inset 0px 0px 5px #000 , 0px 0px 10px #000';
 					domStyle.set(this.currentID, 'box-shadow', boxshadow);
@@ -470,7 +476,6 @@ define([
 				return this.disableHandlers || this.handleEquation.apply(this, arguments);
 			}));
 
-
 			// When the equation box is enabled/disabled, do the same for
 			// the inputs widgets.
 			array.forEach(["nodeInputs", "positiveInputs", "negativeInputs"], function(input){
@@ -483,7 +488,7 @@ define([
 
 			// For each button 'name', assume there is an associated widget in the HTML
 			// with id 'nameButton' and associated handler 'nameHandler' below.
-			var buttons = ["plus", "minus", "times", "divide", "undo", "equationDone", "sum", "product"];
+			var buttons = ["plus", "minus", "times", "divide", "undo", "equationDone", "sum", "product","explanation"];
 			array.forEach(buttons, function(button){
 				var w = registry.byId(button + 'Button');
 				if(!w){
@@ -503,8 +508,10 @@ define([
 				/*	When the equation box is enabled/disabled also do the same
 				 for this button */
 				equationWidget.watch("disabled", function(attr, oldValue, newValue){
-					// console.log("************* " + (newValue?"dis":"en") + "able " + button);
-					w.set("disabled", newValue);
+					if (w.id!=="explanationButton") {
+						// console.log("************* " + (newValue?"dis":"en") + "able " + button);
+						w.set("disabled", newValue);
+					}
 				});
 			}, this);
 
@@ -754,6 +761,8 @@ define([
 			if(this.structured.ops.length == 0) {
 				var equationWidget = registry.byId("equationBox");
 				equationWidget.set("value", "");
+				var givenEquationWidget = registry.byId("givenEquationBox");//if value of selectModel was equal to "given"
+				givenEquationWidget.set("value", "");
 				dom.byId("equationText").innerHTML = "";
 			}
 			else {
@@ -761,7 +770,6 @@ define([
 				this.structured.pop();
 			}
 		},
-
 		//Enables the Forum Button in node editor
 		//Also uses the forum module to activate the event button click
 		activateForumButton: function(){
@@ -782,15 +790,6 @@ define([
 			 * send a warning message, and
 			 * log attempt (the PM does not handle syntax errors).
 			 
-			 If the parse succeeds:
-			 * substitute in student id for variable names (when possible),
-			 * save to model,
-			 * update inputs,
-			 * update the associated connections in the graph, and
-			 * send the equation to the PM. **Done**
-			 * Handle the reply from the PM. **Done**
-			 * If the reply contains an update to the equation, the model should also be updated.
-			 
 			 Note: the model module may do some of these things automatically.
 			 
 			 Also, the following section could just as well be placed in the PM?
@@ -807,8 +806,13 @@ define([
 				parse = expression.parse(inputEquation);
 			}catch(err){
 				console.log("Parser error: ", err);
+				console.log(err.message);
+				console.log(err.Error);
 				this._model.active.setEquation(this.currentID, inputEquation);
-				directives.push({id: 'message', attribute: 'append', value: 'Incorrect equation syntax.'});
+				if(err.message.includes("unexpected variable"))
+					directives.push({id: 'message', attribute: 'append', value: 'The value entered for the equation is incorrect'});
+				else
+					directives.push({id: 'message', attribute: 'append', value: 'Incorrect equation syntax.'});
 				directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
 				this.logging.log("solution-step", {
 					type: "parse-error",
@@ -822,6 +826,27 @@ define([
 				});
 			}
 			if(parse){
+				return parse;
+			}
+			return null;
+		},
+
+		createExpressionNodes: function(parse, ignoreUnknownTest){
+			/*
+			 Create Expression nodes if equation is valid and parsed sucessfully.
+
+			 If the parse succeeds:
+			 * substitute in student id for variable names (when possible),
+			 * save to model,
+			 * update inputs,
+			 * update the associated connections in the graph, and
+			 * send the equation to the PM. **Done**
+			 * Handle the reply from the PM. **Done**
+			 * If the reply contains an update to the equation, the model should also be updated.
+
+			*/
+			if(parse){
+				var inputNodesList = [];
 				var cancelUpdate = false;
 				//getDescriptionID is present only in student mode. So in author mode it will give an identity function. This is a work around in case when its in author mode at that time the given model is the actual model. So descriptionID etc are not available. 
 				var mapID = this._model.active.getDescriptionID || function(x){ return x; };
@@ -894,11 +919,14 @@ define([
 						if(subID){
 							// console.log("	   substituting ", variable, " -> ", studentID);
 							parse.substitute(variable, subID);
+							inputNodesList.push({ "id": subID, "variable":variable});
 						}else if(autocreationFlag){
 							//create node
 							var id = this._model.active.addNode();
 							this.addNode(this._model.active.getNode(id));
-							this.autocreateNodes(id, variable);
+							this.setNodeDescription(id, variable);
+
+							inputNodesList.push({ "id": id, "variable":variable});
 							//get Node ID and substitute in equation
 							var subID2 = unMapID.call(this._model.active, givenID||id);
 							parse.substitute(variable, subID2); //this should handle createInputs and connections to automatic node
@@ -940,7 +968,6 @@ define([
 				if (cancelUpdate){
 					return null;
 				}
-
 				// Expression now is written in terms of student IDs, when possible.
 				// Save with explicit parentheses for all binary operations.
 				var parsedEquation = parse.toString(true);
@@ -963,11 +990,16 @@ define([
 				this.setConnections(this._model.active.getInputs(this.currentID), this.currentID);
 				// console.log("************** equationAnalysis directives ", directives);
 
+				array.forEach(inputNodesList, lang.hitch(this, function(node){
+					this.updateInputNode(node.id, node.variable);
+				}));
+
 				// Send to PM if all variables are known.
 				console.log(parse);
-				return parse;
 			}
-			return null;
+		},
+		// Stub to setting description for auto craeted nodes.
+		setNodeDescription: function(id, variable){
 		},
 		// Stub to connect logging to record bad parse.
 		badParse: function(inputEquation){
@@ -1112,7 +1144,6 @@ define([
 			array.forEach(directives, function(directive) {
 				if(!noModelUpdate)
 					this.updateModelStatus(directive);
-
 				if (this.widgetMap[directive.id]) {
 					var w = registry.byId(this.widgetMap[directive.id]);
 					if (directive.attribute == 'value') {
