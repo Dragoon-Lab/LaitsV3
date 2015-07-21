@@ -25,8 +25,7 @@
  * Student mode-specific handlers
  */
 
-define([
-	"dojo/aspect",
+define(["dojo/aspect",
 	"dojo/_base/array",
 	'dojo/_base/declare',
 	"dojo/_base/lang",
@@ -43,29 +42,33 @@ define([
 	"./equation",
 	"./schemas-student"
 ], function(aspect, array, declare, lang, dom, style, ready,on, registry, tooltipDialog, popup, controller, PM, typechecker, expression, schemaStudent){
-	/* Summary:
-	 *			MVC for the node editor, for students
-	 * Description:
-	 *			Handles selections from the student as he/she completes a model;
-	 *			inherits controller.js
-	 * Tags:
-	 *			controller, student mode, coached mode, test mode
-	 */
-
+	/* Summary:	// Summary:
+	//			MVC for the node editor, for students
+	// Description:
+	//			Handles selections from the student as he/she completes a model;
+	//			inherits controller.js
+	// Tags:
+	//			controller, student mode, coached mode, test mode
+	
 	/*
-	 * Methods in controller specific to the student modes
+	 Methods in controller specific to the student modes
 	 */
 
 	return declare(controller, {
 		_PM: null,
-		_previousExpression:null,
+        _previousExpression:null,
 		_assessment: null,
 		constructor: function(mode, subMode, model){
 			console.log("++++++++ In student constructor");
-			this._PM = new PM(mode, subMode, model, this.activityConfig);
+			this._PM = new PM(mode, subMode, model);
 			lang.mixin(this.widgetMap, this.controlMap);
 			ready(this, "populateSelections");
-			this.init();
+
+			if(this.activityConfig.get("showNodeEditor")) {
+				this.init();
+			}else if(this.activityConfig.get("showIncrementalEditor")){
+				this.initIncrementalPopup();
+			}
 		},
 
 		resettableControls: ["initial","equation"],
@@ -74,9 +77,13 @@ define([
 			aspect.after(this, "closeEditor", function(){
 				var directives = this._PM.notifyCompleteness(this._model);
 				this.applyDirectives(directives);
+				//=======================================================
+				
+				// Unit Testing PM model for incremental activity
+				this._PM.userType = "TWEEK";
+				var result = this._PM.processAnswer("id1", "node", "increment");
+				//=======================================================
 			}, true);
-
-			this.initIncrementalPopup();
 		},
 		// A list of control map specific to students
 		controlMap: {
@@ -88,7 +95,7 @@ define([
 		setPMState: function(state){
 			this._PM.setState(state);
 		},
-
+		
 		setAssessment: function(session){
 			if(this._model.active.getSchemas()){
 				this._assessment = new schemaStudent(this._model, session);
@@ -99,13 +106,12 @@ define([
 
 		populateSelections: function(){
 			/*
-			 * Initialize select options in the node editor that are
-			 * common to all nodes in a problem.
-			 *
-			 * In AUTHOR mode, this needs to be done when the
-			 * node editor is opened.
+			 Initialize select options in the node editor that are
+			 common to all nodes in a problem.
+			 
+			 In AUTHOR mode, this needs to be done when the
+			 node editor is opened.
 			 */
-
 			// Add fields to Description box and inputs box
 			// In author mode, the description control must be a text box
 			var d = registry.byId(this.controlMap.description);
@@ -125,14 +131,14 @@ define([
 
 			//get descriptions to sort as alphabetic order
 			var descriptions = this._model.given.getDescriptions();
-			//create map of names for sorting
-			var descNameMap = {};
-			array.forEach(descriptions,function(desc){
-				descNameMap[desc.value]=this._model.given.getName(desc.value);
-			},this);
+            //create map of names for sorting
+            var descNameMap = {};
+            array.forEach(descriptions,function(desc){
+                descNameMap[desc.value]=this._model.given.getName(desc.value);
+            },this);
 			descriptions.sort(function(obj1, obj2){
 				//return obj1.label > obj2.label;
-				return descNameMap[obj1.value] > descNameMap[obj2.value];
+                    return descNameMap[obj1.value] > descNameMap[obj2.value];
 			},this);
 
 			array.forEach(descriptions, function(desc){
@@ -154,27 +160,27 @@ define([
 			// Need to send to PM and update status, but don't actually
 			// apply directives since they are for a different node.
 			array.forEach(directives,function(directive){
-				this.updateModelStatus(directive, id);
-			}, this);
+                this.updateModelStatus(directive,id);
+            }, this);
 		},
-		isExpressionChanged:function(){
-			var evalue=registry.byId(this.controlMap.equation).get("value");
-			if(this._previousExpression)
-			{
-				var expr=evalue;
-				expr=expr.replace(/\s+/g, '');
-				if(expr==this._previousExpression)
-				{
-					alert("Expression is same, Please modify the expression.");
-					return true;
-				}else{
-					this._previousExpression=expr;
-				}
-			}else{
-				this._previousExpression=evalue.replace(/\s+/g,'');
-			}
-			return false;
-		},
+        isExpressionChanged:function(){
+            var evalue=registry.byId(this.controlMap.equation).get("value");
+            if(this._previousExpression)
+            {
+                var expr=evalue;
+                expr=expr.replace(/\s+/g, '');
+                if(expr==this._previousExpression)
+                {
+                    alert("Expression is same, Please modify the expression.");
+                    return true;
+                }else{
+                    this._previousExpression=expr;
+                }
+            }else{
+                this._previousExpression=evalue.replace(/\s+/g,'');
+            }
+            return false;
+        },
 
 		handleDescription: function(selectDescription){
 			console.log("****** in handleDescription ", this.currentID, selectDescription);
@@ -187,7 +193,8 @@ define([
 			// This is only needed if the type has already been set,
 			// something that is generally only possible in TEST mode.
 			this.updateEquationLabels();
-			this.applyDirectives(this._PM.processAnswer(this.currentID, 'description', selectDescription, this._model.given.getName(selectDescription)));
+			this.applyDirectives(
+				this._PM.processAnswer(this.currentID, 'description', selectDescription, this._model.given.getName(selectDescription)));
 			if(this._forumparams){
 				// enable forum button and activate the event
 				this.activateForumButton();
@@ -202,7 +209,7 @@ define([
 			editorWidget.set('disabled','true');
 			var toolWidget=registry.byId("dijit_Toolbar_0");
 			var cancelButtonWidget=registry.byId("cancelEditorButton");
-			cancelButtonWidget.domNode.style.display="none";// Hide the cancel button
+		    cancelButtonWidget.domNode.style.display="none";// Hide the cancel button
 			toolWidget.domNode.style.display="none"; // Hide the toolbar
 		},
 
@@ -213,25 +220,25 @@ define([
 			this.updateType(type);
 			this.applyDirectives(this._PM.processAnswer(this.currentID, 'type', type));
 		},
-
+		
 		typeSet: function(value){
 			this.updateType(value);
 		},
-
+	
 		/*
-		 * Handler for initial value input
+		 Handler for initial value input
 		 */
-
+	
 		handleInitial: function(initial){
 			//IniFlag returns the status and initial value
 			var IniFlag = typechecker.checkInitialValue(this.widgetMap.initial, this.lastInitial);
-			if(IniFlag.status){
+			if(IniFlag.status){ 
 				//If the initial value is not a number or is unchanged from 
 				// previous value we dont process
 				var newInitial = IniFlag.value;
 				this._model.active.setInitial(this.currentID, newInitial);
-				console.log("ini value action");
-				console.log("current ID",this.currentID,newInitial);
+                console.log("ini value action");
+                console.log("current ID",this.currentID,newInitial);
 				this.applyDirectives(this._PM.processAnswer(this.currentID, 'initial', newInitial));
 			}else if(IniFlag.errorType){
 				this.logging.log('solution-step', {
@@ -245,26 +252,26 @@ define([
 			}
 
 		},
-
+		
 		initialSet: function(value){
 			this._model.active.setInitial(this.currentID, value);
 		},
 
 		/*
-		 *	 handle event on inputs box
-		 */
+		*	 handle event on inputs box
+		*/
 		handleInputs: function(id){
 			//check if id is  not select else return
 
 			console.log("*******Student has chosen input", id, this);
 			// Should add name associated with id to equation
 			// at position of cursor or at the end.
-
+			
 			var expr = this._model.given.getName(id);
-
+			
 			// if user selected selectdefault selection [--select--] no action required, calling return on handler
 			if(expr === null) return;
-
+			
 			this.equationInsert(expr);
 			//restore to default  - creating select input as stateless
 			registry.byId(this.controlMap.inputs).set('value', 'defaultSelect', false);
@@ -282,8 +289,8 @@ define([
 		},
 		equationDoneHandler: function(){
 			var directives = [];
-			if(this.isExpressionChanged())
-				return; //2365 fix, just to check pattern change, not evaluating
+            if(this.isExpressionChanged())
+                    return; //2365 fix, just to check pattern change, not evaluating 
 			var parse = this.equationAnalysis(directives, false);
 			if(parse){
 				var dd = this._PM.processAnswer(this.currentID, 'equation', parse, registry.byId(this.controlMap.equation).get("value"));
@@ -326,7 +333,7 @@ define([
 
 		//Set description for autocreated Nodes
 		setNodeDescription: function(id, variable){
-			//getDescriptionID using variable name
+		    //getDescriptionID using variable name
 			var descID = this._model.given.getNodeIDByName(variable);
 			//setDescriptionID for the node id
 			this._model.active.setDescriptionID(id, descID);
@@ -373,7 +380,6 @@ define([
 				var opt = {};
 				opt[desc.attribute] = desc.value;
 				this._model.student.setStatus(id, desc.id, opt);
-
 			}else{
 				// There are some directives that should update
 				// the student model node (but not the status section).
@@ -396,7 +402,7 @@ define([
 		},
 
 		nodeCloseAssessment: function(){
-			if(this._assessment && this._assessment.currentNodeTime){
+			if(this._assessment){
 				this._assessment.nodeClose(this.currentID);
 			}
 		},
@@ -455,8 +461,7 @@ define([
 					value: expression.convert(that._model.active, that._model.active.getEquation(that.currentID))
 				}]);
 			});
-
-
 		}
+
 	});
 });
