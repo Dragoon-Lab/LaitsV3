@@ -31,6 +31,7 @@ define([
 	'dojo/_base/declare', 
 	"dojo/_base/lang",
 	"dojo/dom",
+
 	"dojo/ready",
 	'dijit/registry',
 	'./controller',
@@ -137,19 +138,16 @@ define([
 		},
 
 		//  should be moved to a function in controller.js
-		autocreateNodes:function(/** auto node id **/ id, /**variable name**/ variable){
-			console.log("auto creating nodes student controller");
+		updateInputNode:function(/** auto node id **/ id, /**variable name**/ variable){
+			console.log("updating nodes student controller");
 			//getDescriptionID using variable name
 			var descID = this._model.given.getNodeIDByName(variable);
-			//setDescriptionID for the node id
-			this._model.active.setDescriptionID(id, descID);
 			var directives = this._PM.processAnswer(id, 'description', descID, this._model.given.getName(descID));
 			// Need to send to PM and update status, but don't actually
 			// apply directives since they are for a different node.
 			array.forEach(directives,function(directive){
                 this.updateModelStatus(directive,id);
             }, this);
-			this.updateNodeLabel(id);
 		},
         isExpressionChanged:function(){
             var evalue=registry.byId(this.controlMap.equation).get("value");
@@ -170,28 +168,6 @@ define([
             return false;
         },
 
-		checkPremature: function(nodeID){
-			if(!this._model.active.getDescriptionID(nodeID)){
-				return;
-			}
-			else if (this._model.isParentNode(this._model.active.getDescriptionID(nodeID))){
-				return;
-			}
-			var isPremature = true;
-			array.some(this._model.active.getNodes(), lang.hitch(this, function(node){
-				if(node.inputs.length > 0){
-					var isInputNode = array.some(node.inputs, function(input){
-						if(input.ID == nodeID) return true;
-					});
-				}
-				if(isInputNode){
-					isPremature = false;
-					return true;
-				}
-			}));
-			return isPremature;
-		},
-		
 		handleDescription: function(selectDescription){
 			console.log("****** in handleDescription ", this.currentID, selectDescription);
 			if(selectDescription == 'defaultSelect'){
@@ -203,26 +179,23 @@ define([
 			// This is only needed if the type has already been set,
 			// something that is generally only possible in TEST mode.
 			this.updateEquationLabels();
-			var isPremature = false;
-			var genus = this._model.given.getGenus(this._model.active.getDescriptionID(this.currentID));
-			if(!genus || genus == "required"){
-				isPremature = (this._mode == "COACHED")? this.checkPremature(this.currentID) : false;	
+			this.applyDirectives(this._PM.processAnswer(this.currentID, 'description', selectDescription, this._model.given.getName(selectDescription)));
+			if(this._forumparams){
+				// enable forum button and activate the event
+				this.activateForumButton();
 			}
-			
-			if(!isPremature){
-				this.applyDirectives(this._PM.processAnswer(this.currentID, 'description', selectDescription, this._model.given.getName(selectDescription)));
-				if(this._forumparams){
-					// enable forum button and activate the event
-					this.activateForumButton();
-				}
-			}else{
-				var directives = [{"id":"description","attribute":"status","value":"premature"},{"id":"description","attribute":"value","value":""},{"id":"message","attribute":"append","value":"The value entered for the description is premature."}];
-				this.applyDirectives(directives);
-				this.applyDirectives([{
-							id: "crisisAlert", attribute:
-							"open", value: "The node you are trying to create is Premature. Please follow the Target Node Strategy."
-						}]);
-			}
+		},
+
+		explanationHandler:function(){
+			var givenID=this._model.student.getGivenID(this.currentID);
+			var editorWidget = registry.byId("editorContent");
+			var content=this._model.given.getExplanation(givenID);
+			editorWidget.set('value',content); // load the explanation in the editor
+			editorWidget.set('disabled','true');
+			var toolWidget=registry.byId("dijit_Toolbar_0");
+			var cancelButtonWidget=registry.byId("cancelEditorButton");
+		    cancelButtonWidget.domNode.style.display="none";// Hide the cancel button
+			toolWidget.domNode.style.display="none"; // Hide the toolbar
 		},
 
 		handleType: function(type){
@@ -232,6 +205,7 @@ define([
 			this.updateType(type);
 			this.applyDirectives(this._PM.processAnswer(this.currentID, 'type', type));
 		},
+		
 		typeSet: function(value){
 			this.updateType(value);
 		},
@@ -270,14 +244,19 @@ define([
 
 		/*
 		*	 handle event on inputs box
-		* */
+		*/
 		handleInputs: function(id){
 			//check if id is  not select else return
 
 			console.log("*******Student has chosen input", id, this);
 			// Should add name associated with id to equation
 			// at position of cursor or at the end.
+			
 			var expr = this._model.given.getName(id);
+			
+			// if user selected selectdefault selection [--select--] no action required, calling return on handler
+			if(expr === null) return;
+			
 			this.equationInsert(expr);
 			//restore to default  - creating select input as stateless
 			registry.byId(this.controlMap.inputs).set('value', 'defaultSelect', false);
@@ -302,17 +281,49 @@ define([
 				var dd = this._PM.processAnswer(this.currentID, 'equation', parse, registry.byId(this.controlMap.equation).get("value"));
 				directives = directives.concat(dd);
 			}
+
 			this.applyDirectives(directives);
+
+			var isDemo = false;
+			if(directives.length > 0){
+				isDemo = array.some(directives, function(directive){
+					if(directive.attribute == "status" && directive.value == "demo") return true;
+				});
+			}
+			if(!isDemo){
+				this.createExpressionNodes(parse, false);
+			}
+			return directives;
 		},
+
 		equationSet: function(value){
 			// applyDirectives updates equationBox, but not equationText:
 			dom.byId("equationText").innerHTML = value;
 
 			var directives = [];
 			// Parse and update model, connections, etc.
-				this.equationAnalysis(directives);
+			var parse = this.equationAnalysis(directives);
 			// Generally, since this is the correct solution, there should be no directives
 			this.applyDirectives(directives);
+
+			//Set equation and process answer
+			var parsedEquation = parse.toString(true);
+			this._model.active.setEquation(this.currentID, parsedEquation);
+			var dd = this._PM.processAnswer(this.currentID, 'equation', parse, registry.byId(this.controlMap.equation).get("value"));
+			this.applyDirectives(dd);
+
+			//Create expression nodes for parsed equation
+			this.createExpressionNodes(parse);
+		},
+
+		//Set description for autocreated Nodes
+		setNodeDescription: function(id, variable){
+		    //getDescriptionID using variable name
+			var descID = this._model.given.getNodeIDByName(variable);
+			//setDescriptionID for the node id
+			this._model.active.setDescriptionID(id, descID);
+
+			this.updateNodeLabel(id);
 		},
 
 		/* 

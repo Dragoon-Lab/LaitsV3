@@ -46,6 +46,33 @@ $userPrecedence = true;
 if(isset($_GET['m']) && $_GET['m'] == "AUTHOR"){
   $userPrecedence = isset($_GET['up'])?($_GET['up'] == "true"):false;
 }
+$restartProblemFlag = isset($_GET['rp'])?$_GET['rp']:false;
+
+// Check if the session is public and expired
+date_default_timezone_set('America/Phoenix'); 
+$subtime =  date('Y-m-d h:m:s', strtotime('-1 minutes')); // Get the time stamp for 24h ago
+if (isset($_GET['s'])) { 
+   $section = mysqli_real_escape_string($mysqli,$_GET['s']);
+   if ($section=='public-login.html') {
+     if(isset($_GET['u']) && isset($_GET['m'])){
+      $user = mysqli_real_escape_string($mysqli,$_GET['u']);
+      $mode = $_GET['m'];
+      $query = <<<EOT
+      SELECT * FROM session WHERE session.user = '$user' AND session.section = '$section' AND session.mode = '$mode' AND session.problem = '$shortProblemName' ORDER BY session.time DESC LIMIT 1   
+EOT;
+
+     $result = $mysqli->query($query)
+      or trigger_error(" query failed." . $mysqli->error);
+       if($row = $result->fetch_row()){
+        if ($row[0]<$subtime) {
+          $restartProblemFlag=true; // Restart the problem
+        }
+      }      
+    }
+  }
+}
+
+
 
 /*
   Print out JSON object containing the model task and the share bit
@@ -70,10 +97,10 @@ function printModel($row){
 
 */
 if(isset($_GET['x'])){
-	
-	$session_id = mysqli_real_escape_string($mysqli,$_GET['x']);
+  
+  $session_id = mysqli_real_escape_string($mysqli,$_GET['x']);
 
-  	$query = <<<EOT
+    $query = <<<EOT
     SELECT solution_graph, share from solutions where session_id = '$session_id'      
 EOT;
 
@@ -81,37 +108,41 @@ EOT;
     or trigger_error("Previous work query failed." . $mysqli->error);
   if($row = $result->fetch_row()){
     printModel($row);
-	mysqli_close($mysqli);
+  mysqli_close($mysqli);
     exit;
-  }	
+  } 
  }
 
-if(isset($_GET['u']) && isset($_GET['s']) && isset($_GET['m'])){
-  $user = mysqli_real_escape_string($mysqli,$_GET['u']);
-  $section = mysqli_real_escape_string($mysqli,$_GET['s']);
-  $mode = $_GET['m'];  // only four choices
-  if(isset($_GET['g']) && !$userPrecedence){
-    //group takes precedence over user, quick fix for sustainability class
-    $query = <<<EOT
-    SELECT t1.solution_graph, t1.share FROM solutions AS t1 JOIN session AS t2 USING (session_id) 
-      WHERE t2.section = '$section' AND t2.mode = '$mode' 
-          AND t2.problem = '$shortProblemName' AND t2.group = '$group' ORDER BY t1.time DESC LIMIT 1
-EOT;
-  } else {
-  $gs = isset($_GET['g'])?"= '$group'":'IS NULL';
-  $query = <<<EOT
-    SELECT t1.solution_graph, t1.share FROM solutions AS t1 JOIN session AS t2 USING (session_id) 
-      WHERE t2.user = '$user' AND t2.section = '$section' AND t2.mode = '$mode' 
-          AND t2.problem = '$shortProblemName' AND t2.group $gs ORDER BY t1.time DESC LIMIT 1
-EOT;
-  }
+if(!$restartProblemFlag) /* if rp(restart problem) not set check in previously sovled problems */
+{
+  if(isset($_GET['u']) && isset($_GET['s']) && isset($_GET['m'])){
+     $user = mysqli_real_escape_string($mysqli,$_GET['u']);
+     $section = mysqli_real_escape_string($mysqli,$_GET['s']);
+     $mode = $_GET['m'];  // only four choices
 
-  $result = $mysqli->query($query)
-    or trigger_error("Previous work query failed." . $mysqli->error);
-  if($row = $result->fetch_row()){
-    printModel($row);
-	mysqli_close($mysqli);
-    exit;
+   if(isset($_GET['g']) && !$userPrecedence){
+      //group takes precedence over user, quick fix for sustainability class
+        $query = <<<EOT
+         SELECT t1.solution_graph, t1.share FROM solutions AS t1 JOIN session AS t2 USING (session_id) 
+              WHERE t2.section = '$section' AND t2.mode = '$mode' 
+              AND t2.problem = '$shortProblemName' AND t2.group = '$group' ORDER BY t1.time DESC LIMIT 1
+EOT;
+    } else {
+     $gs = isset($_GET['g'])?"= '$group'":'IS NULL';
+     $query = <<<EOT
+        SELECT t1.solution_graph, t1.share FROM solutions AS t1 JOIN session AS t2 USING (session_id) 
+            WHERE t2.user = '$user' AND t2.section = '$section' AND t2.mode = '$mode' 
+             AND t2.problem = '$shortProblemName' AND t2.group $gs ORDER BY t1.time DESC LIMIT 1
+EOT;
+    }
+
+   $result = $mysqli->query($query)
+     or trigger_error("Previous work query failed." . $mysqli->error);
+   if($row = $result->fetch_row()){
+       printModel($row);
+    mysqli_close($mysqli);
+        exit;
+      }
   }
 }
 
@@ -121,7 +152,7 @@ EOT;
      a matching published problem
 */
 
-if(isset($_GET['g']) && isset($_GET['s'])){
+if(isset($_GET['g']) && !empty($_GET['g']) && isset($_GET['s']) && !empty($_GET['s'])){
   /*
     If group and section are supplied, then look for 
     custom problem stored in database.
@@ -141,7 +172,7 @@ EOT;
   if($row = $result->fetch_row()){
     printModel($row);
   } else {
-    // No previous work found:  assume that this is a new problem	 
+    // No previous work found:  assume that this is a new problem  
     $statusCode=204;
     if (function_exists('http_response_code')){
       // Only exists for php versions >= 5.4.0
@@ -157,9 +188,12 @@ EOT;
   $host  = $_SERVER['HTTP_HOST'];
   $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
   // To support Java, one would need to switch this to xml
+  // To avoid forceful browsing, further santazing problem name 
+  // REGEX: Replace any character other than alphabat, number, underscore or hypen with underscore 
+  $problem = preg_replace('/[^A-Za-z0-9_\-]/', '_', $problem);
   $extra = 'problems/' . $problem . '.json';
   /* Redirect to a page relative to the current directory.
-     HTTP/1.1 requires an absolute URI as argument to Location. */
+     HTTP/1.1 requires an absolute URI as argument to Location. */ 
   header("Location: http://$host$uri/$extra");
 }
 mysqli_close($mysqli);

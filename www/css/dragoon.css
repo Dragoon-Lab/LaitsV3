@@ -11,7 +11,10 @@
 @import url("../dijit/themes/claro/Dialog.css");
 @import url("../dijit/themes/claro/document.css");
 @import url("state-machine1.css");
-
+/*For styling the rich text editor*/
+@import url("../dijit/themes/claro/Toolbar.css");
+@import url("../dijit/themes/claro/Editor.css");
+@import url("../dijit/icons/editorIcons.css");
 
 html, body, #main{
 	width:100%;	/* make the body expand to fill the visible window */
@@ -64,6 +67,16 @@ html, body, #main{
 .sameedit .fieldgroup > * {
     display:inline-block;
     vertical-align:top
+
+}
+
+.sameedit .fieldgroup > span{
+    text-align: right;
+    width: 14ex;
+}
+.sameedit .fieldgroup > span label{
+    vertical-align:top
+
 }
 
 .sameedit .fieldgroup > label:first-child {
@@ -71,7 +84,8 @@ html, body, #main{
 }
 
 .questionMark{
-    width:4%;
+    width:21px;
+    margin: -4px;
 }
 
 .sameedit #equationText {
@@ -122,13 +136,31 @@ width: 12em;
 }
 
 #authorDescDialog #authorSetDescription{
+    width: 98%;
+    height: 10ex;
+    border:solid black 1px;
+    padding:2px;
+    margin-right:2px;
+
+}
+#authorDescDialog #authorSetLessonsLearned{
+    width: 98%;
     height: 10ex;
     border:solid black 1px;
     padding:2px;
     margin:2px;
 }
 #authorDescDialog .timeStepAuthor{
-    width: 10ex;
+    width: 15ex;
+}
+
+.claro .dijitDisabled .dijitEditorIFrame,
+.claro .dijitDisabled .dijitEditorIFrameContainer{
+  background-color: #FFFFFF !important; /*override claro Editor and keep the explanation dialog box background-color white when disabled*/
+  color: black !important; 
+}
+.claro .dijitEditorIFrame{/*adding resizing ability to the explanation dialog box*/
+   resize:both;
 }
 
 /*
@@ -179,6 +211,12 @@ height:385px;
 
 .nodesDropdown{
 	margin-bottom: 5px;
+}
+
+.error{
+	font:11pt Arial,Myriad,Tahoma,Verdana,sans-serif;
+//	font-weight: bold;
+	color: red;
 }
 
 input[type=radio]{
@@ -271,4 +309,86 @@ input[type=radio]{
 .messageBox-warn{
    background-color: rgba(243,156,18,0.2);
    border: 2px solid #F39C12;
+}
+
+.factorNode{
+	padding-bottom: 10px;
+}
+
+.factorNode div{
+	padding-bottom: 5px;
+	padding-left: 5px;
+}
+
+.factorNode label{
+	font-weight: bold;
+}
+
+.factorNode input[type="text"]{
+	//width: 25px;
+	//border: 0px;
+	
+}
+.factorNode .type label{
+	padding-right: 10px;
+}
+
+.factorNode .unit label{
+	padding-right: 10px;
+}
+
+.factorNode .equation label{
+	padding-right: 10px;
+}
+
+.factorNode .description label{
+	padding-right: 2px;
+}
+
+.factorNode .initial label{
+	padding-right: 10px;
+}
+
+.factorNode .slip{
+	padding-right: 5px;
+}
+
+#factors .heading .guess{
+	padding-left: 173px;
+	padding right: 100px;
+}
+
+#factors .heading{
+	//float: right;
+	width: 100%;
+}
+
+.factorNode .dijitTextBox{
+	border: 0px;
+}
+
+.fname_type{
+	padding-right: 38px;
+}
+
+.fname_units{
+	padding-right: 34px;
+}
+
+.fname_initial{
+	padding-right: 32px;
+}
+
+.fname_equation{
+	padding-right: 11px;
+}
+span.slip{
+	padding-left: 160px;
+}
+
+.clear {
+	content: " ";
+	display: block;
+	clear: both;
+	height: 0;
 }

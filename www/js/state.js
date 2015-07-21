@@ -99,7 +99,7 @@ define([
 		});
 		object.then(lang.hitch(this, function(x){
 			// Don't add to cache if property is also not on the server.
-			if(x!=""){
+			if(x!="" && x!=null){
 			this.cache[property] = x;
 			}
 		}));

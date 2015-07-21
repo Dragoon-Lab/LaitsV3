@@ -1,6 +1,6 @@
 {
     "task": {
-        "taskName": "full wave rectifier with capacitor",
+        "taskName": "Full wave rectifier with smoothing capacitor",
         "time": {
             "start": 0,
             "end": 0.02,
@@ -44,7 +44,7 @@
                 "genus": "required",
                 "type": "function",
                 "units": "volts",
-                "equation": "id2*sinewave(60,0)"
+                "equation": "id2*sinewave(1/60,0)"
             },
             {
                 "ID": "id2",

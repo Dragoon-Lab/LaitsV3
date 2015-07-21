@@ -86,6 +86,10 @@ define([
 
 			var flag = Math.abs(studentResult - givenResult) <= 10e-10 * Math.abs(studentResult + givenResult);
 
+			if(!isFinite(studentResult)){// Handel devide by zero in student mode
+				flag=false;
+			}
+
 			if(givenEqn.indexOf("max") >= 0 || givenEqn.indexOf("min") >= 0){
 				var index = 0;
 				var nodes = Object.keys(valsCopy);
@@ -378,7 +382,7 @@ define([
 				// Include all nodes that belong in the solution.
 				// Additionally we only include nodes that are complete,
 				// except for units.
-				if((!node.genus || node.genus === "required") && model.isComplete(node.ID, true)){ 
+				if((!node.genus || node.genus === "required") && model.isComplete(node.ID)){
 					switch(node.type){
 					case "parameter":
 						// No equation to parse

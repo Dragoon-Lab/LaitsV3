@@ -1,3 +1,6 @@
+ifeq ($(OS),Windows_NT)
+    SHELL=C:/Windows/System32/cmd.exe
+endif
 dojo-version=master
 
 install:
@@ -8,7 +11,6 @@ install:
 	git clone https://github.com/dojo/util.git util
 	git clone https://github.com/bhosaledipak/JsPlumb_Dojo_Integreate.git jsPlumb
 	git clone https://github.com/bvds/js-expression-eval.git math-parser  
-	# In case the build fails, we tag version first.
 	echo "${dojo-version}" > dojo-install-version
 	@echo "call to build script goes here"
 	@echo "Installed Dojo $(dojo-version)."

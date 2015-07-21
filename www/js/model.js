@@ -11,7 +11,7 @@
  *
  *Dragoon is distributed in the hope that it will be useful,
  *but WITHOUT ANY WARRANTY; without even the implied warranty of
- *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
  *GNU Lesser General Public License for more details.
  *
  *You should have received a copy of the GNU Lesser General Public License
@@ -272,6 +272,7 @@ define([
 					//throw error for duplicate descriptions
 					errorMessage += "The following nodes have the duplicate descriptions: <strong>"+ duplicateStr + "</strong>. Please change them to be unique.";
 				}
+
 				if(errorMessage != ""){
 					throw new Error(errorMessage);
 				}
@@ -431,7 +432,10 @@ define([
 			setTaskDescription: function(/*string*/ description){
 				// Summary: set the task description
 				this.model.task.taskDescription = description;
-			}
+			},
+            setTaskLessonsLearned: function(/*string*/ lessonsLearned){
+                this.model.task.lessonsLearned = lessonsLearned;
+            }
 		};
 
 		/* 
@@ -483,6 +487,10 @@ define([
 			getUnits: function(/*string*/ id){
 				return this.getNode(id).units;
 			},
+			getExplanation: function(/*string*/ id){
+				var node = this.getNode(id);
+				return (typeof node.explanation==="undefined")?"":(node && node.explanation);
+			},
 			getEachNodeUnitbyID: function(){
 				//summary: returns key/value pair of node-id/unit
 				var unitList = {};
@@ -512,8 +520,20 @@ define([
 				});
 				return outputs;
 			},
+			getPosition: function(/*string*/ id){
+				// Summary: return current position of the node.
+				return this.getNode(id).position;
+			},
 			getSchemas: function(){
 				return obj.model.task.schemas;
+			},
+			getImageMarks : function(/**string */ nodeId){
+				//debugger;
+				var node = obj.given.getNode(nodeId);
+				
+				if(!node) return null;
+				if(!node["imageMarks"]) return [];
+				else return node["imageMarks"];
 			},
 			setSchemas: function(/* object */ schemas){
 				obj.model.task.schemas = schemas;
@@ -536,6 +556,13 @@ define([
 			setPosition: function(/*string*/ id, /*object*/ positionObject){
 				// Summary: sets the "X" and "Y" values of a node's position
 				this.getNode(id).position = positionObject;
+			},
+			setImageMarks : function(/**string */nodeId, marks){
+				var node = obj.given.getNode(nodeId);
+				if(!node) return null;
+				
+				node["imageMarks"] = marks;
+				console.log("Marks added to the model", marks);
 			},
 			addInput: function(/*string*/ input, /*string*/ inputInto){
 				console.error("Deprecated.	Use setInputs() instead.");
@@ -603,6 +630,7 @@ define([
 						values:{}
 					},
 					nodes: "",
+					rates: {},
 					difficulty: {
 						isolation: 1,
 						cues: 1,
@@ -653,18 +681,30 @@ define([
 					idMap[node.ID]=nID; //store old ID vs new ID
 					node.ID =nID;
 					
+					//check for duplicates(if node with given name already present): 
+					//if true, calculate the properIds for the duplicate nodes 					
 					if(obj.active.getNodeIDByName(node.name)){
-						node.name=node.name+"_duplicate";
+						var name_duplicate_count = 1;
+						//iterate through all the nodes and evalute the duplicate count value
+						while(obj.active.getNodeIDByName(node.name + "_duplicate_" + name_duplicate_count)){
+							name_duplicate_count++;
+						}
+						node.name=node.name+"_duplicate_" + name_duplicate_count;
 					}
 					if(obj.active.getNodeIDByDescription(node.description)){
-						node.description=node.description+"_duplicate";
+						var desc_duplicate_count = 1;
+						//iterate through all the nodes and evalute the duplicate count value
+						while(obj.active.getNodeIDByDescription(node.description + "_duplicate_" + desc_duplicate_count)){
+							desc_duplicate_count++;
+						}
+						node.description=node.description + "_duplicate_" + desc_duplicate_count;
 					}
 					ids.push(node.ID);
 
 					/*trick to update equations with new ids */
 					if(node.equation){
 						var equation = node.equation;
-						console.log("sachin shift value "+ shift);
+						//console.log("sachin shift value "+ shift);
 						var nEquation=equation.replace(/(id\d+)+/g, function(match, str) {
 								var number = str.replace("id", "");
        							return "id"+(parseInt(number)+shift);
@@ -835,6 +875,9 @@ define([
 			setDescription: function(/*string*/ id, /*string*/ description){
 				this.getNode(id).description = description.trim();
 			},
+			setExplanation: function(/*string*/ id, /*string*/ content){
+				this.getNode(id).explanation = content;
+			},
 			setParent: function(/*string*/ id, /*bool*/ parent){
 				this.getNode(id).parentNode = parent;
 			},
@@ -878,7 +921,7 @@ define([
 				// Summary: tracks student progress (correct, incorrect) on a given node;
 				this.getNode(id).status[part] = status;
 			},
-			isComplete: function(/*string*/ id, /*bool*/ unitsOptional){
+			isComplete: function(/*string*/ id){
 				// Summary: Test whether a node is completely filled out, correct or not
 				// Returns a boolean
 				// id: the node id
@@ -892,20 +935,29 @@ define([
 				//	 2.	 Just units
 				//	 3.	 Optional quantity (needs name and description)
 				var node = this.getNode(id);
-				var initialEntered = node.type && node.type == "function" || node.initial != null;
+                var unitsOptional = true;
+                var initialEntered = node.type && node.type == "function" || node.initial != null;
+                var toReturn = '';
 				var equationEntered = node.type && node.type == "parameter" || node.equation;
-				if(!node.genus || node.genus == "required" || node.genus == "allowed" || node.genus == "preferred"){
-					return  node.name && node.description &&
+                console.log("checking the node being studies",node,initialEntered,equationEntered);
+                if(!node.genus || node.genus == "required" || node.genus == "allowed" || node.genus == "preferred"){
+					 toReturn = node.name && node.description &&
 							node.type && (initialEntered || typeof initialEntered === "number") &&
 							(unitsOptional || node.units) &&
 							equationEntered;
 				}else if(node.genus == "initialValue"){
-					return node.genus && node.name && node.description;
+					toReturn = node.genus && node.name && node.description;
 				}else{
-					return node.genus != "defaultSelect" && ((node.name && node.description) ||
+					toReturn = node.genus != "defaultSelect" && ((node.name && node.description) ||
 							node.units);
 				}
-			}
+			    if(toReturn) {
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
 		}, both);
 
 		obj.solution = lang.mixin({
@@ -1151,10 +1203,16 @@ define([
 				var hasUnits = node.descriptionID && obj.given.getUnits(node.descriptionID);
 				var initialEntered = node.type && node.type == "function" || node.initial != null;
 				var equationEntered = node.type && node.type == "parameter" || node.equation;
-				return node.descriptionID && node.type &&
+				var toReturn = node.descriptionID && node.type &&
 						initialEntered && (!hasUnits || node.units) &&
 						equationEntered;
-			}
+			    if(toReturn){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
 		}, both);
 
 		// Execute the constructor
