@@ -22,7 +22,7 @@
 
 define([
 	"dojo/_base/lang"
-	], function(lang){
+], function(lang){
 
 	return function() {
 		var activity_params = {
@@ -135,120 +135,99 @@ define([
 					allowSliders: true
 				}
 			},
-            incremental: {
-                AUTHOR:{
-                    allowCreateNode:true,
-                    allowGraph:true,
-                    allowTable:true,
-                    allowForum:true,
-                    allowCreateSchema:true,
-                    allowProblemTimes:true,
-                    allowSaveAs:true,
-                    allowMerge:true,
-                    allowPreview:true,
-                    allowPrettify:true,
-                    allowHelp: true,
 
-                    allowDeleteNode: true,
-                    allowEditNode: true,
+			incremental: {
 
-                    showHints: true,
-                    showFeedback: true,
+				STUDENT:{
+					allowCreateNode:true,
+					allowGraph:true,
+					allowTable:true,
+					allowForum:true,
+					allowPrettify:true,
+					allowHelp: true,
+					allowLessonLearned:true,
+					allowDeleteNode: true,
+					allowEditNode: true,
 
-                    enable:[
-                    ],
+					showHints: true,
+					showFeedback: true,
+					showCorrectAnswer:true,
 
-                    allowSliders: true,
+					enable:[
+					],
 
-                    promptSaveAs:true,
-                    initializeStudentModel : true
-                },
+					allowSliders: true,
+					plotAuthorSolution:true,
+					initializeStudentModel : true,
 
-                STUDENT:{
-                    allowCreateNode:true,
-                    allowGraph:true,
-                    allowTable:true,
-                    allowForum:true,
-                    allowPrettify:true,
-                    allowHelp: true,
-                    allowLessonLearned:true,
-                    allowDeleteNode: true,
-                    allowEditNode: true,
+					showNodeEditor:false,
+					showIncrementalEditor:true,
+					copyAuthorNodes: true,
+					showNodeDetails:false
+				},
 
-                    showHints: true,
-                    showFeedback: true,
-                    showCorrectAnswer:true,
+				COACHED:{
+					allowCreateNode:true,
+					allowGraph:true,
+					allowTable:true,
+					allowForum:true,
+					allowPrettify:true,
+					allowHelp: true,
+					allowLessonLearned:true,
+					allowDeleteNode: true,
+					allowEditNode: true,
 
-                    enable:[
-                    ],
+					showHints: true,
+					showFeedback: true,
+					showCorrectAnswer:true,
+					targetNodeStrategy:true,
 
-                    allowSliders: true,
-                    plotAuthorSolution:true,
-                    initializeStudentModel : true
-                },
+					enable:[
+					],
 
-                COACHED:{
-                    allowCreateNode:true,
-                    allowGraph:true,
-                    allowTable:true,
-                    allowForum:true,
-                    allowPrettify:true,
-                    allowHelp: true,
-                    allowLessonLearned:true,
-                    allowDeleteNode: true,
-                    allowEditNode: true,
+					allowSliders: true,
+					plotAuthorSolution:true,
+					initializeStudentModel : true
+				},
 
-                    showHints: true,
-                    showFeedback: true,
-                    showCorrectAnswer:true,
-                    targetNodeStrategy:true,
+				TEST:{
+					allowCreateNode:true,
+					allowGraph:true,
+					allowTable:true,
+					allowForum:true,
+					allowPrettify:true,
+					allowHelp: true,
 
-                    enable:[
-                    ],
+					allowDeleteNode: true,
+					allowEditNode: true,
 
-                    allowSliders: true,
-                    plotAuthorSolution:true,
-                    initializeStudentModel : true
-                },
+					showFeedback: true,
+					enable:[
+					],
 
-                TEST:{
-                    allowCreateNode:true,
-                    allowGraph:true,
-                    allowTable:true,
-                    allowForum:true,
-                    allowPrettify:true,
-                    allowHelp: true,
+					allowSliders: true,
+					plotAuthorSolution:true,
+					initializeStudentModel : true
+				},
 
-                    allowDeleteNode: true,
-                    allowEditNode: true,
+				EDITOR:{
+					allowCreateNode:true,
+					allowGraph:true,
+					allowTable:true,
+					allowForum:true,
+					allowPrettify:true,
+					allowHelp: true,
+					allowHints:true,
+					allowDeleteNode: true,
+					allowEditNode: true,
 
-                    showFeedback: true,
-                    enable:[
-                    ],
+					enable:[
+					],
 
-                    allowSliders: true,
-                    plotAuthorSolution:true,
-                    initializeStudentModel : true
-                },
-
-                EDITOR:{
-                    allowCreateNode:true,
-                    allowGraph:true,
-                    allowTable:true,
-                    allowForum:true,
-                    allowPrettify:true,
-                    allowHelp: true,
-                    allowHints:true,
-                    allowDeleteNode: true,
-                    allowEditNode: true,
-
-                    enable:[
-                    ],
-
-                    allowSliders: true,
-                    initializeStudentModel : true
-                }
-            }
+					allowSliders: true,
+					initializeStudentModel : true
+				}
+			}
 		};
 
 		var config = {
@@ -299,9 +278,13 @@ define([
 				//Problem Open Behavior
 				promptSaveAs:false,
 
-                //Model
-                initializeStudentModel : false
+				//Model
+				initializeStudentModel : false,
 
+				//Incremental Behavior
+				showIncrementalEditor: false,
+				copyAuthorNodes: false,
+				showNodeDetails:true
 			},
 
 			constructor: function(/*string*/ mode, /*string*/ activity){

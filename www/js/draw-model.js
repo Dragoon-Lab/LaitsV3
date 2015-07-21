@@ -64,7 +64,8 @@ define([
             }, this);
 
         },
-		constructor: function(givenModel, /*boolean*/ showColor){
+		constructor: function(givenModel, /*boolean*/ showColor, activity_config){
+			this._activityConfig = activity_config;
 			this._showColor = showColor;
 			// setup some defaults for jsPlumb.
 			var instance = jsPlumb.getInstance({
@@ -221,7 +222,7 @@ define([
 			// Add div to drawing
 			console.log("	   --> setting position for vertex : "+ node.ID +" position: x"+node.position.x+"  y:"+node.position.y);
 	
-			var nodeName = graphObjects.getNodeName(this._givenModel,node.ID);
+			var nodeName = graphObjects.getNodeName(this._givenModel,node.ID, this._activityConfig.get("showNodeDetails"));
 			// Don't actually update node, since we will create it below.
 			var colorBorder = this.colorNodeBorder(node.ID, false);
 			var vertex = domConstruct.create("div", {

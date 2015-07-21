@@ -30,22 +30,22 @@ define([
 	"dojo/io-query",
 	"dojo/ready",
 	'dijit/registry',
-    "dijit/Tooltip",
+	"dijit/Tooltip",
 	"dijit/TooltipDialog",
 	"dijit/popup",
 	"./menu",
 	"./load-save",
 	"./model",
-	"./RenderGraph", 
+	"./RenderGraph",
 	"./RenderTable",
-	"./con-student", 
+	"./con-student",
 	"./con-author",
 	"./draw-model",
 	"./logging",
 	"./equation",
 	"./description",
 	"./state",
-    "./typechecker",
+	"./typechecker",
 	"./createSlides",
 	"./lessons-learned",
 	"./schemas-author",
@@ -58,10 +58,10 @@ define([
 	"dijit/Dialog",
 	"./image-box"
 ], function(
-		array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry, toolTip, tooltipDialog, popup,
-		menu, loadSave, model, Graph, Table, controlStudent, controlAuthor, drawmodel, logging, equation,
-		description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan,
-		activityParameters, memory, event, UI, Dialog, ImageBox){
+	array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry, toolTip, tooltipDialog, popup,
+	menu, loadSave, model, Graph, Table, controlStudent, controlAuthor, drawmodel, logging, equation,
+	description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan,
+	activityParameters, memory, event, UI, Dialog, ImageBox){
 
 	/*  Summary:
 	 *			Menu controller
@@ -70,12 +70,12 @@ define([
 	 *  Tags:
 	 *			menu, buttons, controller
 	 */
-	
+
 	console.log("load main.js");
 
-    //remove the loading division, now that the problem is being loaded
-    var loading = document.getElementById('loadingOverlay');
-    loading.style.display = "none";
+	//remove the loading division, now that the problem is being loaded
+	var loading = document.getElementById('loadingOverlay');
+	loading.style.display = "none";
 
 	// Get session parameters
 	var query = {};
@@ -85,35 +85,34 @@ define([
 		console.warn("Should have method for logging this to Apache log files.");
 		console.warn("Dragoon log files won't work since we can't set up a session.");
 		console.error("Function called without arguments");
-        // show error message and exit
-        var errorMessage = new messageBox("errorMessageBox", "error", "Missing information, please recheck the query");
-        errorMessage.show();
-        throw Error("please retry, insufficient information");
-    }
-    //Load Activity Parameters
-    //query.a gives the input activity through url
+		// show error message and exit
+		var errorMessage = new messageBox("errorMessageBox", "error", "Missing information, please recheck the query");
+		errorMessage.show();
+		throw Error("please retry, insufficient information");
+	}
+	//Load Activity Parameters
+	//query.a gives the input activity through url
 	var activity_config;
-    try{
-        activity_config = new activityParameters(query.m, query.a);
-        console.log("ACTIVITY PARAMS", activity_config);
-    }catch(error){
-        throw Error("problem in creating activity configurations");
-    }
+	try{
+		activity_config = new activityParameters(query.m, query.a);
+		console.log("ACTIVITY PARAMS", activity_config);
+	}catch(error){
+		throw Error("problem in creating activity configurations");
+	}
 
-    // Start up new session and get model object from server
+	// Start up new session and get model object from server
 	try {
-        var session = new loadSave(query);
-    }
-    catch(error){
-        console.log("error appeared");
-        var errorMessage = new messageBox("errorMessageBox", "error", error.message);
-        errorMessage.show();
-        throw Error("problem in creating sessions");
-    }
+		var session = new loadSave(query);
+	}
+	catch(error){
+		console.log("error appeared");
+		var errorMessage = new messageBox("errorMessageBox", "error", error.message);
+		errorMessage.show();
+		throw Error("problem in creating sessions");
+	}
 
-
-    console.log("session is",session);
-    logging.setSession(session);  // Give logger message destination
+	console.log("session is",session);
+	logging.setSession(session);  // Give logger message destination
 	session.loadProblem(query).then(function(solutionGraph){
 
 		/*
@@ -124,101 +123,101 @@ define([
 		var loading = document.getElementById('loadingOverlay');
 		loading.style.display = "none";
 
-        //display warning message if not using the supported browser and version
-        var checkBrowser = session.browser.name;
-        var checkVersion = session.browser.version;
-        if((checkBrowser ==="Chrome" && checkVersion<41) ||
-           (checkBrowser==="Safari" && checkVersion<8) ||
-           (checkBrowser==="msie" && checkVersion<11) ||
-           (checkBrowser==="Firefox") || (checkBrowser==="Opera")){
-            var errorMessage = new messageBox("errorMessageBox", "warn","You are using "+ session.browser.name+
-                " version "+session.browser.version + 
-                ". Dragoon is known to work well in these (or higher) browser versions: Google Chrome v41 or later Safari v8 or later Internet Explorer v11 or later");
-            // adding close callback to update the state for browser message
+		//display warning message if not using the supported browser and version
+		var checkBrowser = session.browser.name;
+		var checkVersion = session.browser.version;
+		if((checkBrowser ==="Chrome" && checkVersion<41) ||
+			(checkBrowser==="Safari" && checkVersion<8) ||
+			(checkBrowser==="msie" && checkVersion<11) ||
+			(checkBrowser==="Firefox") || (checkBrowser==="Opera")){
+			var errorMessage = new messageBox("errorMessageBox", "warn","You are using "+ session.browser.name+
+				" version "+session.browser.version +
+				". Dragoon is known to work well in these (or higher) browser versions: Google Chrome v41 or later Safari v8 or later Internet Explorer v11 or later");
+			// adding close callback to update the state for browser message
 			var compatibiltyState = new State(query.u, query.s, "action");
-			errorMessage.addCallback(function(){				
+			errorMessage.addCallback(function(){
 				compatibiltyState.put("browserCompatibility", "ack_" + getVersion());
 			});
-			compatibiltyState.get("browserCompatibility").then(function(res) {				
+			compatibiltyState.get("browserCompatibility").then(function(res) {
 				if(!(res && res == "ack_" + getVersion())){
 					errorMessage.show();
 				}
 			});
-        }
+		}
 
 		var givenModel = new model(query.m, query.p);
 		logging.session.log('open-problem', {problem : query.p});
-        console.log("solution graph is",solutionGraph);
+		console.log("solution graph is",solutionGraph);
 
 		//if(solutionGraph) {
 
 		// get the UI state for the given state and activity
 		var ui_config = new UI(query.m , query.a);
 		console.info("UI Parameters created:",ui_config);
-        console.log("sm ini ?",activity_config);
+		console.log("sm ini ?",activity_config);
 
 		if(solutionGraph) {
-            if(activity_config.get("initializeStudentModel")){
-                console.log("student model being initialized");
-                givenModel.initializeStudentModel(solutionGraph);
-            }
-            try {
-                givenModel.loadModel(solutionGraph);
-            } catch (error) {
-                if (query.m == "AUTHOR") {
-                    var errorMessage = new messageBox("errorMessageBox", "error", error.message);
-                    errorMessage.show();
-                } else {
-                    var errorMessage = new messageBox("errorMessageBox", "error", "This problem could not be loaded. Please contact the problem's author.");
-                    errorMessage.show();
-                    throw Error("Model could not be loaded.");
-                }
-            }
+			if(activity_config.get("initializeStudentModel")){
+				console.log("student model being initialized");
+				givenModel.initializeStudentModel(solutionGraph);
+			}
+			try {
+				givenModel.loadModel(solutionGraph);
+			} catch (error) {
+				if (query.m == "AUTHOR") {
+					var errorMessage = new messageBox("errorMessageBox", "error", error.message);
+					errorMessage.show();
+				} else {
+					var errorMessage = new messageBox("errorMessageBox", "error", "This problem could not be loaded. Please contact the problem's author.");
+					errorMessage.show();
+					throw Error("Model could not be loaded.");
+				}
+			}
 
-            // This version of code addresses loading errors in cases where problem is empty, incomplete or has no root node in coached mode
-            if (query.m !== "AUTHOR") {
-                //check if the problem is empty
-                try {
-                    console.log("checking for emptiness");
-                    var count = 0;
-                    array.forEach(givenModel.given.getNodes(), function (node) {
-                        //for each node increment the counter
-                        count++;
-                    });
-                    console.log("count of nodes is", count);
-                    if (count == 0) {
-                        //if count is zero we throw a error
-                        throw new Error("Problem is Empty");
-                    }
-                    //check for completeness of all nodes
-                    console.log("inside completeness verifying function");
-                    array.forEach(givenModel.given.getNodes(), function (node) {
-                        console.log("node is", node, givenModel.given.isComplete(node.ID));
-                        if (!givenModel.given.isComplete(node.ID)) {
-                            throw new Error("Problem is Incomplete");
-                        }
-                    });
-                    if (query.m === "COACHED") {
-                        //checks for root node if the mode is coached
-                        console.log("inside coached mode root verifying function");
-                        var hasParentFlag = false;
-                        array.forEach(givenModel.given.getNodes(), function (node) {
-                            console.log("node is", node);
-                            if (givenModel.given.getParent(node.ID)) {
-                                hasParentFlag = true;
-                            }
-                        });
-                        if (!hasParentFlag) {
-                        // throw an error if root node is absent
-                        throw new Error("Root Node Missing");
-                        }
-                    }
-                }catch (error) {
-                    var errorMessage = new messageBox("errorMessageBox", "error", error.message);
-                    errorMessage.show();
-                }
-            }
-        } else {
+			// This version of code addresses loading errors in cases where problem is empty, incomplete or has no root node in coached mode
+			if (query.m !== "AUTHOR") {
+				//check if the problem is empty
+				try {
+					console.log("checking for emptiness");
+					var count = 0;
+					array.forEach(givenModel.given.getNodes(), function (node) {
+						//for each node increment the counter
+						count++;
+					});
+					console.log("count of nodes is", count);
+					if (count == 0) {
+						//if count is zero we throw a error
+						throw new Error("Problem is Empty");
+					}
+					//check for completeness of all nodes
+					console.log("inside completeness verifying function");
+					array.forEach(givenModel.given.getNodes(), function (node) {
+						console.log("node is", node, givenModel.given.isComplete(node.ID));
+						if (!givenModel.given.isComplete(node.ID)) {
+							throw new Error("Problem is Incomplete");
+						}
+					});
+					if (query.m === "COACHED") {
+						//checks for root node if the mode is coached
+						console.log("inside coached mode root verifying function");
+						var hasParentFlag = false;
+						array.forEach(givenModel.given.getNodes(), function (node) {
+							console.log("node is", node);
+							if (givenModel.given.getParent(node.ID)) {
+								hasParentFlag = true;
+							}
+						});
+						if (!hasParentFlag) {
+							// throw an error if root node is absent
+							throw new Error("Root Node Missing");
+						}
+					}
+				}catch (error) {
+					var errorMessage = new messageBox("errorMessageBox", "error", error.message);
+					errorMessage.show();
+				}
+			}
+		} else {
 			if(query.g && query.m === "AUTHOR"){
 				var messageHtml = "You have successfully created a new problem named <strong>"+ query.p
 					+ "</strong>.<br/> <br/> If you expected this problem to exist already,"+
@@ -246,7 +245,7 @@ define([
 		var controllerObject = query.m == 'AUTHOR' ?
 			new controlAuthor(query.m, subMode, givenModel, query.is, ui_config, activity_config) :
 			new controlStudent(query.m, subMode, givenModel, query.is, ui_config, activity_config);
-		
+
 		//setting up logging for different modules.
 		if(controllerObject._PM){
 			controllerObject._PM.setLogging(session);  // Set up direct logging in PM
@@ -256,7 +255,7 @@ define([
 			controllerObject.setAssessment(session); //set up assessment for student.
 		}
 		equation.setLogging(session);
-		
+
 		/*
 		 * Create state object
 		 */
@@ -270,7 +269,7 @@ define([
 		ready(function(){
 			var taskString = givenModel.getTaskName();
 			document.title ="Dragoon" + ((taskString) ? " - " + taskString : "");
-			
+
 			//configuring DOM UI 
 			style.set(registry.byId('imageButton').domNode, "display", "none");
 
@@ -309,42 +308,42 @@ define([
 				}
 				dojo.xhrGet(xhrArgs);
 			}
-			
-			var drawModel = new drawmodel(givenModel.active, ui_config.get("showColor"));
+
+			var drawModel = new drawmodel(givenModel.active, ui_config.get("showColor"), activity_config);
 			drawModel.setLogging(session);
-			
-			
-			
-			
+
+
+
+
 			// Wire up drawing new node
 			aspect.after(controllerObject, "addNode",
-						 lang.hitch(drawModel, drawModel.addNode),
-						 true);
-			
+				lang.hitch(drawModel, drawModel.addNode),
+				true);
+
 			// add mouse enter and mouse leave event for every new node	
 			var iBoxController = new ImageBox(givenModel.getImageURL(), givenModel);
-			iBoxController.initNodeMouseEvents();		 
-			
+			iBoxController.initNodeMouseEvents();
+
 			aspect.after(drawModel, "addNode", function(vertex){
 				var context = iBoxController;
 				console.log("AddNode Called", vertex);
 				var target = document.getElementById(vertex.ID);
 				if(!target) return;
 				target.addEventListener('mouseenter', function(event){
-					
+
 					if(context.imageMarked) return;
-					var nodeId = event.srcElement["id"];					
+					var nodeId = event.srcElement["id"];
 					if(nodeId) iBoxController.markImage(nodeId);
 					context.imageMarked = true;
 				});
 				target.addEventListener('mouseleave', function(event){
-					if(!context.imageMarked) return;	
+					if(!context.imageMarked) return;
 					iBoxController.clear();
 					context.imageMarked = false;
 				});
-				
+
 			}, true);
-						 
+
 			// Wire up send to server
 			aspect.after(drawModel, "updater", function(){
 				session.saveProblem(givenModel.model);
@@ -353,8 +352,8 @@ define([
 			// When the node editor controller wants to update node style, inform
 			// the controller for the drawing su
 			aspect.after(controllerObject, "colorNodeBorder",
-						 lang.hitch(drawModel, drawModel.colorNodeBorder), 
-						 true);
+				lang.hitch(drawModel, drawModel.colorNodeBorder),
+				true);
 
 			/*
 			 * Connect node editor to "click with no move" events.
@@ -366,8 +365,10 @@ define([
 					}
 					if(givenModel.getImageURL())
 						registry.byId('imageButton').set('disabled', false);
-					else 
+					else
 						registry.byId('imageButton').set('disabled', true);
+				}else if(activity_config.get("showIncrementalEditor")){
+					controllerObject.showIncrementalEditor(mover.node.id);
 				}
 			}, true);
 
@@ -450,7 +451,7 @@ define([
 					around: dom.byId('prettifyButton')
 				});
 			});
-			
+
 			// Wire up close button...
 			// This will trigger the above session.saveProblem()
 			on(registry.byId("closeButton"), "click", function(){
@@ -490,7 +491,7 @@ define([
 
 					if(givenModel.getImageURL())
 						registry.byId('imageButton').set('disabled', false);
-					else 
+					else
 						registry.byId('imageButton').set('disabled', true);
 				});
 			}
@@ -499,19 +500,19 @@ define([
 				var descButton = registry.byId("descButton");
 				descButton.set("disabled", false);
 
-			/* // TODO: CHECK IF NEEDED BY ACTIVITY PARAMS
-			if(query.m == "AUTHOR"){
-				var db = registry.byId("descButton");
-				db.set("disabled", false);
-                db = registry.byId("saveButton");
-                db.set("disabled", false);
-                db = registry.byId("mergeButton");
-                db.set("disabled", false);
-				db = registry.byId("previewButton");
-				db.set("disabled", false);
-				db = registry.byId("schemaButton");
-				db.set("disabled", false);
-			*/	
+				/* // TODO: CHECK IF NEEDED BY ACTIVITY PARAMS
+				 if(query.m == "AUTHOR"){
+				 var db = registry.byId("descButton");
+				 db.set("disabled", false);
+				 db = registry.byId("saveButton");
+				 db.set("disabled", false);
+				 db = registry.byId("mergeButton");
+				 db.set("disabled", false);
+				 db = registry.byId("previewButton");
+				 db.set("disabled", false);
+				 db = registry.byId("schemaButton");
+				 db.set("disabled", false);
+				 */
 
 				// Description button wiring
 				menu.add("descButton", function(e){
@@ -750,7 +751,7 @@ define([
 				// Image Highlighting events
 				var imgMarker = new ImageBox(givenModel.getImageURL(), givenModel);
 				imgMarker.initMarkImageDialog(controllerObject);
-			
+
 				on(registry.byId('markImageAdd'), "click", function(event){
 					event.preventDefault();
 					imgMarker.addMark();
@@ -785,7 +786,7 @@ define([
 					});
 					//registry.byId('savedMark').dropDown.destory();
 					imgMarker.clear();
-					
+
 					var savedMarks = givenModel.active.getImageMarks(controllerObject.currentID);
 					console.log("saved marks for node", controllerObject.currentID, savedMarks);
 					if(savedMarks)
@@ -794,7 +795,7 @@ define([
 							var mark = {
 								value : ele,
 								label : ele,
-								selected : false								
+								selected : false
 							}
 							console.log(mark);
 							registry.byId("savedMark").addOption(mark);
@@ -943,20 +944,20 @@ define([
 				});
 
 				/*
-			 	 Add link to intro video
-			 	 */
+				 Add link to intro video
+				 */
 				var video = dom.byId("menuIntroVideo");
 				on(video, "click", function(){
 					controllerObject.logging.log('ui-action', {
-						type: "menu-choice", 
+						type: "menu-choice",
 						name: "intro-video"
 					});
 					// "newwindow": the pop-out window name, not required, could be empty
 					// "height" and "width": pop-out window size
 					// Other properties could be changed as the value of yes or no
 					window.open("https://www.youtube.com/watch_popup?v=Pll8iyDzcUs","newwindow",
-								"height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
-							   );
+						"height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
+					);
 				});
 
 				/*
@@ -1114,12 +1115,12 @@ define([
 
 			/*
 			 * This is a work-around for getting a button to work inside a MenuBar.
-		 	 * Otherwise, there is a superfluous error message.
-		 	 */
+			 * Otherwise, there is a superfluous error message.
+			 */
 			array.forEach(menuButtons,function(menuButton){
 				registry.byId(menuButton)._setSelected = function(arg){
-				console.log(menuButton+" _setSelected called with ", arg);				
-			    }			    
+					console.log(menuButton+" _setSelected called with ", arg);
+				}
 			});
 
 		});

@@ -311,6 +311,7 @@ input[type=radio]{
    border: 2px solid #F39C12;
 }
 
+<<<<<<< Updated upstream
 .factorNode{
 	padding-bottom: 10px;
 }
@@ -391,4 +392,15 @@ span.slip{
 	display: block;
 	clear: both;
 	height: 0;
+}
+.inc-button{
+    text-align:center;
+}
+
+.dijitReset{
+    font: normal normal normal 14px/1 FontAwesome  !important;
+}
+
+.bubble .fa{
+    font-size:18px;
 }

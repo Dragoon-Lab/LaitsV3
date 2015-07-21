@@ -43,36 +43,47 @@ define([
 				return [["Arrow", { location:1, id:"arrow", length:14, foldback:0.9 } ]];
 			}
 		},
-		getNodeName:function(model,nodeId,type){
+		getNodeName:function(model,nodeId,showDetails,type){
 			var type = type||model.getType(nodeId)||'triangle';
 			var nodeName = model.getName(nodeId);
-			var parse = model.getEquation(nodeId);
-			var parameter =	 '';
-			if(parse){
-				try{
-					parse=expression.parse(parse);
-					// May want to change symbols to "sum" and "product"
-					parameter = expression.isSum(parse)&&expression.isProduct(parse)?'':expression.isSum(parse)?'+':expression.isProduct(parse)?'*':'';
-					parameter = '<strong style="font-size:18px">'+parameter+'</strong>';
-				}catch(err){
-					console.log("Parse Error" + err);
+			if(showDetails) {
+				var parse = model.getEquation(nodeId);
+				var parameter = '';
+				if (parse) {
+					try {
+						parse = expression.parse(parse);
+						// May want to change symbols to "sum" and "product"
+						parameter = expression.isSum(parse) && expression.isProduct(parse) ? '' : expression.isSum(parse) ? '+' : expression.isProduct(parse) ? '*' : '';
+						parameter = '<strong style="font-size:18px">' + parameter + '</strong>';
+					} catch (err) {
+						console.log("Parse Error" + err);
+					}
 				}
-			}
-			var initialValue = typeof(model.getInitial(nodeId)) === "number"? model.getInitial(nodeId) : '';
-            
-			var unitsValue = model.getUnits(nodeId);
-			if(!unitsValue){
-				unitsValue = '';
-			}
-			initialValue += " " + unitsValue;
+				var initialValue = typeof(model.getInitial(nodeId)) === "number" ? model.getInitial(nodeId) : '';
 
-			if(nodeName){
-				nodeName='<div id='+nodeId+'Label  class="bubble"><div class="'+type+'Wrapper"><strong>'+parameter+'<br>'+initialValue+'</strong></div><div class='+type+'Div><strong>'+nodeName+'</strong></div></div>';
-                console.log(nodeName);
-            }else{
-				nodeName='';
-			}
+				var unitsValue = model.getUnits(nodeId);
+				if (!unitsValue) {
+					unitsValue = '';
+				}
+				initialValue += " " + unitsValue;
 
+				if (nodeName) {
+					nodeName = '<div id=' + nodeId + 'Label  class="bubble"><div class="' + type + 'Wrapper"><strong>' + parameter + '<br>' + initialValue + '</strong></div><div class=' + type + 'Div><strong>' + nodeName + '</strong></div></div>';
+					console.log(nodeName);
+				} else {
+					nodeName = '';
+				}
+			}else{
+				//var dir = model.getTweak();
+				var dir = "Increase";
+				var iconClass = {
+					"Increase": "arrow-up",
+					"Decrease":"arrow-down",
+					"Constant":"&#x003d;",
+					"Unknown":"question"
+				};
+				nodeName='<div id=' + nodeId + 'Label  class="bubble"><div class="' + type + 'Wrapper"><strong class="fa fa-'+ iconClass[dir] +'"></strong></div><div class=' + type + 'Div><strong>' + nodeName + '</strong></div></div>';
+			}
 			return nodeName;
 		}
 	};
