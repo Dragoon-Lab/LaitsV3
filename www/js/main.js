@@ -36,8 +36,7 @@ define([
 	"./menu",
 	"./load-save",
 	"./model",
-	"./RenderGraph",
-	"./RenderTable",
+	"./RenderGraph",	
 	"./con-student",
 	"./con-author",
 	"./draw-model",
@@ -59,7 +58,7 @@ define([
 	"./image-box"
 ], function(
 	array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry, toolTip, tooltipDialog, popup,
-	menu, loadSave, model, Graph, Table, controlStudent, controlAuthor, drawmodel, logging, equation,
+	menu, loadSave, model, Graph, controlStudent, controlAuthor, drawmodel, logging, equation,
 	description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan,
 	activityParameters, memory, event, UI, Dialog, ImageBox){
 
@@ -450,12 +449,6 @@ define([
 					popup: prettifyConfirmDialog,
 					around: dom.byId('prettifyButton')
 				});
-			});
-
-			// Wire up close button...
-			// This will trigger the above session.saveProblem()
-			on(registry.byId("closeButton"), "click", function(){
-				registry.byId("nodeeditor").hide();
 			});
 
 			//Remove nodes from student model(if added) when author deletes the node from given model
