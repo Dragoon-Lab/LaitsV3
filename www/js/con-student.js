@@ -55,9 +55,11 @@ define([
 		_PM: null,
         _previousExpression:null,
 		_assessment: null,
-		constructor: function(mode, subMode, model){
+		constructor: function(mode, subMode, model, inputStyle, activity_config){
 			console.log("++++++++ In student constructor");
-			this._PM = new PM(mode, subMode, model);
+			this._activityConfig = activity_config;
+			this._PM = new PM(mode, subMode, model, this._activityConfig);
+			this._inputStyle = inputStyle;
 			lang.mixin(this.widgetMap, this.controlMap);
 			ready(this, "populateSelections");
 			this.init();
