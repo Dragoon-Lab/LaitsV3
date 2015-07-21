@@ -585,6 +585,18 @@ define([
 				//array.forEach(this.given.getNodes(),function(modelNode){
 				  //  console.log("model node is",modelNode);
 				//});
+			},
+
+			getPlotVariables: function(){
+				var plotVariables = [];
+				var nodes = this.getAllNodes();
+				array.forEach(nodes, function(node){
+					if((node.type == "accumulator" || node.type == "function") && (node.genus == "allowed" || node.genus == "")){
+						plotVariables.push(node.id);
+					}
+				}, this);
+
+				return plotVariables;
 			}
 		};
 
