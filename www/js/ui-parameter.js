@@ -40,6 +40,8 @@
 						"mergeButton" : "hidden",
 						"previewButton" : "hidden",
 						"slidesButton" : "hidden",
+						"lessonsLearnedButton" : "hidden",
+						"doneButton" : "hidden",
 						"nodeBorderCompleteColor" : "gray",
 						"nodeBorderCompleteStyle" : "solid ",
 						"nodeBorderInCompleteStyle" : "dashed ",
@@ -60,7 +62,9 @@
 						"saveButton" : "visible",
 						"mergeButton" : "visible",
 						"previewButton" : "visible",
-						"slidesButton" : "visible"
+						"slidesButton" : "visible",
+						"lessonsLearnedButton" : "visible",
+						"doneButton" : "visible"
 						
 					}
 				},
@@ -71,7 +75,8 @@
 						"graphButton" : "visible",
 						"tableButton" : "visible",
 						"forumButton" : "visible",
-						"slidesButton" : "visible"
+						"slidesButton" : "visible",
+
 				
 					}
 				},
@@ -83,10 +88,38 @@
 				}
 				
 			 ],
+			 incremental : [
+			 	{
+					"mode" : ["STUDENT", "COACHED" , "TEST","EDITOR"] ,
+					"param" : { 
+						"showColor" : true,
+						"nodeBorderSize" : "3px ",
+						"createNodeButton" : "hidden",
+						"graphButton" : "hidden",
+						"tableButton" : "hidden",
+						"forumButton" : "hidden",
+						"schemaButton" : "hidden",
+						"descButton" : "hidde",
+						"saveButton" : "hidden",
+						"mergeButton" : "hidden",
+						"previewButton" : "hidden",
+						"slidesButton" : "hidden",
+						"lessonsLearnedButton" : "hidden",
+						"doneButton" : "visible",
+						"nodeBorderCompleteColor" : "gray",
+						"nodeBorderCompleteStyle" : "solid ",
+						"nodeBorderInCompleteStyle" : "dashed ",
+						"nodeBorderSuccessColor" : "green",
+						"nodeBorderFeedbackColor" : "yellow",
+						"nodeBorderFailColor" : "red",
+						
+					}
+				}
+			 ],
+			 "automated_incremental" : [],	
 			 execution : [],
 			 "automated_execution" : [],
-			 upanddown : [],
-			 "automated_upanddown" : []			 
+			 	 
 		 };
 
 		 var config = {
@@ -113,10 +146,10 @@
 				(typeof this._params[name] != "undefined") ? result =  this._params[name] : result = undefined;
 			 	return result;
 			 },
-			 getMode : function(/* string*/ mode){
+			 getMode : function(){
 				 return this._mode;
 			 },
-			 getActivity : function(/* string*/ activity){
+			 getActivity : function(){
 				 return this._activity;
 			 },
 			 //returns object containing all(general and specific) config parameters for the given mode and activity

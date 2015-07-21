@@ -57,7 +57,6 @@ define([
 			lang.mixin(this.controlMap, this.genericControlMap);
 			this._model = model;
 			this._mode = mode;
-			this._inputStyle = inputStyle;
 			// structured should be its own module.	 For now,
 			// initialize
 			this.structured._model = this._model;

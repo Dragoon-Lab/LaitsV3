@@ -600,6 +600,14 @@ define([
 			getSchemas: function(){
 				return obj.model.task.schemas;
 			},
+			getImageMarks : function(/**string */ nodeId){
+				//debugger;
+				var node = obj.given.getNode(nodeId);
+				
+				if(!node) return null;
+				if(!node["imageMarks"]) return [];
+				else return node["imageMarks"];
+			},
 			setSchemas: function(/* object */ schemas){
 				obj.model.task.schemas = schemas;
 			},
@@ -621,6 +629,13 @@ define([
 			setPosition: function(/*string*/ id, /*object*/ positionObject){
 				// Summary: sets the "X" and "Y" values of a node's position
 				this.getNode(id).position = positionObject;
+			},
+			setImageMarks : function(/**string */nodeId, marks){
+				var node = obj.given.getNode(nodeId);
+				if(!node) return null;
+				
+				node["imageMarks"] = marks;
+				console.log("Marks added to the model", marks);
 			},
 			addInput: function(/*string*/ input, /*string*/ inputInto){
 				console.error("Deprecated.	Use setInputs() instead.");
