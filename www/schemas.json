@@ -1,5 +1,316 @@
 [
 	{
+		"schemaClass" : "PAL3/Electronix Tutor",
+		"subClasses": [
+			{
+			    "name" : "Incandescent Bulb Behavior",
+			    "id" : "Incandescent Bulb Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Capacitor Behavior",
+			    "id" : "Capacitor Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Negative Biased Negative Clampers Behavior",
+			    "id" : "Negative Biased Negative Clampers Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Negative Biased Positive Clampers Behavior",
+			    "id" : "Negative Biased Positive Clampers Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Negative Clampers Behavior",
+			    "id" : "Negative Clampers Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Positive Biased Negative Clampers Behavior",
+			    "id" : "Positive Biased Negative Clampers Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Positive Biased Positive Clampers Behavior",
+			    "id" : "Positive Biased Positive Clampers Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Positive Clampers Behavior",
+			    "id" : "Positive Clampers Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Alternating Current Behavior",
+			    "id" : "Alternating Current Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Diode Behavior-Avalanche",
+			    "id" : "Diode Behavior-Avalanche",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Diode Behavior-Forward",
+			    "id" : "Diode Behavior-Forward",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Diode Behavior-Reverse",
+			    "id" : "Diode Behavior-Reverse",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Diode Physics",
+			    "id" : "Diode Physics",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "LC Input Filter Behavior",
+			    "id" : "LC Input Filter Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "LC Choke Input Filter Behavior",
+			    "id" : "LC Choke Input Filter Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "RC Input Filter Behavior",
+			    "id" : "RC Input Filter Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Generator Behavior",
+			    "id" : "Generator Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Inductor Behavior",
+			    "id" : "Inductor Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Parallel Negative Limiter Behavior",
+			    "id" : "Parallel Negative Limiter Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Parallel Negative Limiter with Negative Bias Behavior",
+			    "id" : "Parallel Negative Limiter with Negative Bias Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Parallel Negative Limiter with Positive Bias Behavior",
+			    "id" : "Parallel Negative Limiter with Positive Bias Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Parallel Positive Limiter Behavior",
+			    "id" : "Parallel Positive Limiter Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Parallel Positive Limiter with Bias Behavior",
+			    "id" : "Parallel Positive Limiter with Bias Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Parallel Positive Limiter with Negative Bias Behavior",
+			    "id" : "Parallel Positive Limiter with Negative Bias Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Parallel Positive Limiter with Positive Bias Behavior",
+			    "id" : "Parallel Positive Limiter with Positive Bias Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Series Negative Limiter Behavior",
+			    "id" : "Series Negative Limiter Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Series Negative Limiter with Negative Bias Behavior",
+			    "id" : "Series Negative Limiter with Negative Bias Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Series Negative Limiter with Positive Bias Behavior",
+			    "id" : "Series Negative Limiter with Positive Bias Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Series Positive Limiter Behavior",
+			    "id" : "Series Positive Limiter Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Series Positive Limiter with Negative Bias Behavior",
+			    "id" : "Series Positive Limiter with Negative Bias Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Series Positive Limiter with Positive Bias Behavior",
+			    "id" : "Series Positive Limiter with Positive Bias Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Bridge Rectifier Behavior",
+			    "id" : "Bridge Rectifier Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Bridge Rectifier with Capacitor Behavior",
+			    "id" : "Bridge Rectifier with Capacitor Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Full Wave Rectifier Behavior",
+			    "id" : "Full Wave Rectifier Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Full Wave Rectifier with Zener Behavior",
+			    "id" : "Full Wave Rectifier with Zener Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Half Wave Rectifier Behavior",
+			    "id" : "Half Wave Rectifier Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Negative Half Wave Rectifier Behavior",
+			    "id" : "Negative Half Wave Rectifier Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Positive Half Wave Rectifier Behavior",
+			    "id" : "Positive Half Wave Rectifier Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Rectifier Behavior",
+			    "id" : "Rectifier Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Zener Voltage Regulator Behavior",
+			    "id" : "Zener Voltage Regulator Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Resistor Behavior",
+			    "id" : "Resistor Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Full Wave Voltage Doubler Behavior",
+			    "id" : "Full Wave Voltage Doubler Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Half Wave Voltage Doubler Behavior",
+			    "id" : "Half Wave Voltage Doubler Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Voltage Regulator Behavior",
+			    "id" : "Voltage Regulator Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Voltage Regulator Function",
+			    "id" : "Voltage Regulator Function",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Zener Diode Behavior",
+			    "id" : "Zener Diode Behavior",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Zener Diode Behavior-Reverse",
+			    "id" : "Zener Diode Behavior-Reverse",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Zener Diode Behavior-Avalanche",
+			    "id" : "Zener Diode Behavior-Avalanche",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Zener Diode Function",
+			    "id" : "Zener Diode Function",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Zener Diode Parameters",
+			    "id" : "Zener Diode Parameters",
+			    "template" : "",
+			    "example" : ""
+			},
+			{
+			    "name" : "Zener Diode Physics",
+			    "id" : "Zener Diode Physics",
+			    "template" : "",
+			    "example" : ""
+			}
+		]
+	},
+	{
 		"schemaClass" : "Generic models of dynamic systems",
 		"subClasses": [
 			{
