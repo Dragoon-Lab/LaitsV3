@@ -55,11 +55,9 @@ define([
 		_PM: null,
         _previousExpression:null,
 		_assessment: null,
-		constructor: function(mode, subMode, model, inputStyle, activity_config){
+		constructor: function(mode, subMode, model){
 			console.log("++++++++ In student constructor");
-			this._activityConfig = activity_config;
 			this._PM = new PM(mode, subMode, model, this._activityConfig);
-			this._inputStyle = inputStyle;
 			lang.mixin(this.widgetMap, this.controlMap);
 			ready(this, "populateSelections");
 			this.init();
@@ -389,7 +387,7 @@ define([
 		},
 
 		nodeCloseAssessment: function(){
-			if(this._assessment){
+			if(this._assessment && this._assessment.currentNodeTime){
 				this._assessment.nodeClose(this.currentID);
 			}
 		}

@@ -51,12 +51,15 @@ define([
 		// Variable to track if an equation has been entered and checked
 		equationEntered: null,	// value is set when node editor opened
 
-		constructor: function(mode, subMode, model, inputStyle){
+		constructor: function(mode, subMode, model, inputStyle, ui_config, activity_config){
 			
 			console.log("+++++++++ In generic controller constructor");
 			lang.mixin(this.controlMap, this.genericControlMap);
 			this._model = model;
 			this._mode = mode;
+			this._inputStyle = inputStyle;
+			this._activityConfig = activity_config;
+			this._uiConfig = ui_config;
 			// structured should be its own module.	 For now,
 			// initialize
 			this.structured._model = this._model;

@@ -444,6 +444,7 @@ define([
 			this.model = model;
 			this.mode = mode;
 			this.activityConfig = activityConfig;
+			this.showCorrectAnswer = this.activityConfig.get("showCorrectAnswer");
 			this.setUserType(subMode);
 		},
 		matchingID: null,
@@ -523,7 +524,7 @@ define([
 			// Tags: Private
 			var interpretation = null;
 			var model = this.model; //needed for anonymous function in the interpret variable.
-			var showCorrectAnswer = this.activityConfig.get("showCorrectAnswer");
+			var showCorrectAnswer = this.showCorrectAnswer;
 			// Retrieves the givenID for the matching given model node
 			var givenID = this.model.student.getDescriptionID(studentID);
 
@@ -532,7 +533,7 @@ define([
 				if(answer === correctAnswer || correctAnswer === true){
 					interpretation = "correct";
 				}else{
-					if(showCorrectAnswer === true){
+					if(showCorrectAnswer){
 						if(model.given.getAttemptCount(givenID, nodePart) > 0)
 							interpretation = "secondFailure";
 						else

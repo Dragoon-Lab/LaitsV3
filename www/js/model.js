@@ -666,8 +666,19 @@ define([
 					}
 				}
 				nodes.splice(index, 1);
+			},
+			getPlotVariables: function(){
+				var plotVariables = [];
+				var nodes = this.getAllNodes();
+				array.forEach(nodes, function(node){
+					if((node.type == "accumulator" || node.type == "function") && (node.genus == "allowed" || node.genus == "")){
+						plotVariables.push(node.id);
+					}
+				}, this);
+
+				return plotVariables;
 			}
-        };
+		};
 
 		obj.given = lang.mixin({
 			addNode: function(options){
