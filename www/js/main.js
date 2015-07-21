@@ -240,8 +240,8 @@ define([
 		/* In principle, we could load just one controller or the other. */
 
 		var controllerObject = query.m == 'AUTHOR' ?
-			new controlAuthor(query.m, subMode, givenModel, query.is, activity_config) :
-			new controlStudent(query.m, subMode, givenModel, query.is, activity_config);
+			new controlAuthor(query.m, subMode, givenModel, query.is, ui_config, activity_config) :
+			new controlStudent(query.m, subMode, givenModel, query.is, ui_config, activity_config);
 		
 		//setting up logging for different modules.
 		if(controllerObject._PM){
