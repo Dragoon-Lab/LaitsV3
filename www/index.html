@@ -471,13 +471,42 @@
             <div>&nbsp;</div>
             <button id="closeButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon" style="float:right;">Done</button>
             <button id="deleteButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon" style="float:left;">Delete Node</button>
-
+            <button id="imageButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon" style="float:left;" disabled="true" style="display: none">Image Highlighting</button>
             <div>&nbsp;</div>
 		</div>
 	    </div>
+        <div class="claro sameedit" id="markImageBox" data-dojo-type="dijit/Dialog" title="Image Highlighting" style="width:600px;"> 
+            <div class="imagebox-container" > 
+                <div class="image-container" style="float:left; margin-left:20px; position:relative; width:44%"> 
+                    <canvas id="markImageCanvas"></canvas>
+                    </br>
+                    <label style="color:grey;">Click and drag to mark the region of the image you wish to highlight when the user puts their mouse over the node.  Then click "Add" to add it to the list of regions to highlight.</label>
+                </div>
+                <div class="coordinates-container" style="float:right; width:44%; position:relative; text-align:right; padding-top:25px; padding-right:15px;">
+                    <div class="fieldgroup">
+                        <label style="width:80px; padding-left:5px;padding-right:5px;text-align:right; margin-left:0px;">Selected Region</label>
+                        <input type="text" id="newMark" data-dojo-type="dijit/form/TextBox" style="width:128px"readonly/>
+                    </div>
+                    <div class="fieldgroup" style="padding-left:15ex; text-align:right">
+                        <button id="markImageAdd" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon" >Add</button>
+                        <button id="markImageClear" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon" >Clear Selection</button>
+                     </div>
+                
+                    <div class="fieldgroup" style="text-align:right;">
+                         <label style="width:80px; padding-left:5px;padding-right:5px; text-align:right; margin-left:0px;">Regions to Highlight</label>
+                         <select id="savedMark" data-dojo-type="dijit/form/Select" style="width:128px"></select><br/>
+                         <div class="fieldgroup" style="text-align: right; display:block;"> <button id="markImageRemove" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon" style="text-align:right;" >Remove</button> </div> 
+                    </div> 
+                </div>
+            </div>
+            <div class="fieldgroup" style="text-align:right;padding-right:15px;">
+			     <button id="markImageCancel" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon" >Cancel</button>
+                 <button id="markImageDone" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Done</button>
+            </div>
+        </div>
 	</div> <!-- end of node editor -->
         <!-- Putting Node-Editor stuff for demo  end -->
-
+    
 
 	<div class="claro slides" id="slidesBox" data-dojo-type="dijit/Dialog" title="Hints">
 		<div id="buttons">
