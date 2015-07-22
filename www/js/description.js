@@ -260,7 +260,6 @@ define([
 			var context = canvas.getContext('2d');
 			context.clearRect(0,0,canvas.width, canvas.height);
 			var desc_text = this.givenModel.getTaskDescription();
-            debugger;
             var descs=[];
             if (this._activity==="incremental"){
              console.log(desc_text);
