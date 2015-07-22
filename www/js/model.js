@@ -66,7 +66,8 @@ define([
 					lessonsLearned: "",
 					givenModelNodes: [],
 					studentModelNodes: [],
-					schemas: []
+					schemas: [],
+					increment: []
 				}};
 
 				/*
@@ -279,8 +280,8 @@ define([
 
 				this.isCompleteFlag = this.matchesGivenSolution();
 			},
-            initializeStudentModel: function(/*Object*/ solutionGraph){
-                this.model = solutionGraph;
+            initializeStudentModel: function(/*Object solutionGraph*/){
+                //this.model = solutionGraph;
                 var thisModel = this;
                 if(!this.model.task.initialized) {
                     this.model.task.initialized=true ;
@@ -361,8 +362,12 @@ define([
 
                 }
             },
-
-
+			getInitialTweakedNode: function(){
+				return this.model.task.increment[0].tweakedNode;
+			},
+			getInitialTweakDirection: function(){
+				return this.model.task.increment[0].tweakDirection;
+			},
             getModelAsString: function(){
 				// Summary: Returns a JSON object in string format
 				//			Should only be used for debugging.
@@ -618,9 +623,6 @@ define([
 				if(!node["imageMarks"]) return [];
 				else return node["imageMarks"];
 			},
-			getTweakDirection: function(/*string*/ id){
-				return this.getNode(id).tweakDirection ;
-			},
 			setSchemas: function(/* object */ schemas){
 				obj.model.task.schemas = schemas;
 			},
@@ -680,16 +682,11 @@ define([
 				}
 				nodes.splice(index, 1);
 			},
-			getPlotVariables: function(){
-				var plotVariables = [];
-				var nodes = this.getAllNodes();
-				array.forEach(nodes, function(node){
-					if((node.type == "accumulator" || node.type == "function") && (node.genus == "allowed" || node.genus == "")){
-						plotVariables.push(node.id);
-					}
-				}, this);
-
-				return plotVariables;
+			setTweakDirection : function(/*string*/ id, /* string*/ direction){
+				this.getNode(id).tweakDirection = direction;
+			},
+			getTweakDirection: function(/*string*/ id){
+				return this.getNode(id).tweakDirection ;
 			}
 		};
 
@@ -1018,9 +1015,6 @@ define([
 				// Summary: tracks student progress (correct, incorrect) on a given node;
 				this.getNode(id).status[part] = status;
 			},
-			setTweakDirection : function(/*string*/ id, /* string*/ direction){
-				this.getNode(id).tweakDirection = direction;
-			},
 			isComplete: function(/*string*/ id){
 				// Summary: Test whether a node is completely filled out, correct or not
 				// Returns a boolean
@@ -1058,6 +1052,17 @@ define([
 				else{
 					return false;
 				}
+			},
+			getPlotVariables: function(){
+				var plotVariables = [];
+				var nodes = this.getNodes();
+				array.forEach(nodes, function(node){
+					if((node.type == "accumulator" || node.type == "function") && (!node.genus || node.genus == "" || node.genus == "allowed")){
+						plotVariables.push(node.ID);
+					}
+				}, this);
+
+				return plotVariables;
 			}
 		}, both);
 
@@ -1276,9 +1281,7 @@ define([
 				this.getNode(id).status[control] = lang.mixin(attributes, options);
 				return attributes;
 			},
-			setTweakDirection : function(/*string*/ id, /* string*/ direction){
-				this.getNode(id).tweakDirection = direction;
-			},
+			
 			setAssistanceScore: function(/*string*/ id, /*string*/ score){
 				// Summary: Sets a the amount of errors/hints that a student
 				//		receives, based on suggestions by Robert Hausmann;
