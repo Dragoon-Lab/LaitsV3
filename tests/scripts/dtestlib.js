@@ -216,6 +216,7 @@ exports.openProblem = function(client,parameters){
     var mode = "&m=" + (paramMap["mode"]);
     var section = "&s=" + (paramMap["section"] || "autotest");
     var nodeEditorMode = "&is=" + (paramMap["submode"] ||  "algebraic");
+    var activity = "&a=construction";
 
     // optional parts
 
@@ -234,7 +235,7 @@ exports.openProblem = function(client,parameters){
     }
     // possible TODO: allow power user mode.
 
-    var url = urlRoot + '?' + user + section + problem + mode + nodeEditorMode + group + logging +
+    var url = urlRoot + '?' + user + section + problem + mode + nodeEditorMode + group + logging + activity +
               "&c=Continue";
 
     if(await(client.session(defer())) === undefined){

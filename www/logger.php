@@ -85,10 +85,11 @@ if($method == 'start-session'||$method == 'rename-problem'){
   }
   $problem = isset($x->p)?"'$x->p'":"DEFAULT";
   $group = isset($x->g)?"'$x->g'":"DEFAULT";
+  $activity = isset($x->a)?"'$x->a'":"construction";
   // This should give an error if session id already exists.
   // Need to verify how error is handled.
-  $query = "INSERT INTO session (session_id, mode, user, section, problem, `group`) " .
-    "VALUES ('$sessionId','$x->m','$x->u','$x->s',$problem,$group)";
+  $query = "INSERT INTO session (session_id, mode, user, section, problem, `group`, activity) " .
+    "VALUES ('$sessionId','$x->m','$x->u','$x->s',$problem,$group,$activity)";
   // echo "Starting new session query $query\n";
   $mysqli->query($query)
     or trigger_error("Session creation failed: " . $mysqli->error);
