@@ -282,74 +282,84 @@ define([
             initializeStudentModel: function(/*Object*/ solutionGraph){
                 this.model = solutionGraph;
                 var thisModel = this;
-                //empty the student model
-                this.model.task.studentModelNodes = [];
-                array.forEach(this.student.getNodes(),function(nodeIds){
-                    console.log("tmz",nodeIds);
-                });
-                var largest = 0;
-                var intID = function(/*object*/ node){
-                    if(node.ID.length >= 2 && node.ID.slice(0, 2) == "id"){
-                        var n = parseInt(node.ID.slice(2));
-                        if(n && n > largest)
-                            largest = n;
-                    }
-                };
-                array.forEach(this.given.getNodes(), intID);
-                this._ID=largest;
-                var nodeStore= [];
-
-                array.forEach(this.given.getNodes(),function(currentNode){
-                    var newNode = thisModel.student.addNodeInc();
-                    nodeStore[currentNode.ID] = newNode;
-                });
-                array.forEach(this.given.getNodes(),function(currentNode){
-                    var newNodeID = nodeStore[currentNode.ID];
-                    thisModel.student.setDescriptionID(newNodeID, currentNode.ID);
-                    thisModel.student.setInitial(newNodeID, currentNode.initial);
-                    thisModel.student.setUnits(newNodeID, currentNode.units);
-                    thisModel.student.setType(newNodeID, currentNode.type);
-                    thisModel.student.setTweakDirection(newNodeID,currentNode.tweakDirection);
-                    if(currentNode.equation){
-                        var inputs = [];
-                        var isExpressionValid = true;
-                        var equation = currentNode.equation;
-                        array.forEach(currentNode.inputs, lang.hitch(this, function(input){
-                            var studentNodeID = nodeStore[input.ID];
-                            if(studentNodeID){
-                                inputs.push({ "ID": studentNodeID});
-                                var regexp = "(" +input.ID +")([^0-9]?)";
-                                var re = new RegExp(regexp);
-                                equation = equation.replace(re, studentNodeID+"$2");
-                            }
-                            else{
-                                isExpressionValid = false;
-                            }
-                        }));
-                        if(isExpressionValid){
-                            thisModel.student.setInputs(inputs, newNodeID);
-                            thisModel.student.setEquation(newNodeID, equation);
-                            thisModel.student.setStatus(newNodeID, "equation" , {"disabled":true,"status":"correct"});
+                if(!this.model.task.initialized) {
+                    this.model.task.initialized=true ;
+                    //empty the student model
+                    this.model.task.studentModelNodes = [];
+                    array.forEach(this.student.getNodes(), function (nodeIds) {
+                        console.log("tmz", nodeIds);
+                    });
+                    var largest = 0;
+                    var intID = function (/*object*/ node) {
+                        if (node.ID.length >= 2 && node.ID.slice(0, 2) == "id") {
+                            var n = parseInt(node.ID.slice(2));
+                            if (n && n > largest)
+                                largest = n;
                         }
-                        else{
-                            thisModel.student.setInputs([], newNodeID);
-                            thisModel.student.setEquation(newNodeID, "");
-                            thisModel.student.setStatus(newNodeID, "equation" , {"disabled":false,"status":"incorrect"});
-                        }
-                    }
-                    thisModel.student.setPosition(newNodeID, currentNode.position);
+                    };
+                    array.forEach(this.given.getNodes(), intID);
+                    this._ID = largest;
+                    var nodeStore = [];
 
-                    //Set default status to correct for all the fields
-                    thisModel.student.setStatus(newNodeID, "description" , {"disabled":true,"status":"correct"});
-                    thisModel.student.setStatus(newNodeID, "type" , {"disabled":true,"status":"correct"});
-                    if(typeof currentNode.units !== "undefined"){
-                        thisModel.student.setStatus(newNodeID, "units" , {"disabled":true,"status":"correct"});
-                    }
-                    if(currentNode.type === "parameter" || currentNode.type === "accumulator" ){
-                        thisModel.student.setStatus(newNodeID, "initial" , {"disabled":true,"status":"correct"});
-                    }
-                });
-                console.log("final Model is",thisModel);
+                    array.forEach(this.given.getNodes(), function (currentNode) {
+                        var newNode = thisModel.student.addNodeInc();
+                        nodeStore[currentNode.ID] = newNode;
+                    });
+                    array.forEach(this.given.getNodes(), function (currentNode) {
+                        var newNodeID = nodeStore[currentNode.ID];
+                        thisModel.student.setDescriptionID(newNodeID, currentNode.ID);
+                        thisModel.student.setInitial(newNodeID, currentNode.initial);
+                        thisModel.student.setUnits(newNodeID, currentNode.units);
+                        thisModel.student.setType(newNodeID, currentNode.type);
+                        thisModel.student.setTweakDirection(newNodeID, currentNode.tweakDirection);
+                        if (currentNode.equation) {
+                            var inputs = [];
+                            var isExpressionValid = true;
+                            var equation = currentNode.equation;
+                            array.forEach(currentNode.inputs, lang.hitch(this, function (input) {
+                                var studentNodeID = nodeStore[input.ID];
+                                if (studentNodeID) {
+                                    inputs.push({"ID": studentNodeID});
+                                    var regexp = "(" + input.ID + ")([^0-9]?)";
+                                    var re = new RegExp(regexp);
+                                    equation = equation.replace(re, studentNodeID + "$2");
+                                }
+                                else {
+                                    isExpressionValid = false;
+                                }
+                            }));
+                            if (isExpressionValid) {
+                                thisModel.student.setInputs(inputs, newNodeID);
+                                thisModel.student.setEquation(newNodeID, equation);
+                                thisModel.student.setStatus(newNodeID, "equation", {
+                                    "disabled": true,
+                                    "status": "correct"
+                                });
+                            }
+                            else {
+                                thisModel.student.setInputs([], newNodeID);
+                                thisModel.student.setEquation(newNodeID, "");
+                                thisModel.student.setStatus(newNodeID, "equation", {
+                                    "disabled": false,
+                                    "status": "incorrect"
+                                });
+                            }
+                        }
+                        thisModel.student.setPosition(newNodeID, currentNode.position);
+
+                        //Set default status to correct for all the fields
+                        thisModel.student.setStatus(newNodeID, "description", {"disabled": true, "status": "correct"});
+                        thisModel.student.setStatus(newNodeID, "type", {"disabled": true, "status": "correct"});
+                        if (typeof currentNode.units !== "undefined") {
+                            thisModel.student.setStatus(newNodeID, "units", {"disabled": true, "status": "correct"});
+                        }
+                        if (currentNode.type === "parameter" || currentNode.type === "accumulator") {
+                            thisModel.student.setStatus(newNodeID, "initial", {"disabled": true, "status": "correct"});
+                        }
+                    });
+                    console.log("final Model is", thisModel);
+
+                }
             },
 
 
