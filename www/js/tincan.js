@@ -89,7 +89,7 @@ define([
 			var api_key = "feb46eec5cdedce5553550318ff93ea9b48ea69a";
 			var statement = {};
 			var assesmentScore = this._assessment.getAssessmentScore("dummy");
-
+			var successFactor = this._assessment.getSuccessFactor();
 			var username = this._session.params.u;
 			var email = username;
 
@@ -154,8 +154,9 @@ define([
 			        },
 			        "extensions":{
 						"http://pal3.ict.usc.edu/lrs/extensions/passive": false,
-						"http://pal3.ict.usc.edu/lrs/extensions/xp": "20",
-						"http://pal3.ict.usc.edu/lrs/extensions/exploreLevel": 0.9
+						"http://pal3.ict.usc.edu/lrs/extensions/exploreLevel": 0.9,
+						"http://pal3.ict.usc.edu/lrs/extensions/successFactor": successFactor,
+						"http://pal3.ict.usc.edu/lrs/extensions/xp": "20"
 			        }
 		    	};
 				var stmt = new TinCan.Statement({
