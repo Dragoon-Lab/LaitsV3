@@ -12,7 +12,7 @@
  *
  *Dragoon is distributed in the hope that it will be useful,
  *but WITHOUT ANY WARRANTY; without even the implied warranty of
- *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+ *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *GNU General Public License for more details.
  *
  *You should have received a copy of the GNU General Public License
@@ -21,49 +21,49 @@
  */
 
 define([
-	"dojo/aspect", "dojo/_base/array", "dojo/_base/declare", "dojo/_base/lang",
-	"dijit/registry", "dojo/dom", "dojo/ready","dojo/dom-style",
-	"./model", "./wraptext", "./typechecker"
+    "dojo/aspect", "dojo/_base/array", "dojo/_base/declare", "dojo/_base/lang",
+    "dijit/registry", "dojo/dom", "dojo/ready","dojo/dom-style",
+    "./model", "./wraptext", "./typechecker"
 ], function(aspect, array, declare, lang, registry, dom, ready, domStyle, model, wrapText, typechecker){
 
-	// Summary: 
-	//			MVC for the description box in author mode
-	// Description:
-	//			Allows the author to modify the description and the times 
-	// Tags:
-	//			description box, author mode
+    // Summary: 
+    //          MVC for the description box in author mode
+    // Description:
+    //          Allows the author to modify the description and the times 
+    // Tags:
+    //          description box, author mode
 
-	return declare(null, {
-		givenModel: null,
-		constructor: function(/*model*/ givenModel,/*string*/ activity){
-			this.givenModel = givenModel;
-			this.timeObj = givenModel.getTime();
+    return declare(null, {
+        givenModel: null,
+        constructor: function(/*model*/ givenModel,/*string*/ activity){
+            this.givenModel = givenModel;
+            this.timeObj = givenModel.getTime();
             this._activity=activity;
-			//Read Values from timeObj and place them in description editor
-			//We also assign them as previous start, stop times and time step
-			dom.byId("authorSetTimeStart").value = this.timeObj.start;
-			this.lastStartTime = {value: this.timeObj.start};
+            //Read Values from timeObj and place them in description editor
+            //We also assign them as previous start, stop times and time step
+            dom.byId("authorSetTimeStart").value = this.timeObj.start;
+            this.lastStartTime = {value: this.timeObj.start};
 
-			dom.byId("authorSetTimeEnd").value = this.timeObj.end;
-			this.lastStopTime = {value: this.timeObj.end};
+            dom.byId("authorSetTimeEnd").value = this.timeObj.end;
+            this.lastStopTime = {value: this.timeObj.end};
 
-			//dom.byId("authorSetTimeStep").value = this.timeObj.step;
-			this.lastStepTime = {value: this.timeObj.step};
+            //dom.byId("authorSetTimeStep").value = this.timeObj.step;
+            this.lastStepTime = {value: this.timeObj.step};
 
-			dom.byId("authorSetTimeStepUnits").value = this.timeObj.units || "seconds";
-			dom.byId("authorSetIntegrationMethod").value = this.timeObj.integrationMethod || "Eulers Method";
-			dom.byId("authorSetImage").value = givenModel.getImageURL() || "";
+            dom.byId("authorSetTimeStepUnits").value = this.timeObj.units || "seconds";
+            dom.byId("authorSetIntegrationMethod").value = this.timeObj.integrationMethod || "Eulers Method";
+            dom.byId("authorSetImage").value = givenModel.getImageURL() || "";
             dom.byId("authorSetLessonsLearned").value = this.serialize(
                 givenModel.getTaskLessonsLearned() ? givenModel.getTaskLessonsLearned() : ""
             );
-			dom.byId("authorSetDescription").value = this.serialize(
-				givenModel.getTaskDescription() ? givenModel.getTaskDescription() : ""	
-			);
-			ready(this, this._initHandles);
-		},
+            dom.byId("authorSetDescription").value = this.serialize(
+                givenModel.getTaskDescription() ? givenModel.getTaskDescription() : ""  
+            );
+            ready(this, this._initHandles);
+        },
 
-		//set up event handling with UI components
-		_initHandles: function() {
+        //set up event handling with UI components
+        _initHandles: function() {
             //Define all the variables necessary to fire onchange events and to pop up tooltips
             //for authorSetTimeStart
             var descWidgetStart = registry.byId('authorSetTimeStart');
@@ -240,90 +240,89 @@ define([
             }));
         },
 
-		// add line breaks
-		// use string split method to unserialize
-		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split
-		serialize: function(d){
-			if(typeof d === "string"){
-				return d;
-			}else{
-				var result = "";
-				array.forEach(d, function(x){
-					result += x + "\n";
-				});
-				return result;
-			}
-		},
+        // add line breaks
+        // use string split method to unserialize
+        // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split
+        serialize: function(d){
+            if(typeof d === "string"){
+                return d;
+            }else{
+                var result = "";
+                array.forEach(d, function(x){
+                    result += x + "\n";
+                });
+                return result;
+            }
+        },
 
-		showDescription: function(){
-			var canvas = dom.byId('myCanvas');
-			var context = canvas.getContext('2d');
-			context.clearRect(0,0,canvas.width, canvas.height);
-			var desc_text = this.givenModel.getTaskDescription();
-            debugger;
+        showDescription: function(){
+            var canvas = dom.byId('myCanvas');
+            var context = canvas.getContext('2d');
+            context.clearRect(0,0,canvas.width, canvas.height);
+            var desc_text = this.givenModel.getTaskDescription();
             var descs=[];
             if (this._activity==="incremental"){
-             console.log(desc_text);
-             descs[0]="One of the parameters of this model has been changed (down or up arrow).  Please click on the incomplete nodes and label them as follows: "
-             descs[1]="* up arrow: quantity will monotonically increase.";
-             descs[2]="* down arrow: quantity will monotonically decrease.";
-             descs[3]="* equal sign: quantity will remain unchanged.";
-             descs[4]="* question mark: quantity will change in some other way over time (e.g. sometimes increase, sometimes decrease)."
+             descs[0]="";
+             descs[1]="One of the parameters of this model has been changed (down or up arrow).  Please click on the incomplete nodes and label them as follows:";
+             descs[2]="* up arrow: quantity will monotonically increase.";
+             descs[3]="* down arrow: quantity will monotonically decrease.";
+             descs[4]="* equal sign: quantity will remain unchanged.";
+             descs[5]="* question mark: quantity will change in some other way over time (e.g. sometimes increase, sometimes decrease)."
              array.forEach(descs,function(d){
                desc_text.push(d);
             });
 
             }
 
-			var imageLeft = 30;
-			var imageTop = 20;
-			var imageHeight = 0;  // default in case there is no image
-			var gapTextImage = 30;
-			var textLeft = 30;
-			var textTop = 50;
-			var textWidth = 400;
-			var textHeight = 20;
+            var imageLeft = 30;
+            var imageTop = 20;
+            var imageHeight = 0;  // default in case there is no image
+            var gapTextImage = 30;
+            var textLeft = 30;
+            var textTop = 50;
+            var textWidth = 400;
+            var textHeight = 20;
 
-			// Layout text
-			// This routine should go in wrapText.js
-			var showText = function(){
-				var marginTop = Math.max(gapTextImage + imageHeight + imageTop, textTop);
+            // Layout text
+            // This routine should go in wrapText.js
+            var showText = function(){
+                var marginTop = Math.max(gapTextImage + imageHeight + imageTop, textTop);
 
-				// Set font for description text
-				context.font = "normal 13px Arial";
-				wrapText(context, desc_text, textLeft, marginTop, textWidth, textHeight);
-			};
+                // Set font for description text
+                context.font = "normal 13px Arial";
+                wrapText(context, desc_text, textLeft, marginTop, textWidth, textHeight);
+            };
 
-			var url = this.givenModel.getImageURL();
-			var imageObj = new Image();
-			var height = null;
-			var width = null;
-			if(url){
-				imageObj.onerror = function() {
-					context.font = "normal 20px 'Lucida Grande, sans-serif'";
-					context.fillStyle= "#1f96db";
-					context.fillText("Image not found", imageLeft, imageTop);
-					showText();
-				};
+            var url = this.givenModel.getImageURL();
+            var imageObj = new Image();
+            var height = null;
+            var width = null;
+            if(url){
+                imageObj.onerror = function() {
+                    context.font = "normal 20px 'Lucida Grande, sans-serif'";
+                    context.fillStyle= "#1f96db";
+                    context.fillText("Image not found", imageLeft, imageTop);
+                    showText();
+                };
 
-				imageObj.src = url;
-				// Can't compute layout unless image is downloaded
-				// The model can also provide dimensions.  If it does, then
-				// we can layout the text immediately
-				imageObj.onload = function(){
-				console.log("Image width is " + imageObj.width);
-					// Rescale image size, while maintaining aspect ratio,
-					// assuming we want max width 300
-					var scalingFactor = imageObj.width > 300 ? 300 / imageObj.width : 1.0;
-					console.log('Computing scaling factor for image ' + scalingFactor);
-					imageHeight = imageObj.height * scalingFactor;
-					context.drawImage(imageObj, imageLeft, imageTop, imageObj.width * scalingFactor, imageHeight);
-					showText();
-				};
-			}else{
-				showText();
-			}
-		}
+                imageObj.src = url;
+                // Can't compute layout unless image is downloaded
+                // The model can also provide dimensions.  If it does, then
+                // we can layout the text immediately
+                imageObj.onload = function(){
+                console.log("Image width is " + imageObj.width);
+                    // Rescale image size, while maintaining aspect ratio,
+                    // assuming we want max width 300
+                    var scalingFactor = imageObj.width > 300 ? 300 / imageObj.width : 1.0;
+                    console.log('Computing scaling factor for image ' + scalingFactor);
+                    imageHeight = imageObj.height * scalingFactor;
+                    context.drawImage(imageObj, imageLeft, imageTop, imageObj.width * scalingFactor, imageHeight);
+                    showText();
+                };
+            }else{
+                showText();
+            }
+        }
 
-	});
+    });
 });
