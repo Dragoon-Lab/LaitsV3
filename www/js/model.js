@@ -64,6 +64,7 @@ define([
 					image: {},
 					taskDescription: "",
 					lessonsLearned: "",
+                    increment:[],
 					givenModelNodes: [],
 					studentModelNodes: [],
 					schemas: [],
@@ -415,6 +416,9 @@ define([
 			getIntegrationMethod: function(){
 				return this.model.task.time.integrationMethod;
 			},
+            getIncrements: function(){
+                return this.model.task.increment;
+            },
 			getTaskDescription: function(){
 				return this.model.task.taskDescription;
 			},

@@ -58,7 +58,20 @@ define([
             );
             dom.byId("authorSetDescription").value = this.serialize(
                 givenModel.getTaskDescription() ? givenModel.getTaskDescription() : ""  
-            );
+            );debugger;
+            //////////
+              var param=dom.byId("authorSetParameters");
+            var increments=this.givenModel.getIncrements();
+            /////
+            array.forEach(increments, function(inc){
+                param.addOption(inc);
+                // var name = this._model.given.getName(inc.value);
+                // var option = {label: name + " (" + inc.label + ")", value: desc.value};
+                // t.addOption(option);
+                // positiveInputs.addOption(option);
+                // negativeInputs.addOption(option);
+            });
+            //////////
             ready(this, this._initHandles);
         },
 
