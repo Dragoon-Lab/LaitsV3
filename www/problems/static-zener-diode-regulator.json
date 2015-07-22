@@ -9,6 +9,12 @@
             "units": "seconds"
         },
         "properties": {},
+        "increment": [
+            {
+                "tweakedNode" : "id20",
+                "tweakDirection": "Increase"
+            }
+        ],
         "image": {
             "URL": "http:\/\/s16.postimg.org\/w6kp6dof9\/znr.png"
         },
@@ -17,9 +23,6 @@
             "",
             "",
             "",
-            ""
-        ],
-        "lessonsLearned": [
             ""
         ],
         "givenModelNodes": [
