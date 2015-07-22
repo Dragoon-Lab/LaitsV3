@@ -44,9 +44,11 @@ define([
 			this.url = url;			
 			var img = new Image();
 			img.src = this.url;
-			var scalingFactor = imageObj.width > 300 ? 300 / imageObj.width : 1.0;
+			debugger;
+			var scalingFactor = img.width > 300 ? 300 / img.width : 1.0;
 			img.height = img.height * scalingFactor;
 			img.width = img.width * scalingFactor;
+			debugger;
 			this.imageNode = img;	
 		}
 	
@@ -102,7 +104,7 @@ define([
 			this.url = this.model.getImageURL();			
 			var img = new Image();
 			img.src = this.url;
-			var scalingFactor = imageObj.width > 300 ? 300 / imageObj.width : 1.0;
+			var scalingFactor = img.width > 300 ? 300 / img.width : 1.0;
 			img.height = img.height * scalingFactor;
 			img.width = img.width * scalingFactor;
 			this.imageNode = img;	
@@ -195,7 +197,7 @@ define([
 			this.url = this.model.getImageURL();			
 			var img = new Image();
 			img.src = this.url;
-			var scalingFactor = imageObj.width > 300 ? 300 / imageObj.width : 1.0;
+			var scalingFactor = img.width > 300 ? 300 / img.width : 1.0;
 			img.height = img.height * scalingFactor;
 			img.width = img.width * scalingFactor;
 			this.imageNode = img;	
@@ -255,12 +257,12 @@ define([
 			
 			setTimeout(function(){
 				context.ctx.fillRect(context.canvasLeftOffset,context.canvasTopOffset, context.imageNode.width, context.imageNode.height);
-				context.ctx.drawImage(context.imageNode,context.canvasLeftOffset,context.canvasTopOffset);
+				context.ctx.drawImage(context.imageNode,context.canvasLeftOffset,context.canvasTopOffset, context.imageNode.width, context.imageNode.height);
 				//context.showGrid(context.allowGrid);
 			});
 			registry.byId('newMark').set('value', '');	
 		}
-		
+		debugger;
 	}
 	ImageControl.prototype.showGrid = function(val){
 		this.allowGrid = val;
