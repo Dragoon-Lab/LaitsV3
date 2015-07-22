@@ -355,7 +355,7 @@ input[type=radio]{
 
 #factors .heading .guess{
 	padding-left: 173px;
-	padding right: 100px;
+	padding-right: 100px;
 }
 
 #factors .heading{
@@ -391,4 +391,27 @@ span.slip{
 	display: block;
 	clear: both;
 	height: 0;
+}
+.inc-button{
+    text-align:center;
+}
+
+.dijitReset{
+    font: normal normal normal 14px/1 FontAwesome  !important;
+}
+
+.bubble .fa{
+    font-size:18px;
+}
+
+.crisisDialog{
+    z-index:2000 !important;
+}
+
+.incrementalContent{
+    margin-top: 20px;
+}
+
+#incrementalPopup span.dijitReset.dijitInline.dijitButtonNode{
+  width:120px;
 }

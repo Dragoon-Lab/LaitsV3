@@ -1,6 +1,6 @@
 {
     "task": {
-        "taskName": "bridge-rectifier-capacitor",
+        "taskName": "Model a Bridge Rectifier with Smoothing Capacitor",
         "time": {
             "start": 1,
             "end": 6000,
