@@ -53,7 +53,6 @@ define([
 			this._model = givenModel;
 			this._assessment = assessment;
 			this._session = session;
-			this._topicIndex = topicIndex;
 		},
 
 		connect: function() {
@@ -94,7 +93,7 @@ define([
 			var username = this._session.params.u;
 			var email = username;
 
-			var topic = this._topicIndex[this._session.params.p] || "No Topic";
+			var topic = this._session.params.topic || "No Topic";
 
 			if (username.indexOf("..") > 0){
 				email = username.split("..")[0];
