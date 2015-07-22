@@ -36,8 +36,7 @@ define([
 	"./menu",
 	"./load-save",
 	"./model",
-	"./RenderGraph",
-	"./RenderTable",
+	"./RenderGraph",	
 	"./con-student",
 	"./con-author",
 	"./draw-model",
@@ -56,12 +55,13 @@ define([
 	"dojo/_base/event",
 	"./ui-parameter",
 	"dijit/Dialog",
-	"./image-box"
+	"./image-box",
+	"./modelChanges"
 ], function(
 	array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry, toolTip, tooltipDialog, popup,
-	menu, loadSave, model, Graph, Table, controlStudent, controlAuthor, drawmodel, logging, equation,
+	menu, loadSave, model, Graph, controlStudent, controlAuthor, drawmodel, logging, equation,
 	description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan,
-	activityParameters, memory, event, UI, Dialog, ImageBox){
+	activityParameters, memory, event, UI, Dialog, ImageBox, modelUpdates){
 
 	/*  Summary:
 	 *			Menu controller
@@ -157,10 +157,7 @@ define([
 		console.log("sm ini ?",activity_config);
 
 		if(solutionGraph) {
-			if(activity_config.get("initializeStudentModel")){
-				console.log("student model being initialized");
-				givenModel.initializeStudentModel(solutionGraph);
-			}
+			//loadModel does sanity check of the model coming from database. Everything should be done afterwards.
 			try {
 				givenModel.loadModel(solutionGraph);
 			} catch (error) {
@@ -172,6 +169,16 @@ define([
 					errorMessage.show();
 					throw Error("Model could not be loaded.");
 				}
+			}
+
+			if(activity_config.get("setTweakDirections")){
+				var updateModel = new modelUpdates(givenModel, query.m, session);
+				updateModel.getTweakDirections();
+			}
+
+			if(activity_config.get("initializeStudentModel")){
+				console.log("student model being initialized");
+				givenModel.initializeStudentModel();
 			}
 
 			// This version of code addresses loading errors in cases where problem is empty, incomplete or has no root node in coached mode
@@ -440,12 +447,6 @@ define([
 					popup: prettifyConfirmDialog,
 					around: dom.byId('prettifyButton')
 				});
-			});
-
-			// Wire up close button...
-			// This will trigger the above session.saveProblem()
-			on(registry.byId("closeButton"), "click", function(){
-				registry.byId("nodeeditor").hide();
 			});
 
 			//Remove nodes from student model(if added) when author deletes the node from given model
