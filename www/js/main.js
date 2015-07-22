@@ -467,7 +467,7 @@ define([
 			}
 
 			// Also used in image loading below.
-			var descObj = new description(givenModel);
+			var descObj = new description(givenModel, query.a);
 
 			// Render image description on canvas
 			descObj.showDescription();
