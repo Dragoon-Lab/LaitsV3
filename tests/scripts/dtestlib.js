@@ -283,6 +283,10 @@ exports.changeClient = function (client, newClient)
     await(newClient.init().url(url.value, defer()));
 }
 
+exports.newWindow = function(client){
+    await(client.newWindow("about:blank","","",defer()));
+}
+
 exports.getCurrentTabId = function(client){
     return await(client.getCurrentTabId(client,defer()));
 }

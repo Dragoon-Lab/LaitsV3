@@ -61,6 +61,7 @@ describe("Testing hack fix for PAL3 activities", function() {
     
     describe("Opening legit incremental URL", function(){
         it("Should open the problem", async(function(){
+            dtest.newWindow(client);
             dtest.openProblem(client,[["problem","bridge-rectifier-capacitor"],["mode","STUDENT"],
                                       ["section","PAL3-dragoon-lab-testing"],
                                       ["activity","incremental"],["logging","true"]]);
@@ -69,6 +70,7 @@ describe("Testing hack fix for PAL3 activities", function() {
 
     describe("Opening problem-name-appended construction URL", function(){
         it("Should open the problem", async(function(){
+            dtest.newWindow(client);
             dtest.openProblem(client,[["problem","bridge-rectifier-capacitor-construction"],["mode","STUDENT"],
                                       ["section","PAL3-dragoon-lab-testing"],
                                       ["activity",""],["logging","true"]]);
@@ -77,6 +79,7 @@ describe("Testing hack fix for PAL3 activities", function() {
     
     describe("Opening problem-name-appended incremental URL", function(){
         it("Should open the problem", async(function(){
+            dtest.newWindow(client);
             dtest.openProblem(client,[["problem","bridge-rectifier-capacitor-incremental"],["mode","STUDENT"],
                                       ["section","PAL3-dragoon-lab-testing"],
                                       ["activity",""],["logging","true"]]);
@@ -85,6 +88,7 @@ describe("Testing hack fix for PAL3 activities", function() {
 
     describe("Opening URL with no activity info", function(){
         it("Should open the problem", async(function(){
+            dtest.newWindow(client);
             dtest.openProblem(client,[["problem","bridge-rectifier-capacitor"],["mode","STUDENT"],
                                       ["section","PAL3-dragoon-lab-testing"],
                                       ["activity",""],["logging","true"]]);

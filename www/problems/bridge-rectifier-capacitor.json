@@ -9,6 +9,12 @@
             "units": "milliseconds"
         },
         "properties": {},
+        "increment": [
+            {
+                "tweakedNode" : "id10",
+                "tweakDirection": "Increase"
+            }
+        ],
         "image": {
             "URL": "http:\/\/i.stack.imgur.com\/BLGnf.gif"
         },
