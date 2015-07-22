@@ -243,13 +243,16 @@ define([
 			var pMenu = new Menu({
 				targetNodeIds: [node.ID]
 			});
-            //test
-			pMenu.addChild(new MenuItem({
-				label: "Delete Node",
-				onClick: lang.hitch(this,function(){
-                        this.deleteNode(node.ID)
-                    })
-			}));
+
+			if(this._activityConfig.get("allowDeleteNode")) {
+				//test
+				pMenu.addChild(new MenuItem({
+					label: "Delete Node",
+					onClick: lang.hitch(this, function () {
+						this.deleteNode(node.ID)
+					})
+				}));
+			}
 			/*
 			 Fire off functions associated with draggable events.
 			 Note that the names (onMoveStart, onMove, onMoveStop) are from

@@ -33,6 +33,7 @@ define(["dojo/aspect",
 	"dojo/dom-style",
 	"dojo/ready",
 	"dojo/on",
+	"dijit/focus",
 	'dijit/registry',
 	"dijit/TooltipDialog",
 	"dijit/popup",
@@ -41,7 +42,7 @@ define(["dojo/aspect",
 	"./typechecker",
 	"./equation",
 	"./schemas-student"
-], function(aspect, array, declare, lang, dom, style, ready,on, registry, tooltipDialog, popup, controller, PM, typechecker, expression, schemaStudent){
+], function(aspect, array, declare, lang, dom, style, ready,on, focusUtil, registry, tooltipDialog, popup, controller, PM, typechecker, expression, schemaStudent){
 	/* Summary:	// Summary:
 	//			MVC for the node editor, for students
 	// Description:
@@ -60,7 +61,7 @@ define(["dojo/aspect",
 		_assessment: null,
 		constructor: function(mode, subMode, model){
 			console.log("++++++++ In student constructor");
-			this._PM = new PM(mode, subMode, model);
+			this._PM = new PM(mode, subMode, model, this.activityConfig);
 			lang.mixin(this.widgetMap, this.controlMap);
 			ready(this, "populateSelections");
 
@@ -77,12 +78,6 @@ define(["dojo/aspect",
 			aspect.after(this, "closeEditor", function(){
 				var directives = this._PM.notifyCompleteness(this._model);
 				this.applyDirectives(directives);
-				//=======================================================
-				
-				// Unit Testing PM model for incremental activity
-				this._PM.userType = "TWEEK";
-				var result = this._PM.processAnswer("id1", "node", "increment");
-				//=======================================================
 			}, true);
 		},
 		// A list of control map specific to students
@@ -422,45 +417,56 @@ define(["dojo/aspect",
 				around: dom.byId(id)
 			});
 
-			this.isShown = true;
+
+			this._incrementalPopup.onBlur = lang.hitch(this, function(){
+				this.closeIncrementalPopup();
+			});
 		},
 
 		initIncrementalPopup: function(){
 			var that = this;
+			that._buttonHandlers = {};
 			var incButtons = ["Increase", "Decrease", "Stays-Same", "Unknown"];
-			this.isShown = false;
 			this._incrementalPopup = registry.byId("incrementalPopup");
 			this._incrementalPopup.onShow = function(){
+				focusUtil.focus(dom.byId("IncreaseButton"));
 				incButtons.forEach(function (item) {
 					var btn = registry.byId(item + "Button");
-					var handler = on(btn, "click", function (e) {
-						e.stopPropagation();
+					that._buttonHandlers[item]= on(btn, "click", function (e) {
+						e.preventDefault();
 						//Set in the model
 						that._model.active.setTweakDirection(that.currentID, item);
+
+						//Process Answer
+						var result = that._PM.processAnswer(that.currentID, "tweakDirection", item);
+						that.applyDirectives(result);
+
 						//Update Node Label
 						that.updateNodeLabel(that.currentID);
-						popup.close(this._incrementalPopup);
-						that.isShown = false;
+
+						that.closeIncrementalPopup();
 					});
-				});
-
-				on(document.body, "click", function(e){
-					if(that.isShown) {
-
-					}
 				});
 			};
 
 			var showEquationButton = registry.byId("EquationButton");
 
 			on(showEquationButton,"click", function(){
-				popup.close(this._incrementalPopup);
+				that.closeIncrementalPopup();
 				that.applyDirectives([{
 					id: "crisisAlert",
 					attribute: "open",
 					value: expression.convert(that._model.active, that._model.active.getEquation(that.currentID))
 				}]);
 			});
+		},
+
+		closeIncrementalPopup: function(){
+			popup.close(this._incrementalPopup);
+			var incButtons = ["Increase", "Decrease", "Stays-Same", "Unknown"];
+			incButtons.forEach(lang.hitch(this, function (item) {
+				this._buttonHandlers[item].remove();
+			}));
 		}
 
 	});

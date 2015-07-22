@@ -407,3 +407,7 @@ span.slip{
 .crisisDialog{
     z-index:2000 !important;
 }
+
+.incrementalContent{
+    margin-top: 20px;
+}

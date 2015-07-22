@@ -1204,6 +1204,12 @@ define([
 					}else{
 						w.set(directive.attribute, directive.value);
 					}
+				}else if(directive.id == "incrementalButtons"){
+					var incButtons = ["Increase", "Decrease", "Stays-Same", "Unknown"];
+					array.forEach(incButtons, function(widget){
+						var w = registry.byId(widget+"Button");
+						w.set(directive.attribute, directive.value);
+					});
 				}else{
 					this.logging.clientLog("warning", {
 						message: "Directive with unknown id, id :"+directive.id,
