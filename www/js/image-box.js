@@ -44,6 +44,9 @@ define([
 			this.url = url;			
 			var img = new Image();
 			img.src = this.url;
+			var scalingFactor = imageObj.width > 300 ? 300 / imageObj.width : 1.0;
+			img.height = img.height * scalingFactor;
+			img.width = img.width * scalingFactor;
 			this.imageNode = img;	
 		}
 	
@@ -99,6 +102,9 @@ define([
 			this.url = this.model.getImageURL();			
 			var img = new Image();
 			img.src = this.url;
+			var scalingFactor = imageObj.width > 300 ? 300 / imageObj.width : 1.0;
+			img.height = img.height * scalingFactor;
+			img.width = img.width * scalingFactor;
 			this.imageNode = img;	
 		}
 		this.controller = controllerObj;
@@ -189,6 +195,9 @@ define([
 			this.url = this.model.getImageURL();			
 			var img = new Image();
 			img.src = this.url;
+			var scalingFactor = imageObj.width > 300 ? 300 / imageObj.width : 1.0;
+			img.height = img.height * scalingFactor;
+			img.width = img.width * scalingFactor;
 			this.imageNode = img;	
 		}
 		// set main image tainted with marks
