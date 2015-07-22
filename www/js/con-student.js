@@ -453,10 +453,23 @@ define(["dojo/aspect",
 
 			on(showEquationButton,"click", function(){
 				that.closeIncrementalPopup();
+				var type = that._model.active.getType(that.currentID);
+				var equationMessage = "";
+				var equation = expression.convert(that._model.active, that._model.active.getEquation(that.currentID));
+				var nodeName = that._model.active.getName(that.currentID);
+				if(type == "accumulator"){
+					equationMessage = "new " + nodeName + " = " + "old "+ nodeName + " + " + equation;
+				}else if(type == "function"){
+					equationMessage = nodeName + " = " + equation;
+				}
 				that.applyDirectives([{
+					id:"crisisAlert",
+					attribute:"title",
+					value: "Equation for "+ nodeName
+				},{
 					id: "crisisAlert",
 					attribute: "open",
-					value: expression.convert(that._model.active, that._model.active.getEquation(that.currentID))
+					value: equationMessage
 				}]);
 			});
 		},
