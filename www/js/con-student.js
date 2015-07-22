@@ -25,21 +25,24 @@
  * Student mode-specific handlers
  */
 
-define([
-	"dojo/aspect",
-	"dojo/_base/array", 
-	'dojo/_base/declare', 
+define(["dojo/aspect",
+	"dojo/_base/array",
+	'dojo/_base/declare',
 	"dojo/_base/lang",
 	"dojo/dom",
-
+	"dojo/dom-style",
 	"dojo/ready",
+	"dojo/on",
 	'dijit/registry',
+	"dijit/TooltipDialog",
+	"dijit/popup",
 	'./controller',
 	"./pedagogical_module",
 	"./typechecker",
+	"./equation",
 	"./schemas-student"
-], function(aspect, array, declare, lang, dom, ready, registry, controller, PM, typechecker, schemaStudent){
-	// Summary: 
+], function(aspect, array, declare, lang, dom, style, ready,on, registry, tooltipDialog, popup, controller, PM, typechecker, expression, schemaStudent){
+	/* Summary:	// Summary:
 	//			MVC for the node editor, for students
 	// Description:
 	//			Handles selections from the student as he/she completes a model;
@@ -60,7 +63,12 @@ define([
 			this._PM = new PM(mode, subMode, model);
 			lang.mixin(this.widgetMap, this.controlMap);
 			ready(this, "populateSelections");
-			this.init();
+
+			if(this.activityConfig.get("showNodeEditor")) {
+				this.init();
+			}else if(this.activityConfig.get("showIncrementalEditor")){
+				this.initIncrementalPopup();
+			}
 		},
 
 		resettableControls: ["initial","equation"],
@@ -72,7 +80,6 @@ define([
 				//=======================================================
 				
 				// Unit Testing PM model for incremental activity
-				debugger;
 				this._PM.userType = "TWEEK";
 				var result = this._PM.processAnswer("id1", "node", "increment");
 				//=======================================================
@@ -398,6 +405,62 @@ define([
 			if(this._assessment){
 				this._assessment.nodeClose(this.currentID);
 			}
+		},
+
+		showIncrementalEditor: function(id){
+			this.currentID = id;
+
+			var type = this._model.active.getType(id);
+			var showEquationButton = registry.byId("EquationButton").domNode;
+			if(type != "accumulator" && type != "function"){
+				style.set(showEquationButton, "display", "none");
+			}else{
+				style.set(showEquationButton, "display", "block");
+			}
+			popup.open({
+				popup: this._incrementalPopup,
+				around: dom.byId(id)
+			});
+
+			this.isShown = true;
+		},
+
+		initIncrementalPopup: function(){
+			var that = this;
+			var incButtons = ["Increase", "Decrease", "Stays-Same", "Unknown"];
+			this.isShown = false;
+			this._incrementalPopup = registry.byId("incrementalPopup");
+			this._incrementalPopup.onShow = function(){
+				incButtons.forEach(function (item) {
+					var btn = registry.byId(item + "Button");
+					var handler = on(btn, "click", function (e) {
+						e.stopPropagation();
+						//Set in the model
+						that._model.active.setTweakDirection(that.currentID, item);
+						//Update Node Label
+						that.updateNodeLabel(that.currentID);
+						popup.close(this._incrementalPopup);
+						that.isShown = false;
+					});
+				});
+
+				on(document.body, "click", function(e){
+					if(that.isShown) {
+
+					}
+				});
+			};
+
+			var showEquationButton = registry.byId("EquationButton");
+
+			on(showEquationButton,"click", function(){
+				popup.close(this._incrementalPopup);
+				that.applyDirectives([{
+					id: "crisisAlert",
+					attribute: "open",
+					value: expression.convert(that._model.active, that._model.active.getEquation(that.currentID))
+				}]);
+			});
 		}
 
 	});
