@@ -74,15 +74,20 @@ define([
 					nodeName = '';
 				}
 			}else{
-				//var dir = model.getTweak();
-				var dir = "Increase";
+				var dir = model.getTweakDirection(nodeId) == ""? "Empty": model.getTweakDirection(nodeId);
+				var content = "";
 				var iconClass = {
+					"Empty": "",
 					"Increase": "arrow-up",
 					"Decrease":"arrow-down",
-					"Constant":"&#x003d;",
+					"Stays-Same":"",
 					"Unknown":"question"
 				};
-				nodeName='<div id=' + nodeId + 'Label  class="bubble"><div class="' + type + 'Wrapper"><strong class="fa fa-'+ iconClass[dir] +'"></strong></div><div class=' + type + 'Div><strong>' + nodeName + '</strong></div></div>';
+
+				if(dir == "Stays-Same"){
+					content = "&#x003d;"
+				}
+				nodeName='<div id=' + nodeId + 'Label  class="bubble"><div class="incrementalContent ' + type + 'Wrapper"><strong class="fa fa-'+ iconClass[dir] +'">'+ content+ '</strong></div><div class=' + type + 'Div><strong>' + nodeName + '</strong></div></div>';
 			}
 			return nodeName;
 		}

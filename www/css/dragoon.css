@@ -311,7 +311,6 @@ input[type=radio]{
    border: 2px solid #F39C12;
 }
 
-<<<<<<< Updated upstream
 .factorNode{
 	padding-bottom: 10px;
 }
@@ -356,7 +355,7 @@ input[type=radio]{
 
 #factors .heading .guess{
 	padding-left: 173px;
-	padding right: 100px;
+	padding-right: 100px;
 }
 
 #factors .heading{
@@ -403,4 +402,12 @@ span.slip{
 
 .bubble .fa{
     font-size:18px;
+}
+
+.crisisDialog{
+    z-index:2000 !important;
+}
+
+.incrementalContent{
+    margin-top: 20px;
 }

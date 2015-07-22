@@ -25,21 +25,25 @@
  * Student mode-specific handlers
  */
 
-define([
-	"dojo/aspect",
-	"dojo/_base/array", 
-	'dojo/_base/declare', 
+define(["dojo/aspect",
+	"dojo/_base/array",
+	'dojo/_base/declare',
 	"dojo/_base/lang",
 	"dojo/dom",
-
+	"dojo/dom-style",
 	"dojo/ready",
+	"dojo/on",
+	"dijit/focus",
 	'dijit/registry',
+	"dijit/TooltipDialog",
+	"dijit/popup",
 	'./controller',
 	"./pedagogical_module",
 	"./typechecker",
+	"./equation",
 	"./schemas-student"
-], function(aspect, array, declare, lang, dom, ready, registry, controller, PM, typechecker, schemaStudent){
-	// Summary: 
+], function(aspect, array, declare, lang, dom, style, ready,on, focusUtil, registry, tooltipDialog, popup, controller, PM, typechecker, expression, schemaStudent){
+	/* Summary:	// Summary:
 	//			MVC for the node editor, for students
 	// Description:
 	//			Handles selections from the student as he/she completes a model;
@@ -57,10 +61,15 @@ define([
 		_assessment: null,
 		constructor: function(mode, subMode, model){
 			console.log("++++++++ In student constructor");
-			this._PM = new PM(mode, subMode, model);
+			this._PM = new PM(mode, subMode, model, this.activityConfig);
 			lang.mixin(this.widgetMap, this.controlMap);
 			ready(this, "populateSelections");
-			this.init();
+
+			if(this.activityConfig.get("showNodeEditor")) {
+				this.init();
+			}else if(this.activityConfig.get("showIncrementalEditor")){
+				this.initIncrementalPopup();
+			}
 		},
 
 		resettableControls: ["initial","equation"],
@@ -69,13 +78,6 @@ define([
 			aspect.after(this, "closeEditor", function(){
 				var directives = this._PM.notifyCompleteness(this._model);
 				this.applyDirectives(directives);
-				//=======================================================
-				
-				// Unit Testing PM model for incremental activity
-				debugger;
-				this._PM.userType = "TWEEK";
-				var result = this._PM.processAnswer("id1", "node", "increment");
-				//=======================================================
 			}, true);
 		},
 		// A list of control map specific to students
@@ -398,6 +400,73 @@ define([
 			if(this._assessment){
 				this._assessment.nodeClose(this.currentID);
 			}
+		},
+
+		showIncrementalEditor: function(id){
+			this.currentID = id;
+
+			var type = this._model.active.getType(id);
+			var showEquationButton = registry.byId("EquationButton").domNode;
+			if(type != "accumulator" && type != "function"){
+				style.set(showEquationButton, "display", "none");
+			}else{
+				style.set(showEquationButton, "display", "block");
+			}
+			popup.open({
+				popup: this._incrementalPopup,
+				around: dom.byId(id)
+			});
+
+
+			this._incrementalPopup.onBlur = lang.hitch(this, function(){
+				this.closeIncrementalPopup();
+			});
+		},
+
+		initIncrementalPopup: function(){
+			var that = this;
+			that._buttonHandlers = {};
+			var incButtons = ["Increase", "Decrease", "Stays-Same", "Unknown"];
+			this._incrementalPopup = registry.byId("incrementalPopup");
+			this._incrementalPopup.onShow = function(){
+				focusUtil.focus(dom.byId("IncreaseButton"));
+				incButtons.forEach(function (item) {
+					var btn = registry.byId(item + "Button");
+					that._buttonHandlers[item]= on(btn, "click", function (e) {
+						e.preventDefault();
+						//Set in the model
+						that._model.active.setTweakDirection(that.currentID, item);
+
+						//Process Answer
+						var result = that._PM.processAnswer(that.currentID, "tweakDirection", item);
+						that.applyDirectives(result);
+
+						//Update Node Label
+						that.updateNodeLabel(that.currentID);
+
+						that.closeIncrementalPopup();
+					});
+				});
+			};
+
+			var showEquationButton = registry.byId("EquationButton");
+
+			on(showEquationButton,"click", function(){
+				that.closeIncrementalPopup();
+				that.applyDirectives([{
+					id: "crisisAlert",
+					attribute: "open",
+					value: expression.convert(that._model.active, that._model.active.getEquation(that.currentID))
+				}]);
+			});
+		},
+
+		closeIncrementalPopup: function(){
+			popup.close(this._incrementalPopup);
+			var incButtons = ["Increase", "Decrease", "Stays-Same", "Unknown"];
+			incButtons.forEach(lang.hitch(this, function (item) {
+				this._buttonHandlers[item].remove();
+			}));
 		}
 
 	});

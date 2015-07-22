@@ -283,14 +283,6 @@ define([
 				style.set(registry.byId('imageButton').domNode, "display", "inline-block");
 			}
 
-			//In TEST and EDITOR mode remove background color and border colors		 
-			if(controllerObject._mode == "TEST" || controllerObject._mode == "EDITOR"){
-				showColor = false;
-			}else{
-				showColor = true;
-			}
-
-
 			//GET problem-topic index for PAL problems
 			palTopicIndex = "";
 			var searchPattern = new RegExp('^pal3', 'i');
@@ -310,8 +302,6 @@ define([
 
 			var drawModel = new drawmodel(givenModel.active, ui_config.get("showColor"), activity_config);
 			drawModel.setLogging(session);
-
-
 
 
 			// Wire up drawing new node
@@ -460,7 +450,7 @@ define([
 			}
 
 			// Also used in image loading below.
-			var descObj = new description(givenModel);
+			var descObj = new description(givenModel, query.a);
 
 			// Render image description on canvas
 			descObj.showDescription();
@@ -1044,6 +1034,13 @@ define([
 								drawModel.deleteNode(controllerObject.currentID);
 						}
 					}
+				});
+			}
+
+			if(activity_config.get("showIncrementalEditor")){
+				//Save session on closing incremental popup
+				aspect.after(controllerObject, "closeIncrementalPopup", function(){
+					session.saveProblem(givenModel.model);
 				});
 			}
 

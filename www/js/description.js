@@ -35,9 +35,10 @@ define([
 
 	return declare(null, {
 		givenModel: null,
-		constructor: function(/*model*/ givenModel){
+		constructor: function(/*model*/ givenModel,/*string*/ activity){
 			this.givenModel = givenModel;
 			this.timeObj = givenModel.getTime();
+            this._activity=activity;
 			//Read Values from timeObj and place them in description editor
 			//We also assign them as previous start, stop times and time step
 			dom.byId("authorSetTimeStart").value = this.timeObj.start;
@@ -259,6 +260,20 @@ define([
 			var context = canvas.getContext('2d');
 			context.clearRect(0,0,canvas.width, canvas.height);
 			var desc_text = this.givenModel.getTaskDescription();
+            debugger;
+            var descs=[];
+            if (this._activity==="incremental"){
+             console.log(desc_text);
+             descs[0]="One of the parameters of this model has been changed (down or up arrow).  Please click on the incomplete nodes and label them as follows: "
+             descs[1]="* up arrow: quantity will monotonically increase.";
+             descs[2]="* down arrow: quantity will monotonically decrease.";
+             descs[3]="* equal sign: quantity will remain unchanged.";
+             descs[4]="* question mark: quantity will change in some other way over time (e.g. sometimes increase, sometimes decrease)."
+             array.forEach(descs,function(d){
+               desc_text.push(d);
+            });
+
+            }
 
 			var imageLeft = 30;
 			var imageTop = 20;

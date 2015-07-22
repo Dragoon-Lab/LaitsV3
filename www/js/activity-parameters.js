@@ -137,95 +137,74 @@ define([
 			},
 
 			incremental: {
-
 				STUDENT:{
-					allowCreateNode:true,
-					allowGraph:true,
-					allowTable:true,
-					allowForum:true,
 					allowPrettify:true,
 					allowHelp: true,
 					allowLessonLearned:true,
-					allowDeleteNode: true,
-					allowEditNode: true,
+
+					allowEditNode:true,
 
 					showHints: true,
 					showFeedback: true,
 					showCorrectAnswer:true,
 
-					enable:[
-					],
-
-					allowSliders: true,
-					plotAuthorSolution:true,
 					initializeStudentModel : true,
 
 					showNodeEditor:false,
 					showIncrementalEditor:true,
-					copyAuthorNodes: true,
-					showNodeDetails:false
+					showNodeDetails:false,
+					copyAuthorNodes: true
 				},
 
 				COACHED:{
-					allowCreateNode:true,
-					allowGraph:true,
-					allowTable:true,
-					allowForum:true,
 					allowPrettify:true,
 					allowHelp: true,
 					allowLessonLearned:true,
-					allowDeleteNode: true,
-					allowEditNode: true,
+
+					allowEditNode:true,
 
 					showHints: true,
 					showFeedback: true,
 					showCorrectAnswer:true,
-					targetNodeStrategy:true,
 
-					enable:[
-					],
+					initializeStudentModel : true,
 
-					allowSliders: true,
-					plotAuthorSolution:true,
-					initializeStudentModel : true
+					showNodeEditor:false,
+					showIncrementalEditor:true,
+					showNodeDetails:false,
+					copyAuthorNodes: true
 				},
 
 				TEST:{
-					allowCreateNode:true,
-					allowGraph:true,
-					allowTable:true,
-					allowForum:true,
 					allowPrettify:true,
 					allowHelp: true,
+					allowLessonLearned:true,
 
-					allowDeleteNode: true,
-					allowEditNode: true,
-
+					allowEditNode:true,
 					showFeedback: true,
-					enable:[
-					],
 
-					allowSliders: true,
-					plotAuthorSolution:true,
-					initializeStudentModel : true
+					initializeStudentModel : true,
+
+					showNodeEditor:false,
+					showIncrementalEditor:true,
+					showNodeDetails:false,
+					copyAuthorNodes: true
 				},
 
 				EDITOR:{
-					allowCreateNode:true,
-					allowGraph:true,
-					allowTable:true,
-					allowForum:true,
 					allowPrettify:true,
 					allowHelp: true,
-					allowHints:true,
-					allowDeleteNode: true,
-					allowEditNode: true,
+					allowLessonLearned:true,
 
-					enable:[
-					],
+					allowEditNode:true,
+					showFeedback: true,
 
-					allowSliders: true,
-					initializeStudentModel : true
+					initializeStudentModel : true,
+
+					showNodeEditor:false,
+					showIncrementalEditor:true,
+					showNodeDetails:false,
+					copyAuthorNodes: true
 				}
 			}
 		};
