@@ -44,11 +44,11 @@ define([
 			this.url = url;			
 			var img = new Image();
 			img.src = this.url;
-			debugger;
+		
 			var scalingFactor = img.width > 300 ? 300 / img.width : 1.0;
 			img.height = img.height * scalingFactor;
 			img.width = img.width * scalingFactor;
-			debugger;
+		
 			this.imageNode = img;	
 		}
 	
@@ -189,7 +189,7 @@ define([
 		});
 	},
 	ImageControl.prototype.markImage = function(/**string */ nodeId){
-		//debugger;
+		
 		// check if there is no image in the model
 		if(!this.model.getImageURL()) return;
 		// if there is a image in the model and yet not initialized in the Image Box
@@ -207,7 +207,7 @@ define([
 		this.canvasTopOffset = 20;
 		this.canvasLeftOffset = 30;
 		this.ctx = document.getElementById(this.mainImage).getContext("2d");
-		//debugger;
+	
 		// if the mode is not author mode, fetch corrosponding DescriptionId to get the markings
 		if(context.model.active.getDescriptionID) nodeId = context.model.active.getDescriptionID(nodeId);
 		
@@ -262,7 +262,7 @@ define([
 			});
 			registry.byId('newMark').set('value', '');	
 		}
-		debugger;
+	
 	}
 	ImageControl.prototype.showGrid = function(val){
 		this.allowGrid = val;
