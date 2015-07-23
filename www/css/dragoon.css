@@ -411,3 +411,7 @@ span.slip{
 .incrementalContent{
     margin-top: 20px;
 }
+
+#incrementalPopup span.dijitReset.dijitInline.dijitButtonNode{
+  width:120px;
+}

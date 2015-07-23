@@ -90,10 +90,31 @@ define([
 		errorMessage.show();
 		throw Error("please retry, insufficient information");
 	}
+
+	// PAL3 HACK - for pal3 sections only!	
+	if (query.s.substring(0,4) === "PAL3"){
+		console.log("In pal3 hack, query.a: " + query.a)
+		if(query.a === "" || query.a === undefined || query.a === null){
+			console.log("no activity found...")
+			// if the problem name ends in "-incremental" or "-waveform"
+			var activitySuffix = query.p.split("-").slice(-1)[0];
+			console.log("suffix: " + activitySuffix);
+			if (activitySuffix === "construction" || activitySuffix === "incremental" || activitySuffix === "waveform"){
+				// set that as the activity
+				query.a = activitySuffix;
+				// truncate the problem name
+				query.p = query.p.substring(0,query.p.indexOf("-"+activitySuffix));
+			} else {
+				// if no recognized extension was given
+				query.a = "construction";
+			}
+		}
+	}
+
 	//Load Activity Parameters
 	//query.a gives the input activity through url
 	var activity_config;
-	try{
+	try{		
 		activity_config = new activityParameters(query.m, query.a);
 		console.log("ACTIVITY PARAMS", activity_config);
 	}catch(error){

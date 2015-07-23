@@ -216,7 +216,12 @@ exports.openProblem = function(client,parameters){
     var mode = "&m=" + (paramMap["mode"]);
     var section = "&s=" + (paramMap["section"] || "autotest");
     var nodeEditorMode = "&is=" + (paramMap["submode"] ||  "algebraic");
-    var activity = "&a=construction";
+    var activity; 
+    if (paramMap["activity"]){
+        activity = "&a=" + paramMap["activity"];
+    } else {
+        activity = ""
+    }
 
     // optional parts
 
@@ -276,6 +281,10 @@ exports.changeClient = function (client, newClient)
     console.log(url.value);
     client.end();
     await(newClient.init().url(url.value, defer()));
+}
+
+exports.newWindow = function(client){
+    await(client.newWindow("about:blank","","",defer()));
 }
 
 exports.getCurrentTabId = function(client){
