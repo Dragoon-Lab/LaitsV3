@@ -3,7 +3,7 @@
         "taskName": "Model a Bridge Rectifier with Smoothing Capacitor",
         "time": {
             "start": 1,
-            "end": 6000,
+            "end": 80,
             "step": 1,
             "integrationMethod": "Eulers Method",
             "units": "milliseconds"
@@ -12,7 +12,7 @@
         "increment": [
             {
                 "tweakedNode" : "id11",
-                "tweakDirection": "Increase"
+                "tweakDirection": "Decrease"
             }
         ],
         "image": {
@@ -78,7 +78,7 @@
                 "genus": "required",
                 "type": "function",
                 "units": "volts",
-                "equation": "id2*sinewave(0.02,0)"
+                "equation": "id2*sinewave(20,0)"
             },
             {
                 "ID": "id2",
