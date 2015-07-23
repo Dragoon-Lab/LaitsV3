@@ -153,7 +153,8 @@ define([
 					showNodeEditor:false,
 					showIncrementalEditor:true,
 					showNodeDetails:false,
-					copyAuthorNodes: true
+					copyAuthorNodes: true,
+					setTweakDirections: true
 				},
 
 				COACHED:{
@@ -172,7 +173,8 @@ define([
 					showNodeEditor:false,
 					showIncrementalEditor:true,
 					showNodeDetails:false,
-					copyAuthorNodes: true
+					copyAuthorNodes: true,
+					setTweakDirections: true
 				},
 
 				TEST:{
@@ -188,7 +190,8 @@ define([
 					showNodeEditor:false,
 					showIncrementalEditor:true,
 					showNodeDetails:false,
-					copyAuthorNodes: true
+					copyAuthorNodes: true,
+					setTweakDirections: true
 				},
 
 				EDITOR:{
@@ -204,7 +207,8 @@ define([
 					showNodeEditor:false,
 					showIncrementalEditor:true,
 					showNodeDetails:false,
-					copyAuthorNodes: true
+					copyAuthorNodes: true,
+					setTweakDirections: true
 				}
 			}
 		};
@@ -263,7 +267,8 @@ define([
 				//Incremental Behavior
 				showIncrementalEditor: false,
 				copyAuthorNodes: false,
-				showNodeDetails:true
+				showNodeDetails:true,
+				setTweakDirections:false
 			},
 
 			constructor: function(/*string*/ mode, /*string*/ activity){

@@ -36,8 +36,7 @@ define([
 	"./menu",
 	"./load-save",
 	"./model",
-	"./RenderGraph",
-	"./RenderTable",
+	"./RenderGraph",	
 	"./con-student",
 	"./con-author",
 	"./draw-model",
@@ -56,12 +55,13 @@ define([
 	"dojo/_base/event",
 	"./ui-parameter",
 	"dijit/Dialog",
-	"./image-box"
+	"./image-box",
+	"./modelChanges"
 ], function(
 	array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry, toolTip, tooltipDialog, popup,
-	menu, loadSave, model, Graph, Table, controlStudent, controlAuthor, drawmodel, logging, equation,
+	menu, loadSave, model, Graph, controlStudent, controlAuthor, drawmodel, logging, equation,
 	description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan,
-	activityParameters, memory, event, UI, Dialog, ImageBox){
+	activityParameters, memory, event, UI, Dialog, ImageBox, modelUpdates){
 
 	/*  Summary:
 	 *			Menu controller
@@ -90,10 +90,31 @@ define([
 		errorMessage.show();
 		throw Error("please retry, insufficient information");
 	}
+
+	// PAL3 HACK - for pal3 sections only!	
+	if (query.s.substring(0,4) === "PAL3"){
+		console.log("In pal3 hack, query.a: " + query.a)
+		if(query.a === "" || query.a === undefined || query.a === null){
+			console.log("no activity found...")
+			// if the problem name ends in "-incremental" or "-waveform"
+			var activitySuffix = query.p.split("-").slice(-1)[0];
+			console.log("suffix: " + activitySuffix);
+			if (activitySuffix === "construction" || activitySuffix === "incremental" || activitySuffix === "waveform"){
+				// set that as the activity
+				query.a = activitySuffix;
+				// truncate the problem name
+				query.p = query.p.substring(0,query.p.indexOf("-"+activitySuffix));
+			} else {
+				// if no recognized extension was given
+				query.a = "construction";
+			}
+		}
+	}
+
 	//Load Activity Parameters
 	//query.a gives the input activity through url
 	var activity_config;
-	try{
+	try{		
 		activity_config = new activityParameters(query.m, query.a);
 		console.log("ACTIVITY PARAMS", activity_config);
 	}catch(error){
@@ -157,10 +178,7 @@ define([
 		console.log("sm ini ?",activity_config);
 
 		if(solutionGraph) {
-			if(activity_config.get("initializeStudentModel")){
-				console.log("student model being initialized");
-				givenModel.initializeStudentModel(solutionGraph);
-			}
+			//loadModel does sanity check of the model coming from database. Everything should be done afterwards.
 			try {
 				givenModel.loadModel(solutionGraph);
 			} catch (error) {
@@ -172,6 +190,16 @@ define([
 					errorMessage.show();
 					throw Error("Model could not be loaded.");
 				}
+			}
+
+			if(activity_config.get("setTweakDirections")){
+				var updateModel = new modelUpdates(givenModel, query.m, session);
+				updateModel.getTweakDirections();
+			}
+
+			if(activity_config.get("initializeStudentModel")){
+				console.log("student model being initialized");
+				givenModel.initializeStudentModel();
 			}
 
 			// This version of code addresses loading errors in cases where problem is empty, incomplete or has no root node in coached mode
@@ -440,12 +468,6 @@ define([
 					popup: prettifyConfirmDialog,
 					around: dom.byId('prettifyButton')
 				});
-			});
-
-			// Wire up close button...
-			// This will trigger the above session.saveProblem()
-			on(registry.byId("closeButton"), "click", function(){
-				registry.byId("nodeeditor").hide();
 			});
 
 			//Remove nodes from student model(if added) when author deletes the node from given model
