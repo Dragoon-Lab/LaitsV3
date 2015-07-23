@@ -355,19 +355,19 @@
 		"schemaClass" : "Electronic Schemas",
 		"subClasses": [
 			{
-				"name" : "Ohms law",
+				"name" : "Ohm's Law: Voltage",
 				"id" : "ohms_law",
 				"template" : "Current flowing through a a load is directly proportional to voltage across it and inversely proportional to the resistance of the load.",
 				"example" : "Find the current running through a load when voltage difference provided by the source is 5V and resistance of the load is 1000 ohms."
 			},
 			{
-				"name" : "Kirchoff's current law",
+				"name" : "Kirchoff's Current Law",
 				"id" : "kirchoff_current_law",
 				"template" : "At a junction in the circuit the sum of all the currents is zero, where current flowing into the node are taken as negative and flowing away are taken as positive.",
 				"example" : "There is a 10 mA current flowing into node A. The junction divides into two paths. If current flowing through one of them is 2mA, then how much current is flowing in the other path?"
 			},
 			{
-				"name" : "Kirchoff's voltage law",
+				"name" : "Kirchoff's Voltage Law",
 				"id" : "kirchoff_voltage_law",
 				"template" : "Voltage change in a complete closed loop is 0.",
 				"example" : "Find the current flowing through two loads in parallel when they are connected to a source of 10V?"
