@@ -38,7 +38,7 @@ $mysqli = mysqli_connect("localhost", $dbuser, $dbpass, $dbname)
 // Must always provide problem name
 $problem =  mysqli_real_escape_string($mysqli,$_GET['p'])
   or trigger_error('Problem name not supplied.', E_USER_ERROR);
-$shortProblemName = (strlen($problem) > 30) ? substr($problem, 0,30) : $problem;
+$shortProblemName = (strlen($problem) > 50) ? substr($problem, 0,50) : $problem;
 
 // Group is optional
 $group = isset($_GET['g'])?mysqli_real_escape_string($mysqli,$_GET['g']):null;
