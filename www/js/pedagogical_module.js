@@ -881,7 +881,7 @@ define([
 			}, logObj);
 			this.logging.log('solution-step', logObj);
 			
-			if(this._assessment){
+			if(this._assessment && this._assessment.currentNodeTime){
 				this._assessment.updateError(nodePart, checkStatus);
 			}
 

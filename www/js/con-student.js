@@ -397,7 +397,7 @@ define(["dojo/aspect",
 		},
 
 		nodeCloseAssessment: function(){
-			if(this._assessment){
+			if(this._assessment && this._assessment.currentNodeTime){
 				this._assessment.nodeClose(this.currentID);
 			}
 		},
