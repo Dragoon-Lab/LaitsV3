@@ -244,7 +244,6 @@ define([
 			// code to clear the main image
 			
 			setTimeout(function(){
-				context.ctx.fillStyle = 'rgba(255, 0, 0, 0.0)';
 				context.ctx.fillRect(context.canvasLeftOffset,context.canvasTopOffset, context.imageNode.width, context.imageNode.height);
 				context.ctx.drawImage(context.imageNode,context.canvasLeftOffset,context.canvasTopOffset, context.imageNode.width, context.imageNode.height);
 				//context.showGrid(context.allowGrid);
@@ -257,7 +256,6 @@ define([
 			context.selected = false;
 			
 			setTimeout(function(){
-				context.ctx.fillStyle = 'rgba(255, 0, 0, 0.0)';
 				context.ctx.fillRect(context.canvasLeftOffset,context.canvasTopOffset, context.imageNode.width, context.imageNode.height);
 				context.ctx.drawImage(context.imageNode,context.canvasLeftOffset,context.canvasTopOffset, context.imageNode.width, context.imageNode.height);
 				//context.showGrid(context.allowGrid);
