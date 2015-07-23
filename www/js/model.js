@@ -67,8 +67,7 @@ define([
                     increment:[],
 					givenModelNodes: [],
 					studentModelNodes: [],
-					schemas: [],
-					increment: []
+					schemas: []
 				}};
 
 				/*
@@ -416,9 +415,16 @@ define([
 			getIntegrationMethod: function(){
 				return this.model.task.time.integrationMethod;
 			},
-            getIncrements: function(){
-                return this.model.task.increment;
+            getInc:function(){
+                myThis=this;
+                return array.map(this.getIncrements(), function(inc){             
+                    return {label:myThis.given.getName(inc.tweakedNode) , value: inc.tweakDirection};
+                });
             },
+            getIncrements: function(){
+
+                return this.model.task.increment;
+           },
 			getTaskDescription: function(){
 				return this.model.task.taskDescription;
 			},
@@ -620,7 +626,6 @@ define([
 				return obj.model.task.schemas;
 			},
 			getImageMarks : function(/**string */ nodeId){
-				//debugger;
 				var node = obj.given.getNode(nodeId);
 				
 				if(!node) return null;

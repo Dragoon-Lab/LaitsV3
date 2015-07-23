@@ -230,20 +230,20 @@
         </div>
 
           <div class="fieldgroup">
-            <label for="authorSetParameters" >Node to adjust: </label>
-            <select id="authorSetParameters" name="authorSetParameters" data-dojo-type="dijit/form/ComboBox" style="width:5em" >
+            <label for="authorSetParameters" >Node to adjust: </label>    
+            <select id="authorSetParameters" name="authorSetParameters" data-dojo-type="dijit/form/Select" style="border:solid black 1px;">
+            <option value='defaultSelect'>--Select--</option>
             </select>
         </div>        
+
         <div class="fieldgroup">
             <label for="authorSetParamDir" > Direction of adjustment: </label>
-            <select id="authorSetParamDir" name="authorSetParamDir" data-dojo-type="dijit/form/ComboBox" class="timeStepAuthor"  >
+            <select id="authorSetParamDir" name="authorSetParamDir" data-dojo-type="dijit/form/Select" style="border:solid black 1px;">
+                <option value='defaultSelect'>--Select--</option>
                 <option>Increase</option>
                 <option>Decrease</option>
-                <option>Equal</option>
-                <option>Unknown</option>
             </select>
         </div>
-
 
         <div class="fieldgroup">
             <label for="authorSetDescription">Problem Statement:</label>

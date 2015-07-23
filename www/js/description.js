@@ -21,7 +21,7 @@
  */
 
 define([
-    "dojo/aspect", "dojo/_base/array", "dojo/_base/declare", "dojo/_base/lang",
+    "dojo/aspect", "dojo/_base/array", "dojo/_base/declare", "dojo/_base/lang", 
     "dijit/registry", "dojo/dom", "dojo/ready","dojo/dom-style",
     "./model", "./wraptext", "./typechecker"
 ], function(aspect, array, declare, lang, registry, dom, ready, domStyle, model, wrapText, typechecker){
@@ -58,20 +58,15 @@ define([
             );
             dom.byId("authorSetDescription").value = this.serialize(
                 givenModel.getTaskDescription() ? givenModel.getTaskDescription() : ""  
-            );debugger;
-            //////////
-              var param=dom.byId("authorSetParameters");
-            var increments=this.givenModel.getIncrements();
-            /////
+            );
+
+             // Populating parameter field
+            var param=registry.byId("authorSetParameters");
+            var increments=this.givenModel.getInc();
             array.forEach(increments, function(inc){
-                param.addOption(inc);
-                // var name = this._model.given.getName(inc.value);
-                // var option = {label: name + " (" + inc.label + ")", value: desc.value};
-                // t.addOption(option);
-                // positiveInputs.addOption(option);
-                // negativeInputs.addOption(option);
+                param.addOption(inc);            
             });
-            //////////
+            
             ready(this, this._initHandles);
         },
 
