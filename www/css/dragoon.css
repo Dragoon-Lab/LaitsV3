@@ -125,7 +125,7 @@ html, body, #main{
     float:right;
 }
 .sameedit .fieldgroup > span.fixedwidth {
-    width: 14ex;
+    width: 13ex;
 }
 /* Right align buttons */
 .buttonBox > * {
