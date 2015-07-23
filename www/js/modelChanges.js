@@ -18,12 +18,11 @@ define([
 		//Didnt put this in model.js as it would cause double sided dependency in model on rest of the dragoon code.
 		//Model is data object and this needs rendergraph to calculate the values for all the nodes.
 		calculateTweakDirections: function(){
-			debugger;
 			if(this._model.given.validateTweakDirections()){
 				return null;
 			}
 			
-			var factor = 0.1;
+			var factor = 0.2;
 			var pv = this._model.given.getPlotVariables();
 			var g = new Graph(this._model, this._mode, this._session, "table");
 			var s1 = g.findSolution(false, pv);
@@ -87,7 +86,6 @@ define([
 		},
 		//this function copies the nodes from given Model and copies them to student node.
 		initializeStudentModel: function(/* boolean */ setTweakDirection){
-			debugger;
 			var nodeStore = [];
 			
 			//re initialize the nodes in case there are some nodes from the start of the problem

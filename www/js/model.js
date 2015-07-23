@@ -606,7 +606,6 @@ define([
 				return this.getNode(id).tweakDirection ;
 			},
 			validateTweakDirections: function(){
-				debugger;
 				var nodes = this.getNodes();
 				return array.every(nodes, function(node){
 					return node.tweakDirection && node.tweakDirection != "";
