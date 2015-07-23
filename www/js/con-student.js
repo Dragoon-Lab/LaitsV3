@@ -409,18 +409,18 @@ define(["dojo/aspect",
 			var showEquationButton = registry.byId("EquationButton").domNode;
 			if(type != "accumulator" && type != "function"){
 				style.set(showEquationButton, "display", "none");
+				this.closeIncrementalPopup();
 			}else{
 				style.set(showEquationButton, "display", "block");
+				popup.open({
+					popup: this._incrementalPopup,
+					around: dom.byId(id)
+				});
+				this._incrementalPopup.onBlur = lang.hitch(this, function(){
+					this.closeIncrementalPopup();
+				});
 			}
-			popup.open({
-				popup: this._incrementalPopup,
-				around: dom.byId(id)
-			});
 
-
-			this._incrementalPopup.onBlur = lang.hitch(this, function(){
-				this.closeIncrementalPopup();
-			});
 		},
 
 		initIncrementalPopup: function(){
