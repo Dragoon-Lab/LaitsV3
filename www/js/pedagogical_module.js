@@ -403,15 +403,15 @@ define([
 		correct: {
 			COACHED: function(obj, part){
 				state(obj, part, "correct");
-				disable(obj, "incrementalButtons", true);
+				disable(obj, "tweakDirection", true);
 			},
 			feedback: function(obj, part){
 				state(obj, part, "correct");
-				disable(obj, "incrementalButtons", true);
+				disable(obj, "tweakDirection", true);
 			},
 			power: function(obj, part){
 				state(obj, part, "correct");
-				disable(obj, "incrementalButtons", true);
+				disable(obj, "tweakDirection", true);
 			},
 			TEST: function(obj, part){
 				state(obj, part, "correct");
@@ -423,15 +423,15 @@ define([
 		firstFailure:{
 			COACHED: function(obj, part){
 				state(obj, part, "incorrect");
-				disable(obj, "incrementalButtons", false);
+				disable(obj, "tweakDirection", false);
 			},
 			feedback: function(obj, part){
 				state(obj, part, "incorrect");
-				disable(obj, "incrementalButtons", false);
+				disable(obj, "tweakDirection", false);
 			},
 			power: function(obj, part){
 				state(obj, part, "incorrect");
-				disable(obj, "incrementalButtons", false);
+				disable(obj, "tweakDirection", false);
 			},
 			TEST: function(obj, part){
 				state(obj, part, "incorrect");
@@ -444,56 +444,56 @@ define([
 		},
 		secondFailure:{
 			COACHED: function(obj, part){
-				state(obj, part, "incorrect");
-				disable(obj, "incrementalButtons", true);
+				state(obj, part, "demo");
+				disable(obj, "tweakDirection", true);
 			},
 			feedback: function(obj, part){
-				state(obj, part, "incorrect");
-				disable(obj, "incrementalButtons", true);
+				state(obj, part, "demo");
+				disable(obj, "tweakDirection", true);
 			},
 			power: function(obj, part){
-				state(obj, part, "incorrect");
-				disable(obj, "incrementalButtons", true);
+				state(obj, part, "demo");
+				disable(obj, "tweakDirection", true);
 			},
 			TEST: function(obj, part){
 				state(obj, part, "incorrect");
-				disable(obj, "incrementalButtons", false);
+				disable(obj, "tweakDirection", false);
 			},
 			EDITOR: function(obj, part){
 				state(obj, part, "incorrect");
-				disable(obj, "incrementalButtons", false);
+				disable(obj, "tweakDirection", false);
 			}
 		},
 		anotherFailure:{
 			COACHED: function(obj, part){
-				state(obj, part, "incorrect");
-				disable(obj, "incrementalButtons", true);
+				state(obj, part, "demo");
+				disable(obj, "tweakDirection", true);
 			},
 			feedback: function(obj, part){
-				state(obj, part, "incorrect");
-				disable(obj, "incrementalButtons", true);
+				state(obj, part, "demo");
+				disable(obj, "tweakDirection", true);
 			},
 			power: function(obj, part){
-				state(obj, part, "incorrect");
-				disable(obj, "incrementalButtons", true);
+				state(obj, part, "demo");
+				disable(obj, "tweakDirection", true);
 			},
 			TEST: function(obj, part){
 				state(obj, part, "incorrect");
-				disable(obj, "incrementalButtons", false);
+				disable(obj, "tweakDirection", false);
 			},
 			EDITOR: function(obj, part){
 				state(obj, part, "incorrect");
-				disable(obj, "incrementalButtons", false);
+				disable(obj, "tweakDirection", false);
 			}
 		},
 		incorrect:{
 			TEST: function(obj, part){
 				state(obj, part, "incorrect");
-				disable(obj, "incrementalButtons", false);
+				disable(obj, "tweakDirection", false);
 			},
 			EDITOR: function(obj, part){
 				state(obj, part, "incorrect");
-				disable(obj, "incrementalButtons", false);
+				disable(obj, "tweakDirection", false);
 			}
 		}
 	};

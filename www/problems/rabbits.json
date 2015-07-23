@@ -46,7 +46,8 @@
                     "type": 0,
                     "initial": 0,
                     "units": 0,
-                    "equation": 0
+                    "equation": 0,
+                    "tweakDirection":0
                 },
                 "status": {}
             },
@@ -67,7 +68,8 @@
                     "type": 0,
                     "initial": 0,
                     "units": 0,
-                    "equation": 0
+                    "equation": 0,
+                    "tweakDirection":0
                 },
                 "status": {}
             },
@@ -87,7 +89,8 @@
                     "type": 0,
                     "initial": 0,
                     "units": 0,
-                    "equation": 0
+                    "equation": 0,
+                    "tweakDirection":0
                 },
                 "status": {}
             },
@@ -107,7 +110,8 @@
                     "type": 0,
                     "initial": 0,
                     "units": 0,
-                    "equation": 0
+                    "equation": 0,
+                    "tweakDirection":0
                 },
                 "status": {}
             },
@@ -124,7 +128,8 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 0,
+                    "tweakDirection":0
                 },
                 "status": {},
                 "inputs":[]
@@ -143,7 +148,8 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 0,
+                    "tweakDirection":0
                 },
                 "status": {},
                 "inputs":[]

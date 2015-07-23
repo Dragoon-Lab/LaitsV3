@@ -62,10 +62,10 @@ define(["dojo/aspect",
 		constructor: function(mode, subMode, model){
 			console.log("++++++++ In student constructor");
 			this._PM = new PM(mode, subMode, model, this.activityConfig);
-			lang.mixin(this.widgetMap, this.controlMap);
-			ready(this, "populateSelections");
 
 			if(this.activityConfig.get("showNodeEditor")) {
+				lang.mixin(this.widgetMap, this.controlMap);
+				ready(this, "populateSelections");
 				this.init();
 			}else if(this.activityConfig.get("showIncrementalEditor")){
 				this.initIncrementalPopup();
@@ -404,14 +404,27 @@ define(["dojo/aspect",
 
 		showIncrementalEditor: function(id){
 			this.currentID = id;
-
+			var incButtons = ["Increase", "Decrease", "Stays-Same", "Unknown"];
 			var type = this._model.active.getType(id);
 			var showEquationButton = registry.byId("EquationButton").domNode;
+
 			if(type != "accumulator" && type != "function"){
 				style.set(showEquationButton, "display", "none");
 				this.closeIncrementalPopup();
 			}else{
 				style.set(showEquationButton, "display", "block");
+				var tweakStatus = this._model.active.getNode(id).status["tweakDirection"];
+				if(tweakStatus && tweakStatus.disabled){
+					array.forEach(incButtons, function(widget){
+						var w = registry.byId(widget+"Button");
+						w.set("disabled", tweakStatus.disabled);
+					});
+				}else{
+					array.forEach(incButtons, function(widget){
+						var w = registry.byId(widget+"Button");
+						w.set("disabled", false);
+					});
+				}
 				popup.open({
 					popup: this._incrementalPopup,
 					around: dom.byId(id)
@@ -420,7 +433,6 @@ define(["dojo/aspect",
 					this.closeIncrementalPopup();
 				});
 			}
-
 		},
 
 		initIncrementalPopup: function(){
@@ -481,6 +493,5 @@ define(["dojo/aspect",
 				this._buttonHandlers[item].remove();
 			}));
 		}
-
 	});
 });

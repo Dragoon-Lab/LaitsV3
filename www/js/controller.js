@@ -77,6 +77,7 @@ define([
 			message: 'messageBox',
 			crisisAlert: 'crisisAlertMessage'
 		},
+
 		// Controls that are select menus
 		selects: ['description', 'type', 'units', 'inputs'],
 
@@ -585,6 +586,13 @@ define([
 		},
 		/* Stub to update connections in graph */
 		addQuantity: function(source, destinations){
+		},
+
+		updateTweakDirection: function(direction){
+			if(typeof direction !== 'undefined' && direction != null){
+				this._model.active.setTweakDirection(this.currentID, direction);
+				this.updateNodeLabel(this.currentID);
+			}
 		},
 
 		updateDescription: function(descID){
@@ -1198,19 +1206,17 @@ define([
 						}else if(w.id == 'selectDescription'){
 							this.updateDescription(directive.value);
 						}
-
 						// Each control has its own function to update the
 						// the model and the graph.
 					}else{
 						w.set(directive.attribute, directive.value);
 					}
-				}else if(directive.id == "incrementalButtons"){
-					var incButtons = ["Increase", "Decrease", "Stays-Same", "Unknown"];
-					array.forEach(incButtons, function(widget){
-						var w = registry.byId(widget+"Button");
-						w.set(directive.attribute, directive.value);
-					});
-				}else{
+				}else if(directive.id == "tweakDirection"){
+					if (directive.attribute == 'value') {
+						this.updateTweakDirection(directive.value);
+					}
+				}
+				else{
 					this.logging.clientLog("warning", {
 						message: "Directive with unknown id, id :"+directive.id,
 						functionTag: 'applyDirectives'
