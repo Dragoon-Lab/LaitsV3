@@ -627,7 +627,7 @@ define([
 					}else if(typeof groupName!=='undefined' && groupName==''){
 						alert('Missing Group Name');
 						return;
-					}else if(problemName && problemName.length > 0 && problemName.length<=30 && checkProblemName.test(problemName)){
+					}else if(problemName && problemName.length > 0 && problemName.length<=50 && checkProblemName.test(problemName)){
 						var checkHyphen = new RegExp('^[\-]+$');
 						if(!checkHyphen.test(problemName)){
 							if (groupName.split("(")[0]+"("=="Private("){
@@ -640,7 +640,7 @@ define([
 							return;
 						}
 					}else{
-						alert("Problem names must be between 1 and 30 characters, and may only include alphanumeric characters and the \"-\" symbol");
+						alert("Problem names must be between 1 and 50 characters, and may only include alphanumeric characters and the \"-\" symbol");
 						return;
 					}
 
