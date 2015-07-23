@@ -1141,6 +1141,10 @@ define([
 				update("initial");
 				update("units");
 				update("equation");
+				var descriptionID = this.getDescriptionID(studentID);
+				if(descriptionID && obj.given.getTweakDirection(descriptionID)){
+					update("tweakDirection");
+				}
 				return bestStatus;
 			},
 
@@ -1243,10 +1247,11 @@ define([
 				// Some given models do not include units.
 				var hasUnits = node.descriptionID && obj.given.getUnits(node.descriptionID);
 				var initialEntered = node.type && node.type == "function" || node.initial != null;
+				var hasTweaks = node.descriptionID && obj.given.getTweakDirection(node.descriptionID);
 				var equationEntered = node.type && node.type == "parameter" || node.equation;
 				var toReturn = node.descriptionID && node.type &&
 					initialEntered && (!hasUnits || node.units) &&
-					equationEntered;
+					equationEntered && (!hasTweaks || node.tweaks);
 				if(toReturn){
 					return true;
 				}
@@ -1257,7 +1262,10 @@ define([
 			checktNodeMandatory: function(id){
 				var descriptionID = this.getDescriptionID(id);
 				return descriptionID || obj.given.checkNodeMandatory(descriptionID);
-			}		
+			},
+			deleteStudentNodes: function(){
+				obj.model.task.studentModelNodes = [];
+			}
 		}, both);
 
 		// Execute the constructor

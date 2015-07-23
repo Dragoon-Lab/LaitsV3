@@ -456,7 +456,7 @@ define(["dojo/aspect",
 						//Update Node Label
 						that.updateNodeLabel(that.currentID);
 
-						that.closeIncrementalPopup();
+						that.closeIncrementalPopup(that.currentID);
 					});
 				});
 			};
@@ -486,12 +486,15 @@ define(["dojo/aspect",
 			});
 		},
 
-		closeIncrementalPopup: function(){
+		closeIncrementalPopup: function(nodeID){
 			popup.close(this._incrementalPopup);
 			var incButtons = ["Increase", "Decrease", "Stays-Same", "Unknown"];
 			incButtons.forEach(lang.hitch(this, function (item) {
 				this._buttonHandlers[item].remove();
 			}));
+			if(nodeID){
+				this.colorNodeBorder(nodeID, true);
+			}
 		}
 	});
 });

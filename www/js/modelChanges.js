@@ -80,7 +80,11 @@ define([
 		//this function copies the nodes from given Model and copies them to student node.
 		initializeStudentModel: function(/* boolean */ setTweakDirection){
 			var nodeStore = [];
-
+			
+			//re initialize the nodes in case there are some nodes from the start of the problem
+			if(this._model.student.getNodes().length != 0){
+				this._model.student.deleteStudentNodes();
+			}
 			array.forEach(this._model.given.getNodes(), function (givenNode) {
 				if(this._model.given.checkNodeMandatory(givenNode.ID)){
 					var newNode = this._model.student.addNode();

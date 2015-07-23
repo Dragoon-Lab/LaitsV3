@@ -155,7 +155,8 @@ define([
 					showNodeDetails:false,
 					copyAuthorNodes: true,
 					setTweakDirections: true,
-					setStudentTweakDirections: true
+					setStudentTweakDirections: true,
+					useTweakStatus: true
 				},
 
 				COACHED:{
@@ -176,7 +177,8 @@ define([
 					showNodeDetails:false,
 					copyAuthorNodes: true,
 					setTweakDirections: true,
-					setStudentTweakDirections: true
+					setStudentTweakDirections: true,
+					useTweakStatus: true
 				},
 
 				TEST:{
@@ -194,7 +196,8 @@ define([
 					showNodeDetails:false,
 					copyAuthorNodes: true,
 					setTweakDirections: true,
-					setStudentTweakDirections: true
+					setStudentTweakDirections: true,
+					useTweakStatus: true
 				},
 
 				EDITOR:{
@@ -212,7 +215,8 @@ define([
 					showNodeDetails:false,
 					copyAuthorNodes: true,
 					setTweakDirections: true,
-					setStudentTweakDirections: true
+					setStudentTweakDirections: true,
+					useTweakStatus: true
 				}
 			}
 		};
@@ -273,7 +277,8 @@ define([
 				copyAuthorNodes: false,
 				showNodeDetails:true,
 				setTweakDirections:false,
-				setStudentTweakDirections: false
+				setStudentTweakDirections: false,
+				useTweakStatus: false
 			},
 
 			constructor: function(/*string*/ mode, /*string*/ activity){
