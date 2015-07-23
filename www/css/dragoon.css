@@ -72,7 +72,7 @@ html, body, #main{
 
 .sameedit .fieldgroup > span{
     text-align: right;
-    width: 14ex;
+   
 }
 .sameedit .fieldgroup > span label{
     vertical-align:top
@@ -124,7 +124,9 @@ html, body, #main{
 .sameedit .buttonBox {
     float:right;
 }
-
+.sameedit .fieldgroup > span.fixedwidth {
+    width: 14ex;
+}
 /* Right align buttons */
 .buttonBox > * {
     float:right;
@@ -396,7 +398,7 @@ span.slip{
     text-align:center;
 }
 
-.dijitReset{
+.fa{
     font: normal normal normal 14px/1 FontAwesome  !important;
 }
 

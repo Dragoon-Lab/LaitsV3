@@ -533,7 +533,7 @@ define([
 					//Display publish problem button on devel and localhost
 					if(window.location.hostname === "localhost" ||
 						window.location.pathname.indexOf("/devel/") === 0){
-						style.set(registry.byId("problemPublishButton").domNode, "display", "inline");
+						style.set(registry.byId("problemPublishButton").domNode, "display", "inline-block");
 					}
 					registry.byId("authorDescDialog").show();
 				});
