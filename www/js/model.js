@@ -534,7 +534,6 @@ define([
 				return obj.model.task.schemas;
 			},
 			getImageMarks : function(/**string */ nodeId){
-				//debugger;
 				var node = obj.given.getNode(nodeId);
 				
 				if(!node) return null;
@@ -607,6 +606,7 @@ define([
 				return this.getNode(id).tweakDirection ;
 			},
 			validateTweakDirections: function(){
+				debugger;
 				var nodes = this.getNodes();
 				return array.every(nodes, function(node){
 					return node.tweakDirection && node.tweakDirection != "";
@@ -982,7 +982,7 @@ define([
 				var plotVariables = [];
 				var nodes = this.getNodes();
 				array.forEach(nodes, function(node){
-					if((node.type == "accumulator" || node.type == "function") && (!node.genus || node.genus == "" || node.genus == "allowed")){
+					if((node.type == "accumulator" || node.type == "function") && (!node.genus || node.genus == "" || node.genus == "required")){
 						plotVariables.push(node.ID);
 					}
 				}, this);
@@ -1251,7 +1251,7 @@ define([
 				var equationEntered = node.type && node.type == "parameter" || node.equation;
 				var toReturn = node.descriptionID && node.type &&
 					initialEntered && (!hasUnits || node.units) &&
-					equationEntered && (!hasTweaks || node.tweaks);
+					equationEntered && (!hasTweaks || node.tweakDirection);
 				if(toReturn){
 					return true;
 				}

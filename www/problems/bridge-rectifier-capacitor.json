@@ -39,6 +39,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
+					"tweakDirection": 0,
                     "assistanceScore": 0
                 },
                 "status": {
@@ -92,6 +93,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
+					"tweakDirection": 0,
                     "assistanceScore": 1
                 },
                 "status": {},
@@ -121,6 +123,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
+					"tweakDirection": 0,
                     "assistanceScore": 0
                 },
                 "status": {},
@@ -148,6 +151,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
+					"tweakDirection": 0,
                     "assistanceScore": 0
                 },
                 "status": {},
@@ -180,6 +184,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
+					"tweakDirection": 0,
                     "assistanceScore": 0
                 },
                 "status": {
@@ -242,6 +247,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
+					"tweakDirection": 0,
                     "assistanceScore": 0
                 },
                 "status": {},
@@ -274,6 +280,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
+					"tweakDirection": 0,
                     "assistanceScore": 0
                 },
                 "status": {},
@@ -306,6 +313,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
+					"tweakDirection": 0,
                     "assistanceScore": 0
                 },
                 "status": {},
@@ -338,6 +346,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
+					"tweakDirection": 0,
                     "assistanceScore": 0
                 },
                 "status": {},
@@ -361,6 +370,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
+					"tweakDirection": 0,
                     "assistanceScore": 0
                 },
                 "status": {},
@@ -386,6 +396,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
+					"tweakDirection": 0,
                     "assistanceScore": 0
                 },
                 "status": {},

@@ -18,10 +18,11 @@ define([
 		//Didnt put this in model.js as it would cause double sided dependency in model on rest of the dragoon code.
 		//Model is data object and this needs rendergraph to calculate the values for all the nodes.
 		calculateTweakDirections: function(){
+			debugger;
 			if(this._model.given.validateTweakDirections()){
 				return null;
 			}
-
+			
 			var factor = 0.1;
 			var pv = this._model.given.getPlotVariables();
 			var g = new Graph(this._model, this._mode, this._session, "table");
@@ -76,9 +77,17 @@ define([
 			}, this);
 
 			this._model.given.setInitial(tweakedNode, value);
+			//setting direction for rest of the parameters as stays same
+			var givenNodes = this._model.given.getNodes();
+			array.forEach(givenNodes, function(givenNode){
+				if(givenNode.type == "parameter" && givenNode.ID != node.ID){
+					this._model.given.setTweakDirection(givenNode.ID, "Stays-Same");
+				}
+			}, this);
 		},
 		//this function copies the nodes from given Model and copies them to student node.
 		initializeStudentModel: function(/* boolean */ setTweakDirection){
+			debugger;
 			var nodeStore = [];
 			
 			//re initialize the nodes in case there are some nodes from the start of the problem
@@ -151,8 +160,10 @@ define([
 		setStudentTweakDirection: function(givenID, studentID){
 			if(givenID == this._model.getInitialTweakedNode()) {
 				this._model.student.setTweakDirection(studentID, this._model.getInitialTweakDirection());
+				this._model.student.setAssistanceScore(studentID, 1);
 			} else if(this._model.given.getType(givenID) == "parameter"){
 				this._model.student.setTweakDirection(studentID, "Stays-Same");
+				this._model.student.setAssistanceScore(studentID, 1);
 			} else {
 				this._model.student.setTweakDirection(studentID, "");
 			}

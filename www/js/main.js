@@ -192,16 +192,6 @@ define([
 				}
 			}
 
-			var updateModel = new modelUpdates(givenModel, query.m, session);
-			if(activity_config.get("setTweakDirections")){
-				updateModel.calculateTweakDirections();
-			}
-			
-			if(activity_config.get("initializeStudentModel") && !givenModel.isCompleteFlag){
-				console.log("student model being initialized");
-				updateModel.initializeStudentModel(activity_config.get("setStudentTweakDirection"));
-			}
-
 			// This version of code addresses loading errors in cases where problem is empty, incomplete or has no root node in coached mode
 			if (query.m !== "AUTHOR") {
 				//check if the problem is empty
@@ -295,6 +285,16 @@ define([
 		controllerObject.setState(state);
 
 		ready(function(){
+			var updateModel = new modelUpdates(givenModel, query.m, session);
+			if(activity_config.get("setTweakDirections")){
+				updateModel.calculateTweakDirections();
+			}
+			
+			if(activity_config.get("initializeStudentModel") && !givenModel.isCompleteFlag){
+				console.log("student model being initialized");
+				updateModel.initializeStudentModel(activity_config.get("setStudentTweakDirection"));
+			}
+			
 			var taskString = givenModel.getTaskName();
 			document.title ="Dragoon" + ((taskString) ? " - " + taskString : "");
 
