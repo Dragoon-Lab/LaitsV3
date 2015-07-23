@@ -171,14 +171,14 @@ define([
 				}
 			}
 
+			var updateModel = new modelUpdates(givenModel, query.m, session);
 			if(activity_config.get("setTweakDirections")){
-				var updateModel = new modelUpdates(givenModel, query.m, session);
-				updateModel.getTweakDirections();
+				updateModel.calculateTweakDirections();
 			}
-
-			if(activity_config.get("initializeStudentModel")){
+			
+			if(activity_config.get("initializeStudentModel") && !givenModel.isCompleteFlag){
 				console.log("student model being initialized");
-				givenModel.initializeStudentModel();
+				updateModel.initializeStudentModel(activity_config.get("setStudentTweakDirection"));
 			}
 
 			// This version of code addresses loading errors in cases where problem is empty, incomplete or has no root node in coached mode
@@ -1093,7 +1093,7 @@ define([
 			var menuButtons=[];
 			menuButtons.push("createNodeButton","graphButton","tableButton","forumButton",
 				"schemaButton","descButton","saveButton","mergeButton",
-				"previewButton","slidesButton","lessonsLearnedButton","doneButton");
+				"previewButton","slidesButton","lessonsLearnedButton","doneButton", "prettifyButton");
 
 			if(query.m == "STUDENT"){
 				style.set(registry.byId('forumButton').domNode, "display", "none");

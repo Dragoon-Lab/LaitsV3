@@ -17,7 +17,11 @@ define([
 		//this sets the tweak direction for all the nodes in the model.
 		//Didnt put this in model.js as it would cause double sided dependency in model on rest of the dragoon code.
 		//Model is data object and this needs rendergraph to calculate the values for all the nodes.
-		getTweakDirections: function(){
+		calculateTweakDirections: function(){
+			if(this._model.given.validateTweakDirections()){
+				return null;
+			}
+
 			var factor = 0.1;
 			var pv = this._model.given.getPlotVariables();
 			var g = new Graph(this._model, this._mode, this._session, "table");
@@ -72,6 +76,82 @@ define([
 			}, this);
 
 			this._model.given.setInitial(tweakedNode, value);
+		},
+		//this function copies the nodes from given Model and copies them to student node.
+		initializeStudentModel: function(/* boolean */ setTweakDirection){
+			var nodeStore = [];
+
+			array.forEach(this._model.given.getNodes(), function (givenNode) {
+				if(this._model.given.checkNodeMandatory(givenNode.ID)){
+					var newNode = this._model.student.addNode();
+					nodeStore[givenNode.ID] = newNode;
+				}
+			}, this);
+			array.forEach(this._model.given.getNodes(), function (givenNode) {
+				var newNodeID = nodeStore[givenNode.ID];
+				if(newNodeID){
+					this._model.student.setDescriptionID(newNodeID, givenNode.ID);
+					this._model.student.setInitial(newNodeID, givenNode.initial);
+					this._model.student.setUnits(newNodeID, givenNode.units);
+					this._model.student.setType(newNodeID, givenNode.type);
+					if(setTweakDirection){
+						this.setStudentTweakDirection(givenNode.ID, newNodeID);
+					}
+					if (givenNode.equation) {
+						var inputs = [];
+						var isExpressionValid = true;
+						var equation = givenNode.equation;
+						array.forEach(givenNode.inputs, function (input) {
+							var studentNodeID = nodeStore[input.ID];
+							if (studentNodeID) {
+								inputs.push({"ID": studentNodeID});
+								var regexp = "(" + input.ID + ")([^0-9]?)";
+								var re = new RegExp(regexp);
+								equation = equation.replace(re, studentNodeID + "$2");
+							} else {
+								isExpressionValid = false;
+							}
+						}, this);
+						if (isExpressionValid) {
+							this._model.student.setInputs(inputs, newNodeID);
+							this._model.student.setEquation(newNodeID, equation);
+							this._model.student.setStatus(newNodeID, "equation", {
+								"disabled": true,
+								"status": "correct"
+							});
+						} else {
+							this._model.student.setInputs([], newNodeID);
+							this._model.student.setEquation(newNodeID, "");
+							this._model.student.setStatus(newNodeID, "equation", {
+								"disabled": false,
+								"status": "incorrect"
+							});
+						}
+					}
+					this._model.student.setPosition(newNodeID, givenNode.position);
+
+					//Set default status to correct for all the fields
+					this._model.student.setStatus(newNodeID, "description", {"disabled": true, "status": "correct"});
+					this._model.student.setStatus(newNodeID, "type", {"disabled": true, "status": "correct"});
+					if (typeof givenNode.units !== "undefined") {
+						this._model.student.setStatus(newNodeID, "units", {"disabled": true, "status": "correct"});
+					}
+					if (givenNode.type === "parameter" || givenNode.type === "accumulator") {
+						this._model.student.setStatus(newNodeID, "initial", {"disabled": true, "status": "correct"});
+					}
+				}
+			}, this);
+			console.log("final Model is", this._model);
+		},
+
+		setStudentTweakDirection: function(givenID, studentID){
+			if(givenID == this._model.getInitialTweakedNode()) {
+				this._model.student.setTweakDirection(studentID, this._model.getInitialTweakDirection());
+			} else if(this._model.given.getType(givenID) == "parameter"){
+				this._model.student.setTweakDirection(studentID, "Stays-Same");
+			} else {
+				this._model.student.setTweakDirection(studentID, "");
+			}
 		}
 	});	
 });

@@ -280,88 +280,6 @@ define([
 
 				this.isCompleteFlag = this.matchesGivenSolution();
 			},
-            initializeStudentModel: function(/*Object solutionGraph*/){
-                //this.model = solutionGraph;
-                var thisModel = this;
-                if(!this.model.task.initialized) {
-                    this.model.task.initialized=true ;
-                    //empty the student model
-                    this.model.task.studentModelNodes = [];
-                    array.forEach(this.student.getNodes(), function (nodeIds) {
-                        console.log("tmz", nodeIds);
-                    });
-                    var largest = 0;
-                    var intID = function (/*object*/ node) {
-                        if (node.ID.length >= 2 && node.ID.slice(0, 2) == "id") {
-                            var n = parseInt(node.ID.slice(2));
-                            if (n && n > largest)
-                                largest = n;
-                        }
-                    };
-                    array.forEach(this.given.getNodes(), intID);
-                    this._ID = largest;
-                    var nodeStore = [];
-
-                    array.forEach(this.given.getNodes(), function (currentNode) {
-                        var newNode = thisModel.student.addNodeInc();
-                        nodeStore[currentNode.ID] = newNode;
-                    });
-                    array.forEach(this.given.getNodes(), function (currentNode) {
-                        var newNodeID = nodeStore[currentNode.ID];
-                        thisModel.student.setDescriptionID(newNodeID, currentNode.ID);
-                        thisModel.student.setInitial(newNodeID, currentNode.initial);
-                        thisModel.student.setUnits(newNodeID, currentNode.units);
-                        thisModel.student.setType(newNodeID, currentNode.type);
-                        thisModel.student.setTweakDirection(newNodeID, currentNode.tweakDirection);
-                        if (currentNode.equation) {
-                            var inputs = [];
-                            var isExpressionValid = true;
-                            var equation = currentNode.equation;
-                            array.forEach(currentNode.inputs, lang.hitch(this, function (input) {
-                                var studentNodeID = nodeStore[input.ID];
-                                if (studentNodeID) {
-                                    inputs.push({"ID": studentNodeID});
-                                    var regexp = "(" + input.ID + ")([^0-9]?)";
-                                    var re = new RegExp(regexp);
-                                    equation = equation.replace(re, studentNodeID + "$2");
-                                }
-                                else {
-                                    isExpressionValid = false;
-                                }
-                            }));
-                            if (isExpressionValid) {
-                                thisModel.student.setInputs(inputs, newNodeID);
-                                thisModel.student.setEquation(newNodeID, equation);
-                                thisModel.student.setStatus(newNodeID, "equation", {
-                                    "disabled": true,
-                                    "status": "correct"
-                                });
-                            }
-                            else {
-                                thisModel.student.setInputs([], newNodeID);
-                                thisModel.student.setEquation(newNodeID, "");
-                                thisModel.student.setStatus(newNodeID, "equation", {
-                                    "disabled": false,
-                                    "status": "incorrect"
-                                });
-                            }
-                        }
-                        thisModel.student.setPosition(newNodeID, currentNode.position);
-
-                        //Set default status to correct for all the fields
-                        thisModel.student.setStatus(newNodeID, "description", {"disabled": true, "status": "correct"});
-                        thisModel.student.setStatus(newNodeID, "type", {"disabled": true, "status": "correct"});
-                        if (typeof currentNode.units !== "undefined") {
-                            thisModel.student.setStatus(newNodeID, "units", {"disabled": true, "status": "correct"});
-                        }
-                        if (currentNode.type === "parameter" || currentNode.type === "accumulator") {
-                            thisModel.student.setStatus(newNodeID, "initial", {"disabled": true, "status": "correct"});
-                        }
-                    });
-                    console.log("final Model is", thisModel);
-
-                }
-            },
 			getInitialTweakedNode: function(){
 				return this.model.task.increment[0].tweakedNode;
 			},
@@ -687,6 +605,12 @@ define([
 			},
 			getTweakDirection: function(/*string*/ id){
 				return this.getNode(id).tweakDirection ;
+			},
+			validateTweakDirections: function(){
+				var nodes = this.getNodes();
+				return array.every(nodes, function(node){
+					return node.tweakDirection && node.tweakDirection != "";
+				});
 			}
 		};
 
@@ -705,6 +629,7 @@ define([
 						initial: 0,
 						units: 0,
 						equation: 0,
+						tweakedDirection: 0,
 						assistanceScore: 0
 					},
 					status: {}
@@ -1063,6 +988,13 @@ define([
 				}, this);
 
 				return plotVariables;
+			},
+			checkNodeMandatory: function(id){
+				var givenNode = this.getNode(id);
+				if(!givenNode.genus || givenNode.genus == "" || givenNode.genus == "required"){
+					return true;
+				}
+				return false;
 			}
 		}, both);
 
@@ -1096,23 +1028,6 @@ define([
 				obj.model.task.studentModelNodes.push(newNode);
 				return newNode.ID;
 			},
-
-            addNodeInc: function(options){
-                // Summary: builds a new node in the student model and
-                //			returns the node's ID.	Can optionally set
-                //			properties.
-                obj._updateNextXYPosition();
-                var newNode = lang.mixin({
-                    ID: "id" + obj._ID++,
-                    inputs: [],
-                    position: {x: obj.x, y: obj.y},
-                    status: {},
-                    tweakDirection : ''
-                }, options || {});
-                obj.model.task.studentModelNodes.push(newNode);
-                return newNode.ID;
-            },
-
 
             addSchemaTime: function(/* string */ id, /* number */ value){
 				var givenID = this.getDescriptionID(id);
@@ -1338,7 +1253,11 @@ define([
 				else{
 					return false;
 				}
-			}
+			},
+			checktNodeMandatory: function(id){
+				var descriptionID = this.getDescriptionID(id);
+				return descriptionID || obj.given.checkNodeMandatory(descriptionID);
+			}		
 		}, both);
 
 		// Execute the constructor
