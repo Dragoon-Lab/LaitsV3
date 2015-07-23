@@ -22,7 +22,7 @@ define([
 				return null;
 			}
 			
-			var factor = 0.2;
+			var factor = 0.4;
 			var pv = this._model.given.getPlotVariables();
 			var g = new Graph(this._model, this._mode, this._session, "table");
 			var s1 = g.findSolution(false, pv);
@@ -48,8 +48,11 @@ define([
 
 			g = new Graph(this._model, this._mode, this._session, "table");
 			var s2 = g.findSolution(false, pv);
+			console.log("original model", s1.plotValues);
+			console.log("new model ", s2.plotValues)
 
 			array.forEach(pv, function(id, index){
+				debugger;
 				var s1Values = s1.plotValues[index];
 				var s2Values = s2.plotValues[index];
 				
@@ -61,12 +64,19 @@ define([
 				}
 				
 				//setting initial value for flag
-				var flag = (s1Values[0] <= s2Values[0]) ? "check" : "Decrease";
-				flag = (flag == "check" && s1Values[0] < s2Values[0])? "Increase" : "Stays-Same";
-				
+			//	var flag = (s1Values[0] <= s2Values[0]) ? "check" : "Decrease";
+			//	flag = (flag == "check" && s1Values[0] < s2Values[0])? "Increase" : "Stays-Same";
+				if (s1Values[0] < s2Values[0]) {
+					flag = "Increase";
+				} else if (s1Values[0] > s2Values[0]) {
+					flag = "Decrease";
+				} else if (s1Values[0] == s2Values[0]) {
+					flag = "Stays-Same";
+				}
+
 				array.forEach(s1Values, function(value, j){
-					if(flag != "Unknown" && ((flag == "Increase" && value >= s2Values[j]) || 
-					(flag == "Decrease" && value <= s2Values[j]) || 
+					if(flag != "Unknown" && ((flag == "Increase" && value > s2Values[j]) ||
+					(flag == "Decrease" && value < s2Values[j]) ||
 					(flag == "Stays-Same" && value != s2Values[j]))){
 						flag = "Unknown";
 					}
