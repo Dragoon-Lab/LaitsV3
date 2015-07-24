@@ -84,7 +84,9 @@ define([
 			//setting direction for rest of the parameters as stays same
 			var givenNodes = this._model.given.getNodes();
 			array.forEach(givenNodes, function(givenNode){
-				if(givenNode.type == "parameter" && givenNode.ID != node.ID){
+				if (givenNode.ID == node.ID) {
+					this._model.given.setTweakDirection(givenNode.ID, tweakDirection);
+				} else if(givenNode.type == "parameter"){
 					this._model.given.setTweakDirection(givenNode.ID, "Stays-Same");
 				}
 			}, this);
