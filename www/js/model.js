@@ -607,7 +607,7 @@ define([
 			validateTweakDirections: function(){
 				var nodes = this.getNodes();
 				var flag = array.every(nodes, function(node){
-					return (!(!node.genus || node.genus == "" || node.genus == "allowed") || (node.tweakDirection && node.tweakDirection != ""));
+					return (!(!node.genus || node.genus == "" || node.genus == "required") || (node.tweakDirection && node.tweakDirection != ""));
 				});
 
 				return flag ? true : false;
