@@ -413,15 +413,19 @@
         "studentModelNodes": [
             {
                 "ID": "id12",
-                "inputs": [],
+                "inputs": [
+                    {
+                        "ID": "id13"
+                    }
+                ],
                 "position": {
                     "x": 497,
                     "y": 313
                 },
                 "status": {
                     "equation": {
-                        "disabled": false,
-                        "status": "incorrect"
+                        "disabled": true,
+                        "status": "correct"
                     },
                     "description": {
                         "disabled": true,
@@ -439,7 +443,7 @@
                 "descriptionID": "id1",
                 "units": "volts",
                 "type": "function",
-                "equation": ""
+                "equation": "id13*sinewave(20,0)"
             },
             {
                 "ID": "id13",

@@ -217,7 +217,9 @@ exports.openProblem = function(client,parameters){
     var section = "&s=" + (paramMap["section"] || "autotest");
     var nodeEditorMode = "&is=" + (paramMap["submode"] ||  "algebraic");
     var activity; 
-    if (paramMap["activity"]){
+    if (paramMap["activity"] === undefined){
+        activity = "&a=construction";
+    } else if (paramMap["activity"]){
         activity = "&a=" + paramMap["activity"];
     } else {
         activity = ""
