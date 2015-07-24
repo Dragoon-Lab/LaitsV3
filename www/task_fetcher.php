@@ -57,7 +57,7 @@ if (isset($_GET['s'])) {
      if(isset($_GET['u']) && isset($_GET['m'])){
       $user = mysqli_real_escape_string($mysqli,$_GET['u']);
       $mode = $_GET['m'];
-      $activity = $_GET['a'];
+      $activity = !empty($_GET['a'])?$_GET['a']:"construction";
       $query = <<<EOT
       SELECT * FROM session WHERE session.user = '$user' AND session.section = '$section' AND session.mode = '$mode' AND session.activity = '$activity' AND session.problem = '$shortProblemName' ORDER BY session.time DESC LIMIT 1
 EOT;
