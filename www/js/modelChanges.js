@@ -94,7 +94,7 @@ define([
 		//this function copies the nodes from given Model and copies them to student node.
 		initializeStudentModel: function(/* boolean */ setTweakDirection){
 			var nodeStore = [];
-			
+
 			//re initialize the nodes in case there are some nodes from the start of the problem
 			if(this._model.student.getNodes().length != 0){
 				this._model.student.deleteStudentNodes();
@@ -119,18 +119,26 @@ define([
 						var inputs = [];
 						var isExpressionValid = true;
 						var equation = givenNode.equation;
+                        var midStore = [];
+                        var i=1;
 						array.forEach(givenNode.inputs, function (input) {
 							var studentNodeID = nodeStore[input.ID];
 							if (studentNodeID) {
 								inputs.push({"ID": studentNodeID});
 								var regexp = "(" + input.ID + ")([^0-9]?)";
 								var re = new RegExp(regexp);
-								equation = equation.replace(re, studentNodeID + "$2");
-							} else {
+                                midStore[i] = studentNodeID ;
+                                equation = equation.replace(re, "ms"+i+ "$2");
+                            } else {
 								isExpressionValid = false;
 							}
+                            i++;
 						}, this);
+
 						if (isExpressionValid) {
+                            for(var j=1;j<=midStore.length;j++){
+                                equation = equation.replace("ms"+j,midStore[j]);
+                            }
 							this._model.student.setInputs(inputs, newNodeID);
 							this._model.student.setEquation(newNodeID, equation);
 							this._model.student.setStatus(newNodeID, "equation", {
