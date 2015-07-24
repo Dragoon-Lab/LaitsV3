@@ -18,10 +18,6 @@ define([
 		//Didnt put this in model.js as it would cause double sided dependency in model on rest of the dragoon code.
 		//Model is data object and this needs rendergraph to calculate the values for all the nodes.
 		calculateTweakDirections: function(){
-			if(this._model.given.validateTweakDirections()){
-				return null;
-			}
-			
 			var factor = 0.4;
 			var pv = this._model.given.getPlotVariables();
 			var g = new Graph(this._model, this._mode, this._session, "table");
@@ -52,7 +48,6 @@ define([
 			console.log("new model ", s2.plotValues)
 
 			array.forEach(pv, function(id, index){
-				debugger;
 				var s1Values = s1.plotValues[index];
 				var s2Values = s2.plotValues[index];
 				
