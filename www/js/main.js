@@ -286,11 +286,11 @@ define([
 
 		ready(function(){
 			var updateModel = new modelUpdates(givenModel, query.m, session);
-			if(activity_config.get("setTweakDirections")){
+			if(activity_config.get("setTweakDirections") && !givenModel.given.validateTweakDirections()){
 				updateModel.calculateTweakDirections();
 			}
 			
-			if(activity_config.get("initializeStudentModel") && !givenModel.isCompleteFlag){
+			if(activity_config.get("initializeStudentModel") && !givenModel.isCompleteFlag && !givenModel.areRequiredNodesVisible()){
 				console.log("student model being initialized");
 				updateModel.initializeStudentModel(activity_config.get("setStudentTweakDirection"));
 			}

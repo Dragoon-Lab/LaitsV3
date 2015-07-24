@@ -277,7 +277,6 @@ define([
 				if(errorMessage != ""){
 					throw new Error(errorMessage);
 				}
-
 				this.isCompleteFlag = this.matchesGivenSolution();
 			},
 			getInitialTweakedNode: function(){
@@ -607,9 +606,11 @@ define([
 			},
 			validateTweakDirections: function(){
 				var nodes = this.getNodes();
-				return array.every(nodes, function(node){
-					return node.tweakDirection && node.tweakDirection != "";
+				var flag = array.every(nodes, function(node){
+					return ((node.genus || node.genus != "allowed") || (node.tweakDirection && node.tweakDirection != ""));
 				});
+
+				return flag ? true : false;
 			}
 		};
 
