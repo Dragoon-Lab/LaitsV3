@@ -110,7 +110,11 @@ define([
 			}
 		}
 	}
-
+	
+	//due to a recent change of adding activities, a work around to add query.a in case its not given
+	if(!query.a){
+		query.a = "construction";
+	}
 	//Load Activity Parameters
 	//query.a gives the input activity through url
 	var activity_config;
