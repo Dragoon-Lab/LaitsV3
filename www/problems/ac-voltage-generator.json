@@ -95,7 +95,7 @@
                 "name": "Sine wave",
                 "genus": "required",
                 "description": "A sine wave from +1 to -1",
-                "equation": "sinewave(id9,0)",
+                "equation": "sinewave(1/id9,0)",
                 "type": "function",
                 "parentNode": false,
                 "units": "volts"

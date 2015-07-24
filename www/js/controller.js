@@ -22,51 +22,87 @@
 /* global define */
 
 define([
-	"dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
-	'dojo/aspect', 'dojo/dom', "dojo/dom-class", "dojo/dom-construct", 'dojo/dom-style',
-	'dojo/keys', 'dojo/on', "dojo/ready",
-	"dijit/popup", 'dijit/registry', "dijit/TooltipDialog",
-	'./equation', './graph-objects','./typechecker', "./forum", "./schemas-student"
-], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, popup, registry, TooltipDialog, expression, graphObjects, typechecker, forum, schemaStudent){
-	// Summary: 
-	//			Controller for the node editor, common to all modes
-	// Description:
-	//			Handles selections from the student or author as he/she 
-	//			completes a model; inherited by con-student.js and con-author.js
-	// Tags:
-	//			controller, student mode, coached mode, test mode, author mode
+	"dojo/_base/array",
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dojo/aspect",
+	"dojo/dom",
+	"dojo/dom-class",
+	"dojo/dom-construct",
+	"dojo/dom-style",
+	"dojo/keys",
+	"dojo/on",
+	"dojo/ready",
+	"dijit/popup",
+	"dijit/registry",
+	"dijit/TooltipDialog",
+	"./equation",
+	"./graph-objects",
+	"./typechecker",
+	"./forum",
+	"./schemas-student"
+], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, popup, registry, TooltipDialog, expression, graphObjects, typechecker, forum){
+
+	/* Summary:
+	 *			Controller for the node editor, common to all modes
+	 * Description:
+	 *			Handles selections from the student or author as he/she
+	 *			completes a model; inherited by con-student.js and con-author.js
+	 * Tags:
+	 *			controller, student mode, coached mode, test mode, author mode
+	 */
 
 	return declare(null, {
 		_model: null,
 		_nodeEditor: null, // node-editor object- will be used for populating fields
 		_forumParams: null, // Addresses needed for linking to forum
 		/*
-		 When opening the node editor, we need to populate the controls without
-		 evaluating those changes.
+		 * When opening the node editor, we need to populate the controls without
+		 * evaluating those changes.
 		 */
 		disableHandlers: false,
 		/* The last value entered into the intial value control */
+
 		lastInitial: {value: null},
 		logging: null,
-		// Variable to track if an equation has been entered and checked
-		equationEntered: null,	// value is set when node editor opened
+		equationEntered: null,	// Variable to track if an equation has been entered and checked value is set when node editor opened
+		// A list of common controls of student and author
+		genericControlMap: {
+			type: "typeId",
+			initial: "initialValue",
+			equation: "equationBox"
+		},
+		// A list of all widgets.  (The constructor mixes this with controlMap)
+		widgetMap: {
+			message: 'messageBox',
+			crisisAlert: 'crisisAlertMessage'
+		},
 
-		constructor: function(mode, subMode, model, inputStyle){
-			
+		// Controls that are select menus
+		selects: ['description', 'type', 'units', 'inputs'],
+
+		constructor: function(mode, subMode, model, inputStyle, ui_config, activity_config){
+
 			console.log("+++++++++ In generic controller constructor");
 			lang.mixin(this.controlMap, this.genericControlMap);
+
 			this._model = model;
 			this._mode = mode;
 			this._inputStyle = inputStyle;
+			this.activityConfig = activity_config;
+			this._uiConfig = ui_config;
 			// structured should be its own module.	 For now,
 			// initialize
 			this.structured._model = this._model;
 
+			ready(this, this._initCrisisAlert);
 			// The Node Editor widget must be set up before modifications
 			// It might be a better idea to only  call the controller
 			// after widgets are set up.
-			ready(this, this._setUpNodeEditor);
-			ready(this, this._initHandles);
+			if(this.activityConfig.get("showNodeEditor")){
+				ready(this, this._setUpNodeEditor);
+				ready(this, this._initHandles);
+			}
 		},
 
 		setState: function(state){
@@ -81,7 +117,7 @@ define([
 				 If not, use algebraic
 				 */
 				if(this._inputStyle){
-					  this.setEquationStyle(this._inputStyle);
+					this.setEquationStyle(this._inputStyle);
 				}else{
 					state.get("mode").then(this.setEquationStyle);
 				}
@@ -114,17 +150,30 @@ define([
 		genericControlMap: {
 			type: "typeId",
 			initial: "initialValue",
-			equation: "equationBox"
+			equation: "equationBox",
+			explanation:"explanationButton"
 		},
 		// A list of all widgets.  (The constructor mixes this with controlMap)
 		widgetMap: {
 			message: 'messageBox',
 			crisisAlert: 'crisisAlertMessage'
 		},
-		// Controls that are select menus
-		selects: ['description', 'type', 'units', 'inputs'],
-		_setUpNodeEditor: function(){
 
+		_initCrisisAlert: function(){
+			//Crisis Alert widget
+			var crisis = registry.byId(this.widgetMap.crisisAlert);
+			crisis._setOpenAttr = function(message){
+				var crisisMessage = dom.byId('crisisMessage');
+				console.log("crisis alert message ", message);
+				crisisMessage.innerHTML = message;
+				crisis.show();
+			};
+			on(registry.byId("OkButton"), "click", function(){
+				crisis.hide();
+			});
+		},
+
+		_setUpNodeEditor: function(){
 			// get Node Editor widget from tree
 			this._nodeEditor = registry.byId('nodeeditor');
 
@@ -150,10 +199,10 @@ define([
 					else if(myThis._mode == "AUTHOR" && registry.byId("selectModel").value == "given"){
 						var equation = registry.byId("givenEquationBox");
 						if(equation.value && !myThis.givenEquationEntered){
-						//Crisis alert popup if equation not checked
+							//Crisis alert popup if equation not checked
 							myThis.applyDirectives([{
 								id: "crisisAlert", attribute:
-								"open", value: "Initial Student Expression value is not checked!  Go back and check your expression to verify it is correct, or delete the expression, before closing the node editor."
+									"open", value: "Initial Student Expression value is not checked!  Go back and check your expression to verify it is correct, or delete the expression, before closing the node editor."
 							}]);
 						}
 						else{
@@ -193,24 +242,23 @@ define([
 				 Previously, just set domNode.bgcolor but this approach didn't work
 				 for text boxes.   */
 				// console.log(">>>>>>>>>>>>> setting color ", this.domNode.id, " to ", value);
-					domStyle.set(this.domNode, 'backgroundColor', value ? colorMap[value] : '');
+				domStyle.set(this.domNode, 'backgroundColor', value ? colorMap[value] : '');
 			};
-			if(this._mode != "TEST" && this._mode != "EDITOR"){
+			if(this.activityConfig.get("showFeedback")){
 				for(var control in this.controlMap){
 					var w = registry.byId(this.controlMap[control]);
 					w._setStatusAttr = setStatus;
 				}
-			}
-			/*
-			 If the status is set for equationBox, we also need to set
-			 the status for equationText.  Since equationText is not a widget,
-			 we need to set it explicitly.
-
-			 Adding a watch method to the equationBox didn't work.
-			 */
-			aspect.after(registry.byId(this.controlMap.equation), "_setStatusAttr",
+				/*
+				 * If the status is set for equationBox, we also need to set
+				 * the status for equationText.  Since equationText is not a widget,
+				 * we need to set it explicitly.
+				 * Adding a watch method to the equationBox didn't work.
+				 */
+				aspect.after(registry.byId(this.controlMap.equation), "_setStatusAttr",
 					lang.hitch({domNode: dom.byId("equationText")}, setStatus),
 					true);
+			}
 
 			var setEnableOption = function(value){
 				console.log("++++ in setEnableOption, scope=", this);
@@ -237,27 +285,18 @@ define([
 				w._setDisableOptionAttr = setDisableOption;
 			}, this);
 
-			var crisis = registry.byId(this.widgetMap.crisisAlert);
-			crisis._setOpenAttr = function(message){
-				var crisisMessage = dom.byId('crisisMessage');
-				console.log("crisis alert message ", message);
-				crisisMessage.innerHTML = message;
-				crisis.show();
-			};
-			on(registry.byId("OkButton"), "click", function(){
-				crisis.hide();
-			});
-
 			// Add appender to message widget
 			var messageWidget = registry.byId(this.widgetMap.message);
 			messageWidget._setAppendAttr = function(message){
 				var message_box_id=dom.byId("messageBox");
-				
+
 				// Set the background color for the new <p> element
 				// then undo the background color after waiting.
-				var element=domConstruct.place('<p style="background-color:#FFD700;">' 
-											   + message + '</p>', message_box_id);
-				window.setTimeout(function(){ 
+				var element=domConstruct.place('<p style="background-color:#FFD700;">'
+					+ message + '</p>', message_box_id);
+
+				/*Set interval for message blink*/
+				window.setTimeout(function(){
 					// This unsets the "background-color" style
 					domStyle.set(element, "backgroundColor", "");
 				}, 3000);  // Wait in milliseconds
@@ -265,8 +304,6 @@ define([
 				// Scroll to bottoms
 				this.domNode.scrollTop = this.domNode.scrollHeight;
 			};
-			/*Set interval for message blink*/
-
 
 			/*
 			 Add fields to units box, using units in model node
@@ -286,20 +323,20 @@ define([
 		// Function called when node editor is closed.
 		// This can be used as a hook for saving sessions and logging
 		closeEditor: function(){
+			console.log("++++++++++ entering closeEditor");
 			if(this._mode == "AUTHOR"){
 				//Reset to given on close of node editor
 				this._model.active = this._model.given;
 				registry.byId("selectModel").set('value',"correct");
 				this.controlMap.equation = "equationBox";
-				domStyle.set('equationBox', 'display', 'block');				
+				domStyle.set('equationBox', 'display', 'block');
 				domStyle.set('givenEquationBox', 'display', 'none');
 				var kind = registry.byId(this.controlMap.kind).value;
 				if(kind == "required"){
 					this._model.given.setGenus(this.currentID, kind);
 				}
 			}
-			console.log("++++++++++ entering closeEditor");
-			// Erase modifications to the control settingse.
+			// Erase modifications to the control settings.
 			// Enable all options in select controls.
 			array.forEach(this.selects, function(control){
 				var w = registry.byId(this.controlMap[control]);
@@ -355,14 +392,14 @@ define([
 			typechecker.closePops();
 			//this.disableHandlers = false;
 			this.logging.log('ui-action', {
-				type: 'close-dialog-box', 
+				type: 'close-dialog-box',
 				nodeID: this.currentID,
 				node: this._model.active.getName(this.currentID),
 				nodeComplete: this._model.active.isComplete(this.currentID)
 			});
-			
+
 			if(this._mode == "EDITOR" || this._mode == "TEST"){
-			    if(typeof this._model.active.getType(this.currentID) !== "undefined"){
+				if(typeof this._model.active.getType(this.currentID) !== "undefined"){
 					var isComplete = this._model.active.isComplete(this.currentID)?'solid':'dashed';
 					var borderColor = "3px "+isComplete+" gray";
 					var boxshadow = 'inset 0px 0px 5px #000 , 0px 0px 10px #000';
@@ -370,11 +407,11 @@ define([
 					domStyle.set(this.currentID, 'border', borderColor);	 // set border gray for studentModelNodes in TEST and EDITOR mode
 				}
 			}
-			
+
 			this.nodeCloseAssessment();
 
-            if(this._previousExpression) //bug 2365
-                this._previousExpression=null; //clear the expression
+			if(this._previousExpression) //bug 2365
+				this._previousExpression=null; //clear the expression
 
 
 			// This cannot go in controller.js since _PM is only in
@@ -384,7 +421,7 @@ define([
 
 		//update the node label
 		updateNodeLabel:function(nodeID){
-			var nodeName = graphObjects.getNodeName(this._model.active,nodeID);
+			var nodeName = graphObjects.getNodeName(this._model.active,nodeID, this.activityConfig.get("showNodeDetails"));
 			if(dom.byId(nodeID + 'Label')){
 				domConstruct.place(nodeName, nodeID + 'Label', "replace");
 			}else if(nodeName){
@@ -395,22 +432,22 @@ define([
 		//set up event handling with UI components
 		_initHandles: function(){
 			// Summary: Set up Node Editor Handlers
-			
+
 			/*
 			 Attach callbacks to each field in node Editor.
-			 
+
 			 The lang.hitch sets the scope to the current scope
 			 and then the handler is only called when disableHandlers
 			 is false.
 
 			 We could write a function to attach the handlers?
 			 */
-			
+
 			var desc = registry.byId(this.controlMap.description);
 			desc.on('Change', lang.hitch(this, function(){
 				return this.disableHandlers || this.handleDescription.apply(this, arguments);
 			}));
-			
+
 			/*
 			 *	 event handler for 'type' field
 			 *	 'handleType' will be called in either Student or Author mode
@@ -418,20 +455,20 @@ define([
 			var type = registry.byId(this.controlMap.type);
 			type.on('Change', lang.hitch(this, function(){
 				return this.disableHandlers || this.handleType.apply(this, arguments);
-			}));			
-			
+			}));
+
 			/*
 			 *	 event handler for 'Initial' field
 			 *	 'handleInitial' will be called in either Student or Author mode
 			 * */
-			
+
 			var initialWidget = registry.byId(this.controlMap.initial);
 			// This event gets fired if student hits TAB or input box
 			// goes out of focus.
 			initialWidget.on('Change', lang.hitch(this, function(){
 				return this.disableHandlers || this.handleInitial.apply(this, arguments);
 			}));
-			
+
 			// Look for ENTER key event and fire 'Change' event, passing
 			// value in box as argument.  This is then intercepted by the
 			// regular handler.
@@ -448,20 +485,20 @@ define([
 					w.set('status','');
 				}
 			}));
-			
+
 			var inputsWidget = registry.byId(this.controlMap.inputs);
 			inputsWidget.on('Change',  lang.hitch(this, function(){
 				return this.disableHandlers || this.handleInputs.apply(this, arguments);
 			}));
-			
+
 			var unitsWidget = registry.byId(this.controlMap.units);
 			unitsWidget.on('Change', lang.hitch(this, function(){
 				return this.disableHandlers || this.handleUnits.apply(this, arguments);
 			}));
-			
+
 			var positiveWidget = registry.byId("positiveInputs");
 			positiveWidget.on('Change', lang.hitch(this.structured, this.structured.handlePositive));
-			
+
 			var negativeWidget = registry.byId("negativeInputs");
 			negativeWidget.on('Change', lang.hitch(this.structured, this.structured.handleNegative));
 
@@ -475,7 +512,6 @@ define([
 				return this.disableHandlers || this.handleEquation.apply(this, arguments);
 			}));
 
-
 			// When the equation box is enabled/disabled, do the same for
 			// the inputs widgets.
 			array.forEach(["nodeInputs", "positiveInputs", "negativeInputs"], function(input){
@@ -488,7 +524,7 @@ define([
 
 			// For each button 'name', assume there is an associated widget in the HTML
 			// with id 'nameButton' and associated handler 'nameHandler' below.
-			var buttons = ["plus", "minus", "times", "divide", "undo", "equationDone", "sum", "product"];
+			var buttons = ["plus", "minus", "times", "divide", "undo", "equationDone", "sum", "product","explanation"];
 			array.forEach(buttons, function(button){
 				var w = registry.byId(button + 'Button');
 				if(!w){
@@ -508,28 +544,32 @@ define([
 				/*	When the equation box is enabled/disabled also do the same
 				 for this button */
 				equationWidget.watch("disabled", function(attr, oldValue, newValue){
-					// console.log("************* " + (newValue?"dis":"en") + "able " + button);
-					w.set("disabled", newValue);
+					if (w.id!=="explanationButton") {
+						// console.log("************* " + (newValue?"dis":"en") + "able " + button);
+						w.set("disabled", newValue);
+					}
 				});
 			}, this);
 
 			//undo background color on change
 			array.forEach(this.resettableControls, function(con){
-				  var w = registry.byId(this.controlMap[con]);
-				  w.on("keydown", lang.hitch(this, function(evt){
+				var w = registry.byId(this.controlMap[con]);
+				w.on("keydown", lang.hitch(this, function(evt){
 					if(evt.keyCode != keys.ENTER){
-						 w.set('status','');
+						w.set('status','');
 					}
-				  }));
+				}));
 			}, this);
 
 		},
+
 		// Need to save state of the node editor in the status section
 		// of the student model.  See documentation/json-format.md
 		updateModelStatus: function(desc){
 			//stub for updateModelStatus
 			//actual implementation in con-student and con-author
 		},
+
 		// attributes that should be saved in the status section
 		validStatus: {status: true, disabled: true},
 		updateNodes: function(){
@@ -546,6 +586,13 @@ define([
 		},
 		/* Stub to update connections in graph */
 		addQuantity: function(source, destinations){
+		},
+
+		updateTweakDirection: function(direction){
+			if(typeof direction !== 'undefined' && direction != null){
+				this._model.active.setTweakDirection(this.currentID, direction);
+				this.updateNodeLabel(this.currentID);
+			}
 		},
 
 		updateDescription: function(descID){
@@ -595,6 +642,7 @@ define([
 					domConstruct.place(nodeName, this.currentID);
 			}
 		},
+
 		updateEquationLabels: function(typeIn){
 			var type = typeIn || this._model.active.getType(this.currentID) || "none";
 			var name = this._model.active.getName(this.currentID);
@@ -603,7 +651,7 @@ define([
 			// Only add label when name exists
 			if(name){
 				switch(type){
-                    case "accumulator":
+					case "accumulator":
 						nodeName = 'new ' + name + ' = ' + 'old ' + name + ' +';
 						//Commenting out Change in Time label per Dr. Kurt
 						//tt = " * Change in Time";
@@ -625,6 +673,7 @@ define([
 			dom.byId('equationLabel').innerHTML = nodeName;
 			//dom.byId('timeStepLabel').innerHTML = tt;
 		},
+
 		equationInsert: function(text){
 			var widget = registry.byId(this.controlMap.equation);
 			var oldEqn = widget.get("value");
@@ -648,6 +697,7 @@ define([
 				}
 			}));
 		},
+
 		plusHandler: function(){
 			console.log("****** plus button");
 			this.equationInsert('+');
@@ -679,19 +729,19 @@ define([
 			negatives: [],
 			ops: [],
 			setOperation: function(op){
-			switch(op){
-				case "sum":
-					this.operation = op;
-					dom.byId("positiveInputsText").innerHTML = "Add quantity:";
-					dom.byId("negativeInputsText").innerHTML = "Subtract quantity:";
-					break;
-				case "product":
-					this.operation = "product";
-					dom.byId("positiveInputsText").innerHTML = "Multiply by quantity:";
-					dom.byId("negativeInputsText").innerHTML = "Divide by quantity:";
-					break;
-				default:
-					throw new Error("Invalid operation " + op);
+				switch(op){
+					case "sum":
+						this.operation = op;
+						dom.byId("positiveInputsText").innerHTML = "Add quantity:";
+						dom.byId("negativeInputsText").innerHTML = "Subtract quantity:";
+						break;
+					case "product":
+						this.operation = "product";
+						dom.byId("positiveInputsText").innerHTML = "Multiply by quantity:";
+						dom.byId("negativeInputsText").innerHTML = "Divide by quantity:";
+						break;
+					default:
+						throw new Error("Invalid operation " + op);
 				}
 				this.update();
 			},
@@ -767,8 +817,7 @@ define([
 				var widget = registry.byId(this.controlMap.equation);
 				this.structured.pop();
 			}
-		}, 
-
+		},
 		//Enables the Forum Button in node editor
 		//Also uses the forum module to activate the event button click
 		activateForumButton: function(){
@@ -784,18 +833,18 @@ define([
 			console.log("****** enter button");
 			/*
 			 This takes the contents of the equation box and parses it.
-			 
+
 			 If the parse fails:
 			 * send a warning message, and
 			 * log attempt (the PM does not handle syntax errors).
-			 
+
 			 Note: the model module may do some of these things automatically.
-			 
+
 			 Also, the following section could just as well be placed in the PM?
 			 */
 			var widget = registry.byId(this.controlMap.equation);
 			var inputEquation = widget.get("value");
-					
+
 			var parse = null;
 			if (inputEquation == "") {
 				directives.push({id: 'message', attribute: 'append', value: 'There is no equation to check.'});
@@ -843,7 +892,7 @@ define([
 			 * Handle the reply from the PM. **Done**
 			 * If the reply contains an update to the equation, the model should also be updated.
 
-			*/
+			 */
 			if(parse){
 				var inputNodesList = [];
 				var cancelUpdate = false;
@@ -858,9 +907,9 @@ define([
 					// autocreation flag will eventually be set from the URL
 					// or from the state table.  Alternatively, we will show a list
 					// of variables.
-					var autocreationFlag = true; 
+					var autocreationFlag = true;
 					/*if(autocreationFlag && !this._model.active.isNode(givenID))
-						this.autocreateNodes(variable);*/
+					 this.autocreateNodes(variable);*/
 
 					// Checks for nodes referencing themselves; this causes problems because
 					//		functions will always evaluate to true if they reference themselves
@@ -881,14 +930,14 @@ define([
 					}
 
 					//check if accumulator has a reference to itself as per the Trello card https://trello.com/c/0aqmwqqG
-					if(givenID && this._model.active.getType(this.currentID) === "accumulator" && 
+					if(givenID && this._model.active.getType(this.currentID) === "accumulator" &&
 						givenID === mapID.call(this._model.active, this.currentID)){
 						cancelUpdate = true;
 						directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
 						directives.push({
 							id: 'crisisAlert',
 							attribute: 'open',
-							value: "The old value of the accumulator is already included in the expression, so you don't have to mention it in the expression.  Only put an expression for the change in the accumulators value.", 
+							value: "The old value of the accumulator is already included in the expression, so you don't have to mention it in the expression.  Only put an expression for the change in the accumulators value.",
 						});
 						this.logging.log("solution-step", {
 							type: "self-referencing-accumulator",
@@ -906,9 +955,9 @@ define([
 
 					var descriptionID = "";
 					var badVarCount = "";
-                    if (!ignoreUnknownTest) {
-                        // Check for number of unknown var, only in student mode.
-                        descriptionID = this._model.active.getDescriptionID(this.currentID);
+					if (!ignoreUnknownTest) {
+						// Check for number of unknown var, only in student mode.
+						descriptionID = this._model.active.getDescriptionID(this.currentID);
 						badVarCount = this._model.given.getAttemptCount(descriptionID, "unknownVar");
 					}
 
@@ -970,7 +1019,7 @@ define([
 				// Expression now is written in terms of student IDs, when possible.
 				// Save with explicit parentheses for all binary operations.
 				var parsedEquation = parse.toString(true);
-				
+
 				//Check to see if parsedEquation returns a string, change to string if not
 				if (typeof parsedEquation == "number"){
 					parsedEquation = parsedEquation.toString();
@@ -1029,21 +1078,21 @@ define([
 			var nodeForumBut = registry.byId("nodeForumButton");
 			var check_desc=this._model.active.getGivenID(id);
 			if(this._forumparams && check_desc && this._model.given.getDescription(check_desc)){
-			try{
-				var check_desc=this._model.active.getGivenID(id);
-			}
-			catch(err)
-			{
-				console.log(err);
-			}
-			if(this._forumparams && this._model.given.getDescription(check_desc)){
-				nodeForumBut.set("disabled", false);
-				forum.activateForum(this._model, this.currentID, this._forumparams,this.logging);
-			}else{
-				//In case there are many nodes,
-				//make sure forum button is disabled
-				nodeForumBut.set("disabled", true);
-			}
+				try{
+					var check_desc=this._model.active.getGivenID(id);
+				}
+				catch(err)
+				{
+					console.log(err);
+				}
+				if(this._forumparams && this._model.given.getDescription(check_desc)){
+					nodeForumBut.set("disabled", false);
+					forum.activateForum(this._model, this.currentID, this._forumparams,this.logging);
+				}else{
+					//In case there are many nodes,
+					//make sure forum button is disabled
+					nodeForumBut.set("disabled", true);
+				}
 			}
 		},
 
@@ -1052,6 +1101,7 @@ define([
 			console.error("initialControlSettings should be overwritten.");
 			//log message added through aspect.
 		},
+
 		populateNodeEditorFields: function(nodeid){
 			//populate description
 			var model = this._model.active;
@@ -1062,9 +1112,9 @@ define([
 
 			/*
 			 Set values and choices based on student model
-			 
+
 			 Set selection for description, type, units, inputs (multiple selections)
-			 
+
 			 Set value for initial value, equation (input),
 			 */
 
@@ -1078,7 +1128,7 @@ define([
 						d.getOptions(desc).disabled=false;
 					}});
 			}
-			
+
 			var type = model.getType(nodeid);
 			console.log('node type is', type || "not set");
 
@@ -1092,7 +1142,7 @@ define([
 			var isInitial = typeof initial === "number";
 			this.lastInitial.value = isInitial?initial.toString():null;
 			registry.byId(this.controlMap.initial).attr('value', isInitial?initial:'');
-			
+
 			var unit = model.getUnits(nodeid);
 			console.log('unit is', unit || "not set");
 			// Initial input in Units box
@@ -1100,7 +1150,7 @@ define([
 
 			// Input choices are different in AUTHOR and student modes
 			// So they are set in con-author.js and con-student.js
-			
+
 			var equation = model.getEquation(nodeid);
 			console.log("equation before conversion ", equation);
 			var mEquation = equation ? expression.convert(model, equation) : '';
@@ -1112,13 +1162,13 @@ define([
 
 			/*
 			 The PM sets enabled/disabled and color for the controls
-			 
+
 			 Set enabled/disabled for input, units, initial value, type
 			 description
-			 
+
 			 Color for Description, type, initial value, units, input,
 			 and equation.
-			 
+
 			 Note that if equation is disabled then
 			 input, +, -, *, /, undo, and done should also be disabled.
 			 */
@@ -1143,28 +1193,30 @@ define([
 			array.forEach(directives, function(directive) {
 				if(!noModelUpdate)
 					this.updateModelStatus(directive);
-
 				if (this.widgetMap[directive.id]) {
 					var w = registry.byId(this.widgetMap[directive.id]);
 					if (directive.attribute == 'value') {
 						w.set("value", directive.value, false);
-                        if(w.id == 'typeId'){
-                            this.updateType(directive.value);
-                        } else if(w.id == 'initialValue'){
-                            this._model.active.setInitial(this.currentID, directive.value);
-                        } else if(w.id == 'equationBox'){
-                        	this.equationSet(directive.value);
-                        }else if(w.id == 'selectDescription'){
-                        	this.updateDescription(directive.value);
-                        }
-
+						if(w.id == 'typeId'){
+							this.updateType(directive.value);
+						} else if(w.id == 'initialValue'){
+							this._model.active.setInitial(this.currentID, directive.value);
+						} else if(w.id == 'equationBox'){
+							this.equationSet(directive.value);
+						}else if(w.id == 'selectDescription'){
+							this.updateDescription(directive.value);
+						}
 						// Each control has its own function to update the
 						// the model and the graph.
-						//this[directive.id+'Set'].call(this, directive.value);
 					}else{
 						w.set(directive.attribute, directive.value);
 					}
-				}else{
+				}else if(directive.id == "tweakDirection"){
+					if (directive.attribute == 'value') {
+						this.updateTweakDirection(directive.value);
+					}
+				}
+				else{
 					this.logging.clientLog("warning", {
 						message: "Directive with unknown id, id :"+directive.id,
 						functionTag: 'applyDirectives'

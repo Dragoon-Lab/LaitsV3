@@ -35,8 +35,7 @@ define([
 
 		initSchemaSession: function(){
 			array.forEach(this._schemas, function(schema){
-				var sID = schema.schemaClass || schema.ID;
-				this._session.logSchema(sID, schema.difficulty);
+				this._session.logSchema(schema.schemaClass, schema.difficulty);
 			}, this);
 		},
 
@@ -44,8 +43,7 @@ define([
 			this._schemas = this._model.student.getSchemas();
 			array.forEach(this._schemas, function(schema){
 				var resultJSON;
-				var sID = schema.schemaClass || schema.ID;
-				this._session.getSchemaApplication(sID).then(function(result){
+				this._session.getSchemaApplication(schema.schemaClass).then(function(result){
 					resultJSON = result;
 				});
 				

@@ -25,20 +25,25 @@
  * Student mode-specific handlers
  */
 
-define([
-	"dojo/aspect",
-	"dojo/_base/array", 
-	'dojo/_base/declare', 
+define(["dojo/aspect",
+	"dojo/_base/array",
+	'dojo/_base/declare',
 	"dojo/_base/lang",
 	"dojo/dom",
+	"dojo/dom-style",
 	"dojo/ready",
+	"dojo/on",
+	"dijit/focus",
 	'dijit/registry',
+	"dijit/TooltipDialog",
+	"dijit/popup",
 	'./controller',
 	"./pedagogical_module",
 	"./typechecker",
+	"./equation",
 	"./schemas-student"
-], function(aspect, array, declare, lang, dom, ready, registry, controller, PM, typechecker, schemaStudent){
-	// Summary: 
+], function(aspect, array, declare, lang, dom, style, ready,on, focusUtil, registry, tooltipDialog, popup, controller, PM, typechecker, expression, schemaStudent){
+	/* Summary:	// Summary:
 	//			MVC for the node editor, for students
 	// Description:
 	//			Handles selections from the student as he/she completes a model;
@@ -56,10 +61,15 @@ define([
 		_assessment: null,
 		constructor: function(mode, subMode, model){
 			console.log("++++++++ In student constructor");
-			this._PM = new PM(mode, subMode, model);
-			lang.mixin(this.widgetMap, this.controlMap);
-			ready(this, "populateSelections");
-			this.init();
+			this._PM = new PM(mode, subMode, model, this.activityConfig);
+
+			if(this.activityConfig.get("showNodeEditor")) {
+				lang.mixin(this.widgetMap, this.controlMap);
+				ready(this, "populateSelections");
+				this.init();
+			}else if(this.activityConfig.get("showIncrementalEditor")){
+				this.initIncrementalPopup();
+			}
 		},
 
 		resettableControls: ["initial","equation"],
@@ -178,11 +188,24 @@ define([
 			// This is only needed if the type has already been set,
 			// something that is generally only possible in TEST mode.
 			this.updateEquationLabels();
-			this.applyDirectives(this._PM.processAnswer(this.currentID, 'description', selectDescription, this._model.given.getName(selectDescription)));
+			this.applyDirectives(
+				this._PM.processAnswer(this.currentID, 'description', selectDescription, this._model.given.getName(selectDescription)));
 			if(this._forumparams){
 				// enable forum button and activate the event
 				this.activateForumButton();
 			}
+		},
+
+		explanationHandler:function(){
+			var givenID=this._model.student.getGivenID(this.currentID);
+			var editorWidget = registry.byId("editorContent");
+			var content=this._model.given.getExplanation(givenID);
+			editorWidget.set('value',content); // load the explanation in the editor
+			editorWidget.set('disabled','true');
+			var toolWidget=registry.byId("dijit_Toolbar_0");
+			var cancelButtonWidget=registry.byId("cancelEditorButton");
+		    cancelButtonWidget.domNode.style.display="none";// Hide the cancel button
+			toolWidget.domNode.style.display="none"; // Hide the toolbar
 		},
 
 		handleType: function(type){
@@ -192,6 +215,7 @@ define([
 			this.updateType(type);
 			this.applyDirectives(this._PM.processAnswer(this.currentID, 'type', type));
 		},
+		
 		typeSet: function(value){
 			this.updateType(value);
 		},
@@ -230,7 +254,7 @@ define([
 
 		/*
 		*	 handle event on inputs box
-		* */
+		*/
 		handleInputs: function(id){
 			//check if id is  not select else return
 
@@ -373,10 +397,104 @@ define([
 		},
 
 		nodeCloseAssessment: function(){
-			if(this._assessment){
+			if(this._assessment && this._assessment.currentNodeTime){
 				this._assessment.nodeClose(this.currentID);
 			}
-		}
+		},
 
+		showIncrementalEditor: function(id){
+			this.currentID = id;
+			var incButtons = ["Increase", "Decrease", "Stays-Same", "Unknown"];
+			var type = this._model.active.getType(id);
+			var showEquationButton = registry.byId("EquationButton").domNode;
+
+			if(type != "accumulator" && type != "function"){
+				style.set(showEquationButton, "display", "none");
+				this.closeIncrementalPopup();
+			}else{
+				style.set(showEquationButton, "display", "block");
+				var tweakStatus = this._model.active.getNode(id).status["tweakDirection"];
+				if(tweakStatus && tweakStatus.disabled){
+					array.forEach(incButtons, function(widget){
+						var w = registry.byId(widget+"Button");
+						w.set("disabled", tweakStatus.disabled);
+					});
+				}else{
+					array.forEach(incButtons, function(widget){
+						var w = registry.byId(widget+"Button");
+						w.set("disabled", false);
+					});
+				}
+				popup.open({
+					popup: this._incrementalPopup,
+					around: dom.byId(id)
+				});
+				this._incrementalPopup.onBlur = lang.hitch(this, function(){
+					this.closeIncrementalPopup();
+				});
+			}
+		},
+
+		initIncrementalPopup: function(){
+			var that = this;
+			that._buttonHandlers = {};
+			var incButtons = ["Increase", "Decrease", "Stays-Same", "Unknown"];
+			this._incrementalPopup = registry.byId("incrementalPopup");
+			this._incrementalPopup.onShow = function(){
+				focusUtil.focus(dom.byId("IncreaseButton"));
+				incButtons.forEach(function (item) {
+					var btn = registry.byId(item + "Button");
+					that._buttonHandlers[item]= on(btn, "click", function (e) {
+						e.preventDefault();
+						//Set in the model
+						that._model.active.setTweakDirection(that.currentID, item);
+
+						//Process Answer
+						var result = that._PM.processAnswer(that.currentID, "tweakDirection", item);
+						that.applyDirectives(result);
+
+						//Update Node Label
+						that.updateNodeLabel(that.currentID);
+
+						that.closeIncrementalPopup(that.currentID);
+					});
+				});
+			};
+
+			var showEquationButton = registry.byId("EquationButton");
+
+			on(showEquationButton,"click", function(){
+				that.closeIncrementalPopup();
+				var type = that._model.active.getType(that.currentID);
+				var equationMessage = "";
+				var equation = expression.convert(that._model.active, that._model.active.getEquation(that.currentID));
+				var nodeName = that._model.active.getName(that.currentID);
+				if(type == "accumulator"){
+					equationMessage = "new " + nodeName + " = " + "old "+ nodeName + " + " + equation;
+				}else if(type == "function"){
+					equationMessage = nodeName + " = " + equation;
+				}
+				that.applyDirectives([{
+					id:"crisisAlert",
+					attribute:"title",
+					value: "Equation for "+ nodeName
+				},{
+					id: "crisisAlert",
+					attribute: "open",
+					value: equationMessage
+				}]);
+			});
+		},
+
+		closeIncrementalPopup: function(nodeID){
+			popup.close(this._incrementalPopup);
+			var incButtons = ["Increase", "Decrease", "Stays-Same", "Unknown"];
+			incButtons.forEach(lang.hitch(this, function (item) {
+				this._buttonHandlers[item].remove();
+			}));
+			if(nodeID){
+				this.colorNodeBorder(nodeID, true);
+			}
+		}
 	});
 });

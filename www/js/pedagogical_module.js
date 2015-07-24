@@ -292,9 +292,12 @@ define([
 		}
 	};
 
-	var actionTable = {
+	var nodeEditorActionTable = {
 		// Summary: This table is used for determining the proper response to a student's answers in the 
 		//		remaining sections (see 'Pedagogical_Module.docx' in the documentation)
+
+		//		Node Editor action table will be used for any activity that uses existing node editor.
+		//		All the actions remain same, only add additional field(s) in _getInterpretation and _enableNext
 		correct: {
 			COACHED: function(obj, part){
 				state(obj, part, "correct");
@@ -395,6 +398,109 @@ define([
 		}
 	};
 
+	var incrementalActionTable = {
+		//Summary: Action table for incremental activity popup.
+		correct: {
+			COACHED: function(obj, part){
+				state(obj, part, "correct");
+				disable(obj, "tweakDirection", true);
+			},
+			feedback: function(obj, part){
+				state(obj, part, "correct");
+				disable(obj, "tweakDirection", true);
+			},
+			power: function(obj, part){
+				state(obj, part, "correct");
+				disable(obj, "tweakDirection", true);
+			},
+			TEST: function(obj, part){
+				state(obj, part, "correct");
+			},
+			EDITOR: function(obj, part){
+				state(obj, part, "correct");
+			}
+		},
+		firstFailure:{
+			COACHED: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "tweakDirection", false);
+			},
+			feedback: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "tweakDirection", false);
+			},
+			power: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "tweakDirection", false);
+			},
+			TEST: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "incrementalButtons", false);
+			},
+			EDITOR: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "incrementalButtons", false);
+			}
+		},
+		secondFailure:{
+			COACHED: function(obj, part){
+				state(obj, part, "demo");
+				disable(obj, "tweakDirection", true);
+			},
+			feedback: function(obj, part){
+				state(obj, part, "demo");
+				disable(obj, "tweakDirection", true);
+			},
+			power: function(obj, part){
+				state(obj, part, "demo");
+				disable(obj, "tweakDirection", true);
+			},
+			TEST: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "tweakDirection", false);
+			},
+			EDITOR: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "tweakDirection", false);
+			}
+		},
+		anotherFailure:{
+			COACHED: function(obj, part){
+				state(obj, part, "demo");
+				disable(obj, "tweakDirection", true);
+			},
+			feedback: function(obj, part){
+				state(obj, part, "demo");
+				disable(obj, "tweakDirection", true);
+			},
+			power: function(obj, part){
+				state(obj, part, "demo");
+				disable(obj, "tweakDirection", true);
+			},
+			TEST: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "tweakDirection", false);
+			},
+			EDITOR: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "tweakDirection", false);
+			}
+		},
+		incorrect:{
+			TEST: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "tweakDirection", false);
+			},
+			EDITOR: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "tweakDirection", false);
+			}
+		}
+	};
+
+	/*
+	 * Add additional tables for activities that does not use node editor.
+	 */
 	//Declare variable for accessing state.js module
 	var record = null;
 
@@ -434,18 +540,12 @@ define([
 	 * 
 	 *****/
 	return declare(null, {
-		constructor: function(/*string*/ mode, /*string*/ subMode, /*model.js object*/ model){
+		constructor: function(/*string*/ mode, /*string*/ subMode, /*model.js object*/ model, /* Activity Config*/ activityConfig){
 			this.model = model;
 			this.mode = mode;
+			this.activityConfig = activityConfig;
+			this.showCorrectAnswer = this.activityConfig.get("showCorrectAnswer");
 			this.setUserType(subMode);
-			this.showCorrectAnswer = true;
-			this.showFeedback = true;
-
-			if(mode === "TEST" || mode === "EDITOR"){
-				this.showCorrectAnswer = false;
-				this.showFeedback = false;
-			}
-
 		},
 		matchingID: null,
 		logging: null,
@@ -518,6 +618,7 @@ define([
 				return;
 			}
 		},
+
 		_getInterpretation: function(/*string*/ studentID, /*string*/ nodePart, /*string | object*/ answer){
 			// Summary: Returns the interpretation of a given answer (correct, incorrect, etc.)
 			//
@@ -533,7 +634,7 @@ define([
 				if(answer === correctAnswer || correctAnswer === true){
 					interpretation = "correct";
 				}else{
-					if(showCorrectAnswer === true){
+					if(showCorrectAnswer){
 						if(model.given.getAttemptCount(givenID, nodePart) > 0)
 							interpretation = "secondFailure";
 						else
@@ -588,6 +689,8 @@ define([
 				case "equation":
 					interpret(check.areEquivalent(givenID, this.model, answer));
 					break;
+				case "tweakDirection":
+					interpret(this.model.given.getTweakDirection(givenID));
 			}
 			/* 
 			 This is an example of logging via direct function calls
@@ -680,7 +783,7 @@ define([
 				if(answer){
 					givenID = answer;
 					descriptionTable[interpretation][this.userType](returnObj, nodePart);
-					for(var i = 0; i < returnObj.length; i++)
+					for(var i = 0; i < returnObj.length; i++){
 						if(returnObj[i].value === "correct" || returnObj[i].value === "demo"){
 							currentStatus = this.model.given.getStatus(givenID, nodePart); //get current status set in given model
 							if(currentStatus !== "correct" && currentStatus !== "demo"){
@@ -698,37 +801,53 @@ define([
 								updateStatus(returnObj, this.model);
 							this.descriptionCounter = 0;
 						}
+						if(returnObj[i].attribute=="disabled" && returnObj[i].id=="type" && returnObj[i].value==false){
+							var content=this.model.given.getExplanation(givenID);
+							if(typeof content !== "undefined" && content!=="" && this.mode !== "AUTHOR")
+								returnObj.push({id: "explanation", attribute: "disabled", value: false});
+						}
+				
+					}	
+
 				}
 				// Process answers for all other node types
 			}else{
 				givenID = this.model.student.getDescriptionID(id);
-
-				console.assert(actionTable[interpretation], "processAnswer() interpretation '" + interpretation + "' not in table ", actionTable);
-				actionTable[interpretation][this.userType](returnObj, nodePart);
-				//add help message for unary minus
-				var nodeType= this.model.given.getType(givenID);
-				if (interpretation==='secondFailure' && nodeType=="accumulator" && nodePart=="equation"){
-					if(answer[0]="-" && answer.slice(1,answer.length).search(/-|\+|\*|\//)<0){
-						returnObj.pop();
-						returnObj.push({id: "message", attribute: "append", value: "Note that "+answer.slice(1,answer.length)+" is decreasing. If a quantity decreases with time, then its change is negative."});
-						disable(returnObj, "enableRemaining", false)
-			        }	
-			    }
+				if(this.activityConfig.get("showNodeEditor")) {
+					console.assert(nodeEditorActionTable[interpretation], "processAnswer() interpretation '" + interpretation + "' not in table ", nodeEditorActionTable);
+					nodeEditorActionTable[interpretation][this.userType](returnObj, nodePart);
+					//add help message for unary minus
+					var nodeType = this.model.given.getType(givenID);
+					if (interpretation === 'secondFailure' && nodeType == "accumulator" && nodePart == "equation") {
+						if (answer[0] == "-" && answer.slice(1, answer.length).search(/-|\+|\*|\//) < 0) {
+							returnObj.pop();
+							returnObj.push({
+								id: "message",
+								attribute: "append",
+								value: "Note that " + answer.slice(1, answer.length) + " is decreasing. If a quantity decreases with time, then its change is negative."
+							});
+							disable(returnObj, "enableRemaining", false)
+						}
+					}
+				}else if(this.activityConfig.get("showIncrementalEditor")){
+					incrementalActionTable[interpretation][this.userType](returnObj, nodePart);
+				}
 				currentStatus = this.model.given.getStatus(givenID, nodePart); //get current status set in given model
-				if(currentStatus !== "correct" && currentStatus !== "demo"){
+				if (currentStatus !== "correct" && currentStatus !== "demo") {
 					this.model.given.setAttemptCount(givenID, nodePart, this.model.given.getAttemptCount(givenID, nodePart) + 1);
-					for(var i = 0; i < returnObj.length; i++)
-						if(returnObj[i].value === "incorrect" || returnObj[i].value === "demo"){
+					for (var i = 0; i < returnObj.length; i++)
+						if (returnObj[i].value === "incorrect" || returnObj[i].value === "demo") {
 							this.model.student.incrementAssistanceScore(id);
 						}
 				}
 				updateStatus(returnObj, this.model);
 				// Activate appropriate parts of the node editor
 				var lastElement = returnObj[returnObj.length - 1].id;
-				if(lastElement === "enableNext" || lastElement === "enableRemaining"){
+				if (lastElement === "enableNext" || lastElement === "enableRemaining") {
 					returnObj.pop();
 					this._enableNext(returnObj, givenID, nodePart, lastElement);
 				}
+
 			}
 			
 			//logging pm response
@@ -762,11 +881,12 @@ define([
 			}, logObj);
 			this.logging.log('solution-step', logObj);
 			
-			if(this._assessment){
+			if(this._assessment && this._assessment.currentNodeTime){
 				this._assessment.updateError(nodePart, checkStatus);
 			}
 
 			console.log("**** PM returning:\n", returnObj);
+
 			return returnObj;
 		},
 		/*****
@@ -793,7 +913,7 @@ define([
 			 For now, do not enable/disable inputs.	 
 			 See Trello card https://trello.com/c/mpd2Ivjd
 			 */
-			var controls = ["type", "initial", "units", "equation"];
+			var controls = ["type", "initial", "units", "equation","explanation"];
 			var directives = array.map(controls, function(control){
 				return {id: control, attribute: "disabled", value: true};
 			});
@@ -808,11 +928,11 @@ define([
 
 		checkDoneness: function(model){
 			if(this.mode == "COACHED" && model.areRequiredNodesVisible()){
-		return [{
-					id: "crisisAlert", 
-			attribute: "open", 
-			value: "You have already created all the necessary nodes. You might want to click on \"Graph\" or \"Table\""
-		}];
+			return [{
+				id: "crisisAlert",
+				attribute: "open",
+				value: "You have already created all the necessary nodes. You might want to click on \"Graph\" or \"Table\""
+			}];
 			} 
 			return false;
 		},
@@ -828,7 +948,7 @@ define([
 				this.logging.log('solution-step', logObj);
 
 				record.increment("problemCompleted", 1);
-				if(this.showFeedback){
+				if(this.activityConfig.get("showFeedback")){
 					// Number of problems to show the hint upon completion
 					if(record.getLocal("problemCompleted") < 3 ){
 						return	[{
@@ -844,7 +964,7 @@ define([
 
 		checkPremature: function(nodeID){
 			//return false for other modes
-			if(this.mode !== "COACHED"){
+			if(!this.activityConfig.get("targetNodeStrategy")){
 				return false;
 			}
 			//Check premature for COACHED mode

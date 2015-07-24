@@ -1,5 +1,316 @@
 [
 	{
+		"schemaClass" : "PAL3 and Electronix Tutor",
+		"subClasses": [
+			{
+				"name" : "Incandescent Bulb Behavior",
+				"id" : "incandescent_bulb_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Capacitor Behavior",
+				"id" : "capacitor_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Negative Biased Negative Clampers Behavior",
+				"id" : "negative_biased_negative_clampers_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Negative Biased Positive Clampers Behavior",
+				"id" : "negative_biased_positive_clampers_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Negative Clampers Behavior",
+				"id" : "negative_clampers_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Positive Biased Negative Clampers Behavior",
+				"id" : "positive_biased_negative_clampers_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Positive Biased Positive Clampers Behavior",
+				"id" : "positive_biased_positive_clampers_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Positive Clampers Behavior",
+				"id" : "positive_clampers_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Alternating Current Behavior",
+				"id" : "alternating_current_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Diode Behavior-Avalanche",
+				"id" : "diode_behavior-avalanche",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Diode Behavior-Forward",
+				"id" : "diode_behavior-forward",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Diode Behavior-Reverse",
+				"id" : "diode_behavior-reverse",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Diode Physics",
+				"id" : "diode_physics",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "LC Input Filter Behavior",
+				"id" : "lc_input_filter_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "LC Choke Input Filter Behavior",
+				"id" : "lc_choke_input_filter_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "RC Input Filter Behavior",
+				"id" : "rc_input_filter_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Generator Behavior",
+				"id" : "generator_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Inductor Behavior",
+				"id" : "inductor_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Parallel Negative Limiter Behavior",
+				"id" : "parallel_negative_limiter_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Parallel Negative Limiter with Negative Bias Behavior",
+				"id" : "parallel_negative_limiter_with_negative_bias_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Parallel Negative Limiter with Positive Bias Behavior",
+				"id" : "parallel_negative_limiter_with_positive_bias_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Parallel Positive Limiter Behavior",
+				"id" : "parallel_positive_limiter_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Parallel Positive Limiter with Bias Behavior",
+				"id" : "parallel_positive_limiter_with_bias_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Parallel Positive Limiter with Negative Bias Behavior",
+				"id" : "parallel_positive_limiter_with_negative_bias_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Parallel Positive Limiter with Positive Bias Behavior",
+				"id" : "parallel_positive_limiter_with_positive_bias_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Series Negative Limiter Behavior",
+				"id" : "series_negative_limiter_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Series Negative Limiter with Negative Bias Behavior",
+				"id" : "series_negative_limiter_with_negative_bias_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Series Negative Limiter with Positive Bias Behavior",
+				"id" : "series_negative_limiter_with_positive_bias_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Series Positive Limiter Behavior",
+				"id" : "series_positive_limiter_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Series Positive Limiter with Negative Bias Behavior",
+				"id" : "series_positive_limiter_with_negative_bias_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Series Positive Limiter with Positive Bias Behavior",
+				"id" : "series_positive_limiter_with_positive_bias_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Bridge Rectifier Behavior",
+				"id" : "bridge_rectifier_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Bridge Rectifier with Capacitor Behavior",
+				"id" : "bridge_rectifier_with_capacitor_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Full Wave Rectifier Behavior",
+				"id" : "full_wave_rectifier_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Full Wave Rectifier with Zener Behavior",
+				"id" : "full_wave_rectifier_with_zener_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Half Wave Rectifier Behavior",
+				"id" : "half_wave_rectifier_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Negative Half Wave Rectifier Behavior",
+				"id" : "negative_half_wave_rectifier_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Positive Half Wave Rectifier Behavior",
+				"id" : "positive_half_wave_rectifier_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Rectifier Behavior",
+				"id" : "rectifier_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Zener Voltage Regulator Behavior",
+				"id" : "zener_voltage_regulator_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Resistor Behavior",
+				"id" : "resistor_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Full Wave Voltage Doubler Behavior",
+				"id" : "full_wave_voltage_doubler_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Half Wave Voltage Doubler Behavior",
+				"id" : "half_wave_voltage_doubler_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Voltage Regulator Behavior",
+				"id" : "voltage_regulator_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Voltage Regulator Function",
+				"id" : "voltage_regulator_function",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Zener Diode Behavior",
+				"id" : "zener_diode_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Zener Diode Behavior-Reverse",
+				"id" : "zener_diode_behavior-reverse",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Zener Diode Behavior-Avalanche",
+				"id" : "zener_diode_behavior-avalanche",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Zener Diode Function",
+				"id" : "zener_diode_function",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Zener Diode Parameters",
+				"id" : "zener_diode_parameters",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Zener Diode Physics",
+				"id" : "zener_diode_physics",
+				"template" : "",
+				"example" : ""
+			}
+		]
+	},
+	{
 		"schemaClass" : "Generic models of dynamic systems",
 		"subClasses": [
 			{
@@ -44,19 +355,19 @@
 		"schemaClass" : "Electronic Schemas",
 		"subClasses": [
 			{
-				"name" : "Ohms law",
+				"name" : "Ohm's Law: Voltage",
 				"id" : "ohms_law",
 				"template" : "Current flowing through a a load is directly proportional to voltage across it and inversely proportional to the resistance of the load.",
 				"example" : "Find the current running through a load when voltage difference provided by the source is 5V and resistance of the load is 1000 ohms."
 			},
 			{
-				"name" : "Kirchoff's current law",
+				"name" : "Kirchoff's Current Law",
 				"id" : "kirchoff_current_law",
 				"template" : "At a junction in the circuit the sum of all the currents is zero, where current flowing into the node are taken as negative and flowing away are taken as positive.",
 				"example" : "There is a 10 mA current flowing into node A. The junction divides into two paths. If current flowing through one of them is 2mA, then how much current is flowing in the other path?"
 			},
 			{
-				"name" : "Kirchoff's voltage law",
+				"name" : "Kirchoff's Voltage Law",
 				"id" : "kirchoff_voltage_law",
 				"template" : "Voltage change in a complete closed loop is 0.",
 				"example" : "Find the current flowing through two loads in parallel when they are connected to a source of 10V?"

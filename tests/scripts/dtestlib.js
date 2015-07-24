@@ -216,6 +216,14 @@ exports.openProblem = function(client,parameters){
     var mode = "&m=" + (paramMap["mode"]);
     var section = "&s=" + (paramMap["section"] || "autotest");
     var nodeEditorMode = "&is=" + (paramMap["submode"] ||  "algebraic");
+    var activity; 
+    if (paramMap["activity"] === undefined){
+        activity = "&a=construction";
+    } else if (paramMap["activity"]){
+        activity = "&a=" + paramMap["activity"];
+    } else {
+        activity = ""
+    }
 
     // optional parts
 
@@ -234,7 +242,7 @@ exports.openProblem = function(client,parameters){
     }
     // possible TODO: allow power user mode.
 
-    var url = urlRoot + '?' + user + section + problem + mode + nodeEditorMode + group + logging +
+    var url = urlRoot + '?' + user + section + problem + mode + nodeEditorMode + group + logging + activity +
               "&c=Continue";
 
     if(await(client.session(defer())) === undefined){
@@ -275,6 +283,10 @@ exports.changeClient = function (client, newClient)
     console.log(url.value);
     client.end();
     await(newClient.init().url(url.value, defer()));
+}
+
+exports.newWindow = function(client){
+    await(client.newWindow("about:blank","","",defer()));
 }
 
 exports.getCurrentTabId = function(client){

@@ -22,12 +22,6 @@
 	    "In this exercise, you will construct a model of rabbit population growth. The first quantity in this model is the population or number of rabbits in the population. Initially, there are 24 rabbits, but the number increases with time. The new population each year is its present value plus the net growth (number of rabbits born minus deaths). The net growth is equal to the product of the population and the growth rate. The growth rate has a fixed value of 0.3 per year."
 	],
 		"lessonsLearned" : ["Simple introductory mathematics. Idea of functions, accumulators and parameters. This is simple model which brush ups your elementary mathetics."],
-		"increment": [
-			{
-				"tweakedNode" : "id3",
-				"tweakDirection": "Increase"
-			}
-		],
         "givenModelNodes": [
             {
                 "ID": "id1",
@@ -35,19 +29,16 @@
                 "type": "accumulator",
                 "parentNode": true,
                 "order": 1,
-                "units": "rabbits",
                 "inputs": [{"ID": "id2"}],
                 "initial": 24,
                 "equation": "id2",
                 "description": "The number of rabbits in the population",
-                "explanation":"",
                 "attemptCount": {
                     "description": 0,
                     "type": 0,
                     "initial": 0,
                     "units": 0,
-                    "equation": 0,
-                    "tweakDirection":0
+                    "equation": 0
                 },
                 "status": {}
             },
@@ -57,19 +48,16 @@
                 "type": "function",
                 "parentNode": false,
                 "order": 2,
-                "units": "rabbits/year",
                 "inputs": [{"ID": "id1"}, {"ID": "id3"}],
                 "initial": null,
                 "equation": "id1 * id3",
                 "description": "The number of additional rabbits each year",
-                "explanation":"",
                 "attemptCount": {
                     "description": 0,
                     "type": 0,
                     "initial": 0,
                     "units": 0,
-                    "equation": 0,
-                    "tweakDirection":0
+                    "equation": 0
                 },
                 "status": {}
             },
@@ -79,18 +67,15 @@
                 "type": "parameter",
                 "parentNode": false,
                 "order": 3,
-                "units": "1/year",
                 "inputs": [],
                 "initial": 0.3,
                 "description": "The number of additional rabbits per year per rabbit",
-                "explanation":"",
                 "attemptCount": {
                     "description": 0,
                     "type": 0,
                     "initial": 0,
                     "units": 0,
-                    "equation": 0,
-                    "tweakDirection":0
+                    "equation": 0
                 },
                 "status": {}
             },
@@ -100,18 +85,15 @@
                 "genus": "extra",
                 "type": "parameter",
                 "parentNode": true,
-                "units": "rabbits",
                 "inputs": [],
                 "initial": 120,
                 "description": "The number of rabbits in the population during the second year",
-                "explanation":"",
                 "attemptCount": {
                     "description": 0,
                     "type": 0,
                     "initial": 0,
                     "units": 0,
-                    "equation": 0,
-                    "tweakDirection":0
+                    "equation": 0
                 },
                 "status": {}
             },
@@ -119,8 +101,6 @@
                 "ID": "id8",
                 "name": "birth rate",
                 "description": "The number of rabbits born per year per rabbit",
-                "explanation":"",
-                "units": "1/year",
                 "genus": "irrelevant",
                 "attemptCount": {
                     "description": 0,
@@ -128,8 +108,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 0,
-                    "tweakDirection":0
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "inputs":[]
@@ -139,8 +118,6 @@
                 "ID": "id9",
                 "name": "death rate",
                 "description": "The number of rabbits that die per year per rabbit",
-                "explanation":"",
-                "units": "1/year",
                 "genus": "irrelevant",
                 "attemptCount": {
                     "description": 0,
@@ -148,8 +125,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 0,
-                    "tweakDirection":0
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "inputs":[]
