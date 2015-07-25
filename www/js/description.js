@@ -157,11 +157,23 @@ define([
                         domStyle.set(errorDialogSpan,"display","");
                         return;
                     }*/
+                    debugger;
                     domStyle.set(errorDialogSpan,"display","none");
                     var tin = dom.byId("authorSetDescription").value;
                     var ll = dom.byId("authorSetLessonsLearned").value;
-                    myThis.givenModel.setTaskDescription(tin.split("\n"));
-                    myThis.givenModel.setTaskLessonsLearned(ll.split("\n"));
+                    var tin_sanitize = tin.split("\n");
+                    var ll_sanitize = ll.split("\n");
+                    // sanitize by removing trailing null values
+                    var flag = false;
+                    tin_sanitize = tin_sanitize.reverse().filter(function(ele, idx, array){
+                        if(flag || ele.length > 0) return flag = true;
+                    });
+                    flag = false;
+                    ll_sanitize = ll_sanitize.reverse().filter(function(ele, idx, array){
+                        if(flag || ele.length > 0) return flag = true;
+                    });
+                    myThis.givenModel.setTaskDescription(tin_sanitize);
+                    myThis.givenModel.setTaskLessonsLearned(ll_sanitize);
                     myThis.timeObj.units = dom.byId("authorSetTimeStepUnits").value;
                     myThis.timeObj.integrationMethod = dom.byId("authorSetIntegrationMethod").value;
                     console.log("integration value" + dom.byId("authorSetIntegrationMethod").value);
@@ -256,6 +268,7 @@ define([
         },
 
         showDescription: function(){
+            
             var canvas = dom.byId('myCanvas');
             var context = canvas.getContext('2d');
             context.clearRect(0,0,canvas.width, canvas.height);
@@ -298,27 +311,32 @@ define([
             var height = null;
             var width = null;
             if(url){
+               
+
+  
+                // Can't compute layout unless image is downloaded
+                // The model can also provide dimensions.  If it does, then
+                // we can layout the text immediately
+                imageObj.onload = function(){
+                    console.log("Image width is " + imageObj.width);
+                    // Rescale image size, while maintaining aspect ratio,
+                    // assuming we want max width 300
+                   
+                    var scalingFactor = imageObj.width > 300 ? 300 / imageObj.width : 1.0;
+                    console.log('Computing scaling factor for image ' + scalingFactor);
+                    imageHeight = imageObj.height * scalingFactor;
+                    context.drawImage(imageObj, imageLeft, imageTop, imageObj.width * scalingFactor, imageHeight);                   
+                    context.fillStyle = "#000";
+                    showText();
+                };
                 imageObj.onerror = function() {
                     context.font = "normal 20px 'Lucida Grande, sans-serif'";
                     context.fillStyle= "#1f96db";
                     context.fillText("Image not found", imageLeft, imageTop);
                     showText();
                 };
-
                 imageObj.src = url;
-                // Can't compute layout unless image is downloaded
-                // The model can also provide dimensions.  If it does, then
-                // we can layout the text immediately
-                imageObj.onload = function(){
-                console.log("Image width is " + imageObj.width);
-                    // Rescale image size, while maintaining aspect ratio,
-                    // assuming we want max width 300
-                    var scalingFactor = imageObj.width > 300 ? 300 / imageObj.width : 1.0;
-                    console.log('Computing scaling factor for image ' + scalingFactor);
-                    imageHeight = imageObj.height * scalingFactor;
-                    context.drawImage(imageObj, imageLeft, imageTop, imageObj.width * scalingFactor, imageHeight);
-                    showText();
-                };
+               
             }else{
                 showText();
             }
