@@ -11,15 +11,15 @@
         "properties": {},
         "increment": [
             {
-                "tweakedNode" : "id20",
+                "tweakedNode": "id20",
                 "tweakDirection": "Increase"
             }
         ],
         "image": {
-            "URL": "http:\/\/s16.postimg.org\/w6kp6dof9\/znr.png"
+            "URL": "http:\/\/i.imgur.com\/oBF2hBY.png?1"
         },
         "taskDescription": [
-            "Create a model for the zener diode voltage regulator shown here.  The power supply is 20 volts.  Assume a 13-volt diode and a 180 ohm resistor.  Graph the resistance of the zener.  The nodes for the power supply and the resistor's resistance are given to you.",
+            "Create a model for the zener diode voltage regulator shown here.  The power supply is 20 volts.  Assume a 13-volt diode. The resistance of resistor R1 is 180 ohms and the resistance of the load resistor(LOAD R) is 100 ohms. Graph the resistance of the zener.  The nodes for the power supply and the resistor's resistance are given to you.",
             "",
             "",
             "",
@@ -30,8 +30,8 @@
                 "ID": "id1",
                 "inputs": [],
                 "position": {
-                    "x": 971.33093261719,
-                    "y": 67.330947875977
+                    "x": 983.33093261719,
+                    "y": 53.330951690674
                 },
                 "attemptCount": {
                     "description": 0,
@@ -39,7 +39,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-					"tweakDirection": 0,
+                    "tweakDirection": 0,
                     "assistanceScore": 0
                 },
                 "status": {},
@@ -69,39 +69,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-					"tweakDirection": 0,
-                    "assistanceScore": 0
-                },
-                "status": {},
-                "name": "Current thru Zener",
-                "description": "Current through the Zener diode",
-                "type": "function",
-                "units": "amps",
-                "equation": "id3"
-            },
-            {
-                "ID": "id3",
-                "inputs": [
-                    {
-                        "ID": "id5",
-                        "label": ""
-                    },
-                    {
-                        "ID": "id6",
-                        "label": "\/"
-                    }
-                ],
-                "position": {
-                    "x": 728,
-                    "y": 272
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-					"tweakDirection": 0,
+                    "tweakDirection": 0,
                     "assistanceScore": 0
                 },
                 "status": {
@@ -130,6 +98,69 @@
                     },
                     "inputs": {
                         "disabled": false
+                    }
+                },
+                "name": "Current thru Zener",
+                "description": "Current through the Zener diode",
+                "type": "function",
+                "units": "amps",
+                "equation": "id3",
+                "genus": "required"
+            },
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id5",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id6",
+                        "label": "\/"
+                    }
+                ],
+                "position": {
+                    "x": 724,
+                    "y": 286
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakDirection": 0,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "kind": {
+                        "status": "entered"
                     }
                 },
                 "name": "Current thru R1",
@@ -161,16 +192,44 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-					"tweakDirection": 0,
+                    "tweakDirection": 0,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                },
                 "name": "R of Zener",
                 "description": "Resistance of the Zener diode",
                 "type": "function",
                 "units": "ohms",
                 "parentNode": true,
-                "equation": "id1\/id2"
+                "equation": "id1\/id2",
+                "genus": "required"
             },
             {
                 "ID": "id5",
@@ -194,19 +253,46 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-					"tweakDirection": 0,
+                    "tweakDirection": 0,
                     "assistanceScore": 0
                 },
                 "status": {
                     "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "root": {
                         "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "kind": {
+                        "status": "entered"
                     }
                 },
                 "name": "V across R1",
                 "description": "Voltage drop across resistor R1",
                 "type": "function",
                 "units": "volts",
-                "equation": "id20-id1"
+                "equation": "id20-id1",
+                "genus": "required"
             },
             {
                 "ID": "id6",
@@ -221,7 +307,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-					"tweakDirection": 0,
+                    "tweakDirection": 0,
                     "assistanceScore": 1
                 },
                 "status": {},
@@ -246,7 +332,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-					"tweakDirection": 0,
+                    "tweakDirection": 0,
                     "assistanceScore": 1
                 },
                 "status": {},
@@ -257,6 +343,179 @@
                 "parentNode": false,
                 "initial": 20,
                 "units": "volts"
+            },
+            {
+                "ID": "id25",
+                "inputs": [],
+                "position": {
+                    "x": 1161.3309326172,
+                    "y": 55.330951690674
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "R of Load R",
+                "description": "Resistance of load resistor R",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 100,
+                "units": "ohms",
+                "genus": "required"
+            },
+            {
+                "ID": "id26",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 1062,
+                    "y": 198
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    }
+                },
+                "name": "V across Load R",
+                "description": "Voltage drop across the load resistor",
+                "type": "function",
+                "units": "volts",
+                "equation": "id1",
+                "genus": "required"
+            },
+            {
+                "ID": "id27",
+                "inputs": [
+                    {
+                        "ID": "id26",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id25",
+                        "label": "\/"
+                    }
+                ],
+                "position": {
+                    "x": 1164,
+                    "y": 284
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    }
+                },
+                "name": "Current thru Load R",
+                "description": "Current through the load resistance",
+                "type": "function",
+                "units": "amps",
+                "equation": "id26\/id25",
+                "genus": "required"
             }
         ],
         "studentModelNodes": [
@@ -323,7 +582,7 @@
         ],
         "schemas": [
             {
-                "ID": "schema5",
+                "ID": "schema13",
                 "schemaClass": "resistor_behavior",
                 "name": "Resistor Behavior",
                 "competence": {
@@ -332,16 +591,16 @@
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id6, id5, id3",
+                "nodes": "id6, id25",
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,
-                    "cues": 0,
-                    "phrases": 0
+                    "cues": 1,
+                    "phrases": 1
                 }
             },
             {
-                "ID": "schema9",
+                "ID": "schema14",
                 "schemaClass": "zener_diode_behavior-avalanche",
                 "name": "Zener Diode Behavior-Avalanche",
                 "competence": {
@@ -350,16 +609,16 @@
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id1, id4, id2",
+                "nodes": "id1",
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,
-                    "cues": 0,
-                    "phrases": 0
+                    "cues": 1,
+                    "phrases": 1
                 }
             },
             {
-                "ID": "schema10",
+                "ID": "schema15",
                 "schemaClass": "zener_voltage_regulator_behavior",
                 "name": "Zener Voltage Regulator Behavior",
                 "competence": {
@@ -368,12 +627,30 @@
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id1, id2, id3, id4, id5, id6, id20",
+                "nodes": "id1, id2, id3, id4, id5, id6, id20, id25, id26, id27",
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,
-                    "cues": 0,
-                    "phrases": 0
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema16",
+                "schemaClass": "kirchoff_voltage_law",
+                "name": "Kirchoff's Voltage Law",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id5, id1, id20",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
                 }
             }
         ]
