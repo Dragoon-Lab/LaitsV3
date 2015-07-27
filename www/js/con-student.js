@@ -441,6 +441,11 @@ define(["dojo/aspect",
 			var incButtons = ["Increase", "Decrease", "Stays-Same", "Unknown"];
 			this._incrementalPopup = registry.byId("incrementalPopup");
 			this._incrementalPopup.onShow = function(){
+				this.logging.log('ui-action', {
+					type: "open-tweak-popup",
+					node: that._model.active.getName(that.currentID),
+					nodeID: that.currentID
+				});
 				focusUtil.focus(dom.byId("IncreaseButton"));
 				incButtons.forEach(function (item) {
 					var btn = registry.byId(item + "Button");
@@ -464,6 +469,12 @@ define(["dojo/aspect",
 			var showEquationButton = registry.byId("EquationButton");
 
 			on(showEquationButton,"click", function(){
+				this.logging.log('ui-action', {
+					type: "open-tweak-equation",
+					node: that._model.active.getName(that.currentID),
+					nodeID: that.currentID,
+				});
+
 				that.closeIncrementalPopup();
 				var type = that._model.active.getType(that.currentID);
 				var equationMessage = "";
@@ -487,6 +498,11 @@ define(["dojo/aspect",
 		},
 
 		closeIncrementalPopup: function(nodeID){
+			this.logging.log('ui-action', {
+				type: "close-tweak-popup",
+				node: that._model.active.getName(that.currentID),
+				nodeID: that.currentID
+			});
 			popup.close(this._incrementalPopup);
 			var incButtons = ["Increase", "Decrease", "Stays-Same", "Unknown"];
 			incButtons.forEach(lang.hitch(this, function (item) {
