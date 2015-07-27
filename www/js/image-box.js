@@ -43,13 +43,16 @@ define([
 		if(url) {
 			this.url = url;			
 			var img = new Image();
+			var context = this;
+			img.onload = function(){
+				var scalingFactor = img.width > 300 ? 300 / img.width : 1.0;
+				img.height = img.height * scalingFactor;
+				img.width = img.width * scalingFactor;	
+				context.imageNode = img;			
+			}
 			img.src = this.url;
-		
-			var scalingFactor = img.width > 300 ? 300 / img.width : 1.0;
-			img.height = img.height * scalingFactor;
-			img.width = img.width * scalingFactor;
-		
-			this.imageNode = img;	
+						
+				
 		}
 	
 		// declare state variables
@@ -99,28 +102,22 @@ define([
 		})
 	}
 	ImageControl.prototype.initMarkImageDialog = function(controllerObj){
-		// imageNode is not yet set and image is added to the model
-		if(!this.url) {
-			this.url = this.model.getImageURL();			
-			var img = new Image();
-			img.src = this.url;
-			var scalingFactor = img.width > 300 ? 300 / img.width : 1.0;
-			img.height = img.height * scalingFactor;
-			img.width = img.width * scalingFactor;
-			this.imageNode = img;	
-		}
-		this.controller = controllerObj;
-		this.ctx = document.getElementById(this.imageId).getContext("2d");
+		// this function is called every time author click on Image Highlighting
+		
+		
 		var c = this; 
+		var canvasEle = document.getElementById(c.imageId);
+		
+		c.controller = controllerObj;
+		//updating the size of the canvas with respect to dimensions of image		
+		canvasEle.width = c.imageNode.width;
+		canvasEle.height = c.imageNode.height;
+		c.ctx = canvasEle.getContext("2d");
+		
 		//adding image to the canvas
-		this.imageNode.onload = function(){
-			console.log("ImageBox.image loaded");
-			var node = document.getElementById(c.imageId);
-			node.width = c.imageNode.width; node.height = c.imageNode.height;
-		}
 		registry.byId('markImageClear').set('disabled', true);
 		setTimeout(function(){		
-			c.ctx.drawImage(c.imageNode, 0,0);	
+			c.ctx.drawImage(c.imageNode, 0,0, c.imageNode.width, c.imageNode.height);	
 		}, 0)
 
 		
@@ -301,6 +298,25 @@ define([
 		if(!selected) return;
 		console.log(selected, "removed");
 		registry.byId('savedMark').removeOption(selected);
+		
+	}
+	ImageControl.prototype.updateImage = function(url){
+		
+		var context = this;
+		context.url = null;
+		context.imageNode = null;
+				
+		var img = new Image();
+		img.onload = function(){
+		
+			var scalingFactor = img.width > 300 ? 300 / img.width : 1.0;
+			img.height = img.height * scalingFactor;
+			img.width = img.width * scalingFactor;			
+			context.imageNode = img;	
+			context.url = url;
+		}
+		img.src = url;
+		
 		
 	}
 

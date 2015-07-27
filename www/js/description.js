@@ -157,7 +157,7 @@ define([
                         domStyle.set(errorDialogSpan,"display","");
                         return;
                     }*/
-                    debugger;
+         
                     domStyle.set(errorDialogSpan,"display","none");
                     var tin = dom.byId("authorSetDescription").value;
                     var ll = dom.byId("authorSetLessonsLearned").value;
@@ -172,8 +172,9 @@ define([
                     ll_sanitize = ll_sanitize.reverse().filter(function(ele, idx, array){
                         if(flag || ele.length > 0) return flag = true;
                     });
-                    myThis.givenModel.setTaskDescription(tin_sanitize);
-                    myThis.givenModel.setTaskLessonsLearned(ll_sanitize);
+                 
+                    myThis.givenModel.setTaskDescription(tin_sanitize.reverse());
+                    myThis.givenModel.setTaskLessonsLearned(ll_sanitize.reverse());
                     myThis.timeObj.units = dom.byId("authorSetTimeStepUnits").value;
                     myThis.timeObj.integrationMethod = dom.byId("authorSetIntegrationMethod").value;
                     console.log("integration value" + dom.byId("authorSetIntegrationMethod").value);
@@ -268,7 +269,7 @@ define([
         },
 
         showDescription: function(){
-            
+           
             var canvas = dom.byId('myCanvas');
             var context = canvas.getContext('2d');
             context.clearRect(0,0,canvas.width, canvas.height);
@@ -299,6 +300,7 @@ define([
             // Layout text
             // This routine should go in wrapText.js
             var showText = function(){
+              
                 var marginTop = Math.max(gapTextImage + imageHeight + imageTop, textTop);
 
                 // Set font for description text
@@ -338,6 +340,7 @@ define([
                 imageObj.src = url;
                
             }else{
+                context.fillStyle = "#000";
                 showText();
             }
         }
