@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS `session`;
 CREATE TABLE `session` (
   `session_id` varchar(50) NOT NULL,
   `mode` varchar(20) NOT NULL,
-  `user` varchar(30) NOT NULL,
+  `user` varchar(100) NOT NULL,
   `section` varchar(30) NOT NULL,
   `problem` varchar(50) DEFAULT NULL,
   `group` varchar(30) DEFAULT NULL,
