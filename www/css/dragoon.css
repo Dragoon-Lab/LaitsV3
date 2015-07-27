@@ -417,3 +417,14 @@ span.slip{
 #incrementalPopup span.dijitReset.dijitInline.dijitButtonNode{
   width:120px;
 }
+
+#viewAllSchemaDialog .schemaItem{
+    width:274px;
+    padding:5px;
+    border-bottom:1px solid #CACACA;
+}
+
+#viewAllSchemaDialog .schemaName{
+    display:inline-block;
+    width:200px;
+}
