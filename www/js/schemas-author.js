@@ -434,6 +434,7 @@ define([
 			var deleteAllSchemaButton = dom.byId("deleteAllSchemaButton");
 			on(deleteAllSchemaButton, 'click', lang.hitch(this, function(){
 				this._model.given.setSchemas([]);
+				this._session.saveProblem(this._model.model);
 				schemaDialog.hide();
 			}));
 
