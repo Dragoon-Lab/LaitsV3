@@ -154,6 +154,11 @@ define([
 			on(resetButtonWidget, "click", lang.hitch(this, function(){
 				this.resetSchema.apply(this, arguments);
 			}));
+
+			var viewSchemaButton = dom.byId("showAllSchemas");
+			on(viewSchemaButton, "click", lang.hitch(this, function(){
+				this.initViewSchemasDialog();
+			}));
 		},
 
 		initNodesHandler: function(){
@@ -230,20 +235,22 @@ define([
 			dom.byId("errorBox").innerHTML = message;
 		},
 
-		saveSchema: function(){			
-			this._model.given.saveSchema(this.currentSchema);
-			if(this.currentNodes){
-				this._model.given.setSchemaNodes(this.currentSchema.ID, this.currentNodes);
+		saveSchema: function(){
+			if(this.currentSchema.name != "") {
+				this._model.given.saveSchema(this.currentSchema);
+				if (this.currentNodes) {
+					this._model.given.setSchemaNodes(this.currentSchema.ID, this.currentNodes);
+				}
 			}
-			
 			this._session.saveProblem(this._model.model);
 			this.nodesCount = 0;
 			//close factor window
-			if(this.showFactor){
+			if (this.showFactor) {
 				registry.byId("schemaFactorBox").hide();
 			} else {
 				registry.byId("schemaAuthorBox").hide();
 			}
+
 		},
 
 		resetSchema: function(){
@@ -390,6 +397,59 @@ define([
 			domConstruct.place(guessTextBox.domNode, idString);
 
 			this.initFactorsHandler(idString);
+		},
+
+		initViewSchemasDialog: function() {
+			var schemaDialog = registry.byId("viewAllSchemaDialog");
+			var content = "";
+			var schemas = this._model.given.getSchemas().slice(0);
+			//Generate Rows for each schema.
+			array.forEach(schemas, function (schema) {
+				content += "<div id='row-" + schema.ID + "' class ='schemaItem'> <span class='schemaName'>" + schema.name + "</span> <button id='Delete" + schema.ID + "Button' data-dojo-type='dijit/form/Button'>Delete</button></div>";
+			});
+
+			if (content == "") {
+				content += "No schemas added.";
+			}
+			else{
+				content += "<div style='height: 20px; margin:10px;' id='EditSchemaButtons'><div style='float:right;'><button id='deleteAllSchemaButton' data-dojo-type='dijit/form/Button' >Delete All</button><button id='saveEditSchemaButton' data-dojo-type='dijit/form/Button' >Save</button><button id='cancelEditSchemaButton' data-dojo-type='dijit/form/Button' >Cancel</button></div></div>";
+			}
+			//Add content and show dialog.
+			schemaDialog.set("content", content);
+			schemaDialog.show();
+
+			//Add event handlers for delete buttons
+			array.forEach(schemas, lang.hitch(this, function(schema){
+				var button = dom.byId("Delete"+ schema.ID +"Button");
+				on(button, 'click', lang.hitch(this, function(){
+					dojo.destroy("row-"+schema.ID);
+					array.forEach(schemas, lang.hitch(this, function(s, index){
+						if(s && s.ID == schema.ID){
+							schemas.splice(index, 1);
+						}
+					}));
+				}));
+			}));
+
+			var deleteAllSchemaButton = dom.byId("deleteAllSchemaButton");
+			on(deleteAllSchemaButton, 'click', lang.hitch(this, function(){
+				this._model.given.setSchemas([]);
+				schemaDialog.hide();
+			}));
+
+			//Event Handler for Save
+			var saveEditSchema = dom.byId("saveEditSchemaButton");
+			on(saveEditSchema, 'click', lang.hitch(this, function(){
+				this._model.given.setSchemas(schemas);
+				this._session.saveProblem(this._model.model);
+				schemaDialog.hide();
+			}));
+
+			//Event Handler for cancel
+			var cancelEditSchemas = dom.byId("cancelEditSchemaButton");
+			on(cancelEditSchemas, 'click', function(){
+				schemaDialog.hide();
+			});
 		}
 	});
 });
