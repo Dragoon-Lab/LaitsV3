@@ -129,28 +129,28 @@ Student closes node editor:
 -- message: `{"time": 61.6, "type": "close-dialog-box",
   "nodeID": "id10", "nodeComplete": true, "node": "fat content"}`  
 
-#### Incremental activity logs:
-Student opens activity popup
--- method: `ui-action`
+#### Incremental activity logs
+Student opens activity popup   
+-- method: `ui-action`  
 -- message: `{"time":2.255,"type":"open-tweak-popup","node":"net growth","nodeID":"id11"}`
 
-Student closes activity popup
--- method: `ui-action`
+Student closes activity popup.  
+-- method: `ui-action`  
 -- message: `{"time":6.503,"type":"close-tweak-popup","node":"net growth","nodeID":"id11"}`
 
-Student opens the equation box from the popup
--- method: `ui-action`
+Student opens the equation box from the popup  
+-- method: `ui-action`  
 -- message `{"time":6.501,"type":"open-tweak-equation","node":"net growth","nodeID":"id11"}`
 
-Close equation box
--- method `ui-action`
+Close equation box  
+-- method `ui-action`  
 -- message `{"time":8.382,"type":"close-tweak-equation", "node": "net growth"}`
 
 The student answers will be handled as it is handled for other node related solution step
 
 #### Author mode
-Node creation - giving values to various properties during construction step
--- method: `solution-step`
+Node creation - giving values to various properties during construction step  
+-- method: `solution-step`  
 -- message: `{"time":1233.535,"type":"solution-enter","nodeID":"id1",
    "propoerty":"name","node":"V across C","value":"V across C","error":false}`
 
@@ -159,8 +159,8 @@ and so on to explain the part that is being updated.
 
 ui-actions in author mode are same as that in student mode. There is a graph
 modification action which tells when an author changes parameter values using sliders.
-In that case log messages is:
--- method: `ui-action`
+In that case log messages is:  
+-- method: `ui-action`  
 -- message: `{"time":1915.861,"type":"solution-manipulation","name":"graph-tab"}`
 
 ### Node properties ###
