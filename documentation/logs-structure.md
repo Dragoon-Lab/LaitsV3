@@ -129,6 +129,40 @@ Student closes node editor:
 -- message: `{"time": 61.6, "type": "close-dialog-box",
   "nodeID": "id10", "nodeComplete": true, "node": "fat content"}`  
 
+#### Incremental activity logs:
+Student opens activity popup
+-- method: `ui-action`
+-- message: `{"time":2.255,"type":"open-tweak-popup","node":"net growth","nodeID":"id11"}`
+
+Student closes activity popup
+-- method: `ui-action`
+-- message: `{"time":6.503,"type":"close-tweak-popup","node":"net growth","nodeID":"id11"}`
+
+Student opens the equation box from the popup
+-- method: `ui-action`
+-- message `{"time":6.501,"type":"open-tweak-equation","node":"net growth","nodeID":"id11"}`
+
+Close equation box
+-- method `ui-action`
+-- message `{"time":8.382,"type":"close-tweak-equation", "node": "net growth"}`
+
+The student answers will be handled as it is handled for other node related solution step
+
+#### Author mode
+Node creation - giving values to various properties during construction step
+-- method: `solution-step`
+-- message: `{"time":1233.535,"type":"solution-enter","nodeID":"id1",
+   "propoerty":"name","node":"V across C","value":"V across C","error":false}`
+
+Here property can take the value like name, description, type, equation, initialValue 
+and so on to explain the part that is being updated.
+
+ui-actions in author mode are same as that in student mode. There is a graph
+modification action which tells when an author changes parameter values using sliders.
+In that case log messages is:
+-- method: `ui-action`
+-- message: `{"time":1915.861,"type":"solution-manipulation","name":"graph-tab"}`
+
 ### Node properties ###
 Following are the different properties in the node:
 
@@ -145,10 +179,6 @@ is assigned to the property associated with the later logging event.
 
 The check comes on its own after the answer is filled. So all the solutions will be logged under
 solution-step.
-
-** I don't like this!  **
-After two answers the demo answer is sent so a log with seek-help method will be
-logged with the information mentioned above.
 
 ### Window focus messages ###
 

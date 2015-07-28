@@ -171,8 +171,10 @@ define([
 			};
 			on(registry.byId("OkButton"), "click", function(){
 				if(crisis.title && crisis.title.indexOf("Equation for") >= 0){
+					var nodeName = crisis.title.replace("Equation for ", "");
 					that.logging.log('ui-action', {
-						type: "close-tweak-equation"
+						type: "close-tweak-equation", 
+						node: nodeName
 					});
 				}
 				crisis.hide();
