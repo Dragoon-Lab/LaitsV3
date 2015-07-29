@@ -158,9 +158,22 @@ define([
 				}	
 
 			}, this);
-			if(active == "solution")
+			
+			var calculateResult = true;
+			if(active == "solution"){
 				values = solutionVals;
-			var result = parse.evaluate(values, time, seed);
+				//checking explicitly if any node is coming out as undefined.
+				//for equation with if the equation was getting parsed correctly for wrong node IDs
+				for(var key in values){
+					if(typeof(values[key]) === "undefined"){
+						calculateResult = false;
+					}
+				}
+			}
+			var result = undefined;
+			if(calculateResult){
+				result = parse.evaluate(values, time, seed);
+			}
 			return result;
 		},
 		/*
