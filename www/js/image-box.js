@@ -40,14 +40,15 @@ define([
 		this.imageNode = null;
 		this.imageId = "markImageCanvas";
 		this.url = null;
+		this.scalingFactor = 1;
 		if(url) {
 			this.url = url;			
 			var img = new Image();
 			var context = this;
 			img.onload = function(){
-				var scalingFactor = img.width > 300 ? 300 / img.width : 1.0;
-				img.height = img.height * scalingFactor;
-				img.width = img.width * scalingFactor;	
+				context.scalingFactor = img.width > 300 ? 300 / img.width : 1.0;
+				img.height = img.height * context.scalingFactor;
+				img.width = img.width * context.scalingFactor;	
 				context.imageNode = img;			
 			}
 			img.src = this.url;
@@ -72,7 +73,9 @@ define([
 			context.ctx.fill();
 			mappings.every(function(ele, index, array){
 				var cords = ele.split(',');
-				context.ctx.drawImage(context.imageNode, parseInt(cords[0]), parseInt(cords[1]), parseInt(cords[2]), parseInt(cords[3]), parseInt(cords[0]) + context.canvasLeftOffset, parseInt(cords[1]) + context.canvasTopOffset, parseInt(cords[2]), parseInt(cords[3]));	
+				debugger;
+				var reverseScaling = 1 / context.scalingFactor;
+				context.ctx.drawImage(context.imageNode, parseInt(cords[0]) * reverseScaling, parseInt(cords[1]) * reverseScaling, parseInt(cords[2]) * reverseScaling, parseInt(cords[3]) * reverseScaling, parseInt(cords[0]) + context.canvasLeftOffset, parseInt(cords[1]) + context.canvasTopOffset, parseInt(cords[2]), parseInt(cords[3]));	
 				return true;
 			})	
 		}, 0);		
@@ -194,9 +197,9 @@ define([
 			this.url = this.model.getImageURL();			
 			var img = new Image();
 			img.src = this.url;
-			var scalingFactor = img.width > 300 ? 300 / img.width : 1.0;
-			img.height = img.height * scalingFactor;
-			img.width = img.width * scalingFactor;
+			this.scalingFactor = img.width > 300 ? 300 / img.width : 1.0;
+			img.height = img.height * this.scalingFactor;
+			img.width = img.width * this.scalingFactor;
 			this.imageNode = img;	
 		}
 		// set main image tainted with marks
@@ -309,9 +312,9 @@ define([
 		var img = new Image();
 		img.onload = function(){
 		
-			var scalingFactor = img.width > 300 ? 300 / img.width : 1.0;
-			img.height = img.height * scalingFactor;
-			img.width = img.width * scalingFactor;			
+			context.scalingFactor = img.width > 300 ? 300 / img.width : 1.0;
+			img.height = img.height * context.scalingFactor;
+			img.width = img.width * context.scalingFactor;			
 			context.imageNode = img;	
 			context.url = url;
 		}
