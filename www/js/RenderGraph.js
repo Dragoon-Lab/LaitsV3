@@ -676,22 +676,22 @@ define([
 							{
 								dom.byId("graphMessage" + id).innerHTML = "";
 								var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
-								var givenObj = this.getMinMaxFromArray(givenSolution.plotValues[k]);				
+								var givenObj = this.getMinMaxFromArray(givenSolution.plotValues[k]);
 								if(givenObj.min < obj.min){
 									obj.min = givenObj.min;
 								}
 								if(givenObj.max > obj.max){
 									obj.max = givenObj.max;
-							}
-							//Redraw y axis based on new min and max values
-							this.chart[id].addAxis("y", {
-									vertical: true,
-									fixed: false,
-									min: obj.min,
-									max: obj.max,									
-									labelFunc: this.formatAxes,
-									title: this.labelString(id)
-									});
+								}
+								//Redraw y axis based on new min and max values
+								this.chart[id].addAxis("y", {
+										vertical: true,
+										fixed: false,
+										min: obj.min,
+										max: obj.max,
+										labelFunc: this.formatAxes,
+										title: this.labelString(id)
+								});
 							}
 							if(this.isCorrect)
 							{
