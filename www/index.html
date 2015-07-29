@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Dragoon</title>
-
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <script type = "text/javascript" src = "version.js"></script>
     <script src="tincan/tincan-min.js"></script>
@@ -542,6 +542,7 @@
             <div id="nodesDropdown"></div> <!-- place holder for nodes dropdown -->
         </div>
         <div id="buttons">
+            <button id="showAllSchemas" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">View All Schemas</button>
             <button id="goToFactors" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Next</button>
             <button id="resetSchema" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Reset</button>
         </div>
@@ -571,7 +572,9 @@
         <button type="button" data-dojo-type="dijit/form/Button"  iconClass="fa inc-button" id="EquationButton"> Show Equation</button>
     </div>
     <!--end of Incremental popup-->
-
+    <div class="claro sameedit" id="viewAllSchemaDialog" data-dojo-type="dijit/Dialog" title="Edit Schemas" style="width:300px;">
+        Hello
+    </div>
 </div>  <!-- main -->
 
 <!-- import liviz -->

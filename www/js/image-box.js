@@ -40,16 +40,20 @@ define([
 		this.imageNode = null;
 		this.imageId = "markImageCanvas";
 		this.url = null;
+		this.scalingFactor = 1;
 		if(url) {
 			this.url = url;			
 			var img = new Image();
+			var context = this;
+			img.onload = function(){
+				context.scalingFactor = img.width > 300 ? 300 / img.width : 1.0;
+				img.height = img.height * context.scalingFactor;
+				img.width = img.width * context.scalingFactor;	
+				context.imageNode = img;			
+			}
 			img.src = this.url;
-		
-			var scalingFactor = img.width > 300 ? 300 / img.width : 1.0;
-			img.height = img.height * scalingFactor;
-			img.width = img.width * scalingFactor;
-		
-			this.imageNode = img;	
+						
+				
 		}
 	
 		// declare state variables
@@ -69,7 +73,9 @@ define([
 			context.ctx.fill();
 			mappings.every(function(ele, index, array){
 				var cords = ele.split(',');
-				context.ctx.drawImage(context.imageNode, parseInt(cords[0]), parseInt(cords[1]), parseInt(cords[2]), parseInt(cords[3]), parseInt(cords[0]) + context.canvasLeftOffset, parseInt(cords[1]) + context.canvasTopOffset, parseInt(cords[2]), parseInt(cords[3]));	
+				debugger;
+				var reverseScaling = 1 / context.scalingFactor;
+				context.ctx.drawImage(context.imageNode, parseInt(cords[0]) * reverseScaling, parseInt(cords[1]) * reverseScaling, parseInt(cords[2]) * reverseScaling, parseInt(cords[3]) * reverseScaling, parseInt(cords[0]) + context.canvasLeftOffset, parseInt(cords[1]) + context.canvasTopOffset, parseInt(cords[2]), parseInt(cords[3]));	
 				return true;
 			})	
 		}, 0);		
@@ -99,28 +105,22 @@ define([
 		})
 	}
 	ImageControl.prototype.initMarkImageDialog = function(controllerObj){
-		// imageNode is not yet set and image is added to the model
-		if(!this.url) {
-			this.url = this.model.getImageURL();			
-			var img = new Image();
-			img.src = this.url;
-			var scalingFactor = img.width > 300 ? 300 / img.width : 1.0;
-			img.height = img.height * scalingFactor;
-			img.width = img.width * scalingFactor;
-			this.imageNode = img;	
-		}
-		this.controller = controllerObj;
-		this.ctx = document.getElementById(this.imageId).getContext("2d");
+		// this function is called every time author click on Image Highlighting
+		
+		
 		var c = this; 
+		var canvasEle = document.getElementById(c.imageId);
+		
+		c.controller = controllerObj;
+		//updating the size of the canvas with respect to dimensions of image		
+		canvasEle.width = c.imageNode.width;
+		canvasEle.height = c.imageNode.height;
+		c.ctx = canvasEle.getContext("2d");
+		
 		//adding image to the canvas
-		this.imageNode.onload = function(){
-			console.log("ImageBox.image loaded");
-			var node = document.getElementById(c.imageId);
-			node.width = c.imageNode.width; node.height = c.imageNode.height;
-		}
 		registry.byId('markImageClear').set('disabled', true);
 		setTimeout(function(){		
-			c.ctx.drawImage(c.imageNode, 0,0);	
+			c.ctx.drawImage(c.imageNode, 0,0, c.imageNode.width, c.imageNode.height);	
 		}, 0)
 
 		
@@ -197,9 +197,9 @@ define([
 			this.url = this.model.getImageURL();			
 			var img = new Image();
 			img.src = this.url;
-			var scalingFactor = img.width > 300 ? 300 / img.width : 1.0;
-			img.height = img.height * scalingFactor;
-			img.width = img.width * scalingFactor;
+			this.scalingFactor = img.width > 300 ? 300 / img.width : 1.0;
+			img.height = img.height * this.scalingFactor;
+			img.width = img.width * this.scalingFactor;
 			this.imageNode = img;	
 		}
 		// set main image tainted with marks
@@ -301,6 +301,25 @@ define([
 		if(!selected) return;
 		console.log(selected, "removed");
 		registry.byId('savedMark').removeOption(selected);
+		
+	}
+	ImageControl.prototype.updateImage = function(url){
+		
+		var context = this;
+		context.url = null;
+		context.imageNode = null;
+				
+		var img = new Image();
+		img.onload = function(){
+		
+			context.scalingFactor = img.width > 300 ? 300 / img.width : 1.0;
+			img.height = img.height * context.scalingFactor;
+			img.width = img.width * context.scalingFactor;			
+			context.imageNode = img;	
+			context.url = url;
+		}
+		img.src = url;
+		
 		
 	}
 
