@@ -652,7 +652,7 @@ define([
 			if(name){
 				switch(type){
 					case "accumulator":
-						nodeName = 'new ' + name + ' = ' + 'old ' + name + ' +';
+						nodeName = 'new ' + name + ' = ' + 'current ' + name + ' +';
 						//Commenting out Change in Time label per Dr. Kurt
 						//tt = " * Change in Time";
 						break;
