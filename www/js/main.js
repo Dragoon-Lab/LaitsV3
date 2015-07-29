@@ -110,11 +110,7 @@ define([
 			}
 		}
 	}
-	
-	//due to a recent change of adding activities, a work around to add query.a in case its not given
-	if(!query.a){
-		query.a = "construction";
-	}
+
 	//Load Activity Parameters
 	//query.a gives the input activity through url
 	var activity_config;
@@ -290,11 +286,11 @@ define([
 
 		ready(function(){
 			var updateModel = new modelUpdates(givenModel, query.m, session);
-			if(activity_config.get("setTweakDirections") && !givenModel.given.validateTweakDirections()){
+			if(activity_config.get("setTweakDirections")){
 				updateModel.calculateTweakDirections();
 			}
 			
-			if(activity_config.get("initializeStudentModel") && !givenModel.isCompleteFlag && !givenModel.areRequiredNodesVisible()){
+			if(activity_config.get("initializeStudentModel") && !givenModel.isCompleteFlag){
 				console.log("student model being initialized");
 				updateModel.initializeStudentModel(activity_config.get("setStudentTweakDirection"));
 			}
@@ -385,10 +381,12 @@ define([
 					if(mover.mouseButton != 2) { //check if not right click
 						controllerObject.showNodeEditor(mover.node.id);
 					}
+			
 					if(givenModel.getImageURL())
 						registry.byId('imageButton').set('disabled', false);
 					else
 						registry.byId('imageButton').set('disabled', true);
+						
 				}else if(activity_config.get("showIncrementalEditor")){
 					controllerObject.showIncrementalEditor(mover.node.id);
 				}
@@ -544,9 +542,14 @@ define([
 
 				aspect.after(registry.byId('authorDescDialog'), "hide", function(){
 					console.log("Saving Description/Timestep edits");
+					
 					session.saveProblem(givenModel.model);
+				
+					if(iBoxController) iBoxController.updateImage(givenModel.getImageURL());
+					if(imgMarker) imgMarker.updateImage(givenModel.getImageURL());
 				});
 				on(registry.byId("descCloseButton"), "click", function(){
+					
 					registry.byId("authorDescDialog").hide();
 				});
 
@@ -631,7 +634,7 @@ define([
 					}else if(typeof groupName!=='undefined' && groupName==''){
 						alert('Missing Group Name');
 						return;
-					}else if(problemName && problemName.length > 0 && problemName.length<=50 && checkProblemName.test(problemName)){
+					}else if(problemName && problemName.length > 0 && problemName.length<=30 && checkProblemName.test(problemName)){
 						var checkHyphen = new RegExp('^[\-]+$');
 						if(!checkHyphen.test(problemName)){
 							if (groupName.split("(")[0]+"("=="Private("){
@@ -644,7 +647,7 @@ define([
 							return;
 						}
 					}else{
-						alert("Problem names must be between 1 and 50 characters, and may only include alphanumeric characters and the \"-\" symbol");
+						alert("Problem names must be between 1 and 30 characters, and may only include alphanumeric characters and the \"-\" symbol");
 						return;
 					}
 
@@ -766,7 +769,7 @@ define([
 
 				// Image Highlighting events
 				var imgMarker = new ImageBox(givenModel.getImageURL(), givenModel);
-				imgMarker.initMarkImageDialog(controllerObject);
+				
 
 				on(registry.byId('markImageAdd'), "click", function(event){
 					event.preventDefault();
@@ -792,8 +795,22 @@ define([
 				// code for image marker button
 				on(registry.byId("imageButton"), "click", function(event){
 					event.preventDefault();
+					// handling no image found error state
+					if(imgMarker.imageNode == null){
+						var errorDialog = new Dialog({
+							content : "No image found for highlighting!",
+							title : "Error",
+							hide: function(){
+								this.destroyRecursive();
+							}
+						});
+						errorDialog.show();
+						return;
+					}
+					
+					imgMarker.initMarkImageDialog(controllerObject);
 					// check if image is initialilzed in ImageBox, if it was not initialized before, initialize it nw
-					if(!imgMarker.url) imgMarker.initMarkImageDialog(controllerObject);
+					//if(!imgMarker.url) imgMarker.initMarkImageDialog(controllerObject);
 					//display the box
 					//if currentID present , update the savedmarks from the model
 					registry.byId('savedMark').getOptions().every(function(ele, idx, array){
