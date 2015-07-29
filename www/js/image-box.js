@@ -72,8 +72,7 @@ define([
 			context.ctx.fillRect(context.canvasLeftOffset,context.canvasTopOffset, context.imageNode.width, context.imageNode.height);
 			context.ctx.fill();
 			mappings.every(function(ele, index, array){
-				var cords = ele.split(',');
-				debugger;
+				var cords = ele.split(',');				
 				var reverseScaling = 1 / context.scalingFactor;
 				context.ctx.drawImage(context.imageNode, parseInt(cords[0]) * reverseScaling, parseInt(cords[1]) * reverseScaling, parseInt(cords[2]) * reverseScaling, parseInt(cords[3]) * reverseScaling, parseInt(cords[0]) + context.canvasLeftOffset, parseInt(cords[1]) + context.canvasTopOffset, parseInt(cords[2]), parseInt(cords[3]));	
 				return true;

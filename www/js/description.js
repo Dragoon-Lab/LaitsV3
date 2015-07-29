@@ -61,7 +61,6 @@ define([
             dom.byId("authorSetDescription").value = this.serialize(
                 givenModel.getTaskDescription() ? givenModel.getTaskDescription() : ""  
             );
-            debugger;
              // Populating parameter field
             var list=[]; //list of all required parameters[{label: "growth rate",value: "id3"},...]
             var opts=[];// populating field [{label: "growth rate",value: "id3"},...]
