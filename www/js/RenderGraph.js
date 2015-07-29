@@ -315,6 +315,7 @@ define([
 					charts[id].addAxis("y", {
 						vertical: true, // min: obj.min, max: obj.max,
 						title: this.labelString(id),
+						titleGap: 20,
 						min: obj.min,
 						max:obj.max,
 						labelFunc: this.formatAxes
@@ -404,10 +405,11 @@ define([
 							titleOrientation: "away", titleGap: 5
 							});
 
-						var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
+						var obj = this.getMinMaxFromArray(staticPlot.plotValues[k]);
 						chartsStatic[id].addAxis("y", {
 							vertical: true,
 							title: this.labelString(id),
+							titleGap: 20,
 							min: obj.min,
 							max:obj.max
 							});
@@ -487,6 +489,7 @@ define([
 								domAttr.remove("chartStatic" + id, "style");
 								domAttr.remove("legendStatic" + id, "style");
 							}else{
+								var obj = { display: "none" };
 								domAttr.set("chartStatic" + id, "style", obj);
 								domAttr.set("legendStatic" + id, "style", obj);
 								domAttr.remove("staticGraphMessage"+id, "style");
@@ -775,10 +778,11 @@ define([
 						if(inf) {
 							dom.byId("staticGraphMessage" + id).innerHTML = "The values you have chosen caused the graph to go infinite.";
 							domStyle.set("chartStatic"+id, "display", "none");
+							domStyle.set("legendStatic" + id, "display", "none");
+							domAttr.remove("staticGraphMessage"+id, "style");
 						}
 						else {
 							dom.byId("staticGraphMessage" + id).innerHTML = "";
-
 							// Calculate Min and Max values to plot on y axis based on given solution and your solution
 							var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
 							var givenObj = this.getMinMaxFromArray(givenSolution.plotValues[k]);
@@ -794,7 +798,8 @@ define([
 								fixed: false,
 								min: obj.min,
 								max: obj.max,
-								titleGap: 5,
+								titleGap: 20,
+								labelFunc: this.formatAxes,
 								title: this.labelString(id)
 							});
 
@@ -821,8 +826,10 @@ define([
 
 					array.forEach(this.active.plotVariables, function(id, k){
 						var inf = this.checkForInfinity(staticPlot.plotValues[k]);
-						if(inf)
+						if(inf) {
 							dom.byId("staticGraphMessage" + id).innerHTML = "The values you have chosen caused the graph to go infinite.";
+							domStyle.set("chartStatic"+id, "display", "none");
+						}
 						else {
 							dom.byId("staticGraphMessage" + id).innerHTML = "";
 							var givenObj = this.getMinMaxFromArray(staticPlot.plotValues[k]);
@@ -831,7 +838,8 @@ define([
 								fixed: false,
 								min: givenObj.min,
 								max: givenObj.max,
-								titleGap: 5,
+								labelFunc: this.formatAxes,
+								titleGap: 20,
 								title: this.labelString(id)
 							});
 							this.chartsStatic[id].addAxis("x", {
@@ -999,6 +1007,8 @@ define([
 		//helper function for axes
 		formatAxes: function(text, value, precision){
 			if(value > 10000){
+				return value.toPrecision(3);
+			}else if(value % 1 != 0){
 				return value.toPrecision(3);
 			}
 			else{
