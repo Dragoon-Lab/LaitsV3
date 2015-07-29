@@ -521,9 +521,12 @@ define([
 					console.log("Saving Description/Timestep edits");
 					session.saveProblem(givenModel.model);
 				});
-				on(registry.byId("descCloseButton"), "click", function(){
+				on(registry.byId("descCloseButton"), "click", lang.hitch(this, function(){
+                	descObj.descDoneHandler();
+                	//console.log("saving the changes in the increment feild",givenModel.model);					
 					registry.byId("authorDescDialog").hide();
-				});
+				}));
+
 
 				on(registry.byId("problemPublishButton"), "click", function(){
 					var w = confirm("Are you sure you want to publish the problem");

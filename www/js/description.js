@@ -39,6 +39,8 @@ define([
             this.givenModel = givenModel;
             this.timeObj = givenModel.getTime();
             this._activity=activity;
+            //this.increment=this.givenModel.getIncrements();
+
             //Read Values from timeObj and place them in description editor
             //We also assign them as previous start, stop times and time step
             dom.byId("authorSetTimeStart").value = this.timeObj.start;
@@ -59,12 +61,56 @@ define([
             dom.byId("authorSetDescription").value = this.serialize(
                 givenModel.getTaskDescription() ? givenModel.getTaskDescription() : ""  
             );
-
+            debugger;
              // Populating parameter field
-            var param=registry.byId("authorSetParameters");
-            var increments=this.givenModel.getInc();
-            array.forEach(increments, function(inc){
-                param.addOption(inc);            
+            var list=[]; //list of all required parameters[{label: "growth rate",value: "id3"},...]
+            var opts=[];// populating field [{label: "growth rate",value: "id3"},...]
+            paramWidget=registry.byId("authorSetParameters");
+            paramDirWidget=registry.byId("authorSetParamDir");
+            increments=this.givenModel.getInc(); // increment field in the model: array of Object{label: "growth rate",value: "Increase"}
+           
+             //  Generating the list of all the required parameters in the model
+            var nods=this.givenModel.given.getNodes()
+            var myThis=this;
+            array.forEach(nods, function(nod){
+                var nodeGenus=myThis.givenModel.given.getGenus(nod.ID)
+                 if (nod.type==="parameter" && (typeof nodeGenus==="undefined" || nodeGenus==="in model and required"))
+                        list.push({value:nod.ID, label:nod.name});
+             });
+
+            // checking if the list is not empty and the node is in the list
+            if (increments.length>0 ){
+              var flag=false;
+              var lbl="";
+              var id;
+              array.forEach(list,function(l){
+                if(l.label==increments[0].label){
+                    flag=true;
+                    lbl=l.label;
+                    id=l.value;
+                    }
+                });
+                if(flag){//the list is not empty and the node is in the list
+                   opts.push({label:lbl, value:id});//setting the default
+                   paramDirWidget.set('value', increments[0].value);
+                   opts.push({value:'defaultSelect', label:'--Select--', Selected: true});
+                }else {//the list is not empty but the increment node is not in the list
+                  this.givenModel.setIncrements([]); 
+                  opts.push({value:'defaultSelect', label:'--Select--', Selected: true});                  
+                }
+                
+            }else // if increments field is empty
+                opts.push({value:'defaultSelect', label:'--Select--', Selected: true});
+
+            //prepare the populating list
+            array.forEach(list, function(l){
+                if (l.label!==lbl)    
+                    opts.push(l);
+            });
+
+            // populating the field 
+            array.forEach(opts, function(opt){
+                paramWidget.addOption(opt);            
             });
             
             ready(this, this._initHandles);
@@ -246,6 +292,17 @@ define([
                     }
                 }
             }));
+        },
+
+        descDoneHandler:function(){
+           console.log("++++++in descDoneHandler");
+            var param= paramWidget.value;
+            var direc = paramDirWidget.value;
+            if (param !== 'defaultSelect' && direc !== 'defaultSelect'){ //both are valid selection
+                this.givenModel.setIncrements("add",param,direc); 
+               // this.increment.push({tweakednode:param, tweakDIrection:direc}); 
+            }else// both invalid or default
+             this.givenModel.setIncrements("clear");            
         },
 
         // add line breaks

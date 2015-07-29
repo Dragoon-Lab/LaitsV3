@@ -368,6 +368,17 @@ define([
 			getInitialTweakDirection: function(){
 				return this.model.task.increment[0].tweakDirection;
 			},
+             getInc:function(){
+                myThis=this;
+                return array.map(this.getIncrements(), function(inc){             
+                    return {label:myThis.given.getName(inc.tweakedNode) , value: inc.tweakDirection};
+                });
+            },
+
+            getIncrements: function(){
+
+                return this.model.task.increment;
+           },
             getModelAsString: function(){
 				// Summary: Returns a JSON object in string format
 				//			Should only be used for debugging.
@@ -533,7 +544,16 @@ define([
 			},
 			setTaskLessonsLearned: function(/*string*/ lessonsLearned){
 				this.model.task.lessonsLearned = lessonsLearned;
-			}
+			},
+            setIncrements: function(/*string*/ op, /*string*/ node, /*string*/ direction){              
+                if (op=="clear")                     
+                    this.model.task.increment.length=0; 
+                else
+                    this.model.task.increment=[{tweakedNode:node, tweakDirection: direction}];
+                
+                console.log("seting the increment field to", this.model.task.increment);              
+
+            }
 		};
 
 		/*
