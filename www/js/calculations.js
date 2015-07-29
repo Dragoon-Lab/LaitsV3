@@ -26,13 +26,16 @@ define([
 	"dojo/_base/lang",
 	"dojo/on",
 	"dojo/dom",
+    "dojo/aspect",
 	"dijit/registry",
 	"dijit/form/HorizontalSlider",
 	"./equation",
 	"./integrate","./typechecker",
 	"./lessons-learned",
-	"dijit/form/Button"
-], function(array, declare, lang, on, dom, registry, HorizontalSlider, equation, integrate, typechecker,lessonsLearned, Button){
+	"dijit/form/Button",
+    "dijit/TooltipDialog",
+    "dijit/popup"
+], function(array, declare, lang, on, dom, aspect, registry, HorizontalSlider, equation, integrate, typechecker,lessonsLearned, Button,tooltipDialog,popup){
 	// Summary: 
 	//			Finds model solutions and sets up the sliders
 	// Description:
@@ -561,6 +564,22 @@ define([
 					return;
 				}
 				lessonsLearned.displayLessonsLearned(contentMsg);
+                aspect.after(registry.byId('lesson'), "hide", function() {
+                    var problemDoneHint = new tooltipDialog({
+                        style: "width: 300px;",
+                        content: '<p>Click "Done" when you are ready to save and submit your work.</p>' +
+                        ' <button type="button" data-dojo-type="dijit/form/Button" id="closeHint">Ok</button>',
+                        onShow: function () {
+                            on(dojo.byId('closeHint'), 'click', function (e) {
+                                popup.close(problemDoneHint);
+                            });
+                        }
+                    });
+                    popup.open({
+                        popup: problemDoneHint,
+                        around: dom.byId('doneButton')
+                    });
+                });
 				dojo.disconnect(handle);
 			});
 			
