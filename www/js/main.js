@@ -740,7 +740,7 @@ define([
 						group=null;
 						section=null;
 					}
-					var query = {g:group,m:"AUTHOR",s:section,p:problem};
+					var query = {g:group,m:"AUTHOR",s:section,p:problem,a:"construction"};
 					session.loadProblem(query).then(function(solutionGraph){
 						console.log("Merge problem is loaded "+solutionGraph);
 						if(solutionGraph){
