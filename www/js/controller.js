@@ -162,6 +162,7 @@ define([
 		_initCrisisAlert: function(){
 			//Crisis Alert widget
 			var crisis = registry.byId(this.widgetMap.crisisAlert);
+			var that = this;
 			crisis._setOpenAttr = function(message){
 				var crisisMessage = dom.byId('crisisMessage');
 				console.log("crisis alert message ", message);
@@ -169,6 +170,13 @@ define([
 				crisis.show();
 			};
 			on(registry.byId("OkButton"), "click", function(){
+				if(crisis.title && crisis.title.indexOf("Equation for") >= 0){
+					var nodeName = crisis.title.replace("Equation for ", "");
+					that.logging.log('ui-action', {
+						type: "close-tweak-equation", 
+						node: nodeName
+					});
+				}
 				crisis.hide();
 			});
 		},

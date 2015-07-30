@@ -441,6 +441,14 @@ define(["dojo/aspect",
 			var incButtons = ["Increase", "Decrease", "Stays-Same", "Unknown"];
 			this._incrementalPopup = registry.byId("incrementalPopup");
 			this._incrementalPopup.onShow = function(){
+				//logging for pop up start
+				that.logging.log('ui-action', {
+					type: "open-tweak-popup",
+					node: that._model.active.getName(that.currentID),
+					nodeID: that.currentID
+				});
+				//assessment for tweak pop up
+				that.nodeStartAssessment(that.currentID);
 				focusUtil.focus(dom.byId("IncreaseButton"));
 				incButtons.forEach(function (item) {
 					var btn = registry.byId(item + "Button");
@@ -456,7 +464,7 @@ define(["dojo/aspect",
 						//Update Node Label
 						that.updateNodeLabel(that.currentID);
 
-						that.closeIncrementalPopup(that.currentID);
+						that.closeIncrementalPopup(true);
 					});
 				});
 			};
@@ -464,7 +472,9 @@ define(["dojo/aspect",
 			var showEquationButton = registry.byId("EquationButton");
 
 			on(showEquationButton,"click", function(){
-				that.closeIncrementalPopup();
+				//close incremental pop up is being called twice when clicking show equation. There is one at showIncementalEditor function at the top.
+				//not sure which is to be removed. For now I am commenting this ~ Sachin
+				//that.closeIncrementalPopup();
 				var type = that._model.active.getType(that.currentID);
 				var equationMessage = "";
 				var equation = expression.convert(that._model.active, that._model.active.getEquation(that.currentID));
@@ -474,6 +484,12 @@ define(["dojo/aspect",
 				}else if(type == "function"){
 					equationMessage = nodeName + " = " + equation;
 				}
+				that.logging.log('ui-action', {
+					type: "open-tweak-equation",
+					node: that._model.active.getName(that.currentID),
+					nodeID: that.currentID,
+				});
+
 				that.applyDirectives([{
 					id:"crisisAlert",
 					attribute:"title",
@@ -486,14 +502,20 @@ define(["dojo/aspect",
 			});
 		},
 
-		closeIncrementalPopup: function(nodeID){
+		closeIncrementalPopup: function(doColorNodeBorder){
+			this.logging.log('ui-action', {
+				type: "close-tweak-popup",
+				node: this._model.active.getName(this.currentID),
+				nodeID: this.currentID
+			});
+			this.nodeCloseAssessment(this.currentID);
 			popup.close(this._incrementalPopup);
 			var incButtons = ["Increase", "Decrease", "Stays-Same", "Unknown"];
 			incButtons.forEach(lang.hitch(this, function (item) {
 				this._buttonHandlers[item].remove();
 			}));
-			if(nodeID){
-				this.colorNodeBorder(nodeID, true);
+			if(doColorNodeBorder){
+				this.colorNodeBorder(this.currentID, true);
 			}
 		}
 	});

@@ -100,7 +100,7 @@ define([
 				this._model.student.deleteStudentNodes();
 			}
 			array.forEach(this._model.given.getNodes(), function (givenNode) {
-				if(this._model.given.checkNodeMandatory(givenNode.ID)){
+				if(this._model.given.isNodeRequired(givenNode.ID)){
 					var newNode = this._model.student.addNode();
 					nodeStore[givenNode.ID] = newNode;
 				}

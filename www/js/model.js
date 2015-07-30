@@ -637,8 +637,8 @@ define([
 			validateTweakDirections: function(){
 				var nodes = this.getNodes();
 				var flag = array.every(nodes, function(node){
-					return (!(!node.genus || node.genus == "" || node.genus == "required") || (node.tweakDirection && node.tweakDirection != ""));
-				});
+					return (!this.isNodeRequired(node.ID) || (node.tweakDirection && node.tweakDirection != ""));
+				}, this);
 
 				return flag ? true : false;
 			}
@@ -1019,7 +1019,7 @@ define([
 
 				return plotVariables;
 			},
-			checkNodeMandatory: function(id){
+			isNodeRequired: function(id){
 				var givenNode = this.getNode(id);
 				if(!givenNode.genus || givenNode.genus == "" || givenNode.genus == "required"){
 					return true;
@@ -1289,9 +1289,9 @@ define([
 					return false;
 				}
 			},
-			checktNodeMandatory: function(id){
+			isNodeRequired: function(id){
 				var descriptionID = this.getDescriptionID(id);
-				return descriptionID || obj.given.checkNodeMandatory(descriptionID);
+				return descriptionID || obj.given.isNodeRequired(descriptionID);
 			},
 			deleteStudentNodes: function(){
 				obj.model.task.studentModelNodes = [];

@@ -724,7 +724,8 @@ define([
 			var interpretation = this._getInterpretation(id, nodePart, answer);
 			var returnObj = [], currentStatus;
 			var givenID;  // ID of the correct node, if it exists
-			var solutionGiven = false;			
+			var solutionGiven = false;
+			var givenAnswer = answer; //keeping a copy of answer for logging purposes.
 			// Send correct answer to controller if status will be set to 'demo'
 			if(interpretation === "lastFailure" || interpretation === "secondFailure"){
 				answer = this.model.student.getCorrectAnswer(id, nodePart);
@@ -870,7 +871,7 @@ define([
 					pmInterpretation: interpretation
 				};
 			}
-			var logAnswer = answerString || answer.toString();
+			var logAnswer = answerString || givenAnswer.toString();
 			logObj = lang.mixin({
 				type : "solution-check",
 				nodeID: id,
