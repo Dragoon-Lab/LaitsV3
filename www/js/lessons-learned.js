@@ -39,6 +39,7 @@ define([
 					contentHTML = contentHTML + "</font>";
 					lessonLearnedDialog.set("content", contentHTML);
 					lessonLearnedDialog.set("title", titleMsg);
+					lessonLearnedDialog.set("style", "width:300px");
 					lessonLearnedDialog.show();
 			}
 		};

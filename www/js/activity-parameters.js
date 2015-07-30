@@ -61,7 +61,7 @@ define([
 					allowForum:true,
 					allowPrettify:true,
 					allowHelp: true,
-					allowLessonLearned:true,
+					allowLessonsLearned:true,
 					allowDeleteNode: true,
 					allowEditNode: true,
 
@@ -83,7 +83,7 @@ define([
 					allowForum:true,
 					allowPrettify:true,
 					allowHelp: true,
-					allowLessonLearned:true,
+					allowLessonsLearned:true,
 					allowDeleteNode: true,
 					allowEditNode: true,
 
@@ -140,7 +140,7 @@ define([
 				STUDENT:{
 					allowPrettify:true,
 					allowHelp: true,
-					allowLessonLearned:true,
+					allowLessonsLearned:true,
 
 					allowEditNode:true,
 
@@ -162,7 +162,7 @@ define([
 				COACHED:{
 					allowPrettify:true,
 					allowHelp: true,
-					allowLessonLearned:true,
+					allowLessonsLearned:true,
 
 					allowEditNode:true,
 
@@ -184,7 +184,7 @@ define([
 				TEST:{
 					allowPrettify:true,
 					allowHelp: true,
-					allowLessonLearned:true,
+					allowLessonsLearned:true,
 
 					allowEditNode:true,
 					showFeedback: true,
@@ -203,7 +203,7 @@ define([
 				EDITOR:{
 					allowPrettify:true,
 					allowHelp: true,
-					allowLessonLearned:true,
+					allowLessonsLearned:true,
 
 					allowEditNode:true,
 					showFeedback: true,
@@ -238,7 +238,7 @@ define([
 				allowHints: false,
 				allowPrettify: false,
 				allowHelp: false,
-				allowLessonLearned: false,
+				allowLessonsLearned: false,
 
 				//Node
 				allowDeleteNode: false,
