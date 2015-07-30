@@ -1,24 +1,21 @@
 {
     "task": {
-        "taskName": "RC series circuits",
+        "taskName": "Model RC Series Circuits",
         "time": {
             "start": 0,
-            "end": 0.1,
+            "end": 10,
             "step": 0.0005,
             "integrationMethod": "Eulers Method",
             "units": "seconds"
         },
         "properties": {},
         "image": {
-            "URL": "http://onlinephys.com/rc_circuit.gif"
+            "URL": "http:\/\/onlinephys.com\/rc_circuit.gif"
         },
         "taskDescription": [
-            "Model a 500 ohm resistor in series with a 0.003 farad capacitor and a battery-switch combination that delivers either 5 volts or a short.  You are given nodes that use sinewave(1/60,0) to represent the switch being closed from 0 to 5 seconds and then open from 6 to 10 seconds.  Graph the voltage across the capacitor.",
-            "",
-            "",
-            ""
+            "Model a 500 ohm resistor in series with a 0.003 farad capacitor and a battery-switch combination that delivers either 5 volts or a short.  You are given nodes that use pulsetrain(0,5,5) to represent the switch being closed from 0 to 5 seconds and then open from 6 to 10 seconds.  Graph the voltage across the capacitor."
         ],
-        "lessonsLearned": "",
+        "lessonsLearned": [],
         "givenModelNodes": [
             {
                 "ID": "id1",
@@ -29,8 +26,8 @@
                     }
                 ],
                 "position": {
-                    "x": 621,
-                    "y": 96
+                    "x": 608,
+                    "y": 53
                 },
                 "attemptCount": {
                     "description": 0,
@@ -40,7 +37,37 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                },
                 "name": "Voltage across capacitor",
                 "genus": "required",
                 "description": "Voltage across capacitor from top to bottom of figure",
@@ -48,7 +75,10 @@
                 "initial": 0,
                 "units": "volts",
                 "equation": "id2",
-                "parentNode": true
+                "parentNode": true,
+                "imageMarks": [
+                    "206 , 78 , 76 , 35"
+                ]
             },
             {
                 "ID": "id2",
@@ -59,12 +89,12 @@
                     },
                     {
                         "ID": "id4",
-                        "label": "/"
+                        "label": "\/"
                     }
                 ],
                 "position": {
-                    "x": 746,
-                    "y": 101
+                    "x": 641,
+                    "y": 605
                 },
                 "attemptCount": {
                     "description": 0,
@@ -74,13 +104,46 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                },
                 "name": "Change in voltage across capacitor",
                 "description": "how much voltage across capacitor increases",
                 "type": "function",
                 "units": "volts",
-                "equation": "id3/id4",
-                "genus": "required"
+                "equation": "id3\/id4",
+                "genus": "required",
+                "imageMarks": [
+                    "208 , 82 , 74 , 30"
+                ]
             },
             {
                 "ID": "id3",
@@ -91,12 +154,12 @@
                     },
                     {
                         "ID": "id6",
-                        "label": "/"
+                        "label": "\/"
                     }
                 ],
                 "position": {
-                    "x": 672,
-                    "y": 232
+                    "x": 444,
+                    "y": 507
                 },
                 "attemptCount": {
                     "description": 0,
@@ -106,20 +169,53 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                },
                 "name": "Current",
                 "description": "current through resistor and capacitor",
                 "genus": "required",
                 "type": "function",
                 "units": "amps",
-                "equation": "id5/id6"
+                "equation": "id5\/id6",
+                "imageMarks": [
+                    "229 , 36 , 32 , 27"
+                ]
             },
             {
                 "ID": "id4",
                 "inputs": [],
                 "position": {
-                    "x": 873.33093261719,
-                    "y": 83.330947875977
+                    "x": 691.33093261719,
+                    "y": 38.330951690674
                 },
                 "attemptCount": {
                     "description": 0,
@@ -129,7 +225,38 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                },
                 "name": "capacitance of capacitor",
                 "description": "capacitance of capacitor",
                 "equation": "",
@@ -137,7 +264,10 @@
                 "parentNode": false,
                 "initial": 0.003,
                 "units": "farads",
-                "genus": "required"
+                "genus": "required",
+                "imageMarks": [
+                    "198 , 78 , 84 , 33"
+                ]
             },
             {
                 "ID": "id5",
@@ -152,8 +282,8 @@
                     }
                 ],
                 "position": {
-                    "x": 537,
-                    "y": 237
+                    "x": 527,
+                    "y": 357
                 },
                 "attemptCount": {
                     "description": 0,
@@ -165,6 +295,32 @@
                 },
                 "status": {
                     "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
                         "disabled": false
                     }
                 },
@@ -173,14 +329,17 @@
                 "type": "function",
                 "units": "volts",
                 "genus": "required",
-                "equation": "id9-id1"
+                "equation": "id9-id1",
+                "imageMarks": [
+                    "146 , 28 , 79 , 42"
+                ]
             },
             {
                 "ID": "id6",
                 "inputs": [],
                 "position": {
-                    "x": 817.33093261719,
-                    "y": 213.33094787598
+                    "x": 369.33096313477,
+                    "y": 41.330951690674
                 },
                 "attemptCount": {
                     "description": 0,
@@ -190,7 +349,38 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                },
                 "name": "Resistance of resistor",
                 "description": "Resistance of resistor",
                 "equation": "",
@@ -198,14 +388,17 @@
                 "parentNode": false,
                 "initial": 500,
                 "units": "ohms",
-                "genus": "required"
+                "genus": "required",
+                "imageMarks": [
+                    "152 , 34 , 64 , 42"
+                ]
             },
             {
                 "ID": "id8",
                 "inputs": [],
                 "position": {
-                    "x": 352.33096313477,
-                    "y": 101.33095550537
+                    "x": 486.33096313477,
+                    "y": 39.330951690674
                 },
                 "attemptCount": {
                     "description": 0,
@@ -215,7 +408,38 @@
                     "equation": 0,
                     "assistanceScore": 1
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                },
                 "name": "battery voltage",
                 "description": "battery voltage",
                 "equation": "",
@@ -223,7 +447,10 @@
                 "parentNode": false,
                 "initial": 5,
                 "units": "volts",
-                "genus": "required"
+                "genus": "required",
+                "imageMarks": [
+                    "13 , 70 , 68 , 46"
+                ]
             },
             {
                 "ID": "id9",
@@ -233,8 +460,8 @@
                     }
                 ],
                 "position": {
-                    "x": 491,
-                    "y": 85
+                    "x": 493,
+                    "y": 201
                 },
                 "attemptCount": {
                     "description": 0,
@@ -244,13 +471,46 @@
                     "equation": 0,
                     "assistanceScore": 1
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                },
                 "name": "Source voltage",
                 "genus": "required",
                 "description": "Voltage from battery-switch combination",
                 "type": "function",
                 "units": "volts",
-                "equation": "id8*sinewave(1/60,0)"
+                "equation": "id8*pulsetrain((0,5),5)",
+                "imageMarks": [
+                    "14 , 74 , 69 , 39"
+                ]
             }
         ],
         "studentModelNodes": [
@@ -258,8 +518,8 @@
                 "ID": "id10",
                 "inputs": [],
                 "position": {
-                    "x": 352.33096313477,
-                    "y": 101.33095550537
+                    "x": 486.33096313477,
+                    "y": 39.330951690674
                 },
                 "status": {
                     "description": {
@@ -292,8 +552,8 @@
                     }
                 ],
                 "position": {
-                    "x": 491,
-                    "y": 85
+                    "x": 493,
+                    "y": 201
                 },
                 "status": {
                     "equation": {
@@ -316,21 +576,22 @@
                 "descriptionID": "id9",
                 "units": "volts",
                 "type": "function",
-                "equation": "id10*sinewave(1/60,0)"
+                "equation": "id10*sinewave(1\/60,0)"
             }
         ],
         "schemas": [
             {
-                "ID": "schema1",
-                "schemaClass": "capacitor",
-                "name": "Capacitor",
+                "ID": "schema5",
+                "schemaClass": "rc_in_series_behavior",
+                "name": "Resistor Capacitor in Series Behavior",
                 "competence": {
                     "errors": 0,
                     "total": 0,
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id1, id2, id4, id3",
+                "nodes": "id5, id1, id3, id6, id2, id4",
+                "rates": {},
                 "difficulty": {
                     "isolation": 1,
                     "cues": 0,
@@ -338,9 +599,63 @@
                 }
             },
             {
-                "ID": "schema2",
+                "ID": "schema6",
+                "schemaClass": "resistor_behavior",
+                "name": "Resistor Behavior",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id5, id6, id3",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema8",
+                "schemaClass": "capacitor_behavior",
+                "name": "Capacitor Behavior",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id4, id2, id1, id3",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema9",
+                "schemaClass": "ohms_law",
+                "name": "Ohm's Law: Voltage",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id5, id3, id6",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema10",
                 "schemaClass": "kirchoff_voltage_law",
-                "name": "Kirchoff's voltage law",
+                "name": "Kirchoff's Voltage Law",
                 "competence": {
                     "errors": 0,
                     "total": 0,
@@ -348,27 +663,11 @@
                     "values": {}
                 },
                 "nodes": "id1, id5, id9",
+                "rates": {},
                 "difficulty": {
                     "isolation": 1,
-                    "cues": 0,
-                    "phrases": 0
-                }
-            },
-            {
-                "ID": "schema3",
-                "schemaClass": "ohms_law",
-                "name": "Ohms law",
-                "competence": {
-                    "errors": 0,
-                    "total": 0,
-                    "timeSpent": 0,
-                    "values": {}
-                },
-                "nodes": "id3, id5, id6",
-                "difficulty": {
-                    "isolation": 1,
-                    "cues": 0,
-                    "phrases": 0
+                    "cues": 1,
+                    "phrases": 1
                 }
             }
         ]
