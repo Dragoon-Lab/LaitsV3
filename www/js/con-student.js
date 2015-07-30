@@ -480,7 +480,7 @@ define(["dojo/aspect",
 				var equation = expression.convert(that._model.active, that._model.active.getEquation(that.currentID));
 				var nodeName = that._model.active.getName(that.currentID);
 				if(type == "accumulator"){
-					equationMessage = "new " + nodeName + " = " + "old "+ nodeName + " + " + equation;
+					equationMessage = "new " + nodeName + " = " + "current "+ nodeName + " + " + equation;
 				}else if(type == "function"){
 					equationMessage = nodeName + " = " + equation;
 				}

@@ -40,7 +40,7 @@ describe("Student mode with incorrect rabbits", function() {
 
         it("Should have correct description color", async(function(){
             var descColor = dtest.getNodeDescriptionColor(client);
-	    atest.checkNodeValue(descColor,"red","Number of liters of water in tank");
+	    atest.checkNodeValue(descColor,"red","The number of rabbits that die per year per rabbit");
         }));
 
         after(async(function(){
@@ -74,7 +74,12 @@ describe("Student mode with incorrect rabbits", function() {
             //dtest.popupWindowPressOk(client);
             dtest.setNodeInitialValue(client, 1);
             dtest.setNodeInitialValue(client, 0);
-            
+        }));
+
+        it ("Should have saved the values correctly", async(function() {
+            dtest.openEditorForNode(client, "population");
+            var units = dtest.getNodeUnits(client);
+            atest.checkNodeValue(units,"rabbits","population");
         }));
     
         it("Should partially incorrectly fill function - net growth", async(function(){

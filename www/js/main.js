@@ -548,10 +548,12 @@ define([
 					if(iBoxController) iBoxController.updateImage(givenModel.getImageURL());
 					if(imgMarker) imgMarker.updateImage(givenModel.getImageURL());
 				});
-				on(registry.byId("descCloseButton"), "click", function(){
-					
+
+				on(registry.byId("descCloseButton"), "click", lang.hitch(this, function(){
+                	descObj.descDoneHandler();
 					registry.byId("authorDescDialog").hide();
-				});
+				}));
+
 
 				on(registry.byId("problemPublishButton"), "click", function(){
 					var w = confirm("Are you sure you want to publish the problem");
