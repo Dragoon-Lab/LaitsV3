@@ -48,6 +48,7 @@ if(isset($_GET['m']) && $_GET['m'] == "AUTHOR"){
 }
 $restartProblemFlag = isset($_GET['rp'])?$_GET['rp']:false;
 
+$activity = !empty($_GET['a'])?$_GET['a']:"construction";
 // Check if the session is public and expired
 date_default_timezone_set('America/Phoenix'); 
 $subtime =  date('Y-m-d h:m:s', strtotime('-1 minutes')); // Get the time stamp for 24h ago
@@ -57,7 +58,6 @@ if (isset($_GET['s'])) {
      if(isset($_GET['u']) && isset($_GET['m'])){
       $user = mysqli_real_escape_string($mysqli,$_GET['u']);
       $mode = $_GET['m'];
-      $activity = !empty($_GET['a'])?$_GET['a']:"construction";
       $query = <<<EOT
       SELECT * FROM session WHERE session.user = '$user' AND session.section = '$section' AND session.mode = '$mode' AND session.activity = '$activity' AND session.problem = '$shortProblemName' ORDER BY session.time DESC LIMIT 1
 EOT;
@@ -120,7 +120,6 @@ if(!$restartProblemFlag) /* if rp(restart problem) not set check in previously s
      $user = mysqli_real_escape_string($mysqli,$_GET['u']);
      $section = mysqli_real_escape_string($mysqli,$_GET['s']);
      $mode = $_GET['m'];  // only four choices
-     $activity = $_GET['a'];
    if(isset($_GET['g']) && !$userPrecedence){
       //group takes precedence over user, quick fix for sustainability class
         $query = <<<EOT
