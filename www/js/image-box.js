@@ -73,13 +73,14 @@ define([
 			context.ctx.fill();
 			mappings.every(function(ele, index, array){
 				var cords = ele.split(',');
-				debugger;
+				
 				var reverseScaling = 1 / context.scalingFactor;
 				context.ctx.drawImage(context.imageNode, parseInt(cords[0]) * reverseScaling, parseInt(cords[1]) * reverseScaling, parseInt(cords[2]) * reverseScaling, parseInt(cords[3]) * reverseScaling, parseInt(cords[0]) + context.canvasLeftOffset, parseInt(cords[1]) + context.canvasTopOffset, parseInt(cords[2]), parseInt(cords[3]));	
 				return true;
 			})	
 		}, 0);		
 	}
+	// for the nodes from the last session
 	ImageControl.prototype.initNodeMouseEvents = function(){
 		var context = this;
 		var givenNodes = this.model.active.getNodes();
@@ -103,6 +104,24 @@ define([
 			});
 			return true;
 		})
+	}
+	ImageControl.prototype.newNodeMouseEvents = function(vertex){
+		var context = this;
+		console.log("AddNode Called", vertex);
+		var target = document.getElementById(vertex.ID);
+		if(!target) return;
+		target.addEventListener('mouseenter', function(event){
+
+			if(context.imageMarked) return;
+			var nodeId = event.srcElement["id"];
+			if(nodeId) this.markImage(nodeId);
+			context.imageMarked = true;
+		});
+		target.addEventListener('mouseleave', function(event){
+			if(!context.imageMarked) return;
+			this.clear();
+			context.imageMarked = false;
+		});
 	}
 	ImageControl.prototype.initMarkImageDialog = function(controllerObj){
 		// this function is called every time author click on Image Highlighting

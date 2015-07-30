@@ -332,17 +332,14 @@ define([
 			var drawModel = new drawmodel(givenModel.active, ui_config.get("showColor"), activity_config);
 			drawModel.setLogging(session);
 
-
-			// Wire up drawing new node
-			aspect.after(controllerObject, "addNode",
-				lang.hitch(drawModel, drawModel.addNode),
-				true);
-
+			
 			// add mouse enter and mouse leave event for every new node	
 			var iBoxController = new ImageBox(givenModel.getImageURL(), givenModel);
+			
 			iBoxController.initNodeMouseEvents();
-
+			// for the new nodes added during the session
 			aspect.after(drawModel, "addNode", function(vertex){
+				
 				var context = iBoxController;
 				console.log("AddNode Called", vertex);
 				var target = document.getElementById(vertex.ID);
@@ -361,6 +358,13 @@ define([
 				});
 
 			}, true);
+			
+			// Wire up drawing new node
+			aspect.after(controllerObject, "addNode",
+				lang.hitch(drawModel, drawModel.addNode),
+				true);
+
+			
 
 			// Wire up send to server
 			aspect.after(drawModel, "updater", function(){
@@ -863,6 +867,7 @@ define([
 			}
 
 			if(activity_config.get("allowGraph")){
+		
 				var graphButton = registry.byId("graphButton");
 				graphButton.set("disabled", false);
 
@@ -870,6 +875,7 @@ define([
 				menu.add("graphButton", function(e){
 					event.stop(e);
 					console.debug("button clicked");
+							
 					// instantiate graph object
 					var buttonClicked = "graph";
 					var graph = new Graph(givenModel, query.m, session, buttonClicked);
@@ -887,6 +893,7 @@ define([
 				//the solution div which shows graph/table when closed
 				//should disable all the pop ups
 				aspect.after(registry.byId('solution'), "hide", function(){
+					
 					console.log("Calling graph/table to be closed");
 					controllerObject.logging.log('ui-action', {
 						type: "menu-choice",
@@ -939,10 +946,10 @@ define([
 					controllerObject.setForum(query);
 				}
 			}
-
+			
 			if(activity_config.get("allowLessonsLearned")){
 
-				//Disable the lessonsLearnedButton
+				//Enable the lessonsLearnedButton
 				//var lessonsLearnedButton = registry.byId("lessonsLearnedButton");
 				//lessonsLearnedButton.set("disabled", true);
 				//Bind lessonsLearnedButton to the click event
