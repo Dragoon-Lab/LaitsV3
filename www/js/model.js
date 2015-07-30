@@ -277,6 +277,7 @@ define([
 				if(errorMessage != ""){
 					throw new Error(errorMessage);
 				}
+
 				this.isCompleteFlag = this.matchesGivenSolution();
 			},
 			getInitialTweakedNode: function(){
@@ -357,7 +358,7 @@ define([
 				return this.model.task.taskDescription;
 			},
 			getTaskLessonsLearned : function() {
-				return this.model.task.lessonsLearned;
+				return (this.model.task.lessonsLearned) ? this.model.task.lessonsLearned : [];
 			},
 			getSlides: function(){
 				return this.model.task.slides;
@@ -646,6 +647,7 @@ define([
 
 		obj.given = lang.mixin({
 			addNode: function(options){
+				debugger;
 				// Summary: builds a new node and returns the node's unique id
 				//			Can optionally add initial values to node.
 				obj._updateNextXYPosition();

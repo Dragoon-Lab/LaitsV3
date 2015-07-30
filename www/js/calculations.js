@@ -547,7 +547,8 @@ define([
 			}
 			var contentMsg = this.model.getTaskLessonsLearned();
 			// patching code to enable lessonlearned when first array is not empty
-			debugger;
+
+			
 			if(contentMsg.length == 0 || contentMsg[0] == "" ){
 				return;	
 			}
