@@ -647,7 +647,6 @@ define([
 
 		obj.given = lang.mixin({
 			addNode: function(options){
-				debugger;
 				// Summary: builds a new node and returns the node's unique id
 				//			Can optionally add initial values to node.
 				obj._updateNextXYPosition();
