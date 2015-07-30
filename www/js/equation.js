@@ -78,24 +78,17 @@ define([
 				}
 			});
 			var valsCopy = dojo.clone(givenVals);
-            var flag;
-			var Result = this.getEquationValue(givenParse, model, givenVals, "given", seed, 0);
-			var studResult = this.getEquationValue(student, model, givenVals, "solution", seed, 0);
 
-            if(! (Result.error || studResult.error) ){
-                var givenResult = Result.result;
-                var studentResult = studResult.result;
-                console.log("results:" + givenResult + ":" + studentResult);
+			var givenResult = this.getEquationValue(givenParse, model, givenVals, "given", seed, 0);
+			var studentResult = this.getEquationValue(student, model, givenVals, "solution", seed, 0);
 
-                flag = Math.abs(studentResult - givenResult) <= 10e-10 * Math.abs(studentResult + givenResult);
+			console.log("results:" + givenResult + ":" + studentResult);
 
-                if (!isFinite(studentResult)) {// Handel devide by zero in student mode
-                    flag = false;
-                }
-            }
-            else{
-                flag = false;
-            }
+			var flag = Math.abs(studentResult - givenResult) <= 10e-10 * Math.abs(studentResult + givenResult);
+
+			if(!isFinite(studentResult)){// Handel devide by zero in student mode
+				flag=false;
+			}
 
 			if(givenEqn.indexOf("max") >= 0 || givenEqn.indexOf("min") >= 0){
 				var index = 0;
@@ -105,32 +98,24 @@ define([
 					givenVals1[nodes[i]] = -1*valsCopy[nodes[i]];
 				}
 
-				var Result1 = this.getEquationValue(givenParse, model, givenVals1, "given", seed, 0);
-				var studResult1 = this.getEquationValue(student, model, givenVals1, "solution", seed, 0);
-                if(! (Result1.error || studResult1.error)) {
-                    var givenResult1 = Result1.result;
-                    var studentResult1 = studResult1.result;
-                    flag = flag && (Math.abs(studentResult1 - givenResult1) <= 10e-10 * Math.abs(studentResult1 + givenResult1));
-                }
-                else{
-                    flag=false;
-                }
-            }
+				console.log(givenVals1);
+			console.log("results:" + givenResult1 + ":" + studentResult1);
+
+				var givenResult1 = this.getEquationValue(givenParse, model, givenVals1, "given", seed, 0);
+				var studentResult1 = this.getEquationValue(student, model, givenVals1, "solution", seed, 0);
+
+
+				flag = flag && (Math.abs(studentResult1 - givenResult1) <= 10e-10 * Math.abs(studentResult1 + givenResult1));
+			}
 
 			if(givenEqn.indexOf("sinewave") >= 0)
 			{
-				var Result2 = this.getEquationValue(givenParse, model, givenVals, "given", seed, 1);
-				var studResult2 = this.getEquationValue(student, model, givenVals, "solution", seed, 1);
-                if(! (Result1.error || studResult1.error)) {
-                    var givenResult2 = Result2.result;
-                    var studentResult2 = studResult2.result;
-                    flag = flag && (Math.abs(studentResult2 - givenResult2) <= 10e-10 * Math.abs(studentResult2 + givenResult2));
-                }
-                else{
-                    flag = false;
-                }
-            }
-			if(isNaN(Result.result) && isNaN(studResult.result))
+				var givenResult2 = this.getEquationValue(givenParse, model, givenVals, "given", seed, 1);
+				var studentResult2 = this.getEquationValue(student, model, givenVals, "solution", seed, 1);
+
+				flag = flag && (Math.abs(studentResult2 - givenResult2) <= 10e-10 * Math.abs(studentResult2 + givenResult2));
+			}
+			if(isNaN(givenResult) && isNaN(studentResult))
 			{
 				flag = true;
 			}
@@ -140,7 +125,6 @@ define([
 		getEquationValue: function(/* math parser object */ parse, /*model object*/ model, values, /* string */ active, /* float */ seed, /* float */ time){
 			var id;
 			var solutionVals = {};
-            var retVal = {result : "", error: false};
 			array.forEach(parse.variables(), function(variable){
 				// console.log("	==== evaluating given variable ", variable);
 				// given model variables should all be given node IDs
@@ -164,7 +148,6 @@ define([
 							message:'Student variable has no match, variable name : '+variable, 
 							functionTag: 'areEquivalent'
 						});
-                        retVal.error=true;
 					}
 					this.evalVar(id, model.solution, values);
 					solutionVals[variable] = values[id];
@@ -175,10 +158,23 @@ define([
 				}	
 
 			}, this);
-			if(active == "solution")
+			
+			var calculateResult = true;
+			if(active == "solution"){
 				values = solutionVals;
-			 retVal.result = parse.evaluate(values, time, seed);
-			return retVal;
+				//checking explicitly if any node is coming out as undefined.
+				//for equation with if the equation was getting parsed correctly for wrong node IDs
+				for(var key in values){
+					if(typeof(values[key]) === "undefined"){
+						calculateResult = false;
+					}
+				}
+			}
+			var result = undefined;
+			if(calculateResult){
+				result = parse.evaluate(values, time, seed);
+			}
+			return result;
 		},
 		/*
 		 Recursively evaluate functions in the model.

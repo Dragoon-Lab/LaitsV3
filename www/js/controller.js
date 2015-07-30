@@ -162,6 +162,7 @@ define([
 		_initCrisisAlert: function(){
 			//Crisis Alert widget
 			var crisis = registry.byId(this.widgetMap.crisisAlert);
+			var that = this;
 			crisis._setOpenAttr = function(message){
 				var crisisMessage = dom.byId('crisisMessage');
 				console.log("crisis alert message ", message);
@@ -169,6 +170,13 @@ define([
 				crisis.show();
 			};
 			on(registry.byId("OkButton"), "click", function(){
+				if(crisis.title && crisis.title.indexOf("Equation for") >= 0){
+					var nodeName = crisis.title.replace("Equation for ", "");
+					that.logging.log('ui-action', {
+						type: "close-tweak-equation", 
+						node: nodeName
+					});
+				}
 				crisis.hide();
 			});
 		},
@@ -652,7 +660,7 @@ define([
 			if(name){
 				switch(type){
 					case "accumulator":
-						nodeName = 'new ' + name + ' = ' + 'old ' + name + ' +';
+						nodeName = 'new ' + name + ' = ' + 'current ' + name + ' +';
 						//Commenting out Change in Time label per Dr. Kurt
 						//tt = " * Change in Time";
 						break;
@@ -1201,9 +1209,11 @@ define([
 							this.updateType(directive.value);
 						} else if(w.id == 'initialValue'){
 							this._model.active.setInitial(this.currentID, directive.value);
+						} else if(w.id == 'selectUnits'){
+							this.unitsSet(directive.value);
 						} else if(w.id == 'equationBox'){
 							this.equationSet(directive.value);
-						}else if(w.id == 'selectDescription'){
+						} else if(w.id == 'selectDescription'){
 							this.updateDescription(directive.value);
 						}
 						// Each control has its own function to update the

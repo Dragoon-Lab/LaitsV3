@@ -38,11 +38,12 @@ define([
 	"dijit/_base",
 	"dijit/layout/ContentPane",
 	"dojo/dom",
+	"dojo/dom-style",
 	"./integrate",
 	"dijit/layout/TabContainer",
 	"dojo/parser",
 	"dojo/domReady!"
-], function(array, declare, lang, on, domAttr, registry, ComboBox, Memory, Chart, Default, Lines, Grid, Legend, calculations, logger, base, contentPane, dom, integrate){
+], function(array, declare, lang, on, domAttr, registry, ComboBox, Memory, Chart, Default, Lines, Grid, Legend, calculations, logger, base, contentPane, dom, domStyle, integrate){
 
 	// The calculations constructor is loaded before the RenderGraph constructor
 	return declare(calculations, {
@@ -84,7 +85,7 @@ define([
 			 be calulated.
 
 			 To include optional nodes,
-			 one would need to order them using topologicalSortgoo
+			 one would need to order them using topologicalSort
 			 */
             var activeSolution = this.findSolution(true, this.active.plotVariables);
             console.log(activeSolution);
@@ -125,7 +126,7 @@ define([
 				var givenSolution = this.findSolution(false, this.given.plotVariables);
 				if(this.isStatic)
 				{
-					var staticGiven = this.findStaticSolution(false, staticNodes[this.staticVar], this.active.plotVariables);
+					givenSolution = this.findStaticSolution(false, staticNodes[this.staticVar], this.given.plotVariables);
 				}
 			}
 			this.resizeWindow();
@@ -164,7 +165,7 @@ define([
 			//add static tab if solution is static
 			if(this.isStatic)
 			{
-			this.dialogContent += "<div id='StaticTab' data-dojo-type='dijit/layout/ContentPane' style='overflow:visible' selected = true data-dojo-props='title:\"Static\"'>"
+			this.dialogContent += "<div id='StaticTab' data-dojo-type='dijit/layout/ContentPane' style='overflow:scroll' selected = true data-dojo-props='title:\"Static\"'>"
 
 			this.dialogContent += "<input id='staticSelect'/>";
 
@@ -174,6 +175,9 @@ define([
 					this.dialogContent += "<div><input id='selStatic" + id + "' data-dojo-type='dijit/form/CheckBox' class='show_graphs' thisid='" + id + "'" + checked + "/>" + " Show " + this.model.active.getName(id) + "</div>";
 					var style = show ? "" : " style='display: none;'";
 					this.dialogContent += "<div	 id='chartStatic" + id + "'" + style + "></div>";
+
+					//graph error message
+					this.dialogContent += "<font color='red' id='staticGraphMessage" + id + "'></font>";
 					// Since the legend div is replaced, we cannot hide the legend here.
 					this.dialogContent += "<div class='legend' id='legendStatic" + id + "'></div>";
 				}, this);
@@ -290,19 +294,18 @@ define([
 
 					var str = "chart" + id;
 					charts[id] = new Chart(str);
+
 					charts[id].addPlot("grid", {
 						type: Grid,
-						// Do not include markers if there are too
-						// many plot points.  It looks ugly and slows down
-						// plotting significantly.
-						hMajorLines: true, 
+						hMajorLines: true,
 						hMinorLines: false,
 						vMajorLines: true,
 						vMinorLines: false,
-						majorHLine: { color: "gray", width: 1 },
-         				majorVLine: { color: "gray", width: 1 }
+						majorHLine: { color: "#CACACA", width: 1 },
+						majorVLine: { color: "#CACACA", width: 1 }
 						//markers: activeSolution.times.length < 25
-						});
+					});
+
 					charts[id].addAxis("x", {
 						title: this.labelString(),
 						titleOrientation: "away", titleGap: 5
@@ -312,6 +315,7 @@ define([
 					charts[id].addAxis("y", {
 						vertical: true, // min: obj.min, max: obj.max,
 						title: this.labelString(id),
+						titleGap: 20,
 						min: obj.min,
 						max:obj.max,
 						labelFunc: this.formatAxes
@@ -346,6 +350,7 @@ define([
 							this.formatSeriesForChart(givenSolution, k), {stroke: "black"}
 						);
 					}
+
 					if(obj.max - obj.min > (Math.pow(10,-16)) || (obj.max - obj.min === 0))
 					{
 						charts[id].render();
@@ -392,22 +397,19 @@ define([
 							hMinorLines: false,
 							vMajorLines: true,
 							vMinorLines: false,
-							majorHLine: { color: "gray", width: 1 },
-         					majorVLine: { color: "gray", width: 1 }
-							// Do not include markers if there are too
-							// many plot points.  It looks ugly and slows down
-							// plotting significantly.
-							//markers: staticPlot.times.length < 25
+							majorHLine: { color: "#CACACA", width: 1 },
+         					majorVLine: { color: "#CACACA", width: 1 }
 							});
 						chartsStatic[id].addAxis("x", {
 							title: dom.byId("staticSelect").value,
 							titleOrientation: "away", titleGap: 5
 							});
 
-						var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
+						var obj = this.getMinMaxFromArray(staticPlot.plotValues[k]);
 						chartsStatic[id].addAxis("y", {
-							vertical: true, // min: obj.min, max: obj.max,
+							vertical: true,
 							title: this.labelString(id),
+							titleGap: 20,
 							min: obj.min,
 							max:obj.max
 							});
@@ -483,12 +485,20 @@ define([
 					var check = registry.byId("selStatic" + id);
 					check.on("Change", function(checked){
 						if(checked) {
-							domAttr.remove("chartStatic" + id, "style");
-							domAttr.remove("legendStatic" + id, "style");
+							if(dom.byId("staticGraphMessage"+id).innerHTML == "") {
+								domAttr.remove("chartStatic" + id, "style");
+								domAttr.remove("legendStatic" + id, "style");
+							}else{
+								var obj = { display: "none" };
+								domAttr.set("chartStatic" + id, "style", obj);
+								domAttr.set("legendStatic" + id, "style", obj);
+								domAttr.remove("staticGraphMessage"+id, "style");
+							}
 						}else{
 							var obj = { display: "none" };
 							domAttr.set("chartStatic" + id, "style", obj);
 							domAttr.set("legendStatic" + id, "style", obj);
+							domAttr.set("staticGraphMessage"+id, "style", obj);
 						}
 					});
 				}, this);
@@ -658,33 +668,33 @@ define([
 				if(this.mode != "AUTHOR")
 				{
 					var activeSolution = this.findSolution(true, this.active.plotVariables);
-					var givenSolution = this.findSolution(false, this.given.plotVariables);	
+					var givenSolution = this.findSolution(false, this.given.plotVariables);
 					//update and render the charts
 					array.forEach(this.active.plotVariables, function(id, k){
 							// Calculate Min and Max values to plot on y axis based on given solution and your solution
-							var inf = this.checkForInfinity(activeSolution.plotValues[k]); 
+							var inf = this.checkForInfinity(activeSolution.plotValues[k]);
 							if(inf)
 								dom.byId("graphMessage" + id).innerHTML = "The values you have chosen caused the graph to go infinite. (See table.)";
 							else
 							{
 								dom.byId("graphMessage" + id).innerHTML = "";
 								var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
-								var givenObj = this.getMinMaxFromArray(givenSolution.plotValues[k]);				
+								var givenObj = this.getMinMaxFromArray(givenSolution.plotValues[k]);
 								if(givenObj.min < obj.min){
 									obj.min = givenObj.min;
 								}
 								if(givenObj.max > obj.max){
 									obj.max = givenObj.max;
-							}
-							//Redraw y axis based on new min and max values
-							this.chart[id].addAxis("y", {
-									vertical: true,
-									fixed: false,
-									min: obj.min,
-									max: obj.max,									
-									labelFunc: this.formatAxes,
-									title: this.labelString(id)
-									});
+								}
+								//Redraw y axis based on new min and max values
+								this.chart[id].addAxis("y", {
+										vertical: true,
+										fixed: false,
+										min: obj.min,
+										max: obj.max,
+										labelFunc: this.formatAxes,
+										title: this.labelString(id)
+								});
 							}
 							if(this.isCorrect)
 							{
@@ -758,14 +768,24 @@ define([
 				if(this.mode != "AUTHOR")
 				{
 					var staticVar = this.checkStaticVar(true);
-
 					var activeSolution = this.findStaticSolution(true, staticVar, this.active.plotVariables);
+					var givenSolution = this.findStaticSolution(false, staticVar, this.given.plotVariables);
+
 					//update and render the charts
 					array.forEach(this.active.plotVariables, function(id, k){
 
+						var inf = this.checkForInfinity(activeSolution.plotValues[k]);
+						if(inf) {
+							dom.byId("staticGraphMessage" + id).innerHTML = "The values you have chosen caused the graph to go infinite.";
+							domStyle.set("chartStatic"+id, "display", "none");
+							domStyle.set("legendStatic" + id, "display", "none");
+							domAttr.remove("staticGraphMessage"+id, "style");
+						}
+						else {
+							dom.byId("staticGraphMessage" + id).innerHTML = "";
 							// Calculate Min and Max values to plot on y axis based on given solution and your solution
-							/*var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
-							var givenObj = this.getMinMaxFromArray(givenSolution.plotValues[k]);				
+							var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
+							var givenObj = this.getMinMaxFromArray(givenSolution.plotValues[k]);
 							if(givenObj.min < obj.min){
 								obj.min = givenObj.min;
 							}
@@ -773,43 +793,66 @@ define([
 								obj.max = givenObj.max;
 							}
 							//Redraw y axis based on new min and max values
-							this.chart[id].addAxis("y", {
-									vertical: true,
-									min: obj.min,
-									max: obj.max,
-									title: this.labelString(id)
-									});*/
+							this.chartsStatic[id].addAxis("y", {
+								vertical: true,
+								fixed: false,
+								min: obj.min,
+								max: obj.max,
+								titleGap: 20,
+								labelFunc: this.formatAxes,
+								title: this.labelString(id)
+							});
+
 							this.chartsStatic[id].addAxis("x", {
-									title: dom.byId("staticSelect").value,
-									titleOrientation: "away", titleGap: 5
-								});
-							//console.log(id);
-							//console.log(this.chartsStatic);
+								title: dom.byId("staticSelect").value,
+								titleOrientation: "away", titleGap: 5
+							});
+
 							this.chartsStatic[id].updateSeries(
 								"Your solution",
 								this.formatSeriesForChart(activeSolution, k),
 								{stroke: "green"}
 							);
 							this.chartsStatic[id].render();
+						}
 						
 					}, this);
+
 				}
-				else
-				{
-				//update and render the charts
+				else {
+					//update and render the charts
 					var staticVar = this.checkStaticVar(true);
 					var staticPlot = this.findStaticSolution(true, staticVar, this.active.plotVariables);
+
 					array.forEach(this.active.plotVariables, function(id, k){
+						var inf = this.checkForInfinity(staticPlot.plotValues[k]);
+						if(inf) {
+							dom.byId("staticGraphMessage" + id).innerHTML = "The values you have chosen caused the graph to go infinite.";
+							domStyle.set("chartStatic"+id, "display", "none");
+						}
+						else {
+							dom.byId("staticGraphMessage" + id).innerHTML = "";
+							var givenObj = this.getMinMaxFromArray(staticPlot.plotValues[k]);
+							this.chartsStatic[id].addAxis("y", {
+								vertical: true,
+								fixed: false,
+								min: givenObj.min,
+								max: givenObj.max,
+								labelFunc: this.formatAxes,
+								titleGap: 20,
+								title: this.labelString(id)
+							});
 							this.chartsStatic[id].addAxis("x", {
-									title: dom.byId("staticSelect").value,
-									titleOrientation: "away", titleGap: 5
-								});
+								title: dom.byId("staticSelect").value,
+								titleOrientation: "away", titleGap: 5
+							});
 							this.chartsStatic[id].updateSeries(
 								"Your solution",
 								this.formatSeriesForChart(staticPlot, k),
 								{stroke: "green"}
 							);
 							this.chartsStatic[id].render();
+						}
 						
 					}, this);
 				}
@@ -821,8 +864,6 @@ define([
 		{
 			var result = false;
 			array.forEach(values, function(value){
-				//console.log(value);
-				//console.log(isFinite(value));
 				if(!isFinite(value))
 				{
 					result = true;
@@ -836,9 +877,6 @@ define([
 			var parameters = this.checkForParameters(choice);
 			var result = parameters[0];
 			var staticSelect = dom.byId("staticSelect");
-			//console.log(staticSelect.value);
-			//console.log(parameters);
-
 
 			if(typeof parameters[0].description != 'undefined')
 			{
@@ -846,7 +884,6 @@ define([
 					
 					if(parameter.description == staticSelect.value)
 					{
-						//console.log(parameter);
 						result = parameter;
 					}
 				}, this);
@@ -861,9 +898,8 @@ define([
 						tempResult = parameter;
 					}
 				}, this);
-				//console.log(tempResult);
+
 				array.forEach(parameters, function(parameter){
-					//console.log(parameter);
 					if(parameter.descriptionID == tempResult.ID)
 					{
 						result = parameter;
@@ -971,6 +1007,8 @@ define([
 		//helper function for axes
 		formatAxes: function(text, value, precision){
 			if(value > 10000){
+				return value.toPrecision(3);
+			}else if(value % 1 != 0){
 				return value.toPrecision(3);
 			}
 			else{

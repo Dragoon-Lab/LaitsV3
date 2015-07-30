@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Dragoon</title>
-
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <script type = "text/javascript" src = "version.js"></script>
     <script src="tincan/tincan-min.js"></script>
@@ -227,6 +227,22 @@
             <label for="authorSetImage">URL for Image:</label>
             <input id="authorSetImage"/>
             <img id="questionMarkURL"  class="questionMark" src="images/questionmark.png"/>
+        </div>
+
+          <div class="fieldgroup">
+            <label for="authorSetParameters" >Node to adjust: </label>    
+            <select id="authorSetParameters" name="authorSetParameters" data-dojo-type="dijit/form/Select" style="border:solid black 1px;">
+            <!-- <option value='defaultSelect'>--Select--</option> -->
+            </select>
+        </div>        
+
+        <div class="fieldgroup">
+            <label for="authorSetParamDir" > Direction of adjustment: </label>
+            <select id="authorSetParamDir" name="authorSetParamDir" data-dojo-type="dijit/form/Select" style="border:solid black 1px;">
+                <option value='defaultSelect'>--Select--</option>
+                <option value="Increase">Increase</option>
+                <option value="Decrease">Decrease</option>
+            </select>
         </div>
 
         <div class="fieldgroup">

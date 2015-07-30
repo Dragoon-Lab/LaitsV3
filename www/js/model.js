@@ -64,10 +64,10 @@ define([
 					image: {},
 					taskDescription: "",
 					lessonsLearned: "",
+                    increment:[],
 					givenModelNodes: [],
 					studentModelNodes: [],
-					schemas: [],
-					increment: []
+					schemas: []
 				}};
 
 				/*
@@ -285,6 +285,17 @@ define([
 			getInitialTweakDirection: function(){
 				return this.model.task.increment[0].tweakDirection;
 			},
+             getInc:function(){
+                myThis=this;
+                return array.map(this.getIncrements(), function(inc){             
+                    return {label:myThis.given.getName(inc.tweakedNode) , value: inc.tweakDirection};
+                });
+            },
+
+            getIncrements: function(){
+
+                return this.model.task.increment;
+           },
             getModelAsString: function(){
 				// Summary: Returns a JSON object in string format
 				//			Should only be used for debugging.
@@ -332,6 +343,16 @@ define([
 			getIntegrationMethod: function(){
 				return this.model.task.time.integrationMethod;
 			},
+            getInc:function(){
+                myThis=this;
+                return array.map(this.getIncrements(), function(inc){             
+                    return {label:myThis.given.getName(inc.tweakedNode) , value: inc.tweakDirection};
+                });
+            },
+            getIncrements: function(){
+
+                return this.model.task.increment;
+           },
 			getTaskDescription: function(){
 				return this.model.task.taskDescription;
 			},
@@ -440,7 +461,16 @@ define([
 			},
 			setTaskLessonsLearned: function(/*string*/ lessonsLearned){
 				this.model.task.lessonsLearned = lessonsLearned;
-			}
+			},
+            setIncrements: function(/*string*/ op, /*string*/ node, /*string*/ direction){              
+                if (op=="clear")                     
+                    this.model.task.increment.length=0; 
+                else
+                    this.model.task.increment=[{tweakedNode:node, tweakDirection: direction}];
+                
+                console.log("seting the increment field to", this.model.task.increment);              
+
+            }
 		};
 
 		/*
@@ -607,8 +637,8 @@ define([
 			validateTweakDirections: function(){
 				var nodes = this.getNodes();
 				var flag = array.every(nodes, function(node){
-					return (!(!node.genus || node.genus == "" || node.genus == "required") || (node.tweakDirection && node.tweakDirection != ""));
-				});
+					return (!this.isNodeRequired(node.ID) || (node.tweakDirection && node.tweakDirection != ""));
+				}, this);
 
 				return flag ? true : false;
 			}
@@ -989,7 +1019,7 @@ define([
 
 				return plotVariables;
 			},
-			checkNodeMandatory: function(id){
+			isNodeRequired: function(id){
 				var givenNode = this.getNode(id);
 				if(!givenNode.genus || givenNode.genus == "" || givenNode.genus == "required"){
 					return true;
@@ -1259,9 +1289,9 @@ define([
 					return false;
 				}
 			},
-			checktNodeMandatory: function(id){
+			isNodeRequired: function(id){
 				var descriptionID = this.getDescriptionID(id);
-				return descriptionID || obj.given.checkNodeMandatory(descriptionID);
+				return descriptionID || obj.given.isNodeRequired(descriptionID);
 			},
 			deleteStudentNodes: function(){
 				obj.model.task.studentModelNodes = [];
