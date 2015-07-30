@@ -546,16 +546,15 @@ define([
 				return;
 			}
 			var contentMsg = this.model.getTaskLessonsLearned();
+			// patching code to enable lessonlearned when first array is not empty
+			if(contentMsg.length == 0 || contentMsg[0] != "" ){
+				return;	
+			}
 			var shown = this.model.isLessonLearnedShown;
 			this.model.isLessonLearnedShown = true;
-			this._state.put("isLessonLearnedShown",true);
-			
-			
-			// patching code to enable lessonlearned when first array is not empty
-			if(contentMsg.length > 0 && contentMsg[0] != ""){
-				var lessonsLearnedButton = registry.byId("lessonsLearnedButton");   
-				lessonsLearnedButton.set("disabled", false);
-			}
+			this._state.put("isLessonLearnedShown",true);			
+			var lessonsLearnedButton = registry.byId("lessonsLearnedButton");   
+			lessonsLearnedButton.set("disabled", false);
 			var userName = this.model;
 			var handle = this.dialogWidget.connect(this.dialogWidget,"hide",function(e) {
 				if(!contentMsg || shown) {
