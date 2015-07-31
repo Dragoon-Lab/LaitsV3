@@ -286,11 +286,11 @@ define([
 
 		ready(function(){
 			var updateModel = new modelUpdates(givenModel, query.m, session);
-			if(activity_config.get("setTweakDirections")){
+			if(activity_config.get("setTweakDirections") && !givenModel.given.validateTweakDirections()){	
 				updateModel.calculateTweakDirections();
 			}
 			
-			if(activity_config.get("initializeStudentModel") && !givenModel.isCompleteFlag){
+			if(activity_config.get("initializeStudentModel") && !givenModel.areRequiredNodesVisible()){
 				console.log("student model being initialized");
 				updateModel.initializeStudentModel(activity_config.get("setStudentTweakDirection"));
 			}
@@ -517,20 +517,7 @@ define([
 			if(activity_config.get("allowProblemTimes")){
 				var descButton = registry.byId("descButton");
 				descButton.set("disabled", false);
-
-				/* // TODO: CHECK IF NEEDED BY ACTIVITY PARAMS
-				 if(query.m == "AUTHOR"){
-				 var db = registry.byId("descButton");
-				 db.set("disabled", false);
-				 db = registry.byId("saveButton");
-				 db.set("disabled", false);
-				 db = registry.byId("mergeButton");
-				 db.set("disabled", false);
-				 db = registry.byId("previewButton");
-				 db.set("disabled", false);
-				 db = registry.byId("schemaButton");
-				 db.set("disabled", false);
-				 */
+				descObj.initializeAuthorWindow();
 
 				// Description button wiring
 				menu.add("descButton", function(e){
@@ -744,7 +731,7 @@ define([
 						group=null;
 						section=null;
 					}
-					var query = {g:group,m:"AUTHOR",s:section,p:problem};
+					var query = {g:group,m:"AUTHOR",s:section,p:problem,a:"construction"};
 					session.loadProblem(query).then(function(solutionGraph){
 						console.log("Merge problem is loaded "+solutionGraph);
 						if(solutionGraph){

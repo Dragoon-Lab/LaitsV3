@@ -39,9 +39,10 @@ define([
             this.givenModel = givenModel;
             this.timeObj = givenModel.getTime();
             this._activity=activity;
-            //this.increment=this.givenModel.getIncrements();
+        },
 
-            //Read Values from timeObj and place them in description editor
+		initializeAuthorWindow: function(){
+			//Read Values from timeObj and place them in description editor
             //We also assign them as previous start, stop times and time step
             dom.byId("authorSetTimeStart").value = this.timeObj.start;
             this.lastStartTime = {value: this.timeObj.start};
@@ -54,66 +55,46 @@ define([
 
             dom.byId("authorSetTimeStepUnits").value = this.timeObj.units || "seconds";
             dom.byId("authorSetIntegrationMethod").value = this.timeObj.integrationMethod || "Eulers Method";
-            dom.byId("authorSetImage").value = givenModel.getImageURL() || "";
+            dom.byId("authorSetImage").value = this.givenModel.getImageURL() || "";
             dom.byId("authorSetLessonsLearned").value = this.serialize(
-                givenModel.getTaskLessonsLearned() ? givenModel.getTaskLessonsLearned() : ""
+                this.givenModel.getTaskLessonsLearned() ? this.givenModel.getTaskLessonsLearned() : ""
             );
             dom.byId("authorSetDescription").value = this.serialize(
-                givenModel.getTaskDescription() ? givenModel.getTaskDescription() : ""  
+                this.givenModel.getTaskDescription() ? this.givenModel.getTaskDescription() : ""  
             );
              // Populating parameter field
             var list=[]; //list of all required parameters[{label: "growth rate",value: "id3"},...]
-            var opts=[];// populating field [{label: "growth rate",value: "id3"},...]
             paramWidget=registry.byId("authorSetParameters");
             paramDirWidget=registry.byId("authorSetParamDir");
-            increments=this.givenModel.getInc(); // increment field in the model: array of Object{label: "growth rate",value: "Increase"}
-           
-             //  Generating the list of all the required parameters in the model
-            var nods=this.givenModel.given.getNodes()
-            var myThis=this;
-            array.forEach(nods, function(nod){
-                var nodeGenus=myThis.givenModel.given.getGenus(nod.ID)
-                 if (nod.type==="parameter" && (typeof nodeGenus==="undefined" || nodeGenus==="in model and required"))
-                        list.push({value:nod.ID, label:nod.name});
-             });
 
-            // checking if the list is not empty and the node is in the list
-            if (increments.length>0 ){
-              var flag=false;
-              var lbl="";
-              var id;
-              array.forEach(list,function(l){
-                if(l.label==increments[0].label){
-                    flag=true;
-                    lbl=l.label;
-                    id=l.value;
-                    }
-                });
-                if(flag){//the list is not empty and the node is in the list
-                   opts.push({label:lbl, value:id});//setting the default
-                   paramDirWidget.set('value', increments[0].value);
-                   opts.push({value:'defaultSelect', label:'--Select--', Selected: true});
-                }else {//the list is not empty but the increment node is not in the list
-                  this.givenModel.setIncrements([]); 
-                  opts.push({value:'defaultSelect', label:'--Select--', Selected: true});                  
-                }
-                
-            }else // if increments field is empty
-                opts.push({value:'defaultSelect', label:'--Select--', Selected: true});
+            var increments=this.givenModel.getIncrements(); // increment field in the model: array of Object{label: "growth rate",value: "Increase"}
+			//  Generating the list of all the required parameters in the model
+            var nodes = this.givenModel.given.getNodes();
+			list.push({
+				value: "defaultSelect",
+				label: "--Select--"
+			});
+            array.forEach(nodes, function(node){
+				if (node.type == "parameter" && this.givenModel.given.isNodeRequired(node.ID)){
+					list.push({
+						value:node.ID, 
+						label:node.name
+					});
+				}
+            }, this);
+			
+			//setting up the list as the param widget
+			paramWidget.set("options", list);
 
-            //prepare the populating list
-            array.forEach(list, function(l){
-                if (l.label!==lbl)    
-                    opts.push(l);
-            });
-
-            // populating the field 
-            array.forEach(opts, function(opt){
-                paramWidget.addOption(opt);            
-            });
-            
-            ready(this, this._initHandles);
-        },
+			if(increments.length > 0){
+				paramWidget.set("value", increments[0].tweakedNode);	
+				paramDirWidget.set("value", increments[0].tweakDirection);
+			} else {
+				paramWidget.set("value", "defaultSelect");
+				paramDirWidget.set("value", "defaultSelect");
+			}
+			this._initHandles();
+		},
 
         //set up event handling with UI components
         _initHandles: function() {
@@ -225,7 +206,15 @@ define([
                     ll_sanitize = ll_sanitize.reverse().filter(function(ele, idx, array){
                         if(flag || ele.length > 0) return flag = true;
                     });
-                 
+                 	
+					var param= paramWidget.value;
+            		var direc = paramDirWidget.value;
+					if (param != 'defaultSelect' && direc != 'defaultSelect'){ //both are valid selection
+						myThis.givenModel.setIncrements(param, direc);
+						// this.increment.push({tweakednode:param, tweakDIrection:direc}); 
+					}else// both invalid or default
+						myThis.givenModel.setIncrements("", "");
+					
                     myThis.givenModel.setTaskDescription(tin_sanitize.reverse());
                     myThis.givenModel.setTaskLessonsLearned(ll_sanitize.reverse());
                     myThis.timeObj.units = dom.byId("authorSetTimeStepUnits").value;
@@ -236,7 +225,8 @@ define([
                     var url = dom.byId("authorSetImage").value;
                     myThis.givenModel.setImage(url ? {URL: url} : {});
                     myThis.showDescription();
-                    //after it has passed all those checks we
+                    
+					//after it has passed all those checks we
                     // do normal closeEditor routine and hide
                     doHide.apply(myThis._descEditor);
                     console.log("close description editor is being called");
@@ -308,14 +298,7 @@ define([
 
         descDoneHandler:function(){
            console.log("++++++in descDoneHandler");
-            var param= paramWidget.value;
-            var direc = paramDirWidget.value;
-            if (param !== 'defaultSelect' && direc !== 'defaultSelect'){ //both are valid selection
-                this.givenModel.setIncrements("add",param,direc); 
-               // this.increment.push({tweakednode:param, tweakDIrection:direc}); 
-            }else// both invalid or default
-             this.givenModel.setIncrements("clear");            
-        },
+		},
 
         // add line breaks
         // use string split method to unserialize
