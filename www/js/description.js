@@ -115,14 +115,14 @@ define([
             //for start time field
             descWidgetStart.on("change", lang.hitch(this, function () {
                 var ret_start_time = typechecker.checkInitialValue('authorSetTimeStart', this.lastStartTime);
-                if (ret_start_time.value) {
+               if (typeof ret_start_time !== "undefined" && ret_start_time.status ) {
                     this.timeObj.start = ret_start_time.value;
                 }
             }));
             //for end time field
             descWidgetStop.on("change", lang.hitch(this, function () {
                 var ret_stop_time = typechecker.checkInitialValue('authorSetTimeEnd', this.lastStopTime);
-                if (ret_stop_time.value) {
+                 if (typeof ret_stop_time !== "undefined" && ret_stop_time.status ) {
                     this.timeObj.end = ret_stop_time.value;
                 }
             }));
@@ -145,27 +145,52 @@ define([
                     //We check the return status and error type for Start Time, Stop Time,Time Step
                     // and incase there is an error with a defined type
                     // we don't close the description editor and further prompt to fix errors in input
+                    errorDialogSpan = dom.byId("start_end_errorbox");
+                    
+                    // start time
                     var ret_start_time = typechecker.checkInitialValue('authorSetTimeStart', myThis.lastStartTime);
-                    if (ret_start_time.errorType) {
+                    if (typeof ret_start_time === "undefined") {
+                        errorDialogSpan.innerHTML=" The time fields can't be empty"
+                        errorDialogSpan.style.display="inline-block";
+                        myThis.timeObj.start = myThis.lastStartTime.value;
                         return;
                     }
+                    else if (ret_start_time.errorType ) {
+                        console.log(ret_start_time.errorType);
+                        myThis.timeObj.start = myThis.lastStartTime.value
+                        return;
+                    }
+                    else if (ret_start_time.status)
+                        myThis.timeObj.start = ret_start_time.value;
 
+                    // end time
                     var ret_stop_time = typechecker.checkInitialValue('authorSetTimeEnd', myThis.lastStopTime);
-                    if (ret_stop_time.errorType) {
+                    if (typeof ret_stop_time === "undefined") {
+                        errorDialogSpan.innerHTML=" The time fields can't be empty"
+                        errorDialogSpan.style.display="inline-block";
+                        myThis.timeObj.end = myThis.lastStopTime.value;
                         return;
                     }
+                    else if (ret_stop_time.errorType ) {
+                        console.log(ret_stop_time.errorType);
+                        myThis.timeObj.end= myThis.lastStopTime.value;
+                        return;
+                    }
+                    else if (ret_stop_time.status)
+                        myThis.timeObj.end = ret_stop_time.value;
 
+                    // time step
                     var ret_step_time = 1;
                     if (ret_step_time.errorType) {
                         return;
                     }
 
-                    if (! (typeof ret_start_time.value === "undefined")) {
-                        myThis.timeObj.start = ret_start_time.value;
-                    }
-                    if (! (typeof ret_stop_time.value === "undefined")) {
-                        myThis.timeObj.end = ret_stop_time.value;
-                    }
+                    // if (! (typeof ret_start_time.value === "undefined")) {
+                    //     myThis.timeObj.start = ret_start_time.value;
+                    // }
+                    // if (! (typeof ret_stop_time.value === "undefined")) {
+                    //     myThis.timeObj.end = ret_stop_time.value;
+                    // }
                     if (! (typeof ret_step_time.value === "undefined")) {
                         myThis.timeObj.step = ret_step_time.value;
                     }
@@ -173,10 +198,10 @@ define([
                     //domStyle.set("timestep_errorbox1","display","none");
                     //domStyle.set("timestep_errorbox2","display","none");
                     var time_step_max = myThis.timeObj.end-myThis.timeObj.start;
-                    errorDialogSpan = dom.byId("start_end_errorbox");
                     if(!( (myThis.timeObj.start < myThis.timeObj.end) )){
                         console.log("start time more than end time");
-                        domStyle.set(errorDialogSpan,"display","");
+                        domStyle.set(errorDialogSpan,"display","inline-block");
+                        errorDialogSpan.innerHTML="Start time must be less than end time";
                         return;
                     }
                     /*errorDialogSpan = dom.byId("timestep_errorbox1");

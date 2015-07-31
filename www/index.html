@@ -212,7 +212,7 @@
             <label for="authorSetTimeEnd">End Time:</label>
             <input id="authorSetTimeEnd" style="width:5em" value="10" data-dojo-type="dijit/form/TextBox"/>
             <div id="timeEndUnits">seconds</div>
-            <div id="start_end_errorbox" style="border: 2px solid #ff0000; display: none;">Start time must be less than end time</div>
+           <!--  <div id="start_end_errorbox" style="border: 2px solid #ff0000; display: none;">Start time must be less than end time</div> -->
 
         </div>
         <div class="fieldgroup">
@@ -255,6 +255,8 @@
             <img id="questionMarkLessons"  class="questionMark" src="images/questionmark.png"/>
             <textarea id="authorSetLessonsLearned" name="authorSetLessonsLearned" data-dojo-type="dijit/form/SimpleTextarea" value="Enter Lessons Learned here..."></textarea>
         </div>
+
+         <div id="start_end_errorbox" style="border: 2px solid #ff0000; display: none;"></div>
         <div class="fieldgroup" style="visibility: hidden;">
             <label for="authorProblemShare" title="Share this problem with students.">Share Problem:</label>
             <input id="authorProblemShare" name="authorProblemShare" data-dojo-type="dijit/form/CheckBox" value="agreed" checked="false"/>
