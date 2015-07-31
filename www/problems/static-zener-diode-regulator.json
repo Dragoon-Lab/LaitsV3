@@ -1,6 +1,6 @@
 {
     "task": {
-        "taskName": "Model a Zener Diode Regulator (Static)",
+        "taskName": "Model a Zener Diode Voltage Regulator (Static)",
         "time": {
             "start": 0,
             "end": 10,
@@ -19,11 +19,7 @@
             "URL": "http:\/\/i.imgur.com\/oBF2hBY.png?1"
         },
         "taskDescription": [
-            "Create a model for the zener diode voltage regulator shown here.  The power supply is 20 volts.  Assume a 13-volt diode. The resistance of resistor R1 is 180 ohms and the resistance of the load resistor(LOAD R) is 100 ohms. Graph the resistance of the zener.  The nodes for the power supply and the resistor's resistance are given to you.",
-            "",
-            "",
-            "",
-            ""
+            "Create a model for the zener diode voltage regulator shown here.  The power supply is 20 volts.  Assume a 13-volt diode. The resistance of resistor R1 is 180 ohms and the resistance of the load resistor(LOAD R) is 1000 ohms. Graph the resistance of the zener.  The nodes for the power supply and the resistor's resistance are given to you. See what happens when you vary the supply voltage or the load resistance"
         ],
         "givenModelNodes": [
             {
@@ -57,11 +53,15 @@
                     {
                         "ID": "id3",
                         "label": ""
+                    },
+                    {
+                        "ID": "id27",
+                        "label": "-"
                     }
                 ],
                 "position": {
-                    "x": 745,
-                    "y": 418
+                    "x": 760,
+                    "y": 421
                 },
                 "attemptCount": {
                     "description": 0,
@@ -98,13 +98,16 @@
                     },
                     "inputs": {
                         "disabled": false
+                    },
+                    "kind": {
+                        "status": "entered"
                     }
                 },
                 "name": "Current thru Zener",
                 "description": "Current through the Zener diode",
                 "type": "function",
                 "units": "amps",
-                "equation": "id3",
+                "equation": "id3-id27",
                 "genus": "required"
             },
             {
@@ -397,7 +400,7 @@
                 "equation": "",
                 "type": "parameter",
                 "parentNode": false,
-                "initial": 100,
+                "initial": 1000,
                 "units": "ohms",
                 "genus": "required"
             },
@@ -652,7 +655,26 @@
                     "cues": 1,
                     "phrases": 1
                 }
+            },
+            {
+                "ID": "schema17",
+                "schemaClass": "kirchoff_current_law",
+                "name": "Kirchoff's Current Law",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id2, id3, id27",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
             }
-        ]
+        ],
+        "lessonsLearned": []
     }
 }

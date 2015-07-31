@@ -10,10 +10,7 @@
         },
         "properties": {},
         "increment": [
-            {
-                "tweakedNode" : "id11",
-                "tweakDirection": "Decrease"
-            }
+            {}
         ],
         "image": {
             "URL": "http:\/\/i.stack.imgur.com\/BLGnf.gif"
@@ -39,7 +36,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-					"tweakDirection": 0,
+                    "tweakDirection": 0,
                     "assistanceScore": 0
                 },
                 "status": {
@@ -93,7 +90,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-					"tweakDirection": 0,
+                    "tweakDirection": 0,
                     "assistanceScore": 1
                 },
                 "status": {},
@@ -123,7 +120,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-					"tweakDirection": 0,
+                    "tweakDirection": 0,
                     "assistanceScore": 0
                 },
                 "status": {},
@@ -151,7 +148,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-					"tweakDirection": 0,
+                    "tweakDirection": 0,
                     "assistanceScore": 0
                 },
                 "status": {},
@@ -184,7 +181,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-					"tweakDirection": 0,
+                    "tweakDirection": 0,
                     "assistanceScore": 0
                 },
                 "status": {
@@ -238,8 +235,8 @@
                     }
                 ],
                 "position": {
-                    "x": 791,
-                    "y": 454
+                    "x": 669,
+                    "y": 118
                 },
                 "attemptCount": {
                     "description": 0,
@@ -247,7 +244,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-					"tweakDirection": 0,
+                    "tweakDirection": 0,
                     "assistanceScore": 0
                 },
                 "status": {},
@@ -280,7 +277,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-					"tweakDirection": 0,
+                    "tweakDirection": 0,
                     "assistanceScore": 0
                 },
                 "status": {},
@@ -304,8 +301,8 @@
                     }
                 ],
                 "position": {
-                    "x": 728,
-                    "y": 317
+                    "x": 817,
+                    "y": 335
                 },
                 "attemptCount": {
                     "description": 0,
@@ -313,10 +310,40 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-					"tweakDirection": 0,
+                    "tweakDirection": 0,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                },
                 "name": "discharging capacitor",
                 "description": "Voltage removed from capacitor by output current",
                 "genus": "required",
@@ -337,8 +364,8 @@
                     }
                 ],
                 "position": {
-                    "x": 891,
-                    "y": 321
+                    "x": 980,
+                    "y": 338
                 },
                 "attemptCount": {
                     "description": 0,
@@ -346,7 +373,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-					"tweakDirection": 0,
+                    "tweakDirection": 0,
                     "assistanceScore": 0
                 },
                 "status": {},
@@ -361,8 +388,8 @@
                 "ID": "id10",
                 "inputs": [],
                 "position": {
-                    "x": 717.33093261719,
-                    "y": 111.33095550537
+                    "x": 807.33093261719,
+                    "y": 106.33095550537
                 },
                 "attemptCount": {
                     "description": 0,
@@ -370,7 +397,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-					"tweakDirection": 0,
+                    "tweakDirection": 0,
                     "assistanceScore": 0
                 },
                 "status": {},
@@ -387,8 +414,8 @@
                 "ID": "id11",
                 "inputs": [],
                 "position": {
-                    "x": 882.33093261719,
-                    "y": 112.33095550537
+                    "x": 919.33093261719,
+                    "y": 104.33095550537
                 },
                 "attemptCount": {
                     "description": 0,
@@ -396,7 +423,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-					"tweakDirection": 0,
+                    "tweakDirection": 0,
                     "assistanceScore": 0
                 },
                 "status": {},
