@@ -1,6 +1,6 @@
 {
     "task": {
-        "taskName": "Model RL Series Circuits,
+        "taskName": "Model RL Series Circuits",
         "time": {
             "start": 0,
             "end": 0.1,
@@ -578,7 +578,7 @@
                 "descriptionID": "id5",
                 "units": "voltage",
                 "type": "function",
-                "equation": "id9*sinewave(1\/60,0)"
+                "equation": "id9*pulsetrain((0,5),5)"
             }
         ],
         "schemas": [
