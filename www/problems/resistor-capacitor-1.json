@@ -576,7 +576,7 @@
                 "descriptionID": "id9",
                 "units": "volts",
                 "type": "function",
-                "equation": "id10*sinewave(1\/60,0)"
+                "equation": "id10*pulsetrain((0,5),5)"
             }
         ],
         "schemas": [
