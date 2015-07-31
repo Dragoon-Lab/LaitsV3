@@ -287,7 +287,7 @@ define([
 				return this.model.task.increment[0].tweakDirection;
 			},
             getIncrements: function(){
-				return this.model.task.increment;
+				return (typeof this.model.task.increment!== "undefined") ? this.model.task.increment:[];
 			},
             getModelAsString: function(){
 				// Summary: Returns a JSON object in string format
