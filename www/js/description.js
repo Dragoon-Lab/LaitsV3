@@ -52,7 +52,7 @@ define([
 
             //dom.byId("authorSetTimeStep").value = this.timeObj.step;
             this.lastStepTime = {value: this.timeObj.step};
-
+            dom.byId("problemName").value = this.givenModel.getTaskName() || "";
             dom.byId("authorSetTimeStepUnits").value = this.timeObj.units || "seconds";
             dom.byId("authorSetIntegrationMethod").value = this.timeObj.integrationMethod || "Eulers Method";
             dom.byId("authorSetImage").value = this.givenModel.getImageURL() || "";
@@ -218,11 +218,17 @@ define([
                     }*/
          
                     domStyle.set(errorDialogSpan,"display","none");
+
+                    var tname = dom.byId("problemName").value; 
+                    myThis.givenModel.setTaskName(tname);
+                    document.title = "Dragoon - " + tname;
+                    
                     var tin = dom.byId("authorSetDescription").value;
                     var ll = dom.byId("authorSetLessonsLearned").value;
+                    
+                    // sanitize by removing trailing null values
                     var tin_sanitize = tin.split("\n");
                     var ll_sanitize = ll.split("\n");
-                    // sanitize by removing trailing null values
                     var flag = false;
                     tin_sanitize = tin_sanitize.reverse().filter(function(ele, idx, array){
                         if(flag || ele.length > 0) return flag = true;
@@ -339,7 +345,76 @@ define([
                 return result;
             }
         },
+        updateModel : function(){
+            var myThis = this;
+            //We check the return status and error type for Start Time, Stop Time,Time Step
+            // and incase there is an error with a defined type
+            // we don't close the description editor and further prompt to fix errors in input
+            var ret_start_time = typechecker.checkInitialValue('authorSetTimeStart', myThis.lastStartTime);
+            if (ret_start_time.errorType) {
+                return;
+            }
 
+            var ret_stop_time = typechecker.checkInitialValue('authorSetTimeEnd', myThis.lastStopTime);
+            if (ret_stop_time.errorType) {
+                return;
+            }
+
+            var ret_step_time = 1;
+            if (ret_step_time.errorType) {
+                return;
+            }
+
+            if (! (typeof ret_start_time.value === "undefined")) {
+                myThis.timeObj.start = ret_start_time.value;
+            }
+            if (! (typeof ret_stop_time.value === "undefined")) {
+                myThis.timeObj.end = ret_stop_time.value;
+            }
+            if (! (typeof ret_step_time.value === "undefined")) {
+                myThis.timeObj.step = ret_step_time.value;
+            }
+            domStyle.set("start_end_errorbox","display","none");
+            //domStyle.set("timestep_errorbox1","display","none");
+            //domStyle.set("timestep_errorbox2","display","none");
+            var time_step_max = myThis.timeObj.end-myThis.timeObj.start;
+            errorDialogSpan = dom.byId("start_end_errorbox");
+            if(!( (myThis.timeObj.start < myThis.timeObj.end) )){
+                console.log("start time more than end time");
+                domStyle.set(errorDialogSpan,"display","");
+                return;
+            }
+            var tname = dom.byId("problemName").value; 
+            myThis.givenModel.setTaskName(tname);
+            document.title = "Dragoon - " + tname;
+            
+            domStyle.set(errorDialogSpan,"display","none");
+            var tin = dom.byId("authorSetDescription").value;
+            var ll = dom.byId("authorSetLessonsLearned").value;
+            
+            
+            // sanitize by removing trailing null values
+            var tin_sanitize = tin.split("\n");
+            var ll_sanitize = ll.split("\n");
+            var flag = false;
+            tin_sanitize = tin_sanitize.reverse().filter(function(ele, idx, array){
+                if(flag || ele.length > 0) return flag = true;
+            });
+            flag = false;
+            ll_sanitize = ll_sanitize.reverse().filter(function(ele, idx, array){
+                if(flag || ele.length > 0) return flag = true;
+            });
+         
+            myThis.givenModel.setTaskDescription(tin_sanitize.reverse());
+            myThis.givenModel.setTaskLessonsLearned(ll_sanitize.reverse());
+            myThis.timeObj.units = dom.byId("authorSetTimeStepUnits").value;
+            myThis.timeObj.integrationMethod = dom.byId("authorSetIntegrationMethod").value;
+            myThis.givenModel.setTime(myThis.timeObj);
+           
+            var url = dom.byId("authorSetImage").value;
+            myThis.givenModel.setImage(url ? {URL: url} : {});
+            console.log("Model is updated");
+        },
         showDescription: function(){
            
             var canvas = dom.byId('myCanvas');
