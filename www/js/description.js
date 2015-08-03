@@ -52,7 +52,7 @@ define([
 
             //dom.byId("authorSetTimeStep").value = this.timeObj.step;
             this.lastStepTime = {value: this.timeObj.step};
-            dom.byId("problemName").value = this.givenModel.getTaskName() || "";
+            dom.byId("taskName").value = this.givenModel.getTaskName() || "";
             dom.byId("authorSetTimeStepUnits").value = this.timeObj.units || "seconds";
             dom.byId("authorSetIntegrationMethod").value = this.timeObj.integrationMethod || "Eulers Method";
             dom.byId("authorSetImage").value = this.givenModel.getImageURL() || "";
@@ -272,7 +272,7 @@ define([
                 domStyle.set(errorDialogSpan,"display","");
                 return;
             }
-            var tname = dom.byId("problemName").value; 
+            var tname = dom.byId("taskName").value; 
             myThis.givenModel.setTaskName(tname);
             document.title = "Dragoon - " + tname;
             
