@@ -25,7 +25,7 @@ catch(Exception $e){
 }	
 try {
 
-	$name = $modelArray["taskName"];
+	$name = (isset($_REQUEST['p']))?$_REQUEST['p']:modelArray["taskName"];
 	$name = str_replace(" ", "-", $name);
 	$name = "problems/".$name.".json";
 	//checking if the file name already exists
