@@ -286,11 +286,11 @@ define([
 
 		ready(function(){
 			var updateModel = new modelUpdates(givenModel, query.m, session);
-			if(activity_config.get("setTweakDirections")){
+			if(activity_config.get("setTweakDirections") && !givenModel.given.validateTweakDirections()){	
 				updateModel.calculateTweakDirections();
 			}
 			
-			if(activity_config.get("initializeStudentModel") && !givenModel.isCompleteFlag){
+			if(activity_config.get("initializeStudentModel") && !givenModel.areRequiredNodesVisible()){
 				console.log("student model being initialized");
 				updateModel.initializeStudentModel(activity_config.get("setStudentTweakDirection"));
 			}
@@ -332,17 +332,14 @@ define([
 			var drawModel = new drawmodel(givenModel.active, ui_config.get("showColor"), activity_config);
 			drawModel.setLogging(session);
 
-
-			// Wire up drawing new node
-			aspect.after(controllerObject, "addNode",
-				lang.hitch(drawModel, drawModel.addNode),
-				true);
-
+			
 			// add mouse enter and mouse leave event for every new node	
 			var iBoxController = new ImageBox(givenModel.getImageURL(), givenModel);
+			
 			iBoxController.initNodeMouseEvents();
-
+			// for the new nodes added during the session
 			aspect.after(drawModel, "addNode", function(vertex){
+				
 				var context = iBoxController;
 				console.log("AddNode Called", vertex);
 				var target = document.getElementById(vertex.ID);
@@ -361,6 +358,13 @@ define([
 				});
 
 			}, true);
+			
+			// Wire up drawing new node
+			aspect.after(controllerObject, "addNode",
+				lang.hitch(drawModel, drawModel.addNode),
+				true);
+
+			
 
 			// Wire up send to server
 			aspect.after(drawModel, "updater", function(){
@@ -513,20 +517,7 @@ define([
 			if(activity_config.get("allowProblemTimes")){
 				var descButton = registry.byId("descButton");
 				descButton.set("disabled", false);
-
-				/* // TODO: CHECK IF NEEDED BY ACTIVITY PARAMS
-				 if(query.m == "AUTHOR"){
-				 var db = registry.byId("descButton");
-				 db.set("disabled", false);
-				 db = registry.byId("saveButton");
-				 db.set("disabled", false);
-				 db = registry.byId("mergeButton");
-				 db.set("disabled", false);
-				 db = registry.byId("previewButton");
-				 db.set("disabled", false);
-				 db = registry.byId("schemaButton");
-				 db.set("disabled", false);
-				 */
+				descObj.initializeAuthorWindow();
 
 				// Description button wiring
 				menu.add("descButton", function(e){
@@ -636,7 +627,7 @@ define([
 					}else if(typeof groupName!=='undefined' && groupName==''){
 						alert('Missing Group Name');
 						return;
-					}else if(problemName && problemName.length > 0 && problemName.length<=30 && checkProblemName.test(problemName)){
+					}else if(problemName && problemName.length > 0 && problemName.length<=50 && checkProblemName.test(problemName)){
 						var checkHyphen = new RegExp('^[\-]+$');
 						if(!checkHyphen.test(problemName)){
 							if (groupName.split("(")[0]+"("=="Private("){
@@ -649,7 +640,7 @@ define([
 							return;
 						}
 					}else{
-						alert("Problem names must be between 1 and 30 characters, and may only include alphanumeric characters and the \"-\" symbol");
+						alert("Problem names must be between 1 and 50 characters, and may only include alphanumeric characters and the \"-\" symbol");
 						return;
 					}
 
@@ -740,7 +731,7 @@ define([
 						group=null;
 						section=null;
 					}
-					var query = {g:group,m:"AUTHOR",s:section,p:problem};
+					var query = {g:group,m:"AUTHOR",s:section,p:problem,a:"construction"};
 					session.loadProblem(query).then(function(solutionGraph){
 						console.log("Merge problem is loaded "+solutionGraph);
 						if(solutionGraph){
@@ -865,6 +856,7 @@ define([
 			}
 
 			if(activity_config.get("allowGraph")){
+		
 				var graphButton = registry.byId("graphButton");
 				graphButton.set("disabled", false);
 
@@ -872,6 +864,7 @@ define([
 				menu.add("graphButton", function(e){
 					event.stop(e);
 					console.debug("button clicked");
+							
 					// instantiate graph object
 					var buttonClicked = "graph";
 					var graph = new Graph(givenModel, query.m, session, buttonClicked);
@@ -889,6 +882,7 @@ define([
 				//the solution div which shows graph/table when closed
 				//should disable all the pop ups
 				aspect.after(registry.byId('solution'), "hide", function(){
+					
 					console.log("Calling graph/table to be closed");
 					controllerObject.logging.log('ui-action', {
 						type: "menu-choice",
@@ -941,10 +935,10 @@ define([
 					controllerObject.setForum(query);
 				}
 			}
-
+			
 			if(activity_config.get("allowLessonsLearned")){
 
-				//Disable the lessonsLearnedButton
+				//Enable the lessonsLearnedButton
 				//var lessonsLearnedButton = registry.byId("lessonsLearnedButton");
 				//lessonsLearnedButton.set("disabled", true);
 				//Bind lessonsLearnedButton to the click event

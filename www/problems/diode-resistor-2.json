@@ -13,7 +13,7 @@
             "URL": "http:\/\/www.johnloomis.org\/ece201L\/lab6\/diode1.jpg"
         },
         "taskDescription": [
-            "Model a diode in series with a resistor and a variable voltage source.  Assume the diode is ideal, the resistor is 500 ohms and the voltage varies between +5 volts and -5 volts.  Nodes have been given to you that represent the varying source voltage. Graph the current through the diode."
+            "Model a diode in series with a resistor and a variable voltage source.  Assume the diode is ideal, the resistor is 500 ohms and the voltage varies between +5 volts and -5 volts.  Nodes have been given to you that represent the varying source voltage.  You should use the max() function (see math functions in the help menu) to compute the voltage at VL.  Your final goal is to graph of the current through the diode."
         ],
         "lessonsLearned": [],
         "givenModelNodes": [
@@ -399,7 +399,7 @@
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id3",
+                "nodes": "id3,id4",
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,
@@ -417,7 +417,7 @@
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id5",
+                "nodes": "id5,id4",
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,
@@ -435,7 +435,7 @@
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id5",
+                "nodes": "id5,id4",
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,
@@ -453,7 +453,7 @@
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id5",
+                "nodes": "id5,id4",
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,

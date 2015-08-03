@@ -602,7 +602,6 @@ define([
             }));
         },
 
-
 		setLogging: function(/*string*/ logging){
 			this._logging = logging;
 		}
