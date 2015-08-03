@@ -70,6 +70,9 @@ define([
 	cache: {},
 	
 	constructor: function(user, section, apropos, path){
+		if(user.indexOf("..") > 0){
+			user = user.split("..")[0];
+		}
 		this.params = {u: user, s: section, aps: apropos};
 		// Add a trailing slash to path, if it exists
 		if(path && path.substr(-1) != '/') path += '/';
