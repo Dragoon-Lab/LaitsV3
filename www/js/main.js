@@ -1113,8 +1113,8 @@ define([
 					}));
 
 					//set class to flash createNode button
-					if((!someNodeIncomplete && !givenModel.isCompleteFlag) ||
-						givenModel.active.getNodeIDFor(rootNode.ID) === null){
+					if(!someNodeIncomplete && (!givenModel.isCompleteFlag ||
+						givenModel.active.getNodeIDFor(rootNode.ID) === null)){
 						domClass.add(dom.byId("createNodeButton"), "glowButton");
 					}
 				}
