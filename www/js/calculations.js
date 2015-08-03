@@ -26,13 +26,17 @@ define([
 	"dojo/_base/lang",
 	"dojo/on",
 	"dojo/dom",
+    "dojo/aspect",
 	"dijit/registry",
 	"dijit/form/HorizontalSlider",
 	"./equation",
 	"./integrate","./typechecker",
 	"./lessons-learned",
-	"dijit/form/Button"
-], function(array, declare, lang, on, dom, registry, HorizontalSlider, equation, integrate, typechecker,lessonsLearned, Button){
+	"dijit/form/Button",
+    "dijit/TooltipDialog",
+    "dijit/popup",
+    "dijit/focus"
+], function(array, declare, lang, on, dom, aspect, registry, HorizontalSlider, equation, integrate, typechecker,lessonsLearned, Button, tooltipDialog, popup, focusUtil){
 	// Summary: 
 	//			Finds model solutions and sets up the sliders
 	// Description:
@@ -536,44 +540,76 @@ define([
 		},
 
 		/* @brief: display the graph*/
-		show: function(){
-			this.dialogWidget.show();
-			var content = this.dialogWidget.get("content").toString();
-			if(content.search("There isn't anything to plot. Try adding some accumulator or function nodes.") >= 0 
-					||content.search("There is nothing to show in the table.	Please define some quantitites.") >= 0 ||
-					this.mode === "EDITOR" || this.mode === "AUTHOR" ||
-					!this.model.active.matchesGivenSolutionAndCorrect()) {
-				return;
-			}
-			var contentMsg = this.model.getTaskLessonsLearned();
-			// patching code to enable lessonlearned when first array is not empty
+        show: function () {
+            this.dialogWidget.show();
+            var content = this.dialogWidget.get("content").toString();
+            if(registry.byId("closeHint")) {
+                var closeHintId = registry.byId("closeHint");
+                closeHintId.destroyRecursive(false);
+            }
+            //close popup each time graph is shown
+            popup.close(problemDoneHint);
 
-			
-			if(contentMsg.length == 0 || contentMsg[0] == "" ){
-				return;	
-			}
-			var shown = this.model.isLessonLearnedShown;
-			this.model.isLessonLearnedShown = true;
-			this._state.put("isLessonLearnedShown",true);			
-			var lessonsLearnedButton = registry.byId("lessonsLearnedButton");   
-			lessonsLearnedButton.set("disabled", false);
-			var userName = this.model;
-			var handle = this.dialogWidget.connect(this.dialogWidget,"hide",function(e) {
-				if(!contentMsg || shown) {
-					if(!contentMsg) {
-						lessonsLearnedButton.set("disabled", true);
-					}
-					return;
-				}
-				lessonsLearned.displayLessonsLearned(contentMsg);
-				dojo.disconnect(handle);
-			});
-			
-			lang.hitch(this, handle);
-		},
+            var problemDoneHint = new tooltipDialog({
+                style: "width: 300px;",
+                content: '<p>Click "Done" when you are ready to save and submit your work.</p>' +
+                ' <button type="button" data-dojo-type="dijit/form/Button" id="closeHint">Ok</button>',
+                onShow: function () {
+                    on(registry.byId('closeHint'), 'click', function () {
+                        console.log("clicked prob done hint closed");
+                        popup.close(problemDoneHint);
+                    });
+                },
+                onBlur: function(){
+                    popup.close(problemDoneHint);
+                }
+            });
+
+            if (content.search("There isn't anything to plot. Try adding some accumulator or function nodes.") >= 0
+                || content.search("There is nothing to show in the table.	Please define some quantitites.") >= 0 ||
+                this.mode === "EDITOR" || this.mode === "AUTHOR" || !this.model.active.matchesGivenSolutionAndCorrect()) {
+                console.log("graph not being shown");
+                return;
+            }
+            var contentMsg = this.model.getTaskLessonsLearned();
+
+            console.log("content message is", contentMsg, this.model);
+            //var thisModel = this;
+            aspect.after(this.dialogWidget, "hide", lang.hitch(this,function () {
+                if (contentMsg.length === 0 || contentMsg[0] == "") {
+                    console.log("lessons learned is empty");
+                    var lessonsLearnedButton = registry.byId("lessonsLearnedButton");
+                    lessonsLearnedButton.set("disabled", false);
+                    popup.open({
+                        popup: problemDoneHint,
+                        around: dom.byId('doneButton')
+                    });
+                }
+                else{
+                    if(this.model.isLessonLearnedShown === null){
+                        lessonsLearned.displayLessonsLearned(contentMsg);
+                        this.model.isLessonLearnedShown = true;
+                        this._state.put("isLessonLearnedShown",true);
+                        aspect.after(registry.byId("lesson"),"hide", function () {
+                            popup.open({
+                                popup: problemDoneHint,
+                                around: dom.byId('doneButton')
+                            });
+                        });
+                    }
+                    else{
+                        popup.open({
+                            popup: problemDoneHint,
+                            around: dom.byId('doneButton')
+                        });
+                    }
+                }
+            }));
+        },
 
 
-		setLogging: function(/*string*/ logging){
+
+        setLogging: function(/*string*/ logging){
 			this._logging = logging;
 		}
 
