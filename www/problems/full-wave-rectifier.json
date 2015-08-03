@@ -931,8 +931,8 @@
                 },
                 "status": {
                     "equation": {
-                        "disabled": false,
-                        "status": "incorrect"
+                        "disabled": true,
+                        "status": "correct"
                     },
                     "description": {
                         "disabled": true,
@@ -950,7 +950,7 @@
                 "descriptionID": "id2",
                 "units": "volts",
                 "type": "function",
-                "equation": "id17"
+                "equation": "id17*sinewave(40,0)"
             },
             {
                 "ID": "id17",
