@@ -428,3 +428,13 @@ span.slip{
     display:inline-block;
     width:200px;
 }
+
+@keyframes glowing {
+    0% { color:#CCCCCC; background-color: #004A7F; box-shadow: 0 0 3px #004A7F; }
+    50% { color:#ffffff; background-color: #0094FF; box-shadow: 0 0 10px #0094FF; }
+    100% { color:#CCCCCC; background-color: #004A7F; box-shadow: 0 0 3px #004A7F; }
+}
+
+.glowButton{
+    animation: glowing 1500ms infinite;
+}

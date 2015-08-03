@@ -25,6 +25,7 @@ define([
 	"dojo/dom",
 	'dojo/dom-geometry',
 	"dojo/dom-style",
+	"dojo/dom-class",
 	"dojo/on",
 	'dojo/aspect',
 	"dojo/io-query",
@@ -58,7 +59,7 @@ define([
 	"./image-box",
 	"./modelChanges"
 ], function(
-	array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry, toolTip, tooltipDialog, popup,
+	array, lang, dom, geometry, style, domClass, on, aspect, ioQuery, ready, registry, toolTip, tooltipDialog, popup,
 	menu, loadSave, model, Graph, controlStudent, controlAuthor, drawmodel, logging, equation,
 	description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan,
 	activityParameters, memory, event, UI, Dialog, ImageBox, modelUpdates){
@@ -511,6 +512,8 @@ define([
 						registry.byId('imageButton').set('disabled', false);
 					else
 						registry.byId('imageButton').set('disabled', true);
+
+					domClass.remove(dom.byId("createNodeButton"), "glowButton");
 				});
 			}
 
@@ -1090,6 +1093,36 @@ define([
 				});
 			}
 
+			if(activity_config.get("targetNodeStrategy")){
+				//Only for coached mode
+				function checkForHint(){
+					//Check for root node in student model
+					var givenNodes = givenModel.given.getNodes();
+					var rootNode = null;
+					array.some(givenNodes, function(node){
+						if(givenModel.isParentNode(node.ID)){
+							rootNode = node;
+							return true;
+						}
+					});
+
+					//check if all present nodes are complete but model is node complete
+					var studentNodes = givenModel.active.getNodes();
+					var someNodeIncomplete = array.some(studentNodes, lang.hitch(this, function(node){
+						if(!givenModel.active.isComplete(node.ID)){ return true; }
+					}));
+
+					//set class to flash createNode button
+					if((!someNodeIncomplete && !givenModel.isCompleteFlag) ||
+						givenModel.active.getNodeIDFor(rootNode.ID) === null){
+						domClass.add(dom.byId("createNodeButton"), "glowButton");
+					}
+				}
+				debugger;
+				checkForHint();
+				aspect.after(drawModel, "deleteNode", lang.hitch(this, checkForHint));
+				aspect.after(registry.byId("nodeeditor"), "hide", lang.hitch(this, checkForHint));
+			}
 			/*
 			 * Add Done Button to Menu
 			 */
@@ -1127,6 +1160,13 @@ define([
 				}
 			});
 
+			menu.add("prettifyButton", function(e){
+				event.stop(e);
+				registry.byId("prettifyButton").set("disabled", true);
+				console.log("Pretify---------------");
+				drawModel.prettify();
+			});
+
 			//This array is used later to called the setSelected function for all the buttons in the menu bar
 			var menuButtons=[];
 			menuButtons.push("createNodeButton","graphButton","tableButton","forumButton",
@@ -1141,13 +1181,6 @@ define([
 				style.set(registry.byId('mergeButton').domNode, "display", "none");
 				style.set(registry.byId('previewButton').domNode, "display", "none");
 			}
-
-			menu.add("prettifyButton", function(e){
-				event.stop(e);
-				registry.byId("prettifyButton").set("disabled", true);
-				console.log("Pretify---------------");
-				drawModel.prettify();
-			});
 
 			/*
 			 * This is a work-around for getting a button to work inside a MenuBar.
