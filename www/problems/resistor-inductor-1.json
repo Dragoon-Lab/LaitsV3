@@ -323,7 +323,7 @@
                 "description": "Voltage of battery switch combo",
                 "genus": "required",
                 "type": "function",
-                "units": "voltage",
+                "units": "volts",
                 "equation": "id8*pulsetrain((0,5),5)",
                 "imageMarks": [
                     "182 , 149 , 69 , 108",
@@ -576,7 +576,7 @@
                     }
                 },
                 "descriptionID": "id5",
-                "units": "voltage",
+                "units": "volts",
                 "type": "function",
                 "equation": "id9*pulsetrain((0,5),5)"
             }
