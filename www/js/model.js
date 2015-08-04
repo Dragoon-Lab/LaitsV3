@@ -109,6 +109,9 @@ define([
 			setLessonLearned : function(_isLessonLearnedShown) {
 				this.isLessonLearnedShown = _isLessonLearnedShown;
 			},
+            setDoneMessageShown : function(_isDoneMessageShown) {
+                this.isDoneMessageShown = _isDoneMessageShown;
+            },
 			updatePosition: function()
 			{
 				if((this.x + this.nodeWidth) < (document.documentElement.clientWidth - this.nodeWidth))
