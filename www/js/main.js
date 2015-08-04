@@ -283,6 +283,9 @@ define([
 		state.get("isLessonLearnedShown").then(function(reply) {
 			givenModel.setLessonLearned(reply);
 		});
+        state.get("isDoneButtonShown").then(function(reply){
+            givenModel.setDoneMessageShown(reply);
+        });
 		controllerObject.setState(state);
 
 		ready(function(){
