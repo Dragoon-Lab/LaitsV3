@@ -580,28 +580,30 @@ define([
                     console.log("lessons learned is empty");
                     var lessonsLearnedButton = registry.byId("lessonsLearnedButton");
                     lessonsLearnedButton.set("disabled", false);
-                    popup.open({
-                        popup: problemDoneHint,
-                        around: dom.byId('doneButton')
-                    });
+                    if(this.model.isDoneMessageShown === null) {
+                        popup.open({
+                            popup: problemDoneHint,
+                            around: dom.byId('doneButton')
+                        });
+                        this.model.isDoneMessageShown = true;
+                        this._state.put("isDoneMessageShown",true);
+                    }
                 }
                 else{
                     if(this.model.isLessonLearnedShown === null){
                         lessonsLearned.displayLessonsLearned(contentMsg);
                         this.model.isLessonLearnedShown = true;
                         this._state.put("isLessonLearnedShown",true);
-                        aspect.after(registry.byId("lesson"),"hide", function () {
-                            popup.open({
-                                popup: problemDoneHint,
-                                around: dom.byId('doneButton')
-                            });
-                        });
-                    }
-                    else{
-                        popup.open({
-                            popup: problemDoneHint,
-                            around: dom.byId('doneButton')
-                        });
+                        aspect.after(registry.byId("lesson"),"hide", lang.hitch(this,function () {
+                            if(this.model.isDoneMessageShown === null) {
+                                popup.open({
+                                    popup: problemDoneHint,
+                                    around: dom.byId('doneButton')
+                                });
+                                this.model.isDoneMessageShown = true;
+                                this._state.put("isDoneMessageShown",true);
+                            }
+                        }));
                     }
                 }
             }));
