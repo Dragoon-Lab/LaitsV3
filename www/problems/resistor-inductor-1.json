@@ -13,7 +13,7 @@
             "URL": "http:\/\/i.imgur.com\/dNNguAS.png"
         },
         "taskDescription": [
-            "Model the circuit shown, with L=4 Henries, R=5 ohms and Vo = 5 volts.  Nodes have been given to you that use pulsetrain(0,5,5) to represent the switch being directed to the battery for 5 seconds and then to the short for 5 seconds.  Use Kirchhoff's Voltage Law to determine the volate across the inductor and Ohm's Law to determine the voltage across the resistor.  Graph the current through the inductor.  "
+            "Model the circuit shown, with L=4 Henries, R=5 ohms and Vo = 5 volts.  Nodes have been given to you that use pulsetrain(0,5,5) to represent the switch being directed to the battery for 5 seconds and then to the short for 5 seconds.  Use Kirchhoff's Voltage Law to determine the voltage across the inductor and Ohm's Law to determine the voltage across the resistor.  Graph the current through the inductor.  "
         ],
         "lessonsLearned": [],
         "givenModelNodes": [
@@ -323,7 +323,7 @@
                 "description": "Voltage of battery switch combo",
                 "genus": "required",
                 "type": "function",
-                "units": "voltage",
+                "units": "volts",
                 "equation": "id8*pulsetrain((0,5),5)",
                 "imageMarks": [
                     "182 , 149 , 69 , 108",
@@ -576,7 +576,7 @@
                     }
                 },
                 "descriptionID": "id5",
-                "units": "voltage",
+                "units": "volts",
                 "type": "function",
                 "equation": "id9*pulsetrain((0,5),5)"
             }
