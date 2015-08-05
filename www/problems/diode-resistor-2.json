@@ -3,8 +3,8 @@
         "taskName": "Model a Diode",
         "time": {
             "start": 0,
-            "end": 2,
-            "step": 0.01,
+            "end": 200,
+            "step": 1,
             "integrationMethod": "Eulers Method",
             "units": "seconds"
         },
@@ -13,7 +13,7 @@
             "URL": "http:\/\/www.johnloomis.org\/ece201L\/lab6\/diode1.jpg"
         },
         "taskDescription": [
-            "Model a diode in series with a resistor and a variable voltage source.  Assume the diode is ideal, the resistor is 500 ohms and the voltage varies between +5 volts and -5 volts.  Nodes have been given to you that represent the varying source voltage.  You should use the max() function (see math functions in the help menu) to compute the voltage at VL.  Your final goal is to graph of the current through the diode."
+            "Model a diode in series with a resistor and a variable voltage source.  Assume the diode is ideal, the resistor is 500 ohms and the voltage varies between +5 volts and -5 volts.  Nodes have been given to you that represent the varying source voltage.  You should use Ohm's Law to compute the current and use the max() function (see math functions in the help menu) to compute the voltage at VL.  Your final goal is to graph of the current through the diode."
         ],
         "lessonsLearned": [],
         "givenModelNodes": [
@@ -72,7 +72,7 @@
                 "description": "Source of variable voltage",
                 "type": "function",
                 "units": "volts",
-                "equation": "id2*sinewave(1,0)",
+                "equation": "id2*sinewave(100,0)",
                 "imageMarks": [
                     "12 , 60 , 109 , 89"
                 ]
@@ -355,7 +355,7 @@
                 "descriptionID": "id1",
                 "units": "volts",
                 "type": "function",
-                "equation": "id7*sinewave(1,0)"
+                "equation": "id7*sinewave(100,0)"
             },
             {
                 "ID": "id7",
@@ -460,6 +460,12 @@
                     "cues": 1,
                     "phrases": 1
                 }
+            }
+        ],
+        "increment": [
+            {
+                "tweakedNode": "",
+                "tweakDirection": ""
             }
         ]
     }

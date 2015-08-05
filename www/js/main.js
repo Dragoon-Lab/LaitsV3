@@ -283,6 +283,9 @@ define([
 		state.get("isLessonLearnedShown").then(function(reply) {
 			givenModel.setLessonLearned(reply);
 		});
+        state.get("isDoneButtonShown").then(function(reply){
+            givenModel.setDoneMessageShown(reply);
+        });
 		controllerObject.setState(state);
 
 		ready(function(){
@@ -553,6 +556,7 @@ define([
 					var w = confirm("Are you sure you want to publish the problem");
 					var response = "There was some error while publishing the problem.";
 					if(w == true){
+						descObj.updateModel();
 						var request_promise = session.publishProblem(givenModel.model);
 						var responseWidget = dom.byId("publishResponse");
 						request_promise.then(function(response_status){

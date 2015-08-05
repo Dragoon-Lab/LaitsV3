@@ -109,6 +109,9 @@ define([
 			setLessonLearned : function(_isLessonLearnedShown) {
 				this.isLessonLearnedShown = _isLessonLearnedShown;
 			},
+            setDoneMessageShown : function(_isDoneMessageShown) {
+                this.isDoneMessageShown = _isDoneMessageShown;
+            },
 			updatePosition: function()
 			{
 				if((this.x + this.nodeWidth) < (document.documentElement.clientWidth - this.nodeWidth))
@@ -420,7 +423,7 @@ define([
 			 * SETTERS
 			 */
 			setTaskName: function(/*string*/ name){
-				this.model.task.taskName = name;
+				if(name) this.model.task.taskName = name;
 			},
 			setImage: function(/*object*/ options){
 				// Summary: JSON object with "URL", "width", and "height" elements; see sample JSON model.

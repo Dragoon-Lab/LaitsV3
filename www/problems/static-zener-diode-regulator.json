@@ -38,14 +38,49 @@
                     "tweakDirection": 0,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
                 "name": "V across Zener",
                 "description": "Voltage drop across the Zener diode",
                 "equation": "",
                 "type": "parameter",
                 "parentNode": false,
                 "initial": 13,
-                "units": "volts"
+                "units": "volts",
+                "genus": "required",
+                "imageMarks": [
+                    "177 , 16 , 39 , 23"
+                ]
             },
             {
                 "ID": "id2",
@@ -60,8 +95,8 @@
                     }
                 ],
                 "position": {
-                    "x": 760,
-                    "y": 421
+                    "x": 752.98614501953,
+                    "y": 430.98959350586
                 },
                 "attemptCount": {
                     "description": 0,
@@ -108,7 +143,10 @@
                 "type": "function",
                 "units": "amps",
                 "equation": "id3-id27",
-                "genus": "required"
+                "genus": "required",
+                "imageMarks": [
+                    "180 , 32 , 23 , 44"
+                ]
             },
             {
                 "ID": "id3",
@@ -171,7 +209,10 @@
                 "type": "function",
                 "equation": "id5\/id6",
                 "units": "amps",
-                "genus": "required"
+                "genus": "required",
+                "imageMarks": [
+                    "103 , 20 , 88 , 19"
+                ]
             },
             {
                 "ID": "id4",
@@ -224,6 +265,9 @@
                     },
                     "inputs": {
                         "disabled": false
+                    },
+                    "kind": {
+                        "status": "entered"
                     }
                 },
                 "name": "R of Zener",
@@ -232,7 +276,10 @@
                 "units": "ohms",
                 "parentNode": true,
                 "equation": "id1\/id2",
-                "genus": "required"
+                "genus": "required",
+                "imageMarks": [
+                    "173 , 34 , 44 , 38"
+                ]
             },
             {
                 "ID": "id5",
@@ -295,7 +342,10 @@
                 "type": "function",
                 "units": "volts",
                 "equation": "id20-id1",
-                "genus": "required"
+                "genus": "required",
+                "imageMarks": [
+                    "90 , 6 , 124 , 34"
+                ]
             },
             {
                 "ID": "id6",
@@ -313,14 +363,46 @@
                     "tweakDirection": 0,
                     "assistanceScore": 1
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                },
                 "name": "R of R1",
                 "description": "Resistance of resistor R1",
                 "equation": "",
                 "type": "parameter",
                 "parentNode": false,
                 "initial": 180,
-                "units": "ohms"
+                "units": "ohms",
+                "imageMarks": [
+                    "126 , 15 , 51 , 34"
+                ],
+                "genus": "required"
             },
             {
                 "ID": "id20",
@@ -338,14 +420,49 @@
                     "tweakDirection": 0,
                     "assistanceScore": 1
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
                 "name": "Supply V",
                 "description": "The voltage of the supply",
                 "equation": "",
                 "type": "parameter",
                 "parentNode": false,
                 "initial": 20,
-                "units": "volts"
+                "units": "volts",
+                "imageMarks": [
+                    "40 , 19 , 61 , 39"
+                ],
+                "genus": "required"
             },
             {
                 "ID": "id25",
@@ -402,7 +519,10 @@
                 "parentNode": false,
                 "initial": 1000,
                 "units": "ohms",
-                "genus": "required"
+                "genus": "required",
+                "imageMarks": [
+                    "240 , 33 , 22 , 39"
+                ]
             },
             {
                 "ID": "id26",
@@ -451,6 +571,9 @@
                     },
                     "units": {
                         "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
                     }
                 },
                 "name": "V across Load R",
@@ -458,7 +581,10 @@
                 "type": "function",
                 "units": "volts",
                 "equation": "id1",
-                "genus": "required"
+                "genus": "required",
+                "imageMarks": [
+                    "216 , 18 , 40 , 21"
+                ]
             },
             {
                 "ID": "id27",
@@ -511,6 +637,9 @@
                     },
                     "units": {
                         "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
                     }
                 },
                 "name": "Current thru Load R",
@@ -518,7 +647,11 @@
                 "type": "function",
                 "units": "amps",
                 "equation": "id26\/id25",
-                "genus": "required"
+                "genus": "required",
+                "imageMarks": [
+                    "197 , 15 , 67 , 26",
+                    "230 , 15 , 36 , 56"
+                ]
             }
         ],
         "studentModelNodes": [
