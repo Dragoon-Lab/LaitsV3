@@ -127,15 +127,25 @@ if(!$restartProblemFlag) /* if rp(restart problem) not set check in previously s
               WHERE t2.section = '$section' AND t2.mode = '$mode' 
               AND t2.problem = '$shortProblemName' AND t2.group = '$group' AND t2.activity = '$activity' ORDER BY t1.time DESC LIMIT 1
 EOT;
+	  
     } else {
      $gs = isset($_GET['g'])?"= '$group'":'IS NULL';
-     $query = <<<EOT
-        SELECT t1.solution_graph, t1.share FROM solutions AS t1 JOIN session AS t2 USING (session_id) 
+	  if($activity == 'construction'){
+     	$query = <<<EOT
+          SELECT t1.solution_graph, t1.share FROM solutions AS t1 JOIN session AS t2 USING (session_id)
             WHERE t2.user = '$user' AND t2.section = '$section' AND t2.mode = '$mode' AND t2.activity = '$activity'
              AND t2.problem = '$shortProblemName' AND t2.group $gs ORDER BY t1.time DESC LIMIT 1
 EOT;
-    }
-
+    } else {
+		//case where user opens a non-published problem and in a different activity, but author always opens in construction activity
+		$query = <<<EOT
+         SELECT t1.solution_graph, t1.share FROM solutions AS t1 JOIN session AS t2 USING (session_id)
+              WHERE t2.section = '$section' AND t2.mode = '$mode'
+              AND t2.problem = '$shortProblemName' AND t2.group $gs
+			  AND (t2.activity = '$activity' OR t2.activity = 'construction') ORDER BY t1.time DESC LIMIT 1
+EOT;
+	  }
+	}
    $result = $mysqli->query($query)
      or trigger_error("Previous work query failed." . $mysqli->error);
    if($row = $result->fetch_row()){
@@ -159,13 +169,21 @@ if(isset($_GET['g']) && !empty($_GET['g']) && isset($_GET['s']) && !empty($_GET[
   */
 
   $section = mysqli_real_escape_string($mysqli,$_GET['s']);
-  
-  $query = <<<EOT
-    SELECT t1.solution_graph, t1.share FROM solutions AS t1 JOIN session AS t2 
-          USING (session_id) 
-      WHERE t2.section = '$section' AND t2.mode = 'AUTHOR' 
+  if($activity == "construction"){
+    $query = <<<EOT
+      SELECT t1.solution_graph, t1.share FROM solutions AS t1 JOIN session AS t2
+          USING (session_id)
+      WHERE t2.section = '$section' AND t2.mode = 'AUTHOR'
           AND t2.problem = '$shortProblemName' AND t2.group = '$group' AND t2.activity = '$activity' ORDER BY t1.time DESC LIMIT 1
 EOT;
+  } else {
+	$query = <<<EOT
+	  SELECT t1.solution_graph, t1.share FROM solutions AS t1 JOIN session AS t2
+	   	  USING(session_id)
+	  WHERE t2.section = '$section' AND t2.mode = 'AUTHOR'
+	      AND t2.problem = '$shortProblemName' AND t2.group = '$group' AND t2.activity = 'CONSTRUCTION' ORDER BY t1.time DESC LIMIT 1
+EOT;
+  }
 
   $result = $mysqli->query($query)
     or trigger_error("Custom solution query failed.");
