@@ -305,7 +305,7 @@ define([
 				 * Otherwise, there is a superfluous error message.
 				 */
 				registry.byId(button)._setSelected = function(arg){
-					console.log(menuButton+" _setSelected called with ", arg);
+					console.log(button+" _setSelected called with ", arg);
 				}
 			}, this);
 			
