@@ -289,6 +289,26 @@ define([
 		controllerObject.setState(state);
 
 		ready(function(){
+			//This array is used later to called the setSelected function for all the buttons in the menu bar
+			//moved this at the start so that the buttons flicker at the start rather than at the end.
+			var menuButtons=[];
+			menuButtons.push("createNodeButton","graphButton","tableButton","forumButton",
+				"schemaButton","descButton","saveButton","mergeButton",
+				"previewButton","slidesButton","lessonsLearnedButton","doneButton", "prettifyButton");
+
+			array.forEach(menuButtons, function(button){
+				//setting display for each menu button
+				style.set(registry.byId(button).domNode, "display", ui_config.get(button));
+
+				/*
+				 * This is a work-around for getting a button to work inside a MenuBar.
+				 * Otherwise, there is a superfluous error message.
+				 */
+				registry.byId(button)._setSelected = function(arg){
+					console.log(menuButton+" _setSelected called with ", arg);
+				}
+			}, this);
+			
 			var updateModel = new modelUpdates(givenModel, query.m, session);
 			if(activity_config.get("setTweakDirections") && !givenModel.given.validateTweakDirections()){	
 				updateModel.calculateTweakDirections();
@@ -1170,33 +1190,6 @@ define([
 				console.log("Pretify---------------");
 				drawModel.prettify();
 			});
-
-			//This array is used later to called the setSelected function for all the buttons in the menu bar
-			var menuButtons=[];
-			menuButtons.push("createNodeButton","graphButton","tableButton","forumButton",
-				"schemaButton","descButton","saveButton","mergeButton",
-				"previewButton","slidesButton","lessonsLearnedButton","doneButton", "prettifyButton");
-
-			if(query.m == "STUDENT"){
-				style.set(registry.byId('forumButton').domNode, "display", "none");
-				style.set(registry.byId('schemaButton').domNode, "display", "none");
-				style.set(registry.byId('descButton').domNode, "display", "none");
-				style.set(registry.byId('saveButton').domNode, "display", "none");
-				style.set(registry.byId('mergeButton').domNode, "display", "none");
-				style.set(registry.byId('previewButton').domNode, "display", "none");
-			}
-
-			/*
-			 * This is a work-around for getting a button to work inside a MenuBar.
-			 * Otherwise, there is a superfluous error message.
-			 */
-			array.forEach(menuButtons,function(menuButton){
-				registry.byId(menuButton)._setSelected = function(arg){
-					console.log(menuButton+" _setSelected called with ", arg);
-				}
-			});
-
 		});
-
 	});
 });
