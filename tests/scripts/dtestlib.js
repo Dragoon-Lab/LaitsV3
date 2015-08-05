@@ -31,8 +31,8 @@ var sync = require('synchronize');
 var await = sync.await;  // Wrap this around asynchronous functions. Returns 2nd arg to callback
 var defer = sync.defer;  // Pass this as the callback function to asynchronous functions
 var testPath = require('./test-paths.js');
-var MAX_NODE_IDS = 100; // The maximum number of node IDs we'll support
-
+var MAX_NODE_IDS = 200; // The maximum number of node IDs we'll support
+var lastCounter = 0;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Utility functions (used within the API)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -80,7 +80,7 @@ function findIdbyName(client, nodeName){
 
 function findDropDownByName(client, name){
     var notFound = true;
-    var counter = 0;
+    var counter = lastCounter;
     var result = null;
     var text = "";
     while(notFound && counter < MAX_NODE_IDS)
@@ -95,6 +95,7 @@ function findDropDownByName(client, name){
         }
         counter++;
     }
+    lastCounter = result-5;
     return result;
 }
 
