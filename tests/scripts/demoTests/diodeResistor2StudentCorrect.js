@@ -26,7 +26,7 @@ describe("Student mode with correct diode resistor 2", function() {
 
     before(async(function (done) {
             dtest.openProblem(client,[["problem","diode-resistor-2"],["mode","STUDENT"],
-                                      ["section","regression-testing"],
+                                      ["section","PAL3-test"],
                                       ["logging","true"]]);
     }));
 
