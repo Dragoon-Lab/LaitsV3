@@ -79,8 +79,8 @@
 						"forumButton" : "inline",
 						"slidesButton" : "inline",
 						"prettifyButton": "inline",
-						"doneButton": "inline"
-				
+						"doneButton": "inline",
+						"lessonsLearnedButton" : "inline"
 					}
 				},
 				{
