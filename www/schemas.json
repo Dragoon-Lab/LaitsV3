@@ -195,6 +195,12 @@
 				"example" : ""
 			},
 			{
+				"name" : "Bridge Rectifier Behavior with Zener Behavior",
+				"id" : "bridge_rect_zener_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
 				"name" : "Bridge Rectifier with Capacitor Behavior",
 				"id" : "bridge_rect_capacitor_behavior",
 				"template" : "",
