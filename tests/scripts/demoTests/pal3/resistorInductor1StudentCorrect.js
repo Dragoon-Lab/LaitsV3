@@ -22,7 +22,7 @@ var sync = require('synchronize');
 // import wrapper for asynchronous functions
 var async = sync.asyncIt;
 
-describe("Student mode with correct resistor Inductor 1", function() {
+describe("Coached mode with correct resistor Inductor 1", function() {
 
     before(async(function (done) {
             dtest.openProblem(client,[["problem","resistor-inductor-1"],["mode","COACHED"],
