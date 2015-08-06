@@ -140,6 +140,7 @@ define([
 			//create tab for graph and fill it
 			this.dialogContent += "<div id='GraphTab' data-dojo-type='dijit/layout/ContentPane' style='overflow:auto; ' data-dojo-props='title:\"Graph\"'>";
 			//Create graph divs along with their error message
+			debugger;
 			array.forEach(this.active.plotVariables, function(id){
 				var show = this.model.active.getType(id) == "accumulator" || this.model.given.getParent(this.model.active.getGivenID(id));
 				var checked = show ? " checked='checked'" : "";
@@ -164,7 +165,7 @@ define([
 
 			//add static tab if solution is static
 			if(this.isStatic)
-			{
+			{debugger;
 			this.dialogContent += "<div id='StaticTab' data-dojo-type='dijit/layout/ContentPane' style='overflow:scroll' selected = true data-dojo-props='title:\"Static\"'>"
 
 			this.dialogContent += "<input id='staticSelect'/>";
@@ -458,7 +459,7 @@ define([
 			// until the user requests, we use the display : none property
 			// The legend div is replaced in the dom, so we must hide it dynamically.
 			array.forEach(this.active.plotVariables, function(id){
-				if(this.model.active.getType(id) == "function"){
+				if(this.model.active.getType(id) == "function" && !this.model.given.getParent(this.model.active.getGivenID(id))){
 					var leg_style = { display: "none" };
 					var k = domAttr.set("legend" + id, "style", leg_style);
 				}
@@ -478,7 +479,7 @@ define([
 			if(this.isStatic)
 			{
 				array.forEach(this.active.plotVariables, function(id){
-					if(this.model.active.getType(id) == "function"){
+					if(this.model.active.getType(id) == "function" && !this.model.given.getParent(this.model.active.getGivenID(id))){
 						var leg_style = { display: "none" };
 						var k = domAttr.set("legendStatic" + id, "style", leg_style);
 					}
