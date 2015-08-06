@@ -137,17 +137,17 @@
     width: 100%;">
 <div id="main" data-dojo-type="dijit/layout/BorderContainer" gutters="false">
     <div data-dojo-type="dijit/MenuBar" id="menuBar" region="top" splitter="false">
-        <button type="button" data-dojo-type="dijit/form/Button" id="createNodeButton" disabled="true">Create Node</button>
-        <button type="button" data-dojo-type="dijit/form/Button" id="graphButton" disabled="true">Graph</button>
-        <button type="button" data-dojo-type="dijit/form/Button" id="tableButton" disabled="true">Table</button>
-        <button type="button" data-dojo-type="dijit/form/Button" id="forumButton" disabled="true">Forum</button>
+        <button type="button" data-dojo-type="dijit/form/Button" id="createNodeButton" disabled="true" style="display: none">Create Node</button>
+        <button type="button" data-dojo-type="dijit/form/Button" id="graphButton" disabled="true" style="display: none">Graph</button>
+        <button type="button" data-dojo-type="dijit/form/Button" id="tableButton" disabled="true" style="display: none">Table</button>
+        <button type="button" data-dojo-type="dijit/form/Button" id="forumButton" disabled="true" style="display: none">Forum</button>
         <button type="button" data-dojo-type="dijit/form/Button" id="schemaButton" disabled="true" style="display: none">Create Schema</button>
         <button type="button" data-dojo-type="dijit/form/Button" id="descButton" disabled="true" style="display: none">Problem &amp; Times</button>
         <button type="button" data-dojo-type="dijit/form/Button" id="saveButton" disabled="true" style="display: none">Save As</button>
         <button type="button" data-dojo-type="dijit/form/Button" id="mergeButton" disabled="true" style="display: none">Merge </button>
         <button type="button" data-dojo-type="dijit/form/Button" id="previewButton" disabled="true" style="display: none">Preview</button>
         <button type="button" data-dojo-type="dijit/form/Button" id="slidesButton" disabled="true" style="display: none">Hints</button>
-        <button type="button" data-dojo-type="dijit/form/Button" id="prettifyButton">Prettify</button>
+        <button type="button" data-dojo-type="dijit/form/Button" id="prettifyButton" style="display: none">Prettify</button>
         <div data-dojo-type="dijit/PopupMenuBarItem">
             <span>Help</span>
             <div data-dojo-type="dijit/Menu" id="menuHelp">
@@ -156,8 +156,8 @@
                 <div id="menuMathFunctions" data-dojo-type="dijit/MenuItem">Math Functions</div>
             </div>
         </div>
-        <button type="button" data-dojo-type="dijit/form/Button" id="lessonsLearnedButton" disabled="true">Lessons Learned</button>
-        <button type="button" data-dojo-type="dijit/form/Button" id="doneButton">Done</button>
+        <button type="button" data-dojo-type="dijit/form/Button" id="lessonsLearnedButton" disabled="true" style="display: none">Lessons Learned</button>
+        <button type="button" data-dojo-type="dijit/form/Button" id="doneButton" style="display: none">Done</button>
     </div> <!-- Menubar -->
 
     <div id="drawingPane" class="restrict-vscroll" data-dojo-type="dijit/layout/ContentPane" region="center">

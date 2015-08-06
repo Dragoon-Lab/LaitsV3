@@ -13,7 +13,7 @@
             "URL": "http:\/\/i.imgur.com\/S4uMPZE.png?1"
         },
         "taskDescription": [
-            "An ac voltage having a maximum peak voltage of 10 volts and is coupled to a wavelength of 40 milliseconds is given an input to a center tapped transformer as shown in the figure. Diodes CR1 and CR2 are real, having a knee voltage of 0.7 volts. The diodes have a resistance of 10^8 ohms when they are reverse biased and 10 ohms when they are forward biased.The load resistor RL has a resistance of 1000 ohms. Graph the output voltage across the load resistor RL"
+            "The input to the center-tapped transformer is an AC voltage with a wavelength of 40 milliseconds and a maximum peak voltage of 10 volts.  The transformer is wound so that there is a 1:1 ratio of turns between the primary and each half of the secondary.  Diodes CR1 and CR2 are real, having a knee voltage of 0.7 volts. The diodes have a resistance of 10^8 ohms when they are reverse biased and 10 ohms when they are forward biased.The load resistor RL has a resistance of 1000 ohms. Graph the output voltage across the load resistor RL"
         ],
         "lessonsLearned": [],
         "givenModelNodes": [

@@ -13,7 +13,7 @@
             {}
         ],
         "image": {
-            "URL": "http:\/\/i.stack.imgur.com\/BLGnf.gif"
+            "URL": "images/PAL3/bridge-rectifier-capacitor.jpg"
         },
         "taskDescription": [
             "Model a full wave rectifier with a 5 voltage AC power supply, a 5000 ohm load and a 0.1 farad smoothing capacitor.  Graph the output voltage.  You have been given nodes that model the AC voltage source."

@@ -576,10 +576,11 @@ define([
             console.log("content message is", contentMsg, this.model);
             //var thisModel = this;
             aspect.after(this.dialogWidget, "hide", lang.hitch(this,function () {
+
                 if (contentMsg.length === 0 || contentMsg[0] == "") {
                     console.log("lessons learned is empty");
-                    var lessonsLearnedButton = registry.byId("lessonsLearnedButton");
-                    lessonsLearnedButton.set("disabled", false);
+                    
+                    
                     if(this.model.isDoneMessageShown === null) {
                         popup.open({
                             popup: problemDoneHint,
@@ -590,8 +591,11 @@ define([
                     }
                 }
                 else{
-                    if(this.model.isLessonLearnedShown === null){
+					
+                    if(this.model.isLessonLearnedShown === false){
                         lessonsLearned.displayLessonsLearned(contentMsg);
+						var lessonsLearnedButton = registry.byId("lessonsLearnedButton");
+						lessonsLearnedButton.set("disabled", false);
                         this.model.isLessonLearnedShown = true;
                         this._state.put("isLessonLearnedShown",true);
                         aspect.after(registry.byId("lesson"),"hide", lang.hitch(this,function () {
