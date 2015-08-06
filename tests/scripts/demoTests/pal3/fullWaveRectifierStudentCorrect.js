@@ -25,7 +25,7 @@ var async = sync.asyncIt;
 describe("Student mode with correct resistor capacitor 1", function() {
 
     before(async(function (done) {
-            dtest.openProblem(client,[["problem","full-wave-rectifier"],["mode","STUDENT"],
+            dtest.openProblem(client,[["problem","full-wave-rectifier"],["mode","COACHED"],
                                       ["section","PAL3-test"],
                                       ["logging","true"]]);
     }));
@@ -145,6 +145,27 @@ describe("Student mode with correct resistor capacitor 1", function() {
         }));
 
     });
+describe("Checking graph/table window:", function(){
+        it("Should open the table window and check the table values", async(function(){
+            dtest.menuOpenTable(client);
+            var currentVal = true;
+            var time = 0;
+            var message = "";
+            var VacrossRLValues = ["0.00","1.55","3.06","4.49", "5.82", "7.00", "8.01", "8.82" ,"9.42", "9.78"];
+            VacrossRLValues.some(function(val, index){
+                if((dtest.tableGetValue(client, index, 11) != VacrossRLValues[index])){
+                    message += "\n required: "+VacrossRLValues[index]+", found: "+dtest.tableGetValue(client, index, 11);
+                    currentVal = false;
+                }
+            });
+
+            assert(currentVal === true,
+                "Values in the \"V across RL (volts)\" column were incorrect. " + message);
+
+            dtest.closeGraphAndTableWindow(client);
+        }));
+    });
+
     describe("Checking node colors", function(){
         it("Nodes should have correct border and fill colors", async(function(){
             //Defines which nodes to check
@@ -429,7 +450,9 @@ describe("Student mode with correct resistor capacitor 1", function() {
                                     ["expectedUnitsColor", "green"],
                                     ["expectedExpressionColor", "gray"]], dtest, client);
         }));
-
     });
-    
+    after(function(done) {
+            client.end();
+            done();
+    });
 });
