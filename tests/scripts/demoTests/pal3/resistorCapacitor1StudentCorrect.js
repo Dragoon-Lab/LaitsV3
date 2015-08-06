@@ -25,7 +25,7 @@ var async = sync.asyncIt;
 describe("Student mode with correct resistor capacitor 1", function() {
 
     before(async(function (done) {
-            dtest.openProblem(client,[["problem","resistor-capacitor-1"],["mode","STUDENT"],
+            dtest.openProblem(client,[["problem","resistor-capacitor-1"],["mode","COACHED"],
                                       ["section","PAL3-test"],
                                       ["logging","true"]]);
     }));
@@ -239,5 +239,8 @@ describe("Student mode with correct resistor capacitor 1", function() {
                 "Values in the \"Voltage across capacitor (volts)\" column were incorrect. " + message);
         }));
     });
-
+    after(function(done) {
+            client.end();
+            done();
+    });
 });

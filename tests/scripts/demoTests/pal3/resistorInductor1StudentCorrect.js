@@ -25,7 +25,7 @@ var async = sync.asyncIt;
 describe("Student mode with correct resistor Inductor 1", function() {
 
     before(async(function (done) {
-            dtest.openProblem(client,[["problem","resistor-inductor-1"],["mode","STUDENT"],
+            dtest.openProblem(client,[["problem","resistor-inductor-1"],["mode","COACHED"],
                                       ["section","PAL3-test"],
                                       ["logging","true"]]);
     }));
@@ -240,5 +240,8 @@ describe("Student mode with correct resistor Inductor 1", function() {
                 "Values in the \"Current (amps)\" column were incorrect. " + message);
         }));
     });
-
+    after(function(done) {
+            client.end();
+            done();
+    });
 });

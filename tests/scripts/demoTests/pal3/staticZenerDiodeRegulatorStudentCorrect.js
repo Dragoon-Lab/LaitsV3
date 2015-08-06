@@ -25,7 +25,7 @@ var async = sync.asyncIt;
 describe("Student mode with correct static zener diode regulator", function() {
 
     before(async(function (done) {
-            dtest.openProblem(client,[["problem","static-zener-diode-regulator"],["mode","STUDENT"],
+            dtest.openProblem(client,[["problem","static-zener-diode-regulator"],["mode","COACHED"],
                                       ["section","PAL3-test"],
                                       ["logging","true"]]);
     }));
@@ -285,5 +285,8 @@ describe("Student mode with correct static zener diode regulator", function() {
                 "Values in the \"Current (amps)\" column were incorrect. " + message);
         }));
     });
-
+    after(function(done) {
+            client.end();
+            done();
+    });
 });
