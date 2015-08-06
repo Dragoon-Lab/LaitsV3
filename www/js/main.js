@@ -280,8 +280,10 @@ define([
 		 */
 
 		var state = new State(query.u, query.s, "action");
+		
 		state.get("isLessonLearnedShown").then(function(reply) {
-			givenModel.setLessonLearned(reply);
+
+			if(reply) givenModel.setLessonLearned(reply);
 		});
         state.get("isDoneButtonShown").then(function(reply){
             givenModel.setDoneMessageShown(reply);
@@ -1142,7 +1144,7 @@ define([
 						domClass.add(dom.byId("createNodeButton"), "glowButton");
 					}
 				}
-				debugger;
+		
 				checkForHint();
 				aspect.after(drawModel, "deleteNode", lang.hitch(this, checkForHint));
 				aspect.after(registry.byId("nodeeditor"), "hide", lang.hitch(this, checkForHint));
