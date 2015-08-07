@@ -103,6 +103,47 @@ describe("Student mode with incorrect rabbits", function() {
         }));
 
     });
+
+    describe("check lessons learned shown", function(){
+        it("Should show lessons learned on graph close", async(function(){
+            dtest.popupWindowPressOk(client);
+            dtest.menuOpenGraph(client);
+            dtest.closeGraphAndTableWindow(client);
+            dtest.waitTime(200); 
+            var lessonsLearnedText = dtest.lessonsLearnedGetText(client);
+            assert(lessonsLearnedText !== "undefined", "Lessons learned text does not match");
+            dtest.lessonsLearnedClose(client);
+        }));
+
+        it("Should show lessons learned on click of button", async(function(){
+            dtest.waitTime(200);
+            dtest.menuOpenLessonsLearned(client);
+            dtest.waitTime(200);
+            dtest.lessonsLearnedClose(client);
+        }));
+    });
+
+    describe("check lesson learned enable after refresh", function(){
+        it("Should show lessons learned on click of menu button", async(function(){
+            client.refresh();
+            dtest.waitTime(5000);
+            dtest.menuOpenLessonsLearned(client);
+            dtest.waitTime(200);
+            var lessonsLearnedText = dtest.lessonsLearnedGetText(client);
+            assert(lessonsLearnedText !== "undefined", "Lessons learned text does not match");
+            dtest.waitTime(200);
+            dtest.lessonsLearnedClose(client);
+        }));
+
+        it("Should not show lessons learned on graph close", async(function(){
+            dtest.menuOpenGraph(client);
+            dtest.waitTime(200);
+            dtest.closeGraphAndTableWindow(client);
+            dtest.waitTime(200);
+            //If we can click graph again then lessons learned was not shown.
+            dtest.menuOpenGraph(client);
+        }));
+    });
     
     after(function(done) {
         client.end();
