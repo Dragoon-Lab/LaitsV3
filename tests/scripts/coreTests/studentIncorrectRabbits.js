@@ -146,7 +146,7 @@ describe("Student mode with incorrect rabbits", function() {
     });
     
     after(function(done) {
-        //client.end();
+        client.end();
         done();
     });
 });
