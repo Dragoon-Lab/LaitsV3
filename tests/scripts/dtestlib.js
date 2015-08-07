@@ -271,6 +271,11 @@ exports.waitForEditor = function(client)
     await(client.waitForVisible('#nodeeditor',1000, false, defer()));
 }
 
+exports.waitForLessonsLearned = function(client)
+{
+    await(client.waitForVisible('#lessons',1000, false, defer()));
+}
+
 exports.refresh = function(client)
 {
     var url = await(client.url(defer()));
@@ -934,9 +939,12 @@ exports.closeSaveAsWindow = function(client){
 // 9.  Lessons Learned window functions
 
 exports.lessonsLearnedClose = function(client){
-    await(client.click('span[class="dijitDialogCloseIcon"]',defer()));
+    await(client.click('#lesson > div.dijitDialogTitleBar > span.dijitDialogCloseIcon',defer()));
 }
 
+exports.lessonsLearnedGetText = function(client){    
+    return await(client.getText("#lesson",defer()));    
+}
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 10.  Forum functions
 
