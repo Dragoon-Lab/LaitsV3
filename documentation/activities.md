@@ -80,7 +80,7 @@ Dragoon will highlight a single empty node which has incremental change values f
 
 ##### When the student clicks on a node
 If the student clicks on the highlighted node, three things happen simultaneously:
-1. The incremental change value appears inside the node, and its borders become solid.
+1. The incremental change value appears inside the node, and its borders change from dashed to solid.  Colors will always be green.
 2. The incremental change node menu appears below the node until the student clicks somewhere else.  It contains:
   - The name of the node (because the menu covers up the nodes label)
   - The "show equation" button (shows equation in a popup along with some text detailing the status of the inputs; see next subsection)
@@ -89,13 +89,16 @@ If the student clicks on the highlighted node, three things happen simultaneousl
 3. Dragoon chooses the next node and highlights it using the algorithm above. 
 If the student clicks on a function node which was highlighted previously the menu appears again.  If the student clicks on a function or accumulator which hasn't been highlighted before, a pop up message will direct them to the next highlighted node.  If they click on a parameter nothing happens.
 
+The student continues to click on nodes until all are complete i.e. all have their value showing and have a solid border.
+
 ##### Additional text in equation pop up
-To provide additional explanation to the student, in addtiion
+In addition to showing the expression of the node,  a list of the inputs and their direction is given as well to help the student understand the resulting direction.
 
 ##### Completing the activity
+When the student completes the final node, a message appears near the "Done" button telling them they have completed the model and that they may click Done to finish or click restart to reset the problem back to its original state.
 
 #### Feedback Modes
-Feedback mode choice is pedagoically irrelevant for this activity since the student does not make any choices.
+Feedback mode choice is pedagoically irrelevant for this activity since the student does not make any choices which require feedback.
 
 ## Architecture
 This section gives an outline of the coding method we will follow to implement activities. Most important thing to understand here is to understand how modes and activities are related. 
