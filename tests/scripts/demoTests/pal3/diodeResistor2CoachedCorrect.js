@@ -22,10 +22,10 @@ var sync = require('synchronize');
 // import wrapper for asynchronous functions
 var async = sync.asyncIt;
 
-describe("Student mode with correct diode resistor 2", function() {
+describe("Coached mode with correct diode resistor 2", function() {
 
     before(async(function (done) {
-            dtest.openProblem(client,[["problem","diode-resistor-2"],["mode","STUDENT"],
+            dtest.openProblem(client,[["problem","diode-resistor-2"],["mode","COACHED"],
                                       ["section","PAL3-test"],
                                       ["logging","true"]]);
     }));
@@ -160,5 +160,8 @@ describe("Student mode with correct diode resistor 2", function() {
                 "Values in the \"current (amps)\" column were incorrect. " + message);
         }));
     });
-
+    after(function(done) {
+            client.end();
+            done();
+    });
 });

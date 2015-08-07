@@ -31,8 +31,8 @@ var sync = require('synchronize');
 var await = sync.await;  // Wrap this around asynchronous functions. Returns 2nd arg to callback
 var defer = sync.defer;  // Pass this as the callback function to asynchronous functions
 var testPath = require('./test-paths.js');
-var MAX_NODE_IDS = 100; // The maximum number of node IDs we'll support
-
+var MAX_NODE_IDS = 200; // The maximum number of node IDs we'll support
+var lastCounter = 0;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Utility functions (used within the API)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -80,7 +80,7 @@ function findIdbyName(client, nodeName){
 
 function findDropDownByName(client, name){
     var notFound = true;
-    var counter = 0;
+    var counter = lastCounter;
     var result = null;
     var text = "";
     while(notFound && counter < MAX_NODE_IDS)
@@ -95,6 +95,7 @@ function findDropDownByName(client, name){
         }
         counter++;
     }
+    lastCounter = result-5;
     return result;
 }
 
@@ -268,6 +269,11 @@ exports.waitTime = function(client, timeToWait)
 exports.waitForEditor = function(client)
 {
     await(client.waitForVisible('#nodeeditor',1000, false, defer()));
+}
+
+exports.waitForLessonsLearned = function(client)
+{
+    await(client.waitForVisible('#lessons',1000, false, defer()));
 }
 
 exports.refresh = function(client)
@@ -933,9 +939,12 @@ exports.closeSaveAsWindow = function(client){
 // 9.  Lessons Learned window functions
 
 exports.lessonsLearnedClose = function(client){
-    await(client.click('span[class="dijitDialogCloseIcon"]',defer()));
+    await(client.click('#lesson > div.dijitDialogTitleBar > span.dijitDialogCloseIcon',defer()));
 }
 
+exports.lessonsLearnedGetText = function(client){    
+    return await(client.getText("#lesson",defer()));    
+}
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 10.  Forum functions
 
