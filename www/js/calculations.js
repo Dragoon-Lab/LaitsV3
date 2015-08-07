@@ -596,7 +596,6 @@ define([
                         lessonsLearned.displayLessonsLearned(contentMsg);
 						var lessonsLearnedButton = registry.byId("lessonsLearnedButton");
 						lessonsLearnedButton.set("disabled", false);
-                        this.model.setLessonLearnedShown(true);
                         //this._state.put("isLessonLearnedShown",true);
                         aspect.after(registry.byId("lesson"),"hide", lang.hitch(this,function () {
                             if(this.model.isDoneMessageShown === false) {

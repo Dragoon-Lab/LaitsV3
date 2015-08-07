@@ -86,6 +86,7 @@ define([
 			nodeHeight: 100,
 			isCompleteFlag: false,
 			isLessonLearnedShown: false,
+			isDoneMessageShown: false,
 
 			/**
 			 *

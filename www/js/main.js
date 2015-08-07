@@ -286,7 +286,8 @@ define([
 			if(reply) givenModel.setLessonLearned(reply);
 		}); */
         state.get("isDoneButtonShown").then(function(reply){
-            givenModel.setDoneMessageShown(reply);
+        	if(reply === true || reply === false)
+				givenModel.setDoneMessageShown(reply);
         });
 		controllerObject.setState(state);
 
@@ -397,6 +398,7 @@ define([
 
 			// updating model after lessonlearned is shown
 			aspect.after(registry.byId("lesson"), "show", function(){
+				givenModel.setLessonLearnedShown(true);
 				session.saveProblem(givenModel.model);
 			}); 
 
