@@ -218,6 +218,90 @@ define([
 					setStudentTweakDirections: true,
 					useTweakStatus: true
 				}
+			},
+
+			"incremental-demo": {
+				STUDENT:{
+					allowPrettify:true,
+						allowHelp: true,
+						allowLessonsLearned:true,
+
+						allowEditNode:true,
+
+						showHints: true,
+						showFeedback: true,
+						showCorrectAnswer:true,
+
+						initializeStudentModel : true,
+
+						showNodeEditor:false,
+						showIncrementalEditor:true,
+						showNodeDetails:false,
+						copyAuthorNodes: true,
+						setTweakDirections: true,
+						setStudentTweakDirections: true,
+						useTweakStatus: true
+				},
+
+				COACHED:{
+					allowPrettify:true,
+						allowHelp: true,
+						allowLessonsLearned:true,
+
+						allowEditNode:true,
+
+						showHints: true,
+						showFeedback: true,
+						showCorrectAnswer:true,
+
+						initializeStudentModel : true,
+
+						showNodeEditor:false,
+						showIncrementalEditor:true,
+						showNodeDetails:false,
+						copyAuthorNodes: true,
+						setTweakDirections: true,
+						setStudentTweakDirections: true,
+						useTweakStatus: true
+				},
+
+				TEST:{
+					allowPrettify:true,
+						allowHelp: true,
+						allowLessonsLearned:true,
+
+						allowEditNode:true,
+						showFeedback: true,
+
+						initializeStudentModel : true,
+
+						showNodeEditor:false,
+						showIncrementalEditor:true,
+						showNodeDetails:false,
+						copyAuthorNodes: true,
+						setTweakDirections: true,
+						setStudentTweakDirections: true,
+						useTweakStatus: true
+				},
+
+				EDITOR:{
+					allowPrettify:true,
+						allowHelp: true,
+						allowLessonsLearned:true,
+
+						allowEditNode:true,
+						showFeedback: true,
+
+						initializeStudentModel : true,
+
+						showNodeEditor:false,
+						showIncrementalEditor:true,
+						showNodeDetails:false,
+						copyAuthorNodes: true,
+						setTweakDirections: true,
+						setStudentTweakDirections: true,
+						useTweakStatus: true
+				}
 			}
 		};
 
