@@ -86,6 +86,7 @@ define([
 			nodeHeight: 100,
 			isCompleteFlag: false,
 			isLessonLearnedShown: false,
+			isDoneMessageShown: false,
 
 			/**
 			 *
@@ -106,8 +107,8 @@ define([
 					pos = { x: this.x, y: this.y, nodeWidth: this.nodeWidth, nodeHeight: this.nodeHeight};
 				}
 			},
-			setLessonLearned : function(_isLessonLearnedShown) {
-				this.isLessonLearnedShown = _isLessonLearnedShown;
+			setLessonLearnedShown : function(_isLessonLearnedShown) {
+				this.model.task.properties.isLessonLearnedShown = _isLessonLearnedShown;
 			},
             setDoneMessageShown : function(_isDoneMessageShown) {
                 this.isDoneMessageShown = _isDoneMessageShown;
@@ -312,6 +313,9 @@ define([
 			},
 			getImageDimensons: function(){
 				return {width: this.model.task.image.width, height: this.model.task.image.height};
+			},
+			getLessonLearnedShown : function() {
+				return (this.model.task.properties.isLessonLearnedShown != undefined)?this.model.task.properties.isLessonLearnedShown : false;	
 			},
 			getTime: function(){
 				// Summary: Returns the time object from the JSON model.

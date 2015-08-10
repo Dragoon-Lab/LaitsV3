@@ -292,12 +292,19 @@ define([
             ll_sanitize = ll_sanitize.reverse().filter(function(ele, idx, array){
                 if(flag || ele.length > 0) return flag = true;
             });
-         
+
+            //read the tweaked Node and Direction
+
+            var tweaked_node = paramWidget.get("value");
+            var tweak_dir = paramDirWidget.get("value");
+
             myThis.givenModel.setTaskDescription(tin_sanitize.reverse());
             myThis.givenModel.setTaskLessonsLearned(ll_sanitize.reverse());
             myThis.timeObj.units = dom.byId("authorSetTimeStepUnits").value;
             myThis.timeObj.integrationMethod = dom.byId("authorSetIntegrationMethod").value;
             myThis.givenModel.setTime(myThis.timeObj);
+            //this function updates the tweaked node and direction inside the increment field of json
+            myThis.givenModel.setIncrements(tweaked_node,tweak_dir);
            
             var url = dom.byId("authorSetImage").value;
             myThis.givenModel.setImage(url ? {URL: url} : {});
