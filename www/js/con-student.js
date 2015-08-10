@@ -517,6 +517,44 @@ define(["dojo/aspect",
 			if(doColorNodeBorder){
 				this.colorNodeBorder(this.currentID, true);
 			}
-		}
+            this.canShowDonePopup();
+		},
+
+        canShowDonePopup: function(){
+            studId = this._model.active.getNodes();
+            console.log("student id is ", studId);
+            var isFinished = true;
+            studId.forEach(lang.hitch(this,function(newId){
+                //each node should be complete and correct else set isFinished to false
+                if(!this._model.active.isComplete(newId.ID) || this._model.student.getCorrectness(newId.ID) === "incorrect") isFinished = false;
+            }));
+            if(isFinished){
+                if(registry.byId("closeHint")) {
+                    var closeHintId = registry.byId("closeHint");
+                    closeHintId.destroyRecursive(false);
+                }
+                //close popup each time
+                popup.close(problemDoneHint);
+
+                var problemDoneHint = new tooltipDialog({
+                    style: "width: 300px;",
+                    content: '<p>Click "Done" when you are ready to save and submit your work.</p>' +
+                    ' <button type="button" data-dojo-type="dijit/form/Button" id="closeHint">Ok</button>',
+                    onShow: function () {
+                        on(registry.byId('closeHint'), 'click', function () {
+                            console.log("clicked prob done hint closed");
+                            popup.close(problemDoneHint);
+                        });
+                    },
+                    onBlur: function(){
+                        popup.close(problemDoneHint);
+                    }
+                });
+                popup.open({
+                    popup: problemDoneHint,
+                    around: dom.byId('doneButton')
+                });
+            }
+        }
 	});
 });
