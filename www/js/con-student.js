@@ -407,11 +407,18 @@ define(["dojo/aspect",
 			var incButtons = ["Increase", "Decrease", "Stays-Same", "Unknown"];
 			var type = this._model.active.getType(id);
 			var showEquationButton = registry.byId("EquationButton").domNode;
+			var showExplanationButton = registry.byId("ShowExplanationButton").domNode;
+			var givenID = this._model.active.getDescriptionID(id);
+			var nodeName = this._model.active.getName(id);
 
 			if(type != "accumulator" && type != "function"){
 				style.set(showEquationButton, "display", "none");
 				this.closeIncrementalPopup();
 			}else{
+				dom.byId("IncrementalNodeName").innerHTML = "<strong>"+ nodeName +"</strong>";
+				this._model.given.getExplanation(givenID) ? style.set(showExplanationButton, "display", "block") :
+					style.set(showExplanationButton, "display", "none");
+
 				style.set(showEquationButton, "display", "block");
 				var tweakStatus = this._model.active.getNode(id).status["tweakDirection"];
 				if(tweakStatus && tweakStatus.disabled){
@@ -439,6 +446,11 @@ define(["dojo/aspect",
 			var that = this;
 			that._buttonHandlers = {};
 			var incButtons = ["Increase", "Decrease", "Stays-Same", "Unknown"];
+			array.forEach(incButtons, lang.hitch(this, function(buttonID){
+				var button = registry.byId(buttonID+"Button").domNode;
+				style.set(button, "display", this._uiConfig.get("qualitativeChangeButtons"));
+			}));
+
 			this._incrementalPopup = registry.byId("incrementalPopup");
 			this._incrementalPopup.onShow = function(){
 				//logging for pop up start
@@ -487,7 +499,7 @@ define(["dojo/aspect",
 				that.logging.log('ui-action', {
 					type: "open-tweak-equation",
 					node: that._model.active.getName(that.currentID),
-					nodeID: that.currentID,
+					nodeID: that.currentID
 				});
 
 				that.applyDirectives([{
@@ -500,6 +512,30 @@ define(["dojo/aspect",
 					value: equationMessage
 				}]);
 			});
+
+			var showExplanationButton = registry.byId("ShowExplanationButton");
+			on(showExplanationButton, 'click', function(){
+				var givenID = that._model.active.getDescriptionID(that.currentID);
+				if(that._model.given.getExplanation(givenID)){
+					var nodeName = that._model.active.getName(that.currentID);
+					that.logging.log('ui-action', {
+						type: "open-tweak-explanation",
+						node: nodeName,
+						nodeID: that.currentID
+					});
+
+					that.applyDirectives([{
+						id:"crisisAlert",
+						attribute:"title",
+						value: "Explanation for "+ nodeName
+					},{
+						id: "crisisAlert",
+						attribute: "open",
+						value: that._model.given.getExplanation(givenID)
+					}]);
+				}
+			});
+
 		},
 
 		closeIncrementalPopup: function(doColorNodeBorder){
