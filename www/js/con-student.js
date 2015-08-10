@@ -409,11 +409,13 @@ define(["dojo/aspect",
 			var showEquationButton = registry.byId("EquationButton").domNode;
 			var showExplanationButton = registry.byId("ShowExplanationButton").domNode;
 			var givenID = this._model.active.getDescriptionID(id);
+			var nodeName = this._model.active.getName(id);
 
 			if(type != "accumulator" && type != "function"){
 				style.set(showEquationButton, "display", "none");
 				this.closeIncrementalPopup();
 			}else{
+				dom.byId("IncrementalNodeName").innerHTML = "<strong>"+ nodeName +"</strong>";
 				this._model.given.getExplanation(givenID) ? style.set(showExplanationButton, "display", "block") :
 					style.set(showExplanationButton, "display", "none");
 
@@ -444,6 +446,11 @@ define(["dojo/aspect",
 			var that = this;
 			that._buttonHandlers = {};
 			var incButtons = ["Increase", "Decrease", "Stays-Same", "Unknown"];
+			array.forEach(incButtons, lang.hitch(this, function(buttonID){
+				var button = registry.byId(buttonID+"Button").domNode;
+				style.set(button, "display", this._uiConfig.get("qualitativeChangeButtons"));
+			}));
+
 			this._incrementalPopup = registry.byId("incrementalPopup");
 			this._incrementalPopup.onShow = function(){
 				//logging for pop up start
