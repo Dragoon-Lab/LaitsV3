@@ -15,7 +15,7 @@
         if (x==null || x==""){
             alert("Please enter a username.");
             return false;
-        }
+        }      
         // If group field is empty, remove from form.
         // Dragoon treats the presence of the group field
         // as a switch for published versus custom problems.
@@ -26,14 +26,19 @@
         return true;
     }
 
-    //for restart problem
-    function handleRestartProblem(selected){	
+    // handle mode change
+    function onModeChange(selected){	
 		if(selected.value=="AUTHOR")
 		{
 			document.getElementById('restartproblem').innerHTML='<label>N/A</label>';
+            document.getElementById('activity').value = "construction";
+            document.getElementById('activity').disabled = true;
+            document.getElementById('defaultActivity').disabled = false;
 		}else
 		{
-			document.getElementById('restartproblem').innerHTML='<input name="rp" type="checkbox"/>';
+			document.getElementById('restartproblem').innerHTML='<input name="rp" type="checkbox"/>';            
+            document.getElementById('activity').disabled = false;
+            document.getElementById('defaultActivity').disabled = true;
 		}
     }
     </script>
@@ -57,7 +62,7 @@
 
                     <div class="fieldgroup">
                         <label for="mode">Mode: </label>
-                        <select name="m" onchange="handleRestartProblem(this)" id="mode">
+                        <select name="m" onchange="onModeChange(this)" id="mode">
                             <option value="STUDENT">Immediate Feedback (Student)</option>
                             <option value="AUTHOR">Author</option>
                             <option value="COACHED">Coached</option>
@@ -72,10 +77,9 @@
                         <select name="a" id="activity">
                             <option value="construction">Construction</option>
                             <option value="incremental">Incremental</option>
-                            <!--<option value="COACHED">Coached</option>
-                            <option value="TEST">Delayed Feedback (Test)</option>
-                            <option value="EDITOR">No Feedback (Editor)</option>-->
+                            <option value="incremental-demo">Incremental Demo</option>
                         </select>
+                        <input type="hidden" id="defaultActivity" name="a" value="construction" disabled=true/>
 					</div>
                     <div class="fieldgroup">
 		        <label>Student submode:</label> &nbsp; &nbsp; &nbsp;
@@ -101,7 +105,7 @@
                     </div>
 
                     <div class="fieldgroup">
-                        <label for="group">Group (optional unless authoring): </label>
+                        <label for="group">Folder:<br> (i.e. group; leave blank for published model) </label>
                         <input id="group" type="text" name="g" value="">
                     </div>
 
