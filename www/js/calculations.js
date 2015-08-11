@@ -443,8 +443,9 @@ define([
 				this.findSolution(true); // Solve active model
 				console.log("	   new solution", this.getTime());
 				//this function is specific to graph/table
+				var updateAuthorGraph=false;
 				this.renderDialog();
-				this.renderStaticDialog();
+				this.renderStaticDialog(updateAuthorGraph);
 				this._rendering = false;
 				console.log("	   new plot done", this.getTime());
 			}));

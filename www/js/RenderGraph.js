@@ -77,7 +77,6 @@ define([
 			/* List of variables to plot: Include functions */
 			this.active.plotVariables = this.active.timeStep.xvars.concat(
 				this.active.timeStep.functions);
-
 			/*
 			 Match list of given model variables.
 			 If the given model node is not part of the given solution,
@@ -106,8 +105,9 @@ define([
 			this.staticVar = 0;
 			//If solution is static, brings up the statis plot
 			if(this.isStatic)
-			{
+			{ 
 				staticNodes = this.checkForParameters();
+				//default plot when graph windows opens
 				var staticPlot = this.findStaticSolution(true, staticNodes[this.staticVar], this.active.plotVariables);
 			}
 
@@ -126,7 +126,7 @@ define([
 				var givenSolution = this.findSolution(false, this.given.plotVariables);
 				if(this.isStatic)
 				{
-					givenSolution = this.findStaticSolution(false, staticNodes[this.staticVar], this.given.plotVariables);
+					givenSolution = this.findStaticSolution(false, staticNodes[this.staticVar], this.given.plotVariables);					
 				}
 			}
 			this.resizeWindow();
@@ -140,7 +140,7 @@ define([
 			//create tab for graph and fill it
 			this.dialogContent += "<div id='GraphTab' data-dojo-type='dijit/layout/ContentPane' style='overflow:auto; ' data-dojo-props='title:\"Graph\"'>";
 			//Create graph divs along with their error message
-			debugger;
+			
 			array.forEach(this.active.plotVariables, function(id){
 				var show = this.model.active.getType(id) == "accumulator" || this.model.given.getParent(this.model.active.getGivenID(id));
 				var checked = show ? " checked='checked'" : "";
@@ -165,7 +165,7 @@ define([
 
 			//add static tab if solution is static
 			if(this.isStatic)
-			{debugger;
+			{
 			this.dialogContent += "<div id='StaticTab' data-dojo-type='dijit/layout/ContentPane' style='overflow:scroll' selected = true data-dojo-props='title:\"Static\"'>"
 
 			this.dialogContent += "<input id='staticSelect'/>";
@@ -380,12 +380,10 @@ define([
 			}
 
 			//puts in data for the static graphs
-			if(this.isStatic)
-			{
+			if(this.isStatic){
 				var staticVar = this.checkStaticVar(true);
 				staticPlot = this.findStaticSolution(true, staticVar, this.active.plotVariables);	
 				givenPlot = this.findStaticSolution(true, staticVar, this.active.plotVariables);
-				//console.log(givenPlot);
 				//console.log(this.given.plotVariables);
 				if(this.active.plotVariables.length > 0){ //we check the length of object, if there are nodes, then we proceed else give an error and return
 					array.forEach(this.active.plotVariables, function(id, k){
@@ -537,7 +535,8 @@ define([
 	    	//console.log(comboBox);	    	
 			this.disableStaticSlider();
 	    	on(comboBox, "change", lang.hitch(this, function(){
-					this.renderStaticDialog();
+	    			var updateAuthorGraph=true;
+					this.renderStaticDialog(updateAuthorGraph);
 					this.disableStaticSlider();
 				}));
 			},
@@ -761,16 +760,16 @@ define([
 		},
 
 		//changes the static graph when sliders or dropdown change
-		renderStaticDialog: function(){
+		renderStaticDialog: function(updateAuthorGraph){
 			console.log("rendering static");
-			//console.log(this.chartsStatic);
+			console.log(this.chartsStatic);
 			if(this.isStatic)
 			{
 				if(this.mode != "AUTHOR")
 				{
 					var staticVar = this.checkStaticVar(true);
 					var activeSolution = this.findStaticSolution(true, staticVar, this.active.plotVariables);
-					var givenSolution = this.findStaticSolution(false, staticVar, this.given.plotVariables);
+					var givenSolution = this.findStaticSolution(true, staticVar, this.active.plotVariables);
 
 					//update and render the charts
 					array.forEach(this.active.plotVariables, function(id, k){
@@ -814,6 +813,13 @@ define([
 								this.formatSeriesForChart(activeSolution, k),
 								{stroke: "green"}
 							);
+							if (updateAuthorGraph) {
+								this.chartsStatic[id].updateSeries(
+									"Author's solution",
+									this.formatSeriesForChart(givenSolution, k), 
+									{stroke: "black"}
+								);
+							}
 							this.chartsStatic[id].render();
 						}
 						
