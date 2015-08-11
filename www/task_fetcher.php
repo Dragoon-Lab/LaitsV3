@@ -140,7 +140,7 @@ EOT;
 		//case where user opens a non-published problem and in a different activity, but author always opens in construction activity
 		$query = <<<EOT
          SELECT t1.solution_graph, t1.share FROM solutions AS t1 JOIN session AS t2 USING (session_id)
-              WHERE t2.section = '$section' AND t2.mode = '$mode'
+              WHERE t2.section = '$section' AND t2.mode = '$mode' AND t2.user = '$user'
               AND t2.problem = '$shortProblemName' AND t2.group $gs
 			  AND (t2.activity = '$activity' OR t2.activity = 'construction') ORDER BY t1.time DESC LIMIT 1
 EOT;
