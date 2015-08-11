@@ -280,11 +280,14 @@ define([
 		 */
 
 		var state = new State(query.u, query.s, "action");
-		state.get("isLessonLearnedShown").then(function(reply) {
-			givenModel.setLessonLearned(reply);
-		});
+		
+		/*state.get("isLessonLearnedShown").then(function(reply) {
+
+			if(reply) givenModel.setLessonLearned(reply);
+		}); */
         state.get("isDoneButtonShown").then(function(reply){
-            givenModel.setDoneMessageShown(reply);
+        	if(reply === true || reply === false)
+				givenModel.setDoneMessageShown(reply);
         });
 		controllerObject.setState(state);
 
@@ -335,7 +338,12 @@ define([
 				style.set(registry.byId('previewButton').domNode, "display", "inline-block");
 				style.set(registry.byId('imageButton').domNode, "display", "inline-block");
 			}
-
+			// update the menu bar based on model state
+			if(query.m != "AUTHOR") {
+				debugger;
+				if(givenModel.getLessonLearnedShown())
+					registry.byId("lessonsLearnedButton").set("disabled", false);
+			}
 			//GET problem-topic index for PAL problems
 			palTopicIndex = "";
 			var searchPattern = new RegExp('^pal3', 'i');
@@ -388,7 +396,11 @@ define([
 				lang.hitch(drawModel, drawModel.addNode),
 				true);
 
-			
+			// updating model after lessonlearned is shown
+			aspect.after(registry.byId("lesson"), "show", function(){
+				givenModel.setLessonLearnedShown(true);
+				session.saveProblem(givenModel.model);
+			}); 
 
 			// Wire up send to server
 			aspect.after(drawModel, "updater", function(){
@@ -974,7 +986,7 @@ define([
 					// preventing default execution of click handler
 					event.stop(e);
 					console.log("inside handler");
-					if(givenModel.isLessonLearnedShown == true){
+					if(givenModel.getLessonLearnedShown() == true){
 						contentMsg = givenModel.getTaskLessonsLearned();
 						lessonsLearned.displayLessonsLearned(contentMsg);
 					}
@@ -1142,7 +1154,7 @@ define([
 						domClass.add(dom.byId("createNodeButton"), "glowButton");
 					}
 				}
-				debugger;
+		
 				checkForHint();
 				aspect.after(drawModel, "deleteNode", lang.hitch(this, checkForHint));
 				aspect.after(registry.byId("nodeeditor"), "hide", lang.hitch(this, checkForHint));

@@ -49,13 +49,14 @@ describe("Test author mode", function() {
             dtest.setKindOfQuantity(client, "in model & required");
             dtest.setNodeDescription(client, "The number of rabbits in the population");
             dtest.setNodeType(client, "Accumulator");
-            dtest.setNodeInitialValue(client, 24);
-            //Doubled because of bug, remove in future
+            // 8/5/2015: Noticed that when units are set after initial value here, Dragoon
+            //           does not process the units even though the text is entered in the field.
+            //           However this doesn't happen when done by hand.
             dtest.setNodeUnits(client, "rabbits");
-            dtest.setNodeExpression(client, "net growth");
-            dtest.waitTime(100);
+            dtest.setNodeInitialValue(client, 24);            
+            dtest.setNodeExpression(client, "net growth");            
             dtest.checkExpression(client);            
-            dtest.checkExpression(client);
+            //dtest.checkExpression(client);
         }));
 
         it("Should fill in function node - net growth", async(function(){
