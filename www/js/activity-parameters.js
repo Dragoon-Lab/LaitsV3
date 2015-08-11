@@ -220,7 +220,7 @@ define([
 				}
 			},
 
-			"incremental-demo": {
+			"incrementalDemo": {
 				STUDENT:{
 					allowPrettify:true,
 						allowHelp: true,

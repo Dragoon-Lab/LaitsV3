@@ -148,7 +148,7 @@
 					 }
 				 }],
 
-			 "incremental-demo" : [{
+			 "incrementalDemo" : [{
 					 "mode" : ["STUDENT", "COACHED"] ,
 					 "param" : {
 						 "showColor" : true,
