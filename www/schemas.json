@@ -195,7 +195,7 @@
 				"example" : ""
 			},
 			{
-				"name" : "Bridge Rectifier Behavior with Zener Behavior",
+				"name" : "Bridge Rectifier with Zener Behavior",
 				"id" : "bridge_rect_zener_behavior",
 				"template" : "",
 				"example" : ""
