@@ -220,7 +220,7 @@ define([
 				}
 			},
 
-			"incrementalDemo": {
+			incrementalDemo: {
 				STUDENT:{
 					allowPrettify:true,
 						allowHelp: true,
@@ -240,7 +240,9 @@ define([
 						copyAuthorNodes: true,
 						setTweakDirections: true,
 						setStudentTweakDirections: true,
-						useTweakStatus: true
+						useTweakStatus: true,
+						demoIncremental:true,
+						showPopupIfComplete: true
 				},
 
 				COACHED:{
@@ -262,7 +264,9 @@ define([
 						copyAuthorNodes: true,
 						setTweakDirections: true,
 						setStudentTweakDirections: true,
-						useTweakStatus: true
+						useTweakStatus: true,
+						demoIncremental:true,
+						showPopupIfComplete: true
 				},
 
 				TEST:{
@@ -281,7 +285,9 @@ define([
 						copyAuthorNodes: true,
 						setTweakDirections: true,
 						setStudentTweakDirections: true,
-						useTweakStatus: true
+						useTweakStatus: true,
+						demoIncremental:true,
+						showPopupIfComplete: true
 				},
 
 				EDITOR:{
@@ -300,7 +306,9 @@ define([
 						copyAuthorNodes: true,
 						setTweakDirections: true,
 						setStudentTweakDirections: true,
-						useTweakStatus: true
+						useTweakStatus: true,
+						demoIncremental:true,
+						showPopupIfComplete: true
 				}
 			}
 		};
@@ -362,7 +370,9 @@ define([
 				showNodeDetails:true,
 				setTweakDirections:false,
 				setStudentTweakDirections: false,
-				useTweakStatus: false
+				useTweakStatus: false,
+				demoIncremental:false,
+				showPopupIfComplete:false
 			},
 
 			constructor: function(/*string*/ mode, /*string*/ activity){

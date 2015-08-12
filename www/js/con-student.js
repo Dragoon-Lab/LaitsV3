@@ -30,6 +30,7 @@ define(["dojo/aspect",
 	'dojo/_base/declare',
 	"dojo/_base/lang",
 	"dojo/dom",
+	"dojo/dom-class",
 	"dojo/dom-style",
 	"dojo/ready",
 	"dojo/on",
@@ -42,7 +43,7 @@ define(["dojo/aspect",
 	"./typechecker",
 	"./equation",
 	"./schemas-student"
-], function(aspect, array, declare, lang, dom, style, ready,on, focusUtil, registry, tooltipDialog, popup, controller, PM, typechecker, expression, schemaStudent){
+], function(aspect, array, declare, lang, dom, domClass, style, ready,on, focusUtil, registry, tooltipDialog, popup, controller, PM, typechecker, expression, schemaStudent){
 	/* Summary:	// Summary:
 	//			MVC for the node editor, for students
 	// Description:
@@ -73,6 +74,7 @@ define(["dojo/aspect",
 		},
 
 		resettableControls: ["initial","equation"],
+		incButtons:["Increase", "Decrease", "Stays-Same", "Unknown"],
 
 		init:function(){
 			aspect.after(this, "closeEditor", function(){
@@ -404,55 +406,67 @@ define(["dojo/aspect",
 
 		showIncrementalEditor: function(id){
 			this.currentID = id;
-			var incButtons = ["Increase", "Decrease", "Stays-Same", "Unknown"];
 			var type = this._model.active.getType(id);
-			var showEquationButton = registry.byId("EquationButton").domNode;
-			var showExplanationButton = registry.byId("ShowExplanationButton").domNode;
 			var givenID = this._model.active.getDescriptionID(id);
 			var nodeName = this._model.active.getName(id);
+
+			var showEquationButton = registry.byId("EquationButton").domNode;
+			var showExplanationButton = registry.byId("ShowExplanationButton").domNode;
 
 			if(type != "accumulator" && type != "function"){
 				style.set(showEquationButton, "display", "none");
 				this.closeIncrementalPopup();
 			}else{
-				dom.byId("IncrementalNodeName").innerHTML = "<strong>"+ nodeName +"</strong>";
-				this._model.given.getExplanation(givenID) ? style.set(showExplanationButton, "display", "block") :
-					style.set(showExplanationButton, "display", "none");
+				if(!this.activityConfig.get("showPopupIfComplete") || (this.activityConfig.get("showPopupIfComplete") && this._model.active.isComplete(id))){
+					//Set Node Name
+					dom.byId("IncrementalNodeName").innerHTML = "<strong>"+ nodeName +"</strong>";
 
-				style.set(showEquationButton, "display", "block");
-				var tweakStatus = this._model.active.getNode(id).status["tweakDirection"];
-				if(tweakStatus && tweakStatus.disabled){
-					array.forEach(incButtons, function(widget){
-						var w = registry.byId(widget+"Button");
-						w.set("disabled", tweakStatus.disabled);
+					//Show hide explanation button
+					this._model.given.getExplanation(givenID) ? style.set(showExplanationButton, "display", "block") :
+						style.set(showExplanationButton, "display", "none");
+
+					style.set(showEquationButton, "display", "block");
+					var tweakStatus = this._model.active.getNode(id).status["tweakDirection"];
+
+					//Enable/Disable incremental buttons
+					if(tweakStatus && tweakStatus.disabled){
+						array.forEach(this.incButtons, function(widget){
+							var w = registry.byId(widget+"Button");
+							w.set("disabled", tweakStatus.disabled);
+						});
+					}else{
+						array.forEach(this.incButtons, function(widget){
+							var w = registry.byId(widget+"Button");
+							w.set("disabled", false);
+						});
+					}
+					popup.open({
+						popup: this._incrementalPopup,
+						around: dom.byId(id)
 					});
-				}else{
-					array.forEach(incButtons, function(widget){
-						var w = registry.byId(widget+"Button");
-						w.set("disabled", false);
+
+					this._incrementalPopup.onBlur = lang.hitch(this, function(){
+						this.closeIncrementalPopup();
 					});
 				}
-				popup.open({
-					popup: this._incrementalPopup,
-					around: dom.byId(id)
-				});
-				this._incrementalPopup.onBlur = lang.hitch(this, function(){
-					this.closeIncrementalPopup();
-				});
 			}
 		},
+
+
 
 		initIncrementalPopup: function(){
 			var that = this;
 			that._buttonHandlers = {};
-			var incButtons = ["Increase", "Decrease", "Stays-Same", "Unknown"];
-			array.forEach(incButtons, lang.hitch(this, function(buttonID){
+
+			//Hide or show inc Buttons
+			array.forEach(this.incButtons, lang.hitch(this, function(buttonID){
 				var button = registry.byId(buttonID+"Button").domNode;
 				style.set(button, "display", this._uiConfig.get("qualitativeChangeButtons"));
 			}));
 
+			//Initialize incremental popup
 			this._incrementalPopup = registry.byId("incrementalPopup");
-			this._incrementalPopup.onShow = function(){
+			this._incrementalPopup.onShow = lang.hitch(this, function(){
 				//logging for pop up start
 				that.logging.log('ui-action', {
 					type: "open-tweak-popup",
@@ -462,7 +476,8 @@ define(["dojo/aspect",
 				//assessment for tweak pop up
 				that.nodeStartAssessment(that.currentID);
 				focusUtil.focus(dom.byId("IncreaseButton"));
-				incButtons.forEach(function (item) {
+
+				this.incButtons.forEach(function (item) {
 					var btn = registry.byId(item + "Button");
 					that._buttonHandlers[item]= on(btn, "click", function (e) {
 						e.preventDefault();
@@ -476,10 +491,11 @@ define(["dojo/aspect",
 						//Update Node Label
 						that.updateNodeLabel(that.currentID);
 
+						//Close popup
 						that.closeIncrementalPopup(true);
 					});
 				});
-			};
+			});
 
 			var showEquationButton = registry.byId("EquationButton");
 
@@ -546,12 +562,48 @@ define(["dojo/aspect",
 			});
 			this.nodeCloseAssessment(this.currentID);
 			popup.close(this._incrementalPopup);
-			var incButtons = ["Increase", "Decrease", "Stays-Same", "Unknown"];
-			incButtons.forEach(lang.hitch(this, function (item) {
+			this.incButtons.forEach(lang.hitch(this, function (item) {
 				this._buttonHandlers[item].remove();
 			}));
 			if(doColorNodeBorder){
 				this.colorNodeBorder(this.currentID, true);
+			}
+		},
+
+		highlightNextNode: function(){
+			if(this.activityConfig.get("demoIncremental")){
+				//Get next node in the list from PM
+				var nextID = "" /*this._PM.getNextNode();*/ // Uncomment this once function is ready
+				if(nextID) {
+					var node = dom.byId(nextID);
+					domClass.add(node, "glowNode");
+					this.currentHighLight = nextID;
+				}
+			}
+		},
+
+		showIncrementalAnswer: function(id){
+			this.currentID = id;
+			if(id === this.currentHighLight){
+				//remove glow
+				var node = dom.byId(id);
+				domClass.remove(node, "glowNode");
+
+				//Process Answer
+				var givenID = this._model.active.getDescriptionID(id);
+				var answer = this._model.given.getTweakDirection(givenID);
+				var result = this._PM.processAnswer(this.currentID, "tweakDirection", answer);
+				this.applyDirectives(result);
+
+				//Set correct answer in model
+				this._model.active.setTweakDirection(this.currentID, answer);
+
+				//Update Node Label
+				this.updateNodeLabel(id);
+				this.colorNodeBorder(this.currentID, true);
+
+				//highlight next node in the list
+				this.highlightNextNode();
 			}
 		}
 	});
