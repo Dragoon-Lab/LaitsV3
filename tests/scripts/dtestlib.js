@@ -940,6 +940,9 @@ exports.closeSaveAsWindow = function(client){
 
 exports.lessonsLearnedClose = function(client){
     await(client.click('#lesson > div.dijitDialogTitleBar > span.dijitDialogCloseIcon',defer()));
+    await(client.waitForVisible('#lesson > div.dijitDialogTitleBar > span.dijitDialogCloseIcon',true,defer()));
+    //await(client.waitForVisible('#lesson > div.dijitDialogTitleBar > span.dijitDialogCloseIcon',6000,defer()));
+    await(client.waitForVisible('#solution_underlay',10000,true,defer()));
 }
 
 exports.lessonsLearnedGetText = function(client){    
