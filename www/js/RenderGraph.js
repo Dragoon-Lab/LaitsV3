@@ -535,8 +535,7 @@ define([
 	    	//console.log(comboBox);	    	
 			this.disableStaticSlider();
 	    	on(comboBox, "change", lang.hitch(this, function(){
-	    			var updateAuthorGraph=true;
-					this.renderStaticDialog(updateAuthorGraph);
+					this.renderStaticDialog(true);// Call the function for updating both the author graph and the student graph
 					this.disableStaticSlider();
 				}));
 			},
@@ -762,7 +761,6 @@ define([
 		//changes the static graph when sliders or dropdown change
 		renderStaticDialog: function(updateAuthorGraph){
 			console.log("rendering static");
-			console.log(this.chartsStatic);
 			if(this.isStatic)
 			{
 				if(this.mode != "AUTHOR")
