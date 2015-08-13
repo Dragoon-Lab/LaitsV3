@@ -343,7 +343,7 @@ define([
 			getIntegrationMethod: function(){
 				return this.model.task.time.integrationMethod;
 			},
-			getTaskDescription: function(){
+			getTaskDescription: function(activityType){
 				var desc = this.model.task.taskDescription; 
 				if(typeof desc.length != "undefined"){
 					return desc;
@@ -450,7 +450,7 @@ define([
 				// Summary: set the model's type
 				this.model.task.properties.type = type;
 			},
-			setTaskDescription: function(/*string*/ description){
+			setTaskDescription: function(/*string*/ description , activityType){
 				// Summary: set the task description
 				var desc = this.model.task.taskDescription;
 				//check if new object is required
