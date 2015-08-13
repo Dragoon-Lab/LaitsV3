@@ -441,3 +441,13 @@ span.slip{
 .glowButton{
     animation: glowing 1500ms infinite;
 }
+
+@keyframes glowingNode {
+    0% { box-shadow: 0 0 10px #00FF00; }
+    50% { box-shadow: 0 0 50px #39FF14; }
+    100% { box-shadow: 0 0 10px #00FF00; }
+}
+
+.glowNode{
+    animation: glowingNode 1500ms infinite;
+}

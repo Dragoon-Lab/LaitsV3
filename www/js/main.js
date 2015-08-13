@@ -292,6 +292,10 @@ define([
 		controllerObject.setState(state);
 
 		ready(function(){
+			//Set Tab title
+			var taskString = givenModel.getTaskName();
+			document.title ="Dragoon" + ((taskString) ? " - " + taskString : "");
+
 			//This array is used later to called the setSelected function for all the buttons in the menu bar
 			//moved this at the start so that the buttons flicker at the start rather than at the end.
 			var menuButtons=[];
@@ -321,29 +325,16 @@ define([
 				console.log("student model being initialized");
 				updateModel.initializeStudentModel(activity_config.get("setStudentTweakDirection"));
 			}
-			
-			var taskString = givenModel.getTaskName();
-			document.title ="Dragoon" + ((taskString) ? " - " + taskString : "");
 
-			//configuring DOM UI 
+			//configuring DOM UI
 			style.set(registry.byId('imageButton').domNode, "display", "none");
 
-			//update the menu bar//  // This should check based on UI parameters instead
-			if(query.m == "AUTHOR"){
-				style.set(registry.byId('forumButton').domNode, "display", "inline-block");
-				style.set(registry.byId('schemaButton').domNode, "display", "inline-block");
-				style.set(registry.byId('descButton').domNode, "display", "inline-block");
-				style.set(registry.byId('saveButton').domNode, "display", "inline-block");
-				style.set(registry.byId('mergeButton').domNode, "display", "inline-block");
-				style.set(registry.byId('previewButton').domNode, "display", "inline-block");
-				style.set(registry.byId('imageButton').domNode, "display", "inline-block");
-			}
 			// update the menu bar based on model state
 			if(query.m != "AUTHOR") {
-				debugger;
 				if(givenModel.getLessonLearnedShown())
 					registry.byId("lessonsLearnedButton").set("disabled", false);
 			}
+
 			//GET problem-topic index for PAL problems
 			palTopicIndex = "";
 			var searchPattern = new RegExp('^pal3', 'i');
@@ -363,7 +354,6 @@ define([
 
 			var drawModel = new drawmodel(givenModel.active, ui_config.get("showColor"), activity_config);
 			drawModel.setLogging(session);
-
 			
 			// add mouse enter and mouse leave event for every new node	
 			var iBoxController = new ImageBox(givenModel.getImageURL(), givenModel);
@@ -428,6 +418,9 @@ define([
 						registry.byId('imageButton').set('disabled', true);
 						
 				}else if(activity_config.get("showIncrementalEditor")){
+					if(activity_config.get("demoIncremental")){
+						controllerObject.showIncrementalAnswer(mover.node.id);
+					}
 					controllerObject.showIncrementalEditor(mover.node.id);
 				}
 			}, true);
@@ -1202,6 +1195,8 @@ define([
 				console.log("Pretify---------------");
 				drawModel.prettify();
 			});
+
+			controllerObject.highlightNextNode();
 		});
 	});
 });
