@@ -39,6 +39,7 @@ define([
             this.givenModel = givenModel;
             this.timeObj = givenModel.getTime();
             this._activity=activity;
+            this._initHandles();
         },
 
 		initializeAuthorWindow: function(){
@@ -109,7 +110,8 @@ define([
             var descWidgetUnit = registry.byId('authorSetTimeStepUnits');
             // Set checkbox for sharing
             registry.byId("authorProblemShare").attr("value", this.givenModel.getShare());
-
+            var setDescription = registry.byId('authorSetDescription');
+            var getActivityType = registry.byId('authorSetDescriptionType');
             // This event gets fired if student hits TAB or input box
             // goes out of focus.
             //for start time field
@@ -152,6 +154,28 @@ define([
                     typechecker.closePops();
 
                 };
+            }));
+            setDescription.on("change", lang.hitch(this, function(data){
+                var activityType = registry.byId("authorSetDescriptionType").get("value");
+                var tin = dom.byId("authorSetDescription").value;
+                 var tin_sanitize = tin.split("\n");
+            
+                var flag = false;
+                tin_sanitize = tin_sanitize.reverse().filter(function(ele, idx, array){
+                    if(flag || ele.length > 0) return flag = true;
+                });
+             
+                this.givenModel.setTaskDescription(tin_sanitize.reverse(), activityType);
+                return;
+            }));
+            
+            getActivityType.on("change", lang.hitch(this,function(event){
+               debugger;
+               var activityValue = getActivityType.get("value");
+                dom.byId("authorSetDescription").value = this.serialize(
+                    this.givenModel.getTaskDescription(activityValue) ? this.givenModel.getTaskDescription(activityValue) : ""  
+                );
+               return; 
             }));
             //for share bit checkbox
             var descCheckButton = registry.byId("authorProblemCheck");
@@ -277,28 +301,23 @@ define([
             document.title = "Dragoon - " + tname;
             
             domStyle.set(errorDialogSpan,"display","none");
-            var tin = dom.byId("authorSetDescription").value;
+            //var tin = dom.byId("authorSetDescription").value;
             var ll = dom.byId("authorSetLessonsLearned").value;
             
             
             // sanitize by removing trailing null values
-            var tin_sanitize = tin.split("\n");
+            //var tin_sanitize = tin.split("\n");
             var ll_sanitize = ll.split("\n");
             var flag = false;
-            tin_sanitize = tin_sanitize.reverse().filter(function(ele, idx, array){
+            /*tin_sanitize = tin_sanitize.reverse().filter(function(ele, idx, array){
                 if(flag || ele.length > 0) return flag = true;
             });
-            flag = false;
+            flag = false;*/
             ll_sanitize = ll_sanitize.reverse().filter(function(ele, idx, array){
                 if(flag || ele.length > 0) return flag = true;
             });
-
-            //read the tweaked Node and Direction
-
-            var tweaked_node = paramWidget.get("value");
-            var tweak_dir = paramDirWidget.get("value");
-
-            myThis.givenModel.setTaskDescription(tin_sanitize.reverse());
+         
+            //myThis.givenModel.setTaskDescription(tin_sanitize.reverse());
             myThis.givenModel.setTaskLessonsLearned(ll_sanitize.reverse());
             myThis.timeObj.units = dom.byId("authorSetTimeStepUnits").value;
             myThis.timeObj.integrationMethod = dom.byId("authorSetIntegrationMethod").value;

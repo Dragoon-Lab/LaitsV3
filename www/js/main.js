@@ -548,11 +548,12 @@ define([
 			if(activity_config.get("allowProblemTimes")){
 				var descButton = registry.byId("descButton");
 				descButton.set("disabled", false);
-				descObj.initializeAuthorWindow();
+				//descObj.initializeAuthorWindow();
 
 				// Description button wiring
 				menu.add("descButton", function(e){
 					event.stop(e);
+					descObj.initializeAuthorWindow();
 					style.set(dom.byId("publishResponse"), "display", "none");
 					//Display publish problem button on devel and localhost
 					if(window.location.hostname === "localhost" ||
