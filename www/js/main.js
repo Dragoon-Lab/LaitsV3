@@ -711,14 +711,23 @@ define([
 			if(activity_config.get("allowPreview")){
 				var previewButton = registry.byId("previewButton");
 				previewButton.set("disabled", false);
-				on(registry.byId("previewButton"),"click",function(){
-					var user = query.u;
+				on(registry.byId("menuConstruction"),"click",function(){
 					var timestamp = new Date().getTime();
 					var url = document.URL.replace("u="+query.u,"u="+query.u+"-"+timestamp);
 					//console.log(url);
 					url=url+"&l=false";
 					window.open(url.replace("m=AUTHOR","m=STUDENT"),"newwindow");
 				});
+
+				on(registry.byId("menuIncremental"),"click",function(){
+					var timestamp = new Date().getTime();
+					var url = document.URL.replace("u="+query.u,"u="+query.u+"-"+timestamp);
+					//console.log(url);
+					url = url.replace("a="+query.a, "a=incremental");
+					url=url+"&l=false";
+					window.open(url.replace("m=AUTHOR","m=STUDENT"),"newwindow");
+				});
+
 			}
 
 			if(activity_config.get("allowCreateSchema")){
@@ -1196,7 +1205,9 @@ define([
 				drawModel.prettify();
 			});
 
-			controllerObject.highlightNextNode();
+			if(activity_config.get("demoIncremental")) {
+				controllerObject.highlightNextNode();
+			}
 		});
 	});
 });
