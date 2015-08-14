@@ -346,7 +346,8 @@ define([
 			getTaskDescription: function(activityType){
 				var desc = this.model.task.taskDescription; 
 				if(typeof desc.length != "undefined"){
-					return desc;
+					this.model.task.taskDescription = {};
+					this.model.task.taskDescription["construction"] = desc;
 				}
 				activityType = (activityType) ? activityType : "construction";
 				return this.model.task.taskDescription[activityType];

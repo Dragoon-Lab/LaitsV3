@@ -348,7 +348,7 @@ define([
             var canvas = dom.byId('myCanvas');
             var context = canvas.getContext('2d');
             context.clearRect(0,0,canvas.width, canvas.height);
-            var desc_text = this.givenModel.getTaskDescription();
+             var desc_text = (this.givenModel.getTaskDescription(this._activity)) ? this.givenModel.getTaskDescription(this._activity) : [];
             var descs=[];
             if (this._activity==="incremental"){
              descs[0]="";
