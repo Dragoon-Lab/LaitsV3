@@ -343,8 +343,14 @@ define([
 			getIntegrationMethod: function(){
 				return this.model.task.time.integrationMethod;
 			},
-			getTaskDescription: function(){
-				return this.model.task.taskDescription;
+			getTaskDescription: function(activityType){
+				var desc = this.model.task.taskDescription; 
+				if(typeof desc.length != "undefined"){
+					this.model.task.taskDescription = {};
+					this.model.task.taskDescription["construction"] = desc;
+				}
+				activityType = (activityType) ? activityType : "construction";
+				return this.model.task.taskDescription[activityType];
 			},
 			getTaskLessonsLearned : function() {
 				return (this.model.task.lessonsLearned) ? this.model.task.lessonsLearned : [];
@@ -445,9 +451,19 @@ define([
 				// Summary: set the model's type
 				this.model.task.properties.type = type;
 			},
-			setTaskDescription: function(/*string*/ description){
+			setTaskDescription: function(/*string*/ description , activityType){
 				// Summary: set the task description
-				this.model.task.taskDescription = description;
+				var desc = this.model.task.taskDescription;
+				//check if new object is required
+				activityType = (activityType) ? activityType : "construction";
+				if(typeof desc.length != "undefined"){
+					var descObj = {};
+					descObj[activityType] = description;
+					this.model.task.taskDescription = descObj;
+					return;
+				}
+				this.model.task.taskDescription[activityType] = description;
+				return;
 			},
 			setTaskLessonsLearned: function(/*string*/ lessonsLearned){
 				this.model.task.lessonsLearned = lessonsLearned;
