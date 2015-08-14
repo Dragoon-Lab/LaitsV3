@@ -711,15 +711,29 @@ define([
 
 			if(activity_config.get("allowPreview")){
 				var previewButton = registry.byId("previewButton");
-				previewButton.set("disabled", false);
-				on(registry.byId("previewButton"),"click",function(){
-					var user = query.u;
-					var timestamp = new Date().getTime();
-					var url = document.URL.replace("u="+query.u,"u="+query.u+"-"+timestamp);
-					//console.log(url);
-					url=url+"&l=false";
-					window.open(url.replace("m=AUTHOR","m=STUDENT"),"newwindow");
-				});
+				if(query.g) {
+					previewButton.set("disabled", false);
+					//activity names and menu Ids should be same
+					var activities = activity_config.getAllActivitesNames();
+					array.forEach(activities, function(activity){
+						on(registry.byId("menu_"+activity),"click",function() {
+							var timestamp = new Date().getTime();
+							var url = document.URL.replace("u="+query.u,"u="+query.u+"-"+timestamp);
+							url=url+"&l=false";
+							url = url.replace("a="+query.a, "a="+ activity);
+							window.open(url.replace("m=AUTHOR","m=STUDENT"),"newwindow");
+						});
+					});
+				}
+				else{
+					previewButton.set("disabled", true);
+					new toolTip({
+						connectId: ["previewButton"],
+						label: "You must save your problem in a folder before it can be previewed." +
+								"<br/>Click \"Save As\" to do so.",
+						position:["below"]
+					});
+				}
 			}
 
 			if(activity_config.get("allowCreateSchema")){
@@ -1197,7 +1211,9 @@ define([
 				drawModel.prettify();
 			});
 
-			controllerObject.highlightNextNode();
+			if(activity_config.get("demoIncremental")) {
+				controllerObject.highlightNextNode();
+			}
 		});
 	});
 });

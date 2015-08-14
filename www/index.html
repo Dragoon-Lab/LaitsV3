@@ -145,7 +145,15 @@
         <button type="button" data-dojo-type="dijit/form/Button" id="descButton" disabled="true" style="display: none">Problem &amp; Times</button>
         <button type="button" data-dojo-type="dijit/form/Button" id="saveButton" disabled="true" style="display: none">Save As</button>
         <button type="button" data-dojo-type="dijit/form/Button" id="mergeButton" disabled="true" style="display: none">Merge </button>
-        <button type="button" data-dojo-type="dijit/form/Button" id="previewButton" disabled="true" style="display: none">Preview</button>
+        <!--<button type="button" data-dojo-type="dijit/form/Button" id="previewButton" disabled="true" style="display: none">Preview</button>-->
+        <div id="previewButton" data-dojo-type="dijit/PopupMenuBarItem">
+            <span>Preview</span>
+            <div data-dojo-type="dijit/Menu" id="menuPreview">
+                <div id="menu_construction" data-dojo-type="dijit/MenuItem">Construction</div>
+                <div id="menu_incremental" data-dojo-type="dijit/MenuItem">Incremental</div>
+                <div id="menu_incrementalDemo" data-dojo-type="dijit/MenuItem">Incremental Demo</div>
+            </div>
+        </div>
         <button type="button" data-dojo-type="dijit/form/Button" id="slidesButton" disabled="true" style="display: none">Hints</button>
         <button type="button" data-dojo-type="dijit/form/Button" id="prettifyButton" style="display: none">Prettify</button>
         <div data-dojo-type="dijit/PopupMenuBarItem">
@@ -590,7 +598,7 @@
     </div> <!-- div for schema factor values -->
 
     <!--Putting Incremental Editor popup -->
-    <div class="claro sameedit" data-dojo-type="dijit/TooltipDialog" id="incrementalPopup" style="display:none;">
+    <div class="claro sameedit" data-dojo-type="dijit/TooltipDialog" id="incrementalMenu" style="display:none;">
         <div id="IncrementalNodeName" class="incrementalButton" style="text-align: center"></div>
         <button type="button" class="incrementalButton" data-dojo-type="dijit/form/Button" iconClass="fa fa-arrow-up inc-button" id="IncreaseButton"> Increase</button>
         <button type="button" class="incrementalButton" data-dojo-type="dijit/form/Button" iconClass="fa fa-arrow-down inc-button"  id="DecreaseButton"> Decrease</button>
