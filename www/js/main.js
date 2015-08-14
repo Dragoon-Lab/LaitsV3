@@ -711,23 +711,18 @@ define([
 			if(activity_config.get("allowPreview")){
 				var previewButton = registry.byId("previewButton");
 				previewButton.set("disabled", false);
-				on(registry.byId("menuConstruction"),"click",function(){
-					var timestamp = new Date().getTime();
-					var url = document.URL.replace("u="+query.u,"u="+query.u+"-"+timestamp);
-					//console.log(url);
-					url=url+"&l=false";
-					window.open(url.replace("m=AUTHOR","m=STUDENT"),"newwindow");
+				
+				//activity names and menu Ids should be same
+				var activities = activity_config.getAllActivitesNames();
+				array.forEach(activities, function(activity){
+					on(registry.byId("menu_"+activity),"click",function() {
+						var timestamp = new Date().getTime();
+						var url = document.URL.replace("u="+query.u,"u="+query.u+"-"+timestamp);
+						url=url+"&l=false";
+						url = url.replace("a="+query.a, "a="+ activity);
+						window.open(url.replace("m=AUTHOR","m=STUDENT"),"newwindow");
+					});
 				});
-
-				on(registry.byId("menuIncremental"),"click",function(){
-					var timestamp = new Date().getTime();
-					var url = document.URL.replace("u="+query.u,"u="+query.u+"-"+timestamp);
-					//console.log(url);
-					url = url.replace("a="+query.a, "a=incremental");
-					url=url+"&l=false";
-					window.open(url.replace("m=AUTHOR","m=STUDENT"),"newwindow");
-				});
-
 			}
 
 			if(activity_config.get("allowCreateSchema")){
