@@ -69,7 +69,7 @@ define(["dojo/aspect",
 				ready(this, "populateSelections");
 				this.init();
 			} else if (this.activityConfig.get("showIncrementalEditor")) {
-				this.initIncrementalPopup();
+				this.initIncrementalMenu();
 			}
 		},
 
@@ -413,7 +413,7 @@ define(["dojo/aspect",
 
 			if (type != "accumulator" && type != "function") {
 				style.set(showEquationButton, "display", "none");
-				this.closeIncrementalPopup();
+				this.closeIncrementalMenu();
 			} else {
 				if (!this.activityConfig.get("showPopupIfComplete") || (this.activityConfig.get("showPopupIfComplete") && this._model.active.isComplete(id))) {
 					//Set Node Name
@@ -439,19 +439,19 @@ define(["dojo/aspect",
 						});
 					}
 					popup.open({
-						popup: this._incrementalPopup,
+						popup: this._incrementalMenu,
 						around: dom.byId(id)
 					});
 
-					this._incrementalPopup.onBlur = lang.hitch(this, function () {
-						this.closeIncrementalPopup();
+					this._incrementalMenu.onBlur = lang.hitch(this, function () {
+						this.closeIncrementalMenu();
 					});
 				}
 			}
 		},
 
 
-		initIncrementalPopup: function () {
+		initIncrementalMenu: function () {
 			var that = this;
 			that._buttonHandlers = {};
 
@@ -462,8 +462,8 @@ define(["dojo/aspect",
 			}));
 
 			//Initialize incremental popup
-			this._incrementalPopup = registry.byId("incrementalPopup");
-			this._incrementalPopup.onShow = lang.hitch(this, function () {
+			this._incrementalMenu = registry.byId("incrementalMenu");
+			this._incrementalMenu.onShow = lang.hitch(this, function () {
 				//logging for pop up start
 				that.logging.log('ui-action', {
 					type: "open-tweak-popup",
@@ -489,7 +489,7 @@ define(["dojo/aspect",
 						that.updateNodeLabel(that.currentID);
 
 						//Close popup
-						that.closeIncrementalPopup(true);
+						that.closeIncrementalMenu(true);
 						that.canShowDonePopup();
 					});
 				});
@@ -498,9 +498,9 @@ define(["dojo/aspect",
 			var showEquationButton = registry.byId("EquationButton");
 
 			on(showEquationButton, "click", function () {
-				//close incremental pop up is being called twice when clicking show equation. There is one at showIncementalEditor function at the top.
+				//close incremental menu is being called twice when clicking show equation. There is one at showIncementalEditor function at the top.
 				//not sure which is to be removed. For now I am commenting this ~ Sachin
-				//that.closeIncrementalPopup();
+				//that.closeIncrementalMenu();
 				var type = that._model.active.getType(that.currentID);
 				var equationMessage = "";
 				var equation = expression.convert(that._model.active, that._model.active.getEquation(that.currentID));
@@ -552,14 +552,14 @@ define(["dojo/aspect",
 
 		},
 
-		closeIncrementalPopup: function (doColorNodeBorder) {
+		closeIncrementalMenu: function (doColorNodeBorder) {
 			this.logging.log('ui-action', {
 				type: "close-tweak-popup",
 				node: this._model.active.getName(this.currentID),
 				nodeID: this.currentID
 			});
 			this.nodeCloseAssessment(this.currentID);
-			popup.close(this._incrementalPopup);
+			popup.close(this._incrementalMenu);
 			this.incButtons.forEach(lang.hitch(this, function (item) {
 				this._buttonHandlers[item].remove();
 			}));
