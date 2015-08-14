@@ -409,14 +409,19 @@
                 <option value="accumulator">Accumulator</option>
                 <option value="function">Function</option>
             </select>
-            <label for="initialValue">Initial Value</label>
+            <span>
+                    <img id="initialValueQuestionMark"  class="questionMark" src="images/questionmark.png" style="padding-left:10px"/>
+                    <label for="initialValue">Initial Value</label>
+            </span>
             <input id="initialValue" type="text" style="width:5em" data-dojo-type="dijit/form/TextBox">
-            <label id="selectUnitsControl">
-                Units
-                <select id="selectUnits" data-dojo-type="dijit/form/Select">
-                    <option value='defaultSelect'>No Units</option>
-                </select>
-            </label>
+             <span>
+                    <img id="unitsQuestionMark"  class="questionMark" src="images/questionmark.png" style="padding-left:10px"/>
+                    <label id="selectUnitsControl">Units
+                        <select id="selectUnits" data-dojo-type="dijit/form/Select">
+                            <option value='defaultSelect'>No Units</option>
+                        </select>
+                    </label>
+             </span>
             <div id="setUnitsControl" style="display: none">
                 <!-- Setting display:none in the widget itself doesn't work.
                      setting display:none in the label doesn't work in FireFox. -->
@@ -446,14 +451,19 @@
                     <select id="setInput" data-dojo-type="dijit/form/ComboBox">
                     </select>
                 </div>
-                <div class="horizontal">
+            </div>
+        </div>
+        <div class="fieldgroup" id="operations">
+                <span class="fixedwidth">
+                    <img id="operationsQuestionMark"  class="questionMark" src="images/questionmark.png" style="margin:2px"/>
+                </span>
+
+                <div>
                     <button id="plusButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">+</button>
                     <button id="minusButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">-</button>
                     <button id="timesButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">*</button>
                     <button id="divideButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">/</button>
                 </div>
-            </div>
-
         </div>
         <div class="fieldgroup" id="structured">
             <label>Inputs</label>

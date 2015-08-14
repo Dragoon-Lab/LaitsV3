@@ -618,12 +618,6 @@ define([
 					"and graphed the author's model, providing an opportunity for retrospection.");
 				makeTooltip('integrationMethod', "Euler's method - Best for functions that occur every tick of the time frame <br>" +
 					"Midpoint - Best for continuous functions <br>");
-				makeTooltip('descriptionQuestionMark', " The quantity computed by the node ");
-				makeTooltip('typeQuestionMark', "<strong>Parameters</strong> represent fixed quantities that never change.<br>"+
-					"<strong>Accumulators</strong> represent a quantity that accumulates the values of its inputs over time.<br>"+
-					"<strong>Functions</strong> represent a value that is directly related to the values of its inputs, without regard to its <br>own previous value.");
-				makeTooltip('inputsQuestionMark', "Select a node name to quickly insert it into the expression.");
-				makeTooltip('expressionBoxQuestionMark', "Determines the value of the quantity. Additional math functions are available in the help menu");
 				makeTooltip('authorDescriptionQuestionMark', "The quantity computed by the node");
 			}
 
@@ -1067,6 +1061,27 @@ define([
 			}
 
 			if(activity_config.get("showNodeEditor")){
+				// Show tips for Root in node modifier and Share Bit in Description and Time
+				var makeTooltip  = function(id,content){
+					new toolTip({
+						connectId: [id],
+						label: content
+					});
+				};
+				makeTooltip('descriptionQuestionMark', " The quantity computed by the node ");
+				makeTooltip('typeQuestionMark', "Suppose you are defining a quantity called zorch: <br>"+
+					"<ul><li>A Parameter is a quantity whose value is given to you.  If zorch=50.3, then it is a parameter.</li>"+
+					"<li> A Function is a quantity whose value is a function of the node’s inputs.<br>"+
+					"If zorch=foo*baz, then it is a Function and its inputs are foo and baz.  * means multiplication.</li>"+
+					"<li>An Accumulator is a quantity whose next value is the sum of its current value and its inputs.<br>" +
+					"If the next value of zorch is its current value + foo – baz, then it is an Accumulator and its " +
+					"<br>inputs are foo and baz.</li></ul>");
+				makeTooltip('inputsQuestionMark', "Select a quantity to enter into the expression above.  Much faster than typing.");
+				makeTooltip('expressionBoxQuestionMark', "Determines the value of the quantity. Additional math functions are available in the help menu");
+				makeTooltip('initialValueQuestionMark',"This is a number, typically given to you in the system description.");
+				makeTooltip('unitsQuestionMark','Some quantities are measured in units, such as feet, volts or dollars.<br>  Pick one here, or “No Units” if this quantity doesn’t need units.');
+				makeTooltip('operationsQuestionMark','Click one of these to enter it in the expression above. <br> See the Help menu at the top of the screen for a list of other mathematical operators and functions that you can type in.');
+
 				// Wire up close button...
 				// This will trigger the above session.saveProblem()
 				on(registry.byId("closeButton"), "click", function(){
