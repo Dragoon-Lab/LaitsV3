@@ -452,6 +452,25 @@ define(["dojo/aspect",
 			}
 		},
 
+		changeDescription:function(changeDesc){
+            switch(changeDesc) {
+                case "Increase":
+                changeDescirpt=" has been increased."
+                break;
+                case "Decrease":
+                changeDescirpt=" has been decreased."
+                break;    
+                case "Stays-Same":
+                changeDescirpt=" stays the same."
+                break;
+                case "Unkonwn":
+                changeDescirpt=" will sometimes increase and sometimes decrease."
+                break;                 
+                default:
+                changeDescirpt=""
+            }// end of switch
+            return changeDescirpt;
+        },
 
 
 		initIncrementalPopup: function(){
@@ -512,6 +531,17 @@ define(["dojo/aspect",
 				}else if(type == "function"){
 					equationMessage = nodeName + " = " + equation;
 				}
+				if (that.activityConfig._activity=="incrementalDemo") {
+                    equationMessage+="<br/>"+"Compared to the original model:";
+                    array.forEach(inputs, function(node){
+                        var inputNode=that._model.active.getNode(node.ID);
+                        var changeDesc=that._model.active.getTweakDirection(node.ID);
+                        var changeDescirpt=that.changeDescription(changeDesc);                        
+                        equationMessage+="<br/>"+that._model.active.getName(node.ID)+changeDescirpt;
+                    });// end of foreach
+                    equationMessage+="<br/>"+ "Therefore, "+nodeName+that.changeDescription(that._model.active.getTweakDirection(that.currentID));
+
+               };// end of if act
 				that.logging.log('ui-action', {
 					type: "open-tweak-equation",
 					node: that._model.active.getName(that.currentID),
