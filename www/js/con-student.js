@@ -642,7 +642,25 @@ define(["dojo/aspect",
 				//highlight next node in the list
 				this.highlightNextNode();
 			}
-		}
+		},
+
+        resetNodesIncDemo: function(){
+            studId = this._model.active.getNodes();
+            console.log("student id is ", studId);
+            studId.forEach(lang.hitch(this, function (newId) {
+                if(newId.type!=="parameter"){
+                    //set tweak direction to null and status none
+                    this._model.active.setTweakDirection(newId.ID,null);
+                    this._model.active.setStatus(newId.ID,"tweakDirection","");
+                    //update node label and border color
+                    this.updateNodeLabel(newId.ID);
+                    this.colorNodeBorder(newId.ID, true);
+
+                    //highlight next node in the list
+                    this.highlightNextNode();
+                }
+            }));
+        }
 
 	});
 });

@@ -301,7 +301,7 @@ define([
 			var menuButtons=[];
 			menuButtons.push("createNodeButton","graphButton","tableButton","forumButton",
 				"schemaButton","descButton","saveButton","mergeButton",
-				"previewButton","slidesButton","lessonsLearnedButton","doneButton", "prettifyButton");
+				"previewButton","slidesButton","lessonsLearnedButton","resetButton","doneButton", "prettifyButton");
 
 			array.forEach(menuButtons, function(button){
 				//setting display for each menu button
@@ -1225,7 +1225,11 @@ define([
 				console.log("Pretify---------------");
 				drawModel.prettify();
 			});
-
+            menu.add("resetButton", function(e){
+                event.stop(e);
+                //call resetNodeInc demo in con student to reset the nodes
+                controllerObject.resetNodesIncDemo();
+            });
 			if(activity_config.get("demoIncremental")) {
 				controllerObject.highlightNextNode();
 			}
