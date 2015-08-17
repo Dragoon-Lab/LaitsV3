@@ -383,7 +383,7 @@ define([
 			if(this.isStatic){
 				var staticVar = this.checkStaticVar(true);
 				staticPlot = this.findStaticSolution(true, staticVar, this.active.plotVariables);	
-				givenPlot = this.findStaticSolution(true, staticVar, this.active.plotVariables);
+				givenPlot = this.findStaticSolution(false, staticVar, this.given.plotVariables);
 				//console.log(this.given.plotVariables);
 				if(this.active.plotVariables.length > 0){ //we check the length of object, if there are nodes, then we proceed else give an error and return
 					array.forEach(this.active.plotVariables, function(id, k){
@@ -767,7 +767,7 @@ define([
 				{
 					var staticVar = this.checkStaticVar(true);
 					var activeSolution = this.findStaticSolution(true, staticVar, this.active.plotVariables);
-					var givenSolution = this.findStaticSolution(true, staticVar, this.active.plotVariables);
+					var givenSolution = this.findStaticSolution(false, staticVar, this.given.plotVariables);
 
 					//update and render the charts
 					array.forEach(this.active.plotVariables, function(id, k){

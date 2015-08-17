@@ -133,14 +133,14 @@ define([
 		},
 		
 		findStaticSolution: function(isActive, givennode, plotVariables){
-			// Summary:	 Find a solution
+			// Summary:	 Find solutions for all the node in plotVariables array as y axises against givennode as x axis
 			// Returns:	 an object of the form
 			//			{status: s, type: m, missingNode: n/soln: solution}
 		    var choice = isActive?this.active:this.given;
-		    var node = givennode.ID;
+		    var node = (isActive) ? givennode.ID : givennode.descriptionID;
 		    var start = givennode.initial / 10;
 		    var stop = givennode.initial * 10;
-		    var step = (stop - start) / 10;
+		    //var step = (stop - start) / 10;
 		    var min = 0;
 		    var max = 0;
 		    /*var val = choice.timeStep.parameters[node], min, max;
@@ -201,20 +201,21 @@ define([
 			try{			 
 				if(plotVariables){
 					// If id is null, then make row null
-					var plotValues = array.map(plotVariables, function(x){
+					var plotValues = array.map(plotVariables, function(x){// Initializing 
 						return x?[]:null;
 					});
 					var timeStep = choice.timeStep;
 					// Copy parameters object.
 					var variables = lang.mixin({}, timeStep.parameters);
+					// Calcultes the solution for every node for each step in x axis
 					for(var k = start; k < stop; k += step){
 							nodes.push(k);
-							variables[node] = k;
+							variables[node] = k; // This array represent the x axis
 							//variables = lang.mixin({}, parameters);
-							array.forEach(timeStep.functions, function(id){
+							array.forEach(timeStep.functions, function(id){ // This does the main calculations
 								variables[id] = timeStep.parse[id].evaluate(variables, time.start);
 							});
-							array.forEach(plotVariables, function(id, k){
+							array.forEach(plotVariables, function(id, k){// Generate the output array for each step
 								if(id){
 									plotValues[k].push(variables[id]);
 								}
