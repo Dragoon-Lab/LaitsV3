@@ -609,7 +609,7 @@ define(["dojo/aspect",
 		highlightNextNode: function () {
 			if (this.activityConfig.get("demoIncremental")) {
 				//Get next node in the list from PM
-				var nextID = ""
+				var nextID = "";
 				/*this._PM.getNextNode();*/ // Uncomment this once function is ready
 				if (nextID) {
 					var node = dom.byId(nextID);
@@ -655,13 +655,11 @@ define(["dojo/aspect",
                     //update node label and border color
                     this.updateNodeLabel(newId.ID);
                     this.colorNodeBorder(newId.ID, true);
-
-                    //highlight next node in the list
-                    this.highlightNextNode();
                 }
             }));
+            //highlight next (should be the first) node in the list
+            this.highlightNextNode();
         }
-
 	});
 });
 
