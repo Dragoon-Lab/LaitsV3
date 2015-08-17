@@ -395,7 +395,11 @@ define([
 
 			getActivity: function(){
 				return this._activity;
+			},
+			getAllActivitesNames: function(){
+				return Object.keys(activity_params);
 			}
+
 		};
 
 		config.constructor.apply(config, arguments);

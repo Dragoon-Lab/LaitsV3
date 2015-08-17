@@ -38,7 +38,9 @@ define([
         constructor: function(/*model*/ givenModel,/*string*/ activity){
             this.givenModel = givenModel;
             this.timeObj = givenModel.getTime();
+            this.bufferDescription = null;
             this._activity=activity;
+            this._initHandles();
         },
 
 		initializeAuthorWindow: function(){
@@ -59,8 +61,9 @@ define([
             dom.byId("authorSetLessonsLearned").value = this.serialize(
                 this.givenModel.getTaskLessonsLearned() ? this.givenModel.getTaskLessonsLearned() : ""
             );
+            this.bufferDescription = {};
             dom.byId("authorSetDescription").value = this.serialize(
-                this.givenModel.getTaskDescription() ? this.givenModel.getTaskDescription() : ""  
+                this.givenModel.getTaskDescription(registry.byId("authorSetDescriptionType").get("value")) ? this.givenModel.getTaskDescription(registry.byId("authorSetDescriptionType").get("value")) : ""  
             );
              // Populating parameter field
             var list=[]; //list of all required parameters[{label: "growth rate",value: "id3"},...]
@@ -93,7 +96,7 @@ define([
 				paramWidget.set("value", "defaultSelect");
 				paramDirWidget.set("value", "defaultSelect");
 			}
-			this._initHandles();
+			//this._initHandles();
 		},
 
         //set up event handling with UI components
@@ -109,7 +112,8 @@ define([
             var descWidgetUnit = registry.byId('authorSetTimeStepUnits');
             // Set checkbox for sharing
             registry.byId("authorProblemShare").attr("value", this.givenModel.getShare());
-
+            var setDescription = registry.byId('authorSetDescription');
+            var getActivityType = registry.byId('authorSetDescriptionType');
             // This event gets fired if student hits TAB or input box
             // goes out of focus.
             //for start time field
@@ -152,6 +156,35 @@ define([
                     typechecker.closePops();
 
                 };
+            }));
+             setDescription.on("change", lang.hitch(this, function(data){
+                var activityType = registry.byId("authorSetDescriptionType").get("value");
+                var tin = dom.byId("authorSetDescription").value;
+                var tin_sanitize = tin.split("\n");
+            
+                var flag = false;
+                tin_sanitize = tin_sanitize.reverse().filter(function(ele, idx, array){
+                    if(flag || ele.length > 0) return flag = true;
+                });
+             
+                //this.givenModel.setTaskDescription(tin_sanitize.reverse(), activityType);
+                this.bufferDescription[activityType] = tin_sanitize.reverse();
+                return;
+            }));
+            
+            getActivityType.on("change", lang.hitch(this,function(event){
+             
+               var activityValue = getActivityType.get("value");
+               //check for the value in buffer
+               if(this.bufferDescription[activityValue]) 
+                    dom.byId("authorSetDescription").value = this.serialize(
+                        this.bufferDescription[activityValue]
+                    );
+               else
+                    dom.byId("authorSetDescription").value = this.serialize(
+                            this.givenModel.getTaskDescription(activityValue) ? this.givenModel.getTaskDescription(activityValue) : ""  
+                        );
+               return; 
             }));
             //for share bit checkbox
             var descCheckButton = registry.byId("authorProblemCheck");
@@ -277,29 +310,29 @@ define([
             document.title = "Dragoon - " + tname;
             
             domStyle.set(errorDialogSpan,"display","none");
-            var tin = dom.byId("authorSetDescription").value;
+            var tweaked_node = paramWidget.get("value");
+            var tweak_dir = paramDirWidget.get("value");
+            //var tin = dom.byId("authorSetDescription").value;
             var ll = dom.byId("authorSetLessonsLearned").value;
             
             
             // sanitize by removing trailing null values
-            var tin_sanitize = tin.split("\n");
+            //var tin_sanitize = tin.split("\n");
             var ll_sanitize = ll.split("\n");
             var flag = false;
-            tin_sanitize = tin_sanitize.reverse().filter(function(ele, idx, array){
+            /*tin_sanitize = tin_sanitize.reverse().filter(function(ele, idx, array){
                 if(flag || ele.length > 0) return flag = true;
             });
-            flag = false;
+            flag = false;*/
             ll_sanitize = ll_sanitize.reverse().filter(function(ele, idx, array){
                 if(flag || ele.length > 0) return flag = true;
             });
-
-            //read the tweaked Node and Direction
-
-            var tweaked_node = paramWidget.get("value");
-            var tweak_dir = paramDirWidget.get("value");
-
-            myThis.givenModel.setTaskDescription(tin_sanitize.reverse());
+         
+            //myThis.givenModel.setTaskDescription(tin_sanitize.reverse());
             myThis.givenModel.setTaskLessonsLearned(ll_sanitize.reverse());
+            for(var activityType in this.bufferDescription){
+                myThis.givenModel.setTaskDescription(this.bufferDescription[activityType], activityType);
+            }
             myThis.timeObj.units = dom.byId("authorSetTimeStepUnits").value;
             myThis.timeObj.integrationMethod = dom.byId("authorSetIntegrationMethod").value;
             myThis.givenModel.setTime(myThis.timeObj);
@@ -315,7 +348,7 @@ define([
             var canvas = dom.byId('myCanvas');
             var context = canvas.getContext('2d');
             context.clearRect(0,0,canvas.width, canvas.height);
-            var desc_text = this.givenModel.getTaskDescription();
+             var desc_text = (this.givenModel.getTaskDescription(this._activity)) ? this.givenModel.getTaskDescription(this._activity) : [];
             var descs=[];
             if (this._activity==="incremental"){
              descs[0]="";
