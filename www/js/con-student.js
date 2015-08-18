@@ -450,25 +450,25 @@ define(["dojo/aspect",
 			}
 		},
 
-		changeDescription:function(changeDesc){
+		getChangeDescriptionText:function(changeDesc){
 			var changeDescript;
 			switch(changeDesc) {
 				case "Increase":
-				changeDescirpt=" has been increased."
+				changeDescript=" has been increased."
 				break;
 				case "Decrease":
-				changeDescirpt=" has been decreased."
+				changeDescript=" has been decreased."
 				break;    
 				case "Stays-Same":
-				changeDescirpt=" stays the same."
+				changeDescript=" stays the same."
 				break;
-				case "Unkonwn":
-				changeDescirpt=" Unkonwn"
+				case "Unknown":
+				changeDescript=" will sometimes increase and sometimes decrease."
 				break;                 
 				default:
-				changeDescirpt=""
+				changeDescript=""
 			}
-			return changeDescirpt;
+			return changeDescript;
 		},
 
 		initIncrementalMenu: function () {
@@ -538,14 +538,14 @@ define(["dojo/aspect",
 						var nodeType=that._model.active.getType(node.ID)
 						var inputNode=that._model.active.getNode(node.ID);
 						var changeDesc=that._model.active.getTweakDirection(node.ID);
-						var changeDescirpt=that.changeDescription(changeDesc); 
+						var changeDescirpt=that.getChangeDescriptionText(changeDesc); 
 						if (nodeType==="accumulator") 
 							equationMessage+="<li>"+"Initial value for the "+that._model.active.getName(node.ID)+" stays the same"+"</li>";
 					
 						else                 
 							equationMessage+="<li style='float:left'>"+that._model.active.getName(node.ID)+changeDescirpt+"</li>";
 					});	
-					equationMessage+="</ul><p>"+ "<br/>Therefore, "+nodeName+that.changeDescription(that._model.active.getTweakDirection(that.currentID))+"</p></div>";					
+					equationMessage+="</ul><p>"+ "<br/>Therefore, "+nodeName+that.getChangeDescriptionText(that._model.active.getTweakDirection(that.currentID))+"</p></div>";					
 				};
 				that.logging.log('ui-action', {
 					type: "open-tweak-equation",
