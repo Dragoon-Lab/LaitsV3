@@ -551,6 +551,8 @@ define([
 		logging: null,
 		descriptionCounter: 0,
 		_assessment: null,
+		nodeOrder: [],
+		nodeCounter: 0,
 	
 		/*****
 		 * Private Functions
@@ -991,24 +993,43 @@ define([
 		},
 
 		getNextNode: function(){
-            return this.nodeOrder[this.counter++];
-        },
+			if(this.nodeOrder)
+				return this.nodeOrder[this.nodeCounter++];
+			else
+				return "";
+		},
 
-        createNodeOrder: function(){
-			var nodes = this._model.student.getNodes();
-            //var matrix = this.createAdjacencyMatrix();
+		setNodeCounter: function(){
+			//handling the edge case of all nodes are full
+			var nOrder = this.nodeOrder;
+			var counter = this.nodeCounter;
+			if(nOrder){
+				counter = nOrder.length;
+				for(var i = 0; i < counter; i++){
+					if(!(this.model.student.getTweakDirection(nOrder[i]))){
+						counter = i;
+						break;
+					}
+				}
+			}
+
+			this.nodeCounter = counter;
+		},
+
+		createNodeOrder: function(){
+			var nodes = this.model.student.getNodes();
 			var l = nodes.length;
 			var tweakedNode;
-			var useTweakNode = this.activityConfig.get("useTweakedNode");
+			var useTweakNode = this.activityConfig.get("useTweakedNodeForOrdering");
 			if(useTweakNode){
 				tweakedNode = this.model.getInitialTweakedNode();
 			}
 
-			var priority = [];
 			var parameterID = [], functionID = [], accumulatorID = [];
 			var studentTweakedNode;
+			var finalHierarchy = [];
 
-            if(nodes){
+			if(nodes){
 				var ids = [];
 				
 				//sets up the complete nodes so that we know the exhaustive node IDs and their types.
@@ -1017,15 +1038,12 @@ define([
 
 					switch(node.type){
 						case "parameter":
-							priority[counter] = 0;
 							parameterID.push(node.ID);
 							break;
 						case "function":
-							priority[counter] = 2;
 							functionID.push(node.ID);
 							break;
 						case "accumulator":
-							priority[counter] = 4;
 							accumulatorID.push(node.ID);
 							break;
 						default:
@@ -1036,161 +1054,159 @@ define([
 						studentTweakedNode = node.ID;
 					}
 				});
-				
-				var str = [];
-				var hierarchy = [];
-				//make hierarchy of the nodes based on inputs.
-				array.forEach(nodes, function(node, counter){
-					var inputs = node.inputs;
 
-					if(inputs){
-						var p = 0, f = 0, a = 0;
-						var inputIDs = ["", "", ""]; //first one for parameters, second for functions, third for accumulators
-						var strF = "", strA = "";
-						array.forEach(inputs, function(input){
-							if(parameterID.indexOf(input.ID) >= 0){
-								inputIDs[0] += input.ID + " ";
-							} else if(functionID.indexOf(input.ID) >= 0){
-								inputIDs[1] += input.ID + " ";
-							} else if(accumulatorID.indexOf(input.ID) >= 0) {
-								inputIDs[2] += input.ID + " ";
-							}
-						});
-						
-						array.forEach(inputIDs, function(temp){
-							if(temp.indexOf(" ") > 0){
-								temp.trim();
-							}
-						});
-						//strF = strF != "" ? strF.substring(0, strF.length - 1) : "";
-						//strA = strA != "" ? strA.substring(0, strA.length - 1) : "";
+				var checkString = function(str, id1, id2){
+					if(str.indexOf(id1) >= 0)
+						return id1;
+					else if(str.indexOf(id2) >= 0)
+						return id2;
+					else
+						return "";
+				};
 
-						//str[counter] = strF + "|" + strA;
-						str[counter] = inputIDs[0] + "~" + inputIDs[1] + "~" + inputIDs[2]
+				//places id2 before or after id1 as given by the position, position values are "before" or "after"
+				var putString = function(str, id1, id2, position){
+					var index;
+					var index1 = str.indexOf(id1);
+					var index2 = str.indexOf(id2);
+
+					if(index2 >= 0){
+						//basically means that both ids are in the string
+						return str;
 					}
-				}, this);
 
-				
-
-				//pick first those function and accumulator which are attached to the tweak node.
-				if(useTweakNode){
-					//setting priority of functions
-					array.forEach(functionID, function(id){
-						var node = nodes[ids.indexOf(id)];
-						var inputs = node.inputs;
-
-						var flag = false;
-						array.forEach(inputs, function(adjacent){
-							if(!flag && adjacent.ID == studentTweakNode){
-								flag = true;
-							}
-						}, this);
-						priority[ids.indexOf(id)] = 1;
-					}, this);
-
-					//setting the priorities of accumulators
-					array.forEach(accumulatorID, function(id){
-						var node = nodes[ids.indexOf(id)];
-						var inputs = node.inputs;
-
-						var flag = false;
-						array.forEach(inputs, function(adjacent){
-							if(!flag && adjacent.ID = studentTweakNode){
-								flag = true;
-							}
-						}, this);
-
-						priority[ids.indexOf(id) = 3;
-					}, this);
-				}
-				
-				/**
-				 * now the priority array has 5 values 0 (parameter), 1(functions attached to tweak node),
-				 * 2 (other function nodes), 3 (accumulators attached to tweaked parameter)
-				 * 4 (other accumulator nodes)
-				 * now we will distinguish among this and give them a proper priority which will help us make the final id list
-				 * first breaking criteria is based on the inputs, 
-				 * if a function has inputs whose input values have a smaller priority then they should take the next higher value.
-				 * final differentiating criteria is done on the of position, left ones i.e smaller x value will be done first.
-				 */
-				
-				var p1 = [], p2 = [], p3 = [], p4 = [];
-				array.forEach(nodes, function(node, counter){
-					switch(priority[counter]){
-						case 1:
-							p1.push(node.ID);
-							break;
-						case 2:
-							p2.push(node.ID);
-							break;
-						case 3:
-							p3.push(node.ID);
-							break
-						case 4: 
-							p4.push(node.ID);
-							break;
+					var l = str.length;
+					var returnString = "";
+					switch(position){
 						default:
+						case "before":
+							if(index1 == 0)
+								returnString = id2 + " " + str;
+							else {
+								//this means that there is already a node that is supposed to be complete before we do this.
+								var index = index1 - 1;
+								returnString = str.slice(0, index) +"="+ id2 + str.slice(index, str.length);
+							}
+							break;
+						case "after":
+							if(index1 == str.length - id1.length)
+								returnString = str + " " +id2;
+							else{
+								var index = index1 + id1.length + 1;
+								returnString = str.slice(0, index) + id2 + "=" + str.slice(index, str.length);
+							}
 							break;
 					}
-				}, this);
 
-				//var finalPriority = [];
-				var finalList = [];
-				if(p1){
-					if(p1.length > 1) {
-						array.forEach(p1, function(id){
-							var node = nodes[ids.indexOf(id)];
-							var inputs = 
-						}, this);
-					} else {
-						//finalPriority[ids.indexOf(p1[0])] = 1;
-						finalList.push(p1[0]);
-					}
+					return returnString;
 				}
-            }
-        }/*,
 
-        /*createAdjacencyMatrix: function(){
-            var nodes = this._model.student.getNodes();
-            var matrix = [];
-			
-			if(nodes){
-				var ids = [];
-
-    	        var l = nodes.length;
-				var i = 0;
-
-            	for(i; i<l; i++){
-					matrix[i] = [];
-					ids[i] = nodes[i].ID;
-					for(var j = 0; j < l; j++){
-						matrix[i][j] = 0;
-					}
-            	}
-
-				array.forEach(nodes, function(node, counter){
-					var inputs = node.inputs;
-					if(inputs){
-						//diagnol elements give 1 if there are any elements connected to it.
-						matrix[counter][counter] = 1;
-						array.forEach(inputs, function(input){
-							matrix[counter][ids.indexOf(input.ID)] = 1;
+				//the priority of the ids is same. So it checks for the position. Which ever is on the left will be done first.
+				var prioritize = function(/* array */ tempIDs){
+					var orderedIDs = [];
+					var positions = [];
+					if(tempIDs.size > 1){
+						array.forEach(tempIDs, function(id){
+							var node = nodes[ids.indexOf(id)];
+							for(var i = 0; i < positions.size; i++){
+								if(node.position.x < positions[i]){
+									positions.splice(i, 0, node.position.x);
+									orderedIDs.splice(i, 0, id);
+									break;
+								}
+							}
 						}, this);
-					}
-				}, this);
-				
-				//gives the hierarchy of the functions and then the accumulators using adjacency matrix
-				var hierarchy = [];
 
-				array.forEach(matrix, function(row, counter){
-					if(matrix[counter][counter] == 1){
-						ids[counter]
+						return orderedIDs;
+					} else {
+						return tempIDs;
 					}
+				};
+
+				if(functionID.length == 1){
+					finalHierarchy.push(functionID[0]);
+					finalHierarchy.push(prioritize(accumulatorID));
+
+					return finalHierarchy;
+				} else if (functionID.length == 0){
+					return prioritize(accumulatorID);
+				}
+
+				var str = [];
+				var hierarchyString = "";
+				var hierarchy = [];
+				var relativeOrderF = [];
+				//make hierarchy of the nodes based on inputs.
+				array.forEach(functionID, function(id){
+					var n = nodes[ids.indexOf(id)];
+					var inputs = n.inputs;
+
+					array.forEach(inputs, function(input){
+						if(functionID.indexOf(input.ID) >= 0){
+							var flag = true;
+
+							//check if some relative order already has the one of the nodes.
+							array.forEach(relativeOrderF, function(s, counter){
+								var temp = checkString(s, n.ID, input.ID);
+
+								if(temp == n.ID){
+								s = putString(s, n.ID, input.ID, "before");
+									flag = false;
+								} else if (temp == input.ID) {
+									s = putString(s, input.ID, n.ID, "after");
+									flag = false;
+								}
+
+								relativeOrderF[counter] = s;
+							}, this);
+
+							if(flag){
+								relativeOrderF.push(input.ID + " " + n.ID);
+							}
+						}
+					}, this);
 				}, this);
-			
+
+				//create the complete hierarchy of functions using relative order.
+				if(relativeOrderF){
+					array.forEach(relativeOrderF, function(s){
+						var arr = s.split(" ");
+						array.forEach(arr, function(id, counter){
+							if(hierarchy && hierarchy[counter]){
+								hierarchy[counter] += ("=" + id);
+							} else {
+								hierarchy[counter] = id;
+							}
+						}, this);
+					}, this);
+
+					console.log("function nodes order is ", hierarchy);
+				}
+				
+				//now we just prioritize all the functions. hierarchy array has ids which are at same levels in the model.
+				//Each row either has ids in the form id10=id13 or id11. All these nodes are functions.
+				if(hierarchy){
+					array.forEach(hierarchy, function(s){
+						if(s.indexOf("=") > 0){
+							var temp = prioritize(s.split("="));
+							array.forEach(temp, function(id){
+								finalHierarchy.push(id);
+							});
+						} else {
+							finalHierarchy.push(s);
+						}
+					}, this);
+				}
+
+				if(finalHierarchy){
+					var temp = prioritize(accumulatorID);
+					array.forEach(temp, function(id){
+						finalHierarchy.push(prioritize(id));
+					});
+				}
 			}
-			
-			return matrix;
-        }*/
+
+			return finalHierarchy;
+		}
 	});
 });

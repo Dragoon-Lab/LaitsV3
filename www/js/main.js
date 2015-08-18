@@ -317,14 +317,28 @@ define([
 			}, this);
 			
 			var updateModel = new modelUpdates(givenModel, query.m, session);
-			if(activity_config.get("setTweakDirections") && !givenModel.given.validateTweakDirections()){	
+			
+			//set tweak directions if needed by the activity and the model has tweak directions.
+			if (activity_config.get("setTweakDirections") && !givenModel.getInitialTweakedNode()){
+				//show a message that this problem is not right for incremental activity
+				var errorMessage = new messageBox("errorMessageBox", "error", "Author has not defined the changed nodes. The problem will not work in this activity. Kindly contact the author of the problem");
+				errorMessage.show();
+				throw Error("problem does not have tweaked nodes");
+			}else if(activity_config.get("setTweakDirections") && !givenModel.given.validateTweakDirections()){
 				updateModel.calculateTweakDirections();
 			}
-			
+
+			//copy problem to student model
 			if(activity_config.get("initializeStudentModel") && !givenModel.areRequiredNodesVisible()){
 				console.log("student model being initialized");
 				updateModel.initializeStudentModel(activity_config.get("setStudentTweakDirection"));
 			}
+
+			//setting the node order for demo activities
+			if(activity_config.get("getNodeOrder") && controllerObject._PM){
+                controllerObject._PM.nodeOrder = controllerObject._PM.createNodeOrder();
+				controllerObject._PM.setNodeCounter();
+            }
 
 			//configuring DOM UI
 			style.set(registry.byId('imageButton').domNode, "display", "none");

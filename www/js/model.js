@@ -285,10 +285,10 @@ define([
 				this.isCompleteFlag = this.matchesGivenSolution();
 			},
 			getInitialTweakedNode: function(){
-				return this.model.task.increment[0].tweakedNode;
+				return this.model.task.increment && this.model.task.increment[0].tweakedNode;
 			},
 			getInitialTweakDirection: function(){
-				return this.model.task.increment[0].tweakDirection;
+				return this.model.task.increment && this.model.task.increment[0].tweakDirection;
 			},
             getIncrements: function(){
 				return (typeof this.model.task.increment!== "undefined") ? this.model.task.increment:[];

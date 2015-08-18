@@ -242,7 +242,9 @@ define([
 						setStudentTweakDirections: true,
 						useTweakStatus: true,
 						demoIncremental:true,
-						showPopupIfComplete: true
+						showPopupIfComplete: true,
+						getNodeOrder: true,
+						useTweakedNodeForOrdering: true
 				},
 
 				COACHED:{
@@ -266,6 +268,8 @@ define([
 						setStudentTweakDirections: true,
 						useTweakStatus: true,
 						demoIncremental:true,
+						useTweakedNodeForOrdering: true,
+						getNodeOrder: true,
 						showPopupIfComplete: true
 				},
 
@@ -287,6 +291,8 @@ define([
 						setStudentTweakDirections: true,
 						useTweakStatus: true,
 						demoIncremental:true,
+						useTweakedNodeForOrdering: true,
+						getNodeOrder: true,
 						showPopupIfComplete: true
 				},
 
@@ -308,6 +314,8 @@ define([
 						setStudentTweakDirections: true,
 						useTweakStatus: true,
 						demoIncremental:true,
+						useTweakedNodeForOrdering: true,
+						getNodeOrder: true,
 						showPopupIfComplete: true
 				}
 			}
@@ -367,12 +375,14 @@ define([
 				//Incremental Behavior
 				showIncrementalEditor: false,
 				copyAuthorNodes: false,
-				showNodeDetails:true,
-				setTweakDirections:false,
+				showNodeDetails: true,
+				setTweakDirections: false,
 				setStudentTweakDirections: false,
 				useTweakStatus: false,
-				demoIncremental:false,
-				showPopupIfComplete:false
+				demoIncremental: false,
+				showPopupIfComplete: false,
+				useTweakedNodeForOrdering: false,
+				getNodeOrder: false
 			},
 
 			constructor: function(/*string*/ mode, /*string*/ activity){
