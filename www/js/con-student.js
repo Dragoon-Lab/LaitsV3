@@ -451,24 +451,25 @@ define(["dojo/aspect",
 		},
 
 		changeDescription:function(changeDesc){
-            switch(changeDesc) {
-                case "Increase":
-                changeDescirpt=" has been increased."
-                break;
-                case "Decrease":
-                changeDescirpt=" has been decreased."
-                break;    
-                case "Stays-Same":
-                changeDescirpt=" stays the same."
-                break;
-                case "Unkonwn":
-                changeDescirpt=" will sometimes increase and sometimes decrease."
-                break;                 
-                default:
-                changeDescirpt=""
-            }// end of switch
-            return changeDescirpt;
-        },
+			var changeDescript;
+			switch(changeDesc) {
+				case "Increase":
+				changeDescirpt=" has been increased."
+				break;
+				case "Decrease":
+				changeDescirpt=" has been decreased."
+				break;    
+				case "Stays-Same":
+				changeDescirpt=" stays the same."
+				break;
+				case "Unkonwn":
+				changeDescirpt=" Unkonwn"
+				break;                 
+				default:
+				changeDescirpt=""
+			}
+			return changeDescirpt;
+		},
 
 		initIncrementalMenu: function () {
 			var that = this;
@@ -524,22 +525,28 @@ define(["dojo/aspect",
 				var equationMessage = "";
 				var equation = expression.convert(that._model.active, that._model.active.getEquation(that.currentID));
 				var nodeName = that._model.active.getName(that.currentID);
+				var inputs=that._model.active.getInputs(that.currentID);
 				if (type == "accumulator") {
-					equationMessage = "new " + nodeName + " = " + "current " + nodeName + " + " + equation;
+					equationMessage = "<div style='float:left'><p>"+"new " + nodeName + " = " + "current " + nodeName + " + " + equation+"</p>";
 				} else if (type == "function") {
-					equationMessage = nodeName + " = " + equation;
+					equationMessage = "<div style='float:left'><p>"+ nodeName + " = " + equation+"</p>";
 				}
 				if (that.activityConfig._activity=="incrementalDemo") {
-                    equationMessage+="<br/>"+"Compared to the original model:";
-                    array.forEach(inputs, function(node){
-                        var inputNode=that._model.active.getNode(node.ID);
-                        var changeDesc=that._model.active.getTweakDirection(node.ID);
-                        var changeDescirpt=that.changeDescription(changeDesc);                        
-                        equationMessage+="<br/>"+that._model.active.getName(node.ID)+changeDescirpt;
-                    });// end of foreach
-                    equationMessage+="<br/>"+ "Therefore, "+nodeName+that.changeDescription(that._model.active.getTweakDirection(that.currentID));
-
-               };// end of if act
+					equationMessage+="<p style='margin-left:-70px'>"+"Compared to the original model:"+"</p>";
+					equationMessage+="<ul>";
+					array.forEach(inputs, function(node){
+						var nodeType=that._model.active.getType(node.ID)
+						var inputNode=that._model.active.getNode(node.ID);
+						var changeDesc=that._model.active.getTweakDirection(node.ID);
+						var changeDescirpt=that.changeDescription(changeDesc); 
+						if (nodeType==="accumulator") 
+							equationMessage+="<li>"+"Initial value for the "+that._model.active.getName(node.ID)+" stays the same"+"</li>";
+					
+						else                 
+							equationMessage+="<li style='float:left'>"+that._model.active.getName(node.ID)+changeDescirpt+"</li>";
+					});	
+					equationMessage+="</ul><p>"+ "<br/>Therefore, "+nodeName+that.changeDescription(that._model.active.getTweakDirection(that.currentID))+"</p></div>";					
+				};
 				that.logging.log('ui-action', {
 					type: "open-tweak-equation",
 					node: that._model.active.getName(that.currentID),
@@ -674,22 +681,22 @@ define(["dojo/aspect",
 			}
 		},
 
-        resetNodesIncDemo: function(){
-            studId = this._model.active.getNodes();
-            console.log("student id is ", studId);
-            studId.forEach(lang.hitch(this, function (newId) {
-                if(newId.type!=="parameter"){
-                    //set tweak direction to null and status none
-                    this._model.active.setTweakDirection(newId.ID,null);
-                    this._model.active.setStatus(newId.ID,"tweakDirection","");
-                    //update node label and border color
-                    this.updateNodeLabel(newId.ID);
-                    this.colorNodeBorder(newId.ID, true);
-                }
-            }));
-            //highlight next (should be the first) node in the list
-            this.highlightNextNode();
-        }
+		resetNodesIncDemo: function(){
+			studId = this._model.active.getNodes();
+			console.log("student id is ", studId);
+			studId.forEach(lang.hitch(this, function (newId) {
+				if(newId.type!=="parameter"){
+					//set tweak direction to null and status none
+					this._model.active.setTweakDirection(newId.ID,null);
+					this._model.active.setStatus(newId.ID,"tweakDirection","");
+					//update node label and border color
+					this.updateNodeLabel(newId.ID);
+					this.colorNodeBorder(newId.ID, true);
+				}
+			}));
+			//highlight next (should be the first) node in the list
+			this.highlightNextNode();
+		}
 	});
 });
 
