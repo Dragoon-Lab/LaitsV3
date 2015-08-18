@@ -423,6 +423,12 @@ define([
 					}
 					controllerObject.showIncrementalEditor(mover.node.id);
 				}
+				else if(activity_config.get("showExecutionEditor")){
+					if(activity_config.get("demoExecution")){
+						controllerObject.showExecutionAnswer(mover.node.id, "2");
+					}
+					controllerObject.showExecutionEditor(mover.node.id, "2");
+				}
 			}, true);
 
 			/*

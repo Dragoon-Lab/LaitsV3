@@ -449,7 +449,9 @@ define(["dojo/aspect",
 				}
 			}
 		},
-
+		showExecutionEditor : function(id, iterationNo){
+			
+		},
 
 		initIncrementalMenu: function () {
 			var that = this;
@@ -607,7 +609,7 @@ define(["dojo/aspect",
 		},
 
 		highlightNextNode: function () {
-			if (this.activityConfig.get("demoIncremental")) {
+			if (this.activityConfig.get("demoIncremental") || this.activityConfig.get("demoExecution")) {
 				//Get next node in the list from PM
 				var nextID = ""
 				/*this._PM.getNextNode();*/ // Uncomment this once function is ready
@@ -616,9 +618,10 @@ define(["dojo/aspect",
 					domClass.add(node, "glowNode");
 					this.currentHighLight = nextID;
 				}
+				return;
 			}
 		},
-
+		
 		showIncrementalAnswer: function (id) {
 			this.currentID = id;
 			if (id === this.currentHighLight) {
@@ -642,6 +645,30 @@ define(["dojo/aspect",
 				//highlight next node in the list
 				this.highlightNextNode();
 			}
+		},
+		showExecutionAnswer : function(id, iteration){
+			this.currentId = id;
+			if(id === this.currentHighlight){
+				//remove glow
+				var node = dom.byId(id);
+				domClass.remove(node, "glowNode");
+			}
+			// process answer
+			
+			var givenID = this._model.active.getDescriptionID(id);
+			var answer = this._model.given.getExecutionVal(givenID, iteration);
+			var result = this._PM.processAnswer(id, "executionVal", answer);
+			this.applyDirectives(result);
+
+			//Set correct answer in model
+			this._model.active.setExecutionVal(this.currentID, answer);
+
+			//Update Node Label
+			this.updateNodeLabel(id);
+			this.colorNodeBorder(this.currentID, true);
+
+			//highlight next node in the list
+			this.highlightNextNode();	
 		}
 
 	});
