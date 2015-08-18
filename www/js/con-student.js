@@ -609,8 +609,7 @@ define(["dojo/aspect",
 		highlightNextNode: function () {
 			if (this.activityConfig.get("demoIncremental")) {
 				//Get next node in the list from PM
-				var nextID = "";
-				/*this._PM.getNextNode();*/ // Uncomment this once function is ready
+				var nextID = this._PM.getNextNode();
 				if (nextID) {
 					var node = dom.byId(nextID);
 					domClass.add(node, "glowNode");

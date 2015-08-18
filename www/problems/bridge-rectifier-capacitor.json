@@ -10,8 +10,11 @@
         },
         "properties": {},
         "increment": [
-            {}
-        ],
+			{
+				"tweakedNode" : "id11",
+				"tweakDirection": "Decrease"
+			}
+		],
         "image": {
             "URL": "images/PAL3/bridge-rectifier-capacitor.jpg"
         },
