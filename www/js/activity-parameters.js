@@ -266,7 +266,9 @@ define([
 						setStudentTweakDirections: true,
 						useTweakStatus: true,
 						demoIncremental:true,
-						showPopupIfComplete: true
+						showPopupIfComplete: true,
+						getNodeOrder: true,
+						useTweakedNodeForOrdering: true
 				},
 
 				TEST:{
@@ -287,6 +289,8 @@ define([
 						setStudentTweakDirections: true,
 						useTweakStatus: true,
 						demoIncremental:true,
+						useTweakedNodeForOrdering: true,
+						getNodeOrder: true,
 						showPopupIfComplete: true
 				},
 
@@ -308,6 +312,8 @@ define([
 						setStudentTweakDirections: true,
 						useTweakStatus: true,
 						demoIncremental:true,
+						useTweakedNodeForOrdering: true,
+						getNodeOrder: true,
 						showPopupIfComplete: true
 				}
 			},
@@ -337,66 +343,65 @@ define([
 
 				COACHED:{
 					allowPrettify:true,
-						allowHelp: true,
-						allowLessonsLearned:true,
+					allowHelp: true,
+					allowLessonsLearned:true,
 
-						allowEditNode:true,
+					allowEditNode:true,
 
-						showHints: true,
-						showFeedback: true,
-						showCorrectAnswer:true,
+					showHints: true,
+					showFeedback: true,
+					showCorrectAnswer:true,
 
-						initializeStudentModel : true,
+					initializeStudentModel : true,
 
-						showNodeEditor:false,
-						showIncrementalEditor:true,
-						showNodeDetails:false,
-						copyAuthorNodes: true,
-						showPopupIfComplete: true,
-						demoExecution : true,
-						highlightNextNode : true,
-						showExecutionEditor : true
+					showNodeEditor:false,
+					showNodeDetails:false,
+					copyAuthorNodes: true,
+					showPopupIfComplete: true,
+					demoExecution : true,
+					highlightNextNode : true,
+					showExecutionEditor : true
 						
 				},
 
 				TEST:{
 					allowPrettify:true,
-						allowHelp: true,
-						allowLessonsLearned:true,
+					allowHelp: true,
+					allowLessonsLearned:true,
 
-						allowEditNode:true,
-						showFeedback: true,
+					allowEditNode:true,
+					showFeedback: true,
 
-						initializeStudentModel : true,
+					initializeStudentModel : true,
 
-						showNodeEditor:false,
-						showIncrementalEditor:true,
-						showNodeDetails:false,
-						copyAuthorNodes: false,
-						showPopupIfComplete: true,
-						demoExecution : true,
-						highlightNextNode : true,
-						showExecutionEditor : true
+					showNodeEditor:false,
+					showNodeDetails:false,
+					copyAuthorNodes: false,
+					showPopupIfComplete: true,
+					demoExecution : true,
+					highlightNextNode : true,
+					showExecutionEditor : true
 				},
 
 				EDITOR:{
 					allowPrettify:true,
-						allowHelp: true,
-						allowLessonsLearned:true,
+					allowHelp: true,
+					allowLessonsLearned:true,
 
-						allowEditNode:true,
-						showFeedback: true,
+					allowEditNode:true,
+					showFeedback: true,
 
-						initializeStudentModel : true,
+					initializeStudentModel : true,
 
-						showNodeEditor:false,
-						showIncrementalEditor:true,
-						showNodeDetails:false,
-						copyAuthorNodes: false,
-						showPopupIfComplete: true,
-						demoExecution : true,
-						highlightNextNode : false,
-						showExecutionEditor : true
+					showNodeEditor:false,
+					showIncrementalEditor:true,
+					showNodeDetails:false,
+					copyAuthorNodes: false,
+					showPopupIfComplete: true,
+					demoExecution : true,
+					highlightNextNode : false,
+					showExecutionEditor : true
+
 				}
 			}
 		};
@@ -455,17 +460,22 @@ define([
 				//Incremental Behavior
 				showIncrementalEditor: false,
 				copyAuthorNodes: false,
-				showNodeDetails:true,
-				setTweakDirections:false,
+				showNodeDetails: true,
+				setTweakDirections: false,
 				setStudentTweakDirections: false,
 				useTweakStatus: false,
 				demoIncremental:false,
 				showPopupIfComplete:false,
+				useTweakedNodeForOrdering: false,
+				getNodeOrder: false,
 				
 				//Execution Behavior
 				showExecutionEditor: false,
 				demoExecution: false,
 				highlightNextNode : false
+
+				
+				
 			},
 
 			constructor: function(/*string*/ mode, /*string*/ activity){
