@@ -527,12 +527,12 @@ define(["dojo/aspect",
 				var nodeName = that._model.active.getName(that.currentID);
 				var inputs=that._model.active.getInputs(that.currentID);
 				if (type == "accumulator") {
-					equationMessage = "<div style='float:left'><p>"+"new " + nodeName + " = " + "current " + nodeName + " + " + equation+"</p>";
+					equationMessage = "<p><b>"+"new " + nodeName + " = " + "current " + nodeName + " + " + equation+"</b></p>";
 				} else if (type == "function") {
-					equationMessage = "<div style='float:left'><p>"+ nodeName + " = " + equation+"</p>";
+					equationMessage = "<p><b>"+ nodeName + " = " + equation+"</b></p>";
 				}
 				if (that.activityConfig._activity=="incrementalDemo") {
-					equationMessage+="<p style='margin-left:-70px'>"+"Compared to the original model:"+"</p>";
+					equationMessage+="<p><div style='text-align:left'>"+"Compared to the original model:"+"</p>";
 					equationMessage+="<ul>";
 					array.forEach(inputs, function(node){
 						var nodeType=that._model.active.getType(node.ID)
@@ -543,9 +543,9 @@ define(["dojo/aspect",
 							equationMessage+="<li>"+"Initial value for the "+that._model.active.getName(node.ID)+" stays the same"+"</li>";
 					
 						else                 
-							equationMessage+="<li style='float:left'>"+that._model.active.getName(node.ID)+changeDescirpt+"</li>";
+							equationMessage+="<li>"+that._model.active.getName(node.ID)+changeDescirpt+"</li>";
 					});	
-					equationMessage+="</ul><p>"+ "<br/>Therefore, "+nodeName+that.getChangeDescriptionText(that._model.active.getTweakDirection(that.currentID))+"</p></div>";					
+					equationMessage+="</ul><p>"+ "Therefore, "+nodeName+that.getChangeDescriptionText(that._model.active.getTweakDirection(that.currentID))+"</p>";					
 				};
 				that.logging.log('ui-action', {
 					type: "open-tweak-equation",
