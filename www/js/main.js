@@ -436,6 +436,11 @@ define([
 						controllerObject.showIncrementalAnswer(mover.node.id);
 					}
 					controllerObject.showIncrementalEditor(mover.node.id);
+				}else if(activity_config.get("showExecutionEditor")){
+					if(activity_config.get("demoExecution")){
+						//controllerObject.showIncrementalAnswer(mover.node.id);
+					}
+					controllerObject.showExecutionMenu(mover.node.id);
 				}
 			}, true);
 

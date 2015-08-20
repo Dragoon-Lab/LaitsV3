@@ -70,6 +70,8 @@ define(["dojo/aspect",
 				this.init();
 			} else if (this.activityConfig.get("showIncrementalEditor")) {
 				this.initIncrementalMenu();
+			}else if(this.activityConfig.get("showExecutionEditor")){
+				this.initExecutionEditor();
 			}
 		},
 
@@ -454,19 +456,19 @@ define(["dojo/aspect",
 			var changeDescript;
 			switch(changeDesc) {
 				case "Increase":
-				changeDescript=" has been increased."
-				break;
+					changeDescript=" has been increased."
+					break;
 				case "Decrease":
-				changeDescript=" has been decreased."
-				break;    
+					changeDescript=" has been decreased."
+					break;
 				case "Stays-Same":
-				changeDescript=" stays the same."
-				break;
+					changeDescript=" stays the same."
+					break;
 				case "Unknown":
-				changeDescript=" will sometimes increase and sometimes decrease."
-				break;                 
+					changeDescript=" will sometimes increase and sometimes decrease."
+					break;
 				default:
-				changeDescript=""
+					changeDescript=""
 			}
 			return changeDescript;
 		},
@@ -518,35 +520,11 @@ define(["dojo/aspect",
 			var showEquationButton = registry.byId("EquationButton");
 
 			on(showEquationButton, "click", function () {
+				var nodeName = that._model.active.getName(that.currentID);
 				//close incremental menu is being called twice when clicking show equation. There is one at showIncementalEditor function at the top.
 				//not sure which is to be removed. For now I am commenting this ~ Sachin
 				//that.closeIncrementalMenu();
-				var type = that._model.active.getType(that.currentID);
-				var equationMessage = "";
-				var equation = expression.convert(that._model.active, that._model.active.getEquation(that.currentID));
-				var nodeName = that._model.active.getName(that.currentID);
-				var inputs=that._model.active.getInputs(that.currentID);
-				if (type == "accumulator") {
-					equationMessage = "<p><b>"+"new " + nodeName + " = " + "current " + nodeName + " + " + equation+"</b></p>";
-				} else if (type == "function") {
-					equationMessage = "<p><b>"+ nodeName + " = " + equation+"</b></p>";
-				}
-				if (that.activityConfig._activity=="incrementalDemo") {
-					equationMessage+="<p><div style='text-align:left'>"+"Compared to the original model:"+"</p>";
-					equationMessage+="<ul>";
-					array.forEach(inputs, function(node){
-						var nodeType=that._model.active.getType(node.ID)
-						var inputNode=that._model.active.getNode(node.ID);
-						var changeDesc=that._model.active.getTweakDirection(node.ID);
-						var changeDescirpt=that.getChangeDescriptionText(changeDesc); 
-						if (nodeType==="accumulator") 
-							equationMessage+="<li>"+"Initial value for the "+that._model.active.getName(node.ID)+" stays the same"+"</li>";
-					
-						else                 
-							equationMessage+="<li>"+that._model.active.getName(node.ID)+changeDescirpt+"</li>";
-					});	
-					equationMessage+="</ul><p>"+ "Therefore, "+nodeName+that.getChangeDescriptionText(that._model.active.getTweakDirection(that.currentID))+"</p>";					
-				};
+				var equationMessage = that.formatEquationMessage();
 				that.logging.log('ui-action', {
 					type: "open-tweak-equation",
 					node: that._model.active.getName(that.currentID),
@@ -695,6 +673,152 @@ define(["dojo/aspect",
 			}));
 			//highlight next (should be the first) node in the list
 			this.highlightNextNode();
+		},
+
+		formatEquationMessage: function(){
+			var type = this._model.active.getType(this.currentID);
+			var equationMessage = "";
+			var equation = expression.convert(this._model.active, this._model.active.getEquation(this.currentID));
+			var nodeName = this._model.active.getName(this.currentID);
+			var inputs=this._model.active.getInputs(this.currentID);
+
+			if (type == "accumulator") {
+				equationMessage = "<p><b>"+"new " + nodeName + " = " + "current " + nodeName + " + " + equation+"</b></p>";
+			} else if (type == "function") {
+				equationMessage = "<p><b>"+ nodeName + " = " + equation+"</b></p>";
+			}
+
+			if (this.activityConfig._activity=="incrementalDemo") {
+				equationMessage+="<p><div style='text-align:left'>"+"Compared to the original model:"+"</p>";
+				equationMessage+="<ul>";
+				array.forEach(inputs, lang.hitch(this, function(node){
+					var nodeType=this._model.active.getType(node.ID)
+					var inputNode=this._model.active.getNode(node.ID);
+					var changeDesc=this._model.active.getTweakDirection(node.ID);
+					var changeDescirpt=this.getChangeDescriptionText(changeDesc);
+					if (nodeType==="accumulator")
+						equationMessage+="<li>"+"Initial value for the "+this._model.active.getName(node.ID)+" stays the same"+"</li>";
+
+					else
+						equationMessage+="<li>"+this._model.active.getName(node.ID)+changeDescirpt+"</li>";
+				}));
+				equationMessage+="</ul><p>"+ "Therefore, "+nodeName+this.getChangeDescriptionText(this._model.active.getTweakDirection(this.currentID))+"</p>";
+			}
+			return equationMessage
+		},
+
+		/*
+		 * Execution Editor
+		 */
+
+		initExecutionEditor: function(){
+			var that = this;
+			that._buttonHandlers = {};
+
+			this._executionMenu = registry.byId("executionMenu");
+			this._executionMenu.onShow = lang.hitch(this, function () {
+				//logging for pop up start
+				that.logging.log('ui-action', {
+					type: "open-execution-popup",
+					node: that._model.active.getName(that.currentID),
+					nodeID: that.currentID
+				});
+				//assessment for tweak pop up
+				that.nodeStartAssessment(that.currentID);
+				focusUtil.focus(dom.byId("newValue"));
+			});
+
+			var showEquationButton = registry.byId("ExecEquationButton");
+			on(showEquationButton, "click", function () {
+				var nodeName = that._model.active.getName(that.currentID);
+				var equationMessage = that.formatEquationMessage();
+				that.logging.log('ui-action', {
+					type: "open-tweak-equation",
+					node: that._model.active.getName(that.currentID),
+					nodeID: that.currentID
+				});
+
+				that.applyDirectives([{
+					id: "crisisAlert",
+					attribute: "title",
+					value: "Equation for " + nodeName
+				}, {
+					id: "crisisAlert",
+					attribute: "open",
+					value: equationMessage
+				}]);
+			});
+
+			var showExplanationButton = registry.byId("ExecShowExplanationButton");
+			on(showExplanationButton, 'click', function () {
+				var givenID = that._model.active.getDescriptionID(that.currentID);
+				if (that._model.given.getExplanation(givenID)) {
+					var nodeName = that._model.active.getName(that.currentID);
+					that.logging.log('ui-action', {
+						type: "open-tweak-explanation",
+						node: nodeName,
+						nodeID: that.currentID
+					});
+
+					that.applyDirectives([{
+						id: "crisisAlert",
+						attribute: "title",
+						value: "Explanation for " + nodeName
+					}, {
+						id: "crisisAlert",
+						attribute: "open",
+						value: that._model.given.getExplanation(givenID)
+					}]);
+				}
+			});
+
+
+			var checkValueButton = registry.byId("execCheckValueButton");
+			on(checkValueButton, "click", function (e) {
+				e.preventDefault();
+				console.log("Add call to process answer here");
+				//Set in the model
+
+				//Close popup
+				that.closeExecutionMenu();
+			});
+
+			this._executionMenu.onBlur = lang.hitch(this, function () {
+				this.closeExecutionMenu();
+			});
+		},
+
+		showExecutionMenu: function(id){
+			this.currentID = id;
+			var givenID = this._model.active.getDescriptionID(id);
+			var type = this._model.active.getType(id);
+			var nodeName = this._model.active.getName(id);
+			var showExplanationButton = registry.byId("ExecShowExplanationButton").domNode;
+
+			if (type != "accumulator" && type != "function") {
+				this.closeExecutionMenu();
+			} else {
+				dom.byId("executionNodeName").innerHTML = "<strong>" + nodeName + "</strong>";
+
+				//Show hide explanation button
+				this._model.given.getExplanation(givenID) ? style.set(showExplanationButton, "display", "block") :
+					style.set(showExplanationButton, "display", "none");
+
+				popup.open({
+					popup: this._executionMenu,
+					around: dom.byId(id)
+				});
+			}
+		},
+
+		closeExecutionMenu: function(){
+			this.logging.log('ui-action', {
+				type: "close-tweak-popup",
+				node: this._model.active.getName(this.currentID),
+				nodeID: this.currentID
+			});
+			this.nodeCloseAssessment(this.currentID);
+			popup.close(this._executionMenu);
 		}
 	});
 });
