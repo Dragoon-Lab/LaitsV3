@@ -551,6 +551,8 @@ define([
 		logging: null,
 		descriptionCounter: 0,
 		_assessment: null,
+		nodeOrder: [],
+		nodeCounter: 0,
 	
 		/*****
 		 * Private Functions
@@ -988,6 +990,223 @@ define([
 				}
 			}));
 			return isPremature;
+		},
+
+		getNextNode: function(){
+			if(this.nodeOrder)
+				return this.nodeOrder[this.nodeCounter++];
+			else
+				return "";
+		},
+
+		setNodeCounter: function(){
+			//handling the edge case of all nodes are full
+			var nOrder = this.nodeOrder;
+			var counter = this.nodeCounter;
+			if(nOrder){
+				counter = nOrder.length;
+				for(var i = 0; i < counter; i++){
+					if(!(this.model.student.getTweakDirection(nOrder[i]))){
+						counter = i;
+						break;
+					}
+				}
+			}
+
+			this.nodeCounter = counter;
+		},
+
+		createNodeOrder: function(){
+			var nodes = this.model.student.getNodes();
+			var l = nodes.length;
+			var tweakedNode;
+			var useTweakNode = this.activityConfig.get("useTweakedNodeForOrdering");
+			if(useTweakNode){
+				tweakedNode = this.model.getInitialTweakedNode();
+			}
+
+			var parameterID = [], functionID = [], accumulatorID = [];
+			var studentTweakedNode;
+			var finalHierarchy = [];
+
+			if(nodes){
+				var ids = [];
+				
+				//sets up the complete nodes so that we know the exhaustive node IDs and their types.
+				array.forEach(nodes, function(node, counter){
+					ids[counter] = node.ID;
+
+					switch(node.type){
+						case "parameter":
+							parameterID.push(node.ID);
+							break;
+						case "function":
+							functionID.push(node.ID);
+							break;
+						case "accumulator":
+							accumulatorID.push(node.ID);
+							break;
+						default:
+							break;
+					}
+					
+					if(useTweakNode && node.descriptionID == tweakedNode){
+						studentTweakedNode = node.ID;
+					}
+				});
+
+				var checkString = function(str, id1, id2){
+					if(str.indexOf(id1) >= 0)
+						return id1;
+					else if(str.indexOf(id2) >= 0)
+						return id2;
+					else
+						return "";
+				};
+
+				//places id2 before or after id1 as given by the position, position values are "before" or "after"
+				var putString = function(str, id1, id2, position){
+					var index;
+					var index1 = str.indexOf(id1);
+					var index2 = str.indexOf(id2);
+
+					if(index2 >= 0){
+						//basically means that both ids are in the string
+						return str;
+					}
+
+					var l = str.length;
+					var returnString = "";
+					switch(position){
+						default:
+						case "before":
+							if(index1 == 0)
+								returnString = id2 + " " + str;
+							else {
+								//this means that there is already a node that is supposed to be complete before we do this.
+								var index = index1 - 1;
+								returnString = str.slice(0, index) +"="+ id2 + str.slice(index, str.length);
+							}
+							break;
+						case "after":
+							if(index1 == str.length - id1.length)
+								returnString = str + " " +id2;
+							else{
+								var index = index1 + id1.length + 1;
+								returnString = str.slice(0, index) + id2 + "=" + str.slice(index, str.length);
+							}
+							break;
+					}
+
+					return returnString;
+				}
+
+				//the priority of the ids is same. So it checks for the position. Which ever is on the left will be done first.
+				var prioritize = function(/* array */ tempIDs){
+					var orderedIDs = [];
+					var positions = [];
+					if(tempIDs.size > 1){
+						array.forEach(tempIDs, function(id){
+							var node = nodes[ids.indexOf(id)];
+							for(var i = 0; i < positions.size; i++){
+								if(node.position.x < positions[i]){
+									positions.splice(i, 0, node.position.x);
+									orderedIDs.splice(i, 0, id);
+									break;
+								}
+							}
+						}, this);
+
+						return orderedIDs;
+					} else {
+						return tempIDs;
+					}
+				};
+
+				if(functionID.length == 1){
+					finalHierarchy.push(functionID[0]);
+					finalHierarchy.push(prioritize(accumulatorID));
+
+					return finalHierarchy;
+				} else if (functionID.length == 0){
+					return prioritize(accumulatorID);
+				}
+
+				var str = [];
+				var hierarchyString = "";
+				var hierarchy = [];
+				var relativeOrderF = [];
+				//make hierarchy of the nodes based on inputs.
+				array.forEach(functionID, function(id){
+					var n = nodes[ids.indexOf(id)];
+					var inputs = n.inputs;
+
+					array.forEach(inputs, function(input){
+						if(functionID.indexOf(input.ID) >= 0){
+							var flag = true;
+
+							//check if some relative order already has the one of the nodes.
+							array.forEach(relativeOrderF, function(s, counter){
+								var temp = checkString(s, n.ID, input.ID);
+
+								if(temp == n.ID){
+								s = putString(s, n.ID, input.ID, "before");
+									flag = false;
+								} else if (temp == input.ID) {
+									s = putString(s, input.ID, n.ID, "after");
+									flag = false;
+								}
+
+								relativeOrderF[counter] = s;
+							}, this);
+
+							if(flag){
+								relativeOrderF.push(input.ID + " " + n.ID);
+							}
+						}
+					}, this);
+				}, this);
+
+				//create the complete hierarchy of functions using relative order.
+				if(relativeOrderF){
+					array.forEach(relativeOrderF, function(s){
+						var arr = s.split(" ");
+						array.forEach(arr, function(id, counter){
+							if(hierarchy && hierarchy[counter]){
+								hierarchy[counter] += ("=" + id);
+							} else {
+								hierarchy[counter] = id;
+							}
+						}, this);
+					}, this);
+
+					console.log("function nodes order is ", hierarchy);
+				}
+				
+				//now we just prioritize all the functions. hierarchy array has ids which are at same levels in the model.
+				//Each row either has ids in the form id10=id13 or id11. All these nodes are functions.
+				if(hierarchy){
+					array.forEach(hierarchy, function(s){
+						if(s.indexOf("=") > 0){
+							var temp = prioritize(s.split("="));
+							array.forEach(temp, function(id){
+								finalHierarchy.push(id);
+							});
+						} else {
+							finalHierarchy.push(s);
+						}
+					}, this);
+				}
+
+				if(finalHierarchy){
+					var temp = prioritize(accumulatorID);
+					array.forEach(temp, function(id){
+						finalHierarchy.push(prioritize(id));
+					});
+				}
+			}
+
+			return finalHierarchy;
 		}
 	});
 });

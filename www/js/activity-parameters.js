@@ -152,7 +152,7 @@ define([
 
 					showNodeEditor:false,
 					showIncrementalEditor:true,
-					showNodeDetails:false,
+					nodeDetails: "DIRECTION",
 					copyAuthorNodes: true,
 					setTweakDirections: true,
 					setStudentTweakDirections: true,
@@ -174,7 +174,7 @@ define([
 
 					showNodeEditor:false,
 					showIncrementalEditor:true,
-					showNodeDetails:false,
+					nodeDetails: "DIRECTION",
 					copyAuthorNodes: true,
 					setTweakDirections: true,
 					setStudentTweakDirections: true,
@@ -193,7 +193,7 @@ define([
 
 					showNodeEditor:false,
 					showIncrementalEditor:true,
-					showNodeDetails:false,
+					nodeDetails: "DIRECTION",
 					copyAuthorNodes: true,
 					setTweakDirections: true,
 					setStudentTweakDirections: true,
@@ -212,7 +212,7 @@ define([
 
 					showNodeEditor:false,
 					showIncrementalEditor:true,
-					showNodeDetails:false,
+					nodeDetails: "DIRECTION",
 					copyAuthorNodes: true,
 					setTweakDirections: true,
 					setStudentTweakDirections: true,
@@ -236,13 +236,15 @@ define([
 
 						showNodeEditor:false,
 						showIncrementalEditor:true,
-						showNodeDetails:false,
+						nodeDetails: "DIRECTION",
 						copyAuthorNodes: true,
 						setTweakDirections: true,
 						setStudentTweakDirections: true,
 						useTweakStatus: true,
 						demoIncremental:true,
-						showPopupIfComplete: true
+						showPopupIfComplete: true,
+						getNodeOrder: true,
+						useTweakedNodeForOrdering: true
 				},
 
 				COACHED:{
@@ -260,12 +262,14 @@ define([
 
 						showNodeEditor:false,
 						showIncrementalEditor:true,
-						showNodeDetails:false,
+						nodeDetails: "DIRECTION",
 						copyAuthorNodes: true,
 						setTweakDirections: true,
 						setStudentTweakDirections: true,
 						useTweakStatus: true,
 						demoIncremental:true,
+						useTweakedNodeForOrdering: true,
+						getNodeOrder: true,
 						showPopupIfComplete: true
 				},
 
@@ -281,12 +285,14 @@ define([
 
 						showNodeEditor:false,
 						showIncrementalEditor:true,
-						showNodeDetails:false,
+						nodeDetails: "DIRECTION",
 						copyAuthorNodes: true,
 						setTweakDirections: true,
 						setStudentTweakDirections: true,
 						useTweakStatus: true,
 						demoIncremental:true,
+						useTweakedNodeForOrdering: true,
+						getNodeOrder: true,
 						showPopupIfComplete: true
 				},
 
@@ -302,13 +308,103 @@ define([
 
 						showNodeEditor:false,
 						showIncrementalEditor:true,
-						showNodeDetails:false,
+						nodeDetails: "DIRECTION",
 						copyAuthorNodes: true,
 						setTweakDirections: true,
 						setStudentTweakDirections: true,
 						useTweakStatus: true,
 						demoIncremental:true,
+						useTweakedNodeForOrdering: true,
+						getNodeOrder: true,
 						showPopupIfComplete: true
+				}
+			},
+			executionDemo: {
+				STUDENT:{
+					allowPrettify:true,
+					allowHelp: true,
+					allowLessonsLearned:true,
+
+					allowEditNode:true,
+
+					showHints: true,
+					showFeedback: true,
+					showCorrectAnswer:true,
+
+					initializeStudentModel : true,
+
+					showNodeEditor:false,
+					nodeDetails: "NEWVALUE",
+					copyAuthorNodes: true,
+
+					showExecutionEditor:true,
+					setNewValues:true,
+					setStudentNewValues:true,
+					demoExecution:true
+
+				},
+
+				COACHED:{
+					allowPrettify:true,
+					allowHelp: true,
+					allowLessonsLearned:true,
+
+					allowEditNode:true,
+
+					showHints: true,
+					showFeedback: true,
+					showCorrectAnswer:true,
+
+					initializeStudentModel : true,
+
+					showNodeEditor:false,
+					nodeDetails: "NEWVALUE",
+					copyAuthorNodes: true,
+
+					showExecutionEditor:true,
+					setNewValues:true,
+					setStudentNewValues:true,
+					demoExecution:true
+				},
+
+				TEST:{
+					allowPrettify:true,
+					allowHelp: true,
+					allowLessonsLearned:true,
+
+					allowEditNode:true,
+					showFeedback: true,
+
+					initializeStudentModel : true,
+
+					showNodeEditor:false,
+					nodeDetails: "NEWVALUE",
+					copyAuthorNodes: true,
+
+					showExecutionEditor:true,
+					setNewValues:true,
+					setStudentNewValues:true,
+					demoExecution:true
+				},
+
+				EDITOR:{
+					allowPrettify:true,
+					allowHelp: true,
+					allowLessonsLearned:true,
+
+					allowEditNode:true,
+					showFeedback: true,
+
+					initializeStudentModel : true,
+
+					showNodeEditor:false,
+					nodeDetails: "NEWVALUE",
+					copyAuthorNodes: true,
+
+					showExecutionEditor:true,
+					setNewValues:true,
+					setStudentNewValues:true,
+					demoExecution:true
 				}
 			}
 		};
@@ -367,12 +463,20 @@ define([
 				//Incremental Behavior
 				showIncrementalEditor: false,
 				copyAuthorNodes: false,
-				showNodeDetails:true,
-				setTweakDirections:false,
+				nodeDetails: "DETAILS",
+				setTweakDirections: false,
 				setStudentTweakDirections: false,
 				useTweakStatus: false,
-				demoIncremental:false,
-				showPopupIfComplete:false
+				demoIncremental: false,
+				showPopupIfComplete: false,
+				useTweakedNodeForOrdering: false,
+				getNodeOrder: false,
+
+				//Execution Behavior
+				showExecutionEditor:false,
+				setNewValues:false,
+				setStudentNewValues:false,
+				demoExecution:false
 			},
 
 			constructor: function(/*string*/ mode, /*string*/ activity){
