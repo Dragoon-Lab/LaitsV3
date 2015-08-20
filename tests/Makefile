@@ -16,12 +16,18 @@ install:
 	git clone http://github.com/isaacs/npm.git
 	cd npm;make
 	sudo npm install -g mocha phantomjs
-	sudo npm install chai webdriverio
-	sudo npm install synchronize
+	sudo npm install chai webdriverio synchronize 
 	sudo curl http://selenium-release.storage.googleapis.com/2.46/selenium-server-standalone-2.46.0.jar
 	#sudo curl http://chromedriver.storage.googleapis.com/2.14/chromedriver_mac32.zip
+else ifeq ($(OS),Windows_NT)
+install:
+	@echo "WINDOWS"
+	npm install -g mocha phantomjs
+	npm install chai webdriverio synchronize
+	curl http://selenium-release.storage.googleapis.com/2.46/selenium-server-standalone-2.46.0.jar
 else
 install:
+	@echo "LINUX"
 	-rm -r -f npm
 	@echo "Installing npm"
 	git clone http://github.com/isaacs/npm.git
@@ -30,6 +36,7 @@ install:
 	npm install synchronize
 	wget http://selenium-release.storage.googleapis.com/2.46/selenium-server-standalone-2.46.0.jar
 endif
+
 run:
 	@echo "starting selenium server"
 	java -jar selenium-server-standalone-2.46.0.jar > selenium.log &
