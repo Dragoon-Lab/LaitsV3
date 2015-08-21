@@ -27,8 +27,8 @@ define([
 				
 		},
 		startService : function(){
-			debugger;
-				// unknown: if the all the constructor initializations are synchronous
+			
+			// unknown: if the all the constructor initializations are synchronous
 			this.HeartbeatService.start();
 			this.TestService.sendTestMessage(this.FRAME_NAME, this.LOADED_VERB, window.location.href, true);
     		console.log("ET loaded message send");

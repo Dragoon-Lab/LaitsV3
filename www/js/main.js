@@ -1257,7 +1257,9 @@ define([
 					tc.sendStatements();
 				}
 				if(activity_config["ElectronixTutor"] && etConnect){
-					etConnect.sendScore(5.0);
+					var score = controllerObject._assessment.getSuccessFactor();
+					etConnect.sendScore(score);
+					console.log("sending score(successfactor):", score);
 				}
 			});
 
