@@ -152,7 +152,7 @@ define([
 
 					showNodeEditor:false,
 					showIncrementalEditor:true,
-					showNodeDetails:false,
+					nodeDetails: "DIRECTION",
 					copyAuthorNodes: true,
 					setTweakDirections: true,
 					setStudentTweakDirections: true,
@@ -174,7 +174,7 @@ define([
 
 					showNodeEditor:false,
 					showIncrementalEditor:true,
-					showNodeDetails:false,
+					nodeDetails: "DIRECTION",
 					copyAuthorNodes: true,
 					setTweakDirections: true,
 					setStudentTweakDirections: true,
@@ -193,7 +193,7 @@ define([
 
 					showNodeEditor:false,
 					showIncrementalEditor:true,
-					showNodeDetails:false,
+					nodeDetails: "DIRECTION",
 					copyAuthorNodes: true,
 					setTweakDirections: true,
 					setStudentTweakDirections: true,
@@ -212,7 +212,7 @@ define([
 
 					showNodeEditor:false,
 					showIncrementalEditor:true,
-					showNodeDetails:false,
+					nodeDetails: "DIRECTION",
 					copyAuthorNodes: true,
 					setTweakDirections: true,
 					setStudentTweakDirections: true,
@@ -236,13 +236,15 @@ define([
 
 					showNodeEditor:false,
 					showIncrementalEditor:true,
-					showNodeDetails:false,
+					nodeDetails: "DIRECTION",
 					copyAuthorNodes: true,
 					setTweakDirections: true,
 					setStudentTweakDirections: true,
 					useTweakStatus: true,
 					demoIncremental:true,
-					showPopupIfComplete: true
+					showPopupIfComplete: true,
+					getNodeOrder: true,
+					useTweakedNodeForOrdering: true
 				},
 
 				COACHED:{
@@ -260,7 +262,7 @@ define([
 
 						showNodeEditor:false,
 						showIncrementalEditor:true,
-						showNodeDetails:false,
+						nodeDetails: "DIRECTION",
 						copyAuthorNodes: true,
 						setTweakDirections: true,
 						setStudentTweakDirections: true,
@@ -283,7 +285,7 @@ define([
 
 						showNodeEditor:false,
 						showIncrementalEditor:true,
-						showNodeDetails:false,
+						nodeDetails: "DIRECTION",
 						copyAuthorNodes: true,
 						setTweakDirections: true,
 						setStudentTweakDirections: true,
@@ -306,7 +308,7 @@ define([
 
 						showNodeEditor:false,
 						showIncrementalEditor:true,
-						showNodeDetails:false,
+						nodeDetails: "DIRECTION",
 						copyAuthorNodes: true,
 						setTweakDirections: true,
 						setStudentTweakDirections: true,
@@ -339,6 +341,13 @@ define([
 					demoExecution : true,
 					highlightNextNode : false,
 					showExecutionEditor : true
+
+					nodeDetails: "NEWVALUE",
+					copyAuthorNodes: true,
+					setNewValues:true,
+					setStudentNewValues:true,
+					demoExecution:true
+
 				},
 
 				COACHED:{
@@ -362,6 +371,12 @@ define([
 					highlightNextNode : true,
 					showExecutionEditor : true
 						
+					nodeDetails: "NEWVALUE",
+					copyAuthorNodes: true,
+					setNewValues:true,
+					setStudentNewValues:true,
+					demoExecution:true
+
 				},
 
 				TEST:{
@@ -375,12 +390,19 @@ define([
 					initializeStudentModel : true,
 
 					showNodeEditor:false,
+
 					showNodeDetails:false,
 					copyAuthorNodes: false,
 					showPopupIfComplete: true,
 					demoExecution : true,
 					highlightNextNode : true,
 					showExecutionEditor : true
+
+					nodeDetails: "NEWVALUE",
+					copyAuthorNodes: true,
+					setNewValues:true,
+					setStudentNewValues:true,
+					demoExecution:true
 				},
 
 				EDITOR:{
@@ -394,14 +416,19 @@ define([
 					initializeStudentModel : true,
 
 					showNodeEditor:false,
+
 					showIncrementalEditor:true,
 					showNodeDetails:false,
 					copyAuthorNodes: false,
 					showPopupIfComplete: true,
 					demoExecution : true,
 					highlightNextNode : false,
-					showExecutionEditor : true
-
+					showExecutionEditor : true,
+					nodeDetails: "NEWVALUE",
+					copyAuthorNodes: true,
+					setNewValues:true,
+					setStudentNewValues:true,
+					demoExecution:true
 				}
 			}
 		};
@@ -460,7 +487,7 @@ define([
 				//Incremental Behavior
 				showIncrementalEditor: false,
 				copyAuthorNodes: false,
-				showNodeDetails: true,
+				nodeDetails: "DETAILS",
 				setTweakDirections: false,
 				setStudentTweakDirections: false,
 				useTweakStatus: false,
@@ -473,9 +500,10 @@ define([
 				showExecutionEditor: false,
 				demoExecution: false,
 				highlightNextNode : false
+				setNewValues:false,
+				setStudentNewValues:false,
+				demoExecution:false
 
-				
-				
 			},
 
 			constructor: function(/*string*/ mode, /*string*/ activity){

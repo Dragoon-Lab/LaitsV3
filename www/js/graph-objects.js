@@ -46,7 +46,7 @@ define([
 		getNodeName:function(model,nodeId,showDetails,type){
 			var type = type||model.getType(nodeId)||'triangle';
 			var nodeName = model.getName(nodeId);
-			if(showDetails) {
+			if(showDetails === "DETAILS") {
 				var parse = model.getEquation(nodeId);
 				var parameter = '';
 				if (parse) {
@@ -73,7 +73,7 @@ define([
 				} else {
 					nodeName = '';
 				}
-			}else{
+			}else if(showDetails === "DIRECTION"){
 				var dir = model.getTweakDirection(nodeId) == ""? "Empty": model.getTweakDirection(nodeId);
 				var content = "";
 				var iconClass = {
@@ -88,6 +88,12 @@ define([
 					content = "&#x003d;"
 				}
 				nodeName='<div id=' + nodeId + 'Label  class="bubble"><div class="incrementalContent ' + type + 'Wrapper"><strong class="fa fa-'+ iconClass[dir] +'">'+ content+ '</strong></div><div class=' + type + 'Div><strong>' + nodeName + '</strong></div></div>';
+			}else if(showDetails === "NEWVALUE"){
+				var newVal = "";//model.getNewValue(nodeId) == ""? "Empty": model.getNewValue(nodeId);
+				var content = ""+newVal;
+
+				nodeName='<div id=' + nodeId + 'Label  class="bubble"><div class="executionContent ' + type + 'Wrapper"><strong>'+ content+ '</strong></div><div class=' + type + 'Div><strong>' + nodeName + '</strong></div></div>';
+
 			}
 			return nodeName;
 		}

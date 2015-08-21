@@ -325,6 +325,24 @@
 				"id" : "zener_diode_physics",
 				"template" : "",
 				"example" : ""
+			},
+			{
+				"name" : "Transistor Behavior",
+				"id" : "transistor_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "CE Transistor Fixed Bias Behavior",
+				"id" : "CE_transistor_fixed_bias_bhvr",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "CE Transistor Battery Bias Behavior",
+				"id" : "CE_transistor_battery_bias_bhvr",
+				"template" : "",
+				"example" : ""
 			}
 		]
 	},

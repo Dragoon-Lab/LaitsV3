@@ -417,7 +417,7 @@ span.slip{
     margin-top: 20px;
 }
 
-#incrementalMenu span.dijitReset.dijitInline.dijitButtonNode{
+.incrementalButton span.dijitReset.dijitInline.dijitButtonNode{
   width:120px;
 }
 

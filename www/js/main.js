@@ -447,6 +447,11 @@ define([
 						controllerObject.showIncrementalAnswer(mover.node.id);
 					}
 					controllerObject.showIncrementalEditor(mover.node.id);
+				}else if(activity_config.get("showExecutionEditor")){
+					if(activity_config.get("demoExecution")){
+						//controllerObject.showIncrementalAnswer(mover.node.id);
+					}
+					controllerObject.showExecutionMenu(mover.node.id);
 				}
 				else if(activity_config.get("showExecutionEditor")){
 					if(activity_config.get("demoExecution")){
@@ -741,13 +746,15 @@ define([
 					//activity names and menu Ids should be same
 					var activities = activity_config.getAllActivitesNames();
 					array.forEach(activities, function(activity){
-						on(registry.byId("menu_"+activity),"click",function() {
-							var timestamp = new Date().getTime();
-							var url = document.URL.replace("u="+query.u,"u="+query.u+"-"+timestamp);
-							url=url+"&l=false";
-							url = url.replace("a="+query.a, "a="+ activity);
-							window.open(url.replace("m=AUTHOR","m=STUDENT"),"newwindow");
-						});
+						if(registry.byId("menu_"+activity)) {
+							on(registry.byId("menu_" + activity), "click", function () {
+								var timestamp = new Date().getTime();
+								var url = document.URL.replace("u=" + query.u, "u=" + query.u + "-" + timestamp);
+								url = url + "&l=false";
+								url = url.replace("a=" + query.a, "a=" + activity);
+								window.open(url.replace("m=AUTHOR", "m=STUDENT"), "newwindow");
+							});
+						}
 					});
 				}
 				else{
