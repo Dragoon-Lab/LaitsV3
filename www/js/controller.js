@@ -642,7 +642,7 @@ define([
 			this._model.active.setType(this.currentID, type);
 			this.updateEquationLabels();
 
-			var nodeName = graphObjects.getNodeName(this._model.active,this.currentID,type);
+			var nodeName = graphObjects.getNodeName(this._model.active,this.currentID, this.activityConfig.get("nodeDetails"), type);
 			if(nodeName != ''){
 				if(dom.byId(this.currentID + 'Label'))
 					domConstruct.place(nodeName, this.currentID + 'Label', "replace");
