@@ -371,9 +371,10 @@ define([
 			}
 			// setting environment for loading dragoon inside ET
 			
+			var etConnect = null;
 			if(activity_config["ElectronixTutor"]) {
 				
-				var etConnect = new ETConnector();
+				etConnect = new ETConnector();
 				etConnect.startService();
 				
 			}
@@ -1255,7 +1256,7 @@ define([
 					//Send Statements
 					tc.sendStatements();
 				}
-				if(activity_config("ElectronixTutor") && etConnect){
+				if(activity_config["ElectronixTutor"] && etConnect){
 					etConnect.sendScore(5.0);
 				}
 			});
