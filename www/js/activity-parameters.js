@@ -340,7 +340,7 @@ define([
 					showPopupIfComplete: true,
 					demoExecution : true,
 					highlightNextNode : false,
-					showExecutionEditor : true
+					showExecutionEditor : true,
 
 					nodeDetails: "NEWVALUE",
 					copyAuthorNodes: true,
@@ -369,7 +369,7 @@ define([
 					showPopupIfComplete: true,
 					demoExecution : true,
 					highlightNextNode : true,
-					showExecutionEditor : true
+					showExecutionEditor : true,
 						
 					nodeDetails: "NEWVALUE",
 					copyAuthorNodes: true,
@@ -396,7 +396,7 @@ define([
 					showPopupIfComplete: true,
 					demoExecution : true,
 					highlightNextNode : true,
-					showExecutionEditor : true
+					showExecutionEditor : true,
 
 					nodeDetails: "NEWVALUE",
 					copyAuthorNodes: true,
@@ -499,7 +499,7 @@ define([
 				//Execution Behavior
 				showExecutionEditor: false,
 				demoExecution: false,
-				highlightNextNode : false
+				highlightNextNode : false,	
 				setNewValues:false,
 				setStudentNewValues:false,
 				demoExecution:false
