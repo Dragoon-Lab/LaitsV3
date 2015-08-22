@@ -14,7 +14,7 @@
         },
         "taskDescription": {
             "construction": [
-                "A d.c supply Vcc=10V is used to bias the transistor Q1 as shown in the figure. The base bias resistor RB has a resistance of 270k ohms and the collector load resistor RL has a resistance of 500 ohms. The current amplification factor, beta of the transistor Q1 is 230. Consider an a.c signal having an amplitude of 20mV and wavelength of 20 milliseconds per cycle is given as an input to the circuit as shown in the figure. Graph the voltage across the collector load resistance RL and output voltage across collector-emitter"
+                "A d.c supply Vcc=10V is used to bias the transistor Q1 as shown in the figure. The base bias resistor RB has a resistance of 270k ohms and the collector load resistor RL has a resistance of 500 ohms. The current amplification factor, beta of the transistor Q1 is 230. Consider an a.c signal having an amplitude of 20mV and wavelength of 20 milliseconds per cycle is given as an input to the circuit as shown in the figure. The knee voltage of the base emitter junction of Q1 is 0.7 volts. Graph the voltage across the collector load resistance RL and output voltage across collector-emitter."
             ]
         },
         "lessonsLearned": [],
