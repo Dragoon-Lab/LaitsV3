@@ -2,6 +2,11 @@
 Windows User: Windows user need to first install [cygwin](https://cygwin.com/install.html) and download make, wget packages in the set up. Then type "make install" in cygwin in LaitsV3 directory (previous directory) to install everything else.
 Mac or linux user: Type "make install" in LaitsV3 directory (previous directory) in a command prompt that supports running of make files. 
 
+Updated Windows instructions:
+* Install Node from https://nodejs.org/download/  (this includes npm)
+* Run make install
+* Download chromedriver and add its path to your system's PATH variable
+
 #Information about the tests
 For testing, we use:
 

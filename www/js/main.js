@@ -57,12 +57,13 @@ define([
 	"./ui-parameter",
 	"dijit/Dialog",
 	"./image-box",
-	"./modelChanges"
+	"./modelChanges",
+	"./ETConnector"
 ], function(
 	array, lang, dom, geometry, style, domClass, on, aspect, ioQuery, ready, registry, toolTip, tooltipDialog, popup,
 	menu, loadSave, model, Graph, controlStudent, controlAuthor, drawmodel, logging, equation,
 	description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan,
-	activityParameters, memory, event, UI, Dialog, ImageBox, modelUpdates){
+	activityParameters, memory, event, UI, Dialog, ImageBox, modelUpdates, ETConnector){
 
 	/*  Summary:
 	 *			Menu controller
@@ -121,7 +122,10 @@ define([
 	}catch(error){
 		throw Error("problem in creating activity configurations");
 	}
-
+	if(activity_config && query.s === "ElectronixTutor"){
+		activity_config["ElectronixTutor"] = true;
+	}
+	
 	// Start up new session and get model object from server
 	try {
 		var session = new loadSave(query);
@@ -295,7 +299,7 @@ define([
 			//Set Tab title
 			var taskString = givenModel.getTaskName();
 			document.title ="Dragoon" + ((taskString) ? " - " + taskString : "");
-
+			
 			//This array is used later to called the setSelected function for all the buttons in the menu bar
 			//moved this at the start so that the buttons flicker at the start rather than at the end.
 			var menuButtons=[];
@@ -370,7 +374,15 @@ define([
 				}
 				dojo.xhrGet(xhrArgs);
 			}
-
+			// setting environment for loading dragoon inside ET
+			
+			var etConnect = null;
+			if(activity_config["ElectronixTutor"]) {
+				
+				etConnect = new ETConnector();
+				etConnect.startService();
+				
+			}
 			var drawModel = new drawmodel(givenModel.active, ui_config.get("showColor"), activity_config);
 			drawModel.setLogging(session);
 			
@@ -441,6 +453,17 @@ define([
 						controllerObject.showIncrementalAnswer(mover.node.id);
 					}
 					controllerObject.showIncrementalEditor(mover.node.id);
+				}else if(activity_config.get("showExecutionEditor")){
+					if(activity_config.get("demoExecution")){
+						//controllerObject.showIncrementalAnswer(mover.node.id);
+					}
+					controllerObject.showExecutionMenu(mover.node.id);
+				}
+				else if(activity_config.get("showExecutionEditor")){
+					if(activity_config.get("demoExecution")){
+						controllerObject.showExecutionAnswer(mover.node.id, "2");
+					}
+					controllerObject.showExecutionEditor(mover.node.id, "2");
 				}
 			}, true);
 
@@ -729,13 +752,15 @@ define([
 					//activity names and menu Ids should be same
 					var activities = activity_config.getAllActivitesNames();
 					array.forEach(activities, function(activity){
-						on(registry.byId("menu_"+activity),"click",function() {
-							var timestamp = new Date().getTime();
-							var url = document.URL.replace("u="+query.u,"u="+query.u+"-"+timestamp);
-							url=url+"&l=false";
-							url = url.replace("a="+query.a, "a="+ activity);
-							window.open(url.replace("m=AUTHOR","m=STUDENT"),"newwindow");
-						});
+						if(registry.byId("menu_"+activity)) {
+							on(registry.byId("menu_" + activity), "click", function () {
+								var timestamp = new Date().getTime();
+								var url = document.URL.replace("u=" + query.u, "u=" + query.u + "-" + timestamp);
+								url = url + "&l=false";
+								url = url.replace("a=" + query.a, "a=" + activity);
+								window.open(url.replace("m=AUTHOR", "m=STUDENT"), "newwindow");
+							});
+						}
 					});
 				}
 				else{
@@ -1235,6 +1260,11 @@ define([
 					tc.connect();
 					//Send Statements
 					tc.sendStatements();
+				}
+				if(activity_config["ElectronixTutor"] && etConnect){
+					var score = controllerObject._assessment.getSuccessFactor();
+					etConnect.sendScore(score);
+					console.log("sending score(successfactor):", score);
 				}
 			});
 

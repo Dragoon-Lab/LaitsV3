@@ -1,16 +1,25 @@
 
 // Set up initial variables
 
+
  // Creating a selenium client utilizing webdriverjs
-var client = require('webdriverio').remote({
-    //logLevel: "verbose",
+var webdriver = require('webdriverio');
+var options = {
+    desiredCapabilities: {
+        browserName: 'chrome'
+    }
+};
+
+/*
+.remote({
+    logLevel: "verbose",
     desiredCapabilities: {
         // See other browers at:
         // http://code.google.com/p/selenium/wiki/DesiredCapabilities
         browserName: 'chrome'
-
     }
 });
+*/
 
 // import chai assertion library
 var assert = require('chai').assert;
@@ -22,6 +31,10 @@ var atest = require('../assertTestLib.js');
 var sync = require('synchronize');
 // import wrapper for asynchronous functions
 var async = sync.asyncIt;
+
+//sync(webdriver,remote);
+
+var client = webdriver.remote(options);
 
 describe("Student mode with incorrect rabbits", function() {
 
@@ -130,18 +143,17 @@ describe("Student mode with incorrect rabbits", function() {
             dtest.menuOpenLessonsLearned(client);
             dtest.waitTime(200);
             var lessonsLearnedText = dtest.lessonsLearnedGetText(client);
-            assert(lessonsLearnedText !== "undefined", "Lessons learned text does not match");
-            dtest.waitTime(200);
+            assert(lessonsLearnedText !== "undefined", "Lessons learned text does not match");            
             dtest.lessonsLearnedClose(client);
+            //dtest.waitTime(1000);
         }));
 
         it("Should not show lessons learned on graph close", async(function(){
             dtest.menuOpenGraph(client);
-            dtest.waitTime(200);
             dtest.closeGraphAndTableWindow(client);
-            dtest.waitTime(200);
-            //If we can click graph again then lessons learned was not shown.
-            dtest.menuOpenGraph(client);
+            //If there is no lessons learned text we have succeeded
+            var lessonsLearnedText = dtest.lessonsLearnedGetText(client);
+            assert(lessonsLearnedText == "" );
         }));
     });
     
