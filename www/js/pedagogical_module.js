@@ -1125,7 +1125,10 @@ define([
 
 				if(functionID.length == 1){
 					finalHierarchy.push(functionID[0]);
-					finalHierarchy.push(prioritize(accumulatorID));
+					var temp = prioritize(accumulatorID);
+					array.forEach(temp, function(id){
+						finalHierarchy.push(id);
+					});
 
 					return finalHierarchy;
 				} else if (functionID.length == 0){
