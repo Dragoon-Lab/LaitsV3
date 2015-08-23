@@ -331,7 +331,12 @@ define([
 			//copy problem to student model
 			if(activity_config.get("initializeStudentModel") && !givenModel.areRequiredNodesVisible()){
 				console.log("student model being initialized");
-				updateModel.initializeStudentModel(activity_config.get("setStudentTweakDirection"));
+				updateModel.initializeStudentModel(activity_config.get("copyFields"));
+
+				//sets student values for parameters.
+				if(activity_config.get("setStudentTweakDirection")){
+					updateModel.initializeStudentTweakDirection();
+				}
 			}
 
 			//setting the node order for demo activities

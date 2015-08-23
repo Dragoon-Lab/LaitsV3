@@ -65,6 +65,7 @@ define([
 					taskDescription: "",
 					lessonsLearned: "",
                     increment:[],
+					executionIterations: null,
 					givenModelNodes: [],
 					studentModelNodes: [],
 					schemas: []
@@ -290,6 +291,9 @@ define([
 			getInitialTweakDirection: function(){
 				return this.model.task.increment && this.model.task.increment[0].tweakDirection;
 			},
+			getExecutionIterations: function(){
+				return this.model.task.executionIterations;
+			},
             getIncrements: function(){
 				return (typeof this.model.task.increment!== "undefined") ? this.model.task.increment:[];
 			},
@@ -470,7 +474,10 @@ define([
 			},
             setIncrements: function(/*string*/ node, /*string*/ direction){
 				this.model.task.increment = [{tweakedNode:node, tweakDirection: direction}];
-            }
+            },
+			setExecutionIterations: function(/* number */ itr){
+				this.model.task.executionIterations = itr;
+			}
 		};
 
 		/*
@@ -569,6 +576,24 @@ define([
 				if(!node["imageMarks"]) return [];
 				else return node["imageMarks"];
 			},
+			getExecutionValue: function(/* string */ id, /* number */ index){
+				var node = this.active.getNode(id);
+				var val = null;
+
+				if(node.executionValue && node.executionValue.length > index){
+					val = node.executionValue[index];
+				}
+
+				return val;
+			},
+			getExecutionValues: function(/* string */ id){
+				var node = this.active.getNode(id);
+
+				return node && node.executionValues;
+			},
+			setExecutionValues: function(/* string */ id, /* array */ values){
+				this.getNode(id).executionValues = values;
+			},
 			setSchemas: function(/* object */ schemas){
 				obj.model.task.schemas = schemas;
 			},
@@ -660,6 +685,7 @@ define([
 						units: 0,
 						equation: 0,
 						tweakedDirection: 0,
+						executionValue: 0,
 						assistanceScore: 0
 					},
 					status: {}
@@ -1240,6 +1266,15 @@ define([
 				var givenID = this.getDescriptionID(id);
 				var node = obj.given.getNode(givenID);
 				node.attemptCount.assistanceScore = score;
+			},
+			setExecutionValue: function(/* string */ id, /* number */ val, /* number */ index){
+				var node = this.getNode(id);
+
+				if(index){
+					node.executionValues[index] = val;
+				} else {
+					node.executionValues.push(val);
+				}
 			},
 			incrementAssistanceScore: function(/*string*/ id){
 				// Summary: Incremements a score of the amount of errors/hints that
