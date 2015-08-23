@@ -114,7 +114,6 @@ define([
 		},
 
 		copyGivenNode: function(/* string */ givenID, /* array */ fields){
-			debugger;
 			var givenNode = this._model.given.getNode(givenID);
 			var newNodeID = this._model.student.getNodeIDFor(givenID) || this.addStudentNode(givenID);
 
@@ -213,7 +212,7 @@ define([
 			return newNodeID;
 		},
 
-		createExecutionValues: function(){
+		calculateExecutionValues: function(){
 			var iterations = this._model.getExecutionIterations() || 2;
 
 			var pv = this._model.given.getPlotVariables();
@@ -224,20 +223,23 @@ define([
 
 			if(nodes){
 				array.forEach(nodes, function(node){
-					var index = pv.indexOf(node.ID);
-					if(node.type != "parameter"){
-						node.executionValue = [];
-						for(var i = 0; i < iterations; i++){
-							var j = i;
-							if(node.type == "accumulator"){
-								j = i+1;
+					if(this._model.given.isNodeRequired(node.ID)){
+						var index = pv.indexOf(node.ID);
+						if(node.type != "parameter"){
+							var arr = []
+							for(var i = 0; i < iterations; i++){
+								var j = i;
+								if(node.type == "accumulator"){
+									j = i+1;
+								}
+								arr.push(s1.plotValues[index][j]);
 							}
-							node.executionValue.push(s1[index][j]);
+							this._model.given.setExecutionValues(node.ID, arr);
+						} else {
+							this._model.given.setExecutionValues(node.ID, [node.initial]);
 						}
-					} else {
-						node.executionValue = [node.initial];
 					}
-				});
+				}, this);
 			}
 		},
 
@@ -249,7 +251,9 @@ define([
 					if(node.type == "parameter"){
 						this._model.student.setExecutionValues(node.ID, this._model.given.getExecutionValues(node.descriptionID));
 						//this._model.student.setStatus(node.ID, {});
-						this.model.student.setAssistanceScore(node.ID, 1);
+						this._model.student.setAssistanceScore(node.ID, 1);
+					} else {
+						this._model.student.setExecutionValues(node.ID, []);
 					}
 				}, this);
 			}

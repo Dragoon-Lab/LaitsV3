@@ -587,12 +587,12 @@ define([
 				return val;
 			},
 			getExecutionValues: function(/* string */ id){
-				var node = this.active.getNode(id);
+				var node = this.getNode(id);
 
-				return node && node.executionValues;
+				return node && node.executionValue;
 			},
 			setExecutionValues: function(/* string */ id, /* array */ values){
-				this.getNode(id).executionValues = values;
+				this.getNode(id).executionValue = values;
 			},
 			setSchemas: function(/* object */ schemas){
 				obj.model.task.schemas = schemas;
@@ -666,6 +666,12 @@ define([
 				}, this);
 
 				return flag ? true : false;
+			},
+			validateExecutionValues: function(){
+				var nodes = this.getNodes();
+				var flag = array.every(nodes, function(node){
+					return (!this.isNodeRequired(node.ID) || (node.executionValue && node.executionValue != ""));
+				}, this);
 			}
 		};
 
@@ -1271,9 +1277,9 @@ define([
 				var node = this.getNode(id);
 
 				if(index){
-					node.executionValues[index] = val;
+					node.executionValue[index] = val;
 				} else {
-					node.executionValues.push(val);
+					node.executionValue.push(val);
 				}
 			},
 			incrementAssistanceScore: function(/*string*/ id){

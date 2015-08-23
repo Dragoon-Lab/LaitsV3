@@ -386,6 +386,13 @@ define([
 					showHints: true,
 					showFeedback: true,
 					showCorrectAnswer:true,
+					copyFields: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation"
+					],
 
 					initializeStudentModel : true,
 
@@ -400,8 +407,8 @@ define([
 
 					nodeDetails: "NEWVALUE",
 					copyAuthorNodes: true,
-					setNewValues:true,
-					setStudentNewValues:true,
+					setExecutionValues:true,
+					setStudentExecutionValues:true,
 					demoExecution:true
 
 				},
@@ -416,6 +423,13 @@ define([
 					showHints: true,
 					showFeedback: true,
 					showCorrectAnswer:true,
+					copyFields: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation"
+					],
 
 					initializeStudentModel : true,
 
@@ -429,8 +443,8 @@ define([
 						
 					nodeDetails: "NEWVALUE",
 					copyAuthorNodes: true,
-					setNewValues:true,
-					setStudentNewValues:true,
+					setExecutionValues:true,
+					setStudentExecutionValues:true,
 					demoExecution:true
 
 				},
@@ -442,6 +456,13 @@ define([
 
 					allowEditNode:true,
 					showFeedback: true,
+					copyFields: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation"
+					],
 
 					initializeStudentModel : true,
 
@@ -456,8 +477,8 @@ define([
 
 					nodeDetails: "NEWVALUE",
 					copyAuthorNodes: true,
-					setNewValues:true,
-					setStudentNewValues:true,
+					setExecutionValues:true,
+					setStudentExecutionValues:true,
 					demoExecution:true
 				},
 
@@ -468,6 +489,13 @@ define([
 
 					allowEditNode:true,
 					showFeedback: true,
+					copyFields: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation"
+					],
 
 					initializeStudentModel : true,
 
@@ -482,8 +510,8 @@ define([
 					showExecutionEditor : true,
 					nodeDetails: "NEWVALUE",
 					copyAuthorNodes: true,
-					setNewValues:true,
-					setStudentNewValues:true,
+					setExecutionValues:true,
+					setStudentExecutionValues:true,
 					demoExecution:true
 				}
 			}
@@ -557,8 +585,8 @@ define([
 				showExecutionEditor: false,
 				demoExecution: false,
 				highlightNextNode : false,	
-				setNewValues:false,
-				setStudentNewValues:false,
+				setExecutionValues:false,
+				setStudentExecutionValues:false,
 				demoExecution:false
 
 			},

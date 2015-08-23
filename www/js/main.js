@@ -330,6 +330,8 @@ define([
 				throw Error("problem does not have tweaked nodes");
 			}else if(activity_config.get("setTweakDirections") && !givenModel.given.validateTweakDirections()){
 				updateModel.calculateTweakDirections();
+			}else if(activity_config.get("setExecutionValues") && !givenModel.given.validateExecutionValues()){
+				updateModel.calculateExecutionValues();
 			}
 
 			//copy problem to student model
@@ -340,6 +342,10 @@ define([
 				//sets student values for parameters.
 				if(activity_config.get("setStudentTweakDirection")){
 					updateModel.initializeStudentTweakDirection();
+				}
+
+				if(activity_config.get("setStudentExecutionValues")){
+					updateModel.initializeStudentExecutionValue();
 				}
 			}
 
