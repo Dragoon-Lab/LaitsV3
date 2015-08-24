@@ -84,7 +84,7 @@ describe("Test author mode", function() {
     });
 
     describe("Checking Nodes:", function(){
-        it("Should detect that the nodes are incomplete", async(function(){
+        it("Should detect that the nodes are incomplete", async(function(){            
             dtest.menuOpenAuthorOptions(client);
             dtest.pressCheckProblemButton(client);
             atest.popupContainsText("The problem has one or more incomplete nodes.",dtest,client);
@@ -94,11 +94,11 @@ describe("Test author mode", function() {
 
         it("Should fill in parameter and uncheck root node", async(function(){
             dtest.openEditorForNode(client, "growth rate");
-            dtest.waitTime(100);  
+            dtest.waitTime(100);
             dtest.setNodeInitialValue(client, 0.3);
             dtest.nodeEditorDone(client);
             dtest.openEditorForNode(client, "net growth");
-            dtest.waitTime(100);  
+            dtest.waitTime(100);
             dtest.clickRootNode(client);
             dtest.nodeEditorDone(client);
         }));
@@ -113,7 +113,7 @@ describe("Test author mode", function() {
 
         it("Should turn the root node on again", async(function(){
             dtest.openEditorForNode(client, "net growth");
-            dtest.waitTime(100);  
+            dtest.waitTime(100);
             dtest.clickRootNode(client);
             dtest.nodeEditorDone(client);
         }));

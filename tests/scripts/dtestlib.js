@@ -809,19 +809,18 @@
     exports.nodeEditorDone = function(client){
         // Summary: Hits the "Done" button in the node editor
         await(client.click('span[id="closeButton_label"]',defer()));
-        //wait(200);
-        await(client.waitForVisible('#nodeeditor_underlay',true,defer()));
+        await(client.waitForVisible('#nodeeditor_underlay',1000,true,defer()));
     }
 
     exports.closeNodeEditor = function(client){
         // Summary: Closes node editor using the "x"    
         await(client.click("#nodeeditor > div.dijitDialogTitleBar > span.dijitDialogCloseIcon",defer()));
-        await(client.waitForVisible('#nodeeditor_underlay',true,defer()));
+        await(client.waitForVisible('#nodeeditor_underlay',1000,true,defer()));
     }
 
     exports.nodeEditorDelete = function(client){
         await(client.click('#deleteButton',defer()));
-        await(client.waitForVisible('#nodeeditor_underlay',true,defer()));
+        await(client.waitForVisible('#nodeeditor_underlay',1000,true,defer()));
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
