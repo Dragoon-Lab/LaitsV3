@@ -401,15 +401,14 @@ define([
 					showNodeDetails:false,
 					copyAuthorNodes: true,
 					showPopupIfComplete: true,
-					demoExecution : true,
+					demoExecutionValues : true,
 					highlightNextNode : false,
 					showExecutionEditor : true,
-
+					getNodeOrder: true,
 					nodeDetails: "NEWVALUE",
-					copyAuthorNodes: true,
+					
 					setExecutionValues:true,
 					setStudentExecutionValues:true,
-					demoExecution:true
 
 				},
 
@@ -435,17 +434,17 @@ define([
 
 					showNodeEditor:false,
 					showNodeDetails:false,
-					copyAuthorNodes: true,
+					
 					showPopupIfComplete: true,
-					demoExecution : true,
+					
 					highlightNextNode : true,
 					showExecutionEditor : true,
-						
+					getNodeOrder: true,
 					nodeDetails: "NEWVALUE",
 					copyAuthorNodes: true,
 					setExecutionValues:true,
 					setStudentExecutionValues:true,
-					demoExecution:true
+					demoExecutionValues:true
 
 				},
 
@@ -469,17 +468,17 @@ define([
 					showNodeEditor:false,
 
 					showNodeDetails:false,
-					copyAuthorNodes: false,
+					
 					showPopupIfComplete: true,
-					demoExecution : true,
+					
 					highlightNextNode : true,
 					showExecutionEditor : true,
-
+					getNodeOrder: true,
 					nodeDetails: "NEWVALUE",
 					copyAuthorNodes: true,
 					setExecutionValues:true,
 					setStudentExecutionValues:true,
-					demoExecution:true
+					demoExecutionValues:true
 				},
 
 				EDITOR:{
@@ -503,16 +502,16 @@ define([
 
 					showIncrementalEditor:true,
 					showNodeDetails:false,
-					copyAuthorNodes: false,
+					
 					showPopupIfComplete: true,
-					demoExecution : true,
+					getNodeOrder: true,
 					highlightNextNode : false,
 					showExecutionEditor : true,
 					nodeDetails: "NEWVALUE",
 					copyAuthorNodes: true,
 					setExecutionValues:true,
 					setStudentExecutionValues:true,
-					demoExecution:true
+					demoExecutionValues:true
 				}
 			}
 		};
@@ -583,11 +582,10 @@ define([
 				
 				//Execution Behavior
 				showExecutionEditor: false,
-				demoExecution: false,
 				highlightNextNode : false,	
 				setExecutionValues:false,
 				setStudentExecutionValues:false,
-				demoExecution:false
+				demoExecutionValues:false
 
 			},
 
