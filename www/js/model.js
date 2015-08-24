@@ -578,7 +578,7 @@ define([
 				else return node["imageMarks"];
 			},
 			getExecutionValue: function(/* string */ id, /* number */ index){
-				var node = this.active.getNode(id);
+				var node = this.getNode(id);
 				var val = null;
 
 				if(node.executionValue && node.executionValue.length > index){
