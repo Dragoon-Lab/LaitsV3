@@ -1075,6 +1075,34 @@ define([
 						return str;
 					}
 
+					var getIndex = function(){
+						var arr = str.split(" ");
+						var i = 0;
+						array.some(arr, function(r, count){
+							i = count;
+							return r.indexOf(id1) >= 0;
+						});
+
+						var j;
+						switch(position){
+							case "before":
+								j = i-1;
+								break;
+							case "after":
+								j = i+1;
+								break;
+							default:
+								j = i;
+						}
+
+						sum = j; //j is added to take care of the spaces that are in after node ids. which are lost in split
+						for(var i = 0; i <= j; i++){
+							sum += arr[i].length;
+						}
+
+						return sum;
+					};
+
 					var l = str.length;
 					var returnString = "";
 					switch(position){
@@ -1085,7 +1113,11 @@ define([
 							else {
 								//this means that there is already a node that is supposed to be complete before we do this.
 								var index = index1 - 1;
+								if(str[index] != " "){
+									index = getIndex();
+								}
 								returnString = str.slice(0, index) +"="+ id2 + str.slice(index, str.length);
+
 							}
 							break;
 						case "after":
@@ -1093,6 +1125,9 @@ define([
 								returnString = str + " " +id2;
 							else{
 								var index = index1 + id1.length + 1;
+								if(str[index] != " "){
+									index = getIndex();
+								}
 								returnString = str.slice(0, index) + id2 + "=" + str.slice(index, str.length);
 							}
 							break;
@@ -1102,17 +1137,29 @@ define([
 				}
 
 				//the priority of the ids is same. So it checks for the position. Which ever is on the left will be done first.
+				//Uses insertion sort based on position.
 				var prioritize = function(/* array */ tempIDs){
 					var orderedIDs = [];
 					var positions = [];
-					if(tempIDs.size > 1){
+					if(tempIDs.length > 1){
 						array.forEach(tempIDs, function(id){
 							var node = nodes[ids.indexOf(id)];
-							for(var i = 0; i < positions.size; i++){
-								if(node.position.x < positions[i]){
-									positions.splice(i, 0, node.position.x);
-									orderedIDs.splice(i, 0, id);
-									break;
+							if(positions.length == 0){
+								positions[0] = node.position.x;
+								orderedIDs[0] = id;
+							} else {
+								var lastIndex = true; // assuming that the id will be added at the end
+								for(var i = 0; i < positions.length; i++){
+									if(node.position.x < positions[i]){
+										positions.splice(i, 0, node.position.x);
+										orderedIDs.splice(i, 0, id);
+										lastIndex = false;
+										break;
+									}
+								}
+								if(lastIndex){
+									orderedIDs.push(id);
+									positions.push(node.position.x);
 								}
 							}
 						}, this);
@@ -1147,7 +1194,6 @@ define([
 					array.forEach(inputs, function(input){
 						if(functionID.indexOf(input.ID) >= 0){
 							var flag = true;
-
 							//check if some relative order already has the one of the nodes.
 							array.forEach(relativeOrderF, function(s, counter){
 								var temp = checkString(s, n.ID, input.ID);
