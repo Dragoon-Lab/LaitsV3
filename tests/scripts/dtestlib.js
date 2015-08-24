@@ -11,7 +11,7 @@
      *
      *Dragoon is distributed in the hope that it will be useful,
      *but WITHOUT ANY WARRANTY; without even the implied warranty of
-     *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+     *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
      *GNU Lesser General Public License for more details.
      *
      *You should have received a copy of the GNU Lesser General Public License
@@ -33,6 +33,7 @@
     var testPath = require('./test-paths.js');
     var MAX_NODE_IDS = 200; // The maximum number of node IDs we'll support
     var lastCounter = 0;
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     // Utility functions (used within the API)
     ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -116,12 +117,15 @@
 
     function wait(milliseconds)
     {
-      var start = new Date().getTime();
-      for (var i = 0; i < 1e7; i++) {
-        if ((new Date().getTime() - start) > milliseconds){
-          break;
+        if(typeof milliseconds === "undefined"){
+            throw new Error("wait received undefined wait time");
         }
-      }
+        var start = new Date().getTime();
+        //console.log("starting wait for "+milliseconds+" at: "+start);
+        var currentTime = new Date().getTime();
+        while((currentTime - start) < milliseconds){
+            currentTime = new Date().getTime();
+        }
     }
 
     function getUrlRoot()
@@ -181,12 +185,6 @@
         }
         else
             return toConvert;
-    }
-
-    function testFun (arg1,arg2){
-        console.log("Arg1: ",arg1);
-        console.log("Arg2: ",arg2);
-        defer();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -266,7 +264,7 @@
         console.log(style.value);
     }
 
-    exports.waitTime = function(client, timeToWait)
+    exports.waitTime = function(timeToWait)
     {
         wait(timeToWait);
     }
@@ -810,16 +808,19 @@
     exports.nodeEditorDone = function(client){
         // Summary: Hits the "Done" button in the node editor
         await(client.click('span[id="closeButton_label"]',defer()));
-        wait(200);
+        //wait(200);
+        await(client.waitForVisible('#nodeeditor_underlay',true,defer()));
     }
 
     exports.closeNodeEditor = function(client){
         // Summary: Closes node editor using the "x"    
         await(client.click("#nodeeditor > div.dijitDialogTitleBar > span.dijitDialogCloseIcon",defer()));
+        await(client.waitForVisible('#nodeeditor_underlay',true,defer()));
     }
 
     exports.nodeEditorDelete = function(client){
         await(client.click('#deleteButton',defer()));
+        await(client.waitForVisible('#nodeeditor_underlay',true,defer()));
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
