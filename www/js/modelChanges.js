@@ -267,6 +267,25 @@ define([
 			}, this);
 		},
 
+		setExecutionIteration: function(){
+			var nodes = this._model.student.getNodes();
+			var itr = 100; // arbitrary high number of iterations.
+			var flag = false;
+
+			if(nodes){
+				array.forEach(nodes, function(node){
+					if(nodes.executionValue && nodes.executionValue.length < itr){
+						itr = nodes.executionValue.length;
+						flag = true;
+					}
+				});
+			}
+
+			if(flag){
+				this._model.student.setIteration(itr);
+			}
+		},
+
 		setStudentTweakDirection: function(givenID, studentID){
 			if(givenID == this._model.getInitialTweakedNode()) {
 				this._model.student.setTweakDirection(studentID, this._model.getInitialTweakDirection());

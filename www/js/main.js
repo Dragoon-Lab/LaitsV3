@@ -329,9 +329,12 @@ define([
 				errorMessage.show();
 				throw Error("problem does not have tweaked nodes");
 			}else if(activity_config.get("setTweakDirections") && !givenModel.given.validateTweakDirections()){
+				//changes to model for incremental activity
 				updateModel.calculateTweakDirections();
 			}else if(activity_config.get("setExecutionValues") && !givenModel.given.validateExecutionValues()){
+				//changes to model for execution activity
 				updateModel.calculateExecutionValues();
+				updateModel.setExecutionIteration();
 			}
 
 			//copy problem to student model

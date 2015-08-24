@@ -88,6 +88,7 @@ define([
 			isCompleteFlag: false,
 			isLessonLearnedShown: false,
 			isDoneMessageShown: false,
+			iteration: 0,
 
 			/**
 			 *
@@ -1319,10 +1320,13 @@ define([
 				var hasUnits = node.descriptionID && obj.given.getUnits(node.descriptionID);
 				var initialEntered = node.type && node.type == "function" || node.initial != null;
 				var hasTweaks = node.descriptionID && obj.given.getTweakDirection(node.descriptionID);
+				var hasExecutionValue = node.descriptionID && obj.given.getExecutionValues(node.descriptionID);
+				var executionIteration = (hasExecutionValue ? (node.type == "parameter" ? 0 : this.getIteration()) : 0); //execution iteration will always be 0 for parameters.
 				var equationEntered = node.type && node.type == "parameter" || node.equation;
 				var toReturn = node.descriptionID && node.type &&
 					initialEntered && (!hasUnits || node.units) &&
-					equationEntered && (!hasTweaks || node.tweakDirection);
+					equationEntered && (!hasTweaks || node.tweakDirection)
+					&& (!hasExecutionValue || node.executionValue[executionIteration]);
 				if(toReturn){
 					return true;
 				}
@@ -1336,6 +1340,15 @@ define([
 			},
 			deleteStudentNodes: function(){
 				obj.model.task.studentModelNodes = [];
+			},
+			incrementIteration: function(){
+				obj.iteration++;
+			},
+			setIteration: function(/* number */ num){
+				obj.iteration = num;
+			},
+			getIteration: function(){
+				return obj.iteration;
 			}
 		}, both);
 
