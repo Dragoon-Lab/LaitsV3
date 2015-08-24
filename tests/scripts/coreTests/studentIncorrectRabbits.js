@@ -57,8 +57,7 @@ describe("Student mode with incorrect rabbits", function() {
         }));
 
         after(async(function(){
-            dtest.nodeEditorDelete(client);     
-            //dtest.waitTime(300);
+            dtest.nodeEditorDelete(client);
         }));
     });
     
@@ -138,14 +137,11 @@ describe("Student mode with incorrect rabbits", function() {
 
     describe("check lesson learned enable after refresh", function(){
         it("Should show lessons learned on click of menu button", async(function(){
-            client.refresh();
-            dtest.waitTime(10000);
+            dtest.refresh(client);
             dtest.menuOpenLessonsLearned(client);
-            dtest.waitTime(200);
             var lessonsLearnedText = dtest.lessonsLearnedGetText(client);
             assert(lessonsLearnedText !== "undefined", "Lessons learned text does not match");            
             dtest.lessonsLearnedClose(client);
-            //dtest.waitTime(1000);
         }));
 
         it("Should not show lessons learned on graph close", async(function(){

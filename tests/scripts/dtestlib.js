@@ -281,9 +281,10 @@
 
     exports.refresh = function(client)
     {
-        var url = await(client.url(defer()));
+        await(client.refresh(defer()));
+        //var url = await(client.url(defer()));
         //await(client.window());
-        await(client.newWindow(url.value, "Color test", 'width=1000,height=1000,resizable,scrollbars=yes,status=1',defer()));
+        //await(client.newWindow(url.value, "Color test", 'width=1000,height=1000,resizable,scrollbars=yes,status=1',defer()));
     }
 
     exports.changeClient = function (client, newClient)
@@ -952,6 +953,7 @@
     }
 
     exports.lessonsLearnedGetText = function(client){    
+        await(client.waitForVisible('#lesson',defer()));
         return await(client.getText("#lesson",defer()));    
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////
