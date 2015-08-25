@@ -211,8 +211,12 @@ EOT;
   $problem = preg_replace('/[^A-Za-z0-9_\-]/', '_', $problem);
   $extra = 'problems/' . $problem . '.json';
   /* Redirect to a page relative to the current directory.
-     HTTP/1.1 requires an absolute URI as argument to Location. */ 
-  header("Location: http://$host$uri/$extra");
+     HTTP/1.1 requires an absolute URI as argument to Location. */
+  if(isset($_SERVER['HTTPS'])){
+  	header("Location: https://$host$uri/$extra");
+  } else {
+	header("Location: http://$host$uri/$extra");
+  }
 }
 mysqli_close($mysqli);
 ?>
