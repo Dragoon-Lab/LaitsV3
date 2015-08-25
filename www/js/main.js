@@ -463,17 +463,12 @@ define([
 					}
 					controllerObject.showIncrementalEditor(mover.node.id);
 				}else if(activity_config.get("showExecutionEditor")){
-					if(activity_config.get("demoExecution")){
+					if(activity_config.get("demoExecutionValues")){
 						//controllerObject.showIncrementalAnswer(mover.node.id);
 					}
 					controllerObject.showExecutionMenu(mover.node.id);
 				}
-				else if(activity_config.get("showExecutionEditor")){
-					if(activity_config.get("demoExecution")){
-						controllerObject.showExecutionAnswer(mover.node.id, "2");
-					}
-					controllerObject.showExecutionEditor(mover.node.id, "2");
-				}
+				
 			}, true);
 
 			/*
@@ -1289,6 +1284,9 @@ define([
                 controllerObject.resetNodesIncDemo();
             });
 			if(activity_config.get("demoIncremental")) {
+				controllerObject.highlightNextNode();
+			}
+			if(activity_config.get("demoExecutionValues")) {
 				controllerObject.highlightNextNode();
 			}
 		});

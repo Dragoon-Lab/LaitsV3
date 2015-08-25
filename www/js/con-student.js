@@ -625,8 +625,8 @@ define(["dojo/aspect",
 			}
 		},
 
-		highlightNextNode: function () {
-			if (this.activityConfig.get("demoIncremental") || this.activityConfig.get("demoExecution")) {
+		highlightNextNode: function () {		
+			if (this.activityConfig.get("demoIncremental") || this.activityConfig.get("demoExecutionValues")) {
 				//Get next node in the list from PM
 				var nextID = this._PM.getNextNode();
 				if (nextID) {
