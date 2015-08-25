@@ -89,10 +89,25 @@ define([
 				}
 				nodeName='<div id=' + nodeId + 'Label  class="bubble"><div class="incrementalContent ' + type + 'Wrapper"><strong class="fa fa-'+ iconClass[dir] +'">'+ content+ '</strong></div><div class=' + type + 'Div><strong>' + nodeName + '</strong></div></div>';
 			}else if(showDetails === "NEWVALUE"){
-				var newVal = "";//model.getNewValue(nodeId) == ""? "Empty": model.getNewValue(nodeId);
-				var content = ""+newVal;
+				var iteration = model.getIteration();
+				var oldVal = model.getInitial(nodeId);
+				if(iteration > 0) {
+					 oldVal = model.getExecutionValue(nodeId, iteration- 1);
+				}
+				var newVal = model.getExecutionValue(nodeId) == undefined? "_____": model.getExecutionValue(nodeId);
 
-				nodeName='<div id=' + nodeId + 'Label  class="bubble"><div class="executionContent ' + type + 'Wrapper"><strong>'+ content+ '</strong></div><div class=' + type + 'Div><strong>' + nodeName + '</strong></div></div>';
+				var unitsValue = model.getUnits(nodeId);
+				if (!unitsValue) {
+					unitsValue = '';
+				}
+
+				var content = "";
+				if(type === "accumulator"){
+					newVal = oldVal + '<br/><strong class="fa fa-angle-double-down"></strong><br/>' + newVal;
+				}
+				content += "<span style='font-size:12px;'>"+ newVal + "</span><br/>"+ unitsValue+"";
+
+				nodeName='<div id=' + nodeId + 'Label  class="bubble bubble-execution"><div class="executionContent ' + type + 'Wrapper"><strong>'+ content+ '</strong></div><div class=' + type + 'Div><strong>' + nodeName + '</strong></div></div>';
 
 			}
 			return nodeName;

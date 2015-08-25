@@ -404,6 +404,126 @@ define(["dojo/aspect",
 			}
 		},
 
+
+		/*
+		 * Common functions for Incremental and Execution activities
+		 */
+
+		getChangeDescriptionText:function(changeDesc){
+			var changeDescript;
+			switch(changeDesc) {
+				case "Increase":
+					changeDescript=" has been increased."
+					break;
+				case "Decrease":
+					changeDescript=" has been decreased."
+					break;
+				case "Stays-Same":
+					changeDescript=" stays the same."
+					break;
+				case "Unknown":
+					changeDescript=" will sometimes increase and sometimes decrease."
+					break;
+				default:
+					changeDescript=""
+			}
+			return changeDescript;
+		},
+
+		formatEquationMessage: function(){
+			/*
+			 * Summary: Formats the message to be displayed by equation dialog
+			 * Used by showEquationDialog
+			 */
+
+			var type = this._model.active.getType(this.currentID);
+			var equationMessage = "";
+			var equation = expression.convert(this._model.active, this._model.active.getEquation(this.currentID));
+			var nodeName = this._model.active.getName(this.currentID);
+			var inputs=this._model.active.getInputs(this.currentID);
+
+			if (type == "accumulator") {
+				equationMessage = "<p><b>"+"new " + nodeName + " = " + "current " + nodeName + " + " + equation+"</b></p>";
+			} else if (type == "function") {
+				equationMessage = "<p><b>"+ nodeName + " = " + equation+"</b></p>";
+			}
+
+			if (this.activityConfig._activity=="incrementalDemo") {
+				equationMessage+="<p><div style='text-align:left'>"+"Compared to the original model:"+"</p>";
+				equationMessage+="<ul>";
+				array.forEach(inputs, lang.hitch(this, function(node){
+					var nodeType=this._model.active.getType(node.ID);
+					var changeDesc=this._model.active.getTweakDirection(node.ID);
+					var changeDescription=this.getChangeDescriptionText(changeDesc);
+					if (nodeType==="accumulator")
+						equationMessage+="<li>"+"Initial value for the "+this._model.active.getName(node.ID)+" stays the same"+"</li>";
+
+					else
+						equationMessage+="<li>"+this._model.active.getName(node.ID)+changeDescription+"</li>";
+				}));
+				equationMessage+="</ul><p>"+ "Therefore, "+nodeName+this.getChangeDescriptionText(this._model.active.getTweakDirection(this.currentID))+"</p>";
+			}
+			return equationMessage
+		},
+
+		showEquationDialog: function(){
+			/*
+			 * Summary: Shows the equation of the node in a popup dialog with correct formatting
+			 * Used by initIncrementalMenu and initExecutionMenu
+			 */
+
+			var nodeName = this._model.active.getName(this.currentID);
+
+			var equationMessage = this.formatEquationMessage();
+			this.logging.log('ui-action', {
+				type: "open-equation",
+				node: this._model.active.getName(this.currentID),
+				nodeID: this.currentID
+			});
+
+			this.applyDirectives([{
+				id: "crisisAlert",
+				attribute: "title",
+				value: "Equation for " + nodeName
+			}, {
+				id: "crisisAlert",
+				attribute: "open",
+				value: equationMessage
+			}]);
+		},
+
+		showExplanationDialog: function(){
+			/*
+			 * Summary: Shows the explanation(if exists) for the node in a popup dialog
+			 * Used by initIncrementalMenu and initExecutionMenu
+			 */
+			var givenID = this._model.active.getDescriptionID(this.currentID);
+			if (this._model.given.getExplanation(givenID)) {
+				var nodeName = this._model.active.getName(this.currentID);
+				this.logging.log('ui-action', {
+					type: "open-explanation",
+					node: nodeName,
+					nodeID: this.currentID
+				});
+
+				this.applyDirectives([{
+					id: "crisisAlert",
+					attribute: "title",
+					value: "Explanation for " + nodeName
+				}, {
+					id: "crisisAlert",
+					attribute: "open",
+					value: this._model.given.getExplanation(givenID)
+				}]);
+			}
+		},
+
+
+		/*
+		 * Incremental Menu
+		 * Summary: initialize, add event handlers and show incremental menu tooltipDialog
+		 */
+
 		showIncrementalEditor: function (id) {
 			this.currentID = id;
 			var type = this._model.active.getType(id);
@@ -452,9 +572,6 @@ define(["dojo/aspect",
 			}
 		},
 
-		showExecutionEditor : function(id, iterationNo){
-		},	
-
 		getChangeDescriptionText:function(changeDesc){
 			var changeDescript;
 			switch(changeDesc) {
@@ -479,7 +596,6 @@ define(["dojo/aspect",
 
 		initIncrementalMenu: function () {
 			var that = this;
-			that._buttonHandlers = {};
 
 			//Hide or show inc Buttons
 			array.forEach(this.incButtons, lang.hitch(this, function (buttonID) {
@@ -499,76 +615,37 @@ define(["dojo/aspect",
 				//assessment for tweak pop up
 				that.nodeStartAssessment(that.currentID);
 				focusUtil.focus(dom.byId("IncreaseButton"));
+			});
 
-				this.incButtons.forEach(function (item) {
-					var btn = registry.byId(item + "Button");
-					that._buttonHandlers[item] = on(btn, "click", function (e) {
-						e.preventDefault();
-						//Set in the model
-						that._model.active.setTweakDirection(that.currentID, item);
+			this.incButtons.forEach(function (item) {
+				var btn = registry.byId(item + "Button");
+				on(btn, "click", function (e) {
+					e.preventDefault();
+					//Set in the model
+					that._model.active.setTweakDirection(that.currentID, item);
 
-						//Process Answer
-						var result = that._PM.processAnswer(that.currentID, "tweakDirection", item);
-						that.applyDirectives(result);
+					//Process Answer
+					var result = that._PM.processAnswer(that.currentID, "tweakDirection", item);
+					that.applyDirectives(result);
 
-						//Update Node Label
-						that.updateNodeLabel(that.currentID);
+					//Update Node Label
+					that.updateNodeLabel(that.currentID);
 
-						//Close popup
-						that.closeIncrementalMenu(true);
-						that.canShowDonePopup();
-					});
+					//Close popup
+					that.closeIncrementalMenu(true);
+					that.canShowDonePopup();
 				});
 			});
 
 			var showEquationButton = registry.byId("EquationButton");
-
-			on(showEquationButton, "click", function () {
-				var nodeName = that._model.active.getName(that.currentID);
-				//close incremental menu is being called twice when clicking show equation. There is one at showIncementalEditor function at the top.
-				//not sure which is to be removed. For now I am commenting this ~ Sachin
-				//that.closeIncrementalMenu();
-				var equationMessage = that.formatEquationMessage();
-				that.logging.log('ui-action', {
-					type: "open-tweak-equation",
-					node: that._model.active.getName(that.currentID),
-					nodeID: that.currentID
-				});
-
-				that.applyDirectives([{
-					id: "crisisAlert",
-					attribute: "title",
-					value: "Equation for " + nodeName
-				}, {
-					id: "crisisAlert",
-					attribute: "open",
-					value: equationMessage
-				}]);
-			});
+			on(showEquationButton, "click", lang.hitch(this, function () {
+				this.showEquationDialog();
+			}));
 
 			var showExplanationButton = registry.byId("ShowExplanationButton");
-			on(showExplanationButton, 'click', function () {
-				var givenID = that._model.active.getDescriptionID(that.currentID);
-				if (that._model.given.getExplanation(givenID)) {
-					var nodeName = that._model.active.getName(that.currentID);
-					that.logging.log('ui-action', {
-						type: "open-tweak-explanation",
-						node: nodeName,
-						nodeID: that.currentID
-					});
-
-					that.applyDirectives([{
-						id: "crisisAlert",
-						attribute: "title",
-						value: "Explanation for " + nodeName
-					}, {
-						id: "crisisAlert",
-						attribute: "open",
-						value: that._model.given.getExplanation(givenID)
-					}]);
-				}
-			});
-
+			on(showExplanationButton, 'click', lang.hitch(this, function () {
+				this.showExplanationDialog();
+			}));
 		},
 
 		closeIncrementalMenu: function (doColorNodeBorder) {
@@ -579,9 +656,6 @@ define(["dojo/aspect",
 			});
 			this.nodeCloseAssessment(this.currentID);
 			popup.close(this._incrementalMenu);
-			this.incButtons.forEach(lang.hitch(this, function (item) {
-				this._buttonHandlers[item].remove();
-			}));
 			if (doColorNodeBorder) {
 				this.colorNodeBorder(this.currentID, true);
 			}
@@ -663,35 +737,8 @@ define(["dojo/aspect",
 			}
 		},
 
-
-		showExecutionAnswer : function(id, iteration){
-			this.currentId = id;
-			if(id === this.currentHighlight){
-				//remove glow
-				var node = dom.byId(id);
-				domClass.remove(node, "glowNode");
-			}
-			// process answer
-			
-			var givenID = this._model.active.getDescriptionID(id);
-			var answer = this._model.given.getExecutionVal(givenID, iteration);
-			var result = this._PM.processAnswer(id, "executionVal", answer);
-			this.applyDirectives(result);
-
-			//Set correct answer in model
-			this._model.active.setExecutionVal(this.currentID, answer);
-
-			//Update Node Label
-			this.updateNodeLabel(id);
-			this.colorNodeBorder(this.currentID, true);
-
-			//highlight next node in the list
-			this.highlightNextNode();	
-		},
-
 		resetNodesIncDemo: function(){
-			studId = this._model.active.getNodes();
-			console.log("student id is ", studId);
+			var studId = this._model.active.getNodes();
 			studId.forEach(lang.hitch(this, function (newId) {
 				if(newId.type!=="parameter"){
 					//set tweak direction to null and status none
@@ -706,45 +753,13 @@ define(["dojo/aspect",
 			this.highlightNextNode();
 		},
 
-		formatEquationMessage: function(){
-			var type = this._model.active.getType(this.currentID);
-			var equationMessage = "";
-			var equation = expression.convert(this._model.active, this._model.active.getEquation(this.currentID));
-			var nodeName = this._model.active.getName(this.currentID);
-			var inputs=this._model.active.getInputs(this.currentID);
-
-			if (type == "accumulator") {
-				equationMessage = "<p><b>"+"new " + nodeName + " = " + "current " + nodeName + " + " + equation+"</b></p>";
-			} else if (type == "function") {
-				equationMessage = "<p><b>"+ nodeName + " = " + equation+"</b></p>";
-			}
-
-			if (this.activityConfig._activity=="incrementalDemo") {
-				equationMessage+="<p><div style='text-align:left'>"+"Compared to the original model:"+"</p>";
-				equationMessage+="<ul>";
-				array.forEach(inputs, lang.hitch(this, function(node){
-					var nodeType=this._model.active.getType(node.ID)
-					var inputNode=this._model.active.getNode(node.ID);
-					var changeDesc=this._model.active.getTweakDirection(node.ID);
-					var changeDescirpt=this.getChangeDescriptionText(changeDesc);
-					if (nodeType==="accumulator")
-						equationMessage+="<li>"+"Initial value for the "+this._model.active.getName(node.ID)+" stays the same"+"</li>";
-
-					else
-						equationMessage+="<li>"+this._model.active.getName(node.ID)+changeDescirpt+"</li>";
-				}));
-				equationMessage+="</ul><p>"+ "Therefore, "+nodeName+this.getChangeDescriptionText(this._model.active.getTweakDirection(this.currentID))+"</p>";
-			}
-			return equationMessage
-		},
-
 		/*
 		 * Execution Editor
+		 * Summary: initialize, add event handlers and show execution menu tooltipDialog
 		 */
 
 		initExecutionEditor: function(){
 			var that = this;
-			that._buttonHandlers = {};
 
 			this._executionMenu = registry.byId("executionMenu");
 			this._executionMenu.onShow = lang.hitch(this, function () {
@@ -756,67 +771,42 @@ define(["dojo/aspect",
 				});
 				//assessment for tweak pop up
 				that.nodeStartAssessment(that.currentID);
-				focusUtil.focus(dom.byId("newValue"));
+				focusUtil.focus(dom.byId("executionValue"));
 			});
 
 			var showEquationButton = registry.byId("ExecEquationButton");
-			on(showEquationButton, "click", function () {
-				var nodeName = that._model.active.getName(that.currentID);
-				var equationMessage = that.formatEquationMessage();
-				that.logging.log('ui-action', {
-					type: "open-tweak-equation",
-					node: that._model.active.getName(that.currentID),
-					nodeID: that.currentID
-				});
-
-				that.applyDirectives([{
-					id: "crisisAlert",
-					attribute: "title",
-					value: "Equation for " + nodeName
-				}, {
-					id: "crisisAlert",
-					attribute: "open",
-					value: equationMessage
-				}]);
-			});
+			on(showEquationButton, "click", lang.hitch(this, function () {
+				this.showEquationDialog();
+			}));
 
 			var showExplanationButton = registry.byId("ExecShowExplanationButton");
-			on(showExplanationButton, 'click', function () {
-				var givenID = that._model.active.getDescriptionID(that.currentID);
-				if (that._model.given.getExplanation(givenID)) {
-					var nodeName = that._model.active.getName(that.currentID);
-					that.logging.log('ui-action', {
-						type: "open-tweak-explanation",
-						node: nodeName,
-						nodeID: that.currentID
-					});
-
-					that.applyDirectives([{
-						id: "crisisAlert",
-						attribute: "title",
-						value: "Explanation for " + nodeName
-					}, {
-						id: "crisisAlert",
-						attribute: "open",
-						value: that._model.given.getExplanation(givenID)
-					}]);
-				}
-			});
-
+			on(showExplanationButton, 'click', lang.hitch(this, function () {
+				this.showExplanationDialog();
+			}));
 
 			var checkValueButton = registry.byId("execCheckValueButton");
-			on(checkValueButton, "click", function (e) {
+			on(checkValueButton, "click", lang.hitch(this, function (e) {
 				e.preventDefault();
-				console.log("Add call to process answer here");
 				//Set in the model
+				var answer = registry.byId("executionValue").value;
+				var result = this._PM.processAnswer(this.currentID, "executionVal", answer);
+				this.applyDirectives(result);
+				this._model.active.setExecutionValue(this.currentID, answer);
+
+				//Update Node Label
+				this.updateNodeLabel(this.currentID);
+				this.colorNodeBorder(this.currentID, true);
 
 				//Close popup
 				that.closeExecutionMenu();
-			});
+			}));
 
 			this._executionMenu.onBlur = lang.hitch(this, function () {
 				this.closeExecutionMenu();
 			});
+
+			var executionValText = registry.byId("executionValue");
+			executionValText._setStatusAttr = this._setStatus;
 		},
 
 		showExecutionMenu: function(id){
@@ -829,22 +819,69 @@ define(["dojo/aspect",
 			if (type != "accumulator" && type != "function") {
 				this.closeExecutionMenu();
 			} else {
-				dom.byId("executionNodeName").innerHTML = "<strong>" + nodeName + "</strong>";
+				if (!this.activityConfig.get("showPopupIfComplete") || (this.activityConfig.get("showPopupIfComplete") && this._model.active.isComplete(id))) {
+					//logging for pop up start
+					this.logging.log('ui-action', {
+						type: "open-execution-popup",
+						node: this._model.active.getName(this.currentID),
+						nodeID: this.currentID
+					});
 
-				//Show hide explanation button
-				this._model.given.getExplanation(givenID) ? style.set(showExplanationButton, "display", "block") :
-					style.set(showExplanationButton, "display", "none");
+					//set node name
+					dom.byId("executionNodeName").innerHTML = "<strong>" + nodeName + "</strong>";
 
-				popup.open({
-					popup: this._executionMenu,
-					around: dom.byId(id)
-				});
+					//Show hide explanation button
+					this._model.given.getExplanation(givenID) ? style.set(showExplanationButton, "display", "block") :
+						style.set(showExplanationButton, "display", "none");
+					var answer = this._model.active.getExecutionValue(id);
+					registry.byId("executionValue").set("value", answer);
+
+					//enable/disable check value button
+					var execValStatus = this._model.active.getNode(id).status["executionVal"];
+					var w = registry.byId("execCheckValueButton");
+					if (execValStatus && execValStatus.disabled) {
+						w.set("disabled", execValStatus.disabled);
+					} else {
+						w.set("disabled", false);
+					}
+
+					//open execution menu
+					popup.open({
+						popup: this._executionMenu,
+						around: dom.byId(id)
+					});
+				}
+			}
+		},
+
+		showExecutionAnswer : function(id){
+			this.currentID = id;
+			if(id === this.currentHighLight){
+				//remove glow
+				var node = dom.byId(id);
+				domClass.remove(node, "glowNode");
+				// process answer
+				var givenID = this._model.active.getDescriptionID(id);
+				var answer = this._model.given.getExecutionValue(givenID);
+				var result = this._PM.processAnswer(id, "executionVal", answer);
+				this.applyDirectives(result);
+
+				//Set correct answer in model
+				this._model.active.setExecutionValue(this.currentID, answer);
+				registry.byId("executionValue").set("value", answer);
+
+				//Update Node Label
+				this.updateNodeLabel(id);
+				this.colorNodeBorder(this.currentID, true);
+
+				//highlight next node in the list
+				this.highlightNextNode();
 			}
 		},
 
 		closeExecutionMenu: function(){
 			this.logging.log('ui-action', {
-				type: "close-tweak-popup",
+				type: "close-execution-popup",
 				node: this._model.active.getName(this.currentID),
 				nodeID: this.currentID
 			});

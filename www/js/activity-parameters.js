@@ -397,19 +397,15 @@ define([
 					initializeStudentModel : true,
 
 					showNodeEditor:false,
-					
-					showNodeDetails:false,
-					copyAuthorNodes: true,
 					showPopupIfComplete: true,
-					demoExecutionValues : true,
-					highlightNextNode : false,
+					copyAuthorNodes: true,
 					showExecutionEditor : true,
 					getNodeOrder: true,
 					nodeDetails: "NEWVALUE",
 					
 					setExecutionValues:true,
 					setStudentExecutionValues:true,
-
+					demoExecution:true
 				},
 
 				COACHED:{
@@ -433,19 +429,16 @@ define([
 					initializeStudentModel : true,
 
 					showNodeEditor:false,
-					showNodeDetails:false,
 					
 					showPopupIfComplete: true,
-					
-					highlightNextNode : true,
+
 					showExecutionEditor : true,
 					getNodeOrder: true,
 					nodeDetails: "NEWVALUE",
 					copyAuthorNodes: true,
 					setExecutionValues:true,
 					setStudentExecutionValues:true,
-					demoExecutionValues:true
-
+					demoExecution:true
 				},
 
 				TEST:{
@@ -466,19 +459,15 @@ define([
 					initializeStudentModel : true,
 
 					showNodeEditor:false,
-
-					showNodeDetails:false,
-					
 					showPopupIfComplete: true,
-					
-					highlightNextNode : true,
+
 					showExecutionEditor : true,
 					getNodeOrder: true,
 					nodeDetails: "NEWVALUE",
 					copyAuthorNodes: true,
 					setExecutionValues:true,
 					setStudentExecutionValues:true,
-					demoExecutionValues:true
+					demoExecution:true
 				},
 
 				EDITOR:{
@@ -501,17 +490,15 @@ define([
 					showNodeEditor:false,
 
 					showIncrementalEditor:true,
-					showNodeDetails:false,
 					
 					showPopupIfComplete: true,
 					getNodeOrder: true,
-					highlightNextNode : false,
 					showExecutionEditor : true,
 					nodeDetails: "NEWVALUE",
 					copyAuthorNodes: true,
 					setExecutionValues:true,
 					setStudentExecutionValues:true,
-					demoExecutionValues:true
+					demoExecution:true
 				}
 			}
 		};
@@ -582,11 +569,9 @@ define([
 				
 				//Execution Behavior
 				showExecutionEditor: false,
-				highlightNextNode : false,	
 				setExecutionValues:false,
 				setStudentExecutionValues:false,
-				demoExecutionValues:false
-
+				demoExecution:false
 			},
 
 			constructor: function(/*string*/ mode, /*string*/ activity){

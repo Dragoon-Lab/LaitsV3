@@ -339,9 +339,9 @@ define([
 			}else if(activity_config.get("setExecutionValues") && !givenModel.given.validateExecutionValues()){
 				//changes to model for execution activity
 				updateModel.calculateExecutionValues();
-				updateModel.setExecutionIteration();
-			}
 
+
+			}
 			//copy problem to student model
 			if(activity_config.get("initializeStudentModel") && !givenModel.areRequiredNodesVisible()){
 				console.log("student model being initialized");
@@ -354,9 +354,9 @@ define([
 
 				if(activity_config.get("setStudentExecutionValues")){
 					updateModel.initializeStudentExecutionValue();
+					updateModel.setExecutionIteration();
 				}
 			}
-
 			//setting the node order for demo activities
 			if(activity_config.get("getNodeOrder") && controllerObject._PM){
                 controllerObject._PM.nodeOrder = controllerObject._PM.createNodeOrder();
@@ -456,7 +456,6 @@ define([
 					if(mover.mouseButton != 2) { //check if not right click
 						controllerObject.showNodeEditor(mover.node.id);
 					}
-			
 					if(givenModel.getImageURL())
 						registry.byId('imageButton').set('disabled', false);
 					else
@@ -468,12 +467,11 @@ define([
 					}
 					controllerObject.showIncrementalEditor(mover.node.id);
 				}else if(activity_config.get("showExecutionEditor")){
-					if(activity_config.get("demoExecutionValues")){
-						//controllerObject.showIncrementalAnswer(mover.node.id);
+					if(activity_config.get("demoExecution")){
+						controllerObject.showExecutionAnswer(mover.node.id);
 					}
 					controllerObject.showExecutionMenu(mover.node.id);
 				}
-				
 			}, true);
 
 			/*
@@ -1288,10 +1286,7 @@ define([
                 //call resetNodeInc demo in con student to reset the nodes
                 controllerObject.resetNodesIncDemo();
             });
-			if(activity_config.get("demoIncremental")) {
-				controllerObject.highlightNextNode();
-			}
-			if(activity_config.get("demoExecutionValues")) {
+			if(activity_config.get("demoIncremental") || activity_config.get("demoExecution")) {
 				controllerObject.highlightNextNode();
 			}
 		});
