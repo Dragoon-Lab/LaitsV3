@@ -63,7 +63,7 @@ describe("Student mode with incorrect rabbits", function() {
     
     describe("Should incorrectly fill nodes", function(){
         afterEach(async(function(){
-            dtest.nodeEditorDone(client);
+            dtest.nodeEditorDone(client);            
         }))
 
         it("Should incorrectly fill accumulator - population", async(function(){
@@ -113,9 +113,8 @@ describe("Student mode with incorrect rabbits", function() {
             dtest.setNodeUnits(client, "years");
             dtest.setNodeUnits(client, "rabbits");
         }));
-
     });
-
+    
     describe("check lessons learned shown", function(){
         it("Should show lessons learned on graph close", async(function(){            
             dtest.popupWindowPressOk(client);
@@ -151,10 +150,9 @@ describe("Student mode with incorrect rabbits", function() {
             var lessonsLearnedText = dtest.lessonsLearnedGetText(client);
             assert(lessonsLearnedText == "" );
         }));
-    });
-    
-    after(function(done) {
-        client.end();
-        done();
-    });
+    });    
+
+    after(async(function(done){
+        dtest.endTest(client);
+    }));
 });

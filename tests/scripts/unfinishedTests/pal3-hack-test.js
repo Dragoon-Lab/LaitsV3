@@ -95,8 +95,7 @@ describe("Testing hack fix for PAL3 activities", function() {
         }));
     });
 
-    after(function(done) {
-        client.end();
-        done();
-    });
+    after(async(function(done){
+        dtest.endTest(client);
+    }));
 });

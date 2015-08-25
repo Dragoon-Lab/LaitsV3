@@ -334,8 +334,7 @@ describe("Coached mode with correct bridge rectifier capacitor", function() {
                                     ["expectedExpressionColor", "green"]], dtest, client);
         }));
     });
-    after(function(done) {
-            client.end();
-            done();
-    });
+    after(async(function(done){
+        dtest.endTest(client);
+    }));
 });

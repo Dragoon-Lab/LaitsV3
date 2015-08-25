@@ -212,8 +212,7 @@ describe("Test graph/table window:", function() {
 
     });
 
-    after(function(done) {
-        client.end();
-        done();
-    });
+    after(async(function(done){
+        dtest.endTest(client);
+    }));
 });

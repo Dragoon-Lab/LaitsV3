@@ -82,8 +82,7 @@ describe("Regression test for bug 2471", function() {
         }));
     });
 
-    after(function(done) {
-        client.end();
-        done();
-    });
+    after(async(function(done){
+        dtest.endTest(client);
+    }));
 });

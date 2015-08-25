@@ -265,6 +265,10 @@ exports.openProblem = function(client,parameters){
     //}
 }
 
+exports.endTest = function(client){
+    await(client.end(defer()));
+}
+
 //Test Functions
 exports.getHtmlOfNode = function(client, nodeName){
     var html = await(client.getHTML('#id' + findIdbyName(client, nodeName),defer()));

@@ -160,8 +160,7 @@ describe("Coached mode with correct diode resistor 2", function() {
                 "Values in the \"current (amps)\" column were incorrect. " + message);
         }));
     });
-    after(function(done) {
-            client.end();
-            done();
-    });
+    after(async(function(done){
+        dtest.endTest(client);
+    }));
 });

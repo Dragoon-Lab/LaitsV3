@@ -95,8 +95,7 @@ describe("Regression test for bug 2567", function() {
         }));
     });
 
-    after(function(done) {
-        client.end();
-        done();
-    });
+    after(async(function(done){
+        dtest.endTest(client);
+    }));
 });

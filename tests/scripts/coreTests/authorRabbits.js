@@ -257,8 +257,7 @@ describe("Test author mode", function() {
         }));
     });
 
-    after(function(done) {
-        client.end();
-        done();
-    });
+    after(async(function(done){
+        dtest.endTest(client);
+    }));
 });
