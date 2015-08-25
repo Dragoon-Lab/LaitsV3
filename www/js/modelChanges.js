@@ -218,7 +218,6 @@ define([
 			var pv = this._model.given.getPlotVariables();
 			var g = new Graph(this._model, this._mode, this._session, "table");
 			var s1 = g.findSolution(false, pv);
-
 			var nodes = this._model.given.getNodes();
 
 			if(nodes){
@@ -232,7 +231,7 @@ define([
 								if(node.type == "accumulator"){
 									j = i+1;
 								}
-								arr.push(s1.plotValues[index][j]);
+								arr.push(s1.plotValues[index][j].toPrecision(3));
 							}
 							this._model.given.setExecutionValues(node.ID, arr);
 						} else {

@@ -409,7 +409,7 @@ define([
 					
 					setExecutionValues:true,
 					setStudentExecutionValues:true,
-
+					demoExecution:true
 				},
 
 				COACHED:{
@@ -444,8 +444,7 @@ define([
 					copyAuthorNodes: true,
 					setExecutionValues:true,
 					setStudentExecutionValues:true,
-					demoExecutionValues:true
-
+					demoExecution:true
 				},
 
 				TEST:{
@@ -478,7 +477,7 @@ define([
 					copyAuthorNodes: true,
 					setExecutionValues:true,
 					setStudentExecutionValues:true,
-					demoExecutionValues:true
+					demoExecution:true
 				},
 
 				EDITOR:{
@@ -511,7 +510,7 @@ define([
 					copyAuthorNodes: true,
 					setExecutionValues:true,
 					setStudentExecutionValues:true,
-					demoExecutionValues:true
+					demoExecution:true
 				}
 			}
 		};

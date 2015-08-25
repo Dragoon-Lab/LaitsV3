@@ -580,8 +580,10 @@ define([
 			getExecutionValue: function(/* string */ id, /* number */ index){
 				var node = this.getNode(id);
 				var val = null;
-
-				if(node.executionValue && node.executionValue.length > index){
+				if(index === undefined){
+					val = node.executionValue[obj.student.getIteration()];
+				}
+				else if(node.executionValue && node.executionValue.length > index){
 					val = node.executionValue[index];
 				}
 
@@ -1280,7 +1282,12 @@ define([
 				if(index){
 					node.executionValue[index] = val;
 				} else {
-					node.executionValue.push(val);
+					var iteration = obj.student.getIteration();
+					if(iteration < node.executionValue.length){
+						node.executionValue[iteration] = val;
+					}else {
+						node.executionValue.push(val);
+					}
 				}
 			},
 			incrementAssistanceScore: function(/*string*/ id){
