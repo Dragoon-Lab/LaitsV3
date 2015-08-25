@@ -971,6 +971,7 @@ exports.lessonsLearnedClose = function(client){
     await(client.waitForVisible('#lesson > div.dijitDialogTitleBar > span.dijitDialogCloseIcon',true,defer()));
     //await(client.waitForVisible('#lesson > div.dijitDialogTitleBar > span.dijitDialogCloseIcon',6000,defer()));
     await(client.waitForVisible('#solution_underlay',10000,true,defer()));
+    await(client.waitForVisible('#lesson_underlay',10000,true,defer()));
 }
 
 exports.lessonsLearnedGetText = function(client){    

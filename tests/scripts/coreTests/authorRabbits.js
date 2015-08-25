@@ -46,7 +46,7 @@ describe("Test author mode", function() {
         it("Should create Accumulator node - population", async(function(){
             dtest.menuCreateNode(client);
             dtest.setNodeName(client, "population");
-            dtest.setKindOfQuantity(client, "in model & required");
+            //dtest.setKindOfQuantity(client, "in model & required"); // buggy, but uneccessary.
             dtest.setNodeDescription(client, "The number of rabbits in the population");
             dtest.setNodeType(client, "Accumulator");
             // 8/5/2015: Noticed that when units are set after initial value here, Dragoon
@@ -63,7 +63,7 @@ describe("Test author mode", function() {
             dtest.openEditorForNode(client, "net growth");
             dtest.waitTime(100);          
             dtest.setNodeDescription(client, "The number of additional rabbits each year");
-            dtest.setKindOfQuantity(client, "in model & required");
+            //dtest.setKindOfQuantity(client, "in model & required");
             dtest.setNodeUnits(client, "rabbits/year");
             dtest.setNodeType(client, "Function");
             dtest.setNodeExpression(client, "growth rate*population");
@@ -76,7 +76,7 @@ describe("Test author mode", function() {
             dtest.openEditorForNode(client, "growth rate");
             dtest.waitTime(100);         
             dtest.setNodeDescription(client, "The number of additional rabbits per year per rabbit");
-            dtest.setKindOfQuantity(client, "in model & required");
+            //dtest.setKindOfQuantity(client, "in model & required");
             dtest.setNodeType(client, "Parameter");
             dtest.setNodeUnits(client, "1/year");
             dtest.checkExpression(client);
