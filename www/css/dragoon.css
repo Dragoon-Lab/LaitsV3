@@ -406,7 +406,7 @@ span.slip{
 }
 
 .bubble .fa{
-    font-size:18px;
+    font-size:18px !important;
 }
 
 .crisisDialog{
@@ -414,9 +414,12 @@ span.slip{
 }
 
 .incrementalContent{
-    margin-top: 20px;
+    margin: 0px;
+    padding: 25px 0 0 15px;
 }
-
+.executionContent{
+    margin:10px 15px 0;
+}
 .incrementalButton span.dijitReset.dijitInline.dijitButtonNode{
   width:120px;
 }

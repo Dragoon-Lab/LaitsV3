@@ -497,7 +497,105 @@ define([
 			}
 		}
 	};
-
+	var executionActionTable = {
+		//Summary: Action table for incremental activity popup.
+		correct: {
+			COACHED: function(obj, part){
+				state(obj, part, "correct");
+				disable(obj, "executionVal", true);
+			},
+			feedback: function(obj, part){
+				state(obj, part, "correct");
+				disable(obj, "executionVal", true);
+			},
+			power: function(obj, part){
+				state(obj, part, "correct");
+				disable(obj, "executionVal", true);
+			},
+			TEST: function(obj, part){
+				state(obj, part, "correct");
+			},
+			EDITOR: function(obj, part){
+				state(obj, part, "correct");
+			}
+		},
+		firstFailure:{
+			COACHED: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "executionVal", false);
+			},
+			feedback: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "executionVal", false);
+			},
+			power: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "executionVal", false);
+			},
+			TEST: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "executionVal", false);
+			},
+			EDITOR: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "executionVal", false);
+			}
+		},
+		secondFailure:{
+			COACHED: function(obj, part){
+				state(obj, part, "demo");
+				disable(obj, "executionVal", true);
+			},
+			feedback: function(obj, part){
+				state(obj, part, "demo");
+				disable(obj, "executionVal", true);
+			},
+			power: function(obj, part){
+				state(obj, part, "demo");
+				disable(obj, "executionVal", true);
+			},
+			TEST: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "executionVal", false);
+			},
+			EDITOR: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "executionVal", false);
+			}
+		},
+		anotherFailure:{
+			COACHED: function(obj, part){
+				state(obj, part, "demo");
+				disable(obj, "executionVal", true);
+			},
+			feedback: function(obj, part){
+				state(obj, part, "demo");
+				disable(obj, "executionVal", true);
+			},
+			power: function(obj, part){
+				state(obj, part, "demo");
+				disable(obj, "executionVal", true);
+			},
+			TEST: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "executionVal", false);
+			},
+			EDITOR: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "executionVal", false);
+			}
+		},
+		incorrect:{
+			TEST: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "executionVal", false);
+			},
+			EDITOR: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "executionVal", false);
+			}
+		}
+	};
 	/*
 	 * Add additional tables for activities that does not use node editor.
 	 */
@@ -693,6 +791,10 @@ define([
 					break;
 				case "tweakDirection":
 					interpret(this.model.given.getTweakDirection(givenID));
+					break;
+				case "executionVal":
+					interpret(this.model.given.getExecutionValue(givenID));
+					break;
 			}
 			/* 
 			 This is an example of logging via direct function calls
@@ -834,6 +936,8 @@ define([
 					}
 				}else if(this.activityConfig.get("showIncrementalEditor")){
 					incrementalActionTable[interpretation][this.userType](returnObj, nodePart);
+				}else if(this.activityConfig.get("showExecutionEditor")){
+					executionActionTable[interpretation][this.userType](returnObj, nodePart);
 				}
 				currentStatus = this.model.given.getStatus(givenID, nodePart); //get current status set in given model
 				if (currentStatus !== "correct" && currentStatus !== "demo") {
