@@ -397,12 +397,8 @@ define([
 					initializeStudentModel : true,
 
 					showNodeEditor:false,
-					
-					showNodeDetails:false,
-					copyAuthorNodes: true,
 					showPopupIfComplete: true,
-					demoExecutionValues : true,
-					highlightNextNode : false,
+					copyAuthorNodes: true,
 					showExecutionEditor : true,
 					getNodeOrder: true,
 					nodeDetails: "NEWVALUE",
@@ -433,11 +429,9 @@ define([
 					initializeStudentModel : true,
 
 					showNodeEditor:false,
-					showNodeDetails:false,
 					
 					showPopupIfComplete: true,
-					
-					highlightNextNode : true,
+
 					showExecutionEditor : true,
 					getNodeOrder: true,
 					nodeDetails: "NEWVALUE",
@@ -465,12 +459,8 @@ define([
 					initializeStudentModel : true,
 
 					showNodeEditor:false,
-
-					showNodeDetails:false,
-					
 					showPopupIfComplete: true,
-					
-					highlightNextNode : true,
+
 					showExecutionEditor : true,
 					getNodeOrder: true,
 					nodeDetails: "NEWVALUE",
@@ -500,11 +490,9 @@ define([
 					showNodeEditor:false,
 
 					showIncrementalEditor:true,
-					showNodeDetails:false,
 					
 					showPopupIfComplete: true,
 					getNodeOrder: true,
-					highlightNextNode : false,
 					showExecutionEditor : true,
 					nodeDetails: "NEWVALUE",
 					copyAuthorNodes: true,
@@ -581,11 +569,9 @@ define([
 				
 				//Execution Behavior
 				showExecutionEditor: false,
-				highlightNextNode : false,	
 				setExecutionValues:false,
 				setStudentExecutionValues:false,
-				demoExecutionValues:false
-
+				demoExecution:false
 			},
 
 			constructor: function(/*string*/ mode, /*string*/ activity){
