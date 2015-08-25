@@ -953,6 +953,7 @@
         // Summary: closes the save as window    
         await(client.click("#authorSaveDialog > div.dijitDialogTitleBar > span.dijitDialogCloseIcon",
                 defer()));
+        await(client.waitForVisible('#authorSaveDialog_underlay',1000,true,defer()));
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
