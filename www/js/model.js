@@ -354,7 +354,7 @@ define([
 					this.model.task.taskDescription = {};
 					this.model.task.taskDescription["construction"] = desc;
 				}
-				activityType = (activityType) ? activityType : "construction";
+				activityType = (activityType && this.model.task.taskDescription[activityType]) ? activityType : "construction";
 				return this.model.task.taskDescription[activityType];
 			},
 			getTaskLessonsLearned : function() {
