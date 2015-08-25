@@ -31,8 +31,8 @@
     var await = sync.await;  // Wrap this around asynchronous functions. Returns 2nd arg to callback
     var defer = sync.defer;  // Pass this as the callback function to asynchronous functions
     var testPath = require('./test-paths.js');
-    var MAX_NODE_IDS = 200; // The maximum number of node IDs we'll support
-    var lastCounter = 0;
+    var MAX_DROPDOWN_IDS = 200; // The maximum number of dropdown IDs we'll support
+    var lastDropdownID = 0;  // Tracks the last dropdown ID.  Should be reset to 0 for every new session
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     // Utility functions (used within the API)
@@ -62,7 +62,7 @@
         var counter = 1;
         var result = null;
         var text = "";
-        while(notFound && counter < MAX_NODE_IDS)
+        while(notFound && counter < MAX_DROPDOWN_IDS)
         {
             try{
                 text = await(client.getText('#id' + counter,defer()));
@@ -80,11 +80,13 @@
     }
 
     function findDropDownByName(client, name){
+        //console.log("Starting findDropdown: "+name);
         var notFound = true;
-        var counter = lastCounter;
+        var counter = lastDropdownID;
         var result = null;
         var text = "";
-        while(notFound && counter < MAX_NODE_IDS)
+        //console.log("start count: "+counter);
+        while(notFound && counter < MAX_DROPDOWN_IDS)
         {
             try{
                 text = await(client.getText('#dijit_MenuItem_' + counter,defer()));
@@ -96,7 +98,11 @@
             }
             counter++;
         }
-        lastCounter = result-5;
+        //console.log("result: "+result);
+        lastDropdownID = result-5;
+        if(result == null){
+            throw new Error("Could not find dropdown item: "+name);
+        }
         return result;
     }
 
@@ -118,7 +124,7 @@
     function wait(milliseconds)
     {
         if(typeof milliseconds === "undefined"){
-            throw new Error("wait received undefined wait time");
+            throw new Error("Wait received undefined wait time.");
         }
         var start = new Date().getTime();
         //console.log("starting wait for "+milliseconds+" at: "+start);
@@ -206,7 +212,7 @@
     // 1. Problem functions
 
     // Open a problem
-    exports.openProblem = function(client,parameters){
+    exports.openProblem = function(client,parameters){        
         // parameters should be an associative array of arguments corresponding to the values needed to
         // build the URL
         var paramMap = convertArrayToMap(parameters);
@@ -248,6 +254,9 @@
         var url = urlRoot + '?' + user + section + problem + mode + nodeEditorMode + group + logging + activity +
                   "&c=Continue";
         
+        // Reset the dropdown counter:
+        lastDropdownID = 0;
+
         //if(await(client.session(defer())) === undefined){
         await(client.init(defer()));
         await(client.url(url,defer()));
@@ -281,6 +290,9 @@
 
     exports.refresh = function(client)
     {
+        // Reset the dropdown counter:
+        lastDropdownID = 0;
+
         await(client.refresh(defer()));
         //var url = await(client.url(defer()));
         //await(client.window());
@@ -292,6 +304,8 @@
         var url = await(client.url(defer()));
         console.log(url.value);
         client.end();
+        // Reset the dropdown counter:
+        lastDropdownID = 0;
         await(newClient.init().url(url.value,defer()));
     }
 
@@ -304,6 +318,9 @@
     }
 
     exports.switchTab = function(client,tabId){
+        // Reset the dropdown counter:
+        lastDropdownID = 0;
+
         await(client.switchTab(tabId,defer()));
     }
 
