@@ -139,15 +139,15 @@ function getUrlRoot()
     var testTarget = testPath.getTestTarget();
     if(testTarget === "devel")
     {
-        return 'http://dragoon.asu.edu/devel/index.html'
+        return 'https://dragoon.asu.edu/devel/index.html'
     }
     else if(testTarget === "demo")
     {
-        return 'http://dragoon.asu.edu/demo/index.html'
+        return 'https://dragoon.asu.edu/demo/index.html'
     }
     else if(testTarget === "pal3")
     {
-        return 'http://dragoon.asu.edu/PAL3/index.html'
+        return 'https://dragoon.asu.edu/PAL3/index.html'
     }
     else if(testTarget === "local")
     {
@@ -218,7 +218,6 @@ exports.openProblem = function(client,parameters){
     var paramMap = convertArrayToMap(parameters);
 
     // required params
-    //var urlRoot = 'http://dragoon.asu.edu/devel/index.html';
     var urlRoot = getUrlRoot();
     var user = "u="+(paramMap["user"] || getDate()); // defaults to the current date
     var problem = "&p=" + (paramMap["problem"] || getDate());

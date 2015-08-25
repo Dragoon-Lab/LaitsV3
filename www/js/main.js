@@ -111,10 +111,15 @@ define([
 				query.a = "construction";
 			}
 		}
-	}
+	}	
 
 	//Load Activity Parameters
 	//query.a gives the input activity through url
+	// If query.a is missing, warn and then default to construction
+	if (typeof query.a == 'undefined'){
+		console.warn("The activity URL parameter is undefined. Loading construction activity by default.");
+		query.a = "construction";
+	}
 	var activity_config;
 	try{		
 		activity_config = new activityParameters(query.m, query.a);
@@ -1056,7 +1061,7 @@ define([
 					// "newwindow": the pop-out window name, not required, could be empty
 					// "height" and "width": pop-out window size
 					// Other properties could be changed as the value of yes or no
-					window.open("http://dragoon.asu.edu","newwindow",
+					window.open("https://dragoon.asu.edu","newwindow",
 						"toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
 					);
 				});

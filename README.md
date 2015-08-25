@@ -1,6 +1,6 @@
 ## Dragoon documentation ##
 
-The [Dragoon website](http://dragoon.asu.edu) includes
+The [Dragoon website](https://dragoon.asu.edu) includes
 background information, access to the tutor system and a
 tutorial to get you started using Dragoon.
 

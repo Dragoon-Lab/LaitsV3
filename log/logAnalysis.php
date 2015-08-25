@@ -296,7 +296,7 @@ Class AnalyzeLogs{
 				$oldName = " ";
 				while($author = $authorResult->fetch_assoc()){
 					$newName = $author['author'];
-					$jnlpAuthorURL = "http://dragoon.asu.edu/devel/startup.php?section=".$section[$i]."&amp;problem_id=".$author['problemName']."&amp;mode=AUTHOR&amp;username=".$newName;
+					$jnlpAuthorURL = "https://dragoon.asu.edu/devel/startup.php?section=".$section[$i]."&amp;problem_id=".$author['problemName']."&amp;mode=AUTHOR&amp;username=".$newName;
 					echo "  <tr>";
 						if($newName == $oldName){
 							echo "<td></td>";
@@ -322,7 +322,7 @@ Class AnalyzeLogs{
 				while($student = $studentResult->fetch_assoc()){
 					$newStudentName = $student['id'];
 					$problemNumber = $student['problemNum'];
-					$jnlpStudentURL = "http://dragoon.asu.edu/devel/startup.php?section=".$section[$i]."&amp;problem_id=".$problemNumber."&amp;mode=STUDENT&amp;username=".$newStudentName;
+					$jnlpStudentURL = "https://dragoon.asu.edu/devel/startup.php?section=".$section[$i]."&amp;problem_id=".$problemNumber."&amp;mode=STUDENT&amp;username=".$newStudentName;
 					echo "  <tr>";
 						if($newStudentName == $oldStudentName){
 							echo "<td> </td>";
