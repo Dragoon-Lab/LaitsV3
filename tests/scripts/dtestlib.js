@@ -601,23 +601,23 @@ exports.setNodeDescription = function(client, description){
     if(await(client.isVisible('#selectDescription',defer())))
     {
         selectDropdownValue(client,"#selectDescription",description);
-        /*await(client.click('#selectDescription',defer()));
-        //await(client.click('#selectDescription',defer()));
-        await(client.waitForVisible('#selectDescription_menu',defer()));
-        var number = findDropDownByName(client, description);
-        if(number != null)
-        {
-            await(client.click('#dijit_MenuItem_' + number,defer()));
-        }
-        else
-        {
-            await(client.click('#selectDescription',defer()));
-        }*/
     }
     else
     {
         await(client.setValue('#setDescription', description,defer()));
     }
+}
+
+//////////////////////////////////////////////////
+// Node Explanation
+
+exports.nodeEditorOpenExplanation = function (client){
+    await(client.click('#explanationButton',defer()));
+}
+
+exports.closeExplanation = function (client){
+    await(client.click("#dijit_Dialog_0 > div.dijitDialogTitleBar > span.dijitDialogCloseIcon",defer()));
+    await(client.waitForVisible('#dijit_DialogUnderlay_0',1000,true,defer()));
 }
 
 //////////////////////////////////////////////////
@@ -824,6 +824,20 @@ exports.openNodeForum = function(client){
 }
 
 //////////////////////////////////////////////////
+// Image Highlighting
+
+exports.nodeEditorOpenImageHighlighting = function (client){
+    await(client.click('#imageButton',defer()));
+}
+
+exports.closeImageHighlighting = function (client){
+    await(client.click("#markImageBox > div.dijitDialogTitleBar > span.dijitDialogCloseIcon",defer()));
+    await(client.waitForVisible('#dijit_DialogUnderlay_0',1000,true,defer()));
+}
+
+
+
+//////////////////////////////////////////////////
 // Exiting the node editor
 
 exports.nodeEditorDone = function(client){
@@ -929,6 +943,10 @@ exports.closeGraphAndTableWindow = function(client){
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 6.  Problem & Times window functions
+
+exports.setProblemImageURL = function(client,url){
+    await(client.setValue('#authorSetImage',url,defer()));
+}
 
 exports.pressCheckProblemButton = function(client){
     // Summary: clicks the "Check Problem" button
