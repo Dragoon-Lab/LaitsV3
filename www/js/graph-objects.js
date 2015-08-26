@@ -71,7 +71,7 @@ define([
 					nodeName = '<div id=' + nodeId + 'Label  class="bubble"><div class="' + type + 'Wrapper"><strong>' + parameter + '<br>' + initialValue + '</strong></div><div class=' + type + 'Div><strong>' + nodeName + '</strong></div></div>';
 					console.log(nodeName);
 				} else {
-					nodeName = '<p class="triangleContent">Click Me!</p>';
+					nodeName = '<p class="triangleContent">Click here!</p>';
 				}
 			}else if(showDetails === "DIRECTION"){
 				var dir = model.getTweakDirection(nodeId) == ""? "Empty": model.getTweakDirection(nodeId);
