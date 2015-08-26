@@ -565,15 +565,17 @@ define(["dojo/aspect",
 						around: dom.byId(id)
 					});
 
+
 					this._incrementalMenu.onBlur = lang.hitch(this, function () {
 						this.closeIncrementalMenu();
-						if(this.activityConfig.get("demoIncremental")) {
-							console.log("can show done popup called inside inc demo");
-							if(!this.shownDone){
-								this.canShowDonePopup();
-							}
-						}
 					});
+
+					if(this.activityConfig.get("demoIncremental")) {
+						console.log("can show done popup called inside inc demo");
+						if(!this.shownDone){
+							this.canShowDonePopup();
+						}
+					}
 				}
 			}
 		},
