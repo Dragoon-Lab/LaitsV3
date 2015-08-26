@@ -23,7 +23,7 @@ var sync = require('synchronize');
 // import wrapper for asynchronous functions
 var async = sync.asyncIt;
 
-describe("Student mode incremental rabbits", function() {
+describe("Incremental Demo Rabbits (student mode)", function() {
 
     before(async(function (done) {
             dtest.openProblem(client,[["problem","rabbits"],["mode","STUDENT"],
@@ -33,14 +33,12 @@ describe("Student mode incremental rabbits", function() {
 
     it("Should click the first node", async(function(){
         dtest.openEditorForNode(client, "net growth");
-        atest.checkNodeValue(dtest.getNodeBorderColor(client,"population"),"green","population");
-        atest.checkNodeValue(dtest.getNodeFillColor(client,"population"),"green","population");        
+        atest.checkNodeValue(dtest.getNodeBorderColor(client,"net growth"),"green","net growth border");
     }));
 
     it("Should click the second node", async(function(){
         dtest.openEditorForNode(client, "population");
-        atest.checkNodeValue(dtest.getNodeBorderColor(client,"population"),"green","population");
-        atest.checkNodeValue(dtest.getNodeFillColor(client,"population"),"green","population");        
+        atest.checkNodeValue(dtest.getNodeBorderColor(client,"population"),"green","population border");
     }));
 
     it("Should display and close the done message", async(function(){

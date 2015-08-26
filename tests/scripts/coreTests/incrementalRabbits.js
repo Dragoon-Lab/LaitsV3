@@ -23,7 +23,7 @@ var sync = require('synchronize');
 // import wrapper for asynchronous functions
 var async = sync.asyncIt;
 
-describe("Student mode incremental rabbits", function() {
+describe("Incremental Rabbits (student mode)", function() {
 
     before(async(function (done) {
             dtest.openProblem(client,[["problem","rabbits"],["mode","STUDENT"],
@@ -35,22 +35,22 @@ describe("Student mode incremental rabbits", function() {
     it("Should get the first node wrong and turn red", async(function(){
         dtest.openEditorForNode(client, "net growth");
         dtest.clickIncrementalDecrease(client);
-        atest.checkNodeValue(dtest.getNodeBorderColor(client,"net growth"),"red","net growth");
-        atest.checkNodeValue(dtest.getNodeFillColor(client,"net growth"),"white","net growth");
+        atest.checkNodeValue(dtest.getNodeBorderColor(client,"net growth"),"red","net growth border");
+        atest.checkNodeValue(dtest.getNodeFillColor(client,"net growth"),"white","net growth fill");
     }));
 
     it("Should get the first node wrong again and turn yellow", async(function(){
         dtest.openEditorForNode(client, "net growth");
         dtest.clickIncrementalUnknown(client);
-        atest.checkNodeValue(dtest.getNodeBorderColor(client,"net growth"),"yellow","net growth");
-        atest.checkNodeValue(dtest.getNodeFillColor(client,"net growth"),"white","net growth");
+        atest.checkNodeValue(dtest.getNodeBorderColor(client,"net growth"),"yellow","net growth border");
+        atest.checkNodeValue(dtest.getNodeFillColor(client,"net growth"),"white","net growth fill");
     }));
     // get second node right
     it("Should get the second node right and turn green", async(function(){
         dtest.openEditorForNode(client, "population");
         dtest.clickIncrementalIncrease(client);
-        atest.checkNodeValue(dtest.getNodeBorderColor(client,"population"),"green","population");
-        atest.checkNodeValue(dtest.getNodeFillColor(client,"population"),"green","population");
+        atest.checkNodeValue(dtest.getNodeBorderColor(client,"population"),"green","population border");
+        atest.checkNodeValue(dtest.getNodeFillColor(client,"population"),"green","population fill");
     }));
 
     // close done window
