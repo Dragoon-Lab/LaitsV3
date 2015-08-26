@@ -1230,6 +1230,22 @@ define([
 				}
 		
 				checkForHint();
+				if(query.a==="construction"){
+					// Create the root nodes for the user when the problem loads
+					console.log("creating the root node:")
+					var studentNodes = givenModel.active.getNodes();
+					var currentNodes=[]; 
+					array.forEach(studentNodes,function(node){
+						currentNodes.push(node.descriptionID);
+					});
+					var id = givenModel.active.addNode();				
+					givenModel.student.setDescriptionID(id, rootNode.ID);
+					givenModel.student.setStatus(id, "description", {"disabled": false, "status": "correct"});
+					givenModel.student.setStatus(id, "type", {"disabled": false});
+	
+					if (currentNodes.indexOf(rootNode.ID)<0) 
+						drawModel.addNode(givenModel.active.getNode(id));
+				}				
 				aspect.after(drawModel, "deleteNode", lang.hitch(this, checkForHint));
 				aspect.after(registry.byId("nodeeditor"), "hide", lang.hitch(this, checkForHint));
 			}
