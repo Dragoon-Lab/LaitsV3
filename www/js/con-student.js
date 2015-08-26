@@ -714,10 +714,6 @@ define(["dojo/aspect",
 					var node = dom.byId(nextID);
 					domClass.add(node, "glowNode");
 					this.currentHighLight = nextID;
-					return true;
-				}
-				else{
-					return false;
 				}
 				return;
 			}
@@ -750,7 +746,13 @@ define(["dojo/aspect",
 
 		resetNodesIncDemo: function(){
 			var studId = this._model.active.getNodes();
+			var nowHighLighted = this.currentHighLight;
 			studId.forEach(lang.hitch(this, function (newId) {
+				//remove the glow for current highlighted node as a part of reset
+				if(newId.ID === nowHighLighted) {
+					var noHighlight = dom.byId(newId.ID);
+					domClass.remove(noHighlight, "glowNode");
+				}
 				if(newId.type!=="parameter"){
 					//set tweak direction to null and status none
 					this._model.active.setTweakDirection(newId.ID,null);
@@ -761,6 +763,9 @@ define(["dojo/aspect",
 				}
 			}));
 			//highlight next (should be the first) node in the list
+			console.log("highlighting after reset called");
+			//reset the node counter to 0 before highlighting
+			this._PM.nodeCounter = 0;
 			this.highlightNextNode();
 		},
 
