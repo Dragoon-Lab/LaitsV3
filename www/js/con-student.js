@@ -769,6 +769,7 @@ define(["dojo/aspect",
 			//reset the node counter to 0 before highlighting
 			this._PM.nodeCounter = 0;
 			this.highlightNextNode();
+			this.shownDone = false;
 		},
 
 		/*
