@@ -406,6 +406,11 @@ exports.menuOpenHelpMathFunctions = function(client){
     await(client.click('#menuMathFunctions',defer()));
 }
 
+exports.menuReset = function(client){
+    await(client.waitForVisible('#resetButton',defer()));
+    await(client.click('#resetButton',defer()));
+}
+
 exports.menuOpenLessonsLearned = function(client){
     await(client.waitForVisible('#lessonsLearnedButton',defer()));
     await(client.click('#lessonsLearnedButton',defer()));
