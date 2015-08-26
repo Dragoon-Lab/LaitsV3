@@ -447,6 +447,12 @@ define(["dojo/aspect",
 
 					this._incrementalMenu.onBlur = lang.hitch(this, function () {
 						this.closeIncrementalMenu();
+						if(this.activityConfig.get("demoIncremental")) {
+							console.log("can show done popup called inside inc demo");
+							if(!this.shownDone){
+								this.canShowDonePopup();
+							}
+						}
 					});
 				}
 			}
@@ -599,7 +605,6 @@ define(["dojo/aspect",
 				}
 				//close popup each time
 				popup.close(problemDoneHint);
-
 				var problemDoneHint = new tooltipDialog({
 					style: "width: 300px;",
 					content: '<p>You have completed this activity. Click "Done" when you are ready to save and submit your work.</p>' +
@@ -614,10 +619,12 @@ define(["dojo/aspect",
 						popup.close(problemDoneHint);
 					}
 				});
-				popup.open({
+				var res=popup.open({
 					popup: problemDoneHint,
 					around: dom.byId('doneButton')
 				});
+				this.shownDone = true;
+				console.log("popup is",res);
 			}
 		},
 
@@ -629,6 +636,10 @@ define(["dojo/aspect",
 					var node = dom.byId(nextID);
 					domClass.add(node, "glowNode");
 					this.currentHighLight = nextID;
+					return true;
+				}
+				else{
+					return false;
 				}
 			}
 		},
