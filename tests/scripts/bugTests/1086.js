@@ -82,8 +82,7 @@ describe("Regression test for trello card #1086", function() {
         }));
     });
 
-    after(function(done) {
-        client.end();
-        done();
-    });
+    after(async(function(done){
+        dtest.endTest(client);
+    }));
 });

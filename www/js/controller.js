@@ -180,6 +180,27 @@ define([
 				crisis.hide();
 			});
 		},
+		_setStatus : function(value){
+			var colorMap = {
+				correct: "lightGreen",
+				incorrect: "#FF8080",
+				demo: "yellow",
+				premature: "lightBlue",
+				entered: "#2EFEF7"
+			};
+			if(value && !colorMap[value]){
+				this.logging.clientLog("assert", {
+					message: 'Invalid color specification, color value : '+value,
+					functionTag: 'setStatus'
+				});
+			}
+			/* BvdS:  I chose bgColor because it was easy to do
+			 Might instead/also change text color?
+			 Previously, just set domNode.bgcolor but this approach didn't work
+			 for text boxes.   */
+			// console.log(">>>>>>>>>>>>> setting color ", this.domNode.id, " to ", value);
+			domStyle.set(this.domNode, 'backgroundColor', value ? colorMap[value] : '');
+		},
 
 		_setUpNodeEditor: function(){
 			// get Node Editor widget from tree
@@ -231,31 +252,11 @@ define([
 			 When "status" attribute is changed, then this function
 			 is called.
 			 */
-			var setStatus = function(value){
-				var colorMap = {
-					correct: "lightGreen",
-					incorrect: "#FF8080",
-					demo: "yellow",
-					premature: "lightBlue",
-					entered: "#2EFEF7"
-				};
-				if(value && !colorMap[value]){
-					this.logging.clientLog("assert", {
-						message: 'Invalid color specification, color value : '+value,
-						functionTag: 'setStatus'
-					});
-				}
-				/* BvdS:  I chose bgColor because it was easy to do
-				 Might instead/also change text color?
-				 Previously, just set domNode.bgcolor but this approach didn't work
-				 for text boxes.   */
-				// console.log(">>>>>>>>>>>>> setting color ", this.domNode.id, " to ", value);
-				domStyle.set(this.domNode, 'backgroundColor', value ? colorMap[value] : '');
-			};
+
 			if(this.activityConfig.get("showFeedback")){
 				for(var control in this.controlMap){
 					var w = registry.byId(this.controlMap[control]);
-					w._setStatusAttr = setStatus;
+					w._setStatusAttr = this._setStatus;
 				}
 				/*
 				 * If the status is set for equationBox, we also need to set
@@ -264,7 +265,7 @@ define([
 				 * Adding a watch method to the equationBox didn't work.
 				 */
 				aspect.after(registry.byId(this.controlMap.equation), "_setStatusAttr",
-					lang.hitch({domNode: dom.byId("equationText")}, setStatus),
+					lang.hitch({domNode: dom.byId("equationText")}, this._setStatus),
 					true);
 			}
 
@@ -603,6 +604,14 @@ define([
 			}
 		},
 
+		updateExecutionValue: function(executionVal){
+			if(typeof executionVal !== 'undefined' && executionVal != null){
+				this._model.active.setExecutionValue(this.currentID, executionVal);
+				this.updateNodeLabel(this.currentID);
+				registry.byId("executionValue").set("value", executionVal);
+			}
+		},
+
 		updateDescription: function(descID){
 			console.log("===========>	changing node description to " + descID);
 			if(typeof descID !== 'undefined' && descID != null){
@@ -642,7 +651,7 @@ define([
 			this._model.active.setType(this.currentID, type);
 			this.updateEquationLabels();
 
-			var nodeName = graphObjects.getNodeName(this._model.active,this.currentID,type);
+			var nodeName = graphObjects.getNodeName(this._model.active,this.currentID, this.activityConfig.get("nodeDetails"), type);
 			if(nodeName != ''){
 				if(dom.byId(this.currentID + 'Label'))
 					domConstruct.place(nodeName, this.currentID + 'Label', "replace");
@@ -1224,6 +1233,13 @@ define([
 				}else if(directive.id == "tweakDirection"){
 					if (directive.attribute == 'value') {
 						this.updateTweakDirection(directive.value);
+					}
+				}else if(directive.id == "executionVal"){
+					if (directive.attribute == 'value') {
+						this.updateExecutionValue(directive.value);
+					}else{
+						var w = registry.byId("executionValue");
+						w.set(directive.attribute, directive.value);
 					}
 				}
 				else{

@@ -80,8 +80,7 @@ describe("Schema preview bug", function() {
         })); 
     });
 
-    after(function(done) {
-        client.end();
-        done();
-    });
+    after(async(function(done){
+        dtest.endTest(client);
+    }));
 });

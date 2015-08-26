@@ -57,12 +57,13 @@ define([
 	"./ui-parameter",
 	"dijit/Dialog",
 	"./image-box",
-	"./modelChanges"
+	"./modelChanges",
+	"./ETConnector"
 ], function(
 	array, lang, dom, geometry, style, domClass, on, aspect, ioQuery, ready, registry, toolTip, tooltipDialog, popup,
 	menu, loadSave, model, Graph, controlStudent, controlAuthor, drawmodel, logging, equation,
 	description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan,
-	activityParameters, memory, event, UI, Dialog, ImageBox, modelUpdates){
+	activityParameters, memory, event, UI, Dialog, ImageBox, modelUpdates, ETConnector){
 
 	/*  Summary:
 	 *			Menu controller
@@ -110,10 +111,15 @@ define([
 				query.a = "construction";
 			}
 		}
-	}
+	}	
 
 	//Load Activity Parameters
 	//query.a gives the input activity through url
+	// If query.a is missing, warn and then default to construction
+	if (typeof query.a == 'undefined'){
+		console.warn("The activity URL parameter is undefined. Loading construction activity by default.");
+		query.a = "construction";
+	}
 	var activity_config;
 	try{		
 		activity_config = new activityParameters(query.m, query.a);
@@ -121,7 +127,10 @@ define([
 	}catch(error){
 		throw Error("problem in creating activity configurations");
 	}
-
+	if(activity_config && query.s === "ElectronixTutor"){
+		activity_config["ElectronixTutor"] = true;
+	}
+	
 	// Start up new session and get model object from server
 	try {
 		var session = new loadSave(query);
@@ -295,13 +304,13 @@ define([
 			//Set Tab title
 			var taskString = givenModel.getTaskName();
 			document.title ="Dragoon" + ((taskString) ? " - " + taskString : "");
-
+			
 			//This array is used later to called the setSelected function for all the buttons in the menu bar
 			//moved this at the start so that the buttons flicker at the start rather than at the end.
 			var menuButtons=[];
 			menuButtons.push("createNodeButton","graphButton","tableButton","forumButton",
 				"schemaButton","descButton","saveButton","mergeButton",
-				"previewButton","slidesButton","lessonsLearnedButton","resetButton","doneButton", "prettifyButton");
+				"previewButton","slidesButton","lessonsLearnedButton","resetButton","doneButton", "prettifyButton", "imageButton");
 
 			array.forEach(menuButtons, function(button){
 				//setting display for each menu button
@@ -325,24 +334,36 @@ define([
 				errorMessage.show();
 				throw Error("problem does not have tweaked nodes");
 			}else if(activity_config.get("setTweakDirections") && !givenModel.given.validateTweakDirections()){
+				//changes to model for incremental activity
 				updateModel.calculateTweakDirections();
-			}
+			}else if(activity_config.get("setExecutionValues") && !givenModel.given.validateExecutionValues()){
+				//changes to model for execution activity
+				updateModel.calculateExecutionValues();
 
+
+			}
 			//copy problem to student model
 			if(activity_config.get("initializeStudentModel") && !givenModel.areRequiredNodesVisible()){
 				console.log("student model being initialized");
-				updateModel.initializeStudentModel(activity_config.get("setStudentTweakDirection"));
-			}
+				updateModel.initializeStudentModel(activity_config.get("copyFields"));
 
+				//sets student values for parameters.
+				if(activity_config.get("setStudentTweakDirection")){
+					updateModel.initializeStudentTweakDirection();
+				}
+
+				if(activity_config.get("setStudentExecutionValues")){
+					updateModel.initializeStudentExecutionValue();
+					updateModel.setExecutionIteration();
+				}
+			}
 			//setting the node order for demo activities
 			if(activity_config.get("getNodeOrder") && controllerObject._PM){
                 controllerObject._PM.nodeOrder = controllerObject._PM.createNodeOrder();
 				controllerObject._PM.setNodeCounter();
             }
 
-			//configuring DOM UI
-			style.set(registry.byId('imageButton').domNode, "display", "none");
-
+			
 			// update the menu bar based on model state
 			if(query.m != "AUTHOR") {
 				if(givenModel.getLessonLearnedShown())
@@ -365,7 +386,15 @@ define([
 				}
 				dojo.xhrGet(xhrArgs);
 			}
-
+			// setting environment for loading dragoon inside ET
+			
+			var etConnect = null;
+			if(activity_config["ElectronixTutor"]) {
+				
+				etConnect = new ETConnector();
+				etConnect.startService();
+				
+			}
 			var drawModel = new drawmodel(givenModel.active, ui_config.get("showColor"), activity_config);
 			drawModel.setLogging(session);
 			
@@ -425,7 +454,6 @@ define([
 					if(mover.mouseButton != 2) { //check if not right click
 						controllerObject.showNodeEditor(mover.node.id);
 					}
-			
 					if(givenModel.getImageURL())
 						registry.byId('imageButton').set('disabled', false);
 					else
@@ -438,7 +466,7 @@ define([
 					controllerObject.showIncrementalEditor(mover.node.id);
 				}else if(activity_config.get("showExecutionEditor")){
 					if(activity_config.get("demoExecution")){
-						//controllerObject.showIncrementalAnswer(mover.node.id);
+						controllerObject.showExecutionAnswer(mover.node.id);
 					}
 					controllerObject.showExecutionMenu(mover.node.id);
 				}
@@ -729,13 +757,15 @@ define([
 					//activity names and menu Ids should be same
 					var activities = activity_config.getAllActivitesNames();
 					array.forEach(activities, function(activity){
-						on(registry.byId("menu_"+activity),"click",function() {
-							var timestamp = new Date().getTime();
-							var url = document.URL.replace("u="+query.u,"u="+query.u+"-"+timestamp);
-							url=url+"&l=false";
-							url = url.replace("a="+query.a, "a="+ activity);
-							window.open(url.replace("m=AUTHOR","m=STUDENT"),"newwindow");
-						});
+						if(registry.byId("menu_"+activity)) {
+							on(registry.byId("menu_" + activity), "click", function () {
+								var timestamp = new Date().getTime();
+								var url = document.URL.replace("u=" + query.u, "u=" + query.u + "-" + timestamp);
+								url = url + "&l=false";
+								url = url.replace("a=" + query.a, "a=" + activity);
+								window.open(url.replace("m=AUTHOR", "m=STUDENT"), "newwindow");
+							});
+						}
 					});
 				}
 				else{
@@ -1027,7 +1057,7 @@ define([
 					// "newwindow": the pop-out window name, not required, could be empty
 					// "height" and "width": pop-out window size
 					// Other properties could be changed as the value of yes or no
-					window.open("http://dragoon.asu.edu","newwindow",
+					window.open("https://dragoon.asu.edu","newwindow",
 						"toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
 					);
 				});
@@ -1236,6 +1266,11 @@ define([
 					//Send Statements
 					tc.sendStatements();
 				}
+				if(activity_config["ElectronixTutor"] && etConnect){
+					var score = controllerObject._assessment.getSuccessFactor();
+					etConnect.sendScore(score);
+					console.log("sending score(successfactor):", score);
+				}
 			});
 
 			menu.add("prettifyButton", function(e){
@@ -1249,7 +1284,7 @@ define([
                 //call resetNodeInc demo in con student to reset the nodes
                 controllerObject.resetNodesIncDemo();
             });
-			if(activity_config.get("demoIncremental")) {
+			if(activity_config.get("demoIncremental") || activity_config.get("demoExecution")) {
 				controllerObject.highlightNextNode();
 			}
 		});

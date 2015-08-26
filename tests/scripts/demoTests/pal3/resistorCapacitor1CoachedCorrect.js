@@ -239,8 +239,7 @@ describe("Coached mode with correct resistor capacitor 1", function() {
                 "Values in the \"Voltage across capacitor (volts)\" column were incorrect. " + message);
         }));
     });
-    after(function(done) {
-            client.end();
-            done();
-    });
+    after(async(function(done){
+        dtest.endTest(client);
+    }));
 });

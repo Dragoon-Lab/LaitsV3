@@ -285,8 +285,7 @@ describe("Coached mode with correct static zener diode regulator", function() {
                 "Values in the \"Current (amps)\" column were incorrect. " + message);
         }));
     });
-    after(function(done) {
-            client.end();
-            done();
-    });
+    after(async(function(done){
+        dtest.endTest(client);
+    }));
 });

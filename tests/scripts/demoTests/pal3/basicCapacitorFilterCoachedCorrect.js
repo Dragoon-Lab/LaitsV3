@@ -266,8 +266,7 @@ describe("Coached mode with correct basic capacitor filter", function() {
             
         }));
     });
-    after(function(done) {
-            client.end();
-            done();
-    });
+    after(async(function(done){
+        dtest.endTest(client);
+    }));
 });

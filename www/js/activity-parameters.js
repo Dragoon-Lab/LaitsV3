@@ -149,6 +149,13 @@ define([
 					showCorrectAnswer:true,
 
 					initializeStudentModel : true,
+					copyFields: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation"
+					],
 
 					showNodeEditor:false,
 					showIncrementalEditor:true,
@@ -171,6 +178,13 @@ define([
 					showCorrectAnswer:true,
 
 					initializeStudentModel : true,
+					copyFields: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation"
+					],
 
 					showNodeEditor:false,
 					showIncrementalEditor:true,
@@ -190,6 +204,13 @@ define([
 					showFeedback: true,
 
 					initializeStudentModel : true,
+					copyFields: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation"
+					],
 
 					showNodeEditor:false,
 					showIncrementalEditor:true,
@@ -209,6 +230,13 @@ define([
 					showFeedback: true,
 
 					initializeStudentModel : true,
+					copyFields: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation"
+					],
 
 					showNodeEditor:false,
 					showIncrementalEditor:true,
@@ -223,100 +251,128 @@ define([
 			incrementalDemo: {
 				STUDENT:{
 					allowPrettify:true,
-						allowHelp: true,
-						allowLessonsLearned:true,
+					allowHelp: true,
+					allowLessonsLearned:true,
 
-						allowEditNode:true,
+					allowEditNode:true,
 
-						showHints: true,
-						showFeedback: true,
-						showCorrectAnswer:true,
+					showHints: true,
+					showFeedback: true,
+					showCorrectAnswer:true,
 
-						initializeStudentModel : true,
+					initializeStudentModel : true,
+					copyFields: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation"
+					],
 
-						showNodeEditor:false,
-						showIncrementalEditor:true,
-						nodeDetails: "DIRECTION",
-						copyAuthorNodes: true,
-						setTweakDirections: true,
-						setStudentTweakDirections: true,
-						useTweakStatus: true,
-						demoIncremental:true,
-						showPopupIfComplete: true,
-						getNodeOrder: true,
-						useTweakedNodeForOrdering: true
+					showNodeEditor:false,
+					showIncrementalEditor:true,
+					nodeDetails: "DIRECTION",
+					copyAuthorNodes: true,
+					setTweakDirections: true,
+					setStudentTweakDirections: true,
+					useTweakStatus: true,
+					demoIncremental:true,
+					showPopupIfComplete: true,
+					getNodeOrder: true,
+					useTweakedNodeForOrdering: true
 				},
 
 				COACHED:{
 					allowPrettify:true,
-						allowHelp: true,
-						allowLessonsLearned:true,
+					allowHelp: true,
+					allowLessonsLearned:true,
 
-						allowEditNode:true,
+					allowEditNode:true,
 
-						showHints: true,
-						showFeedback: true,
-						showCorrectAnswer:true,
+					showHints: true,
+					showFeedback: true,
+					showCorrectAnswer:true,
 
-						initializeStudentModel : true,
+					initializeStudentModel : true,
+					copyFields: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation"
+					],
 
-						showNodeEditor:false,
-						showIncrementalEditor:true,
-						nodeDetails: "DIRECTION",
-						copyAuthorNodes: true,
-						setTweakDirections: true,
-						setStudentTweakDirections: true,
-						useTweakStatus: true,
-						demoIncremental:true,
-						useTweakedNodeForOrdering: true,
-						getNodeOrder: true,
-						showPopupIfComplete: true
+					showNodeEditor:false,
+					showIncrementalEditor:true,
+					nodeDetails: "DIRECTION",
+					copyAuthorNodes: true,
+					setTweakDirections: true,
+					setStudentTweakDirections: true,
+					useTweakStatus: true,
+					demoIncremental:true,
+					useTweakedNodeForOrdering: true,
+					getNodeOrder: true,
+					showPopupIfComplete: true
 				},
 
 				TEST:{
 					allowPrettify:true,
-						allowHelp: true,
-						allowLessonsLearned:true,
+					allowHelp: true,
+					allowLessonsLearned:true,
 
-						allowEditNode:true,
-						showFeedback: true,
+					allowEditNode:true,
+					showFeedback: true,
 
-						initializeStudentModel : true,
+					initializeStudentModel : true,
+					copyFields: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation"
+					],
 
-						showNodeEditor:false,
-						showIncrementalEditor:true,
-						nodeDetails: "DIRECTION",
-						copyAuthorNodes: true,
-						setTweakDirections: true,
-						setStudentTweakDirections: true,
-						useTweakStatus: true,
-						demoIncremental:true,
-						useTweakedNodeForOrdering: true,
-						getNodeOrder: true,
-						showPopupIfComplete: true
+					showNodeEditor:false,
+					showIncrementalEditor:true,
+					nodeDetails: "DIRECTION",
+					copyAuthorNodes: true,
+					setTweakDirections: true,
+					setStudentTweakDirections: true,
+					useTweakStatus: true,
+					demoIncremental:true,
+					useTweakedNodeForOrdering: true,
+					getNodeOrder: true,
+					showPopupIfComplete: true
 				},
 
 				EDITOR:{
 					allowPrettify:true,
-						allowHelp: true,
-						allowLessonsLearned:true,
+					allowHelp: true,
+					allowLessonsLearned:true,
 
-						allowEditNode:true,
-						showFeedback: true,
+					allowEditNode:true,
+					showFeedback: true,
 
-						initializeStudentModel : true,
+					initializeStudentModel : true,
+					copyFields: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation"
+					],
 
-						showNodeEditor:false,
-						showIncrementalEditor:true,
-						nodeDetails: "DIRECTION",
-						copyAuthorNodes: true,
-						setTweakDirections: true,
-						setStudentTweakDirections: true,
-						useTweakStatus: true,
-						demoIncremental:true,
-						useTweakedNodeForOrdering: true,
-						getNodeOrder: true,
-						showPopupIfComplete: true
+					showNodeEditor:false,
+					showIncrementalEditor:true,
+					nodeDetails: "DIRECTION",
+					copyAuthorNodes: true,
+					setTweakDirections: true,
+					setStudentTweakDirections: true,
+					useTweakStatus: true,
+					demoIncremental:true,
+					useTweakedNodeForOrdering: true,
+					getNodeOrder: true,
+					showPopupIfComplete: true
 				}
 			},
 			executionDemo: {
@@ -330,18 +386,26 @@ define([
 					showHints: true,
 					showFeedback: true,
 					showCorrectAnswer:true,
+					copyFields: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation"
+					],
 
 					initializeStudentModel : true,
 
 					showNodeEditor:false,
-					nodeDetails: "NEWVALUE",
+					showPopupIfComplete: true,
 					copyAuthorNodes: true,
-
-					showExecutionEditor:true,
-					setNewValues:true,
-					setStudentNewValues:true,
+					showExecutionEditor : true,
+					getNodeOrder: true,
+					nodeDetails: "NEWVALUE",
+					
+					setExecutionValues:true,
+					setStudentExecutionValues:true,
 					demoExecution:true
-
 				},
 
 				COACHED:{
@@ -354,16 +418,26 @@ define([
 					showHints: true,
 					showFeedback: true,
 					showCorrectAnswer:true,
+					copyFields: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation"
+					],
 
 					initializeStudentModel : true,
 
 					showNodeEditor:false,
+					
+					showPopupIfComplete: true,
+
+					showExecutionEditor : true,
+					getNodeOrder: true,
 					nodeDetails: "NEWVALUE",
 					copyAuthorNodes: true,
-
-					showExecutionEditor:true,
-					setNewValues:true,
-					setStudentNewValues:true,
+					setExecutionValues:true,
+					setStudentExecutionValues:true,
 					demoExecution:true
 				},
 
@@ -374,16 +448,25 @@ define([
 
 					allowEditNode:true,
 					showFeedback: true,
+					copyFields: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation"
+					],
 
 					initializeStudentModel : true,
 
 					showNodeEditor:false,
+					showPopupIfComplete: true,
+
+					showExecutionEditor : true,
+					getNodeOrder: true,
 					nodeDetails: "NEWVALUE",
 					copyAuthorNodes: true,
-
-					showExecutionEditor:true,
-					setNewValues:true,
-					setStudentNewValues:true,
+					setExecutionValues:true,
+					setStudentExecutionValues:true,
 					demoExecution:true
 				},
 
@@ -394,16 +477,27 @@ define([
 
 					allowEditNode:true,
 					showFeedback: true,
+					copyFields: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation"
+					],
 
 					initializeStudentModel : true,
 
 					showNodeEditor:false,
+
+					showIncrementalEditor:true,
+					
+					showPopupIfComplete: true,
+					getNodeOrder: true,
+					showExecutionEditor : true,
 					nodeDetails: "NEWVALUE",
 					copyAuthorNodes: true,
-
-					showExecutionEditor:true,
-					setNewValues:true,
-					setStudentNewValues:true,
+					setExecutionValues:true,
+					setStudentExecutionValues:true,
 					demoExecution:true
 				}
 			}
@@ -459,6 +553,7 @@ define([
 
 				//Model
 				initializeStudentModel : false,
+				copyFields: [],
 
 				//Incremental Behavior
 				showIncrementalEditor: false,
@@ -467,15 +562,15 @@ define([
 				setTweakDirections: false,
 				setStudentTweakDirections: false,
 				useTweakStatus: false,
-				demoIncremental: false,
-				showPopupIfComplete: false,
+				demoIncremental:false,
+				showPopupIfComplete:false,
 				useTweakedNodeForOrdering: false,
 				getNodeOrder: false,
-
+				
 				//Execution Behavior
-				showExecutionEditor:false,
-				setNewValues:false,
-				setStudentNewValues:false,
+				showExecutionEditor: false,
+				setExecutionValues:false,
+				setStudentExecutionValues:false,
 				demoExecution:false
 			},
 

@@ -451,8 +451,7 @@ describe("Checking graph/table window:", function(){
                                     ["expectedExpressionColor", "gray"]], dtest, client);
         }));
     });
-    after(function(done) {
-            client.end();
-            done();
-    });
+    after(async(function(done){
+        dtest.endTest(client);
+    }));
 });

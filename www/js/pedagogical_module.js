@@ -497,7 +497,105 @@ define([
 			}
 		}
 	};
-
+	var executionActionTable = {
+		//Summary: Action table for incremental activity popup.
+		correct: {
+			COACHED: function(obj, part){
+				state(obj, part, "correct");
+				disable(obj, "executionVal", true);
+			},
+			feedback: function(obj, part){
+				state(obj, part, "correct");
+				disable(obj, "executionVal", true);
+			},
+			power: function(obj, part){
+				state(obj, part, "correct");
+				disable(obj, "executionVal", true);
+			},
+			TEST: function(obj, part){
+				state(obj, part, "correct");
+			},
+			EDITOR: function(obj, part){
+				state(obj, part, "correct");
+			}
+		},
+		firstFailure:{
+			COACHED: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "executionVal", false);
+			},
+			feedback: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "executionVal", false);
+			},
+			power: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "executionVal", false);
+			},
+			TEST: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "executionVal", false);
+			},
+			EDITOR: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "executionVal", false);
+			}
+		},
+		secondFailure:{
+			COACHED: function(obj, part){
+				state(obj, part, "demo");
+				disable(obj, "executionVal", true);
+			},
+			feedback: function(obj, part){
+				state(obj, part, "demo");
+				disable(obj, "executionVal", true);
+			},
+			power: function(obj, part){
+				state(obj, part, "demo");
+				disable(obj, "executionVal", true);
+			},
+			TEST: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "executionVal", false);
+			},
+			EDITOR: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "executionVal", false);
+			}
+		},
+		anotherFailure:{
+			COACHED: function(obj, part){
+				state(obj, part, "demo");
+				disable(obj, "executionVal", true);
+			},
+			feedback: function(obj, part){
+				state(obj, part, "demo");
+				disable(obj, "executionVal", true);
+			},
+			power: function(obj, part){
+				state(obj, part, "demo");
+				disable(obj, "executionVal", true);
+			},
+			TEST: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "executionVal", false);
+			},
+			EDITOR: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "executionVal", false);
+			}
+		},
+		incorrect:{
+			TEST: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "executionVal", false);
+			},
+			EDITOR: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "executionVal", false);
+			}
+		}
+	};
 	/*
 	 * Add additional tables for activities that does not use node editor.
 	 */
@@ -693,6 +791,10 @@ define([
 					break;
 				case "tweakDirection":
 					interpret(this.model.given.getTweakDirection(givenID));
+					break;
+				case "executionVal":
+					interpret(this.model.given.getExecutionValue(givenID));
+					break;
 			}
 			/* 
 			 This is an example of logging via direct function calls
@@ -834,6 +936,8 @@ define([
 					}
 				}else if(this.activityConfig.get("showIncrementalEditor")){
 					incrementalActionTable[interpretation][this.userType](returnObj, nodePart);
+				}else if(this.activityConfig.get("showExecutionEditor")){
+					executionActionTable[interpretation][this.userType](returnObj, nodePart);
 				}
 				currentStatus = this.model.given.getStatus(givenID, nodePart); //get current status set in given model
 				if (currentStatus !== "correct" && currentStatus !== "demo") {
@@ -1075,6 +1179,34 @@ define([
 						return str;
 					}
 
+					var getIndex = function(){
+						var arr = str.split(" ");
+						var i = 0;
+						array.some(arr, function(r, count){
+							i = count;
+							return r.indexOf(id1) >= 0;
+						});
+
+						var j;
+						switch(position){
+							case "before":
+								j = i-1;
+								break;
+							case "after":
+								j = i+1;
+								break;
+							default:
+								j = i;
+						}
+
+						sum = j; //j is added to take care of the spaces that are in after node ids. which are lost in split
+						for(var i = 0; i <= j; i++){
+							sum += arr[i].length;
+						}
+
+						return sum;
+					};
+
 					var l = str.length;
 					var returnString = "";
 					switch(position){
@@ -1085,7 +1217,11 @@ define([
 							else {
 								//this means that there is already a node that is supposed to be complete before we do this.
 								var index = index1 - 1;
+								if(str[index] != " "){
+									index = getIndex();
+								}
 								returnString = str.slice(0, index) +"="+ id2 + str.slice(index, str.length);
+
 							}
 							break;
 						case "after":
@@ -1093,6 +1229,9 @@ define([
 								returnString = str + " " +id2;
 							else{
 								var index = index1 + id1.length + 1;
+								if(str[index] != " "){
+									index = getIndex();
+								}
 								returnString = str.slice(0, index) + id2 + "=" + str.slice(index, str.length);
 							}
 							break;
@@ -1102,17 +1241,29 @@ define([
 				}
 
 				//the priority of the ids is same. So it checks for the position. Which ever is on the left will be done first.
+				//Uses insertion sort based on position.
 				var prioritize = function(/* array */ tempIDs){
 					var orderedIDs = [];
 					var positions = [];
-					if(tempIDs.size > 1){
+					if(tempIDs.length > 1){
 						array.forEach(tempIDs, function(id){
 							var node = nodes[ids.indexOf(id)];
-							for(var i = 0; i < positions.size; i++){
-								if(node.position.x < positions[i]){
-									positions.splice(i, 0, node.position.x);
-									orderedIDs.splice(i, 0, id);
-									break;
+							if(positions.length == 0){
+								positions[0] = node.position.x;
+								orderedIDs[0] = id;
+							} else {
+								var lastIndex = true; // assuming that the id will be added at the end
+								for(var i = 0; i < positions.length; i++){
+									if(node.position.x < positions[i]){
+										positions.splice(i, 0, node.position.x);
+										orderedIDs.splice(i, 0, id);
+										lastIndex = false;
+										break;
+									}
+								}
+								if(lastIndex){
+									orderedIDs.push(id);
+									positions.push(node.position.x);
 								}
 							}
 						}, this);
@@ -1125,7 +1276,10 @@ define([
 
 				if(functionID.length == 1){
 					finalHierarchy.push(functionID[0]);
-					finalHierarchy.push(prioritize(accumulatorID));
+					var temp = prioritize(accumulatorID);
+					array.forEach(temp, function(id){
+						finalHierarchy.push(id);
+					});
 
 					return finalHierarchy;
 				} else if (functionID.length == 0){
@@ -1144,7 +1298,6 @@ define([
 					array.forEach(inputs, function(input){
 						if(functionID.indexOf(input.ID) >= 0){
 							var flag = true;
-
 							//check if some relative order already has the one of the nodes.
 							array.forEach(relativeOrderF, function(s, counter){
 								var temp = checkString(s, n.ID, input.ID);

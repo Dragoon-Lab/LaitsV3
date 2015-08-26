@@ -11,7 +11,7 @@
  *
  *Dragoon is distributed in the hope that it will be useful,
  *but WITHOUT ANY WARRANTY; without even the implied warranty of
- *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+ *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *GNU Lesser General Public License for more details.
  *
  *You should have received a copy of the GNU Lesser General Public License
@@ -31,8 +31,9 @@ var sync = require('synchronize');
 var await = sync.await;  // Wrap this around asynchronous functions. Returns 2nd arg to callback
 var defer = sync.defer;  // Pass this as the callback function to asynchronous functions
 var testPath = require('./test-paths.js');
-var MAX_NODE_IDS = 200; // The maximum number of node IDs we'll support
-var lastCounter = 0;
+var MAX_DROPDOWN_IDS = 200; // The maximum number of dropdown IDs we'll support
+var lastDropdownID = 0;  // Tracks the last dropdown ID.  Should be reset to 0 for every new session
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Utility functions (used within the API)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -61,10 +62,10 @@ function findIdbyName(client, nodeName){
     var counter = 1;
     var result = null;
     var text = "";
-    while(notFound && counter < MAX_NODE_IDS)
+    while(notFound && counter < MAX_DROPDOWN_IDS)
     {
         try{
-            text = await(client.getText('#id' + counter, defer()));
+            text = await(client.getText('#id' + counter,defer()));
             var lines = text.split('\n');
             var newText = lines.splice(-1,1)[0]; // take the last line
         }catch(err){}
@@ -79,14 +80,16 @@ function findIdbyName(client, nodeName){
 }
 
 function findDropDownByName(client, name){
+    //console.log("Starting findDropdown: "+name);
     var notFound = true;
-    var counter = lastCounter;
+    var counter = lastDropdownID;
     var result = null;
     var text = "";
-    while(notFound && counter < MAX_NODE_IDS)
+    //console.log("start count: "+counter);
+    while(notFound && counter < MAX_DROPDOWN_IDS)
     {
         try{
-            text = await(client.getText('#dijit_MenuItem_' + counter, defer()));
+            text = await(client.getText('#dijit_MenuItem_' + counter,defer()));
         }catch(err){}
         if(text == name)
         {
@@ -95,33 +98,40 @@ function findDropDownByName(client, name){
         }
         counter++;
     }
-    lastCounter = result-5;
+    //console.log("result: "+result);
+    lastDropdownID = result-5;
+    if(result == null){
+        throw new Error("Could not find dropdown item: "+name);
+    }
     return result;
 }
 
 function selectDropdownValue(client,dropDownID,value){
     await(client.waitForVisible(dropDownID,defer()));
-    await(client.click(dropDownID, defer()));
-    await(client.waitForVisible(dropDownID+'_menu', defer()));
+    await(client.click(dropDownID,defer()));
+    await(client.waitForVisible(dropDownID+'_menu',defer()));
     var number = findDropDownByName(client, value);
     if(number != null)
     {
-        await(client.click('#dijit_MenuItem_' + number, defer()));
+        await(client.click('#dijit_MenuItem_' + number,defer()));
     }
     else
     {
-        await(client.click(dropDownID, defer()));
+        await(client.click(dropDownID,defer()));
     }
 }
 
 function wait(milliseconds)
 {
-  var start = new Date().getTime();
-  for (var i = 0; i < 1e7; i++) {
-    if ((new Date().getTime() - start) > milliseconds){
-      break;
+    if(typeof milliseconds === "undefined"){
+        throw new Error("Wait received undefined wait time.");
     }
-  }
+    var start = new Date().getTime();
+    //console.log("starting wait for "+milliseconds+" at: "+start);
+    var currentTime = new Date().getTime();
+    while((currentTime - start) < milliseconds){
+        currentTime = new Date().getTime();
+    }
 }
 
 function getUrlRoot()
@@ -129,15 +139,15 @@ function getUrlRoot()
     var testTarget = testPath.getTestTarget();
     if(testTarget === "devel")
     {
-        return 'http://dragoon.asu.edu/devel/index.html'
+        return 'https://dragoon.asu.edu/devel/index.html'
     }
     else if(testTarget === "demo")
     {
-        return 'http://dragoon.asu.edu/demo/index.html'
+        return 'https://dragoon.asu.edu/demo/index.html'
     }
     else if(testTarget === "pal3")
     {
-        return 'http://dragoon.asu.edu/PAL3/index.html'
+        return 'https://dragoon.asu.edu/PAL3/index.html'
     }
     else if(testTarget === "local")
     {
@@ -183,8 +193,6 @@ function rgbToColor(toConvert)
         return toConvert;
 }
 
-//dijit_MenuItem_#
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Exported functions - The dtest API
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -204,13 +212,12 @@ function rgbToColor(toConvert)
 // 1. Problem functions
 
 // Open a problem
-exports.openProblem = function(client,parameters){
+exports.openProblem = function(client,parameters){        
     // parameters should be an associative array of arguments corresponding to the values needed to
     // build the URL
     var paramMap = convertArrayToMap(parameters);
 
     // required params
-    //var urlRoot = 'http://dragoon.asu.edu/devel/index.html';
     var urlRoot = getUrlRoot();
     var user = "u="+(paramMap["user"] || getDate()); // defaults to the current date
     var problem = "&p=" + (paramMap["problem"] || getDate());
@@ -245,12 +252,20 @@ exports.openProblem = function(client,parameters){
 
     var url = urlRoot + '?' + user + section + problem + mode + nodeEditorMode + group + logging + activity +
               "&c=Continue";
+    
+    // Reset the dropdown counter:
+    lastDropdownID = 0;
 
-    if(await(client.session(defer())) === undefined){
-        await(client.init().url(url,defer()));
-    } else {
-        await(client.url(url,defer()));
-    }
+    //if(await(client.session(defer())) === undefined){
+    await(client.init(defer()));
+    await(client.url(url,defer()));
+    //} else {
+    //    await(client.url(url,defer()));
+    //}
+}
+
+exports.endTest = function(client){
+    await(client.end(defer()));
 }
 
 //Test Functions
@@ -261,26 +276,30 @@ exports.getHtmlOfNode = function(client, nodeName){
     console.log(style.value);
 }
 
-exports.waitTime = function(client, timeToWait)
+exports.waitTime = function(timeToWait)
 {
     wait(timeToWait);
 }
 
 exports.waitForEditor = function(client)
 {
-    await(client.waitForVisible('#nodeeditor',1000, false, defer()));
+    await(client.waitForVisible('#nodeeditor',1000, false,defer()));
 }
 
 exports.waitForLessonsLearned = function(client)
 {
-    await(client.waitForVisible('#lessons',1000, false, defer()));
+    await(client.waitForVisible('#lessons',1000, false,defer()));
 }
 
 exports.refresh = function(client)
 {
-    var url = await(client.url(defer()));
+    // Reset the dropdown counter:
+    lastDropdownID = 0;
+
+    await(client.refresh(defer()));
+    //var url = await(client.url(defer()));
     //await(client.window());
-    await(client.newWindow(url.value, "Color test", 'width=1000,height=1000,resizable,scrollbars=yes,status=1', defer()));
+    //await(client.newWindow(url.value, "Color test", 'width=1000,height=1000,resizable,scrollbars=yes,status=1',defer()));
 }
 
 exports.changeClient = function (client, newClient)
@@ -288,7 +307,9 @@ exports.changeClient = function (client, newClient)
     var url = await(client.url(defer()));
     console.log(url.value);
     client.end();
-    await(newClient.init().url(url.value, defer()));
+    // Reset the dropdown counter:
+    lastDropdownID = 0;
+    await(newClient.init().url(url.value,defer()));
 }
 
 exports.newWindow = function(client){
@@ -300,12 +321,15 @@ exports.getCurrentTabId = function(client){
 }
 
 exports.switchTab = function(client,tabId){
+    // Reset the dropdown counter:
+    lastDropdownID = 0;
+
     await(client.switchTab(tabId,defer()));
 }
 
 exports.getCurrentUsername = function(client){
     // returns the username from the URL parameter (assumes there is a parameter after u=)
-    var url = client.url(defer()).requestHandler.fullRequestOptions.body;
+    var url = await(client.url(defer())).requestHandler.fullRequestOptions.body;
     return url.split('u=')[1].split('&')[0];
 }
 
@@ -313,7 +337,7 @@ exports.getCurrentUsername = function(client){
 // 2. Menu bar functions
 
 exports.menuCreateNode = function(client){
-    await(client.waitForVisible('span[id="createNodeButton_label"]',defer()));    
+    await(client.waitForVisible('span[id="createNodeButton_label"]',defer()));
     await(client.click('span[id="createNodeButton_label"]',defer()));
     wait(200);
 }
@@ -414,11 +438,11 @@ exports.moveNode = function(client,nodeName,xDest,yDest){
 }
 
 exports.deleteNode = function(client,nodeName){
-    await(client.rightClick('#id' + findIdbyName(client, nodeName), 50, 50, defer()));
+    await(client.rightClick('#id' + findIdbyName(client, nodeName), 50, 50,defer()));
     console.log("##################################TEXT:");
     console.log(await(client.getAttribute('#id12','_dijitmenudijit_menu_2',defer())));
     console.log(await(client.getText('#dijit_Menu_2',defer())));
-    await(client.click('#dijit_Menu_2',defer())); //' + ((findIdbyName(client, nodeName) - 1), defer()))); 
+    await(client.click('#dijit_Menu_2',defer())); //' + ((findIdbyName(client, nodeName) - 1),defer()))); 
 }
 
 // Reading nodes
@@ -497,11 +521,11 @@ exports.getNodeEditorTitle = function(client){
 }
 
 exports.getNodeName = function(client){
-    await(client.getText('#widget_setName', defer()));
+    await(client.getText('#widget_setName',defer()));
 }
 
 exports.setNodeName = function(client, nodeName){
-    await(client.setValue('#setName', nodeName, defer()));
+    await(client.setValue('#setName', nodeName,defer()));
 }
 
 //////////////////////////////////////////////////
@@ -531,17 +555,17 @@ exports.getKindOfQuantity = function(client){
 
 exports.setKindOfQuantity = function(client, type){
     selectDropdownValue(client,"#selectKind",type);
-    /*await(client.click('#selectKind', defer()));
+    /*await(client.click('#selectKind',defer()));
     wait(100);
-    await(client.waitForVisible('#selectKind_menu', defer()));
+    await(client.waitForVisible('#selectKind_menu',defer()));
     var number = findDropDownByName(client, type);
     if(number != null)
     {
-        await(client.click('#dijit_MenuItem_' + number, defer()));
+        await(client.click('#dijit_MenuItem_' + number,defer()));
     }
     else
     {
-        await(client.click('#selectKind', defer()));
+        await(client.click('#selectKind',defer()));
     }*/
 }
 
@@ -555,7 +579,7 @@ exports.getNodeDescription = function(client){
     }
     else
     {
-        return await(client.getValue('#setDescription', defer()));
+        return await(client.getValue('#setDescription',defer()));
     }
 }
 
@@ -577,23 +601,23 @@ exports.setNodeDescription = function(client, description){
     if(await(client.isVisible('#selectDescription',defer())))
     {
         selectDropdownValue(client,"#selectDescription",description);
-        /*await(client.click('#selectDescription', defer()));
-        //await(client.click('#selectDescription', defer()));
-        await(client.waitForVisible('#selectDescription_menu', defer()));
-        var number = findDropDownByName(client, description);
-        if(number != null)
-        {
-            await(client.click('#dijit_MenuItem_' + number, defer()));
-        }
-        else
-        {
-            await(client.click('#selectDescription', defer()));
-        }*/
     }
     else
     {
-        await(client.setValue('#setDescription', description, defer()));
+        await(client.setValue('#setDescription', description,defer()));
     }
+}
+
+//////////////////////////////////////////////////
+// Node Explanation
+
+exports.nodeEditorOpenExplanation = function (client){
+    await(client.click('#explanationButton',defer()));
+}
+
+exports.closeExplanation = function (client){
+    await(client.click("#dijit_Dialog_0 > div.dijitDialogTitleBar > span.dijitDialogCloseIcon",defer()));
+    await(client.waitForVisible('#dijit_DialogUnderlay_0',1000,true,defer()));
 }
 
 //////////////////////////////////////////////////
@@ -611,7 +635,7 @@ exports.checkRootNode = function(client){
 
 //Set to true(checked) or set to false(unchecked) (defaults to setting to true)
 exports.clickRootNode = function(client){
-        await(client.click('#markRootNode', defer()));
+        await(client.click('#markRootNode',defer()));
         return;
 }
 
@@ -641,16 +665,16 @@ exports.isNodeTypeDisabled = function(client){
 
 exports.setNodeType = function(client,type){
     selectDropdownValue(client,'#typeId',type);
-    /*await(client.click('#typeId', defer()));
-    await(client.waitForVisible('#typeId_menu', defer()));
+    /*await(client.click('#typeId',defer()));
+    await(client.waitForVisible('#typeId_menu',defer()));
     var number = findDropDownByName(client, type);
     if(number != null)
     {
-        await(client.click('#dijit_MenuItem_' + number, defer()));
+        await(client.click('#dijit_MenuItem_' + number,defer()));
     }
     else
     {
-        await(client.click('#selectKind', defer()));
+        await(client.click('#selectKind',defer()));
     }*/
 }
 
@@ -674,7 +698,7 @@ exports.isNodeInitialValueDisabled = function(client){
 }
 
 exports.setNodeInitialValue = function(client,initialValue){
-    await(client.setValue('#initialValue',initialValue.toString(), defer()));
+    await(client.setValue('#initialValue',initialValue.toString(),defer()));
     await(client.click("#algebraic",defer()));
 }
 
@@ -710,21 +734,21 @@ exports.setNodeUnits = function(client,units){
         if(await(client.isVisible('#selectUnits',defer())))
         {
             selectDropdownValue(client,'#selectUnits',units);
-            /*await(client.click('#selectUnits', defer()));
-            await(client.waitForVisible('#selectUnits_menu', defer()));
+            /*await(client.click('#selectUnits',defer()));
+            await(client.waitForVisible('#selectUnits_menu',defer()));
             var number = findDropDownByName(client, units);
             if(number != null)
             {
-                await(client.click('#dijit_MenuItem_' + number, defer()));
+                await(client.click('#dijit_MenuItem_' + number,defer()));
             }
             else
             {
-                await(client.click('#selectUnits', defer()));
+                await(client.click('#selectUnits',defer()));
             }*/
         }
         else
         {
-            await(client.setValue('#setUnits', units, defer()));
+            await(client.setValue('#setUnits', units,defer()));
         }
     }
     catch(err){
@@ -755,7 +779,7 @@ exports.isNodeExpressionDisabled = function(client){
 }
 
 exports.setNodeExpression = function(client,expression){
-    await(client.setValue('#equationBox', expression, defer()));
+    await(client.setValue('#equationBox', expression,defer()));
     await(client.click("#algebraic",defer()));
 }
 
@@ -800,21 +824,37 @@ exports.openNodeForum = function(client){
 }
 
 //////////////////////////////////////////////////
+// Image Highlighting
+
+exports.nodeEditorOpenImageHighlighting = function (client){
+    await(client.click('#imageButton',defer()));
+}
+
+exports.closeImageHighlighting = function (client){
+    await(client.click("#markImageBox > div.dijitDialogTitleBar > span.dijitDialogCloseIcon",defer()));
+    await(client.waitForVisible('#dijit_DialogUnderlay_0',1000,true,defer()));
+}
+
+
+
+//////////////////////////////////////////////////
 // Exiting the node editor
 
 exports.nodeEditorDone = function(client){
     // Summary: Hits the "Done" button in the node editor
     await(client.click('span[id="closeButton_label"]',defer()));
-    wait(200);
+    await(client.waitForVisible('#nodeeditor_underlay',1000,true,defer()));
 }
 
 exports.closeNodeEditor = function(client){
     // Summary: Closes node editor using the "x"    
     await(client.click("#nodeeditor > div.dijitDialogTitleBar > span.dijitDialogCloseIcon",defer()));
+    await(client.waitForVisible('#nodeeditor_underlay',1000,true,defer()));
 }
 
 exports.nodeEditorDelete = function(client){
-    await(client.click('#deleteButton', defer()));
+    await(client.click('#deleteButton',defer()));
+    await(client.waitForVisible('#nodeeditor_underlay',1000,true,defer()));
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -856,23 +896,23 @@ exports.selectTableTab = function(client){
 // Read text in graph window
 exports.getGraphMessageText = function(client){
     // Summary: returns the text in the graph window, if no graph is displayed (or null otherwise)
-    return await(client.getText('#solution', defer()))
+    return await(client.getText('#solution',defer()))
 }
 
 exports.getGraphResultText = function(client){
     // Summary: returns the text used to display if the student matched the author's result or not
     //          (i.e. the red or green text) or null if neither message is not present
-    return await(client.getText('#graphResultText', defer()));
+    return await(client.getText('#graphResultText',defer()));
 }
 
 // Slider and value manipulation
 
 exports.setQuantityValue = function(client,quantityName,newValue){
     // Summary: Changes the value in the box marked with quantityName to newValue
-    await(client.setValue('#textGraph_id' + findIdbyName(client,quantityName), newValue , defer()));
-    await(client.addValue('#textGraph_id' + findIdbyName(client,quantityName), "\r" , defer()));
+    await(client.setValue('#textGraph_id' + findIdbyName(client,quantityName), newValue ,defer()));
+    await(client.addValue('#textGraph_id' + findIdbyName(client,quantityName), "\r" ,defer()));
     //wait(100);
-    await(client.click('#row0col0', defer())); 
+    await(client.click('#row0col0',defer())); 
 }
 
 exports.moveSliderRight = function(client,quantityName,distance){
@@ -904,6 +944,10 @@ exports.closeGraphAndTableWindow = function(client){
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 6.  Problem & Times window functions
 
+exports.setProblemImageURL = function(client,url){
+    await(client.setValue('#authorSetImage',url,defer()));
+}
+
 exports.pressCheckProblemButton = function(client){
     // Summary: clicks the "Check Problem" button
     await(client.click("#authorProblemCheck",defer()));
@@ -930,6 +974,7 @@ exports.closeSaveAsWindow = function(client){
     // Summary: closes the save as window    
     await(client.click("#authorSaveDialog > div.dijitDialogTitleBar > span.dijitDialogCloseIcon",
             defer()));
+    await(client.waitForVisible('#authorSaveDialog_underlay',1000,true,defer()));
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -940,9 +985,14 @@ exports.closeSaveAsWindow = function(client){
 
 exports.lessonsLearnedClose = function(client){
     await(client.click('#lesson > div.dijitDialogTitleBar > span.dijitDialogCloseIcon',defer()));
+    await(client.waitForVisible('#lesson > div.dijitDialogTitleBar > span.dijitDialogCloseIcon',true,defer()));
+    //await(client.waitForVisible('#lesson > div.dijitDialogTitleBar > span.dijitDialogCloseIcon',6000,defer()));
+    await(client.waitForVisible('#solution_underlay',10000,true,defer()));
+    await(client.waitForVisible('#lesson_underlay',10000,true,defer()));
 }
 
 exports.lessonsLearnedGetText = function(client){    
+    await(client.waitForVisible('#lesson',defer()));
     return await(client.getText("#lesson",defer()));    
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
