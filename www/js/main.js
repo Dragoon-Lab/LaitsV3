@@ -310,7 +310,7 @@ define([
 			var menuButtons=[];
 			menuButtons.push("createNodeButton","graphButton","tableButton","forumButton",
 				"schemaButton","descButton","saveButton","mergeButton",
-				"previewButton","slidesButton","lessonsLearnedButton","resetButton","doneButton", "prettifyButton");
+				"previewButton","slidesButton","lessonsLearnedButton","resetButton","doneButton", "prettifyButton", "imageButton");
 
 			array.forEach(menuButtons, function(button){
 				//setting display for each menu button
@@ -363,9 +363,7 @@ define([
 				controllerObject._PM.setNodeCounter();
             }
 
-			//configuring DOM UI
-			style.set(registry.byId('imageButton').domNode, "display", "none");
-
+			
 			// update the menu bar based on model state
 			if(query.m != "AUTHOR") {
 				if(givenModel.getLessonLearnedShown())
