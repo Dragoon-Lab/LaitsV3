@@ -162,7 +162,7 @@ define([
 			boxshadow = "";
 			var backgroundcolor = "";
 			var color = "";
-			if(type){
+			if(type && type != "triangle"){
 				if(this._showColor){
 					color = this._givenModel.getCorrectness?
 					this._givenModel.getCorrectness(nodeID):"neutral";

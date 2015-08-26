@@ -184,6 +184,7 @@
     -webkit-transition:background-color 0.25s ease-in;
     -moz-transition:background-color 0.25s ease-in;
     transition:background-color 0.25s ease-in;
+    color: #e0e0e0;
 }
 
 .triangleDiv{
@@ -191,6 +192,14 @@
    margin-left:-20px;
 }
 
+.triangleContent {
+    font-weight: bold;
+    padding: 0px;
+    margin-top: 45px;
+    width:40px;
+    margin-left: -20px;
+    text-align: center;
+}
 
 .function {
     z-index:20; position:absolute;
