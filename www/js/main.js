@@ -256,7 +256,7 @@ define([
 				var errorMessage = new messageBox("errorMessageBox", "error", "Problem not found.");
 				errorMessage.show();
 			}
-		}
+		}		
 
 		/*
 		 * start up controller
@@ -294,10 +294,10 @@ define([
 
 			if(reply) givenModel.setLessonLearned(reply);
 		}); */
-        state.get("isDoneButtonShown").then(function(reply){
-        	if(reply === true || reply === false)
+		state.get("isDoneButtonShown").then(function(reply){
+			if(reply === true || reply === false)
 				givenModel.setDoneMessageShown(reply);
-        });
+		});
 		controllerObject.setState(state);
 
 		ready(function(){
@@ -326,11 +326,19 @@ define([
 			}, this);
 			
 			var updateModel = new modelUpdates(givenModel, query.m, session);
-			
+			//if (activity_config.get("setTweakDirections")){
+			//	console.log("initial tweak: "+givenModel.getInitialTweakedNode());
+			//	console.log("initial tweak: "+givenModel.getInitialTweakDirection());
+			//}
+
 			//set tweak directions if needed by the activity and the model has tweak directions.
-			if (activity_config.get("setTweakDirections") && !givenModel.getInitialTweakedNode()){
+			if (activity_config.get("setTweakDirections") && (!givenModel.getInitialTweakedNode() ||
+															  !givenModel.getInitialTweakDirection())) {
 				//show a message that this problem is not right for incremental activity
-				var errorMessage = new messageBox("errorMessageBox", "error", "Author has not defined the changed nodes. The problem will not work in this activity. Kindly contact the author of the problem");
+				var errorMessage = new messageBox("errorMessageBox", "error", "The author of this problem has not set up the initial "+
+																			"incremental change node, so this model cannot be done "+
+																			"in this activity. "+
+																			"Please contact the author of the problem.");
 				errorMessage.show();
 				throw Error("problem does not have tweaked nodes");
 			}else if(activity_config.get("setTweakDirections") && !givenModel.given.validateTweakDirections()){
@@ -359,9 +367,9 @@ define([
 			}
 			//setting the node order for demo activities
 			if(activity_config.get("getNodeOrder") && controllerObject._PM){
-                controllerObject._PM.nodeOrder = controllerObject._PM.createNodeOrder();
+				controllerObject._PM.nodeOrder = controllerObject._PM.createNodeOrder();
 				controllerObject._PM.setNodeCounter();
-            }
+			}
 
 			
 			// update the menu bar based on model state
@@ -620,7 +628,7 @@ define([
 				});
 
 				on(registry.byId("descCloseButton"), "click", lang.hitch(this, function(){
-                	descObj.descDoneHandler();
+					descObj.descDoneHandler();
 					registry.byId("authorDescDialog").hide();
 				}));
 
@@ -1279,11 +1287,11 @@ define([
 				console.log("Pretify---------------");
 				drawModel.prettify();
 			});
-            menu.add("resetButton", function(e){
-                event.stop(e);
-                //call resetNodeInc demo in con student to reset the nodes
-                controllerObject.resetNodesIncDemo();
-            });
+			menu.add("resetButton", function(e){
+				event.stop(e);
+				//call resetNodeInc demo in con student to reset the nodes
+				controllerObject.resetNodesIncDemo();
+			});
 			if(activity_config.get("demoIncremental") || activity_config.get("demoExecution")) {
 				controllerObject.highlightNextNode();
 			}
