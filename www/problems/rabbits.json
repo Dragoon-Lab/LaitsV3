@@ -49,6 +49,10 @@
                     "equation": 0,
                     "tweakDirection":0
                 },
+                "position": {
+                    "x": 500,
+                    "y": 200
+                },
                 "status": {}
             },
             {
@@ -71,6 +75,10 @@
                     "equation": 0,
                     "tweakDirection":0
                 },
+                "position": {
+                    "x": 650,
+                    "y": 200
+                },
                 "status": {}
             },
             {
@@ -91,6 +99,10 @@
                     "units": 0,
                     "equation": 0,
                     "tweakDirection":0
+                },
+                "position": {
+                    "x": 800,
+                    "y": 200
                 },
                 "status": {}
             },

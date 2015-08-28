@@ -34,6 +34,12 @@ describe("Test author mode", function() {
             dtest.pressCheckProblemButton(client);
             atest.popupContainsText("The problem is empty.",dtest,client);
             dtest.popupWindowPressCancel(client);
+        }));
+    });
+
+    describe("Testing adding an image",function(){
+        it("Should add the rabbits image",async(function(){
+            dtest.setProblemImageURL(client,"images/rabbit.jpeg");
             dtest.pressProblemAndTimesDone(client);
         }));
     });
@@ -55,8 +61,19 @@ describe("Test author mode", function() {
             dtest.setNodeUnits(client, "rabbits");
             dtest.setNodeInitialValue(client, 24);            
             dtest.setNodeExpression(client, "net growth");            
-            dtest.checkExpression(client);            
-            //dtest.checkExpression(client);
+            dtest.checkExpression(client);
+        }));
+
+        it("Should open and close the explanation window", async(function(){
+            dtest.openEditorForNode(client,"population");
+            dtest.nodeEditorOpenExplanation(client);
+            dtest.closeExplanation(client);
+        }));         
+
+        it("Should open and close the image highlight window", async(function(){
+            dtest.openEditorForNode(client,"population");
+            dtest.nodeEditorOpenImageHighlighting(client);
+            dtest.closeImageHighlighting(client);
         }));
 
         it("Should fill in function node - net growth", async(function(){
@@ -116,7 +133,7 @@ describe("Test author mode", function() {
             dtest.waitTime(100);
             dtest.clickRootNode(client);
             dtest.nodeEditorDone(client);
-        }));
+        }));        
 
         it("Should have correct Accumulator values", async(function(){
             dtest.openEditorForNode(client, "population");

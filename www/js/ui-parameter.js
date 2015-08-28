@@ -49,6 +49,7 @@ define(["dojo/_base/lang"], function (lang) {
 						"nodeBorderSuccessColor": "green",
 						"nodeBorderFeedbackColor": "yellow",
 						"nodeBorderFailColor": "red",
+						"imageButton": "none"
 
 					}
 				},
@@ -67,7 +68,8 @@ define(["dojo/_base/lang"], function (lang) {
 						"slidesButton": "inline",
 						"lessonsLearnedButton": "inline",
 						"doneButton": "inline",
-						"prettifyButton": "inline"
+						"prettifyButton": "inline",
+						"imageButton": "inline"
 
 					}
 				},
