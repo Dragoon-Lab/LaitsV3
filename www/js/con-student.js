@@ -827,23 +827,6 @@ define(["dojo/aspect",
 				this.showExplanationDialog();
 			}));
 
-			var checkValueButton = registry.byId("execCheckValueButton");
-			on(checkValueButton, "click", lang.hitch(this, function (e) {
-				e.preventDefault();
-				//Set in the model
-				var answer = registry.byId("executionValue").value;
-				var result = this._PM.processAnswer(this.currentID, "executionVal", answer);
-				this.applyDirectives(result);
-				this._model.active.setExecutionValue(this.currentID, answer);
-
-				//Update Node Label
-				this.updateNodeLabel(this.currentID);
-				this.colorNodeBorder(this.currentID, true);
-
-				//Close popup
-				that.closeExecutionMenu();
-			}));
-
 			this._executionMenu.onBlur = lang.hitch(this, function () {
 				this.closeExecutionMenu();
 			});
@@ -878,15 +861,6 @@ define(["dojo/aspect",
 						style.set(showExplanationButton, "display", "none");
 					var answer = this._model.active.getExecutionValue(id);
 					registry.byId("executionValue").set("value", answer);
-
-					//enable/disable check value button
-					var execValStatus = this._model.active.getNode(id).status["executionVal"];
-					var w = registry.byId("execCheckValueButton");
-					if (execValStatus && execValStatus.disabled) {
-						w.set("disabled", execValStatus.disabled);
-					} else {
-						w.set("disabled", false);
-					}
 
 					//open execution menu
 					popup.open({
@@ -962,7 +936,7 @@ define(["dojo/aspect",
 				this.resetNodesExecDemo();
 			}
 			else{
-				//bahar can write her code here
+				//bahar can write her code here , when the iteration is 2 , we can show the graph
 			}
 		}
 	});
