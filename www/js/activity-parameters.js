@@ -500,6 +500,118 @@ define([
 					setStudentExecutionValues:true,
 					demoExecution:true
 				}
+			},
+			execution: {
+				STUDENT:{
+					allowPrettify:true,
+					allowHelp: true,
+					allowLessonsLearned:true,
+
+					allowEditNode:true,
+
+					showHints: true,
+					showFeedback: true,
+					showCorrectAnswer:true,
+					copyFields: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation"
+					],
+
+					initializeStudentModel : true,
+
+					showNodeEditor:false,
+					copyAuthorNodes: true,
+					showExecutionEditor : true,
+					nodeDetails: "NEWVALUE",
+
+					setExecutionValues:true,
+					setStudentExecutionValues:true
+				},
+
+				COACHED:{
+					allowPrettify:true,
+					allowHelp: true,
+					allowLessonsLearned:true,
+
+					allowEditNode:true,
+
+					showHints: true,
+					showFeedback: true,
+					showCorrectAnswer:true,
+					copyFields: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation"
+					],
+
+					initializeStudentModel : true,
+
+					showNodeEditor:false,
+
+					showExecutionEditor : true,
+					nodeDetails: "NEWVALUE",
+					copyAuthorNodes: true,
+					setExecutionValues:true,
+					setStudentExecutionValues:true
+				},
+
+				TEST:{
+					allowPrettify:true,
+					allowHelp: true,
+					allowLessonsLearned:true,
+
+					allowEditNode:true,
+					showFeedback: true,
+					copyFields: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation"
+					],
+
+					initializeStudentModel : true,
+					showNodeEditor:false,
+
+					showExecutionEditor : true,
+					nodeDetails: "NEWVALUE",
+					copyAuthorNodes: true,
+					setExecutionValues:true,
+					setStudentExecutionValues:true
+				},
+
+				EDITOR:{
+					allowPrettify:true,
+					allowHelp: true,
+					allowLessonsLearned:true,
+
+					allowEditNode:true,
+					showFeedback: true,
+					copyFields: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation"
+					],
+
+					initializeStudentModel : true,
+
+					showNodeEditor:false,
+
+					showIncrementalEditor:true,
+
+					showExecutionEditor : true,
+					nodeDetails: "NEWVALUE",
+					copyAuthorNodes: true,
+					setExecutionValues:true,
+					setStudentExecutionValues:true
+				}
 			}
 		};
 

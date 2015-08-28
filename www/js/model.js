@@ -1210,6 +1210,9 @@ define([
 				if(descriptionID && obj.given.getTweakDirection(descriptionID)){
 					update("tweakDirection");
 				}
+				if(descriptionID && obj.given.getExecutionValues(descriptionID)){
+					update("executionValue");
+				}
 				return bestStatus;
 			},
 

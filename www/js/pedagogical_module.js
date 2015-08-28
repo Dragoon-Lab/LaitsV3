@@ -502,15 +502,15 @@ define([
 		correct: {
 			COACHED: function(obj, part){
 				state(obj, part, "correct");
-				disable(obj, "executionVal", true);
+				disable(obj, "executionValue", true);
 			},
 			feedback: function(obj, part){
 				state(obj, part, "correct");
-				disable(obj, "executionVal", true);
+				disable(obj, "executionValue", true);
 			},
 			power: function(obj, part){
 				state(obj, part, "correct");
-				disable(obj, "executionVal", true);
+				disable(obj, "executionValue", true);
 			},
 			TEST: function(obj, part){
 				state(obj, part, "correct");
@@ -522,77 +522,77 @@ define([
 		firstFailure:{
 			COACHED: function(obj, part){
 				state(obj, part, "incorrect");
-				disable(obj, "executionVal", false);
+				disable(obj, "executionValue", false);
 			},
 			feedback: function(obj, part){
 				state(obj, part, "incorrect");
-				disable(obj, "executionVal", false);
+				disable(obj, "executionValue", false);
 			},
 			power: function(obj, part){
 				state(obj, part, "incorrect");
-				disable(obj, "executionVal", false);
+				disable(obj, "executionValue", false);
 			},
 			TEST: function(obj, part){
 				state(obj, part, "incorrect");
-				disable(obj, "executionVal", false);
+				disable(obj, "executionValue", false);
 			},
 			EDITOR: function(obj, part){
 				state(obj, part, "incorrect");
-				disable(obj, "executionVal", false);
+				disable(obj, "executionValue", false);
 			}
 		},
 		secondFailure:{
 			COACHED: function(obj, part){
 				state(obj, part, "demo");
-				disable(obj, "executionVal", true);
+				disable(obj, "executionValue", true);
 			},
 			feedback: function(obj, part){
 				state(obj, part, "demo");
-				disable(obj, "executionVal", true);
+				disable(obj, "executionValue", true);
 			},
 			power: function(obj, part){
 				state(obj, part, "demo");
-				disable(obj, "executionVal", true);
+				disable(obj, "executionValue", true);
 			},
 			TEST: function(obj, part){
 				state(obj, part, "incorrect");
-				disable(obj, "executionVal", false);
+				disable(obj, "executionValue", false);
 			},
 			EDITOR: function(obj, part){
 				state(obj, part, "incorrect");
-				disable(obj, "executionVal", false);
+				disable(obj, "executionValue", false);
 			}
 		},
 		anotherFailure:{
 			COACHED: function(obj, part){
 				state(obj, part, "demo");
-				disable(obj, "executionVal", true);
+				disable(obj, "executionValue", true);
 			},
 			feedback: function(obj, part){
 				state(obj, part, "demo");
-				disable(obj, "executionVal", true);
+				disable(obj, "executionValue", true);
 			},
 			power: function(obj, part){
 				state(obj, part, "demo");
-				disable(obj, "executionVal", true);
+				disable(obj, "executionValue", true);
 			},
 			TEST: function(obj, part){
 				state(obj, part, "incorrect");
-				disable(obj, "executionVal", false);
+				disable(obj, "executionValue", false);
 			},
 			EDITOR: function(obj, part){
 				state(obj, part, "incorrect");
-				disable(obj, "executionVal", false);
+				disable(obj, "executionValue", false);
 			}
 		},
 		incorrect:{
 			TEST: function(obj, part){
 				state(obj, part, "incorrect");
-				disable(obj, "executionVal", false);
+				disable(obj, "executionValue", false);
 			},
 			EDITOR: function(obj, part){
 				state(obj, part, "incorrect");
-				disable(obj, "executionVal", false);
+				disable(obj, "executionValue", false);
 			}
 		}
 	};
@@ -792,7 +792,7 @@ define([
 				case "tweakDirection":
 					interpret(this.model.given.getTweakDirection(givenID));
 					break;
-				case "executionVal":
+				case "executionValue":
 					interpret(this.model.given.getExecutionValue(givenID));
 					break;
 			}

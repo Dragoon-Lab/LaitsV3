@@ -1234,7 +1234,7 @@ define([
 					if (directive.attribute == 'value') {
 						this.updateTweakDirection(directive.value);
 					}
-				}else if(directive.id == "executionVal"){
+				}else if(directive.id == "executionValue"){
 					if (directive.attribute == 'value') {
 						this.updateExecutionValue(directive.value);
 					}else{
