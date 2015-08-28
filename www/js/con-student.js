@@ -935,8 +935,9 @@ define(["dojo/aspect",
 			if(this._model.student.getIteration() <2) {
 				this.resetNodesExecDemo();
 			}
-			else{
+			else if(this._model.student.getIteration()==2){
 				//bahar can write her code here , when the iteration is 2 , we can show the graph
+				console.log("activity ended time to show the graph");
 			}
 		}
 	});
