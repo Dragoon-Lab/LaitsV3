@@ -403,6 +403,7 @@ define([
 				etConnect.startService();
 				
 			}
+			
 			var drawModel = new drawmodel(givenModel.active, ui_config.get("showColor"), activity_config);
 			drawModel.setLogging(session);
 			
@@ -1210,17 +1211,30 @@ define([
 			}
 
 			if(activity_config.get("targetNodeStrategy")){
-				//Only for coached mode
+				var rootNodes = givenModel.given.getRootNodes();
+				var studentNodes = givenModel.active.getNodes();	
+
+				//  Getting existing nodes
+				var currentNodes=[]; 
+				array.forEach(studentNodes,function(node){
+					currentNodes.push(node.descriptionID);
+				});				
+
+				// Creating the root node  if missing
+				array.forEach(rootNodes, function(rootNode){
+					if (currentNodes.indexOf(rootNode.ID)<0){ // Checks if any root node is missing
+						//updateModel.copyGivenNode(rootNode.ID,[]);
+						var id = givenModel.active.addNode();				
+						givenModel.student.setDescriptionID(id, rootNode.ID);
+						givenModel.student.setStatus(id, "description", {"disabled": false, "status": "correct"});
+						givenModel.student.setStatus(id, "type", {"disabled": false});
+						drawModel.addNode(givenModel.active.getNode(id));
+					}
+				});
+			
+
 				function checkForHint(){
-					//Check for root node in student model
-					var givenNodes = givenModel.given.getNodes();
-					var rootNode = null;
-					array.some(givenNodes, function(node){
-						if(givenModel.isParentNode(node.ID)){
-							rootNode = node;
-							return true;
-						}
-					});
+					var rootNodes = givenModel.given.getRootNodes();					
 
 					//check if all present nodes are complete but model is node complete
 					var studentNodes = givenModel.active.getNodes();
@@ -1228,9 +1242,12 @@ define([
 						if(!givenModel.active.isComplete(node.ID)){ return true; }
 					}));
 
+					var rootNodeMising=array.some(rootNodes, function(rootNode){
+						if(givenModel.active.getNodeIDFor(rootNode.ID) === null){ return true; }
+					});
+
 					//set class to flash createNode button
-					if(!someNodeIncomplete && (!givenModel.isCompleteFlag ||
-						givenModel.active.getNodeIDFor(rootNode.ID) === null)){
+					if(!someNodeIncomplete && (!givenModel.isCompleteFlag || rootNodeMising)){
 						domClass.add(dom.byId("createNodeButton"), "glowButton");
 					}
 				}
