@@ -406,6 +406,11 @@ exports.menuOpenHelpMathFunctions = function(client){
     await(client.click('#menuMathFunctions',defer()));
 }
 
+exports.menuReset = function(client){
+    await(client.waitForVisible('#resetButton',defer()));
+    await(client.click('#resetButton',defer()));
+}
+
 exports.menuOpenLessonsLearned = function(client){
     await(client.waitForVisible('#lessonsLearnedButton',defer()));
     await(client.click('#lessonsLearnedButton',defer()));
@@ -419,6 +424,13 @@ exports.menuDone = function(client){
     await(client.click('#doneButton_label',defer()));
 }
 
+exports.closeMenuDonePopup = function(client){
+    await(client.click('#closeHint',defer()));
+}
+
+exports.isDonePopupVisible = function(client){
+    return await(client.isVisible('#doneButton_dropdown',defer()));
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 3. Canvas functions
@@ -601,23 +613,23 @@ exports.setNodeDescription = function(client, description){
     if(await(client.isVisible('#selectDescription',defer())))
     {
         selectDropdownValue(client,"#selectDescription",description);
-        /*await(client.click('#selectDescription',defer()));
-        //await(client.click('#selectDescription',defer()));
-        await(client.waitForVisible('#selectDescription_menu',defer()));
-        var number = findDropDownByName(client, description);
-        if(number != null)
-        {
-            await(client.click('#dijit_MenuItem_' + number,defer()));
-        }
-        else
-        {
-            await(client.click('#selectDescription',defer()));
-        }*/
     }
     else
     {
         await(client.setValue('#setDescription', description,defer()));
     }
+}
+
+//////////////////////////////////////////////////
+// Node Explanation
+
+exports.nodeEditorOpenExplanation = function (client){
+    await(client.click('#explanationButton',defer()));
+}
+
+exports.closeExplanation = function (client){
+    await(client.click("#dijit_Dialog_0 > div.dijitDialogTitleBar > span.dijitDialogCloseIcon",defer()));
+    await(client.waitForVisible('#dijit_DialogUnderlay_0',1000,true,defer()));
 }
 
 //////////////////////////////////////////////////
@@ -824,6 +836,20 @@ exports.openNodeForum = function(client){
 }
 
 //////////////////////////////////////////////////
+// Image Highlighting
+
+exports.nodeEditorOpenImageHighlighting = function (client){
+    await(client.click('#imageButton',defer()));
+}
+
+exports.closeImageHighlighting = function (client){
+    await(client.click("#markImageBox > div.dijitDialogTitleBar > span.dijitDialogCloseIcon",defer()));
+    await(client.waitForVisible('#dijit_DialogUnderlay_0',1000,true,defer()));
+}
+
+
+
+//////////////////////////////////////////////////
 // Exiting the node editor
 
 exports.nodeEditorDone = function(client){
@@ -930,6 +956,10 @@ exports.closeGraphAndTableWindow = function(client){
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 6.  Problem & Times window functions
 
+exports.setProblemImageURL = function(client,url){
+    await(client.setValue('#authorSetImage',url,defer()));
+}
+
 exports.pressCheckProblemButton = function(client){
     // Summary: clicks the "Check Problem" button
     await(client.click("#authorProblemCheck",defer()));
@@ -980,3 +1010,29 @@ exports.lessonsLearnedGetText = function(client){
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 10.  Forum functions
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// 11.  Incremental functions
+
+exports.clickIncrementalIncrease = function(client){
+    await(client.click("#IncreaseButton",defer()));
+}
+
+exports.clickIncrementalDecrease = function(client){
+    await(client.click("#DecreaseButton",defer()));
+}
+
+exports.clickIncrementalStaysSame = function(client){
+    await(client.click("#Stays-SameButton",defer()));
+}
+
+exports.clickIncrementalUnknown = function(client){
+    await(client.click("#UnknownButton",defer()));
+}
+
+exports.clickIncrementalEquation = function(client){
+    await(client.click("#EquationButton",defer()));
+}
+
+exports.clickIncrementalExplanation = function(client){
+    await(client.click("#ShowExplanationButton",defer()));
+}
