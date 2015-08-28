@@ -708,10 +708,12 @@ define(["dojo/aspect",
 			}
 		},
 
-		highlightNextNode: function () {		
-			if (this.activityConfig.get("demoIncremental") || this.activityConfig.get("demoExecutionValues")) {
+		highlightNextNode: function () {
+			console.log("activity is",this.activityConfig.get("demoExecution"));		
+			if (this.activityConfig.get("demoIncremental") || this.activityConfig.get("demoExecution")) {
 				//Get next node in the list from PM
 				var nextID = this._PM.getNextNode();
+				console.log("next node is", nextID);
 				if (nextID) {
 					var node = dom.byId(nextID);
 					domClass.add(node, "glowNode");
@@ -771,6 +773,28 @@ define(["dojo/aspect",
 			this.highlightNextNode();
 			this.shownDone = false;
 		},
+
+		resetNodesExecDemo: function(){
+			var studId = this._model.active.getNodes();
+			var nowHighLighted = this.currentHighLight;
+			studId.forEach(lang.hitch(this, function (newId) {
+				//remove the glow for current highlighted node as a part of reset
+				if(newId.ID === nowHighLighted) {
+					var noHighlight = dom.byId(newId.ID);
+					domClass.remove(noHighlight, "glowNode");
+				}
+				if(newId.type!=="parameter"){
+					//update node label and border color
+					this.updateNodeLabel(newId.ID);
+					this.colorNodeBorder(newId.ID, true);
+				}
+			}));
+			//highlight next (should be the first) node in the list
+			console.log("highlighting after reset called");
+			this._PM.nodeCounter = 0;
+			this.highlightNextNode();
+		},
+
 
 		/*
 		 * Execution Editor
@@ -871,6 +895,8 @@ define(["dojo/aspect",
 					});
 				}
 			}
+			//check if is the end of iteration with the current node completion
+			this.canRunNextIteration();
 		},
 
 		showExecutionAnswer : function(id){
@@ -906,6 +932,38 @@ define(["dojo/aspect",
 			});
 			this.nodeCloseAssessment(this.currentID);
 			popup.close(this._executionMenu);
+		},
+
+		canRunNextIteration: function () {
+			studId = this._model.active.getNodes();
+			var isFinished = true;
+			studId.forEach(lang.hitch(this, function (newId) {
+				//each node should be complete and correct else set isFinished to false
+				if (!this._model.active.isComplete(newId.ID) || this._model.student.getCorrectness(newId.ID) === "incorrect") isFinished = false;
+			}));
+			if (isFinished) {
+				//time for the next iteration
+				this.applyDirectives([{
+				id: "crisisAlert",
+				attribute: "title",
+				value: "Iteration Has Completed"
+			}, {
+				id: "crisisAlert",
+				attribute: "open",
+				value: "You have completed all the values for this time step.  Click 'Ok' to proceed to the next time step."
+			}]);
+			}
+		},
+
+		callNextIteration: function () {
+			this._model.student.incrementIteration();
+			console.log("iteration count is",this._model.student.getIteration());
+			if(this._model.student.getIteration() <2) {
+				this.resetNodesExecDemo();
+			}
+			else{
+				//bahar can write her code here
+			}
 		}
 	});
 });
