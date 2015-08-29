@@ -1060,7 +1060,17 @@ define([
 					return true;
 				}
 				return false;
-			}
+			},
+            getRootNodes: function(){
+                var rootNodes = [];
+                var givenNodes = this.getNodes();                   
+                array.forEach(givenNodes, function(node){
+                    if(obj.isParentNode(node.ID) && this.isNodeRequired(node.ID)){
+                        rootNodes.push(node);
+                    }
+                },this);
+                return rootNodes;
+            }
 		}, both);
 
 		obj.solution = lang.mixin({
