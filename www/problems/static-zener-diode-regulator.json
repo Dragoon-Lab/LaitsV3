@@ -1,6 +1,6 @@
 {
     "task": {
-        "taskName": "Model a Zener Diode Voltage Regulator (Static)",
+        "taskName": "static-zener-diode-regulator",
         "time": {
             "start": 0,
             "end": 10,
@@ -18,9 +18,11 @@
         "image": {
             "URL": "http:\/\/i.imgur.com\/oBF2hBY.png?1"
         },
-        "taskDescription": [
-            "Create a model for the zener diode voltage regulator shown here.  The power supply is 20 volts.  Assume a 13-volt diode. The resistance of resistor R1 is 180 ohms and the resistance of the load resistor(LOAD R) is 1000 ohms. Graph the resistance of the zener.  The nodes for the power supply and the resistor's resistance are given to you. See what happens when you vary the supply voltage or the load resistance"
-        ],
+        "taskDescription": {
+            "construction": [
+                "Create a model for the zener diode voltage regulator shown here.  The power supply is 20 volts.  Assume a 13-volt diode. The resistance of resistor R1 is 180 ohms and the resistance of the load resistor(LOAD R) is 1000 ohms. Graph the resistance of the zener.  The nodes for the power supply and the resistor's resistance are given to you. See what happens to the resistance of the Zener diode when you vary the supply voltage and\/or the load resistance. Notice that the model is inaccurate when the supply voltage is less than a certain number.  Why is that?"
+            ]
+        },
         "givenModelNodes": [
             {
                 "ID": "id1",
@@ -521,7 +523,7 @@
                 "units": "ohms",
                 "genus": "required",
                 "imageMarks": [
-                    "240 , 33 , 22 , 39"
+                    "237 , 38 , 53 , 36"
                 ]
             },
             {
@@ -581,7 +583,7 @@
                 "type": "function",
                 "units": "volts",
                 "equation": "id1",
-                "genus": "required",
+                "genus": "allowed",
                 "imageMarks": [
                     "216 , 18 , 40 , 21"
                 ]
