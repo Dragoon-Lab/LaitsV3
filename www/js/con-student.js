@@ -777,6 +777,35 @@ define(["dojo/aspect",
 		resetNodesExecDemo: function(){
 			var studId = this._model.active.getNodes();
 			var nowHighLighted = this.currentHighLight;
+			this._model.student.setIteration(0);
+			studId.forEach(lang.hitch(this, function (newId) {
+				//remove the glow for current highlighted node as a part of reset
+				if(newId.ID === nowHighLighted) {
+					var noHighlight = dom.byId(newId.ID);
+					domClass.remove(noHighlight, "glowNode");
+				}
+				if(newId.type!=="parameter"){
+					//empty the execution values
+					this._model.student.emptyExecutionValues(newId.ID);
+					//update node label and border color
+					this.updateNodeLabel(newId.ID);
+					this.colorNodeBorder(newId.ID, true);					
+				}
+
+			}));
+			//highlight next (should be the first) node in the list
+			console.log("highlighting after reset called");
+			this._PM.nodeCounter = 0;
+			
+			this.highlightNextNode();
+			
+
+		},
+
+
+		resetIterationExecDemo: function(){
+			var studId = this._model.active.getNodes();
+			var nowHighLighted = this.currentHighLight;
 			studId.forEach(lang.hitch(this, function (newId) {
 				//remove the glow for current highlighted node as a part of reset
 				if(newId.ID === nowHighLighted) {
@@ -794,7 +823,6 @@ define(["dojo/aspect",
 			this._PM.nodeCounter = 0;
 			this.highlightNextNode();
 		},
-
 
 		/*
 		 * Execution Editor
@@ -913,8 +941,11 @@ define(["dojo/aspect",
 			var isFinished = true;
 			studId.forEach(lang.hitch(this, function (newId) {
 				//each node should be complete and correct else set isFinished to false
+				console.log("is complete",this._model.active.isComplete(newId.ID));
+				console.log("correctness", this._model.student.getCorrectness(newId.ID))
 				if (!this._model.active.isComplete(newId.ID) || this._model.student.getCorrectness(newId.ID) === "incorrect") isFinished = false;
 			}));
+			console.log("isfinished is",isFinished);
 			if (isFinished) {
 				//time for the next iteration
 				this.applyDirectives([{
@@ -927,13 +958,16 @@ define(["dojo/aspect",
 				value: "You have completed all the values for this time step.  Click 'Ok' to proceed to the next time step."
 			}]);
 			}
+			console.log("model is",this._model);
 		},
 
 		callNextIteration: function () {
 			this._model.student.incrementIteration();
 			console.log("iteration count is",this._model.student.getIteration());
+			//var it_count = 
 			if(this._model.student.getIteration() <2) {
-				this.resetNodesExecDemo();
+				this.resetIterationExecDemo();
+				console.log("mode is", this._model);
 			}
 			else if(this._model.student.getIteration()==2){
 				//bahar can write her code here , when the iteration is 2 , we can show the graph

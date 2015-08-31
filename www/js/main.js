@@ -1306,8 +1306,14 @@ define([
 			});
 			menu.add("resetButton", function(e){
 				event.stop(e);
-				//call resetNodeInc demo in con student to reset the nodes
-				controllerObject.resetNodesIncDemo();
+				//call resetNodeInc demo in con student to reset the nodes	
+				if(activity_config.get("demoIncremental")){
+					controllerObject.resetNodesIncDemo();
+				}
+				//call resetNodeExec demo in con student to reset the nodes
+				if(activity_config.get("demoExecution")){
+					controllerObject.resetNodesExecDemo();
+				}	
 			});
 			if(activity_config.get("demoIncremental") || activity_config.get("demoExecution")) {
 				controllerObject.highlightNextNode();

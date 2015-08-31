@@ -1300,6 +1300,10 @@ define([
 					}
 				}
 			},
+			emptyExecutionValues: function(/* string */ id){
+				var node = this.getNode(id);
+				node.executionValue = [];		
+			},
 			incrementAssistanceScore: function(/*string*/ id){
 				// Summary: Incremements a score of the amount of errors/hints that
 				//		a student receives, based on suggestions by Robert Hausmann;
