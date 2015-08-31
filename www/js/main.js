@@ -1211,6 +1211,7 @@ define([
 			}
 
 			if(activity_config.get("targetNodeStrategy")){
+				// Only in construction activity and COACHED mode 
 				var rootNodes = givenModel.given.getRootNodes();
 				var studentNodes = givenModel.active.getNodes();	
 
@@ -1220,13 +1221,13 @@ define([
 					currentNodes.push(node.descriptionID);
 				});				
 
-				// Creating the root node  if missing
+				// Creating the root node if missing
 				array.forEach(rootNodes, function(rootNode){
 					if (currentNodes.indexOf(rootNode.ID)<0){ // Checks if any root node is missing
 						//updateModel.copyGivenNode(rootNode.ID,[]);
 						var id = givenModel.active.addNode();				
 						givenModel.student.setDescriptionID(id, rootNode.ID);
-						givenModel.student.setStatus(id, "description", {"disabled": false, "status": "correct"});
+						givenModel.student.setStatus(id, "description", {"disabled": true, "status": "correct"});
 						givenModel.student.setStatus(id, "type", {"disabled": false});
 						drawModel.addNode(givenModel.active.getNode(id));
 					}
