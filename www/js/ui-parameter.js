@@ -26,7 +26,7 @@ define(["dojo/_base/lang"], function (lang) {
 		var parameters = {
 			construction: [
 				{
-					"mode": ["AUTHOR", "STUDENT", "COACHED", "TEST"],
+					"mode": ["AUTHOR", "STUDENT", "COACHED", "TEST","EDITOR"],
 					"param": {
 						"showColor": true,
 						"nodeBorderSize": "3px ",
@@ -74,7 +74,7 @@ define(["dojo/_base/lang"], function (lang) {
 					}
 				},
 				{
-					"mode": ["STUDENT", "COACHED", "TEST"],
+					"mode": ["STUDENT", "COACHED", "TEST","EDITOR"],
 					"param": {
 						"createNodeButton": "inline",
 						"graphButton": "inline",

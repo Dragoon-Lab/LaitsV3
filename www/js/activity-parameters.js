@@ -94,7 +94,6 @@ define([
 
 					enable:[
 					],
-
 					allowSliders: true,
 					plotAuthorSolution:true
 				},
@@ -109,8 +108,6 @@ define([
 
 					allowDeleteNode: true,
 					allowEditNode: true,
-
-					showFeedback: true,
 					enable:[
 					],
 
@@ -201,7 +198,6 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
-					showFeedback: true,
 
 					initializeStudentModel : true,
 					copyFields: [
@@ -321,8 +317,6 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
-					showFeedback: true,
-
 					initializeStudentModel : true,
 					copyFields: [
 						"description",
@@ -447,7 +441,6 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
-					showFeedback: true,
 					copyFields: [
 						"description",
 						"type",
