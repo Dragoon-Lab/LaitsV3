@@ -162,7 +162,7 @@ define([
 			boxshadow = "";
 			var backgroundcolor = "";
 			var color = "";
-			if(type){
+			if(type && type != "triangle"){
 				if(this._showColor){
 					color = this._givenModel.getCorrectness?
 					this._givenModel.getCorrectness(nodeID):"neutral";
@@ -222,7 +222,7 @@ define([
 			// Add div to drawing
 			console.log("	   --> setting position for vertex : "+ node.ID +" position: x"+node.position.x+"  y:"+node.position.y);
 	
-			var nodeName = graphObjects.getNodeName(this._givenModel,node.ID, this._activityConfig.get("nodeDetails"));
+			var htmlContent = graphObjects.getNodeName(this._givenModel,node.ID, this._activityConfig.get("nodeDetails"));
 			// Don't actually update node, since we will create it below.
 			var colorBorder = this.colorNodeBorder(node.ID, false);
 			var vertex = domConstruct.create("div", {
@@ -235,7 +235,7 @@ define([
 					'box-shadow': colorBorder.boxShadow,
 					backgroundColor: colorBorder.backgroundColor
 				},
-				innerHTML: nodeName
+				innerHTML: htmlContent
 			},"statemachine-demo");
 			//domConstruct.place(vertex, "statemachine-demo");
 

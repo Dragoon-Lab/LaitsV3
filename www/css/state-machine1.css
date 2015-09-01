@@ -70,25 +70,28 @@
     /*white-space:nowrap;*/
     -ms-text-overflow:ellipsis;
     text-overflow:ellipsis;
-    width:40px;
-    margin:10px 15px;
+    width:90%;
+    margin:10px 0px;
+    padding: 0px 5%;
 }
 .functionWrapper{
     margin: 0px;
-    padding: 12px 7px;
+    padding: 12px 5%;
 }
 .parameterWrapper{
 	  overflow:hidden!important;
     /*white-space:nowrap;*/
     -ms-text-overflow:ellipsis;
     text-overflow:ellipsis;
-    width:40px;
+    width:100%;
 	 -webkit-transform: rotate(0deg)!important;
     -moz-transform: rotate(0deg);
     -ms-transform: rotate(0deg);
     -o-transform: rotate(0deg);
     transform: rotate(0deg);
-    padding: 12px 7px;
+    padding-right: 5px;
+    padding-left: -5px;
+    padding-top: 14px;
 }
 .functionWrapper:hover,.accumulatorWrapper:hover,.parameterWrapper:hover{
  overflow:visible!important;
@@ -118,18 +121,21 @@
     -ms-transform: rotate(0deg)!important;
     -o-transform: rotate(0deg)!important;
     transform: rotate(0deg)!important;
-    position: relative;
-    top:40px;
+    position: absolute;
+    top: 135%;
+    padding-left: 5px;
 }
 
 .functionDiv{
-  position:relative;
-  top:40px;
+    position: absolute;
+    top: 120%;
+    padding-left: 5px;
 }
 
 .accumulatorDiv{
- position:relative;
- top:40px;
+    position: absolute;
+    top: 120%;
+    padding-left: 5px;
 }
 
 .parameter div{
@@ -184,13 +190,25 @@
     -webkit-transition:background-color 0.25s ease-in;
     -moz-transition:background-color 0.25s ease-in;
     transition:background-color 0.25s ease-in;
+   
 }
 
 .triangleDiv{
-   margin-top:90px;
-   margin-left:-20px;
+    position: relative;
+    top: 25px;
+    transform: translateX(-50%);
+    text-align: center;
 }
 
+.triangleWrapper {
+    font-weight: bold;
+    padding: 0px;
+    margin-top: 40px;
+    width:40px;
+    margin-left: -20px;
+    text-align: center;
+    color: #e0e0e0;
+}
 
 .function {
     z-index:20; position:absolute;

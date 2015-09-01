@@ -434,10 +434,8 @@ define([
 		//update the node label
 		updateNodeLabel:function(nodeID){
 			var nodeName = graphObjects.getNodeName(this._model.active,nodeID, this.activityConfig.get("nodeDetails"));
-			if(dom.byId(nodeID + 'Label')){
+			if(nodeName && dom.byId(nodeID + 'Label')){
 				domConstruct.place(nodeName, nodeID + 'Label', "replace");
-			}else if(nodeName){
-				domConstruct.place(nodeName, nodeID);
 			}
 		},
 
