@@ -117,7 +117,6 @@ define([
 			var givenNode = this._model.given.getNode(givenID);
 			var newNodeID = this._model.student.getNodeIDFor(givenID) || this.addStudentNode(givenID);
 
-			console.log("sachin " + newNodeID);
 			var nodeStore = [];
 			if(givenNode && givenNode.equation){
 				var studentNode = this._model.student.getNodes();
@@ -128,35 +127,35 @@ define([
 
 			if(givenNode && newNodeID){
 				//set default values and their status.
-				if(fields.indexOf("initial") >= 0){
+				if(fields && fields.indexOf("initial") >= 0){
 					this._model.student.setInitial(newNodeID, givenNode.initial);
 					if (givenNode.type === "parameter" || givenNode.type === "accumulator") {
 						this._model.student.setStatus(newNodeID, "initial", {"disabled": true, "status": "correct"});
 					}
 				}
 
-				if(fields.indexOf("units") >= 0){
+				if(fields && fields.indexOf("units") >= 0){
 					this._model.student.setUnits(newNodeID, givenNode.units);
 					if (typeof givenNode.units !== "undefined") {
 						this._model.student.setStatus(newNodeID, "units", {"disabled": true, "status": "correct"});
 					}
 				}
 
-				if(fields.indexOf("type") >= 0){
+				if(fields && fields.indexOf("type") >= 0){
 					this._model.student.setType(newNodeID, givenNode.type);
 					this._model.student.setStatus(newNodeID, "type", {"disabled": true, "status": "correct"});
 				}
 
-				if(fields.indexOf("tweak") >= 0){
+				if(fields && fields.indexOf("tweak") >= 0){
 					//this.setStudentTweakDirection(givenNode.ID, newNodeID);
 					this._model.student.setTweakDirection(newNodeID, givenNode.tweakDirection);
 				}
 
-				if(fields.indexOf("execution") >= 0){
+				if(fields && fields.indexOf("execution") >= 0){
 					this._model.student.setExecutionValues(newNodeID, givenNode.executionValue);
 				}
 
-				if (fields.indexOf("equation") && nodeStore && givenNode.equation) {
+				if (fields && fields.indexOf("equation") && nodeStore && givenNode.equation) {
 					var inputs = [];
 					var isExpressionValid = true;
 					var equation = givenNode.equation;

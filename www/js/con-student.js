@@ -941,11 +941,8 @@ define(["dojo/aspect",
 			var isFinished = true;
 			studId.forEach(lang.hitch(this, function (newId) {
 				//each node should be complete and correct else set isFinished to false
-				console.log("is complete",this._model.active.isComplete(newId.ID));
-				console.log("correctness", this._model.student.getCorrectness(newId.ID))
 				if (!this._model.active.isComplete(newId.ID) || this._model.student.getCorrectness(newId.ID) === "incorrect") isFinished = false;
 			}));
-			console.log("isfinished is",isFinished);
 			if (isFinished) {
 				//time for the next iteration
 				this.applyDirectives([{
