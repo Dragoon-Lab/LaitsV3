@@ -580,28 +580,6 @@ define(["dojo/aspect",
 			}
 		},
 
-		getChangeDescriptionText:function(changeDesc){
-			var changeDescript;
-			switch(changeDesc) {
-				case "Increase":
-					changeDescript=" has been increased."
-					break;
-				case "Decrease":
-					changeDescript=" has been decreased."
-					break;
-				case "Stays-Same":
-					changeDescript=" stays the same."
-					break;
-				case "Unknown":
-					changeDescript=" will sometimes increase and sometimes decrease."
-					break;
-				default:
-					changeDescript=""
-			}
-			return changeDescript;
-
-		},
-
 		initIncrementalMenu: function () {
 			var that = this;
 
@@ -777,6 +755,35 @@ define(["dojo/aspect",
 		resetNodesExecDemo: function(){
 			var studId = this._model.active.getNodes();
 			var nowHighLighted = this.currentHighLight;
+			this._model.student.setIteration(0);
+			studId.forEach(lang.hitch(this, function (newId) {
+				//remove the glow for current highlighted node as a part of reset
+				if(newId.ID === nowHighLighted) {
+					var noHighlight = dom.byId(newId.ID);
+					domClass.remove(noHighlight, "glowNode");
+				}
+				if(newId.type!=="parameter"){
+					//empty the execution values
+					this._model.student.emptyExecutionValues(newId.ID);
+					//update node label and border color
+					this.updateNodeLabel(newId.ID);
+					this.colorNodeBorder(newId.ID, true);					
+				}
+
+			}));
+			//highlight next (should be the first) node in the list
+			console.log("highlighting after reset called");
+			this._PM.nodeCounter = 0;
+			
+			this.highlightNextNode();
+			
+
+		},
+
+
+		resetIterationExecDemo: function(){
+			var studId = this._model.active.getNodes();
+			var nowHighLighted = this.currentHighLight;
 			studId.forEach(lang.hitch(this, function (newId) {
 				//remove the glow for current highlighted node as a part of reset
 				if(newId.ID === nowHighLighted) {
@@ -794,7 +801,6 @@ define(["dojo/aspect",
 			this._PM.nodeCounter = 0;
 			this.highlightNextNode();
 		},
-
 
 		/*
 		 * Execution Editor
@@ -911,12 +917,13 @@ define(["dojo/aspect",
 		canRunNextIteration: function () {
 			studId = this._model.active.getNodes();
 			var isFinished = true;
+			var inFirstIteration=false;
 			studId.forEach(lang.hitch(this, function (newId) {
 				//each node should be complete and correct else set isFinished to false
 				if (!this._model.active.isComplete(newId.ID) || this._model.student.getCorrectness(newId.ID) === "incorrect") isFinished = false;
 			}));
-			if (isFinished) {
-				//time for the next iteration
+			if(this._model.student.getIteration() <1) inFirstIteration=true;
+			if (isFinished&inFirstIteration) {
 				this.applyDirectives([{
 				id: "crisisAlert",
 				attribute: "title",
@@ -927,18 +934,42 @@ define(["dojo/aspect",
 				value: "You have completed all the values for this time step.  Click 'Ok' to proceed to the next time step."
 			}]);
 			}
+			else if (isFinished) {
+				this.applyDirectives([{
+					id: "crisisAlert",
+					attribute: "title",
+					value: "Demonstration Completed" 
+				}, {
+					id: "crisisAlert",
+					attribute: "open",
+					value: "Good work, now Dragoon will compute the rest of the values for you and display them as a table and as a graph in the next window."
+				}]);
+				
+				console.log("activity ended time to show the graph");
+			}
+			console.log("model is",this._model);
 		},
 
 		callNextIteration: function () {
 			this._model.student.incrementIteration();
 			console.log("iteration count is",this._model.student.getIteration());
+			var crisis = registry.byId(this.widgetMap.crisisAlert); 
 			if(this._model.student.getIteration() <2) {
-				this.resetNodesExecDemo();
+				this.resetIterationExecDemo();
 			}
-			else if(this._model.student.getIteration()==2){
-				//bahar can write her code here , when the iteration is 2 , we can show the graph
-				console.log("activity ended time to show the graph");
-			}
+			// else if(this._model.student.getIteration()==2){
+			// this.applyDirectives([{
+			// 	id: "crisisAlert",
+			// 	attribute: "title",
+			// 	value: "Demonstration Completed" 
+			// }, {
+			// 	id: "crisisAlert",
+			// 	attribute: "open",
+			// 	value: "Good work, now Dragoon will compute the rest of the values for you and display them as a table and as a graph in the next window."
+			// }]);
+				
+			// 	console.log("activity ended time to show the graph");
+			// }
 		}
 	});
 });

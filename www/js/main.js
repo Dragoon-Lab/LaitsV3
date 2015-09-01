@@ -953,6 +953,64 @@ define([
 					});
 				}
 			}
+			//  To show the graph and table window in excution demo activity
+			var crisis=registry.byId("crisisAlertMessage");
+			aspect.after(crisis, "hide", function(){
+				if (crisis.title && crisis.title.indexOf("Demonstration Completed") >= 0) {
+
+					var tableButton = registry.byId("tableButton");
+					tableButton.set("disabled", false);
+					var graphButton = registry.byId("graphButton");
+					graphButton.set("disabled", false);
+					style.set(graphButton.domNode, "display","inline-block");
+					style.set(tableButton.domNode, "display","inline-block");
+
+					// instantiate graph object to show the graph after clicking OK
+					var buttonClicked = "graph";
+					var graph = new Graph(givenModel, query.m, session, buttonClicked);
+					graph.setStateGraph(state);
+					var problemComplete = givenModel.matchesGivenSolution();
+
+					graph._logging.log('ui-action', {
+						type: "menu-choice",
+						name: "show-graph",
+						problemComplete: problemComplete
+					});
+					graph.show();
+
+					// show graph when button clicked
+					menu.add("graphButton", function(e){
+						event.stop(e);
+						console.debug("button clicked");
+							
+						// instantiate graph object
+						var buttonClicked = "graph";
+						//var graph = new Graph(givenModel, query.m, session, buttonClicked);
+						graph.setStateGraph(state);
+						var problemComplete = givenModel.matchesGivenSolution();
+
+						graph._logging.log('ui-action', {
+							type: "menu-choice",
+							name: "graph-button",
+							problemComplete: problemComplete
+						});
+						graph.show();
+					});
+					// show table when button clicked
+					menu.add("tableButton", function(e){
+					event.stop(e);
+					console.debug("table button clicked");
+					var buttonClicked = "table";
+					var table = new Graph(givenModel, query.m, session, buttonClicked);
+					table.setStateGraph(state);
+					table._logging.log('ui-action', {
+						type: "menu-choice",
+						name: "table-button"
+					});
+					table.show();
+			   	 	});
+				}
+			});
 
 			if(activity_config.get("allowGraph")){
 		
@@ -1307,8 +1365,14 @@ define([
 			});
 			menu.add("resetButton", function(e){
 				event.stop(e);
-				//call resetNodeInc demo in con student to reset the nodes
-				controllerObject.resetNodesIncDemo();
+				//call resetNodeInc demo in con student to reset the nodes	
+				if(activity_config.get("demoIncremental")){
+					controllerObject.resetNodesIncDemo();
+				}
+				//call resetNodeExec demo in con student to reset the nodes
+				if(activity_config.get("demoExecution")){
+					controllerObject.resetNodesExecDemo();
+				}	
 			});
 			if(activity_config.get("demoIncremental") || activity_config.get("demoExecution")) {
 				controllerObject.highlightNextNode();

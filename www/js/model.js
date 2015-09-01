@@ -660,7 +660,7 @@ define([
 				this.getNode(id).tweakDirection = direction;
 			},
 			getTweakDirection: function(/*string*/ id){
-				return this.getNode(id).tweakDirection ;
+				return (typeof this.getNode(id).tweakDirection!== "undefined") ?  this.getNode(id).tweakDirection:"";
 			},
 			validateTweakDirections: function(){
 				var nodes = this.getNodes();
@@ -1300,6 +1300,10 @@ define([
 					}
 				}
 			},
+			emptyExecutionValues: function(/* string */ id){
+				var node = this.getNode(id);
+				node.executionValue = [];		
+			},
 			incrementAssistanceScore: function(/*string*/ id){
 				// Summary: Incremements a score of the amount of errors/hints that
 				//		a student receives, based on suggestions by Robert Hausmann;
@@ -1340,6 +1344,7 @@ define([
 				var hasExecutionValue = node.descriptionID && obj.given.getExecutionValues(node.descriptionID);
 				var executionIteration = (hasExecutionValue ? (node.type == "parameter" ? 0 : this.getIteration()) : 0); //execution iteration will always be 0 for parameters.
 				var equationEntered = node.type && node.type == "parameter" || node.equation;
+                executionIteration= (executionIteration<1)?executionIteration:1;
 				var toReturn = node.descriptionID && node.type &&
 					initialEntered && (!hasUnits || node.units) &&
 					equationEntered && (!hasTweaks || node.tweakDirection)
