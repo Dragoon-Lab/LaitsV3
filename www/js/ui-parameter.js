@@ -167,7 +167,7 @@ define(["dojo/_base/lang"], function (lang) {
 					"previewButton": "none",
 					"slidesButton": "none",
 					"lessonsLearnedButton": "none",
-                    "resetButton": "inline",
+					"resetButton": "inline",
 					"doneButton": "inline",
 					"prettifyButton": "inline",
 					"nodeBorderCompleteColor": "gray",
@@ -196,7 +196,7 @@ define(["dojo/_base/lang"], function (lang) {
 						"previewButton": "none",
 						"slidesButton": "none",
 						"lessonsLearnedButton": "none",
-                        "resetButton": "inline",
+						"resetButton": "inline",
 						"doneButton": "inline",
 						"prettifyButton": "inline",
 						"nodeBorderCompleteColor": "gray",
@@ -209,11 +209,38 @@ define(["dojo/_base/lang"], function (lang) {
 
 					}
 				}],
-			execution: [],
-			executionDemo: [{
-					"mode": ["STUDENT", "COACHED"],
+			execution: [{
+				"mode": ["STUDENT", "COACHED"],
+				"param": {
+					"showColor": true,
+					"nodeBorderSize": "3px ",
+					"createNodeButton": "none",
+					"graphButton": "none",
+					"tableButton": "none",
+					"forumButton": "none",
+					"schemaButton": "none",
+					"descButton": "none",
+					"saveButton": "none",
+					"mergeButton": "none",
+					"previewButton": "none",
+					"slidesButton": "none",
+					"lessonsLearnedButton": "none",
+					"resetButton": "inline",
+					"doneButton": "inline",
+					"prettifyButton": "inline",
+					"nodeBorderCompleteColor": "gray",
+					"nodeBorderCompleteStyle": "solid ",
+					"nodeBorderInCompleteStyle": "dashed ",
+					"nodeBorderSuccessColor": "green",
+					"nodeBorderFeedbackColor": "yellow",
+					"nodeBorderFailColor": "red",
+					"qualitativeChangeButtons": "none"
+				}
+			},
+				{
+					"mode": ["TEST", "EDITOR"],
 					"param": {
-						"showColor": true,
+						"showColor": false,
 						"nodeBorderSize": "3px ",
 						"createNodeButton": "none",
 						"graphButton": "none",
@@ -232,12 +259,41 @@ define(["dojo/_base/lang"], function (lang) {
 						"nodeBorderCompleteColor": "gray",
 						"nodeBorderCompleteStyle": "solid ",
 						"nodeBorderInCompleteStyle": "dashed ",
-						"nodeBorderSuccessColor": "green",
-						"nodeBorderFeedbackColor": "yellow",
-						"nodeBorderFailColor": "red",
+						"nodeBorderSuccessColor": "gray",
+						"nodeBorderFeedbackColor": "gray",
+						"nodeBorderFailColor": "gray",
 						"qualitativeChangeButtons": "none"
-					}
-				},
+
+					}}
+			],
+			executionDemo: [{
+				"mode": ["STUDENT", "COACHED"],
+				"param": {
+					"showColor": true,
+					"nodeBorderSize": "3px ",
+					"createNodeButton": "none",
+					"graphButton": "none",
+					"tableButton": "none",
+					"forumButton": "none",
+					"schemaButton": "none",
+					"descButton": "none",
+					"saveButton": "none",
+					"mergeButton": "none",
+					"previewButton": "none",
+					"slidesButton": "none",
+					"lessonsLearnedButton": "none",
+					"resetButton": "inline",
+					"doneButton": "inline",
+					"prettifyButton": "inline",
+					"nodeBorderCompleteColor": "gray",
+					"nodeBorderCompleteStyle": "solid ",
+					"nodeBorderInCompleteStyle": "dashed ",
+					"nodeBorderSuccessColor": "green",
+					"nodeBorderFeedbackColor": "yellow",
+					"nodeBorderFailColor": "red",
+					"qualitativeChangeButtons": "none"
+				}
+			},
 				{
 					"mode": ["TEST", "EDITOR"],
 					"param": {

@@ -362,6 +362,20 @@ define([
             });
 
             }
+            else if(this._activity === "incrementalDemo"){
+
+                descs[0]="";
+                descs[1] = "Welcome to a demonstration of a Dragoon Incremental Change activity.  In an Incremental Change activity, we use a completed model to determine how changing the value of one parameter will affect the rest of the quantities in the model.  You will see one of four labels on a node:";
+                descs[2]= "* The up arrow means the quantity will monotonically increase (i.e. will generally be greater and never be less than the original value) because of the change.";
+                descs[3]= "* The down arrow means the quantity will monotonically decrease (i.e. will generally be less than and never be greater than the original value) because of the change.";
+                descs[4]= "* The equals sign means the quantity will remain the same despite the change.";
+                descs[5]= "* The question mark means the quantity will sometimes be greater and sometimes be less than its original value.";
+                descs[6]= "In this model the value of the parameter, "+ this.givenModel.given.getName(this.givenModel.getInitialTweakedNode()) + ", has been "+ this.givenModel.getInitialTweakDirection() +"d. You must now choose the correct label for each of the function and accumulator nodes using the symbols listed above.";
+                descs[7]= "For this demonstration, Dragoon highlight the node you should label next.  When you click on that node, Dragoon will label it for you.  You can then click the \"Show Equation\" button to see why the node was given the label.";
+                array.forEach(descs,function(d){
+                    desc_text.push(d);
+                });
+            }
 
             var imageLeft = 30;
             var imageTop = 20;

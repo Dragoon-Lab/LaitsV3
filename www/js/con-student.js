@@ -537,7 +537,8 @@ define(["dojo/aspect",
 				style.set(showEquationButton, "display", "none");
 				this.closeIncrementalMenu();
 			} else {
-				if (!this.activityConfig.get("showPopupIfComplete") || (this.activityConfig.get("showPopupIfComplete") && this._model.active.isComplete(id))) {
+				if (!this.activityConfig.get("showPopupIfComplete") || (this.activityConfig.get("showPopupIfComplete")
+					&& this._model.active.isComplete(id))) {
 					//Set Node Name
 					dom.byId("IncrementalNodeName").innerHTML = "<strong>" + nodeName + "</strong>";
 
@@ -709,7 +710,6 @@ define(["dojo/aspect",
 		},
 
 		highlightNextNode: function () {
-			console.log("activity is",this.activityConfig.get("demoExecution"));		
 			if (this.activityConfig.get("demoIncremental") || this.activityConfig.get("demoExecution")) {
 				//Get next node in the list from PM
 				var nextID = this._PM.getNextNode();
@@ -722,7 +722,7 @@ define(["dojo/aspect",
 				return;
 			}
 		},
-		
+
 		showIncrementalAnswer: function (id) {
 			this.currentID = id;
 			if (id === this.currentHighLight) {
@@ -748,7 +748,7 @@ define(["dojo/aspect",
 			}
 		},
 
-		resetNodesIncDemo: function(){
+		resetNodesIncDemo: function (){
 			var studId = this._model.active.getNodes();
 			var nowHighLighted = this.currentHighLight;
 			studId.forEach(lang.hitch(this, function (newId) {
@@ -829,7 +829,7 @@ define(["dojo/aspect",
 		 * Summary: initialize, add event handlers and show execution menu tooltipDialog
 		 */
 
-		initExecutionEditor: function(){
+		initExecutionEditor: function (){
 			var that = this;
 
 			this._executionMenu = registry.byId("executionMenu");
@@ -855,6 +855,22 @@ define(["dojo/aspect",
 				this.showExplanationDialog();
 			}));
 
+			var checkValueButton = registry.byId("execCheckValueButton");
+			on(checkValueButton, "click", lang.hitch(this, function (e) {
+				e.preventDefault();
+				//Set in the model
+				var answer = registry.byId("executionValue").value;
+				var result = this._PM.processAnswer(this.currentID, "executionValue", answer);
+				this.applyDirectives(result);
+				this._model.active.setExecutionValue(this.currentID, answer);
+
+				//Update Node Label
+				this.updateNodeLabel(this.currentID);
+				this.colorNodeBorder(this.currentID, true);
+
+				//Close popup
+				that.closeExecutionMenu();
+			}));
 			this._executionMenu.onBlur = lang.hitch(this, function () {
 				this.closeExecutionMenu();
 			});
@@ -863,7 +879,7 @@ define(["dojo/aspect",
 			executionValText._setStatusAttr = this._setStatus;
 		},
 
-		showExecutionMenu: function(id){
+		showExecutionMenu: function (id){
 			this.currentID = id;
 			var givenID = this._model.active.getDescriptionID(id);
 			var type = this._model.active.getType(id);
@@ -873,7 +889,8 @@ define(["dojo/aspect",
 			if (type != "accumulator" && type != "function") {
 				this.closeExecutionMenu();
 			} else {
-				if (!this.activityConfig.get("showPopupIfComplete") || (this.activityConfig.get("showPopupIfComplete") && this._model.active.isComplete(id))) {
+				if (!this.activityConfig.get("showPopupIfComplete") || (this.activityConfig.get("showPopupIfComplete")
+					&& this._model.active.isComplete(id))) {
 					//logging for pop up start
 					this.logging.log('ui-action', {
 						type: "open-execution-popup",
@@ -883,13 +900,25 @@ define(["dojo/aspect",
 
 					//set node name
 					dom.byId("executionNodeName").innerHTML = "<strong>" + nodeName + "</strong>";
+					var executionValue = registry.byId("executionValue");
+					var checkValueButton = registry.byId("execCheckValueButton");
 
 					//Show hide explanation button
 					this._model.given.getExplanation(givenID) ? style.set(showExplanationButton, "display", "block") :
 						style.set(showExplanationButton, "display", "none");
-					var answer = this._model.active.getExecutionValue(id);
-					registry.byId("executionValue").set("value", answer);
+					var answer = this._model.active.getExecutionValue(id)|| "";
+					executionValue.set("value", answer);
 
+					//enable/disable textbox and button
+					var execValStatus = this._model.active.getNode(id).status["executionValue"] || false;
+					executionValue.set("status", execValStatus.status|| "");
+					if (execValStatus && execValStatus.disabled) {
+						checkValueButton.set("disabled", execValStatus.disabled);
+						executionValue.set("disabled", execValStatus.disabled);
+					}else{
+						checkValueButton.set("disabled", false);
+						executionValue.set("disabled", false);
+					}
 					//open execution menu
 					popup.open({
 						popup: this._executionMenu,
@@ -901,7 +930,7 @@ define(["dojo/aspect",
 			this.canRunNextIteration();
 		},
 
-		showExecutionAnswer : function(id){
+		showExecutionAnswer : function (id){
 			this.currentID = id;
 			if(id === this.currentHighLight){
 				//remove glow
@@ -910,7 +939,7 @@ define(["dojo/aspect",
 				// process answer
 				var givenID = this._model.active.getDescriptionID(id);
 				var answer = this._model.given.getExecutionValue(givenID);
-				var result = this._PM.processAnswer(id, "executionVal", answer);
+				var result = this._PM.processAnswer(id, "executionValue", answer);
 				this.applyDirectives(result);
 
 				//Set correct answer in model
@@ -926,7 +955,7 @@ define(["dojo/aspect",
 			}
 		},
 
-		closeExecutionMenu: function(){
+		closeExecutionMenu: function (){
 			this.logging.log('ui-action', {
 				type: "close-execution-popup",
 				node: this._model.active.getName(this.currentID),
