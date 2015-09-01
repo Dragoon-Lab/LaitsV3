@@ -67,7 +67,7 @@ define([
 					unitsValue = '';
 				}
 				initialValue += " " + unitsValue;
-				if(!nodeName && type === 'triangle') initialValue = 'Click here!';
+				if(type === 'triangle') initialValue = 'Click here!';
 				htmlContent = '<div id=' + nodeId + 'Label  class="bubble"><div class="' + type + 'Wrapper"><strong>' + parameter + '<br>' + initialValue + '</strong></div><div class=' + type + 'Div><strong>' + nodeName + '</strong></div></div>';
 				console.log(nodeName);
 				

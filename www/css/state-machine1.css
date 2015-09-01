@@ -195,7 +195,7 @@
 
 .triangleDiv{
     position: relative;
-    top: 45px;
+    top: 25px;
     transform: translateX(-50%);
     text-align: center;
 }
