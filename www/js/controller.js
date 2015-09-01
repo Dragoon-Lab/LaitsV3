@@ -177,6 +177,9 @@ define([
 						node: nodeName
 					});
 				}
+				if(crisis.title && crisis.title.indexOf("Iteration Has") >= 0){
+					that.callNextIteration();
+				}
 				crisis.hide();
 			});
 		},

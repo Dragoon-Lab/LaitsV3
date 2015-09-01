@@ -1060,7 +1060,17 @@ define([
 					return true;
 				}
 				return false;
-			}
+			},
+            getRootNodes: function(){
+                var rootNodes = [];
+                var givenNodes = this.getNodes();                   
+                array.forEach(givenNodes, function(node){
+                    if(obj.isParentNode(node.ID) && this.isNodeRequired(node.ID)){
+                        rootNodes.push(node);
+                    }
+                },this);
+                return rootNodes;
+            }
 		}, both);
 
 		obj.solution = lang.mixin({
@@ -1289,6 +1299,10 @@ define([
 						node.executionValue.push(val);
 					}
 				}
+			},
+			emptyExecutionValues: function(/* string */ id){
+				var node = this.getNode(id);
+				node.executionValue = [];		
 			},
 			incrementAssistanceScore: function(/*string*/ id){
 				// Summary: Incremements a score of the amount of errors/hints that

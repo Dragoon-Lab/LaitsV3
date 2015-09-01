@@ -337,7 +337,8 @@ exports.getCurrentUsername = function(client){
 // 2. Menu bar functions
 
 exports.menuCreateNode = function(client){
-    await(client.waitForVisible('span[id="createNodeButton_label"]',defer()));
+    //await(client.waitForVisible('span[id="createNodeButton_label"]',defer()));
+    // removed 8/31/2015, because it doesn't work with flashing coached mode button
     await(client.click('span[id="createNodeButton_label"]',defer()));
     wait(200);
 }
