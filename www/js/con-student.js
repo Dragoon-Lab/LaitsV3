@@ -833,22 +833,6 @@ define(["dojo/aspect",
 				this.showExplanationDialog();
 			}));
 
-			var checkValueButton = registry.byId("execCheckValueButton");
-			on(checkValueButton, "click", lang.hitch(this, function (e) {
-				e.preventDefault();
-				//Set in the model
-				var answer = registry.byId("executionValue").value;
-				var result = this._PM.processAnswer(this.currentID, "executionValue", answer);
-				this.applyDirectives(result);
-				this._model.active.setExecutionValue(this.currentID, answer);
-
-				//Update Node Label
-				this.updateNodeLabel(this.currentID);
-				this.colorNodeBorder(this.currentID, true);
-
-				//Close popup
-				that.closeExecutionMenu();
-			}));
 			this._executionMenu.onBlur = lang.hitch(this, function () {
 				this.closeExecutionMenu();
 			});
@@ -879,8 +863,7 @@ define(["dojo/aspect",
 					//set node name
 					dom.byId("executionNodeName").innerHTML = "<strong>" + nodeName + "</strong>";
 					var executionValue = registry.byId("executionValue");
-					var checkValueButton = registry.byId("execCheckValueButton");
-
+					
 					//Show hide explanation button
 					this._model.given.getExplanation(givenID) ? style.set(showExplanationButton, "display", "block") :
 						style.set(showExplanationButton, "display", "none");
@@ -891,10 +874,8 @@ define(["dojo/aspect",
 					var execValStatus = this._model.active.getNode(id).status["executionValue"] || false;
 					executionValue.set("status", execValStatus.status|| "");
 					if (execValStatus && execValStatus.disabled) {
-						checkValueButton.set("disabled", execValStatus.disabled);
 						executionValue.set("disabled", execValStatus.disabled);
 					}else{
-						checkValueButton.set("disabled", false);
 						executionValue.set("disabled", false);
 					}
 					//open execution menu
