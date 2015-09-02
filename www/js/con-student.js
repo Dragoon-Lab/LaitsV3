@@ -924,7 +924,7 @@ define(["dojo/aspect",
 			popup.close(this._executionMenu);
 		},
 
-		canRunNextIteration: function () {	
+		canRunNextIteration: function () {
 			
 			var crisis=registry.byId(this.widgetMap.crisisAlert); 
 			crisis._onKey=function(){}; // Override the _onKey function to prevent crisis dialogbox from closing when ESC is pressed
@@ -935,7 +935,6 @@ define(["dojo/aspect",
 
 			studId = this._model.active.getNodes();
 			var isFinished = true;
-			var inFirstIteration=false;
 			studId.forEach(lang.hitch(this, function (newId) {
 			//each node should be complete and correct else set isFinished to false
 				if (!this._model.active.isComplete(newId.ID) || this._model.student.getCorrectness(newId.ID) === "incorrect") isFinished = false;
