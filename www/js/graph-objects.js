@@ -44,8 +44,9 @@ define([
 			}
 		},
 		getNodeName:function(model,nodeId,showDetails,type){
-			var type = type||model.getType(nodeId)||'triangle';
-			var nodeName = model.getName(nodeId);
+			type = type||model.getType(nodeId)||'triangle';
+			var nodeName = model.getName(nodeId) || '';
+			var htmlContent = null;
 			if(showDetails === "DETAILS") {
 				var parse = model.getEquation(nodeId);
 				var parameter = '';
@@ -66,13 +67,10 @@ define([
 					unitsValue = '';
 				}
 				initialValue += " " + unitsValue;
-
-				if (nodeName) {
-					nodeName = '<div id=' + nodeId + 'Label  class="bubble"><div class="' + type + 'Wrapper"><strong>' + parameter + '<br>' + initialValue + '</strong></div><div class=' + type + 'Div><strong>' + nodeName + '</strong></div></div>';
-					console.log(nodeName);
-				} else {
-					nodeName = '';
-				}
+				if(type === 'triangle') initialValue = 'Click here!';
+				htmlContent = '<div id=' + nodeId + 'Label  class="bubble"><div class="' + type + 'Wrapper"><strong>' + parameter + '<br>' + initialValue + '</strong></div><div class=' + type + 'Div><strong>' + nodeName + '</strong></div></div>';
+				console.log(nodeName);
+				
 			}else if(showDetails === "DIRECTION"){
 				var dir = model.getTweakDirection(nodeId) == ""? "Empty": model.getTweakDirection(nodeId);
 				var content = "";
@@ -87,7 +85,7 @@ define([
 				if(dir == "Stays-Same"){
 					content = "&#x003d;"
 				}
-				nodeName='<div id=' + nodeId + 'Label  class="bubble"><div class="incrementalContent ' + type + 'Wrapper"><strong class="fa fa-'+ iconClass[dir] +'">'+ content+ '</strong></div><div class=' + type + 'Div><strong>' + nodeName + '</strong></div></div>';
+				htmlContent='<div id=' + nodeId + 'Label  class="bubble"><div class="incrementalContent ' + type + 'Wrapper"><strong class="fa fa-'+ iconClass[dir] +'">'+ content+ '</strong></div><div class=' + type + 'Div><strong>' + nodeName + '</strong></div></div>';
 			}else if(showDetails === "NEWVALUE"){
 				var iteration = model.getIteration();
 				var oldVal = model.getInitial(nodeId);
@@ -107,10 +105,10 @@ define([
 				}
 				content += "<span style='font-size:12px;'>"+ newVal + "</span><br/>"+ unitsValue+"";
 
-				nodeName='<div id=' + nodeId + 'Label  class="bubble bubble-execution"><div class="executionContent ' + type + 'Wrapper"><strong>'+ content+ '</strong></div><div class=' + type + 'Div><strong>' + nodeName + '</strong></div></div>';
+				htmlContent='<div id=' + nodeId + 'Label  class="bubble bubble-execution"><div class="executionContent ' + type + 'Wrapper"><strong>'+ content+ '</strong></div><div class=' + type + 'Div><strong>' + nodeName + '</strong></div></div>';
 
 			}
-			return nodeName;
+			return htmlContent;
 		}
 	};
 });
