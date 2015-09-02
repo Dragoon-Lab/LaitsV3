@@ -914,25 +914,32 @@ define(["dojo/aspect",
 			popup.close(this._executionMenu);
 		},
 
-		canRunNextIteration: function () {
+		canRunNextIteration: function () {	
+			
+			var crisis=registry.byId(this.widgetMap.crisisAlert); 
+			crisis._onKey=function(){}; // Override the _onKey function to prevent crisis dialogbox from closing when ESC is pressed
+			style.set(crisis.closeButtonNode,"display","none"); // Hide the close button 
+
+			var inFirstIteration=false;		
+			inFirstIteration=(this._model.student.getIteration() <1) ? true : false;
+
 			studId = this._model.active.getNodes();
 			var isFinished = true;
-			var inFirstIteration=false;
 			studId.forEach(lang.hitch(this, function (newId) {
-				//each node should be complete and correct else set isFinished to false
+			//each node should be complete and correct else set isFinished to false
 				if (!this._model.active.isComplete(newId.ID) || this._model.student.getCorrectness(newId.ID) === "incorrect") isFinished = false;
-			}));
-			if(this._model.student.getIteration() <1) inFirstIteration=true;
-			if (isFinished&inFirstIteration) {
+			}));		
+
+			if (isFinished & inFirstIteration) {
 				this.applyDirectives([{
-				id: "crisisAlert",
-				attribute: "title",
-				value: "Iteration Has Completed"
-			}, {
-				id: "crisisAlert",
-				attribute: "open",
-				value: "You have completed all the values for this time step.  Click 'Ok' to proceed to the next time step."
-			}]);
+					id: "crisisAlert",
+					attribute: "title",
+					value: "Iteration Has Completed"
+				}, {
+					id: "crisisAlert",
+					attribute: "open",
+					value: "You have completed all the values for this time step.  Click 'Ok' to proceed to the next time step."
+			    }]);			
 			}
 			else if (isFinished) {
 				this.applyDirectives([{
@@ -943,11 +950,10 @@ define(["dojo/aspect",
 					id: "crisisAlert",
 					attribute: "open",
 					value: "Good work, now Dragoon will compute the rest of the values for you and display them as a table and as a graph in the next window."
-				}]);
-				
+				}]);				
 				console.log("activity ended time to show the graph");
-			}
-			console.log("model is",this._model);
+			}											
+			//console.log("model is",this._model);
 		},
 
 		callNextIteration: function () {
@@ -957,19 +963,6 @@ define(["dojo/aspect",
 			if(this._model.student.getIteration() <2) {
 				this.resetIterationExecDemo();
 			}
-			// else if(this._model.student.getIteration()==2){
-			// this.applyDirectives([{
-			// 	id: "crisisAlert",
-			// 	attribute: "title",
-			// 	value: "Demonstration Completed" 
-			// }, {
-			// 	id: "crisisAlert",
-			// 	attribute: "open",
-			// 	value: "Good work, now Dragoon will compute the rest of the values for you and display them as a table and as a graph in the next window."
-			// }]);
-				
-			// 	console.log("activity ended time to show the graph");
-			// }
 		}
 	});
 });
