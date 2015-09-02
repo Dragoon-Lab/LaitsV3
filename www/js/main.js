@@ -125,7 +125,7 @@ define([
 		activity_config = new activityParameters(query.m, query.a);
 		console.log("ACTIVITY PARAMS", activity_config);
 	}catch(error){
-		throw Error("problem in creating activity configurations");
+		throw Error("Problem in creating activity configurations: "+error);
 	}
 	if(activity_config && query.s === "ElectronixTutor"){
 		activity_config["ElectronixTutor"] = true;
