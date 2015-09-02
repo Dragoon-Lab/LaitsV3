@@ -52,6 +52,10 @@ define([
 			//
 			var d = new Date();
 			var seed = d.getTime();
+
+			//factor between which the values would lie, count is the number of times we should check the values.
+			var factor = 1000000;
+			var count = 25;
 			if(typeof(studentEquation) == 'string')
 			{
 				console.log("hello");
@@ -66,58 +70,64 @@ define([
 				this.logging.clientLog("assert", {
 					message:'Given node '+id+' does not have an equation', 
 					functionTag : 'areEquivalent'
-			});
+				});
 			}
 			
 			var givenParse = Parser.parse(givenEqn, seed);
 			var givenVals = {};
-			array.forEach(model.given.getNodes(), function(node){
-				/* Parameter and accumulator nodes are treated as independent. */
-				if((!node.genus || node.genus === "required")/* && (node.type == 'parameter' || node.type == 'accumulator')*/){
-					givenVals[node.ID] = Math.random();
-				}
-			});
-			var valsCopy = dojo.clone(givenVals);
+			var flag = true;
+			var i = 0;
+			while(flag && i < count){
+				array.forEach(model.given.getNodes(), function(node){
+					/* Parameter and accumulator nodes are treated as independent. */
+					if((!node.genus || node.genus === "required")/* && (node.type == 'parameter' || node.type == 'accumulator')*/){
+						givenVals[node.ID] = (Math.random()*2 - 1)*factor; //converts value beween 0 and 1 to -factor to factor
+					}
+				});
+				var valsCopy = dojo.clone(givenVals);
 
-			var givenResult = this.getEquationValue(givenParse, model, givenVals, "given", seed, 0);
-			var studentResult = this.getEquationValue(student, model, givenVals, "solution", seed, 0);
+				var givenResult = this.getEquationValue(givenParse, model, givenVals, "given", seed, 0);
+				var studentResult = this.getEquationValue(student, model, givenVals, "solution", seed, 0);
 
-			console.log("results:" + givenResult + ":" + studentResult);
+				console.log("results:" + givenResult + ":" + studentResult);
 
-			var flag = Math.abs(studentResult - givenResult) <= 10e-10 * Math.abs(studentResult + givenResult);
+				flag = Math.abs(studentResult - givenResult) <= 10e-10 * Math.abs(studentResult + givenResult);
 
-			if(!isFinite(studentResult)){// Handel devide by zero in student mode
-				flag=false;
-			}
-
-			if(givenEqn.indexOf("max") >= 0 || givenEqn.indexOf("min") >= 0){
-				var index = 0;
-				var nodes = Object.keys(valsCopy);
-				var givenVals1 = {};
-				for(var i = 0; i<nodes.length; i++){
-					givenVals1[nodes[i]] = -1*valsCopy[nodes[i]];
+				if(!isFinite(studentResult)){// Handel devide by zero in student mode
+					flag=false;
 				}
 
-				console.log(givenVals1);
-			console.log("results:" + givenResult1 + ":" + studentResult1);
+				//now we dont need to do that max and min fix for the equation
+				/*if(givenEqn.indexOf("max") >= 0 || givenEqn.indexOf("min") >= 0){
+					var index = 0;
+					var nodes = Object.keys(valsCopy);
+					var givenVals1 = {};
+					for(var i = 0; i<nodes.length; i++){
+						givenVals1[nodes[i]] = -1*valsCopy[nodes[i]];
+					}
 
-				var givenResult1 = this.getEquationValue(givenParse, model, givenVals1, "given", seed, 0);
-				var studentResult1 = this.getEquationValue(student, model, givenVals1, "solution", seed, 0);
+					console.log(givenVals1);
+					console.log("results:" + givenResult1 + ":" + studentResult1);
+
+					var givenResult1 = this.getEquationValue(givenParse, model, givenVals1, "given", seed, 0);
+					var studentResult1 = this.getEquationValue(student, model, givenVals1, "solution", seed, 0);
 
 
-				flag = flag && (Math.abs(studentResult1 - givenResult1) <= 10e-10 * Math.abs(studentResult1 + givenResult1));
-			}
+					flag = flag && (Math.abs(studentResult1 - givenResult1) <= 10e-10 * Math.abs(studentResult1 + givenResult1));
+				}*/
 
-			if(givenEqn.indexOf("sinewave") >= 0)
-			{
-				var givenResult2 = this.getEquationValue(givenParse, model, givenVals, "given", seed, 1);
-				var studentResult2 = this.getEquationValue(student, model, givenVals, "solution", seed, 1);
+				if(givenEqn.indexOf("sinewave") >= 0)
+				{
+					var givenResult2 = this.getEquationValue(givenParse, model, givenVals, "given", seed, 1);
+					var studentResult2 = this.getEquationValue(student, model, givenVals, "solution", seed, 1);
 
-				flag = flag && (Math.abs(studentResult2 - givenResult2) <= 10e-10 * Math.abs(studentResult2 + givenResult2));
-			}
-			if(isNaN(givenResult) && isNaN(studentResult))
-			{
-				flag = true;
+					flag = flag && (Math.abs(studentResult2 - givenResult2) <= 10e-10 * Math.abs(studentResult2 + givenResult2));
+				}
+				if(isNaN(givenResult) && isNaN(studentResult))
+				{
+					flag = true;
+				}
+				i++;
 			}
 			return flag; 
 		},
