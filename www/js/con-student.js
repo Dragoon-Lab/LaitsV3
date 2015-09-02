@@ -941,6 +941,7 @@ define(["dojo/aspect",
 					value: "You have completed all the values for this time step.  Click 'Ok' to proceed to the next time step."
 			    }]);			
 			}
+<<<<<<< HEAD
 			else if (isFinished) {
 				this.applyDirectives([{
 					id: "crisisAlert",
@@ -954,14 +955,28 @@ define(["dojo/aspect",
 				console.log("activity ended time to show the graph");
 			}											
 			//console.log("model is",this._model);
+=======
+			console.log("model is",this._model);
+>>>>>>> origin
 		},
 
 		callNextIteration: function () {
 			this._model.student.incrementIteration();
 			console.log("iteration count is",this._model.student.getIteration());
+<<<<<<< HEAD
 			var crisis = registry.byId(this.widgetMap.crisisAlert); 
 			if(this._model.student.getIteration() <2) {
 				this.resetIterationExecDemo();
+=======
+			//var it_count = 
+			if(this._model.student.getIteration() <2) {
+				this.resetIterationExecDemo();
+				console.log("mode is", this._model);
+			}
+			else if(this._model.student.getIteration()==2){
+				//bahar can write her code here , when the iteration is 2 , we can show the graph
+				console.log("activity ended time to show the graph");
+>>>>>>> origin
 			}
 		}
 	});
