@@ -80,25 +80,27 @@ function findIdbyName(client, nodeName){
 }
 
 function findDropDownByName(client, name){
-    //console.log("Starting findDropdown: "+name);
+    console.log("Starting findDropdown: "+name);
     var notFound = true;
     var counter = lastDropdownID;
     var result = null;
     var text = "";
-    //console.log("start count: "+counter);
+    console.log("start count: "+counter);
     while(notFound && counter < MAX_DROPDOWN_IDS)
     {
         try{
             text = await(client.getText('#dijit_MenuItem_' + counter,defer()));
+            console.log("menu item text is",text,counter);
         }catch(err){}
         if(text == name)
         {
+            console.log("")
             notFound = false;
             result = counter;
         }
         counter++;
     }
-    //console.log("result: "+result);
+    console.log("result: "+result);
     lastDropdownID = result-5;
     if(result == null){
         throw new Error("Could not find dropdown item: "+name);
@@ -107,6 +109,7 @@ function findDropDownByName(client, name){
 }
 
 function selectDropdownValue(client,dropDownID,value){
+    wait(500);
     await(client.waitForVisible(dropDownID,defer()));
     await(client.click(dropDownID,defer()));
     await(client.waitForVisible(dropDownID+'_menu',defer()));
