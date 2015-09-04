@@ -17,7 +17,18 @@
         },
         "taskDescription": {
             "construction": [
-                "Suppose that 1000 Dodos were living on the island of Mauritius when sailors landed. The sailors accidentally introduced a new species, rats. The rats ate essentially all the Dodo eggs as soon as they were laid, so the Dodo birth rate dropped to zero. Meanwhile, the annual Dodo death rate continued to be 20% (0.2 in Dragoon, which uses only decimal notation). So, 0.2 of the Dodos died each year and no Dodos were born.  Construct a model of the dodo population and then click \"Graph\" to make sure your model matches the author's model."
+                "Let's construct the Dodo population model that we saw earlier.  We are given an incomplete node labeled \"population\".  Let's start by completing it.  Enter 1000 as its initial value.  Enter \"- deaths\" into the expression box by clicking on the minus sign button and then selecting \"deaths\" from the inputs menu.  When done, click on the Check Expression button and then on the Done button.",
+                "",
+                "Now click on the next triangular node, and make it into a function node whose description is \"The number of Dodos that die each year.\"  Its expression should be \"death rate * population\"",
+                "",
+                "Now click on the new triangular node, and make it into a parameter node whose description is \"The fraction of Dodos that die each year.\"   Enter \"0.2\" as its value, and click Done.",
+                "",
+                "You now have a complete model.  You can drag the nodes around to make it prettier if you want, or use the \"prettify\" button to let Dragoon arrange them for you.",
+                "",
+                "Click on the \"Graph\" button and observe how the Dodo population changes.  Try moving the sliders.  When you have closed the graph window, click on the Done button in the top of menu bar."
+            ],
+            "incremental": [
+                "Suppose that 1000 Dodos were living on the island of Mauritius when sailors landed. The sailors accidentally introduced a new species, rats. The rats ate essentially all the Dodo eggs as soon as they were laid, so the Dodo birth rate dropped to zero. Meanwhile, the annual Dodo death rate continued to be 20%. That is, 20% of the Dodos died each year and no Dodos were born. Build a model and observe how the Dodo population changed over 20 years."
             ]
         },
         "givenModelNodes": [
