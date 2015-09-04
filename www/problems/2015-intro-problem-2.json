@@ -1,11 +1,11 @@
 {
     "task": {
-        "taskName": "Isle Royale - Moose population 2",
+        "taskName": "parkinglot",
         "time": {
-            "start": 1900,
-            "end": 1920,
+            "start": 0,
+            "end": 40,
             "step": 1,
-            "units": "Years",
+            "units": "Days",
             "integrationMethod": "Eulers Method"
         },
         "properties": {
@@ -13,22 +13,14 @@
             "type": ""
         },
         "image": {
-            "URL": "images\/moose_60.png"
+            "URL": "images\/parking.jpg"
         },
         "taskDescription": {
             "construction": [
-                "Assumptions:",
-                " * The moose population is 20 in the first year (1900).",
-                " * Births are the only change in the population. Deaths, immigration and emigration do not occur.",
-                " * The number of moose births each year is the moose population times the probability of a moose giving birth during the year.",
-                " * The probability of a moose giving birth each year is 20%."
+                " A car dealership has a front lot and a back lot, and it has to empty the front lot every evening before closing. The back lot starts with 10 cars in it, and the front lot starts with 40 cars in it. Jack drives cars from the front lot to the back lot at a rate of one car per minute. After 40 minutes, he's done. Graph the contents of both lots. "
             ],
             "incremental": [
-                "Assumptions:",
-                " * The moose population is 20 in the first year (1900).",
-                " * Births are the only change in the population. Deaths, immigration and emigration do not occur.",
-                " * The number of moose births each year is the moose population times the probability of a moose giving birth during the year.",
-                " * The probability of a moose giving birth each year is 20%."
+                " A car dealership has a front lot and a back lot, and it has to empty the front lot every evening before closing. The back lot starts with 10 cars in it, and the front lot starts with 40 cars in it. Jack drives cars from the front lot to the back lot at a rate of one car per minute. After 40 minutes, he's done."
             ]
         },
         "givenModelNodes": [
@@ -51,17 +43,21 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "moose population",
+                "name": "front lot",
                 "type": "accumulator",
                 "parentNode": true,
                 "units": "",
-                "description": "The number of moose in the population",
-                "initial": 20,
-                "equation": "id3"
+                "description": "The number of cars parked in the front lot",
+                "initial": 40,
+                "equation": "- id3"
             },
             {
                 "ID": "id2",
-                "inputs": [],
+                "inputs": [
+                    {
+                        "ID": "id3"
+                    }
+                ],
                 "position": {
                     "x": 651.09735729932,
                     "y": 50
@@ -74,23 +70,17 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "moose birth probability",
-                "type": "parameter",
-                "parentNode": false,
+                "name": "back lot",
+                "type": "accumulator",
+                "parentNode": true,
                 "units": "",
-                "description": "The probability of a moose giving birth during the year",
-                "initial": 0.2
+                "description": "The number of cars parked in the back lot",
+                "initial": 10,
+                "equation": "id3"
             },
             {
                 "ID": "id3",
-                "inputs": [
-                    {
-                        "ID": "id1"
-                    },
-                    {
-                        "ID": "id2"
-                    }
-                ],
+                "inputs": [],
                 "position": {
                     "x": 531.09735729932,
                     "y": 50.000000000038
@@ -103,19 +93,19 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "moose births",
-                "type": "function",
+                "name": "cars moved per minute",
+                "type": "parameter",
                 "parentNode": false,
                 "units": "",
-                "description": "The number of moose born each year",
-                "equation": "id1 * id2"
+                "description": "The number of cars moved per minute",
+                "initial": 1
             }
         ],
         "studentModelNodes": [],
         "lessonsLearned": [],
         "increment": [
             {
-                "tweakedNode": "id2",
+                "tweakedNode": "id3",
                 "tweakDirection": "Increase"
             }
         ]
