@@ -1,6 +1,6 @@
 {
     "task": {
-        "taskName": "2015-intro-problem-1-and-3",
+        "taskName": "Dodo Population",
         "time": {
             "start": 0,
             "end": 20,
@@ -28,7 +28,10 @@
                 "Click on the \"Graph\" button and observe how the Dodo population changes.  Try moving the sliders.  When you have closed the graph window, click on the Done button in the top of menu bar."
             ],
             "incremental": [
-                "Suppose that 1000 Dodos were living on the island of Mauritius when sailors landed. The sailors accidentally introduced a new species, rats. The rats ate essentially all the Dodo eggs as soon as they were laid, so the Dodo birth rate dropped to zero. Meanwhile, the annual Dodo death rate continued to be 20%. That is, 20% of the Dodos died each year and no Dodos were born. Build a model and observe how the Dodo population changed over 20 years."
+                "Suppose that 1000 Dodos were living on the island of Mauritius when sailors landed. The sailors accidentally introduced a new species, rats. The rats ate essentially all the Dodo eggs as soon as they were laid, so the Dodo birth rate dropped to zero. Meanwhile, the annual Dodo death rate continued to be 20%. That is, 20% of the Dodos died each year and no Dodos were born."
+            ],
+            "execution": [
+                "Suppose that 1000 Dodos were living on the island of Mauritius when sailors landed. The sailors accidentally introduced a new species, rats. The rats ate essentially all the Dodo eggs as soon as they were laid, so the Dodo birth rate dropped to zero. Meanwhile, the annual Dodo death rate continued to be 20%. That is, 20% of the Dodos died each year and no Dodos were born."
             ]
         },
         "givenModelNodes": [
