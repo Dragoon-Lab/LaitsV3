@@ -210,10 +210,19 @@ define([
 
 			return newNodeID;
 		},
-
+		/*
+		This function first set the iteration number and then calculate the
+		execution values for each node for each iteration.
+		*/
 		calculateExecutionValues: function(){
-			var iterations = this._model.getExecutionIterations() || 2;
+			// Setting the iteration number
+			var iterations = this._model.getExecutionIterations(); 
+			if(!iterations){
+				iterations = this.calculateExecutionIterations(); // We can change the iteration number here
+				this._model.setExecutionIterations(iterations);
+			}
 
+			// Calculating the he execution values for each node
 			var pv = this._model.given.getPlotVariables();
 			var g = new Graph(this._model, this._mode, this._session, "table");
 			var s1 = g.findSolution(false, pv);
@@ -233,12 +242,32 @@ define([
 								arr.push(s1.plotValues[index][j].toPrecision(3));
 							}
 							this._model.given.setExecutionValues(node.ID, arr);
-						} else {
+							console.log("execution values for node "+node.ID+" are:",arr);
+						} else 
 							this._model.given.setExecutionValues(node.ID, [node.initial]);
-						}
 					}
 				}, this);
+
 			}
+		},
+		/*
+		This function calculates the maximum iteration number in respect to the number of nodes
+		*/
+		calculateExecutionIterations: function(){
+			var nodes = this._model.given.getNodes();
+			var count = 0;
+
+			if(nodes){
+				array.forEach(nodes, function(node){
+					if(node.type == "accumulator" || node.type == "function")
+						count++;
+				});
+			}
+
+			if(count >= 4)
+				return 2;
+			else 
+				return 3;
 		},
 
 		initializeStudentExecutionValue: function(){
@@ -297,3 +326,4 @@ define([
 		}
 	});
 });
+

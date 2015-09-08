@@ -925,13 +925,13 @@ define(["dojo/aspect",
 		},
 
 		canRunNextIteration: function () {
-			
+
 			var crisis=registry.byId(this.widgetMap.crisisAlert); 
 			crisis._onKey=function(){}; // Override the _onKey function to prevent crisis dialogbox from closing when ESC is pressed
 			style.set(crisis.closeButtonNode,"display","none"); // Hide the close button 
 
-			var inFirstIteration=false;		
-			inFirstIteration=(this._model.student.getIteration() <1) ? true : false;
+			var iterationNum=this._model.student.getIteration();
+			var maxItration=this._model.getExecutionIterations();
 
 			studId = this._model.active.getNodes();
 			var isFinished = true;
@@ -940,7 +940,7 @@ define(["dojo/aspect",
 				if (!this._model.active.isComplete(newId.ID) || this._model.student.getCorrectness(newId.ID) === "incorrect") isFinished = false;
 			}));		
 
-			if (isFinished & inFirstIteration) {
+			if (isFinished & iterationNum<maxItration-1) { // Not in the last iteration
 				this.applyDirectives([{
 					id: "crisisAlert",
 					attribute: "title",
@@ -950,7 +950,9 @@ define(["dojo/aspect",
 					attribute: "open",
 					value: "You have completed all the values for this time step.  Click 'Ok' to proceed to the next time step."
 			    }]);			
-			} else if (isFinished) {
+			} 
+			else if (isFinished & iterationNum==maxItration-1) {// In last iteration
+				this._model.student.incrementIteration();
 				this.applyDirectives([{
 					id: "crisisAlert",
 					attribute: "title",
@@ -969,7 +971,7 @@ define(["dojo/aspect",
 			this._model.student.incrementIteration();
 			console.log("iteration count is",this._model.student.getIteration());
 			var crisis = registry.byId(this.widgetMap.crisisAlert); 
-			if(this._model.student.getIteration() <2) {
+			if(this._model.student.getIteration() < this._model.getExecutionIterations()) {
 				this.resetIterationExecDemo();
 			}
 		}

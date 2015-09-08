@@ -577,18 +577,21 @@ define([
 				if(!node["imageMarks"]) return [];
 				else return node["imageMarks"];
 			},
+           
 			getExecutionValue: function(/* string */ id, /* number */ index){
+				var studentItr=obj.student.getIteration();
+                var maxItration=obj.getExecutionIterations();
 				var node = this.getNode(id);
-				var val = null;
-				if(index === undefined){
-					val = node.executionValue[obj.student.getIteration()];
-				}
-				else if(node.executionValue && node.executionValue.length > index){
-					val = node.executionValue[index];
-				}
+                var val = null;
+                if(index === undefined){
+                    val = node.executionValue[(studentItr>=maxItration)?maxItration-1:studentItr];
+                }
+                else if(node.executionValue && node.executionValue.length > index){
+                    val = node.executionValue[index];
+                }
 
-				return val;
-			},
+                return val;
+            },
 			getExecutionValues: function(/* string */ id){
 				var node = this.getNode(id);
 
@@ -1339,6 +1342,7 @@ define([
 				// Summary: Test whether a node is completely filled out, correct or not
 				// Returns a boolean
 				// id: the node id
+				var maxItr=obj.getExecutionIterations();
 				var node = this.getNode(id);
 				// Some given models do not include units.
 				var hasUnits = node.descriptionID && obj.given.getUnits(node.descriptionID);
@@ -1347,7 +1351,8 @@ define([
 				var hasExecutionValue = node.descriptionID && obj.given.getExecutionValues(node.descriptionID);
 				var executionIteration = (hasExecutionValue ? (node.type == "parameter" ? 0 : this.getIteration()) : 0); //execution iteration will always be 0 for parameters.
 				var equationEntered = node.type && node.type == "parameter" || node.equation;
-                executionIteration= (executionIteration<1)?executionIteration:1;
+                executionIteration= (executionIteration<maxItr-1)?executionIteration:maxItr-1;
+
 				var toReturn = node.descriptionID && node.type &&
 					initialEntered && (!hasUnits || node.units) &&
 					equationEntered && (!hasTweaks || node.tweakDirection)
