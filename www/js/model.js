@@ -141,7 +141,20 @@ define([
 				else
 					return false;
 			},
-
+			// Adding these as private methods since other modules should not rely on model
+			// for manipulating activities.  If others need this, move to a different file.
+			_isDemoActivityType: function(activity){
+				console.log("_isDemoActivityType:"+(activity && activity.substring(activity.length-4,activity.length) == "Demo"));
+				return (activity && activity.substring(activity.length-4,activity.length) == "Demo");
+			},
+			_convertDemoToExercise: function(activity){
+				if (obj._isDemoActivityType(activity)){
+					console.log("_convertDemoToExercise:"+activity.substring(0,activity.length-4));
+					return activity.substring(0,activity.length-4);
+				} else {
+					throw new Error("Attempted to convert non-demo activity to an exercise.");
+				}
+			},
 			_getNextOptimalNode: function(/*string*/ givenNodeID){
 				// Summary: Accepts the id of a parent node and returns the next optimal
 				//		child node that is not visible, or null if all descendants are visible;
@@ -354,8 +367,12 @@ define([
 					this.model.task.taskDescription = {};
 					this.model.task.taskDescription["construction"] = desc;
 				}
-				activityType = (activityType && this.model.task.taskDescription[activityType]) ? activityType : "construction";
-				return this.model.task.taskDescription[activityType];
+				// Demo versions of activities do not have separate descriptions, so:
+				// Convert demo activity to exercise version, if applicable.
+				var exercise = (activityType && obj._isDemoActivityType(activityType)) ? obj._convertDemoToExercise(activityType) : activityType;
+				// Default to construction if desired acitivty description is not found in model.
+				exercise = (exercise && this.model.task.taskDescription[exercise]) ? exercise : "construction";
+				return this.model.task.taskDescription[exercise];
 			},
 			getTaskLessonsLearned : function() {
 				return (this.model.task.lessonsLearned) ? this.model.task.lessonsLearned : [];
