@@ -581,28 +581,6 @@ define(["dojo/aspect",
 			}
 		},
 
-		getChangeDescriptionText:function(changeDesc){
-			var changeDescript;
-			switch(changeDesc) {
-				case "Increase":
-					changeDescript=" has been increased."
-					break;
-				case "Decrease":
-					changeDescript=" has been decreased."
-					break;
-				case "Stays-Same":
-					changeDescript=" stays the same."
-					break;
-				case "Unknown":
-					changeDescript=" will sometimes increase and sometimes decrease."
-					break;
-				default:
-					changeDescript=""
-			}
-			return changeDescript;
-
-		},
-
 		initIncrementalMenu: function () {
 			var that = this;
 
@@ -718,6 +696,8 @@ define(["dojo/aspect",
 					var node = dom.byId(nextID);
 					domClass.add(node, "glowNode");
 					this.currentHighLight = nextID;
+				} else {
+					this.currentHighLight = null;
 				}
 				return;
 			}
@@ -855,22 +835,6 @@ define(["dojo/aspect",
 				this.showExplanationDialog();
 			}));
 
-			var checkValueButton = registry.byId("execCheckValueButton");
-			on(checkValueButton, "click", lang.hitch(this, function (e) {
-				e.preventDefault();
-				//Set in the model
-				var answer = registry.byId("executionValue").value;
-				var result = this._PM.processAnswer(this.currentID, "executionValue", answer);
-				this.applyDirectives(result);
-				this._model.active.setExecutionValue(this.currentID, answer);
-
-				//Update Node Label
-				this.updateNodeLabel(this.currentID);
-				this.colorNodeBorder(this.currentID, true);
-
-				//Close popup
-				that.closeExecutionMenu();
-			}));
 			this._executionMenu.onBlur = lang.hitch(this, function () {
 				this.closeExecutionMenu();
 			});
@@ -901,8 +865,7 @@ define(["dojo/aspect",
 					//set node name
 					dom.byId("executionNodeName").innerHTML = "<strong>" + nodeName + "</strong>";
 					var executionValue = registry.byId("executionValue");
-					var checkValueButton = registry.byId("execCheckValueButton");
-
+					
 					//Show hide explanation button
 					this._model.given.getExplanation(givenID) ? style.set(showExplanationButton, "display", "block") :
 						style.set(showExplanationButton, "display", "none");
@@ -913,10 +876,8 @@ define(["dojo/aspect",
 					var execValStatus = this._model.active.getNode(id).status["executionValue"] || false;
 					executionValue.set("status", execValStatus.status|| "");
 					if (execValStatus && execValStatus.disabled) {
-						checkValueButton.set("disabled", execValStatus.disabled);
 						executionValue.set("disabled", execValStatus.disabled);
 					}else{
-						checkValueButton.set("disabled", false);
 						executionValue.set("disabled", false);
 					}
 					//open execution menu
@@ -933,6 +894,7 @@ define(["dojo/aspect",
 		showExecutionAnswer : function (id){
 			this.currentID = id;
 			if(id === this.currentHighLight){
+				//console.log("Updating answer in node: "+id);
 				//remove glow
 				var node = dom.byId(id);
 				domClass.remove(node, "glowNode");
@@ -966,38 +928,54 @@ define(["dojo/aspect",
 		},
 
 		canRunNextIteration: function () {
+
+			var crisis=registry.byId(this.widgetMap.crisisAlert); 
+			crisis._onKey=function(){}; // Override the _onKey function to prevent crisis dialogbox from closing when ESC is pressed
+			style.set(crisis.closeButtonNode,"display","none"); // Hide the close button 
+
+			var iterationNum=this._model.student.getIteration();
+			var maxItration=this._model.getExecutionIterations();
+
 			studId = this._model.active.getNodes();
 			var isFinished = true;
 			studId.forEach(lang.hitch(this, function (newId) {
-				//each node should be complete and correct else set isFinished to false
+			//each node should be complete and correct else set isFinished to false
 				if (!this._model.active.isComplete(newId.ID) || this._model.student.getCorrectness(newId.ID) === "incorrect") isFinished = false;
-			}));
-			if (isFinished) {
-				//time for the next iteration
+			}));		
+
+			if (isFinished & iterationNum<maxItration-1) { // Not in the last iteration
 				this.applyDirectives([{
-				id: "crisisAlert",
-				attribute: "title",
-				value: "Iteration Has Completed"
-			}, {
-				id: "crisisAlert",
-				attribute: "open",
-				value: "You have completed all the values for this time step.  Click 'Ok' to proceed to the next time step."
-			}]);
-			}
-			console.log("model is",this._model);
+					id: "crisisAlert",
+					attribute: "title",
+					value: "Iteration Has Completed"
+				}, {
+					id: "crisisAlert",
+					attribute: "open",
+					value: "You have completed all the values for this time step.  Click 'Ok' to proceed to the next time step."
+			    }]);			
+			} 
+			else if (isFinished & iterationNum==maxItration-1) {// In last iteration
+				this._model.student.incrementIteration();
+				this.applyDirectives([{
+					id: "crisisAlert",
+					attribute: "title",
+					value: "Demonstration Completed" 
+				}, {
+					id: "crisisAlert",
+					attribute: "open",
+					value: "Good work, now Dragoon will compute the rest of the values for you and display them as a table and as a graph in the next window."
+				}]);				
+				console.log("activity ended time to show the graph");
+			}											
+			//console.log("model is",this._model);
 		},
 
 		callNextIteration: function () {
 			this._model.student.incrementIteration();
 			console.log("iteration count is",this._model.student.getIteration());
-			//var it_count = 
-			if(this._model.student.getIteration() <2) {
+			var crisis = registry.byId(this.widgetMap.crisisAlert); 
+			if(this._model.student.getIteration() <= this._model.getExecutionIterations()) {
 				this.resetIterationExecDemo();
-				console.log("mode is", this._model);
-			}
-			else if(this._model.student.getIteration()==2){
-				//bahar can write her code here , when the iteration is 2 , we can show the graph
-				console.log("activity ended time to show the graph");
 			}
 		}
 	});

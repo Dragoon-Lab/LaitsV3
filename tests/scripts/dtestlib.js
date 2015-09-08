@@ -90,9 +90,11 @@ function findDropDownByName(client, name){
     {
         try{
             text = await(client.getText('#dijit_MenuItem_' + counter,defer()));
+            //console.log("menu item text is",text,counter);
         }catch(err){}
         if(text == name)
         {
+            //console.log("")
             notFound = false;
             result = counter;
         }
@@ -107,6 +109,7 @@ function findDropDownByName(client, name){
 }
 
 function selectDropdownValue(client,dropDownID,value){
+    wait(500);
     await(client.waitForVisible(dropDownID,defer()));
     await(client.click(dropDownID,defer()));
     await(client.waitForVisible(dropDownID+'_menu',defer()));
@@ -180,7 +183,8 @@ function rgbToColor(toConvert)
         return "white";
     }
     else if(toConvert === "rgba(0,0,0,0)" || toConvert === "gray" || toConvert === "rgb(230,230,230)" ||
-            toConvert == "rgb(230,230,230)" || toConvert == "rgba(230,230,230,1)")
+            toConvert == "rgb(230,230,230)" || toConvert == "rgba(230,230,230,1)" ||
+            toConvert === "rgb(128,128,128)" || toConvert === "rgb(128,128,128,1)")
     {
         return "gray";
     }

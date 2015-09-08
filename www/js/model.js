@@ -141,7 +141,20 @@ define([
 				else
 					return false;
 			},
-
+			// Adding these as private methods since other modules should not rely on model
+			// for manipulating activities.  If others need this, move to a different file.
+			_isDemoActivityType: function(activity){
+				console.log("_isDemoActivityType:"+(activity && activity.substring(activity.length-4,activity.length) == "Demo"));
+				return (activity && activity.substring(activity.length-4,activity.length) == "Demo");
+			},
+			_convertDemoToExercise: function(activity){
+				if (obj._isDemoActivityType(activity)){
+					console.log("_convertDemoToExercise:"+activity.substring(0,activity.length-4));
+					return activity.substring(0,activity.length-4);
+				} else {
+					throw new Error("Attempted to convert non-demo activity to an exercise.");
+				}
+			},
 			_getNextOptimalNode: function(/*string*/ givenNodeID){
 				// Summary: Accepts the id of a parent node and returns the next optimal
 				//		child node that is not visible, or null if all descendants are visible;
@@ -354,8 +367,12 @@ define([
 					this.model.task.taskDescription = {};
 					this.model.task.taskDescription["construction"] = desc;
 				}
-				activityType = (activityType && this.model.task.taskDescription[activityType]) ? activityType : "construction";
-				return this.model.task.taskDescription[activityType];
+				// Demo versions of activities do not have separate descriptions, so:
+				// Convert demo activity to exercise version, if applicable.
+				var exercise = (activityType && obj._isDemoActivityType(activityType)) ? obj._convertDemoToExercise(activityType) : activityType;
+				// Default to construction if desired acitivty description is not found in model.
+				exercise = (exercise && this.model.task.taskDescription[exercise]) ? exercise : "construction";
+				return this.model.task.taskDescription[exercise];
 			},
 			getTaskLessonsLearned : function() {
 				return (this.model.task.lessonsLearned) ? this.model.task.lessonsLearned : [];
@@ -577,18 +594,21 @@ define([
 				if(!node["imageMarks"]) return [];
 				else return node["imageMarks"];
 			},
+           
 			getExecutionValue: function(/* string */ id, /* number */ index){
+				var studentItr=obj.student.getIteration();
+                var maxItration=obj.getExecutionIterations();
 				var node = this.getNode(id);
-				var val = null;
-				if(index === undefined){
-					val = node.executionValue[obj.student.getIteration()];
-				}
-				else if(node.executionValue && node.executionValue.length > index){
-					val = node.executionValue[index];
-				}
+                var val = null;
+                if(index === undefined){
+                    val = node.executionValue[(studentItr>=maxItration)?maxItration-1:studentItr];
+                }
+                else if(node.executionValue && node.executionValue.length > index){
+                    val = node.executionValue[index];
+                }
 
-				return val;
-			},
+                return val;
+            },
 			getExecutionValues: function(/* string */ id){
 				var node = this.getNode(id);
 
@@ -660,7 +680,7 @@ define([
 				this.getNode(id).tweakDirection = direction;
 			},
 			getTweakDirection: function(/*string*/ id){
-				return this.getNode(id).tweakDirection ;
+				return (typeof this.getNode(id).tweakDirection!== "undefined") ?  this.getNode(id).tweakDirection:"";
 			},
 			validateTweakDirections: function(){
 				var nodes = this.getNodes();
@@ -1339,6 +1359,7 @@ define([
 				// Summary: Test whether a node is completely filled out, correct or not
 				// Returns a boolean
 				// id: the node id
+				var maxItr=obj.getExecutionIterations();
 				var node = this.getNode(id);
 				// Some given models do not include units.
 				var hasUnits = node.descriptionID && obj.given.getUnits(node.descriptionID);
@@ -1347,6 +1368,8 @@ define([
 				var hasExecutionValue = node.descriptionID && obj.given.getExecutionValues(node.descriptionID);
 				var executionIteration = (hasExecutionValue ? (node.type == "parameter" ? 0 : this.getIteration()) : 0); //execution iteration will always be 0 for parameters.
 				var equationEntered = node.type && node.type == "parameter" || node.equation;
+                executionIteration= (executionIteration<maxItr-1)?executionIteration:maxItr-1;
+
 				var toReturn = node.descriptionID && node.type &&
 					initialEntered && (!hasUnits || node.units) &&
 					equationEntered && (!hasTweaks || node.tweakDirection)
