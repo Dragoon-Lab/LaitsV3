@@ -696,6 +696,8 @@ define(["dojo/aspect",
 					var node = dom.byId(nextID);
 					domClass.add(node, "glowNode");
 					this.currentHighLight = nextID;
+				} else {
+					this.currentHighLight = null;
 				}
 				return;
 			}
@@ -892,6 +894,7 @@ define(["dojo/aspect",
 		showExecutionAnswer : function (id){
 			this.currentID = id;
 			if(id === this.currentHighLight){
+				//console.log("Updating answer in node: "+id);
 				//remove glow
 				var node = dom.byId(id);
 				domClass.remove(node, "glowNode");
@@ -971,7 +974,7 @@ define(["dojo/aspect",
 			this._model.student.incrementIteration();
 			console.log("iteration count is",this._model.student.getIteration());
 			var crisis = registry.byId(this.widgetMap.crisisAlert); 
-			if(this._model.student.getIteration() < this._model.getExecutionIterations()) {
+			if(this._model.student.getIteration() <= this._model.getExecutionIterations()) {
 				this.resetIterationExecDemo();
 			}
 		}

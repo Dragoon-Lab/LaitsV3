@@ -216,11 +216,7 @@ define([
 		*/
 		calculateExecutionValues: function(){
 			// Setting the iteration number
-			var iterations = this._model.getExecutionIterations(); 
-			if(!iterations){
-				iterations = this.calculateExecutionIterations(); // We can change the iteration number here
-				this._model.setExecutionIterations(iterations);
-			}
+			var iterations = this._model.getExecutionIterations() || this.calculateExecutionIterations(); 
 
 			// Calculating the he execution values for each node
 			var pv = this._model.given.getPlotVariables();
@@ -254,20 +250,11 @@ define([
 		This function calculates the maximum iteration number in respect to the number of nodes
 		*/
 		calculateExecutionIterations: function(){
-			var nodes = this._model.given.getNodes();
-			var count = 0;
+			var nodeTypeCounts = this._model.given.getNodeTypeCount();
 
-			if(nodes){
-				array.forEach(nodes, function(node){
-					if(node.type == "accumulator" || node.type == "function")
-						count++;
-				});
-			}
-
-			if(count >= 4)
-				return 2;
-			else 
-				return 3;
+			var iterations = ((nodeTypeCounts["accumulator"]+nodeTypeCounts["function"]) < 4) ? 3:2;
+			this._model.setExecutionIterations(iterations);
+			return iterations;
 		},
 
 		initializeStudentExecutionValue: function(){
