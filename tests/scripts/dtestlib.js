@@ -183,7 +183,8 @@ function rgbToColor(toConvert)
         return "white";
     }
     else if(toConvert === "rgba(0,0,0,0)" || toConvert === "gray" || toConvert === "rgb(230,230,230)" ||
-            toConvert == "rgb(230,230,230)" || toConvert == "rgba(230,230,230,1)")
+            toConvert == "rgb(230,230,230)" || toConvert == "rgba(230,230,230,1)" ||
+            toConvert === "rgb(128,128,128)" || toConvert === "rgb(128,128,128,1)")
     {
         return "gray";
     }

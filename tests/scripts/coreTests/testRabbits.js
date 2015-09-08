@@ -23,7 +23,7 @@ var sync = require('synchronize');
 // import wrapper for asynchronous functions
 var async = sync.asyncIt;
 
-describe("Editor mode with correct rabbits", function() {
+describe("Test mode with correct rabbits", function() {
 
     before(async(function (done) {
             dtest.openProblem(client,[["problem","rabbits"],["mode","TEST"],
@@ -73,8 +73,8 @@ describe("Editor mode with correct rabbits", function() {
                 var nodeBorderStyle = dtest.getNodeBorderStyle(client, element);
                 var nodeFillColor = dtest.getNodeFillColor(client, element);
                 //Asserts values
-                assert(nodeBorderColor === "rgb(128,128,128)",
-                    "Node border color for " + element + " was " + nodeBorderColor + " instead of rgb(128,128,128)");
+                assert(nodeBorderColor === "gray",
+                    "Node border color for " + element + " was " + nodeBorderColor + " instead of gray");
                 assert(nodeBorderStyle === "solid",
                     "Node border style for " + element + " was " + nodeBorderStyle + " instead of solid");
                 assert(nodeFillColor === "white",
