@@ -1322,7 +1322,13 @@ define([
 
 					if(!nodeAddedFlag){
 						//means that none of the inputs were function hence the priority will be 0 for this
-						relativeOrderF.push(id);
+						var checkID = array.some(relativeOrderF, function(s){
+							return (s.indexOf(id) >= 0);
+						});
+
+						if(!checkID){
+							relativeOrderF.push(id);
+						}
 					}
 				}, this);
 
