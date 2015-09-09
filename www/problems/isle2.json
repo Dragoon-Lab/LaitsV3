@@ -31,6 +31,12 @@
                 " * The probability of a moose giving birth each year is 20%."
             ]
         },
+        "increment": [
+            {
+                "tweakedNode" : "id2",
+                "tweakDirection": "Increase"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",
