@@ -44,7 +44,7 @@ var dtest = require('../dtestlib.js');
 // import dragoon assertion library
 var atest = require('../assertTestLib.js');
 // import sync library
-varnn sync = require('synchronize');
+var sync = require('synchronize');
 // import wrapper for asynchronous functions
 var async = sync.asyncIt;
 
