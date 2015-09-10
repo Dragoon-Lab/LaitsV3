@@ -127,7 +127,6 @@ define([
 			if(this._activityConfig.get("resetAssistanceScore")){
 				var type = this._model.given.getType(givenID);
 				if(type != "parameter") {
-					debugger;
 					this._model.student.setAssistanceScore(newNodeID , 0);
 				}
 			}
