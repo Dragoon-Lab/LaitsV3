@@ -1124,7 +1124,7 @@ define([
 					// "newwindow": the pop-out window name, not required, could be empty
 					// "height" and "width": pop-out window size
 					// Other properties could be changed as the value of yes or no
-					window.open("https://dragoon.asu.edu","newwindow",
+					window.open("https://dragoon.asu.edu/about.php","newwindow",
 						"toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
 					);
 				});
@@ -1141,11 +1141,26 @@ define([
 					// "newwindow": the pop-out window name, not required, could be empty
 					// "height" and "width": pop-out window size
 					// Other properties could be changed as the value of yes or no
+					window.open("https://www.youtube.com/watch_popup?v=7w6_CA0NlqY","newwindow",
+						"height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
+					);
+				});
+				/*
+				 Add link to old intro video
+				 */
+				var video = dom.byId("menuOldIntroVideo");
+				on(video, "click", function(){
+					controllerObject.logging.log('ui-action', {
+						type: "menu-choice",
+						name: "intro-video"
+					});
+					// "newwindow": the pop-out window name, not required, could be empty
+					// "height" and "width": pop-out window size
+					// Other properties could be changed as the value of yes or no
 					window.open("https://www.youtube.com/watch_popup?v=Pll8iyDzcUs","newwindow",
 						"height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
 					);
 				});
-
 				/*
 				 Add link to list of math functions
 				 */
