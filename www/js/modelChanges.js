@@ -125,37 +125,37 @@ define([
 				}, this);
 			}
 
-			if(givenNode && newNodeID){
+			if(givenNode && newNodeID && fields){
 				//set default values and their status.
-				if(fields && fields.indexOf("initial") >= 0){
+				if(fields.indexOf("initial") >= 0){
 					this._model.student.setInitial(newNodeID, givenNode.initial);
 					if (givenNode.type === "parameter" || givenNode.type === "accumulator") {
 						this._model.student.setStatus(newNodeID, "initial", {"disabled": true, "status": "correct"});
 					}
 				}
 
-				if(fields && fields.indexOf("units") >= 0){
+				if(fields.indexOf("units") >= 0){
 					this._model.student.setUnits(newNodeID, givenNode.units);
 					if (typeof givenNode.units !== "undefined") {
 						this._model.student.setStatus(newNodeID, "units", {"disabled": true, "status": "correct"});
 					}
 				}
 
-				if(fields && fields.indexOf("type") >= 0){
+				if(fields.indexOf("type") >= 0){
 					this._model.student.setType(newNodeID, givenNode.type);
 					this._model.student.setStatus(newNodeID, "type", {"disabled": true, "status": "correct"});
 				}
 
-				if(fields && fields.indexOf("tweak") >= 0){
+				if(fields.indexOf("tweak") >= 0){
 					//this.setStudentTweakDirection(givenNode.ID, newNodeID);
 					this._model.student.setTweakDirection(newNodeID, givenNode.tweakDirection);
 				}
 
-				if(fields && fields.indexOf("execution") >= 0){
+				if(fields.indexOf("execution") >= 0){
 					this._model.student.setExecutionValues(newNodeID, givenNode.executionValue);
 				}
 
-				if (fields && fields.indexOf("equation") && nodeStore && givenNode.equation) {
+				if (fields.indexOf("equation") && nodeStore && givenNode.equation) {
 					var inputs = [];
 					var isExpressionValid = true;
 					var equation = givenNode.equation;
@@ -195,6 +195,8 @@ define([
 					}
 				}
 				this._model.student.setPosition(newNodeID, givenNode.position);
+			} else if (newNodeID && !fields){
+				this._model.student.setStatus(newNodeID, "type", {"disabled": false});
 			}
 
 			return newNodeID;
