@@ -1294,7 +1294,7 @@ define([
 				array.forEach(functionID, function(id){
 					var n = nodes[ids.indexOf(id)];
 					var inputs = n.inputs;
-
+					var nodeAddedFlag = false;
 					array.forEach(inputs, function(input){
 						if(functionID.indexOf(input.ID) >= 0){
 							var flag = true;
@@ -1316,8 +1316,20 @@ define([
 							if(flag){
 								relativeOrderF.push(input.ID + " " + n.ID);
 							}
+							nodeAddedFlag = true;
 						}
 					}, this);
+
+					if(!nodeAddedFlag){
+						//means that none of the inputs were function hence the priority will be 0 for this
+						var checkID = array.some(relativeOrderF, function(s){
+							return (s.indexOf(id) >= 0);
+						});
+
+						if(!checkID){
+							relativeOrderF.push(id);
+						}
+					}
 				}, this);
 
 				//create the complete hierarchy of functions using relative order.
@@ -1335,7 +1347,6 @@ define([
 
 					console.log("function nodes order is ", hierarchy);
 				}
-				
 				//now we just prioritize all the functions. hierarchy array has ids which are at same levels in the model.
 				//Each row either has ids in the form id10=id13 or id11. All these nodes are functions.
 				if(hierarchy){
@@ -1354,7 +1365,7 @@ define([
 				if(finalHierarchy){
 					var temp = prioritize(accumulatorID);
 					array.forEach(temp, function(id){
-						finalHierarchy.push(prioritize(id));
+						finalHierarchy.push(id);
 					});
 				}
 			}
