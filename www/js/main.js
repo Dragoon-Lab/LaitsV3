@@ -325,7 +325,7 @@ define([
 				}
 			}, this);
 			
-			var updateModel = new modelUpdates(givenModel, query.m, session);
+			var updateModel = new modelUpdates(givenModel, query.m, session, activity_config);
 			//if (activity_config.get("setTweakDirections")){
 			//	console.log("initial tweak: "+givenModel.getInitialTweakedNode());
 			//	console.log("initial tweak: "+givenModel.getInitialTweakDirection());

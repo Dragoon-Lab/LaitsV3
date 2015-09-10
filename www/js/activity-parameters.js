@@ -146,6 +146,7 @@ define([
 					showCorrectAnswer:true,
 
 					initializeStudentModel : true,
+					resetAssistanceScore : true,
 					copyFields: [
 						"description",
 						"type",
@@ -175,6 +176,7 @@ define([
 					showCorrectAnswer:true,
 
 					initializeStudentModel : true,
+					resetAssistanceScore : true,
 					copyFields: [
 						"description",
 						"type",
@@ -200,6 +202,7 @@ define([
 					allowEditNode:true,
 
 					initializeStudentModel : true,
+					resetAssistanceScore : true,
 					copyFields: [
 						"description",
 						"type",
@@ -226,6 +229,7 @@ define([
 					showFeedback: true,
 
 					initializeStudentModel : true,
+					resetAssistanceScore : true,
 					copyFields: [
 						"description",
 						"type",
@@ -257,6 +261,7 @@ define([
 					showCorrectAnswer:true,
 
 					initializeStudentModel : true,
+					resetAssistanceScore : true,
 					copyFields: [
 						"description",
 						"type",
@@ -290,6 +295,7 @@ define([
 					showCorrectAnswer:true,
 
 					initializeStudentModel : true,
+					resetAssistanceScore : true,
 					copyFields: [
 						"description",
 						"type",
@@ -318,6 +324,7 @@ define([
 
 					allowEditNode:true,
 					initializeStudentModel : true,
+					resetAssistanceScore : true,
 					copyFields: [
 						"description",
 						"type",
@@ -348,6 +355,7 @@ define([
 					showFeedback: true,
 
 					initializeStudentModel : true,
+					resetAssistanceScore : true,
 					copyFields: [
 						"description",
 						"type",
@@ -389,6 +397,7 @@ define([
 					],
 
 					initializeStudentModel : true,
+					resetAssistanceScore : true,
 
 					showNodeEditor:false,
 					showPopupIfComplete: true,
@@ -421,9 +430,9 @@ define([
 					],
 
 					initializeStudentModel : true,
+					resetAssistanceScore : true,
 
 					showNodeEditor:false,
-					
 					showPopupIfComplete: true,
 
 					showExecutionEditor : true,
@@ -658,6 +667,7 @@ define([
 
 				//Model
 				initializeStudentModel : false,
+				resetAssistanceScore: false,
 				copyFields: [],
 
 				//Incremental Behavior
