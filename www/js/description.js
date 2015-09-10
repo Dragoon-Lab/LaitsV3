@@ -392,6 +392,9 @@ define([
                     break;
             }
             if (descs.length != 0){
+                if (typeof desc_text == "string") {
+                    desc_text = [desc_text];
+                }
                 array.forEach(descs,function(d){
                     desc_text.push(d);
                 });
