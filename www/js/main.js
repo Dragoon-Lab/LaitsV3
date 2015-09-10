@@ -356,7 +356,7 @@ define([
 				updateModel.initializeStudentModel(activity_config.get("copyFields"));
 
 				//sets student values for parameters.
-				if(activity_config.get("setStudentTweakDirection")){
+				if(activity_config.get("setStudentTweakDirections")){
 					updateModel.initializeStudentTweakDirection();
 				}
 

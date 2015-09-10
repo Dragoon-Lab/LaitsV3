@@ -54,7 +54,7 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "drivers lost prop.",
+                "name": "drivers lost prop",
                 "type": "parameter",
                 "parentNode": false,
                 "units": "",
@@ -76,7 +76,7 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "new commuter prop.",
+                "name": "new commuter prop",
                 "type": "parameter",
                 "parentNode": false,
                 "units": "",
@@ -104,7 +104,7 @@
                 "units": "",
                 "description": "The number of commuters that use public transportation each year",
                 "initial": 14000,
-                "equation": "+ null"
+                "equation": "+ id3"
             },
             {
                 "ID": "id5",
@@ -184,7 +184,7 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "driver commuter diff.",
+                "name": "driver commuter diff",
                 "type": "function",
                 "parentNode": true,
                 "units": "",

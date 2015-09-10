@@ -355,10 +355,10 @@ define([
                 case "incremental":
                     descs[0]="";
                     descs[1]="One of the parameters of this model has been changed (down or up arrow).  Please click on the incomplete nodes and label them as follows:";
-                    descs[2]="* up arrow: quantity will monotonically increase.";
-                    descs[3]="* down arrow: quantity will monotonically decrease.";
-                    descs[4]="* equal sign: quantity will remain unchanged.";
-                    descs[5]="* question mark: quantity will change in some other way over time (e.g. sometimes increase, sometimes decrease).";                
+                    descs[2]= "* The up arrow means the quantity will monotonically increase (i.e. will generally be greater and never be less than the original value) because of the change.";
+                    descs[3]= "* The down arrow means the quantity will monotonically decrease (i.e. will generally be less than and never be greater than the original value) because of the change.";
+                    descs[4]= "* The equals sign means the quantity will remain the same despite the change.";
+                    descs[5]="* The question mark means the quantity will sometimes be greater and sometimes be less than its original value."
                     break;
                 case "incrementalDemo":
                     descs[0]="";
@@ -392,6 +392,9 @@ define([
                     break;
             }
             if (descs.length != 0){
+                if (typeof desc_text == "string") {
+                    desc_text = [desc_text];
+                }
                 array.forEach(descs,function(d){
                     desc_text.push(d);
                 });
