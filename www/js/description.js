@@ -348,30 +348,53 @@ define([
             var canvas = dom.byId('myCanvas');
             var context = canvas.getContext('2d');
             context.clearRect(0,0,canvas.width, canvas.height);
-             var desc_text = (this.givenModel.getTaskDescription(this._activity)) ? this.givenModel.getTaskDescription(this._activity) : [];
+            var desc_text = (this.givenModel.getTaskDescription(this._activity)) ? this.givenModel.getTaskDescription(this._activity) : [];
             var descs=[];
-            if (this._activity==="incremental"){
-             descs[0]="";
-             descs[1]="One of the parameters of this model has been changed (down or up arrow).  Please click on the incomplete nodes and label them as follows:";
-             descs[2]="* up arrow: quantity will monotonically increase.";
-             descs[3]="* down arrow: quantity will monotonically decrease.";
-             descs[4]="* equal sign: quantity will remain unchanged.";
-             descs[5]="* question mark: quantity will change in some other way over time (e.g. sometimes increase, sometimes decrease)."
-             array.forEach(descs,function(d){
-               desc_text.push(d);
-            });
-
+            console.log("activity for description:" + this._activity);
+            switch(this._activity){
+                case "incremental":
+                    descs[0]="";
+                    descs[1]="One of the parameters of this model has been changed (down or up arrow).  Please click on the incomplete nodes and label them as follows:";
+                    descs[2]= "* The up arrow means the quantity will monotonically increase (i.e. will generally be greater and never be less than the original value) because of the change.";
+                    descs[3]= "* The down arrow means the quantity will monotonically decrease (i.e. will generally be less than and never be greater than the original value) because of the change.";
+                    descs[4]= "* The equals sign means the quantity will remain the same despite the change.";
+                    descs[5]="* The question mark means the quantity will sometimes be greater and sometimes be less than its original value."
+                    break;
+                case "incrementalDemo":
+                    descs[0]="";
+                    descs[1] = "Welcome to a demonstration of a Dragoon Incremental Change activity.  In an Incremental Change activity, we use a completed model to determine how changing the value of one parameter will affect the rest of the quantities in the model.  You will see one of four labels on a node:";
+                    descs[2]= "* The up arrow means the quantity will monotonically increase (i.e. will generally be greater and never be less than the original value) because of the change.";
+                    descs[3]= "* The down arrow means the quantity will monotonically decrease (i.e. will generally be less than and never be greater than the original value) because of the change.";
+                    descs[4]= "* The equals sign means the quantity will remain the same despite the change.";
+                    descs[5]= "* The question mark means the quantity will sometimes be greater and sometimes be less than its original value.";
+                    descs[6]= "In this model the value of the parameter, "+ this.givenModel.given.getName(this.givenModel.getInitialTweakedNode()) + ", has been "+ this.givenModel.getInitialTweakDirection() +"d. You must now choose the correct label for each of the function and accumulator nodes using the symbols listed above.";
+                    descs[7]= "For this demonstration, Dragoon highlight the node you should label next.  When you click on that node, Dragoon will label it for you.  You can then click the \"Show Equation\" button to see why the node was given the label.";
+                    break;
+                case "executionDemo":
+                    descs[0]="";
+                    descs[1]="Welcome to a demonstration of Dragoon.  In this activity we use a completed model to show you how Dragoon calculates values for the quantities in the model.  Each shape on the screen is a node representing a quantity:";
+                    descs[2]="* Diamonds represent parameters, which have constant values.";
+                    descs[3]="* Circles represent functions, whose quantity is a function its inputs (indicated by blue arrows going into the node).";
+                    descs[4]="* Squares represent accumulators, whose next value is the sum of its current value and a function its inputs.  In this activity, the current value is written at the top of the node.";
+                    descs[5]="At each timestep, Dragoon will calculate the value of every function and accumulator, add them to a table and then graph them.  In this activity, we will step through this process one node at a time.   Click on the highlighted node and Dragoon will compute its value.  Click the \"Show Equation\" button to see the formula used to compute that node.  It should make sense to you.";
+                    descs[6]="Repeat this process until Dragoon produces the graphs.";
+                    break;
+                case "execution":
+                    descs[0]="";
+                    descs[1]="In this activity we will calculate the values for the quantities in the model.  Recall that each shape on the screen is a node representing a quantity:";
+                    descs[2]="* Diamonds represent parameters, which have constant values.";
+                    descs[3]="* Circles represent functions, whose quantity is a function its inputs (indicated by blue arrows going into the node).";
+                    descs[4]="* Squares represent accumulators, whose next value is the sum of its current value and a function its inputs.  In this activity, the current value is written at the top of the node.";
+                    descs[5]="At each timestep, Dragoon will calculate the value of every function and accumulator, add them to a table and then graph them.  In this activity, we will step through this process one node at a time and fill in the nodes ourselves.";
+                    descs[6]="Click on an incomplete node (one with a dashed border) and choose the correct value.  You may click the \"Show Equation\" button to see the formula used to compute the quantity of the node.  You may find it easier to start with the nodes which have values for all of their inputs.";
+                    descs[7]="Tip: When a nodes input is coming from an accumulator, use its current value (the top number) in the calculation, rather than its new value.";
+                    descs[8]="Repeat this process until Dragoon produces the graphs.";
+                    break;
             }
-            else if(this._activity === "incrementalDemo"){
-
-                descs[0]="";
-                descs[1] = "Welcome to a demonstration of a Dragoon Incremental Change activity.  In an Incremental Change activity, we use a completed model to determine how changing the value of one parameter will affect the rest of the quantities in the model.  You will see one of four labels on a node:";
-                descs[2]= "* The up arrow means the quantity will monotonically increase (i.e. will generally be greater and never be less than the original value) because of the change.";
-                descs[3]= "* The down arrow means the quantity will monotonically decrease (i.e. will generally be less than and never be greater than the original value) because of the change.";
-                descs[4]= "* The equals sign means the quantity will remain the same despite the change.";
-                descs[5]= "* The question mark means the quantity will sometimes be greater and sometimes be less than its original value.";
-                descs[6]= "In this model the value of the parameter, "+ this.givenModel.given.getName(this.givenModel.getInitialTweakedNode()) + ", has been "+ this.givenModel.getInitialTweakDirection() +"d. You must now choose the correct label for each of the function and accumulator nodes using the symbols listed above.";
-                descs[7]= "For this demonstration, Dragoon highlight the node you should label next.  When you click on that node, Dragoon will label it for you.  You can then click the \"Show Equation\" button to see why the node was given the label.";
+            if (descs.length != 0){
+                if (typeof desc_text == "string") {
+                    desc_text = [desc_text];
+                }
                 array.forEach(descs,function(d){
                     desc_text.push(d);
                 });

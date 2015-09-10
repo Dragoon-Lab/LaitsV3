@@ -20,7 +20,13 @@
 	    " * Births and deaths are the only change in the population. Immigration and emigration do not occur.",
 	    " * The probability of a moose giving birth each year is 20%.",
 	    " * The probability of a moose dying each year is 5%."
-	],
+	    ],
+        "increment": [
+            {
+                "tweakedNode" : "id2",
+                "tweakDirection": "Increase"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",
@@ -29,8 +35,8 @@
 		    {"ID": "id5"}
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 550,
+                    "y": 200
                 },
                 "attemptCount": {
                     "description": 0,
@@ -52,7 +58,7 @@
                 "ID": "id2",
                 "inputs": [],
                 "position": {
-                    "x": 400,
+                    "x": 650,
                     "y": 100
                 },
                 "attemptCount": {
@@ -103,8 +109,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 650,
+                    "y": 300
                 },
                 "attemptCount": {
                     "description": 0,
@@ -132,8 +138,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 450,
+                    "y": 300
                 },
                 "attemptCount": {
                     "description": 0,
