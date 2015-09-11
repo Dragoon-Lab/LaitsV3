@@ -679,6 +679,7 @@ define([
 						break;
 					case "parameter":
 					case "none":
+						nodeName = "&nbsp;";
 						break;
 					default:
 						this.logging.clientLog("error", {

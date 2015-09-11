@@ -122,10 +122,15 @@ html, body, #main{
 /* If we use float to horizontally align, there seems to be
    no way to vertically align the buttons.  */
 .sameedit .buttonBox {
-    float:right;
+    margin-left: 10px;
+    padding-top:10px;
+}
+.sameedit .buttonBox .dijitButtonContents{
+    width:120px;
 }
 .sameedit .fieldgroup > span.fixedwidth {
-    width: 13ex;
+    width: 14ex;
+    margin-right:3px;
 }
 /* Right align buttons */
 .buttonBox > * {
@@ -402,7 +407,10 @@ span.slip{
 }
 
 .fa{
-    font: normal normal normal 14px/1 FontAwesome  !important;
+    font: normal normal normal 14px/1 FontAwesome;
+}
+#operations .fa{
+    font: normal normal normal 11px/1 FontAwesome;
 }
 
 .bubble .fa{
@@ -453,4 +461,24 @@ span.slip{
 
 .parameterWrapper .nodeContent{
     -moz-transform: rotate(-45deg);
+}
+
+#equationBox, #givenEquationBox{
+    min-height:48px;
+    font:10pt Arial,Myriad,Tahoma,Verdana,sans-serif !important;
+}
+
+.ExpressionContainer{
+    background-color: #E1E1E1;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.fa-division{
+    transform: rotate(-65deg);
+    -webkit-transform: rotate(-65deg);
+    -moz-transform: rotate(-65deg);
+    -ms-transform: rotate(-65deg);
+    -o-transform: rotate(-65deg);
+    font-size: 13px !important;
 }
