@@ -482,6 +482,7 @@ define([
 			/*
 			 * Connect node editor to "click with no move" events.
 			 */
+			 
 			aspect.after(drawModel, "onClickNoMove", function(mover){
 				if(activity_config.get("showNodeEditor")){
 					if(mover.mouseButton != 2) { //check if not right click
@@ -1302,8 +1303,11 @@ define([
 
 			if(activity_config.get("showIncrementalEditor")){
 				//Save session on closing incremental popup
-				aspect.after(controllerObject, "closeIncrementalPopup", function(){
-					session.saveProblem(givenModel.model);
+				//Saving incremental activity to DB
+				//Not Saving demoIncremental activity to DB
+				aspect.after(controllerObject, "closeIncrementalMenu", function(){
+					if(!activity_config.get("demoIncremental"))
+						session.saveProblem(givenModel.model);
 				});
 			}
 
