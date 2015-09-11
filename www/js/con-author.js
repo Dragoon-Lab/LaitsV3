@@ -445,7 +445,7 @@ define([
 			}
 		},
 		
-		handleType: function(type){    
+		handleType: function(type){
             var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
             if(this.getModelType() == "correct"){
 				// Summary: Sets the type of the current node.				
@@ -460,6 +460,10 @@ define([
 				this.updateType(type);
 				//update student node status
                 this.updateStatus("type", type,  this._model.student.getType(studentNodeID));
+
+                // "Initial Value" label --> "Value" for parameters
+                if (type=="parameter") style.set('initLabel', 'display', 'none');
+				else style.set('initLabel',"display","inline");
             }
 			else if(this.getModelType() == "given"){
 				this.controlMap.equation = "givenEquationBox";

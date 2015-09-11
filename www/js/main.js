@@ -403,6 +403,30 @@ define([
 				etConnect.startService();
 				
 			}
+
+			if(activity_config.get("targetNodeStrategy")){ 
+				// Only in construction activity when in COACHED mode 
+				var rootNodes = givenModel.given.getRootNodes();
+				var studentNodes = givenModel.active.getNodes();	
+
+				// Getting existing nodes
+				var currentNodes=[]; 
+				array.forEach(studentNodes,function(node){
+					currentNodes.push(node.descriptionID);
+				});				
+
+				// Creating the root node if missing
+				array.forEach(rootNodes, function(rootNode){
+					if (currentNodes.indexOf(rootNode.ID)<0){ // Checks if any root node is missing
+						var id=updateModel.copyGivenNode(rootNode.ID);
+						// var id = givenModel.active.addNode();				
+						// givenModel.student.setDescriptionID(id, rootNode.ID);
+						// givenModel.student.setStatus(id, "description", {"disabled": true, "status": "correct"});
+						// givenModel.student.setStatus(id, "type", {"disabled": false});
+						//drawModel.addNode(givenModel.active.getNode(id));
+					}
+				});		
+			}	
 			
 			var drawModel = new drawmodel(givenModel.active, ui_config.get("showColor"), activity_config);
 			drawModel.setLogging(session);
@@ -1124,7 +1148,7 @@ define([
 					// "newwindow": the pop-out window name, not required, could be empty
 					// "height" and "width": pop-out window size
 					// Other properties could be changed as the value of yes or no
-					window.open("https://dragoon.asu.edu","newwindow",
+					window.open("https://dragoon.asu.edu/about.php","newwindow",
 						"toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
 					);
 				});
@@ -1141,11 +1165,26 @@ define([
 					// "newwindow": the pop-out window name, not required, could be empty
 					// "height" and "width": pop-out window size
 					// Other properties could be changed as the value of yes or no
+					window.open("https://www.youtube.com/watch_popup?v=7w6_CA0NlqY","newwindow",
+						"height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
+					);
+				});
+				/*
+				 Add link to old intro video
+				 */
+				var video = dom.byId("menuOldIntroVideo");
+				on(video, "click", function(){
+					controllerObject.logging.log('ui-action', {
+						type: "menu-choice",
+						name: "intro-video"
+					});
+					// "newwindow": the pop-out window name, not required, could be empty
+					// "height" and "width": pop-out window size
+					// Other properties could be changed as the value of yes or no
 					window.open("https://www.youtube.com/watch_popup?v=Pll8iyDzcUs","newwindow",
 						"height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
 					);
 				});
-
 				/*
 				 Add link to list of math functions
 				 */
@@ -1269,28 +1308,6 @@ define([
 			}
 
 			if(activity_config.get("targetNodeStrategy")){
-				// Only in construction activity and COACHED mode 
-				var rootNodes = givenModel.given.getRootNodes();
-				var studentNodes = givenModel.active.getNodes();	
-
-				//  Getting existing nodes
-				var currentNodes=[]; 
-				array.forEach(studentNodes,function(node){
-					currentNodes.push(node.descriptionID);
-				});				
-
-				// Creating the root node if missing
-				array.forEach(rootNodes, function(rootNode){
-					if (currentNodes.indexOf(rootNode.ID)<0){ // Checks if any root node is missing
-						//updateModel.copyGivenNode(rootNode.ID,[]);
-						var id = givenModel.active.addNode();				
-						givenModel.student.setDescriptionID(id, rootNode.ID);
-						givenModel.student.setStatus(id, "description", {"disabled": true, "status": "correct"});
-						givenModel.student.setStatus(id, "type", {"disabled": false});
-						drawModel.addNode(givenModel.active.getNode(id));
-					}
-				});
-			
 
 				function checkForHint(){
 					var rootNodes = givenModel.given.getRootNodes();					

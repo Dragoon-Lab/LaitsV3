@@ -163,8 +163,9 @@
             <span>Help</span>
             <div data-dojo-type="dijit/Menu" id="menuHelp">
                 <div id="menuIntroText" data-dojo-type="dijit/MenuItem">Introduction</div>
-                <div id="menuIntroVideo" data-dojo-type="dijit/MenuItem">Intro Video</div>
-                <div id="menuMathFunctions" data-dojo-type="dijit/MenuItem">Math Functions</div>
+                <div id="menuIntroVideo" data-dojo-type="dijit/MenuItem">Intro video</div>
+                <div id="menuOldIntroVideo" data-dojo-type="dijit/MenuItem">Slightly older intro video</div>
+                <div id="menuMathFunctions" data-dojo-type="dijit/MenuItem">Math functions</div>
             </div>
         </div>
         <button type="button" data-dojo-type="dijit/form/Button" id="lessonsLearnedButton" disabled="true" style="display: none">Lessons Learned</button>
@@ -418,7 +419,7 @@
             </select>
             <span>
                     <img id="initialValueQuestionMark"  class="questionMark" src="images/questionmark.png" style="padding-left:10px"/>
-                    <label for="initialValue">Initial Value</label>
+                    <label for="initialValue"><p id="initLabel" style="display:inline">Initial </p>Value</label>
             </span>
             <input id="initialValue" type="text" style="width:5em" data-dojo-type="dijit/form/TextBox">
              <span>
