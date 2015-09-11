@@ -66,9 +66,9 @@ define([
 				if (!unitsValue) {
 					unitsValue = '';
 				}
-				initialValue += " " + unitsValue;
+				initialValue += "<br/>" + unitsValue;
 				if(type === 'triangle') initialValue = 'Click here!';
-				htmlContent = '<div id=' + nodeId + 'Label  class="bubble"><div class="' + type + 'Wrapper"><strong>' + parameter + '<br>' + initialValue + '</strong></div><div class=' + type + 'Div><strong>' + nodeName + '</strong></div></div>';
+				htmlContent = '<div id=' + nodeId + 'Label  class="bubble"><div class="' + type + 'Wrapper"><strong class="nodeContent">' + parameter + initialValue + '</strong></div><div class=' + type + 'Div><strong>' + nodeName + '</strong></div></div>';
 				console.log(nodeName);
 				
 			}else if(showDetails === "DIRECTION"){
@@ -85,7 +85,7 @@ define([
 				if(dir == "Stays-Same"){
 					content = "&#x003d;"
 				}
-				htmlContent='<div id=' + nodeId + 'Label  class="bubble"><div class="incrementalContent ' + type + 'Wrapper"><strong class="fa fa-'+ iconClass[dir] +'">'+ content+ '</strong></div><div class=' + type + 'Div><strong>' + nodeName + '</strong></div></div>';
+				htmlContent='<div id=' + nodeId + 'Label  class="bubble"><div class="' + type + 'Wrapper"><strong class="nodeContent fa fa-'+ iconClass[dir] +'">'+ content+ '</strong></div><div class=' + type + 'Div><strong>' + nodeName + '</strong></div></div>';
 			}else if(showDetails === "NEWVALUE"){
 				var iteration = model.getIteration();
 				var oldVal = model.getInitial(nodeId);
@@ -105,7 +105,7 @@ define([
 				}
 				content += "<span style='font-size:12px;'>"+ newVal + "</span><br/>"+ unitsValue+"";
 
-				htmlContent='<div id=' + nodeId + 'Label  class="bubble bubble-execution"><div class="executionContent ' + type + 'Wrapper"><strong>'+ content+ '</strong></div><div class=' + type + 'Div><strong>' + nodeName + '</strong></div></div>';
+				htmlContent='<div id=' + nodeId + 'Label  class="bubble bubble-execution"><div class="executionContent ' + type + 'Wrapper"><strong class="nodeContent">'+ content+ '</strong></div><div class=' + type + 'Div><strong>' + nodeName + '</strong></div></div>';
 
 			}
 			return htmlContent;

@@ -65,32 +65,29 @@
     height: 75px;
 }
 
-.functionWrapper,.accumulatorWrapper{
+.functionWrapper,.accumulatorWrapper, .parameterWrapper{
     overflow:hidden!important;
     /*white-space:nowrap;*/
     -ms-text-overflow:ellipsis;
     text-overflow:ellipsis;
-    width:90%;
-    margin:10px 0px;
-    padding: 0px 5%;
-    height: 100%
-}
-.functionWrapper{
-    padding: 12px 5%;
-}
-.parameterWrapper{
-	  overflow:hidden!important;
-    /*white-space:nowrap;*/
-    -ms-text-overflow:ellipsis;
-    text-overflow:ellipsis;
     width:100%;
-	 -webkit-transform: rotate(0deg)!important;
-    -moz-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-    margin: 10px 0px;
-    padding: 12px 0px;
+    margin:0 auto;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    -webkit-transform:  translateY(-50%) !important;
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    padding: 0 3px;
+}
+
+.parameterWrapper{
+    -webkit-transform: rotate(0deg) translateY(-50%) !important;
+    -moz-transform: rotate(0deg) translateY(-50%);
+    -ms-transform: rotate(0deg) translateY(-50%);
+    -o-transform: rotate(0deg) translateY(-50%);
+    transform: rotate(0deg) translateY(-50%);
 }
 
 .functionWrapper:hover,.accumulatorWrapper:hover,.parameterWrapper:hover{

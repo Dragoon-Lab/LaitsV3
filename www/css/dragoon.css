@@ -413,10 +413,6 @@ span.slip{
     z-index:2000 !important;
 }
 
-.incrementalContent{
-    margin: 0px;
-    padding: 25px 0 0 15px;
-}
 .executionContent{
    /* margin:10px 15px 0; */
 }
@@ -453,4 +449,8 @@ span.slip{
 
 .glowNode{
     animation: glowingNode 1500ms infinite;
+}
+
+.parameterWrapper .nodeContent{
+    -moz-transform: rotate(-45deg);
 }
