@@ -58,7 +58,6 @@ define([
 			var count = 25;
 			if(typeof(studentEquation) == 'string')
 			{
-				console.log("hello");
 				var student = Parser.parse(studentEquation, seed);
 			}
 			else
@@ -88,8 +87,6 @@ define([
 
 				var givenResult = this.getEquationValue(givenParse, model, givenVals, "given", seed, 0);
 				var studentResult = this.getEquationValue(student, model, givenVals, "solution", seed, 0);
-
-				console.log("results:" + givenResult + ":" + studentResult);
 
 				flag = Math.abs(studentResult - givenResult) <= 10e-10 * Math.abs(studentResult + givenResult);
 
@@ -145,7 +142,6 @@ define([
 					 A variable may, or may not, have a value assigned when 
 					 the given model was evaluated above.
 					 */
-					console.log("	 ==== evaluating student variable ", variable);
 					if(model.student.isNode(variable)){
 						id = model.student.getDescriptionID(variable);
 					}else {
@@ -162,7 +158,6 @@ define([
 					this.evalVar(id, model.solution, values);
 					solutionVals[variable] = values[id];
 				} else {
-					console.log("	==== evaluating given variable ", variable);
 					id = variable;
 					this.evalVar(id, model.given, values);
 				}	
@@ -209,7 +204,6 @@ define([
 				}
 				parents[id] = true;
 				// Evaluate function node
-				console.log("=========== about to parse ", node.equation);
 				console.warn("========	  It is important to log failures of this parse");
 				var parse = Parser.parse(node.equation);
 				array.forEach(parse.variables(), function(x){
