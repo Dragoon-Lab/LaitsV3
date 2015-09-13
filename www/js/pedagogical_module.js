@@ -1338,7 +1338,8 @@ define([
 						var arr = s.split(" ");
 						array.forEach(arr, function(id, counter){
 							if(hierarchy && hierarchy[counter]){
-								hierarchy[counter] += ("=" + id);
+								if(hierarchy[counter].indexOf(id) < 0)
+									hierarchy[counter] += ("=" + id);
 							} else {
 								hierarchy[counter] = id;
 							}
