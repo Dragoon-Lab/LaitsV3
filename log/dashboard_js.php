@@ -33,6 +33,7 @@
 	!empty($_REQUEST["m"])?($mode = $_REQUEST["m"]):$mode = 'STUDENT';
 	!empty($_REQUEST["u"])?($user = $_REQUEST["u"]):$user = '';
 	!empty($_REQUEST["p"])?($sproblem = $_REQUEST["p"]):$sproblem = '';
+	!empty($_REQUEST["a"])?($activity = $_REQUEST["a"]):$activity = '';
 	//trimming the problem name
 	$problem = (strlen($sproblem) > 50) ? substr($sproblem, 0,50) : $sproblem;
 	!empty($_REQUEST["db_name"])?($dbname = $_REQUEST["db_name"]):'';
@@ -44,7 +45,7 @@
 
 	$db = new Dashboard($mysqli);
 
-	$resultObjects = $db->createDashboard($section, $mode, $user, $problem, $fromDate, $toDate, $fromTime, $toTime);
+	$resultObjects = $db->createDashboard($section, $mode, $activity, $user, $problem, $fromDate, $toDate, $fromTime, $toTime);
 
 	print(json_encode($resultObjects));
 	mysqli_close($mysqli);
