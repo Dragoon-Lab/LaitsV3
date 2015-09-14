@@ -465,12 +465,14 @@ define([
 			// updating model after lessonlearned is shown
 			aspect.after(registry.byId("lesson"), "show", function(){
 				givenModel.setLessonLearnedShown(true);
-				session.saveProblem(givenModel.model);
+				if(!(activity_config("demoExecution") || activity_config("demoIncremental")))
+					session.saveProblem(givenModel.model);
 			}); 
 
 			// Wire up send to server
 			aspect.after(drawModel, "updater", function(){
-				session.saveProblem(givenModel.model);
+				if(!(activity_config("demoExecution") || activity_config("demoIncremental")))
+					session.saveProblem(givenModel.model);
 			});
 
 			// When the node editor controller wants to update node style, inform
