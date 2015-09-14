@@ -521,7 +521,8 @@ define([
 					nodeDetails: "NEWVALUE",
 
 					setExecutionValues:true,
-					setStudentExecutionValues:true
+					setStudentExecutionValues:true,
+                    executionExercise: true
 				},
 
 				COACHED:{
@@ -550,8 +551,9 @@ define([
 					nodeDetails: "NEWVALUE",
 					copyAuthorNodes: true,
 					setExecutionValues:true,
-					setStudentExecutionValues:true
-				},
+					setStudentExecutionValues:true,
+                    executionExercise: true
+                },
 
 				TEST:{
 					allowPrettify:true,
@@ -575,8 +577,9 @@ define([
 					nodeDetails: "NEWVALUE",
 					copyAuthorNodes: true,
 					setExecutionValues:true,
-					setStudentExecutionValues:true
-				},
+					setStudentExecutionValues:true,
+                    executionExercise: true
+                },
 
 				EDITOR:{
 					allowPrettify:true,
@@ -603,7 +606,8 @@ define([
 					nodeDetails: "NEWVALUE",
 					copyAuthorNodes: true,
 					setExecutionValues:true,
-					setStudentExecutionValues:true
+					setStudentExecutionValues:true,
+                    executionExercise: true
 				}
 			}
 		};
@@ -676,7 +680,8 @@ define([
 				showExecutionEditor: false,
 				setExecutionValues:false,
 				setStudentExecutionValues:false,
-				demoExecution:false
+				demoExecution:false,
+                executionExercise: false
 			},
 
 			constructor: function(/*string*/ mode, /*string*/ activity){

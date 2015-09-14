@@ -34,6 +34,7 @@ define(["dojo/aspect",
 	"dojo/dom-style",
 	"dojo/ready",
 	"dojo/on",
+    "dojo/dom-construct",
 	"dijit/focus",
 	'dijit/registry',
 	"dijit/TooltipDialog",
@@ -43,7 +44,7 @@ define(["dojo/aspect",
 	"./typechecker",
 	"./equation",
 	"./schemas-student"
-], function(aspect, array, declare, lang, dom, domClass, style, ready,on, focusUtil, registry, tooltipDialog, popup, controller, PM, typechecker, expression, schemaStudent) {
+], function(aspect, array, declare, lang, dom, domClass, style, ready,on, domConstruct, focusUtil, registry, tooltipDialog, popup, controller, PM, typechecker, expression, schemaStudent) {
 	/* Summary:	// Summary:
 	 //			MVC for the node editor, for students
 	 // Description:
@@ -149,8 +150,55 @@ define(["dojo/aspect",
 				negativeInputs.addOption(option);
 			}, this);
 		},
+        //this function populates the options for the current iteration in the execution activity
+        populateExecOptions: function(id){
+            var executionValue = registry.byId("executionValue");
+            var execValStatus = this._model.active.getNode(id).status["executionValue"] || false;
+            console.log("before populating",execValStatus);
+            if(!execValStatus) {
+                console.log("start populating");
+                var ret_arr = this._model.student.getAllExecutionValues();
+                //remove duplicates if any
+                var uniqueOptions = ret_arr.filter(function (elem, pos) {
+                    return ret_arr.indexOf(elem) == pos;
+                });
+                //populate the executionValue comboBox
+                console.log("unique options", uniqueOptions, ret_arr);
 
-		//  should be moved to a function in controller.js
+                var currentOption = [];
+                executionValue.removeOption(executionValue.getOptions());
+                //ad default option
+                executionValue.addOption({label: "select",value: "default"});
+                array.forEach(uniqueOptions, function (optionVal) {
+                    currentOption = [{label: "" + optionVal, value: "" + optionVal}];
+                    executionValue.removeOption(currentOption);
+                    executionValue.addOption(currentOption);
+                });
+                uniqueOptions=[];
+            }
+            //for change in the select values
+            executionValue.on('Change', lang.hitch(this, function () {
+                if(executionValue.value !== "default") {
+                    var nodeIdHere = id;
+                    //var givenID = this._model.active.getDescriptionID(id);
+                    var answer = executionValue.value;
+                    console.log("changed value is ", answer)
+                    var result = this._PM.processAnswer(id, "executionValue", answer);
+                    this.applyDirectives(result);
+
+                    //Set correct answer in model
+                    this._model.active.setExecutionValue(this.currentID, answer);
+                    registry.byId("executionValue").set("selected", answer);
+
+                    //Update Node Label
+                    this.updateNodeLabel(id);
+                    this.colorNodeBorder(this.currentID, true);
+                }
+            }));
+        },
+
+
+        //  should be moved to a function in controller.js
 		updateInputNode: function (/** auto node id **/ id, /**variable name**/ variable) {
 			console.log("updating nodes student controller");
 			//getDescriptionID using variable name
@@ -796,6 +844,11 @@ define(["dojo/aspect",
 					//update node label and border color
 					this.updateNodeLabel(newId.ID);
 					this.colorNodeBorder(newId.ID, true);
+                    if(this.activityConfig.get("executionExercise")) {
+                        console.log("setting status");
+                        this._model.active.getNode(newId.ID).status["executionValue"]=null;
+                        registry.byId("executionValue").set("disabled", false);
+                    }
 				}
 			}));
 			//highlight next (should be the first) node in the list
@@ -869,12 +922,22 @@ define(["dojo/aspect",
 					//Show hide explanation button
 					this._model.given.getExplanation(givenID) ? style.set(showExplanationButton, "display", "block") :
 						style.set(showExplanationButton, "display", "none");
-					var answer = this._model.active.getExecutionValue(id)|| "";
-					executionValue.set("value", answer);
 
+                    //in case of execution demo we need to show the correct answer
+                    if(this.activityConfig.get("demoExecution")) {
+                        var answer = this._model.active.getExecutionValue(id) || "";
+                        executionValue.set("selected", answer);
+                    }
+                    //in case of execution activity we need to populate the options for the student to solve
+                    else if(this.activityConfig.get("executionExercise")){
+                        var answer = this._model.active.getExecutionValue(id) || "";
+                        executionValue.set("selected", answer);
+                        this.populateExecOptions(id);
+                    }
 					//enable/disable textbox and button
 					var execValStatus = this._model.active.getNode(id).status["executionValue"] || false;
 					executionValue.set("status", execValStatus.status|| "");
+                    console.log("current status is",execValStatus);
 					if (execValStatus && execValStatus.disabled) {
 						executionValue.set("disabled", execValStatus.disabled);
 					}else{
@@ -906,7 +969,9 @@ define(["dojo/aspect",
 
 				//Set correct answer in model
 				this._model.active.setExecutionValue(this.currentID, answer);
-				registry.byId("executionValue").set("value", answer);
+				registry.byId("executionValue").addOption({label: ""+answer, value: ""+answer});
+                registry.byId("executionValue").attr("value",answer);
+
 
 				//Update Node Label
 				this.updateNodeLabel(id);
@@ -916,6 +981,10 @@ define(["dojo/aspect",
 				this.highlightNextNode();
 			}
 		},
+
+        handleExecChange: function(val){
+            console.log("value returned is",val);
+        },
 
 		closeExecutionMenu: function (){
 			this.logging.log('ui-action', {

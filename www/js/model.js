@@ -617,6 +617,18 @@ define([
 			setExecutionValues: function(/* string */ id, /* array */ values){
 				this.getNode(id).executionValue = values;
 			},
+            getAllExecutionValues: function(){
+                var nodes = obj.given.getNodes();
+                var coll = new Array();
+                var studentItr=obj.student.getIteration();
+                array.forEach(nodes,function(node){
+                    if((obj.given.getGenus(node.ID)!== "extra") || (obj.given.getGenus(node.ID)!== "irrelevant") )
+                    var insertVal = obj.given.getExecutionValue(node.ID,studentItr);
+                    if(insertVal)
+                        coll.push(insertVal);
+                });
+                return coll;
+            },
 			setSchemas: function(/* object */ schemas){
 				obj.model.task.schemas = schemas;
 			},

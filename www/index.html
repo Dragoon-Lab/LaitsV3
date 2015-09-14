@@ -632,7 +632,10 @@
         <div id="executionNodeName" class="incrementalButton" style="text-align: center"></div>
 
         <label for="executionValue">New Value:</label>
-        <input id="executionValue" type="text" style="width:5em" data-dojo-type="dijit/form/TextBox">
+        <select id="executionValue"  data-dojo-type="dijit/form/Select">
+            <option value='defaultSelect'>--Select--</option>
+        </select>
+
         <div style="text-align:center">
              <button type="button" class="incrementalButton" data-dojo-type="dijit/form/Button"  iconClass="fa inc-button" id="ExecEquationButton"> Show Equation</button><br/>
              <button type="button" class="incrementalButton" data-dojo-type="dijit/form/Button"  iconClass="fa inc-button" id="ExecShowExplanationButton"> Show Explanation</button>

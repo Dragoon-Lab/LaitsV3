@@ -177,10 +177,10 @@ define([
 						node: nodeName
 					});
 				}
-				crisis.hide();
 				if(crisis.title && crisis.title.indexOf("Iteration Has") >= 0){
 					that.callNextIteration();
 				}
+				crisis.hide();
 			});
 		},
 		_setStatus : function(value){
