@@ -483,7 +483,8 @@ define([
                         tab_data.findSolution()
 
                     }
-					*/controllerObject.showExecutionMenu(mover.node.id);
+					*/
+                    controllerObject.showExecutionMenu(mover.node.id);
 				}
 			}, true);
 

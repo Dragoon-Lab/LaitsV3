@@ -194,6 +194,7 @@ define(["dojo/aspect",
                     this.updateNodeLabel(id);
                     this.colorNodeBorder(this.currentID, true);
                 }
+                this.canRunNextIteration();
             }));
         },
 
