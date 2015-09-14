@@ -14,7 +14,8 @@
 			"query": "custom",
 			"qObject": {
 				"m": "!AUTHOR",
-				"s": "sos326-s15"
+				"s": "sos326-f15",
+				"a": "construction"
 			}
 		},
 		{
@@ -129,7 +130,8 @@
 			"query": "custom",
 			"qObject": {
 				"m": "!AUTHOR",
-				"s": "sos326-s15"
+				"s": "sos326-f15",
+				"a": "construction"
 			}
 		},
 		{

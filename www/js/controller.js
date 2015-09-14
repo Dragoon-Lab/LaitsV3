@@ -177,10 +177,10 @@ define([
 						node: nodeName
 					});
 				}
-				crisis.hide();
 				if(crisis.title && crisis.title.indexOf("Iteration Has") >= 0){
 					that.callNextIteration();
 				}
+				crisis.hide();
 			});
 		},
 		_setStatus : function(value){
@@ -679,6 +679,7 @@ define([
 						break;
 					case "parameter":
 					case "none":
+						nodeName = "&nbsp;";
 						break;
 					default:
 						this.logging.clientLog("error", {

@@ -28,8 +28,8 @@
 			$this->al = new AnalyzeLogs($con);
 		}
 
-		function createDashboard($section, $mode, $user, $problem, $fromTime, $fromDate, $toTime, $toDate){
-			$query = $this->getQuery($section, $mode, $user, $problem, $fromTime, $fromDate, $toTime, $toDate);
+		function createDashboard($section, $mode, $activity, $user, $problem, $fromTime, $fromDate, $toTime, $toDate){
+			$query = $this->getQuery($section, $mode, $activity, $user, $problem, $fromTime, $fromDate, $toTime, $toDate);
 			$result = $this->al->getResults($query);
 			$objects = null;
 			if($result->num_rows != 0)
@@ -38,7 +38,7 @@
 			return $objects;
 		}
 
-		function getQuery($section, $mode, $user, $problem, $fromDate, $toDate, $fromTime, $toTime){
+		function getQuery($section, $mode, $activity, $user, $problem, $fromDate, $toDate, $fromTime, $toTime){
 			$userString = "AND user = '".$user."' ";
 			$fromTimeString =  "AND time >= '".$fromDate.(!empty($fromTime)?(" ".$fromTime):"")."' ";
 			$toTimeString = "AND time <= '".(!empty($toDate)?$toDate:$fromDate).(!empty($toTime)?(" ".$toTime):"")."' ";
@@ -56,6 +56,7 @@
 			if(substr($section, 0, 1) == "%"){
 				$likeSection = true;
 			}
+			$activityString = "AND activity = '".$activity."' ";
 			$problemString = "AND problem ".($likeProblem?"LIKE":"=")." '".$problem."' ";
 			$modeString = " AND mode ".($notMode?"!":"")."= '".$mode."' ";
 			$sectionString = " section ".($likeSection?"LIKE":"=")." '".$section."' ";
@@ -72,6 +73,7 @@
 				(!empty($problem) ?$problemString:"").
 				(!empty($fromDate)?$toTimeString:"").
 				(!empty($mode)?$modeString:"").
+				(!empty($activity)?$activityString:"").
 			"ORDER BY user asc, problem asc, time asc, tid asc;";
 		//	$queryString = "SELECT tid, mode, session.session_id, user, problem, time, method, message, `group` from session JOIN step ON session.session_id = step.session_id where method != 'client-message' AND mode != 'AUTHOR' AND user = 'cdluna' AND problem LIKE '%ps3-0%' ORDER BY user asc, problem asc, tid asc;";
 		//	echo $queryString;
@@ -637,7 +639,7 @@
 				$errorRatio = $incorrectChecks/$totalChecks;
 			}
 
-			$diff = strtotime($currentTime) - strtotime($row['time']) - $newMessage['time'];
+			$diff = strtotime($currentTime) - strtotime($oldRow['time']) - $newMessage['time'];
 			if($upObject->sessionRunning && $diff > 7200){
 				$upObject->sessionRunning = false;
 			}

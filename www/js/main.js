@@ -504,7 +504,14 @@ define([
 					if(activity_config.get("demoExecution")){
 						controllerObject.showExecutionAnswer(mover.node.id);
 					}
-					controllerObject.showExecutionMenu(mover.node.id);
+                    /*
+                    else if(activity_config.get("executionExercise")){
+                        var tab_data = new Graph(givenModel, query.m, session, "forExecIterations");
+                        tab_data.findSolution()
+
+                    }
+					*/
+                    controllerObject.showExecutionMenu(mover.node.id);
 				}
 			}, true);
 
@@ -1395,7 +1402,7 @@ define([
 				//call resetNodeExec demo in con student to reset the nodes
 				if(activity_config.get("demoExecution")){
 					controllerObject.resetNodesExecDemo();
-				}	
+				}
 			});
 			if(activity_config.get("demoIncremental") || activity_config.get("demoExecution")) {
 				controllerObject.highlightNextNode();
