@@ -215,8 +215,8 @@ define(["dojo/_base/lang"], function (lang) {
 					"showColor": true,
 					"nodeBorderSize": "3px ",
 					"createNodeButton": "none",
-					"graphButton": "inline",
-					"tableButton": "inline",
+					"graphButton": "none",
+					"tableButton": "none",
 					"forumButton": "none",
 					"schemaButton": "none",
 					"descButton": "none",
@@ -225,7 +225,6 @@ define(["dojo/_base/lang"], function (lang) {
 					"previewButton": "none",
 					"slidesButton": "none",
 					"lessonsLearnedButton": "none",
-					"resetButton": "inline",
 					"doneButton": "inline",
 					"prettifyButton": "inline",
 					"nodeBorderCompleteColor": "gray",
@@ -243,8 +242,8 @@ define(["dojo/_base/lang"], function (lang) {
 						"showColor": false,
 						"nodeBorderSize": "3px ",
 						"createNodeButton": "none",
-						"graphButton": "inline",
-						"tableButton": "inline",
+						"graphButton": "none",
+						"tableButton": "none",
 						"forumButton": "none",
 						"schemaButton": "none",
 						"descButton": "none",
@@ -253,7 +252,6 @@ define(["dojo/_base/lang"], function (lang) {
 						"previewButton": "none",
 						"slidesButton": "none",
 						"lessonsLearnedButton": "none",
-						"resetButton": "inline",
 						"doneButton": "inline",
 						"prettifyButton": "inline",
 						"nodeBorderCompleteColor": "gray",
@@ -272,8 +270,8 @@ define(["dojo/_base/lang"], function (lang) {
 					"showColor": true,
 					"nodeBorderSize": "3px ",
 					"createNodeButton": "none",
-					"graphButton": "inline",
-					"tableButton": "inline",
+					"graphButton": "none",
+					"tableButton": "none",
 					"forumButton": "none",
 					"schemaButton": "none",
 					"descButton": "none",
@@ -300,8 +298,8 @@ define(["dojo/_base/lang"], function (lang) {
 						"showColor": false,
 						"nodeBorderSize": "3px ",
 						"createNodeButton": "none",
-						"graphButton": "inline",
-						"tableButton": "inline",
+						"graphButton": "none",
+						"tableButton": "none",
 						"forumButton": "none",
 						"schemaButton": "none",
 						"descButton": "none",
@@ -335,10 +333,8 @@ define(["dojo/_base/lang"], function (lang) {
 				// iterate through all object in the activity and merge all params for given mode:
 				//console.log("In constructor", this._mode, this._activity);
 				for (var idx in parameters[this._activity]) {
-					if (parameters[this._activity].hasOwnProperty(idx)) {
-						var obj = parameters[this._activity][idx];
-						if (obj && obj.mode.indexOf(this._mode) > -1) this._params = lang.mixin(this._params, obj.param);
-					}
+					var obj = parameters[this._activity][idx];
+					if (obj.mode.indexOf(this._mode) > -1) this._params = lang.mixin(this._params, obj.param);
 				}
 			},
 

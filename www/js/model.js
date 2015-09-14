@@ -623,9 +623,13 @@ define([
                 var studentItr=obj.student.getIteration();
                 array.forEach(nodes,function(node){
                     if((obj.given.getGenus(node.ID)!== "extra") || (obj.given.getGenus(node.ID)!== "irrelevant") )
-                    var insertVal = obj.given.getExecutionValue(node.ID,studentItr);
+                        var insertVal = obj.given.getExecutionValue(node.ID,studentItr);
                     if(insertVal)
                         coll.push(insertVal);
+                    if(obj.given.getType(node.ID)=== "parameter" && (obj.given.getGenus(node.ID)!== "extra")&&(obj.given.getGenus(node.ID)!== "irrelevant") )
+                        var parVal = obj.given.getInitial(node.ID);
+                    if(parVal)
+                        coll.push(parVal);
                 });
                 return coll;
             },
