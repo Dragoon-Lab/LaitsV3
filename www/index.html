@@ -163,8 +163,9 @@
             <span>Help</span>
             <div data-dojo-type="dijit/Menu" id="menuHelp">
                 <div id="menuIntroText" data-dojo-type="dijit/MenuItem">Introduction</div>
-                <div id="menuIntroVideo" data-dojo-type="dijit/MenuItem">Intro Video</div>
-                <div id="menuMathFunctions" data-dojo-type="dijit/MenuItem">Math Functions</div>
+                <div id="menuIntroVideo" data-dojo-type="dijit/MenuItem">Intro video</div>
+                <div id="menuOldIntroVideo" data-dojo-type="dijit/MenuItem">Slightly older intro video</div>
+                <div id="menuMathFunctions" data-dojo-type="dijit/MenuItem">Math functions</div>
             </div>
         </div>
         <button type="button" data-dojo-type="dijit/form/Button" id="lessonsLearnedButton" disabled="true" style="display: none">Lessons Learned</button>
@@ -398,10 +399,11 @@
                     </button>
                 </div>
             </div>
-
-            <button id="explanationButton" data-dojo-type="dijit/form/Button" type="button" iconClass="dijitNoIcon" onclick="myFormDialog.show()" style="margin: 10px 80px 10px 10px; width: 10px;">
-                Explanation
-            </button>
+            <div class="buttonBox">
+                <button id="explanationButton" data-dojo-type="dijit/form/Button" type="button" iconClass="dijitNoIcon" onclick="myFormDialog.show()">
+                    Explanation
+                </button>
+            </div>
             <!--  End of explanation part -->
 
         </div>
@@ -418,7 +420,7 @@
             </select>
             <span>
                     <img id="initialValueQuestionMark"  class="questionMark" src="images/questionmark.png" style="padding-left:10px"/>
-                    <label for="initialValue">Initial Value</label>
+                    <label for="initialValue"><p id="initLabel" style="display:inline">Initial </p>Value</label>
             </span>
             <input id="initialValue" type="text" style="width:5em" data-dojo-type="dijit/form/TextBox">
              <span>
@@ -442,91 +444,90 @@
             <input id ="markRootNode" name ="markRootNode" data-dojo-type="dijit/form/CheckBox" value="agreed" checked="false"/>
             <img id="questionMarkRoot"  class="questionMark" src="images/questionmark.png"/>
         </div>
-        <div class="fieldgroup">
-                 <span class="fixedwidth">
-                     <img id="expressionBoxQuestionMark"  class="questionMark" src="images/questionmark.png"/>
-                     <label for="equationBox">Expression</label>
-                 </span>
-            <div class="vertical">
-                <div id="equationLabel"></div>
-                <textarea id="equationBox" rows=2 cols=30 data-dojo-type="dijit/form/SimpleTextarea"></textarea>
-                <!-- adding givenEquationBox for equations in given model for author , hidden in student mode -->
-                <textarea id="givenEquationBox" rows=2 cols=30 data-dojo-type="dijit/form/SimpleTextarea" style="display:none;"></textarea>
-                <div id="equationText"></div>
-                <!--<div id="timeStepLabel"></div>-->
-            </div>
-            <div class="buttonBox">
-                <button id="undoButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Undo</button>
-                <button id="equationDoneButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Check Expression</button>
-            </div>
-        </div>
-        <div class="fieldgroup" id="algebraic">
-                <span class="fixedwidth">
-                    <img id="inputsQuestionMark"  class="questionMark" src="images/questionmark.png"/>
-                    <label>Inputs</label>
-                </span>
-            <div class="vertical">
-                <div id="inputControlStudent">
-                    <select id="nodeInputs" data-dojo-type="dijit/form/Select">
-                        <option value='defaultSelect'>--Select--</option>
-                    </select>
+        <div class="ExpressionContainer">
+            <div class="fieldgroup">
+                     <span class="fixedwidth">
+                         <img id="expressionBoxQuestionMark"  class="questionMark" src="images/questionmark.png"/>
+                         <label for="equationBox">Expression</label>
+                     </span>
+                <div class="vertical">
+                    <div id="equationLabel"></div>
+                    <textarea id="equationBox" rows=2 cols=35 data-dojo-type="dijit/form/SimpleTextarea"></textarea>
+                    <!-- adding givenEquationBox for equations in given model for author , hidden in student mode -->
+                    <textarea id="givenEquationBox" rows=2 cols=35 data-dojo-type="dijit/form/SimpleTextarea" style="display:none; min-height:48px;"></textarea>
+                    <div id="equationText"></div>
+                    <!--<div id="timeStepLabel"></div>-->
                 </div>
+                <div class="buttonBox">
+                    <button id="undoButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Undo</button>
+                    <button id="equationDoneButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Check Expression</button>
+                </div>
+            </div>
+            <div class="fieldgroup" id="algebraic">
+                    <span class="fixedwidth">
+                        <img id="inputsQuestionMark"  class="questionMark" src="images/questionmark.png"/>
+                        <label>Insert above </label>
+                    </span>
+                <div class="vertical">
+                    <div id="inputControlStudent">
+                        <select id="nodeInputs" data-dojo-type="dijit/form/Select" style="background-color:#fff;">
+                            <option value='defaultSelect'>--Select--</option>
+                        </select>
+                    </div>
 
-                <div id="inputControlAuthor" style="display:none">
-                    <select id="setInput" data-dojo-type="dijit/form/ComboBox">
-                    </select>
+                    <div id="inputControlAuthor" style="display:none">
+                        <select id="setInput" data-dojo-type="dijit/form/ComboBox" style="background-color:#fff;">
+                        </select>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="fieldgroup" id="operations">
-                <span class="fixedwidth">
-                    <img id="operationsQuestionMark"  class="questionMark" src="images/questionmark.png" style="margin:2px"/>
-                </span>
+            <div class="fieldgroup" id="operations">
+                    <span class="fixedwidth">
+                        <img id="operationsQuestionMark"  class="questionMark" src="images/questionmark.png" style="margin:2px"/>
+                    </span>
 
-            <div>
-                <button id="plusButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">+</button>
-                <button id="minusButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">-</button>
-                <button id="timesButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">*</button>
-                <button id="divideButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">/</button>
+                <div>
+                    <button id="plusButton" title="Plus" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon"><span class="fa fa-plus"></span></button>
+                    <button id="minusButton" title="Minus" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon"><span class="fa fa-minus"></span></button>
+                    <button id="timesButton"  title="Times" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon"><span class="fa fa-asterisk"></span></button>
+                    <button id="divideButton"  title="Divide" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon"><strong class="fa fa-minus fa-division"></strong></button>
+                </div>
             </div>
-        </div>
-        <div class="fieldgroup" id="structured">
-            <label>Inputs</label>
-            <div class="vertical">
-                <div class="horizontal">
-                    <button id="sumButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Sum</button>
-                    <button id="productButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Product</button>
-                </div>
-                <div class="horizontal">
-                    <label id="positiveInputsText" for="positiveInputs" style="display:inline">Add quantity:</label><br>
-                    <select id="positiveInputs" data-dojo-type="dijit/form/Select" style="display:inline-block">
-                        <option value='defaultSelect'>--Select--</option>
-                    </select>
-                </div>
-                <div class="horizontal">
-                    <label id="negativeInputsText" for="negativeInputs" style="display:inline">Subtract quantity:</label><br>
-                    <select id="negativeInputs" data-dojo-type="dijit/form/Select" style="display:inline-block">
-                        <option value='defaultSelect'>--Select--</option>
-                    </select>
+            <div class="fieldgroup" id="structured">
+                <label>Insert above </label>
+                <div class="vertical">
+                    <div class="horizontal">
+                        <button id="sumButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Sum</button>
+                        <button id="productButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Product</button>
+                    </div>
+                    <div class="horizontal">
+                        <label id="positiveInputsText" for="positiveInputs" style="display:inline">Add quantity:</label><br>
+                        <select id="positiveInputs" data-dojo-type="dijit/form/Select" style="display:inline-block">
+                            <option value='defaultSelect'>--Select--</option>
+                        </select>
+                    </div>
+                    <div class="horizontal">
+                        <label id="negativeInputsText" for="negativeInputs" style="display:inline">Subtract quantity:</label><br>
+                        <select id="negativeInputs" data-dojo-type="dijit/form/Select" style="display:inline-block">
+                            <option value='defaultSelect'>--Select--</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="fieldgroup">
             <label for="messageBox">Messages</label>
             <div id="messageBox" class="textscroll" data-dojo-type="dijit/layout/ContentPane"></div>
-            <div class="buttonBox">
+            <div class="buttonBox" style="padding-top:0px">
                 <!-- Strut to move close button down.  It would be
                         better to do this with css... -->
-                <div>&nbsp;<button id="nodeForumButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon" disabled="true">Forum</button></div>
-                <div>&nbsp;</div>
-                <div>&nbsp;</div>
+                <button id="nodeForumButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon" disabled="true">Forum</button>
             </div>
-            <div style="display:block">
-                <div>&nbsp;</div>
+            <div style="margin-bottom:10px; display:block">
+                <span>&nbsp;</span>
                 <button id="closeButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon" style="float:right;">Done</button>
                 <button id="deleteButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon" style="float:left;">Delete Node</button>
                 <button id="imageButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon" style="float:left; " disabled="true">Image Highlighting</button>
-                <div>&nbsp;</div>
             </div>
         </div>
         <div class="claro sameedit" id="markImageBox" data-dojo-type="dijit/Dialog" title="Image Highlighting" style="width:600px;">

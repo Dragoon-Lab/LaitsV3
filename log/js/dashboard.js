@@ -337,8 +337,9 @@ define([
 			var tableString = '';
 			var row = 0;
 			array.forEach(this.users, function(user){
-
+				var userRow = false;
 				if(!this.modules['names'] && this.currentUser == user){
+					userRow = true;
 					tableString += "<tr class = 'light-blue'>";
 				} else {
 					tableString += "<tr>";
@@ -363,7 +364,7 @@ define([
 					var complete = this.problemComplete[row][col];
 					var runningStatus = this.sessionRunning[row][col];
 					tableString += "<td";
-					if(this.modules['colors']){
+					if(this.modules['colors'] && !userRow){
 						if(complete){
 							tableString += " class='green'";
 						} else if(!complete && runningStatus){

@@ -679,6 +679,7 @@ define([
 						break;
 					case "parameter":
 					case "none":
+						nodeName = "&nbsp;";
 						break;
 					default:
 						this.logging.clientLog("error", {
@@ -1090,6 +1091,12 @@ define([
 			this.disableHandlers = true;
 			this.initialControlSettings(id);
 			this.populateNodeEditorFields(id);
+
+			// "Initial Value" label --> "Value" for parameters			
+			var type=this._model.active.getType(this.currentID);
+			if (type=="parameter") 	domStyle.set('initLabel', 'display', 'none');
+			else domStyle.set('initLabel',"display","inline");
+
 			this._nodeEditor.show().then(lang.hitch(this, function(){
 				this.disableHandlers = false;
 			}));

@@ -265,6 +265,12 @@ define(["dojo/aspect",
 				return; // don't do anything if they choose default
 			this.updateType(type);
 			this.applyDirectives(this._PM.processAnswer(this.currentID, 'type', type));
+
+			// "Initial Value" label --> "Value" for parameters
+			var type=this._model.active.getType(this.currentID);
+            if (type=="parameter") style.set('initLabel', 'display', 'none');
+			else style.set('initLabel',"display","inline");
+
 		},
 
 		typeSet: function (value) {
