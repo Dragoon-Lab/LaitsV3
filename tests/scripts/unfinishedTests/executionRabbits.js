@@ -30,49 +30,87 @@ describe("Execution Rabbits (student mode)", function() {
                                       ["section","regression-testing"],
                                       ["logging","true"],["activity","exectuion"]]);
     }));
+    
+    describe("In iteration 1:", function(){
+        // get first node wrong
+        it("Should get the first node wrong and turn red", async(function(){
+            dtest.openEditorForNode(client, "net growth");
+            dtest.selectExecutionValue(client,"0.3");
+            atest.checkNodeValue(dtest.getNodeBorderColor(client,"net growth"),"red","net growth border");
+            atest.checkNodeValue(dtest.getNodeFillColor(client,"net growth"),"white","net growth fill");
+        }));
+        
+        it("Should get the first node wrong again and turn yellow", async(function(){        
+            dtest.selectExecutionValue(client,"31.2");
+            atest.checkNodeValue(dtest.getNodeBorderColor(client,"net growth"),"yellow","net growth border");
+            atest.checkNodeValue(dtest.getNodeFillColor(client,"net growth"),"white","net growth fill");
+        }));
+        // get second node right
+        it("Should get the second node right and turn green", async(function(){
+            dtest.openEditorForNode(client, "population");
+            dtest.selectExecutionValue(client,"31.2");
+            atest.checkNodeValue(dtest.getNodeBorderColor(client,"population"),"green","population border");
+            atest.checkNodeValue(dtest.getNodeFillColor(client,"population"),"green","population fill");
+        }));
 
-    // get first node wrong
-    it("Should get the first node wrong and turn red", async(function(){
-        dtest.openEditorForNode(client, "net growth");
-        dtest.selectExecutionValue(client,"0.3");
-        atest.checkNodeValue(dtest.getNodeBorderColor(client,"net growth"),"red","net growth border");
-        atest.checkNodeValue(dtest.getNodeFillColor(client,"net growth"),"white","net growth fill");
-    }));
-
-    it("Should get the first node wrong again and turn yellow", async(function(){        
-        dtest.selectExecutionValue(client,"31.2");
-        atest.checkNodeValue(dtest.getNodeBorderColor(client,"net growth"),"yellow","net growth border");
-        atest.checkNodeValue(dtest.getNodeFillColor(client,"net growth"),"white","net growth fill");
-    }));
-    // get second node right
-    it("Should get the second node right and turn green", async(function(){
-        dtest.openEditorForNode(client, "population");
-        dtest.selectExecutionValue(client,"31.2");
-        atest.checkNodeValue(dtest.getNodeBorderColor(client,"population"),"green","population border");
-        atest.checkNodeValue(dtest.getNodeFillColor(client,"population"),"green","population fill");
-    }));
-
-    it("Should display the next iteration message", async(function(){
-        atest.popupContainsText(client, "You have completed all the values for this time step.");
-        dtest.closeExecutionIterationPopup(client);
+        it("Should display the next iteration message", async(function(){
+            atest.popupContainsText(client, "You have completed all the values for this time step.");
+            dtest.closeExecutionIterationPopup(client);
+        }));
     });
 
-    // close done window
-    it("Should display and close the done message", async(function(){
-        assert(dtest.isDonePopupVisible(client),"The Done hint popup is not visible, but it should be!");
-        dtest.closeMenuDonePopup(client);
-    }));
-    
-    // check for extra done window 
-    it("Should show an equation and not show done hint again", async(function(){
-        dtest.openEditorForNode(client, "net growth");
-        dtest.clickIncrementalEquation(client);
-        dtest.waitTime(1000);
-        // atest.popupContainsText("net growth = population*growth rate",dtest,client) //TODO: doesn't work for this popup
-        assert(!dtest.isDonePopupVisible(client),"The Done hint popup is visible, but it should not be!");
-    }));
-    
+
+    describe("In iteration 2:", function(){
+        // get first node wrong
+        it("Should get the first node right and turn green", async(function(){
+            dtest.openEditorForNode(client, "net growth");
+            dtest.selectExecutionValue(client,"12.2");
+            atest.checkNodeValue(dtest.getNodeBorderColor(client,"net growth"),"green","net growth border");
+            atest.checkNodeValue(dtest.getNodeFillColor(client,"net growth"),"green","net growth fill");
+        }));
+
+        it("Should get the second node wrong and turn red", async(function(){        
+            dtest.selectExecutionValue(client,"12.2");
+            atest.checkNodeValue(dtest.getNodeBorderColor(client,"net growth"),"red","net growth border");
+            atest.checkNodeValue(dtest.getNodeFillColor(client,"net growth"),"white","net growth fill");
+        }));
+        // get second node right
+        it("Should get the second node right and turn green", async(function(){
+            dtest.openEditorForNode(client, "population");
+            dtest.selectExecutionValue(client,"52.7");
+            atest.checkNodeValue(dtest.getNodeBorderColor(client,"population"),"green","population border");
+            atest.checkNodeValue(dtest.getNodeFillColor(client,"population"),"white","population fill");
+        }));
+
+        it("Should display the next iteration message", async(function(){
+            atest.popupContainsText(client, "You have completed all the values for this time step.");
+            dtest.closeExecutionIterationPopup(client);
+        }));
+    });
+
+    describe("In iteration 3:", function(){
+        
+        it("Should get the first node right and turn green", async(function(){
+            dtest.openEditorForNode(client, "net growth");
+            dtest.selectExecutionValue(client,"9.36");
+            atest.checkNodeValue(dtest.getNodeBorderColor(client,"net growth"),"red","net growth border");
+            atest.checkNodeValue(dtest.getNodeFillColor(client,"net growth"),"white","net growth fill");
+        }));
+
+        it("Should get the second node right and turn green", async(function(){
+            dtest.openEditorForNode(client, "population");
+            dtest.selectExecutionValue(client,"40.6");
+            atest.checkNodeValue(dtest.getNodeBorderColor(client,"population"),"green","population border");
+            atest.checkNodeValue(dtest.getNodeFillColor(client,"population"),"green","population fill");
+        }));
+
+        it("Should display the next iteration message", async(function(){
+            atest.popupContainsText(client, "You have completed all the values for this time step.");
+            dtest.closeExecutionIterationPopup(client);
+        }));
+    });
+
     after(async(function(done){
-        dtest.endTest(client);
+        //dtest.endTest(client);
     }));
 });
