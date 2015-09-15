@@ -1209,6 +1209,23 @@ define([
 						"height=400, width=600, toolbar =no, menubar=no, scrollbars=yes, resizable=no, location=no, status=no"
 					);
 				});
+				/*
+				 Add link to list of Intro to Dragoon concepts
+				 */
+				var introConcept = dom.byId("menuIntroConcept");
+				on(introConcept, "click", function(){
+					controllerObject.logging.log('ui-action', {
+						type: "menu-choice",
+						name: "introConcept"
+					});
+					// "newwindow": the pop-out window name, not required, could be empty
+					// "height" and "width": pop-out window size
+					// Other properties could be changed as the value of yes or no
+					window.open("DragoonConcepts.html","newwindow",
+						"height=400, width=600, toolbar =no, menubar=no, scrollbars=yes, resizable=no, location=no, status=no"
+					);
+				});
+
 
 			}
 
