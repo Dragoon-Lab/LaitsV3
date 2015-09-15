@@ -22,7 +22,7 @@
 	</script>
 	<style>
 		body{
-			/*font: 1.3em/1.3 Arial, Helvetica, sans-serif;*/
+			font: 1em/1.3 Arial, Helvetica, sans-serif;
 			margin: 25px;
 		}
 
@@ -44,6 +44,11 @@
 </head>
 <body>
 <div id="page-wrap">
+<p><b>System:</b> In the top left part of the window, a system is described using an image and some text.  This is always the first thing you should read.</p>
+<p><b>Model:</b> In general, a model of a system consists of mathematically related, numerical quantities.  This window is for displaying and editing a model of the given system.</p>
+<p><b>Nodes:</b> This window represents the model’s quantities as diamonds, circles and other shapes.  These shapes are called nodes.  The quantity’s name appears beneath the node.</p>
+<p><b>Parameters:</b> If the user can set the value of quantity by typing it in, then the node is called a parameter.  It shown as a diamond, with its value inside it.</p>
+<p><b>Functions:</b> If the value of a node is calculated as a mathematical function of the values of other nodes, then it is shown as a circle. </p>
 <p><b>Inputs:</b>  The nodes whose values are needed for calculating this node’s value are called inputs and shown with arrows coming into the node.<span class="explain" id="inputExplainMore" onclick="show(inputExplain,inputExplainMore,inputHide)">Explain more...</span></p> 
 	<ul id="inputExplain" style="display:none;">
 		<li>Suppose that the node Total has its value calculated by the sum Price+Tax-Discount.  Then the node Total has three inputs and it has arrows coming into it from three nodes: Price, Tax and Discount. </li>
