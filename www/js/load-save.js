@@ -170,7 +170,6 @@ define([
 			window.open(url,"_self");
 		},
 		saveProblem: function(model,newSessionID){
-			debugger;
 			// Summary: saves the string held in this.saveData in the database.
 			if(this.doLogging){
 				var object = {

@@ -176,26 +176,7 @@ define(["dojo/aspect",
                 });
                 uniqueOptions=[];
             }
-            //for change in the select values
-            executionValue.on('Change', lang.hitch(this, function () {
-                if(executionValue.value !== "default") {
-                    var nodeIdHere = id;
-                    //var givenID = this._model.active.getDescriptionID(id);
-                    var answer = executionValue.value;
-                    console.log("changed value is ", answer)
-                    var result = this._PM.processAnswer(id, "executionValue", answer);
-                    this.applyDirectives(result);
 
-                    //Set correct answer in model
-                    this._model.active.setExecutionValue(this.currentID, answer);
-                    registry.byId("executionValue").set("selected", answer);
-
-                    //Update Node Label
-                    this.updateNodeLabel(id);
-                    this.colorNodeBorder(this.currentID, true);
-                }
-                this.canRunNextIteration();
-            }));
         },
 
 
@@ -706,7 +687,6 @@ define(["dojo/aspect",
 
 		canShowDonePopup: function () {
 			studId = this._model.active.getNodes();
-			console.log("student id is ", studId);
 			var isFinished = true;
 			studId.forEach(lang.hitch(this, function (newId) {
 				//each node should be complete and correct else set isFinished to false
@@ -725,7 +705,6 @@ define(["dojo/aspect",
 					' <button type="button" data-dojo-type="dijit/form/Button" id="closeHint">Ok</button>',
 					onShow: function () {
 						on(registry.byId('closeHint'), 'click', function () {
-							console.log("clicked prob done hint closed");
 							popup.close(problemDoneHint);
 						});
 					},
@@ -738,7 +717,6 @@ define(["dojo/aspect",
 					around: dom.byId('doneButton')
 				});
 				this.shownDone = true;
-				console.log("popup is",res);
 			}
 		},
 
@@ -746,7 +724,6 @@ define(["dojo/aspect",
 			if (this.activityConfig.get("demoIncremental") || this.activityConfig.get("demoExecution")) {
 				//Get next node in the list from PM
 				var nextID = this._PM.getNextNode();
-				console.log("next node is", nextID);
 				if (nextID) {
 					var node = dom.byId(nextID);
 					domClass.add(node, "glowNode");
@@ -802,7 +779,6 @@ define(["dojo/aspect",
 				}
 			}));
 			//highlight next (should be the first) node in the list
-			console.log("highlighting after reset called");
 			//reset the node counter to 0 before highlighting
 			this._PM.nodeCounter = 0;
 			this.highlightNextNode();
@@ -814,6 +790,7 @@ define(["dojo/aspect",
 			var nowHighLighted = this.currentHighLight;
 			this._model.student.setIteration(0);
 			studId.forEach(lang.hitch(this, function (newId) {
+
 				//remove the glow for current highlighted node as a part of reset
 				if(newId.ID === nowHighLighted) {
 					var noHighlight = dom.byId(newId.ID);
@@ -824,17 +801,12 @@ define(["dojo/aspect",
 					this._model.student.emptyExecutionValues(newId.ID);
 					//update node label and border color
 					this.updateNodeLabel(newId.ID);
-					this.colorNodeBorder(newId.ID, true);					
+					this.colorNodeBorder(newId.ID, true);
 				}
-
 			}));
 			//highlight next (should be the first) node in the list
-			console.log("highlighting after reset called");
 			this._PM.nodeCounter = 0;
-			
 			this.highlightNextNode();
-			
-
 		},
 
 
@@ -842,6 +814,7 @@ define(["dojo/aspect",
 			var studId = this._model.active.getNodes();
 			var nowHighLighted = this.currentHighLight;
 			studId.forEach(lang.hitch(this, function (newId) {
+				var givenID = this._model.active.getDescriptionID(newId.ID);
 				//remove the glow for current highlighted node as a part of reset
 				if(newId.ID === nowHighLighted) {
 					var noHighlight = dom.byId(newId.ID);
@@ -852,14 +825,21 @@ define(["dojo/aspect",
 					this.updateNodeLabel(newId.ID);
 					this.colorNodeBorder(newId.ID, true);
                     if(this.activityConfig.get("executionExercise")) {
-                        console.log("setting status");
                         this._model.active.getNode(newId.ID).status["executionValue"]=null;
+						this._model.given.getNode(givenID).status["executionValue"]=null;
                         registry.byId("executionValue").set("disabled", false);
                     }
+
+					this._model.given.getNode(givenID).attemptCount['assistanceScore'] = 0;
+					this._model.given.getNode(givenID).attemptCount['tweakDirection'] = 0;
+					this._model.given.getNode(givenID).attemptCount['executionValue'] = 0;
+
+					//Update Node Label
+					this.updateNodeLabel(newId.ID);
+					this.colorNodeBorder(newId.ID, true);
 				}
 			}));
 			//highlight next (should be the first) node in the list
-			console.log("highlighting after reset called");
 			this._PM.nodeCounter = 0;
 			this.highlightNextNode();
 		},
@@ -898,6 +878,27 @@ define(["dojo/aspect",
 			this._executionMenu.onBlur = lang.hitch(this, function () {
 				this.closeExecutionMenu();
 			});
+			var executionValue = registry.byId("executionValue");
+
+			//for change in the select values
+			executionValue.on('Change', lang.hitch(this, function () {
+				var currentValue = this._model.active.getExecutionValue(this.currentID) || "";
+				if(executionValue.value !== "default" && currentValue !== executionValue.value) {
+					//var givenID = this._model.active.getDescriptionID(id);
+					var answer = executionValue.value;
+					var result = this._PM.processAnswer(this.currentID, "executionValue", answer);
+					this.applyDirectives(result);
+
+					//Set correct answer in model
+					this._model.active.setExecutionValue(this.currentID, answer);
+					registry.byId("executionValue").set("selected", answer);
+
+					//Update Node Label
+					this.updateNodeLabel(this.currentID);
+					this.colorNodeBorder(this.currentID, true);
+				}
+				this.canRunNextIteration();
+			}));
 
 			var executionValText = registry.byId("executionValue");
 			executionValText._setStatusAttr = this._setStatus;
@@ -925,7 +926,7 @@ define(["dojo/aspect",
 					//set node name
 					dom.byId("executionNodeName").innerHTML = "<strong>" + nodeName + "</strong>";
 					var executionValue = registry.byId("executionValue");
-					
+
 					//Show hide explanation button
 					this._model.given.getExplanation(givenID) ? style.set(showExplanationButton, "display", "block") :
 						style.set(showExplanationButton, "display", "none");
@@ -933,18 +934,18 @@ define(["dojo/aspect",
                     //in case of execution demo we need to show the correct answer
                     if(this.activityConfig.get("demoExecution")) {
                         var answer = this._model.active.getExecutionValue(id) || "";
-                        executionValue.set("selected", answer);
+                        executionValue.set("value", answer);
                     }
                     //in case of execution activity we need to populate the options for the student to solve
                     else if(this.activityConfig.get("executionExercise")){
-                        var answer = this._model.active.getExecutionValue(id) || "";
-                        executionValue.set("selected", answer);
-                        this.populateExecOptions(id);
+						answer = this._model.active.getExecutionValue(id) || "";
+                        executionValue.set("value", answer);
+						this.populateExecOptions(id);
+
                     }
 					//enable/disable textbox and button
 					var execValStatus = this._model.active.getNode(id).status["executionValue"] || false;
 					executionValue.set("status", execValStatus.status|| "");
-                    console.log("current status is",execValStatus);
 					if (execValStatus && execValStatus.disabled) {
 						executionValue.set("disabled", execValStatus.disabled);
 					}else{
@@ -1004,10 +1005,9 @@ define(["dojo/aspect",
 		},
 
 		canRunNextIteration: function () {
-
-			var crisis=registry.byId(this.widgetMap.crisisAlert); 
+			var crisis=registry.byId(this.widgetMap.crisisAlert);
 			crisis._onKey=function(){}; // Override the _onKey function to prevent crisis dialogbox from closing when ESC is pressed
-			style.set(crisis.closeButtonNode,"display","none"); // Hide the close button 
+			style.set(crisis.closeButtonNode,"display","none"); // Hide the close button
 
 			var iterationNum=this._model.student.getIteration();
 			var maxItration=this._model.getExecutionIterations();
@@ -1016,7 +1016,8 @@ define(["dojo/aspect",
 			var isFinished = true;
 			studId.forEach(lang.hitch(this, function (newId) {
 			//each node should be complete and correct else set isFinished to false
-				if (!this._model.active.isComplete(newId.ID) || this._model.student.getCorrectness(newId.ID) === "incorrect") isFinished = false;
+				if (!this._model.active.isComplete(newId.ID) || this._model.student.getCorrectness(newId.ID) === "incorrect")
+					isFinished = false;
 			}));		
 
 			if (isFinished & iterationNum<maxItration-1) { // Not in the last iteration
@@ -1040,8 +1041,7 @@ define(["dojo/aspect",
 					id: "crisisAlert",
 					attribute: "open",
 					value: "Good work, now Dragoon will compute the rest of the values for you and display them as a table and as a graph in the next window."
-				}]);				
-				console.log("activity ended time to show the graph");
+				}]);
 			}											
 			//console.log("model is",this._model);
 		},
