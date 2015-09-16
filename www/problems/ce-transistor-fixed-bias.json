@@ -18,12 +18,12 @@
             ]
         },
         "lessonsLearned": [],
-        "increment": [
-            {
-                "tweakedNode": "defaultSelect",
-                "tweakDirection": "defaultSelect"
-            }
-        ],
+        // "increment": [
+        //     {
+        //         "tweakedNode": "defaultSelect",
+        //         "tweakDirection": "defaultSelect"
+        //     }
+        // ],
         "givenModelNodes": [
             {
                 "ID": "id2",
