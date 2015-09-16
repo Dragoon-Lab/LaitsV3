@@ -141,5 +141,3 @@ exports.popupContainsText = function(expectedText,dtest,client){
 	var text = dtest.popupWindowGetText(client);
 	assert(text.indexOf(expectedText) >= 0,"Message text was \"" + text + "\", could not find \"" + expectedText+"\"");
 }
-
-

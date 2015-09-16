@@ -465,12 +465,14 @@ define([
 			// updating model after lessonlearned is shown
 			aspect.after(registry.byId("lesson"), "show", function(){
 				givenModel.setLessonLearnedShown(true);
-				session.saveProblem(givenModel.model);
+				if(!(activity_config("demoExecution") || activity_config("demoIncremental")))
+					session.saveProblem(givenModel.model);
 			}); 
 
 			// Wire up send to server
 			aspect.after(drawModel, "updater", function(){
-				session.saveProblem(givenModel.model);
+				if(!(activity_config("demoExecution") || activity_config("demoIncremental")))
+					session.saveProblem(givenModel.model);
 			});
 
 			// When the node editor controller wants to update node style, inform
@@ -1209,6 +1211,23 @@ define([
 						"height=400, width=600, toolbar =no, menubar=no, scrollbars=yes, resizable=no, location=no, status=no"
 					);
 				});
+				/*
+				 Add link to list of Intro to Dragoon concepts
+				 */
+				var introConcept = dom.byId("menuIntroConcept");
+				on(introConcept, "click", function(){
+					controllerObject.logging.log('ui-action', {
+						type: "menu-choice",
+						name: "introConcept"
+					});
+					// "newwindow": the pop-out window name, not required, could be empty
+					// "height" and "width": pop-out window size
+					// Other properties could be changed as the value of yes or no
+					window.open("DragoonConcepts.html","newwindow",
+						"height=400, width=600, toolbar =no, menubar=no, scrollbars=yes, resizable=no, location=no, status=no"
+					);
+				});
+
 
 			}
 

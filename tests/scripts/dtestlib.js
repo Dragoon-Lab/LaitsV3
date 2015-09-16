@@ -555,7 +555,7 @@ exports.popupWindowPressOk = function(client){
 }
 
 exports.popupWindowGetText = function(client){    
-    return await(client.getText("#solution",defer()));    
+    return await(client.getText("#solution",defer())) || await(client.getText("#crisisMessage",defer()))
 }
 
 exports.popupWindowPressCancel = function(client){
@@ -1040,4 +1040,29 @@ exports.clickIncrementalEquation = function(client){
 
 exports.clickIncrementalExplanation = function(client){
     await(client.click("#ShowExplanationButton",defer()));
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// 12.  Execution functions
+
+exports.selectExecutionValue = function(client,value){
+    selectDropdownValue(client,"#executionValue",value);
+}
+
+exports.getExecutionValueColor = function(client){
+    // Summary: Returns a string representing the color of the field: "red","yellow","green","blue"
+    //          or "none" if the field has no color.
+    var test = await(client.getCssProperty('#executionValue',"background-color" ,defer())).value;
+    wait(1000);
+    return rgbToColor(test);
+}
+
+exports.clickExecutionEquation = function(client){
+    await(client.click("#ExecEquationButton",defer()));
+}
+
+exports.closeExecutionIterationPopup = function(client){
+    await(client.click("#OkButton",defer()));
+    await(client.waitForVisible('#crisisAlertMessage_underlay',1000,true,defer()));
 }

@@ -17,7 +17,7 @@
         },
         "taskDescription": {
             "construction": [
-                "Let's construct the Dodo population model that we saw earlier.  We are given an incomplete node labeled \"population\".  Let's start by completing it.  Enter 1000 as its initial value.  Enter \"- deaths\" into the expression box by clicking on the minus sign button and then selecting \"deaths\" from the insert above menu.  When done, click on the Check Expression button and then on the Done button.",
+                "Let's construct the Dodo population model that we saw earlier.  We are given an incomplete node labeled \"population\".  Let's start by completing it.  First, set its type to \"Accumulator\" since it will change from its initial value over time.  Enter 1000 as its initial value.  Enter \"- deaths\" into the expression box by clicking on the minus sign button and then selecting \"deaths\" from the insert above menu.  When done, click on the Check Expression button and then on the Done button.",
                 "",
                 "Now click on the next triangular node, and make it into a function node whose description is \"The number of Dodos that die each year.\"  Its expression should be \"death rate * population\"",
                 "",
