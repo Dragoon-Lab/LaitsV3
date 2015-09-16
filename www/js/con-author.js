@@ -445,7 +445,7 @@ define([
 			}
 		},
 		
-		handleType: function(type){    
+		handleType: function(type){
             var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
             if(this.getModelType() == "correct"){
 				// Summary: Sets the type of the current node.				
@@ -460,6 +460,10 @@ define([
 				this.updateType(type);
 				//update student node status
                 this.updateStatus("type", type,  this._model.student.getType(studentNodeID));
+
+                // "Initial Value" label --> "Value" for parameters
+                if (type=="parameter") style.set('initLabel', 'display', 'none');
+				else style.set('initLabel',"display","inline");
             }
 			else if(this.getModelType() == "given"){
 				this.controlMap.equation = "givenEquationBox";
@@ -612,6 +616,7 @@ define([
 						message: "parse error"
 					}
 				}
+                console.log("directives are", directives);
 				this.applyDirectives(directives);
 				this.createExpressionNodes(parse, true); 
 			}
@@ -620,16 +625,16 @@ define([
 				var eqn = registry.byId(this.controlMap.equation).value;
 				var inputs = [];
 				if(typeof equation != "undefined" && eqn != null && eqn != ""){
-					var parse = equation.parse(eqn);					
-					array.forEach(parse.variables(), lang.hitch(this, function(variable){
-						var givenID = this._model.given.getNodeIDByName(variable);
+					var parse = equation.parse(eqn);
+                    console.log("parse is ", parse);
+                    this.givenEquationEntered = true;
+                    array.forEach(parse.variables(), lang.hitch(this, function(variable){
+						console.log("there are variables");
+                        var givenID = this._model.given.getNodeIDByName(variable);
 						var studentID = this._model.student.getNodeIDFor(givenID);
-					    if(studentID != null){
-							eqn = eqn.replace(variable, studentID);
-							inputs.push({"ID": studentID});
-							this.givenEquationEntered = true;
-						}
-						else{
+					    eqn = eqn.replace(variable, studentID);
+						inputs.push({"ID": studentID});
+                        if(studentID == null){
 							this.givenEquationEntered = false;
 							eqn = "";
 							this.applyDirectives([{
@@ -637,11 +642,12 @@ define([
 								"open", value: "You are trying to add a node that is not part of student model."
 							}]);
 							registry.byId(this.controlMap.equation).set("value", "");
-						}
+						    return;
+                        }
 					}));
 
 					this._model.student.setInputs(inputs, studentNodeID);
-					this._model.student.setEquation(studentNodeID, eqn);				
+					this._model.student.setEquation(studentNodeID, eqn);
 					if(this.givenEquationEntered){
 						style.set(this.controlMap.equation, 'backgroundColor', "#2EFEF7");
 					}

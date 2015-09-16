@@ -7,8 +7,6 @@
 }
 
 .accumulator {
-    width: 60px;
-    height: 60px;
     position:absolute;
     border: 1px solid black;
     z-index:24;
@@ -59,27 +57,39 @@
 .bubble{
     display: inline-block;
     vertical-align: middle;
-    width:40px;
+    width: 65px;
+    height: 65px;
 }
-.functionWrapper,.accumulatorWrapper{
+.bubble-execution{
+    width: 75px;
+    height: 75px;
+}
+
+.functionWrapper,.accumulatorWrapper, .parameterWrapper{
     overflow:hidden!important;
     /*white-space:nowrap;*/
     -ms-text-overflow:ellipsis;
     text-overflow:ellipsis;
-    width:40px;
+    width:100%;
+    margin:0 auto;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    -webkit-transform:  translateY(-50%) !important;
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    padding: 0 3px;
 }
+
 .parameterWrapper{
-	  overflow:hidden!important;
-    /*white-space:nowrap;*/
-    -ms-text-overflow:ellipsis;
-    text-overflow:ellipsis;
-    width:40px;
-	 -webkit-transform: rotate(0deg)!important;
-    -moz-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);	
+    -webkit-transform: rotate(0deg) translateY(-50%) !important;
+    -moz-transform: rotate(0deg) translateY(-50%);
+    -ms-transform: rotate(0deg) translateY(-50%);
+    -o-transform: rotate(0deg) translateY(-50%);
+    transform: rotate(0deg) translateY(-50%);
 }
+
 .functionWrapper:hover,.accumulatorWrapper:hover,.parameterWrapper:hover{
  overflow:visible!important;
 }
@@ -108,20 +118,25 @@
     -ms-transform: rotate(0deg)!important;
     -o-transform: rotate(0deg)!important;
     transform: rotate(0deg)!important;
-    position: relative;
-    top:55px;
+    position: absolute;
+    top: 135%;
+    padding-left: 3px;
+    width: 100%
 }
 
 .functionDiv{
-  position:relative; 
-  top:40px;
+    position: absolute;
+    top: 120%;
+    padding-left: 3px;
+    width:100%;
 }
 
 .accumulatorDiv{
- position:relative;
- top:40px;
+    position: absolute;
+    top: 120%;
+    padding-left: 3px;
+    width:100%;
 }
-
 
 .parameter div{
     -webkit-transform: rotate(45deg);
@@ -132,8 +147,6 @@
 }
 
 .parameter {
-    width: 60px;
-    height: 60px;
     /*margin: 23px 0 0 30px;*/
     z-index:20; position:absolute;
     /* Rotate */
@@ -141,7 +154,7 @@
     -moz-transform: rotate(-45deg);
     -ms-transform: rotate(-45deg);
     -o-transform: rotate(-45deg);
-    transform: rotate(-45deg);*/
+    transform: rotate(-45deg);
 
   /* border-radius:1em;*/
     border:1px solid #2e6f9a;
@@ -177,17 +190,27 @@
     -webkit-transition:background-color 0.25s ease-in;
     -moz-transition:background-color 0.25s ease-in;
     transition:background-color 0.25s ease-in;
+   
 }
 
 .triangleDiv{
-   margin-top:90px;
-   margin-left:-20px;
+    position: relative;
+    top: 25px;
+    transform: translateX(-50%);
+    text-align: center;
 }
 
+.triangleWrapper {
+    font-weight: bold;
+    padding: 0px;
+    margin-top: 40px;
+    width:40px;
+    margin-left: -20px;
+    text-align: center;
+    color: #e0e0e0;
+}
 
 .function {
-    width: 60px;
-    height: 60px;
     z-index:20; position:absolute;
     border-radius: 50px;
     border:1px solid #2e6f9a;

@@ -16,13 +16,13 @@
 			},
 			{
 				"name" : "Negative Biased Negative Clampers Behavior",
-				"id" : "negative_biased_negative_clampers_behavior",
+				"id" : "neg_bias_neg_clampers_behavior",
 				"template" : "",
 				"example" : ""
 			},
 			{
 				"name" : "Negative Biased Positive Clampers Behavior",
-				"id" : "negative_biased_positive_clampers_behavior",
+				"id" : "neg_bias_pos_clampers_behavior",
 				"template" : "",
 				"example" : ""
 			},
@@ -34,13 +34,13 @@
 			},
 			{
 				"name" : "Positive Biased Negative Clampers Behavior",
-				"id" : "positive_biased_negative_clampers_behavior",
+				"id" : "pos_bias_neg_clampers_behavior",
 				"template" : "",
 				"example" : ""
 			},
 			{
 				"name" : "Positive Biased Positive Clampers Behavior",
-				"id" : "positive_biased_positive_clampers_behavior",
+				"id" : "pos_bias_pos_clampers_behavior",
 				"template" : "",
 				"example" : ""
 			},
@@ -112,79 +112,79 @@
 			},
 			{
 				"name" : "Parallel Negative Limiter Behavior",
-				"id" : "parallel_negative_limiter_behavior",
+				"id" : "parallel_neg_limiter_behavior",
 				"template" : "",
 				"example" : ""
 			},
 			{
 				"name" : "Parallel Negative Limiter with Negative Bias Behavior",
-				"id" : "parallel_negative_limiter_with_negative_bias_behavior",
+				"id" : "parallel_n_limiter_n_bias_bhvr",
 				"template" : "",
 				"example" : ""
 			},
 			{
 				"name" : "Parallel Negative Limiter with Positive Bias Behavior",
-				"id" : "parallel_negative_limiter_with_positive_bias_behavior",
+				"id" : "parallel_n_limiter_p_bias_bhvr",
 				"template" : "",
 				"example" : ""
 			},
 			{
 				"name" : "Parallel Positive Limiter Behavior",
-				"id" : "parallel_positive_limiter_behavior",
+				"id" : "parallel_pos_limiter_behavior",
 				"template" : "",
 				"example" : ""
 			},
 			{
 				"name" : "Parallel Positive Limiter with Bias Behavior",
-				"id" : "parallel_positive_limiter_with_bias_behavior",
+				"id" : "parallel_p_limiter_bias_bhvr",
 				"template" : "",
 				"example" : ""
 			},
 			{
 				"name" : "Parallel Positive Limiter with Negative Bias Behavior",
-				"id" : "parallel_positive_limiter_with_negative_bias_behavior",
+				"id" : "parallel_p_limiter_n_bias_bhvr",
 				"template" : "",
 				"example" : ""
 			},
 			{
 				"name" : "Parallel Positive Limiter with Positive Bias Behavior",
-				"id" : "parallel_positive_limiter_with_positive_bias_behavior",
+				"id" : "parallel_p_limiter_p_bias_bhvr",
 				"template" : "",
 				"example" : ""
 			},
 			{
 				"name" : "Series Negative Limiter Behavior",
-				"id" : "series_negative_limiter_behavior",
+				"id" : "series_neg_limiter_behavior",
 				"template" : "",
 				"example" : ""
 			},
 			{
 				"name" : "Series Negative Limiter with Negative Bias Behavior",
-				"id" : "series_negative_limiter_with_negative_bias_behavior",
+				"id" : "series_n_limiter_n_bias_bhvr",
 				"template" : "",
 				"example" : ""
 			},
 			{
 				"name" : "Series Negative Limiter with Positive Bias Behavior",
-				"id" : "series_negative_limiter_with_positive_bias_behavior",
+				"id" : "series_n_limiter_p_bias_bhvr",
 				"template" : "",
 				"example" : ""
 			},
 			{
 				"name" : "Series Positive Limiter Behavior",
-				"id" : "series_positive_limiter_behavior",
+				"id" : "series_pos_limiter_behavior",
 				"template" : "",
 				"example" : ""
 			},
 			{
 				"name" : "Series Positive Limiter with Negative Bias Behavior",
-				"id" : "series_positive_limiter_with_negative_bias_behavior",
+				"id" : "series_p_limiter_n_bias_bhvr",
 				"template" : "",
 				"example" : ""
 			},
 			{
 				"name" : "Series Positive Limiter with Positive Bias Behavior",
-				"id" : "series_positive_limiter_with_positive_bias_behavior",
+				"id" : "series_p_limiter_p_bias_bhvr",
 				"template" : "",
 				"example" : ""
 			},
@@ -195,8 +195,14 @@
 				"example" : ""
 			},
 			{
+				"name" : "Bridge Rectifier with Zener Behavior",
+				"id" : "bridge_rect_zener_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
 				"name" : "Bridge Rectifier with Capacitor Behavior",
-				"id" : "bridge_rectifier_with_capacitor_behavior",
+				"id" : "bridge_rect_capacitor_behavior",
 				"template" : "",
 				"example" : ""
 			},
@@ -208,7 +214,7 @@
 			},
 			{
 				"name" : "Full Wave Rectifier with Zener Behavior",
-				"id" : "full_wave_rectifier_with_zener_behavior",
+				"id" : "full_wave_rect_zener_behavior",
 				"template" : "",
 				"example" : ""
 			},
@@ -220,13 +226,13 @@
 			},
 			{
 				"name" : "Negative Half Wave Rectifier Behavior",
-				"id" : "negative_half_wave_rectifier_behavior",
+				"id" : "n_half_wave_rectifier_behavior",
 				"template" : "",
 				"example" : ""
 			},
 			{
 				"name" : "Positive Half Wave Rectifier Behavior",
-				"id" : "positive_half_wave_rectifier_behavior",
+				"id" : "p_half_wave_rectifier_behavior",
 				"template" : "",
 				"example" : ""
 			},
@@ -238,7 +244,7 @@
 			},
 			{
 				"name" : "Zener Voltage Regulator Behavior",
-				"id" : "zener_voltage_regulator_behavior",
+				"id" : "zener_voltage_regulator_bhvr",
 				"template" : "",
 				"example" : ""
 			},
@@ -249,14 +255,26 @@
 				"example" : ""
 			},
 			{
+				"name" : "Resistor Capacitor in Series Behavior",
+				"id" : "rc_in_series_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Resistor Inductor in Series Behavior",
+				"id" : "rl_in_series_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
 				"name" : "Full Wave Voltage Doubler Behavior",
-				"id" : "full_wave_voltage_doubler_behavior",
+				"id" : "full_wave_voltage_doubler_bhvr",
 				"template" : "",
 				"example" : ""
 			},
 			{
 				"name" : "Half Wave Voltage Doubler Behavior",
-				"id" : "half_wave_voltage_doubler_behavior",
+				"id" : "half_wave_voltage_doubler_bhvr",
 				"template" : "",
 				"example" : ""
 			},
@@ -307,6 +325,24 @@
 				"id" : "zener_diode_physics",
 				"template" : "",
 				"example" : ""
+			},
+			{
+				"name" : "Transistor Behavior",
+				"id" : "transistor_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "CE Transistor Fixed Bias Behavior",
+				"id" : "CE_transistor_fixed_bias_bhvr",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "CE Transistor Battery Bias Behavior",
+				"id" : "CE_transistor_battery_bias_bhvr",
+				"template" : "",
+				"example" : ""
 			}
 		]
 	},
@@ -355,19 +391,19 @@
 		"schemaClass" : "Electronic Schemas",
 		"subClasses": [
 			{
-				"name" : "Ohms law",
+				"name" : "Ohm's Law: Voltage",
 				"id" : "ohms_law",
 				"template" : "Current flowing through a a load is directly proportional to voltage across it and inversely proportional to the resistance of the load.",
 				"example" : "Find the current running through a load when voltage difference provided by the source is 5V and resistance of the load is 1000 ohms."
 			},
 			{
-				"name" : "Kirchoff's current law",
+				"name" : "Kirchoff's Current Law",
 				"id" : "kirchoff_current_law",
 				"template" : "At a junction in the circuit the sum of all the currents is zero, where current flowing into the node are taken as negative and flowing away are taken as positive.",
 				"example" : "There is a 10 mA current flowing into node A. The junction divides into two paths. If current flowing through one of them is 2mA, then how much current is flowing in the other path?"
 			},
 			{
-				"name" : "Kirchoff's voltage law",
+				"name" : "Kirchoff's Voltage Law",
 				"id" : "kirchoff_voltage_law",
 				"template" : "Voltage change in a complete closed loop is 0.",
 				"example" : "Find the current flowing through two loads in parallel when they are connected to a source of 10V?"

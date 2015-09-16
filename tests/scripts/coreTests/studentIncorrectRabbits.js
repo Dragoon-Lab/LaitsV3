@@ -1,16 +1,25 @@
 
 // Set up initial variables
 
+
  // Creating a selenium client utilizing webdriverjs
-var client = require('webdriverio').remote({
-    //logLevel: "verbose",
+var webdriver = require('webdriverio');
+var options = {
+    desiredCapabilities: {
+        browserName: 'chrome'
+    }
+};
+
+/*
+.remote({
+    logLevel: "verbose",
     desiredCapabilities: {
         // See other browers at:
         // http://code.google.com/p/selenium/wiki/DesiredCapabilities
         browserName: 'chrome'
-
     }
 });
+*/
 
 // import chai assertion library
 var assert = require('chai').assert;
@@ -22,6 +31,10 @@ var atest = require('../assertTestLib.js');
 var sync = require('synchronize');
 // import wrapper for asynchronous functions
 var async = sync.asyncIt;
+
+//sync(webdriver,remote);
+
+var client = webdriver.remote(options);
 
 describe("Student mode with incorrect rabbits", function() {
 
@@ -40,18 +53,17 @@ describe("Student mode with incorrect rabbits", function() {
 
         it("Should have correct description color", async(function(){
             var descColor = dtest.getNodeDescriptionColor(client);
-	    atest.checkNodeValue(descColor,"red","Number of liters of water in tank");
+	    atest.checkNodeValue(descColor,"red","The number of rabbits that die per year per rabbit");
         }));
 
         after(async(function(){
-            dtest.nodeEditorDelete(client);     
-            dtest.waitTime(client, 300);
+            dtest.nodeEditorDelete(client);
         }));
     });
     
     describe("Should incorrectly fill nodes", function(){
         afterEach(async(function(){
-            dtest.nodeEditorDone(client);
+            dtest.nodeEditorDone(client);            
         }))
 
         it("Should incorrectly fill accumulator - population", async(function(){
@@ -74,7 +86,12 @@ describe("Student mode with incorrect rabbits", function() {
             //dtest.popupWindowPressOk(client);
             dtest.setNodeInitialValue(client, 1);
             dtest.setNodeInitialValue(client, 0);
-            
+        }));
+
+        it ("Should have saved the values correctly", async(function() {
+            dtest.openEditorForNode(client, "population");
+            var units = dtest.getNodeUnits(client);
+            atest.checkNodeValue(units,"rabbits","population");
         }));
     
         it("Should partially incorrectly fill function - net growth", async(function(){
@@ -96,11 +113,46 @@ describe("Student mode with incorrect rabbits", function() {
             dtest.setNodeUnits(client, "years");
             dtest.setNodeUnits(client, "rabbits");
         }));
-
     });
     
-    after(function(done) {
-        client.end();
-        done();
+    describe("check lessons learned shown", function(){
+        it("Should show lessons learned on graph close", async(function(){            
+            dtest.popupWindowPressOk(client);
+            dtest.menuOpenGraph(client);
+            dtest.closeGraphAndTableWindow(client);
+            dtest.waitTime(2000); 
+            var lessonsLearnedText = dtest.lessonsLearnedGetText(client);
+            assert(lessonsLearnedText !== "undefined", "Lessons learned text does not match");
+            dtest.lessonsLearnedClose(client);
+        }));
+
+        it("Should show lessons learned on click of button", async(function(){
+            dtest.waitTime(200);
+            dtest.menuOpenLessonsLearned(client);
+            dtest.waitTime(200);
+            dtest.lessonsLearnedClose(client);
+        }));
     });
+
+    describe("check lesson learned enable after refresh", function(){
+        it("Should show lessons learned on click of menu button", async(function(){
+            dtest.refresh(client);
+            dtest.menuOpenLessonsLearned(client);
+            var lessonsLearnedText = dtest.lessonsLearnedGetText(client);
+            assert(lessonsLearnedText !== "undefined", "Lessons learned text does not match");            
+            dtest.lessonsLearnedClose(client);
+        }));
+
+        it("Should not show lessons learned on graph close", async(function(){
+            dtest.menuOpenGraph(client);
+            dtest.closeGraphAndTableWindow(client);
+            //If there is no lessons learned text we have succeeded
+            var lessonsLearnedText = dtest.lessonsLearnedGetText(client);
+            assert(lessonsLearnedText == "" );
+        }));
+    });    
+
+    after(async(function(done){
+        dtest.endTest(client);
+    }));
 });

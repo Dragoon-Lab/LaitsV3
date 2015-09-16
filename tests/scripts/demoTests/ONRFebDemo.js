@@ -44,7 +44,7 @@ var dtest = require('../dtestlib.js');
 // import dragoon assertion library
 var atest = require('../assertTestLib.js');
 // import sync library
-varnn sync = require('synchronize');
+var sync = require('synchronize');
 // import wrapper for asynchronous functions
 var async = sync.asyncIt;
 
@@ -120,9 +120,8 @@ describe("Running through ONR Feb 2015 demo", function() {
         it("should open in student mode and create a node", async(function(){
             
         }));
-        after(function(done) {
-            client.end();
-            done();
+        after(async(function(done){
+            dtest.endTest(client);
         }));
 
     });
@@ -182,9 +181,8 @@ describe("Running through ONR Feb 2015 demo", function() {
         }));
 
 
-        after(function(done) {
-            client.end();
-            done();
+        after(async(function(done){
+            dtest.endTest(client);
         }));
     });
 
@@ -196,9 +194,8 @@ describe("Running through ONR Feb 2015 demo", function() {
                                       ["logging","true"]]);
         }));
 
-        after(function(done) {
-            client.end();
-            done();
+        after(async(function(done){
+            dtest.endTest(client);
         }));
     });
 

@@ -1,23 +1,21 @@
 {
     "task": {
-        "taskName": "RL series circuits",
+        "taskName": "Model RL Series Circuits",
         "time": {
             "start": 0,
-            "end": 0.1,
-            "step": 0.0005,
+            "end": 10,
+            "step": 1,
             "integrationMethod": "Eulers Method",
             "units": "seconds"
         },
         "properties": {},
         "image": {
-            "URL": "http://i.imgur.com/dNNguAS.png"
+            "URL": "http:\/\/i.imgur.com\/dNNguAS.png"
         },
         "taskDescription": [
-            "Model the circuit shown, with L=4 Henries, R=5 ohms and Vo = 5 volts.  Nodes have been given to you that represent the switch being directed to the battery for 5 seconds and then to the short for 5 seconds.  Graph the current through the inductor.  ",
-            "",
-            ""
+            "Model the circuit shown, with L=4 Henries, R=5 ohms and Vo = 5 volts.  Nodes have been given to you that use pulsetrain(0,5,5) to represent the switch being directed to the battery for 5 seconds and then to the short for 5 seconds.  Use Kirchhoff's Voltage Law to determine the voltage across the inductor and Ohm's Law to determine the voltage across the resistor.  Graph the current through the inductor.  "
         ],
-        "lessonsLearned": "",
+        "lessonsLearned": [],
         "givenModelNodes": [
             {
                 "ID": "id1",
@@ -28,8 +26,8 @@
                     }
                 ],
                 "position": {
-                    "x": 387,
-                    "y": 73
+                    "x": 687,
+                    "y": 64
                 },
                 "attemptCount": {
                     "description": 0,
@@ -39,7 +37,37 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                },
                 "name": "Current",
                 "genus": "required",
                 "description": "Current thru inductor and resistor from left to right",
@@ -47,7 +75,10 @@
                 "initial": 0,
                 "units": "amps",
                 "equation": "id2",
-                "parentNode": true
+                "parentNode": true,
+                "imageMarks": [
+                    "272 , 59 , 17 , 23"
+                ]
             },
             {
                 "ID": "id2",
@@ -58,12 +89,12 @@
                     },
                     {
                         "ID": "id4",
-                        "label": "/"
+                        "label": "\/"
                     }
                 ],
                 "position": {
-                    "x": 563,
-                    "y": 70
+                    "x": 639,
+                    "y": 498
                 },
                 "attemptCount": {
                     "description": 0,
@@ -73,13 +104,46 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                },
                 "name": "Change in current",
                 "genus": "required",
                 "description": "change in inductor-resistor current",
                 "type": "function",
                 "units": "amps",
-                "equation": "id3/id4"
+                "equation": "id3\/id4",
+                "imageMarks": [
+                    "142 , 2 , 135 , 71"
+                ]
             },
             {
                 "ID": "id3",
@@ -94,8 +158,8 @@
                     }
                 ],
                 "position": {
-                    "x": 636,
-                    "y": 190
+                    "x": 842,
+                    "y": 421
                 },
                 "attemptCount": {
                     "description": 0,
@@ -105,20 +169,53 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                },
                 "name": "V across inductor",
                 "description": "Voltage across inductor from left to right",
                 "genus": "required",
                 "type": "function",
                 "units": "volts",
-                "equation": "id5-id6"
+                "equation": "id5-id6",
+                "imageMarks": [
+                    "153 , 1 , 110 , 70"
+                ]
             },
             {
                 "ID": "id4",
                 "inputs": [],
                 "position": {
-                    "x": 694.33093261719,
-                    "y": 45.330951690674
+                    "x": 554.33093261719,
+                    "y": 59.330951690674
                 },
                 "attemptCount": {
                     "description": 0,
@@ -128,7 +225,38 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                },
                 "name": "L of inductor",
                 "description": "Inductance of inductor",
                 "genus": "required",
@@ -136,7 +264,10 @@
                 "type": "parameter",
                 "parentNode": false,
                 "initial": 4,
-                "units": "henries"
+                "units": "henries",
+                "imageMarks": [
+                    "268 , 73 , -114 , -70"
+                ]
             },
             {
                 "ID": "id5",
@@ -146,8 +277,8 @@
                     }
                 ],
                 "position": {
-                    "x": 773,
-                    "y": 192
+                    "x": 940,
+                    "y": 250
                 },
                 "attemptCount": {
                     "description": 0,
@@ -157,13 +288,48 @@
                     "equation": 0,
                     "assistanceScore": 1
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                },
                 "name": "Source voltage",
                 "description": "Voltage of battery switch combo",
                 "genus": "required",
                 "type": "function",
-                "units": "voltage",
-                "equation": "id8*sinewave(1/60,0)"
+                "units": "volts",
+                "equation": "id8*pulsetrain((0,5),5)",
+                "imageMarks": [
+                    "182 , 149 , 69 , 108",
+                    "252 , 255 , -65 , -89",
+                    "0 , 127 , 120 , 71"
+                ]
             },
             {
                 "ID": "id6",
@@ -178,8 +344,8 @@
                     }
                 ],
                 "position": {
-                    "x": 510,
-                    "y": 194
+                    "x": 769,
+                    "y": 236
                 },
                 "attemptCount": {
                     "description": 0,
@@ -189,20 +355,53 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                },
                 "name": "V across resistor",
                 "genus": "required",
                 "description": "Voltage across resistor",
                 "type": "function",
                 "units": "volts",
-                "equation": "id1*id7"
+                "equation": "id1*id7",
+                "imageMarks": [
+                    "34 , 0 , 69 , 91"
+                ]
             },
             {
                 "ID": "id7",
                 "inputs": [],
                 "position": {
-                    "x": 371.33096313477,
-                    "y": 176.33094787598
+                    "x": 849.33093261719,
+                    "y": 51.330951690674
                 },
                 "attemptCount": {
                     "description": 0,
@@ -212,7 +411,38 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                },
                 "name": "R of resistor",
                 "description": "Resistance of resistor",
                 "genus": "required",
@@ -220,14 +450,17 @@
                 "type": "parameter",
                 "parentNode": false,
                 "initial": 5,
-                "units": "ohms"
+                "units": "ohms",
+                "imageMarks": [
+                    "32 , 2 , 75 , 84"
+                ]
             },
             {
                 "ID": "id8",
                 "inputs": [],
                 "position": {
-                    "x": 852.33093261719,
-                    "y": 71.330947875977
+                    "x": 958.33093261719,
+                    "y": 52.330951690674
                 },
                 "attemptCount": {
                     "description": 0,
@@ -237,7 +470,38 @@
                     "equation": 0,
                     "assistanceScore": 1
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                },
                 "name": "battery voltage",
                 "description": "Battery voltage (Vo in the figure)",
                 "equation": "",
@@ -245,7 +509,10 @@
                 "parentNode": false,
                 "initial": 5,
                 "units": "volts",
-                "genus": "required"
+                "genus": "required",
+                "imageMarks": [
+                    "252 , 255 , -65 , -89"
+                ]
             }
         ],
         "studentModelNodes": [
@@ -253,8 +520,8 @@
                 "ID": "id9",
                 "inputs": [],
                 "position": {
-                    "x": 852.33093261719,
-                    "y": 71.330947875977
+                    "x": 958.33093261719,
+                    "y": 52.330951690674
                 },
                 "status": {
                     "description": {
@@ -287,8 +554,8 @@
                     }
                 ],
                 "position": {
-                    "x": 773,
-                    "y": 192
+                    "x": 940,
+                    "y": 250
                 },
                 "status": {
                     "equation": {
@@ -309,23 +576,24 @@
                     }
                 },
                 "descriptionID": "id5",
-                "units": "voltage",
+                "units": "volts",
                 "type": "function",
-                "equation": "id9*sinewave(1/60,0)"
+                "equation": "id9*pulsetrain((0,5),5)"
             }
         ],
         "schemas": [
             {
-                "ID": "schema1",
-                "schemaClass": "inductor",
-                "name": "Inductor",
+                "ID": "schema4",
+                "schemaClass": "inductor_behavior",
+                "name": "Inductor Behavior",
                 "competence": {
                     "errors": 0,
                     "total": 0,
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id1, id2, id3, id4",
+                "nodes": "id4, id3, id2",
+                "rates": {},
                 "difficulty": {
                     "isolation": 1,
                     "cues": 0,
@@ -333,16 +601,17 @@
                 }
             },
             {
-                "ID": "schema2",
-                "schemaClass": "kirchoff_voltage_law",
-                "name": "Kirchoff's voltage law",
+                "ID": "schema5",
+                "schemaClass": "resistor_behavior",
+                "name": "Resistor Behavior",
                 "competence": {
                     "errors": 0,
                     "total": 0,
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id3, id6, id8",
+                "nodes": "id6, id7, id1",
+                "rates": {},
                 "difficulty": {
                     "isolation": 1,
                     "cues": 0,
@@ -350,20 +619,57 @@
                 }
             },
             {
-                "ID": "schema3",
+                "ID": "schema7",
+                "schemaClass": "rl_in_series_behavior",
+                "name": "Resistor Inductor in Series Behavior",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id2, id3, id4, id6, id7",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema9",
                 "schemaClass": "ohms_law",
-                "name": "Ohms law",
+                "name": "Ohm's Law: Voltage",
                 "competence": {
                     "errors": 0,
                     "total": 0,
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id1, id6, id7",
+                "nodes": "id6, id1, id7",
+                "rates": {},
                 "difficulty": {
                     "isolation": 1,
-                    "cues": 0,
-                    "phrases": 0
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema10",
+                "schemaClass": "kirchoff_voltage_law",
+                "name": "Kirchoff's Voltage Law",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id3, id6, id5",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
                 }
             }
         ]

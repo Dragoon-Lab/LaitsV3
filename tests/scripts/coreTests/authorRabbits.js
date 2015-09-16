@@ -34,6 +34,12 @@ describe("Test author mode", function() {
             dtest.pressCheckProblemButton(client);
             atest.popupContainsText("The problem is empty.",dtest,client);
             dtest.popupWindowPressCancel(client);
+        }));
+    });
+
+    describe("Testing adding an image",function(){
+        it("Should add the rabbits image",async(function(){
+            dtest.setProblemImageURL(client,"images/rabbit.jpeg");
             dtest.pressProblemAndTimesDone(client);
         }));
     });
@@ -46,23 +52,35 @@ describe("Test author mode", function() {
         it("Should create Accumulator node - population", async(function(){
             dtest.menuCreateNode(client);
             dtest.setNodeName(client, "population");
-            dtest.setKindOfQuantity(client, "in model & required");
+            //dtest.setKindOfQuantity(client, "in model & required"); // buggy, but uneccessary.
             dtest.setNodeDescription(client, "The number of rabbits in the population");
             dtest.setNodeType(client, "Accumulator");
-            dtest.setNodeInitialValue(client, 24);
-            //Doubled because of bug, remove in future
+            // 8/5/2015: Noticed that when units are set after initial value here, Dragoon
+            //           does not process the units even though the text is entered in the field.
+            //           However this doesn't happen when done by hand.
             dtest.setNodeUnits(client, "rabbits");
-            dtest.setNodeExpression(client, "net growth");
-            dtest.waitTime(100);
-            dtest.checkExpression(client);            
+            dtest.setNodeInitialValue(client, 24);            
+            dtest.setNodeExpression(client, "net growth");            
             dtest.checkExpression(client);
+        }));
+
+        it("Should open and close the explanation window", async(function(){
+            dtest.openEditorForNode(client,"population");
+            dtest.nodeEditorOpenExplanation(client);
+            dtest.closeExplanation(client);
+        }));         
+
+        it("Should open and close the image highlight window", async(function(){
+            dtest.openEditorForNode(client,"population");
+            dtest.nodeEditorOpenImageHighlighting(client);
+            dtest.closeImageHighlighting(client);
         }));
 
         it("Should fill in function node - net growth", async(function(){
             dtest.openEditorForNode(client, "net growth");
             dtest.waitTime(100);          
             dtest.setNodeDescription(client, "The number of additional rabbits each year");
-            dtest.setKindOfQuantity(client, "in model & required");
+            //dtest.setKindOfQuantity(client, "in model & required");
             dtest.setNodeUnits(client, "rabbits/year");
             dtest.setNodeType(client, "Function");
             dtest.setNodeExpression(client, "growth rate*population");
@@ -75,7 +93,7 @@ describe("Test author mode", function() {
             dtest.openEditorForNode(client, "growth rate");
             dtest.waitTime(100);         
             dtest.setNodeDescription(client, "The number of additional rabbits per year per rabbit");
-            dtest.setKindOfQuantity(client, "in model & required");
+            //dtest.setKindOfQuantity(client, "in model & required");
             dtest.setNodeType(client, "Parameter");
             dtest.setNodeUnits(client, "1/year");
             dtest.checkExpression(client);
@@ -83,7 +101,7 @@ describe("Test author mode", function() {
     });
 
     describe("Checking Nodes:", function(){
-        it("Should detect that the nodes are incomplete", async(function(){
+        it("Should detect that the nodes are incomplete", async(function(){            
             dtest.menuOpenAuthorOptions(client);
             dtest.pressCheckProblemButton(client);
             atest.popupContainsText("The problem has one or more incomplete nodes.",dtest,client);
@@ -93,11 +111,11 @@ describe("Test author mode", function() {
 
         it("Should fill in parameter and uncheck root node", async(function(){
             dtest.openEditorForNode(client, "growth rate");
-            dtest.waitTime(100);  
+            dtest.waitTime(100);
             dtest.setNodeInitialValue(client, 0.3);
             dtest.nodeEditorDone(client);
             dtest.openEditorForNode(client, "net growth");
-            dtest.waitTime(100);  
+            dtest.waitTime(100);
             dtest.clickRootNode(client);
             dtest.nodeEditorDone(client);
         }));
@@ -112,10 +130,10 @@ describe("Test author mode", function() {
 
         it("Should turn the root node on again", async(function(){
             dtest.openEditorForNode(client, "net growth");
-            dtest.waitTime(100);  
+            dtest.waitTime(100);
             dtest.clickRootNode(client);
             dtest.nodeEditorDone(client);
-        }));
+        }));        
 
         it("Should have correct Accumulator values", async(function(){
             dtest.openEditorForNode(client, "population");
@@ -256,8 +274,7 @@ describe("Test author mode", function() {
         }));
     });
 
-    after(function(done) {
-        client.end();
-        done();
-    });
+    after(async(function(done){
+        dtest.endTest(client);
+    }));
 });

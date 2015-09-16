@@ -100,10 +100,9 @@ describe('Test dragoon testing framework',function() {
             assert(birthRateColor === "none","The birth rate node should have no border.");
         }));
 
-        after(function (done) {
-            client.end();
-            done();
-        });
+        after(async(function(done){
+            dtest.endTest(client);
+        }));
     });
 
 
@@ -188,10 +187,9 @@ describe('Test dragoon testing framework',function() {
             dtest.nodeEditorDone(client);
         }));
 
-        after(function (done) {
-            client.end();
-            done();
-        });
+        after(async(function(done){
+            dtest.endTest(client);
+        }));
     });
     
     describe("graph & table functions",function () {
@@ -205,10 +203,9 @@ describe('Test dragoon testing framework',function() {
                     "received: "+message);
             }));
 
-            after(function (done) {
-                client.end();
-                done();
-            });
+            after(async(function(done){
+                dtest.endTest(client);
+            }));
         });
 
         describe("for a complete incorrect model",function(){
@@ -237,10 +234,9 @@ describe('Test dragoon testing framework',function() {
                     "Incorrect table value!");
             }));
 
-            after(function (done) {
-                client.end();
-                done();
-            });
+            after(async(function(done){
+                dtest.endTest(client);
+            }));
         });
     });
 });

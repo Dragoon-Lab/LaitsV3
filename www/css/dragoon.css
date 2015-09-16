@@ -72,7 +72,7 @@ html, body, #main{
 
 .sameedit .fieldgroup > span{
     text-align: right;
-    width: 14ex;
+   
 }
 .sameedit .fieldgroup > span label{
     vertical-align:top
@@ -122,9 +122,16 @@ html, body, #main{
 /* If we use float to horizontally align, there seems to be
    no way to vertically align the buttons.  */
 .sameedit .buttonBox {
-    float:right;
+    margin-left: 10px;
+    padding-top:10px;
 }
-
+.sameedit .buttonBox .dijitButtonContents{
+    width:120px;
+}
+.sameedit .fieldgroup > span.fixedwidth {
+    width: 14ex;
+    margin-right:3px;
+}
 /* Right align buttons */
 .buttonBox > * {
     float:right;
@@ -355,7 +362,7 @@ input[type=radio]{
 
 #factors .heading .guess{
 	padding-left: 173px;
-	padding right: 100px;
+	padding-right: 100px;
 }
 
 #factors .heading{
@@ -391,4 +398,87 @@ span.slip{
 	display: block;
 	clear: both;
 	height: 0;
+}
+.inc-button{
+    text-align:center;
+}
+.incrementalButton{
+    padding-bottom: 3px;
+}
+
+.fa{
+    font: normal normal normal 14px/1 FontAwesome;
+}
+#operations .fa{
+    font: normal normal normal 11px/1 FontAwesome;
+}
+
+.bubble .fa{
+    font-size:18px !important;
+}
+
+.crisisDialog{
+    z-index:2000 !important;
+}
+
+.executionContent{
+   /* margin:10px 15px 0; */
+}
+.incrementalButton span.dijitReset.dijitInline.dijitButtonNode{
+  width:120px;
+}
+
+#viewAllSchemaDialog .schemaItem{
+    width:274px;
+    padding:5px;
+    border-bottom:1px solid #CACACA;
+}
+
+#viewAllSchemaDialog .schemaName{
+    display:inline-block;
+    width:200px;
+}
+
+@keyframes glowing {
+    0% { color:#CCCCCC; background-color: #004A7F; box-shadow: 0 0 3px #004A7F; }
+    50% { color:#ffffff; background-color: #0094FF; box-shadow: 0 0 10px #0094FF; }
+    100% { color:#CCCCCC; background-color: #004A7F; box-shadow: 0 0 3px #004A7F; }
+}
+
+.glowButton{
+    animation: glowing 1500ms infinite;
+}
+
+@keyframes glowingNode {
+    0% { box-shadow: 0 0 1em #00FF00; }
+    50% { box-shadow: 0 0 5em #39FF14; }
+    100% { box-shadow: 0 0 1em #00FF00; }
+}
+
+.glowNode{
+    animation: glowingNode 1500ms infinite;
+}
+
+.parameterWrapper .nodeContent{
+    -moz-transform: rotate(-45deg);
+}
+
+#equationBox, #givenEquationBox{
+    min-height:48px;
+    font:10pt Arial,Myriad,Tahoma,Verdana,sans-serif !important;
+}
+
+.ExpressionContainer{
+    background-color: #E1E1E1;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.fa-division{
+    transform: rotate(-65deg);
+    -webkit-transform: rotate(-65deg);
+    -moz-transform: rotate(-65deg);
+    -ms-transform: rotate(-65deg);
+    -o-transform: rotate(-65deg);
+    font-size: 13px !important;
 }

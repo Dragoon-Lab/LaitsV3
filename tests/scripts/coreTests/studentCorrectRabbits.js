@@ -198,10 +198,7 @@ describe("Student mode with correct rabbits", function() {
         }));
     });
 
-
-
-    after(function(done) {
-        client.end();
-        done();
-    });
+    after(async(function(done){
+        dtest.endTest(client);
+    }));
 });

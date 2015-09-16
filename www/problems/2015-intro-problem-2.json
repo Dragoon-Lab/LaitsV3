@@ -1,0 +1,116 @@
+{
+    "task": {
+        "taskName": "Parking Lot",
+        "time": {
+            "start": 0,
+            "end": 40,
+            "step": 1,
+            "units": "Days",
+            "integrationMethod": "Eulers Method"
+        },
+        "properties": {
+            "phase": "",
+            "type": ""
+        },
+        "image": {
+            "URL": "images\/parking.jpg"
+        },
+        "taskDescription": {
+            "construction": [
+                " A car dealership has a front lot and a back lot, and it has to empty the front lot every evening before closing. The back lot starts with 10 cars in it, and the front lot starts with 40 cars in it. Jack drives cars from the front lot to the back lot at a rate of one car per minute. After 40 minutes, he's done. Graph the contents of both lots. "
+            ],
+            "incremental": [
+                " A car dealership has a front lot and a back lot, and it has to empty the front lot every evening before closing. The back lot starts with 10 cars in it, and the front lot starts with 40 cars in it. Jack drives cars from the front lot to the back lot at a rate of one car per minute. After 40 minutes, he's done."
+            ],
+            "execution": [
+                " A car dealership has a front lot and a back lot, and it has to empty the front lot every evening before closing. The back lot starts with 10 cars in it, and the front lot starts with 40 cars in it. Jack drives cars from the front lot to the back lot at a rate of one car per minute. After 40 minutes, he's done."
+            ]
+        },
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id3"
+                    }
+                ],
+                "position": {
+                    "x": 410,
+                    "y": 50
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "front lot",
+                "type": "accumulator",
+                "parentNode": true,
+                "units": "",
+                "description": "The number of cars parked in the front lot",
+                "initial": 40,
+                "equation": "- id3"
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id3"
+                    }
+                ],
+                "position": {
+                    "x": 651.09735729932,
+                    "y": 50
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "back lot",
+                "type": "accumulator",
+                "parentNode": true,
+                "units": "",
+                "description": "The number of cars parked in the back lot",
+                "initial": 10,
+                "equation": "id3"
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 531.09735729932,
+                    "y": 50.000000000038
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "cars moved per minute",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of cars moved per minute",
+                "initial": 1
+            }
+        ],
+        "studentModelNodes": [],
+        "lessonsLearned": [],
+        "increment": [
+            {
+                "tweakedNode": "id3",
+                "tweakDirection": "Increase"
+            }
+        ]
+    }
+}

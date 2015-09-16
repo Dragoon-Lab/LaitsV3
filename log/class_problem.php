@@ -43,7 +43,7 @@
 		$oldName = " ";
 		while($author = $authorResult->fetch_assoc()){
 			$newName = $author['author'];
-			$jnlpAuthorURL = "http://dragoon.asu.edu/devel/startup.php?section=cpi-360&amp;problem_id=".$author['problemName']."&amp;mode=AUTHOR&amp;username=".$newName;
+			$jnlpAuthorURL = "https://dragoon.asu.edu/devel/startup.php?section=cpi-360&amp;problem_id=".$author['problemName']."&amp;mode=AUTHOR&amp;username=".$newName;
 			echo "  <tr>";
 				if($newName == $oldName){
 					echo "<td></td>";
@@ -69,7 +69,7 @@ echo "<br /><br />\n";
 		while($student = $studentResult->fetch_assoc()){
 			$newStudentName = $student['id'];
 			$problemNumber = $student['problemNum'];
-			$jnlpStudentURL = "http://dragoon.asu.edu/devel/startup.php?section=cpi-360&amp;problem_id=".$problemNumber."&amp;mode=STUDENT&amp;username=".$newStudentName;
+			$jnlpStudentURL = "https://dragoon.asu.edu/devel/startup.php?section=cpi-360&amp;problem_id=".$problemNumber."&amp;mode=STUDENT&amp;username=".$newStudentName;
 			echo "  <tr>";
 				if($newStudentName == $oldStudentName){
 					echo "<td> </td>";

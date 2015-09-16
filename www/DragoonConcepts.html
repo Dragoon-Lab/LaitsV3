@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<title>Introduction to Dragoon Concepts</title>
+	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon"/>
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+	<script type = "text/javascript" src = "version.js"></script>
+	<script src="tincan/tincan-min.js"></script>
+	<script type="text/javascript">
+
+		function show(ul,p,pd){
+			ul.style.display='block';
+			p.style.display='none';
+			pd.style.display='block';
+		}
+		function hide(ul,p,pd){
+			ul.style.display='none';
+			p.style.display='block';
+			pd.style.display='none';
+		}
+	</script>
+	<style>
+		body{
+			font: 1em/1.3 Arial, Helvetica, sans-serif;
+			margin: 25px;
+		}
+
+		.explain{
+			cursor:pointer;  
+			color: #36f;
+			padding-left: 8px;
+			background: transparent url(images/down.gif) no-repeat left;"
+		}
+		.hide{
+			display:none;
+			cursor:pointer;
+			color: #36f; 
+			padding-left: 8px; 
+			background: transparent url(images/up.gif) no-repeat left;
+		}
+	</style>
+
+</head>
+<body>
+<div id="page-wrap">
+<p><b>System:</b> In the top left part of the window, a system is described using an image and some text.  This is always the first thing you should read.</p>
+<p><b>Model:</b> In general, a model of a system consists of mathematically related, numerical quantities.  This window is for displaying and editing a model of the given system.</p>
+<p><b>Nodes:</b> This window represents the model’s quantities as diamonds, circles and other shapes.  These shapes are called nodes.  The quantity’s name appears beneath the node.</p>
+<p><b>Parameters:</b> If the user can set the value of quantity by typing it in, then the node is called a parameter.  It shown as a diamond, with its value inside it.</p>
+<p><b>Functions:</b> If the value of a node is calculated as a mathematical function of the values of other nodes, then it is shown as a circle. </p>
+<p><b>Inputs:</b>  The nodes whose values are needed for calculating this node’s value are called inputs and shown with arrows coming into the node.<span class="explain" id="inputExplainMore" onclick="show(inputExplain,inputExplainMore,inputHide)">Explain more...</span></p> 
+	<ul id="inputExplain" style="display:none;">
+		<li>Suppose that the node Total has its value calculated by the sum Price+Tax-Discount.  Then the node Total has three inputs and it has arrows coming into it from three nodes: Price, Tax and Discount. </li>
+		<li>With some types of problems, the node Total will have a + sign inside it, which tells you that its value is the sum of its inputs.</li>
+		<li>The arrow from Discount has a small circle with a minus sign in it, because it is negated before being included in the sum.</li>
+		<li>Suppose that the node Tax has its value calculated by the product TaxRate * Price (the asterisk means multiplication).  Then the node Tax has two inputs and has arrows coming into it from two nodes: TaxRate and Price.</li>
+		<li>Sometimes the node Tax will have an asterisk inside it, which tells you that its value is the sum of its inputs.</li>
+		<li>When a node’s calculation is a product of its inputs, then sometimes a little circle appears at the arrowhead of an input indicating that it is inverted before being included in the product.  Thus, if X=Y*Z/W, then the arrow from W into X will have such a circle on its arrowhead, whereas the arrows from Y and Z into X will not.</li>
+	</ul>
+	<p id="inputHide" class="hide" onclick="hide(inputExplain,inputExplainMore,inputHide)">Hide Details</p> 
+
+
+<p><b>Accumulators:</b>  If a node’s value changes over time, and its next value is calculated by adding its current value to its inputs, then it is called an accumulator and shown as a rectangle.
+<span id="accumExplainMore" class="explain" onclick="show(accumExplain,accumExplainMore,accumHide)">Explain more...</span></p> 
+	<ul id="accumExplain" style="display:none;">
+		<li>Suppose we want to model a bank account and how the money in it changes daily.  The basic relationship is this: the money in the account tomorrow is equal to the money in the account today plus any deposits (additions) to the account made today minus any withdrawals (subtractions) from the account made today. </li>
+		<li>To model this, we can use a node for the quantity MoneyInAccount which has two inputs: Deposits and Withdrawals.  </li>
+		<li>This would look like a rectangle with two arrows coming into it, one from each of the two input nodes.  The head of the arrow from Withdrawals has a little circle with a minus sign in it, because this quantity is subtracted from MoneyInAccount.  </li>
+		<li>In order to know how much money is in the account, we not only have to keep track of deposits and withdrawals, we also have to know how much money was in the account when the account was created.  All accumulators have an initial value, so we can use the initial value of MoneyInAccount to represent the amount of money in the account when it was created.</li>		
+	</ul>
+	<p id="accumHide" class="hide" onclick="hide(accumExplain,accumExplainMore,accumHide)">Hide Details</p> 
+
+<p><b> Clicking:</b>  When you click on a node, you can do things to it.  Exactly what happens depends on the type of problem you are solving</p>
+<!-- <button type="button" data-dojo-type="dijit/form/Button" id="clickExplain" onclick="show(clickExplain)">Explain more</button>  -->
+<p><b>Dragging:</b> You can move a node by dragging on it. This doesn’t affect the math.  It just makes the diagram prettier or easier to understand.</p>
+<!-- <p><b>Buttons:</b>  Several buttons appear in the row above this window.  Hovering over them will pop up an explanation of what they do.</p>
+</div> -->
+
+
+</body>
+</html>

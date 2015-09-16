@@ -34,7 +34,7 @@ var assert = require('chai').assert;
 var await = sync.await;  // Wrap this around asynchronous functions. Returns 2nd arg to callback
 var defer = sync.defer;  // Pass this as the callback function to asynchronous functions
 var testPath = require('./test-paths.js');
-var MAX_NODE_IDS = 100; // The maximum number of node IDs we'll support
+var MAX_NODE_IDS = 200; // The maximum number of node IDs we'll support
 
 function convertArrayToMap(assocArray){
     var newMap = {};
@@ -141,5 +141,3 @@ exports.popupContainsText = function(expectedText,dtest,client){
 	var text = dtest.popupWindowGetText(client);
 	assert(text.indexOf(expectedText) >= 0,"Message text was \"" + text + "\", could not find \"" + expectedText+"\"");
 }
-
-

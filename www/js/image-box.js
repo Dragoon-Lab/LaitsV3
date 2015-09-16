@@ -40,11 +40,20 @@ define([
 		this.imageNode = null;
 		this.imageId = "markImageCanvas";
 		this.url = null;
+		this.scalingFactor = 1;
 		if(url) {
 			this.url = url;			
 			var img = new Image();
+			var context = this;
+			img.onload = function(){
+				context.scalingFactor = img.width > 300 ? 300 / img.width : 1.0;
+				img.height = img.height * context.scalingFactor;
+				img.width = img.width * context.scalingFactor;	
+				context.imageNode = img;			
+			}
 			img.src = this.url;
-			this.imageNode = img;	
+						
+				
 		}
 	
 		// declare state variables
@@ -63,12 +72,14 @@ define([
 			context.ctx.fillRect(context.canvasLeftOffset,context.canvasTopOffset, context.imageNode.width, context.imageNode.height);
 			context.ctx.fill();
 			mappings.every(function(ele, index, array){
-				var cords = ele.split(',');
-				context.ctx.drawImage(context.imageNode, parseInt(cords[0]), parseInt(cords[1]), parseInt(cords[2]), parseInt(cords[3]), parseInt(cords[0]) + context.canvasLeftOffset, parseInt(cords[1]) + context.canvasTopOffset, parseInt(cords[2]), parseInt(cords[3]));	
+				var cords = ele.split(',');				
+				var reverseScaling = 1 / context.scalingFactor;
+				context.ctx.drawImage(context.imageNode, parseInt(cords[0]) * reverseScaling, parseInt(cords[1]) * reverseScaling, parseInt(cords[2]) * reverseScaling, parseInt(cords[3]) * reverseScaling, parseInt(cords[0]) + context.canvasLeftOffset, parseInt(cords[1]) + context.canvasTopOffset, parseInt(cords[2]), parseInt(cords[3]));	
 				return true;
 			})	
 		}, 0);		
 	}
+	// for the nodes from the last session
 	ImageControl.prototype.initNodeMouseEvents = function(){
 		var context = this;
 		var givenNodes = this.model.active.getNodes();
@@ -93,26 +104,41 @@ define([
 			return true;
 		})
 	}
+	ImageControl.prototype.newNodeMouseEvents = function(vertex){
+		var context = this;
+		console.log("AddNode Called", vertex);
+		var target = document.getElementById(vertex.ID);
+		if(!target) return;
+		target.addEventListener('mouseenter', function(event){
+
+			if(context.imageMarked) return;
+			var nodeId = event.srcElement["id"];
+			if(nodeId) this.markImage(nodeId);
+			context.imageMarked = true;
+		});
+		target.addEventListener('mouseleave', function(event){
+			if(!context.imageMarked) return;
+			this.clear();
+			context.imageMarked = false;
+		});
+	}
 	ImageControl.prototype.initMarkImageDialog = function(controllerObj){
-		// imageNode is not yet set and image is added to the model
-		if(!this.url) {
-			this.url = this.model.getImageURL();			
-			var img = new Image();
-			img.src = this.url;
-			this.imageNode = img;	
-		}
-		this.controller = controllerObj;
-		this.ctx = document.getElementById(this.imageId).getContext("2d");
+		// this function is called every time author click on Image Highlighting
+		
+		
 		var c = this; 
+		var canvasEle = document.getElementById(c.imageId);
+		
+		c.controller = controllerObj;
+		//updating the size of the canvas with respect to dimensions of image		
+		canvasEle.width = c.imageNode.width;
+		canvasEle.height = c.imageNode.height;
+		c.ctx = canvasEle.getContext("2d");
+		
 		//adding image to the canvas
-		this.imageNode.onload = function(){
-			console.log("ImageBox.image loaded");
-			var node = document.getElementById(c.imageId);
-			node.width = c.imageNode.width; node.height = c.imageNode.height;
-		}
 		registry.byId('markImageClear').set('disabled', true);
 		setTimeout(function(){		
-			c.ctx.drawImage(c.imageNode, 0,0);	
+			c.ctx.drawImage(c.imageNode, 0,0, c.imageNode.width, c.imageNode.height);	
 		}, 0)
 
 		
@@ -181,7 +207,7 @@ define([
 		});
 	},
 	ImageControl.prototype.markImage = function(/**string */ nodeId){
-		//debugger;
+		
 		// check if there is no image in the model
 		if(!this.model.getImageURL()) return;
 		// if there is a image in the model and yet not initialized in the Image Box
@@ -189,6 +215,9 @@ define([
 			this.url = this.model.getImageURL();			
 			var img = new Image();
 			img.src = this.url;
+			this.scalingFactor = img.width > 300 ? 300 / img.width : 1.0;
+			img.height = img.height * this.scalingFactor;
+			img.width = img.width * this.scalingFactor;
 			this.imageNode = img;	
 		}
 		// set main image tainted with marks
@@ -196,7 +225,7 @@ define([
 		this.canvasTopOffset = 20;
 		this.canvasLeftOffset = 30;
 		this.ctx = document.getElementById(this.mainImage).getContext("2d");
-		//debugger;
+	
 		// if the mode is not author mode, fetch corrosponding DescriptionId to get the markings
 		if(context.model.active.getDescriptionID) nodeId = context.model.active.getDescriptionID(nodeId);
 		
@@ -233,6 +262,7 @@ define([
 			// code to clear the main image
 			
 			setTimeout(function(){
+				context.ctx.fillStyle = 'rgba(255, 0, 0, 0.0)';
 				context.ctx.fillRect(context.canvasLeftOffset,context.canvasTopOffset, context.imageNode.width, context.imageNode.height);
 				context.ctx.drawImage(context.imageNode,context.canvasLeftOffset,context.canvasTopOffset, context.imageNode.width, context.imageNode.height);
 				//context.showGrid(context.allowGrid);
@@ -245,13 +275,14 @@ define([
 			context.selected = false;
 			
 			setTimeout(function(){
+				context.ctx.fillStyle = 'rgba(255, 0, 0, 0.0)';
 				context.ctx.fillRect(context.canvasLeftOffset,context.canvasTopOffset, context.imageNode.width, context.imageNode.height);
-				context.ctx.drawImage(context.imageNode,context.canvasLeftOffset,context.canvasTopOffset);
+				context.ctx.drawImage(context.imageNode,context.canvasLeftOffset,context.canvasTopOffset, context.imageNode.width, context.imageNode.height);
 				//context.showGrid(context.allowGrid);
 			});
 			registry.byId('newMark').set('value', '');	
 		}
-		
+	
 	}
 	ImageControl.prototype.showGrid = function(val){
 		this.allowGrid = val;
@@ -288,6 +319,25 @@ define([
 		if(!selected) return;
 		console.log(selected, "removed");
 		registry.byId('savedMark').removeOption(selected);
+		
+	}
+	ImageControl.prototype.updateImage = function(url){
+		
+		var context = this;
+		context.url = null;
+		context.imageNode = null;
+				
+		var img = new Image();
+		img.onload = function(){
+		
+			context.scalingFactor = img.width > 300 ? 300 / img.width : 1.0;
+			img.height = img.height * context.scalingFactor;
+			img.width = img.width * context.scalingFactor;			
+			context.imageNode = img;	
+			context.url = url;
+		}
+		img.src = url;
+		
 		
 	}
 

@@ -3,7 +3,7 @@ if [ "$1" == --help ]; then
 	echo Usage: $0 [test-path]
 	echo Note: test-path can be either a directory or a single file
 else
-	java -jar selenium-server-standalone-2.45.0.jar -log selenium.log &
+	java -jar selenium-server-standalone-2.46.0.jar -log selenium.log &
 	echo "Waiting 5 seconds for selenium server to start.: "
 	printf "5..."
 	sleep 1

@@ -1,111 +1,121 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
-    <title>Dragoon Demo</title>
+	<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+	<title>Dragoon Demo</title>
 
-    <link rel="stylesheet" type="text/css" href="css/login-base.css">
-    <link rel="stylesheet" type="text/css" href="css/login-form.css">
+	<link rel="stylesheet" type="text/css" href="css/login-base.css">
+	<link rel="stylesheet" type="text/css" href="css/login-form.css">
 
-    <script type="text/javascript">
+	<script type="text/javascript">
 
-    function validateForm(){
-        var form = document.forms["problem-select"];
-        var x = form.u.value;
-        if (x==null || x==""){
-            alert("Please enter a username.");
-            return false;
-        }
-        // If group field is empty, remove from form.
-        // Dragoon treats the presence of the group field
-        // as a switch for published versus custom problems.
-        if(form.g.value.trim() == ""){
-          console.log("Deleting group (g) from GET.", form);
-          document.getElementById("group").removeAttribute('name');
-        }
-        return true;
-    }
+	function validateForm(){
+		var form = document.forms["problem-select"];
+		var x = form.u.value;
+		if (x==null || x==""){
+			alert("Please enter a username.");
+			return false;
+		}      
+		// If group field is empty, remove from form.
+		// Dragoon treats the presence of the group field
+		// as a switch for published versus custom problems.
+		if(form.g.value.trim() == ""){
+		  console.log("Deleting group (g) from GET.", form);
+		  document.getElementById("group").removeAttribute('name');
+		}
+		return true;
+	}
 
-    //for restart problem
-    function handleRestartProblem(selected){	
+	// handle mode change
+	function onModeChange(selected){	
 		if(selected.value=="AUTHOR")
 		{
 			document.getElementById('restartproblem').innerHTML='<label>N/A</label>';
+			document.getElementById('activity').value = "construction";
+			document.getElementById('activity').disabled = true;
+			document.getElementById('defaultActivity').disabled = false;
 		}else
 		{
-			document.getElementById('restartproblem').innerHTML='<input name="rp" type="checkbox"/>';
+			document.getElementById('restartproblem').innerHTML='<input name="rp" type="checkbox"/>';            
+			document.getElementById('activity').disabled = false;
+			document.getElementById('defaultActivity').disabled = true;
 		}
-    }
-    </script>
+	}
+	</script>
 
 </head>
 <body>
-    <!-- Removed "onbeforeunload='reset_options()'" from body tag to correct form reset problems after download-->
+	<!-- Removed "onbeforeunload='reset_options()'" from body tag to correct form reset problems after download-->
 <div id="page-wrap">
 
-    <div id="content">
+	<div id="content">
 
-        <form action="index.html" method="GET" id="problem-select" class="problem-selection-form" onsubmit="return validateForm()">
+		<form action="index.html" method="GET" id="problem-select" class="problem-selection-form" onsubmit="return validateForm()">
 
-            <h2>Start Dragoon Demo</h2>
+			<h2>Start Dragoon Demo</h2>
+				<div class="fieldgroup">
+					<label for="username">Username: </label>
+					<input id="username" type="text" name="u">
+				</div>
 
+				<div class="fieldgroup">
+					<label for="mode">Mode: </label>
+					<select name="m" onchange="onModeChange(this)" id="mode">
+						<option value="STUDENT">Immediate Feedback (Student)</option>
+						<option value="AUTHOR">Author</option>
+						<option value="COACHED">Coached</option>
+						<option value="TEST">Delayed Feedback (Test)</option>
+						<option value="EDITOR">No Feedback (Editor)</option>
+					</select>
+				<label for="restart-problem">Restart Problem :</label>
+				<div id="restartproblem"><input name="rp" type="checkbox"/></div>
+				</div>
 
-                    <div class="fieldgroup">
-                        <label for="username">Username: </label>
-                        <input id="username" type="text" name="u">
-                    </div>
+				<div class="fieldgroup">
+					<label for="activity">Activity: </label>
+					<select name="a" id="activity">
+						<option value="construction">Construction</option>
+						<option value="incremental">Incremental</option>
+						<option value="incrementalDemo">Incremental Demo</option>
+						<option value="execution">Execution</option>
+						<option value="executionDemo">Execution Demo</option>
+					</select>
+					<input type="hidden" id="defaultActivity" name="a" value="construction" disabled=true/>
+				</div>
 
-                    <div class="fieldgroup">
-                        <label for="mode">Mode: </label>
-                        <select name="m" onchange="handleRestartProblem(this)" id="mode">
-                            <option value="STUDENT">Immediate Feedback (Student)</option>
-                            <option value="AUTHOR">Author</option>
-                            <option value="COACHED">Coached</option>
-                            <option value="TEST">Delayed Feedback (Test)</option>
-                            <option value="EDITOR">No Feedback (Editor)</option>
-                        </select>
-			<label for="restart-problem">Restart Problem :</label>
-			<div id="restartproblem"><input name="rp" type="checkbox"/></div>
-                    </div>
+				<div class="fieldgroup">
+				<label>Student submode:</label> &nbsp; &nbsp; &nbsp;
+						<input type="radio" id="fb" name="sm" value="feedback"  checked="checked" style="float:none">
+				<label for="fb" class="radio">Feedback</label>
+				<input type="radio" id="po" name="sm" value="power" style="float:none">
+				<label for="po" class="radio">Power User</label><br>
+						<label>Node Editor:</label>&nbsp;&nbsp;&nbsp;
+						<input type="radio" id="eia" name="is" value="algebraic" checked="checked" style="float:none">
+				<label for="eia" class="radio">Algebraic</label>
+						<input type="radio" id="eis" name="is" value="structured" style="float:none">
+				<label for="eis" class="radio">Structured</label>
+				</div>
 
-                    <div class="fieldgroup">
-		        <label>Student submode:</label> &nbsp; &nbsp; &nbsp;
-                        <input type="radio" id="fb" name="sm" value="feedback"  checked="checked" style="float:none">
-		        <label for="fb" class="radio">Feedback</label>
-		        <input type="radio" id="po" name="sm" value="power" style="float:none">
-		        <label for="po" class="radio">Power User</label><br>
-                        <label>Node Editor:</label>&nbsp;&nbsp;&nbsp;
-                        <input type="radio" id="eia" name="is" value="algebraic" checked="checked" style="float:none">
-		        <label for="eia" class="radio">Algebraic</label>
-                        <input type="radio" id="eis" name="is" value="structured" style="float:none">
-		        <label for="eis" class="radio">Structured</label>
-                    </div>
+				<div class="fieldgroup">
+					<label for="problem">Problem: </label>
+					<input id="problem" type="text" name="p" value="rabbits">
+				</div>
 
-                    <div class="fieldgroup">
-                        <label for="problem">Problem: </label>
-                        <input id="problem" type="text" name="p" value="rabbits">
-                    </div>
+				<div class="fieldgroup">
+					<label for="section">Section: </label>
+					<input id="section" type="text" name="s" value="login.html">
+				</div>
 
-                    <div class="fieldgroup">
-                        <label for="section">Section: </label>
-                        <input id="section" type="text" name="s" value="login.html">
-                    </div>
+				<div class="fieldgroup">
+					<label for="group">Folder:<br> (i.e. group; leave blank for published model) </label>
+					<input id="group" type="text" name="g" value="">
+				</div>
 
-                    <div class="fieldgroup">
-                        <label for="group">Group (optional unless authoring): </label>
-                        <input id="group" type="text" name="g" value="">
-                    </div>
-
-                    <div class="fieldgroup">
-                        <input type="submit" name="c" value="Continue" class="submit">
-                        
-                    </div>
-        </form>
-
-
-    </div>
-
+				<div class="fieldgroup">
+					<input type="submit" name="c" value="Continue" class="submit">
+				</div>
+		</form>
+	</div>
 </div>
-
 </body>
 </html>

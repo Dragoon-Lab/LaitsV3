@@ -38,7 +38,7 @@ $mysqli = mysqli_connect("localhost", $dbuser, $dbpass, $dbname)
 // Must always provide problem name
 $problem =  mysqli_real_escape_string($mysqli,$_GET['p'])
   or trigger_error('Problem name not supplied.', E_USER_ERROR);
-$shortProblemName = (strlen($problem) > 30) ? substr($problem, 0,30) : $problem;
+$shortProblemName = (strlen($problem) > 50) ? substr($problem, 0,50) : $problem;
 
 // Group is optional
 $group = isset($_GET['g'])?mysqli_real_escape_string($mysqli,$_GET['g']):null;
@@ -48,6 +48,7 @@ if(isset($_GET['m']) && $_GET['m'] == "AUTHOR"){
 }
 $restartProblemFlag = isset($_GET['rp'])?$_GET['rp']:false;
 
+$activity = !empty($_GET['a'])?$_GET['a']:"construction";
 // Check if the session is public and expired
 date_default_timezone_set('America/Phoenix'); 
 $subtime =  date('Y-m-d h:m:s', strtotime('-1 minutes')); // Get the time stamp for 24h ago
@@ -58,7 +59,7 @@ if (isset($_GET['s'])) {
       $user = mysqli_real_escape_string($mysqli,$_GET['u']);
       $mode = $_GET['m'];
       $query = <<<EOT
-      SELECT * FROM session WHERE session.user = '$user' AND session.section = '$section' AND session.mode = '$mode' AND session.problem = '$shortProblemName' ORDER BY session.time DESC LIMIT 1   
+      SELECT * FROM session WHERE session.user = '$user' AND session.section = '$section' AND session.mode = '$mode' AND session.activity = '$activity' AND session.problem = '$shortProblemName' ORDER BY session.time DESC LIMIT 1
 EOT;
 
      $result = $mysqli->query($query)
@@ -119,23 +120,32 @@ if(!$restartProblemFlag) /* if rp(restart problem) not set check in previously s
      $user = mysqli_real_escape_string($mysqli,$_GET['u']);
      $section = mysqli_real_escape_string($mysqli,$_GET['s']);
      $mode = $_GET['m'];  // only four choices
-
    if(isset($_GET['g']) && !$userPrecedence){
       //group takes precedence over user, quick fix for sustainability class
         $query = <<<EOT
          SELECT t1.solution_graph, t1.share FROM solutions AS t1 JOIN session AS t2 USING (session_id) 
               WHERE t2.section = '$section' AND t2.mode = '$mode' 
-              AND t2.problem = '$shortProblemName' AND t2.group = '$group' ORDER BY t1.time DESC LIMIT 1
+              AND t2.problem = '$shortProblemName' AND t2.group = '$group' AND t2.activity = '$activity' ORDER BY t1.time DESC LIMIT 1
 EOT;
+	  
     } else {
      $gs = isset($_GET['g'])?"= '$group'":'IS NULL';
-     $query = <<<EOT
-        SELECT t1.solution_graph, t1.share FROM solutions AS t1 JOIN session AS t2 USING (session_id) 
-            WHERE t2.user = '$user' AND t2.section = '$section' AND t2.mode = '$mode' 
+	  if($activity == 'construction'){
+     	$query = <<<EOT
+          SELECT t1.solution_graph, t1.share FROM solutions AS t1 JOIN session AS t2 USING (session_id)
+            WHERE t2.user = '$user' AND t2.section = '$section' AND t2.mode = '$mode' AND t2.activity = '$activity'
              AND t2.problem = '$shortProblemName' AND t2.group $gs ORDER BY t1.time DESC LIMIT 1
 EOT;
-    }
-
+    } else {
+		//case where user opens a non-published problem and in a different activity, but author always opens in construction activity
+		$query = <<<EOT
+         SELECT t1.solution_graph, t1.share FROM solutions AS t1 JOIN session AS t2 USING (session_id)
+              WHERE t2.section = '$section' AND t2.mode = '$mode' AND t2.user = '$user'
+              AND t2.problem = '$shortProblemName' AND t2.group $gs
+			  AND (t2.activity = '$activity' OR t2.activity = 'construction') ORDER BY t1.time DESC LIMIT 1
+EOT;
+	  }
+	}
    $result = $mysqli->query($query)
      or trigger_error("Previous work query failed." . $mysqli->error);
    if($row = $result->fetch_row()){
@@ -159,13 +169,21 @@ if(isset($_GET['g']) && !empty($_GET['g']) && isset($_GET['s']) && !empty($_GET[
   */
 
   $section = mysqli_real_escape_string($mysqli,$_GET['s']);
-  
-  $query = <<<EOT
-    SELECT t1.solution_graph, t1.share FROM solutions AS t1 JOIN session AS t2 
-          USING (session_id) 
-      WHERE t2.section = '$section' AND t2.mode = 'AUTHOR' 
-          AND t2.problem = '$shortProblemName' AND t2.group = '$group' ORDER BY t1.time DESC LIMIT 1
+  if($activity == "construction"){
+    $query = <<<EOT
+      SELECT t1.solution_graph, t1.share FROM solutions AS t1 JOIN session AS t2
+          USING (session_id)
+      WHERE t2.section = '$section' AND t2.mode = 'AUTHOR'
+          AND t2.problem = '$shortProblemName' AND t2.group = '$group' AND t2.activity = '$activity' ORDER BY t1.time DESC LIMIT 1
 EOT;
+  } else {
+	$query = <<<EOT
+	  SELECT t1.solution_graph, t1.share FROM solutions AS t1 JOIN session AS t2
+	   	  USING(session_id)
+	  WHERE t2.section = '$section' AND t2.mode = 'AUTHOR'
+	      AND t2.problem = '$shortProblemName' AND t2.group = '$group' AND t2.activity = 'CONSTRUCTION' ORDER BY t1.time DESC LIMIT 1
+EOT;
+  }
 
   $result = $mysqli->query($query)
     or trigger_error("Custom solution query failed.");
@@ -193,8 +211,12 @@ EOT;
   $problem = preg_replace('/[^A-Za-z0-9_\-]/', '_', $problem);
   $extra = 'problems/' . $problem . '.json';
   /* Redirect to a page relative to the current directory.
-     HTTP/1.1 requires an absolute URI as argument to Location. */ 
-  header("Location: http://$host$uri/$extra");
+     HTTP/1.1 requires an absolute URI as argument to Location. */
+  if(isset($_SERVER['HTTPS'])){
+  	header("Location: https://$host$uri/$extra");
+  } else {
+	header("Location: http://$host$uri/$extra");
+  }
 }
 mysqli_close($mysqli);
 ?>

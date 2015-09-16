@@ -89,8 +89,9 @@ describe("Test math functions:", function() {
             atest.checkTableValues("sine wave", 22, sineWave, dtest, client);
         }));
     });
-    after(function(done) {
-        client.end();
-        done();
-    });
+
+    after(async(function(done){
+        dtest.endTest(client);
+    }));
+
 });

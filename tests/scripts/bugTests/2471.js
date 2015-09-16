@@ -61,14 +61,12 @@ describe("Regression test for bug 2471", function() {
 
     describe("Test for blue node description", function(){
         it("It should create the accumulator ok", async(function(){
-            dtest.menuCreateNode(client);
-            dtest.setNodeDescription(client, "Number of Giardia per liter of water in the tank");
-            dtest.popupWindowPressOk(client);
-            dtest.setNodeType(client,"Accumulator")
+            dtest.openEditorForNode(client,"Giardia per liter of tank water");
+            dtest.setNodeType(client,"Accumulator");
             dtest.popupWindowPressOk(client);
             dtest.setNodeInitialValue(client,1.5);
+            dtest.popupWindowPressOk(client);
             dtest.setNodeExpression(client,"Giardia births");
-            dtest.checkExpression(client);
             dtest.nodeEditorDone(client);
             var name = "Giardia per liter of tank water";
             atest.checkNodeValue(dtest.getNodeBorderColor(client,name),"green",name);
@@ -82,8 +80,7 @@ describe("Regression test for bug 2471", function() {
         }));
     });
 
-    after(function(done) {
-        client.end();
-        done();
-    });
+    after(async(function(done){
+        dtest.endTest(client);
+    }));
 });

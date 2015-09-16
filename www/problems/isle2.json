@@ -4,23 +4,39 @@
         "time": {
             "start": 1900,
             "end": 1920,
-            "step": 1.0,
-            "units": "Years"
+            "step": 1,
+            "units": "Years",
+            "integrationMethod": "Eulers Method"
         },
         "properties": {
             "phase": "",
             "type": ""
         },
         "image": {
-            "URL": "images/moose_60.png"
+            "URL": "images\/moose_60.png"
         },
-        "taskDescription": [
-	    "Assumptions:",
-	    " * The moose population is 20 in the first year (1900).",
-	    " * Births are the only change in the population. Deaths, immigration and emigration do not occur.",
-        " * The number of moose births each year is the moose population times the probability of a moose giving birth during the year.",
-	    " * The probability of a moose giving birth each year is 20%."
-	],
+        "taskDescription": {
+            "construction": [
+                "Assumptions:",
+                " * The moose population is 20 in the first year (1900).",
+                " * Births are the only change in the population. Deaths, immigration and emigration do not occur.",
+                " * The number of moose births each year is the moose population times the probability of a moose giving birth during the year.",
+                " * The probability of a moose giving birth each year is 20%."
+            ],
+            "incremental": [
+                "Assumptions:",
+                " * The moose population is 20 in the first year (1900).",
+                " * Births are the only change in the population. Deaths, immigration and emigration do not occur.",
+                " * The number of moose births each year is the moose population times the probability of a moose giving birth during the year.",
+                " * The probability of a moose giving birth each year is 20%."
+            ]
+        },
+        "increment": [
+            {
+                "tweakedNode" : "id2",
+                "tweakDirection": "Increase"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",
@@ -30,8 +46,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 410,
+                    "y": 140
                 },
                 "attemptCount": {
                     "description": 0,
@@ -53,8 +69,8 @@
                 "ID": "id2",
                 "inputs": [],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 651.09735729932,
+                    "y": 140
                 },
                 "attemptCount": {
                     "description": 0,
@@ -82,8 +98,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 531.09735729932,
+                    "y": 140
                 },
                 "attemptCount": {
                     "description": 0,
@@ -101,6 +117,13 @@
                 "equation": "id1 * id2"
             }
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [],
+        "lessonsLearned": [],
+        "increment": [
+            {
+                "tweakedNode": "id2",
+                "tweakDirection": "Increase"
+            }
+        ]
     }
 }

@@ -16,12 +16,27 @@
             "width": 225,
             "height": 100
         },
-        "taskDescription": [
-	    "In 1859, Thomas Austin released 24 rabbits onto his property in Australia. Despite various attempts at eradicating the rabbits, the population grew at an average rate of 0.3 per year over the next 60 years. The rabbits eventually occupied most of the continent of Australia.",
-	    "",
-	    "In this exercise, you will construct a model of rabbit population growth. The first quantity in this model is the population or number of rabbits in the population. Initially, there are 24 rabbits, but the number increases with time. The new population each year is its present value plus the net growth (number of rabbits born minus deaths). The net growth is equal to the product of the population and the growth rate. The growth rate has a fixed value of 0.3 per year."
-	],
+        "taskDescription": {
+            "construction": [
+        	    "In 1859, Thomas Austin released 24 rabbits onto his property in Australia. Despite various attempts at eradicating the rabbits, the population grew at an average rate of 0.3 per year over the next 60 years. The rabbits eventually occupied most of the continent of Australia.",
+        	    "",
+        	    "In this exercise, you will construct a model of rabbit population growth. The first quantity in this model is the population or number of rabbits in the population. Initially, there are 24 rabbits, but the number increases with time. The new population each year is its present value plus the net growth (number of rabbits born minus deaths). The net growth is equal to the product of the population and the growth rate. The growth rate has a fixed value of 0.3 per year."
+            ],
+            "incremental": [
+                "In 1859, Thomas Austin released 24 rabbits onto his property in Australia. Despite various attempts at eradicating the rabbits, the population grew at an average rate of 0.3 per year over the next 60 years. The rabbits eventually occupied most of the continent of Australia."
+            ],
+            "execution": [
+                "In 1859, Thomas Austin released 24 rabbits onto his property in Australia. Despite various attempts at eradicating the rabbits, the population grew at an average rate of 0.3 per year over the next 60 years. The rabbits eventually occupied most of the continent of Australia."
+            ]
+	   },
+
 		"lessonsLearned" : ["Simple introductory mathematics. Idea of functions, accumulators and parameters. This is simple model which brush ups your elementary mathetics."],
+		"increment": [
+			{
+				"tweakedNode" : "id3",
+				"tweakDirection": "Increase"
+			}
+		],
         "givenModelNodes": [
             {
                 "ID": "id1",
@@ -40,7 +55,12 @@
                     "type": 0,
                     "initial": 0,
                     "units": 0,
-                    "equation": 0
+                    "equation": 0,
+                    "tweakDirection":0
+                },
+                "position": {
+                    "x": 500,
+                    "y": 200
                 },
                 "status": {}
             },
@@ -61,7 +81,12 @@
                     "type": 0,
                     "initial": 0,
                     "units": 0,
-                    "equation": 0
+                    "equation": 0,
+                    "tweakDirection":0
+                },
+                "position": {
+                    "x": 650,
+                    "y": 200
                 },
                 "status": {}
             },
@@ -81,7 +106,12 @@
                     "type": 0,
                     "initial": 0,
                     "units": 0,
-                    "equation": 0
+                    "equation": 0,
+                    "tweakDirection":0
+                },
+                "position": {
+                    "x": 800,
+                    "y": 200
                 },
                 "status": {}
             },
@@ -101,7 +131,8 @@
                     "type": 0,
                     "initial": 0,
                     "units": 0,
-                    "equation": 0
+                    "equation": 0,
+                    "tweakDirection":0
                 },
                 "status": {}
             },
@@ -118,7 +149,8 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 0,
+                    "tweakDirection":0
                 },
                 "status": {},
                 "inputs":[]
@@ -137,7 +169,8 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 0,
+                    "tweakDirection":0
                 },
                 "status": {},
                 "inputs":[]

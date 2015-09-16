@@ -8,10 +8,11 @@ DROP TABLE IF EXISTS `session`;
 CREATE TABLE `session` (
   `session_id` varchar(50) NOT NULL,
   `mode` varchar(20) NOT NULL,
-  `user` varchar(30) NOT NULL,
+  `user` varchar(100) NOT NULL,
   `section` varchar(30) NOT NULL,
-  `problem` varchar(30) DEFAULT NULL,
+  `problem` varchar(50) DEFAULT NULL,
   `group` varchar(30) DEFAULT NULL,
+  `activity` varchar(30) DEFAULT NULL,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`session_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

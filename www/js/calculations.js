@@ -26,13 +26,17 @@ define([
 	"dojo/_base/lang",
 	"dojo/on",
 	"dojo/dom",
+    "dojo/aspect",
 	"dijit/registry",
 	"dijit/form/HorizontalSlider",
 	"./equation",
 	"./integrate","./typechecker",
 	"./lessons-learned",
-	"dijit/form/Button"
-], function(array, declare, lang, on, dom, registry, HorizontalSlider, equation, integrate, typechecker,lessonsLearned, Button){
+	"dijit/form/Button",
+    "dijit/TooltipDialog",
+    "dijit/popup",
+    "dijit/focus"
+], function(array, declare, lang, on, dom, aspect, registry, HorizontalSlider, equation, integrate, typechecker,lessonsLearned, Button, tooltipDialog, popup, focusUtil){
 	// Summary: 
 	//			Finds model solutions and sets up the sliders
 	// Description:
@@ -129,14 +133,14 @@ define([
 		},
 		
 		findStaticSolution: function(isActive, givennode, plotVariables){
-			// Summary:	 Find a solution
+			// Summary:	 Find solutions for all the node in plotVariables array as y axises against givennode as x axis
 			// Returns:	 an object of the form
 			//			{status: s, type: m, missingNode: n/soln: solution}
 		    var choice = isActive?this.active:this.given;
-		    var node = givennode.ID;
+		    var node = (isActive) ? givennode.ID : givennode.descriptionID;
 		    var start = givennode.initial / 10;
 		    var stop = givennode.initial * 10;
-		    var step = (stop - start) / 10;
+		    //var step = (stop - start) / 10;
 		    var min = 0;
 		    var max = 0;
 		    /*var val = choice.timeStep.parameters[node], min, max;
@@ -197,20 +201,21 @@ define([
 			try{			 
 				if(plotVariables){
 					// If id is null, then make row null
-					var plotValues = array.map(plotVariables, function(x){
+					var plotValues = array.map(plotVariables, function(x){// Initializing 
 						return x?[]:null;
 					});
 					var timeStep = choice.timeStep;
 					// Copy parameters object.
 					var variables = lang.mixin({}, timeStep.parameters);
+					// Calcultes the solution for every node for each step in x axis
 					for(var k = start; k < stop; k += step){
 							nodes.push(k);
-							variables[node] = k;
+							variables[node] = k; // This array represent the x axis
 							//variables = lang.mixin({}, parameters);
-							array.forEach(timeStep.functions, function(id){
+							array.forEach(timeStep.functions, function(id){ // This does the main calculations
 								variables[id] = timeStep.parse[id].evaluate(variables, time.start);
 							});
-							array.forEach(plotVariables, function(id, k){
+							array.forEach(plotVariables, function(id, k){// Generate the output array for each step
 								if(id){
 									plotValues[k].push(variables[id]);
 								}
@@ -440,7 +445,7 @@ define([
 				console.log("	   new solution", this.getTime());
 				//this function is specific to graph/table
 				this.renderDialog();
-				this.renderStaticDialog();
+				this.renderStaticDialog(false);// Call the function without updating the author graph
 				this._rendering = false;
 				console.log("	   new plot done", this.getTime());
 			}));
@@ -536,39 +541,81 @@ define([
 		},
 
 		/* @brief: display the graph*/
-		show: function(){
-			this.dialogWidget.show();
-			var content = this.dialogWidget.get("content").toString();
-			if(content.search("There isn't anything to plot. Try adding some accumulator or function nodes.") >= 0 
-					||content.search("There is nothing to show in the table.	Please define some quantitites.") >= 0 ||
-					this.mode === "EDITOR" || this.mode === "AUTHOR" ||
-					!this.model.active.matchesGivenSolutionAndCorrect()) {
-				return;
-			}
-			var contentMsg = this.model.getTaskLessonsLearned();
-			var shown = this.model.isLessonLearnedShown;
-			this.model.isLessonLearnedShown = true;
-			this._state.put("isLessonLearnedShown",true);
-			var lessonsLearnedButton = registry.byId("lessonsLearnedButton");   
-			lessonsLearnedButton.set("disabled", false);
-			
-			var userName = this.model;
-			var handle = this.dialogWidget.connect(this.dialogWidget,"hide",function(e) {
-				if(!contentMsg || shown) {
-					if(!contentMsg) {
-						lessonsLearnedButton.set("disabled", true);
-					}
-					return;
-				}
-				lessonsLearned.displayLessonsLearned(contentMsg);
-				dojo.disconnect(handle);
-			});
-			
-			lang.hitch(this, handle);
-		},
+        show: function () {
+            this.dialogWidget.show();
+            var content = this.dialogWidget.get("content").toString();
+            if(registry.byId("closeHint")) {
+                var closeHintId = registry.byId("closeHint");
+                closeHintId.destroyRecursive(false);
+            }
+            //close popup each time graph is shown
+            popup.close(problemDoneHint);
+
+            var problemDoneHint = new tooltipDialog({
+                style: "width: 300px;",
+                content: '<p>Click "Done" when you are ready to save and submit your work.</p>' +
+                ' <button type="button" data-dojo-type="dijit/form/Button" id="closeHint">Ok</button>',
+                onShow: function () {
+                    on(registry.byId('closeHint'), 'click', function () {
+                        console.log("clicked prob done hint closed");
+                        popup.close(problemDoneHint);
+                    });
+                },
+                onBlur: function(){
+                    popup.close(problemDoneHint);
+                }
+            });
+
+            if (content.search("There isn't anything to plot. Try adding some accumulator or function nodes.") >= 0
+                || content.search("There is nothing to show in the table.	Please define some quantitites.") >= 0 ||
+                this.mode === "EDITOR" || this.mode === "AUTHOR" || !this.model.active.matchesGivenSolutionAndCorrect()) {
+                console.log("graph not being shown");
+                return;
+            }
+            var contentMsg = this.model.getTaskLessonsLearned();
+
+            console.log("content message is", contentMsg, this.model);
+            //var thisModel = this;
+            aspect.after(this.dialogWidget, "hide", lang.hitch(this,function () {
+
+                if (contentMsg.length === 0 || contentMsg[0] == "") {
+                    console.log("lessons learned is empty");
+                    
+                    
+                    if(this.model.isDoneMessageShown === false) {
+                        popup.open({
+                            popup: problemDoneHint,
+                            around: dom.byId('doneButton')
+                        });
+                        this.model.isDoneMessageShown = true;
+                        this._state.put("isDoneMessageShown",true);
+                    }
+                }
+                else{
+					
+                    if(this.model.getLessonLearnedShown() === false){
+                        lessonsLearned.displayLessonsLearned(contentMsg);
+						var lessonsLearnedButton = registry.byId("lessonsLearnedButton");
+						lessonsLearnedButton.set("disabled", false);
+                        //this._state.put("isLessonLearnedShown",true);
+                        aspect.after(registry.byId("lesson"),"hide", lang.hitch(this,function () {
+                            if(this.model.isDoneMessageShown === false) {
+                                popup.open({
+                                    popup: problemDoneHint,
+                                    around: dom.byId('doneButton')
+                                });
+                                this.model.isDoneMessageShown = true;
+                                this._state.put("isDoneMessageShown",true);
+                            }
+                        }));
+                    }
+                }
+            }));
+        },
 
 
-		setLogging: function(/*string*/ logging){
+
+        setLogging: function(/*string*/ logging){
 			this._logging = logging;
 		}
 

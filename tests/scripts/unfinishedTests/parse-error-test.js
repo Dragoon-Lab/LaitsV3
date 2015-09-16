@@ -91,8 +91,7 @@ describe("Parse error crash on load bug", function() {
       dtest.nodeEditorDone(client);
     }));
 
-    after(function(done) {
-        client.end();
-        done();
-    });
+    after(async(function(done){
+        dtest.endTest(client);
+    }));
 });
