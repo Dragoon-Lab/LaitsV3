@@ -1267,7 +1267,6 @@ define([
 				// Wire up close button...
 				// This will trigger the above session.saveProblem()
 				on(registry.byId("closeButton"), "click", function(){
-					debugger;
 					registry.byId("nodeeditor").hide();
 				});
 
