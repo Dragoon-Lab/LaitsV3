@@ -95,7 +95,6 @@
                 "status": {},
                 "name": "Birth rate",
                 "description": "Giardia births as a proportion of Giardia population",
-                "equation": "",
                 "type": "parameter",
                 "parentNode": false,
                 "initial": 0.2
@@ -119,7 +118,6 @@
                 "genus": "extra",
                 "name": "Size of water tank",
                 "description": "Number of liters of water in tank",
-                "equation": "",
                 "type": "parameter",
                 "parentNode": false,
                 "initial": 10000
@@ -142,7 +140,6 @@
                 "status": {},
                 "name": "Giardia per liter of pond water",
                 "description": "Number of Giardia per liter of pond water",
-                "equation": "",
                 "type": "parameter",
                 "parentNode": false,
                 "initial": 15000,
@@ -167,7 +164,6 @@
                 "genus": "extra",
                 "name": "Max safe Giardia per liter",
                 "description": "Maximum number of Giardia per liter for safe water",
-                "equation": "",
                 "type": "parameter",
                 "parentNode": false,
                 "initial": 10
@@ -191,7 +187,6 @@
                 "genus": "extra",
                 "name": "Pond water added to tank",
                 "description": "Number of liters of pond water added to the tank",
-                "equation": "",
                 "type": "parameter",
                 "parentNode": false,
                 "initial": 1
@@ -215,7 +210,7 @@
                 "genus": "extra",
                 "name": "Initial Giardia per liter of tank water",
                 "description": "Initial number of Giardia per liter of water in the tank",
-                "equation": "",
+                
                 "type": "parameter",
                 "parentNode": false,
                 "initial": 1.5

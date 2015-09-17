@@ -89,7 +89,7 @@
                 },
                 "status": {},
                 "name": "Books transferred per day",
-                "description": "Number of Prof Smith takes homeeach day",
+                "description": "Number of Prof Smith takes home each day",
                 "type": "parameter",
                 "parentNode": false,
                 "initial": 2
