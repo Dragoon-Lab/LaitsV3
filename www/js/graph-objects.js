@@ -61,13 +61,14 @@ define([
 						console.log("Parse Error" + err);
 					}
 				}
-				var initialValue = typeof(model.getInitial(nodeId)) === "number" ? model.getInitial(nodeId) : '';
+				var initialValue = typeof(model.getInitial(nodeId)) === "number" ? model.getInitial(nodeId) : '';				
 
 				var unitsValue = model.getUnits(nodeId);
 				if (!unitsValue) {
 					unitsValue = '';
 				}
-				if(initialValue) {
+				
+				if(initialValue !== '') {
 					initialValue += "<br/>" + unitsValue;
 				}else{
 					initialValue = unitsValue;
