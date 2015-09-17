@@ -465,13 +465,13 @@ define([
 			// updating model after lessonlearned is shown
 			aspect.after(registry.byId("lesson"), "show", function(){
 				givenModel.setLessonLearnedShown(true);
-				if(!(activity_config("demoExecution") || activity_config("demoIncremental")))
+				if(!(activity_config.get("demoExecution") || activity_config.get("demoIncremental")))
 					session.saveProblem(givenModel.model);
 			}); 
 
 			// Wire up send to server
 			aspect.after(drawModel, "updater", function(){
-				if(!(activity_config("demoExecution") || activity_config("demoIncremental")))
+				if(!(activity_config.get("demoExecution") || activity_config.get("demoIncremental")))
 					session.saveProblem(givenModel.model);
 			});
 
@@ -1250,6 +1250,7 @@ define([
 				// Wire up close button...
 				// This will trigger the above session.saveProblem()
 				on(registry.byId("closeButton"), "click", function(){
+					debugger;
 					registry.byId("nodeeditor").hide();
 				});
 
