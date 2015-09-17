@@ -1032,17 +1032,16 @@ define(["dojo/aspect",
 			    }]);			
 			} 
 			else if (isFinished & iterationNum==maxItration-1) {// In last iteration
-				this._model.student.incrementIteration();
 				this.applyDirectives([{
 					id: "crisisAlert",
 					attribute: "title",
-					value: "Demonstration Completed" 
+					value: "Demonstration Completed"
 				}, {
 					id: "crisisAlert",
 					attribute: "open",
 					value: "Good work, now Dragoon will compute the rest of the values for you and display them as a table and as a graph in the next window."
 				}]);
-			}											
+			}
 			//console.log("model is",this._model);
 		},
 
