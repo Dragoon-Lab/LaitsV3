@@ -54,3 +54,4 @@ tests/node/
 tests/scripts/test-paths.js
 
 *.swp
+log/thesis
