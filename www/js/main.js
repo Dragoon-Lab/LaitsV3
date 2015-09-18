@@ -465,13 +465,13 @@ define([
 			// updating model after lessonlearned is shown
 			aspect.after(registry.byId("lesson"), "show", function(){
 				givenModel.setLessonLearnedShown(true);
-				if(!(activity_config("demoExecution") || activity_config("demoIncremental")))
+				if(!(activity_config.get("demoExecution") || activity_config.get("demoIncremental")))
 					session.saveProblem(givenModel.model);
 			}); 
 
 			// Wire up send to server
 			aspect.after(drawModel, "updater", function(){
-				if(!(activity_config("demoExecution") || activity_config("demoIncremental")))
+				if(!(activity_config.get("demoExecution") || activity_config.get("demoIncremental")))
 					session.saveProblem(givenModel.model);
 			});
 
