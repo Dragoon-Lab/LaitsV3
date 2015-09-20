@@ -128,6 +128,10 @@ Student closes node editor:
 -- method: `ui-action`  
 -- message: `{"time": 61.6, "type": "close-dialog-box",
   "nodeID": "id10", "nodeComplete": true, "node": "fat content"}`  
+  
+Student completes the problem:
+-- method: `solution-step`
+-- message: `{"time": 211.2, "type": "completeness-check", "problemComplete": true}`
 
 #### Incremental activity logs
 Student opens activity popup   
