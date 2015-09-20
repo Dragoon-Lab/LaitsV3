@@ -1169,6 +1169,9 @@ define([
 					var returnValue = obj.getOptimalNode(studentID);
 					console.log("Correct node: ", returnValue);
 					return returnValue;
+				}else if(nodePart === "executionValue"){
+					var id = this.getDescriptionID(studentID);
+					return obj.given.getNode(id).executionValue[this.getIteration()];
 				}else{
 					var id = this.getDescriptionID(studentID);
 					var node = obj.given.getNode(id);
