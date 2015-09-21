@@ -62,7 +62,7 @@
 			$sectionString = " section ".($likeSection?"LIKE":"=")." '".$section."' ";
 			$queryString = 
 			"SELECT 
-				tid, session.session_id, mode, user, problem, time, method, message, `group` 
+				tid, session.session_id, mode, user, problem, time, method, message, `group`, activity 
 			from 
 				session JOIN step ON session.session_id = step.session_id 
 			where". 
@@ -74,7 +74,7 @@
 				(!empty($fromDate)?$toTimeString:"").
 				(!empty($mode)?$modeString:"").
 				(!empty($activity)?$activityString:"").
-			"ORDER BY user asc, problem asc, time asc, tid asc;";
+			"ORDER BY user asc, problem asc, activity asc, time asc, tid asc;";
 		//	$queryString = "SELECT tid, mode, session.session_id, user, problem, time, method, message, `group` from session JOIN step ON session.session_id = step.session_id where method != 'client-message' AND mode != 'AUTHOR' AND user = 'cdluna' AND problem LIKE '%ps3-0%' ORDER BY user asc, problem asc, tid asc;";
 		//	echo $queryString;
 
@@ -101,8 +101,8 @@
 			while($row = $result->fetch_assoc()){
 				if($first){
 					$oldRow = $row;
+					$first = false;
 				}
-				$first = false;
 				if($resetVariables){
 					$sessionTime = 0; $outOfFocusTime = 0; $timeWasted=0; $focusTime = 0; $propertyStartTime = 0;
 					$runningSessionTime = 0; $runningOutOfFocusTime = 0;
@@ -120,6 +120,7 @@
 					$upObject->problem = $row['problem'];
 					$upObject->user = $row['user'];
 					$upObject->mode = $row['mode'];
+					$upObject->activity = $row['activity'];
 					$timeSkip = false;
 					$slideIndex = -1;
 					$slidesOpen = false;
@@ -127,8 +128,8 @@
 					$currentSession = new Session();
 					$currentSession->timeStamp = $row['time'];
 					$currentAction;
+					$resetVariables = false;
 				}
-				$resetVariables = false;
 				$method = $row['method'];
 				$newMessage = json_decode($row['message'], true);
 				$oldMessage = json_decode($oldRow['message'], true);
@@ -136,7 +137,7 @@
 				$newSession = $row['session_id'];	
 				if($oldSession != $newSession){
 					//this means either the problem was opened again or their is a new user problem combination.
-					if(($oldRow['user'] == $row['user']) && ($oldRow['problem'] == $row['problem'])){
+					if(($oldRow['user'] == $row['user']) && ($oldRow['problem'] == $row['problem']) && ($oldRow['activity'] == $row['activity'])){
 						//$stepTime = 0;
 						$upObject->sessionRunning = true;
 						$problemReOpen +=1;
@@ -149,7 +150,7 @@
 						//array_push($objectArray, $upObject);
 					}
 					$currentSession->time = $runningSessionTime - $runningOutOfFocusTime;
-										array_push($upObject->sessions, $currentSession);
+					array_push($upObject->sessions, $currentSession);
 					$currentSession = new Session();
 					$currentSession->timeStamp = $row['time'];
 					$runningSessionTime = 0;
@@ -329,6 +330,98 @@
 					} else if($type === "slide-change"){
 						$slideIndex = $newMessage['slide'];
 						$slidesOpen = true;
+					} else if($type === "open-equation"){
+						if($currentNode == null){
+							$currentNode = $upObject->getNodeFromID($newMessage['nodeID']);
+							if($currentNode == null){
+								$currentNode = new Node();
+								$currentNode->name = $newMessage['node'];
+								$currentNode->id = $nodeID;
+								$currentNode->openTimes = 1;
+								$currentNode->nodeExist = true;
+							}
+						}
+						if($currentProperty != null){
+							array_push($currentNode->properties, $currentProperty);
+						}
+						$currentProperty = $currentNode->getPropertyFromName("equationPopup");
+						if($currentProperty == null){
+							$currentProperty = new Property();
+							$currentProperty->name = "equationPopup";
+						}
+						$equationPopupStartTime = $newMessage['time'];
+					} else if($type === "close-equation"){
+						if($currentNode == null){
+							$currentNode = $upObject->getNodeFromName($newMessage['node']);
+						}
+						if($currentProperty == null){
+							$currentProperty = $currentNode->getPropertyFromName("equationPopup");
+							if($currentProperty == null){
+								$currentProperty = new Property();
+								$currentProperty->name = "equationPopup";
+								$equationPopupStartTime = $newMessage['time'] - $stepTime;
+							}
+						}
+						$currentProperty->time += ($newMessage['time'] - $equationPopupStartTime);
+						$index = $currentNode->getIndex("equationPopup");
+						if($index >= 0){
+							$currentNode->properties[$index] = $currentProperty;
+						} else {
+							array_push($currentNode->properties, $currentProperty);
+						}
+						$currentProperty = null;
+
+						//adding the node back to its original place.
+						$index = $upObject->getIndex($currentNode->id);
+						if($index >= 0){
+							$upObject->nodes[$index] = $currentNode;
+						} else {
+							array_push($upObject->nodes, $currentNode);
+						}
+						$currentNode = null;
+					} else if($type === "open-tweak-popup" || $type === "open-execution-popup"){
+						if($currentNode != null && $currentNode->id != $newMessage['nodeID']){
+							$upObject->getIndex($currentNode->id);
+							if($index >= 0){
+								$upObject->nodes[$index] = $currentNode;
+							} else {
+								array_push($upObject->nodes, $currentNode);
+							}
+							$currentNode = null;
+						}
+						if($currentNode == null){
+							$index = $upObject->getIndex($newMessage['node']);
+							if($index >= 0){
+								$currentNode = $upObject->nodes[$index];
+								$currentNode->openTimes++;
+							} else {
+								$currentNode = new Node();
+								$currentNode->name = $newMessage['node'];
+								$currentNode->id = $newMessage['nodeID'];
+								$currentNode->openTimes = 1;
+								$currentNode->nodeExist = true;
+							}
+						}
+						$propertyStartTime = $newMessage['time'];
+					} else if($type === "close-tweak-popup" || $type === "close-execution-popup"){
+						if($currentNode != null){
+							if($currentProperty != null){
+								$index = $currentNode->getIndex($currentProperty->name);
+								if($index >= 0){
+									$currentNode->properties[$index] = $currentProperty;
+								} else {
+									array_push($currentNode->properties, $currentProperty);
+								}
+								$currentProperty = null;
+							}
+							$index = $upObject->getIndex($currentNode->id);
+							if($index >= 0){
+								$upObject->nodes[$index] = $currentNode;
+							} else {
+								array_push($upObject->nodes, $currentNode);
+							}
+							$currentNode = null;
+						}
 					}
 				} else if($method === "solution-step"){
 					$type = $newMessage['type'];
@@ -440,7 +533,9 @@
 						if($checkResult === "CORRECT"){
 							$currentProperty->time = $newMessage['time']-$propertyStartTime;
 
-							$currentProperty->correctValue = $newMessage['value'];
+							if(!in_array($newMessage['value'], $currentProperty->correctValue)){
+								array_push($currentProperty->correctValue, $newMessage['value']);
+							}
 							if(!$autoCreated && !$pushNodeBack){
 								//in case the node was autocreated then we cant update the property start time as equation time is coming wrong.
 								$currentIndex = $currentNode->getIndex($currentProperty->name);
@@ -462,7 +557,8 @@
 							array_push($currentProperty->answers, $newMessage['value']);
 							$incorrectChecks = $incorrectChecks+1;
 							if(in_array('correctValue', $newMessage)){
-								$currentProperty->correctValue = $newMessage['correctValue'];
+								if(!in_array($newMessage['value'], $currentProperty->correctValue))
+									array_push($currentProperty->correctValue, $newMessage['correctValue']);
 							}
 							if($newMessage['solutionProvided'] == "true" && !$autoCreated){
 								array_push($currentProperty->status, "DEMO");
