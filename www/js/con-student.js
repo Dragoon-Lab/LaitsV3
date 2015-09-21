@@ -713,6 +713,10 @@ define([
 						popup.close(problemDoneHint);
 					}
 				});
+				this.logging.log('solution-step', {
+					type: "completeness-check",
+					problemComplete: isFinished
+				});
 				var res=popup.open({
 					popup: problemDoneHint,
 					around: dom.byId('doneButton')
