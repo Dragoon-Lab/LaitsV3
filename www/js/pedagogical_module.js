@@ -843,11 +843,11 @@ define([
 					}else
 						console.error("Unexpected null from model.getCorrectAnswer().");
 				}else{
-
-                    if(this.activityConfig.get("executionExercise")){
+					//do not need this as getCorrectAnswer gives the correct answer for execution activity
+                    /*if(this.activityConfig.get("executionExercise")){
                         var itr = this.model.student.getIteration();
                         answer = answer[itr];
-                    }
+                    }*/
 					returnObj.push({id: nodePart, attribute: "value", value: answer});
 					solutionGiven = true;
 				}

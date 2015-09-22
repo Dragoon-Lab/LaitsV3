@@ -173,7 +173,7 @@ define([
 				if(crisis.title && crisis.title.indexOf("Equation for") >= 0){
 					var nodeName = crisis.title.replace("Equation for ", "");
 					that.logging.log('ui-action', {
-						type: "close-tweak-equation", 
+						type: "close-equation", 
 						node: nodeName
 					});
 				}
@@ -608,8 +608,8 @@ define([
 		updateExecutionValue: function(executionVal){
 			if(typeof executionVal !== 'undefined' && executionVal != null){
 				this._model.active.setExecutionValue(this.currentID, executionVal);
-				this.updateNodeLabel(this.currentID);
-				registry.byId("executionValue").set("value", executionVal);
+				//this.updateNodeLabel(this.currentID);
+				registry.byId("executionValue").set("value", executionVal, false);
 			}
 		},
 
@@ -1247,7 +1247,7 @@ define([
 						this.updateExecutionValue(directive.value);
 					}else{
 						var w = registry.byId("executionValue");
-						w.set(directive.attribute, directive.value);
+						w.set(directive.attribute, directive.value, false);
 					}
 				}
 				else{

@@ -25,7 +25,8 @@
  * Student mode-specific handlers
  */
 
-define(["dojo/aspect",
+define([
+	"dojo/aspect",
 	"dojo/_base/array",
 	'dojo/_base/declare',
 	"dojo/_base/lang",
@@ -712,6 +713,10 @@ define(["dojo/aspect",
 						popup.close(problemDoneHint);
 					}
 				});
+				this.logging.log('solution-step', {
+					type: "completeness-check",
+					problemComplete: isFinished
+				});
 				var res=popup.open({
 					popup: problemDoneHint,
 					around: dom.byId('doneButton')
@@ -879,19 +884,15 @@ define(["dojo/aspect",
 				this.closeExecutionMenu();
 			});
 			var executionValue = registry.byId("executionValue");
-
 			//for change in the select values
-			executionValue.on('Change', lang.hitch(this, function () {
+			executionValue.on('change', lang.hitch(this, function () {
 				var currentValue = this._model.active.getExecutionValue(this.currentID) || "";
 				if(executionValue.value !== "default" && currentValue !== executionValue.value) {
 					//var givenID = this._model.active.getDescriptionID(id);
 					var answer = executionValue.value;
+					this._model.active.setExecutionValue(this.currentID, answer);
 					var result = this._PM.processAnswer(this.currentID, "executionValue", answer);
 					this.applyDirectives(result);
-
-					//Set correct answer in model
-					this._model.active.setExecutionValue(this.currentID, answer);
-					registry.byId("executionValue").set("selected", answer);
 
 					//Update Node Label
 					this.updateNodeLabel(this.currentID);
@@ -916,13 +917,6 @@ define(["dojo/aspect",
 			} else {
 				if (!this.activityConfig.get("showPopupIfComplete") || (this.activityConfig.get("showPopupIfComplete")
 					&& this._model.active.isComplete(id))) {
-					//logging for pop up start
-					this.logging.log('ui-action', {
-						type: "open-execution-popup",
-						node: this._model.active.getName(this.currentID),
-						nodeID: this.currentID
-					});
-
 					//set node name
 					dom.byId("executionNodeName").innerHTML = "<strong>" + nodeName + "</strong>";
 					var executionValue = registry.byId("executionValue");
