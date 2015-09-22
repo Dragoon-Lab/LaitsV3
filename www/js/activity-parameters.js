@@ -618,6 +618,110 @@ define([
 					setStudentExecutionValues:true,
                     executionExercise: true
 				}
+			},
+
+			waveform: {
+				STUDENT:{
+					allowPrettify:true,
+					allowHelp: true,
+					allowLessonsLearned:true,
+
+					allowEditNode:true,
+
+					showHints: true,
+					showFeedback: true,
+					showCorrectAnswer:true,
+					copyFields: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation"
+					],
+
+					initializeStudentModel : true,
+
+					showNodeEditor:false,
+					copyAuthorNodes: true,
+					showWaveformEditor : true,
+					nodeDetails: "WAVEFORM"
+				},
+
+				COACHED:{
+					allowPrettify:true,
+					allowHelp: true,
+					allowLessonsLearned:true,
+
+					allowEditNode:true,
+
+					showHints: true,
+					showFeedback: true,
+					showCorrectAnswer:true,
+					copyFields: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation"
+					],
+
+					initializeStudentModel : true,
+
+					showNodeEditor:false,
+
+					showWaveformEditor : true,
+					nodeDetails: "WAVEFORM",
+					copyAuthorNodes: true
+				},
+
+				TEST:{
+					allowPrettify:true,
+					allowHelp: true,
+					allowLessonsLearned:true,
+
+					allowEditNode:true,
+					showFeedback: true,
+					copyFields: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation"
+					],
+
+					initializeStudentModel : true,
+					showNodeEditor:false,
+
+					showWaveformEditor : true,
+					nodeDetails: "WAVEFORM",
+					copyAuthorNodes: true
+				},
+
+				EDITOR:{
+					allowPrettify:true,
+					allowHelp: true,
+					allowLessonsLearned:true,
+
+					allowEditNode:true,
+					showFeedback: true,
+					copyFields: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation"
+					],
+
+					initializeStudentModel : true,
+
+					showNodeEditor:false,
+
+					showIncrementalEditor:true,
+
+					showWaveformEditor : true,
+					nodeDetails: "WAVEFORM",
+					copyAuthorNodes: true
+				}
 			}
 		};
 
@@ -691,7 +795,11 @@ define([
 				setExecutionValues:false,
 				setStudentExecutionValues:false,
 				demoExecution:false,
-                executionExercise: false
+                executionExercise: false,
+
+				//Waveform Behavior
+				showWaveformEditor: false
+
 			},
 
 			constructor: function(/*string*/ mode, /*string*/ activity){

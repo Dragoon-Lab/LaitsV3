@@ -126,6 +126,9 @@ define([
 			}
 
 			//BACKWARD COMPATIBILITY: add a field for tweakDirection and executionValue and set it to zero in the given nodes if not already present
+			this._model.given.getNode(givenID).waveformValue = this._model.given.getNode(givenID).waveformValue || null;
+			this._model.given.getNode(givenID).executionValue = this._model.given.getNode(givenID).executionValue || 0;
+
 			this._model.given.getNode(givenID).attemptCount['assistanceScore'] =  this._model.given.getNode(givenID).attemptCount['assistanceScore'] || 0;
 			this._model.given.getNode(givenID).attemptCount['tweakDirection'] =  this._model.given.getNode(givenID).attemptCount['tweakDirection'] || 0;
 			this._model.given.getNode(givenID).attemptCount['executionValue'] =  this._model.given.getNode(givenID).attemptCount['executionValue'] || 0;
