@@ -1083,7 +1083,7 @@ define([
 				var plotVariables = [];
 				var nodes = this.getNodes();
 				array.forEach(nodes, function(node){
-					if((node.type == "accumulator" || node.type == "function") && (!node.genus || node.genus == "" || node.genus == "required")){
+					if((node.type == "accumulator" || node.type == "function") && (this.isNodeRequired(node.ID) || this.isNodeAllowed(node.ID))){
 						plotVariables.push(node.ID);
 					}
 				}, this);
@@ -1096,6 +1096,10 @@ define([
 					return true;
 				}
 				return false;
+			},
+			isNodeAllowed: function(id){
+				var givenNode = this.getNode(id);
+				return (givenNode.genus == "allowed");
 			},
             getRootNodes: function(){
                 var rootNodes = [];
@@ -1403,6 +1407,10 @@ define([
 			isNodeRequired: function(id){
 				var descriptionID = this.getDescriptionID(id);
 				return descriptionID || obj.given.isNodeRequired(descriptionID);
+			},
+			isNodeAllowed: function(id){
+				var descriptionId = this.getDescriptionID(id);
+				return descriptionID || obj.given.isNodeAllowed(descriptionID);
 			},
 			deleteStudentNodes: function(){
 				obj.model.task.studentModelNodes = [];

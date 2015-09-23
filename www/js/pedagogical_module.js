@@ -751,12 +751,18 @@ define([
 				case "description":
 					this.descriptionCounter++;
 
-					if(this.model.given.getGenus(answer) && this.model.given.getGenus(answer) != "required"){
-						array.forEach(this.model.given.getNodes(), function(extra){
-							if(answer === extra.ID && extra.genus && extra.genus != "allowed"){
+					if(this.model.given.getGenus(answer) && (this.model.given.getGenus(answer) != "required" && this.model.given.getGenus(answer) != "allowed")){
+						/*array.forEach(this.model.given.getNodes(), function(extra){
+							if(answer === extra.ID && extra.genus){
 								interpretation = extra.genus;
 							}
-						});
+						});*/
+						/**
+						/* we have already eliminated the correct cases of required and allowed so other three can be given to the interpretation as is.
+						/* this is what is being done in the above loop as well. If there is any issue then we can remove this line.
+						/* and un comment the above loop
+						**/
+						interpretation = this.model.given.getGenus(answer);
 					}else if(this.model.isNodeVisible(studentID, answer)){
 							interpretation = "redundant";
 					}else if(this.model.isParentNode(answer) || (this.model.isNodesParentVisible(studentID, answer) && !this.checkPremature(studentID))){
