@@ -614,6 +614,13 @@ define([
 
 				return node && node.executionValue;
 			},
+
+			getWaveformValue: function( /* string */ id){
+				/* returns waveform string for given node id*/
+				var node = this.getNode(id);
+				return node && node.waveformValue;
+			},
+
 			setExecutionValues: function(/* string */ id, /* array */ values){
 				this.getNode(id).executionValue = values;
 			},
@@ -655,6 +662,12 @@ define([
 				// Summary: sets the "X" and "Y" values of a node's position
 				this.getNode(id).position = positionObject;
 			},
+
+			setWaveformValue: function(/* string */ id , /* string */ value){
+				/* sets passed waveform string value for node id*/
+				this.getNode(id).waveformValue = value;
+			},
+
 			setImageMarks : function(/**string */nodeId, marks){
 				var node = obj.given.getNode(nodeId);
 				if(!node) return null;
@@ -731,6 +744,7 @@ define([
 						equation: 0,
 						tweakedDirection: 0,
 						executionValue: 0,
+						waveformValue: null,
 						assistanceScore: 0
 					},
 					status: {}

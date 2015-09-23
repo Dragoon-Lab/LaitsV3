@@ -114,6 +114,10 @@ define([
 				htmlContent='<div id=' + nodeId + 'Label  class="bubble bubble-execution"><div class="executionContent ' + type + 'Wrapper"><strong class="nodeContent">'+ content+ '</strong></div><div class=' + type + 'Div><strong>' + nodeName + '</strong></div></div>';
 
 			}
+			else if(showDetails === "WAVEFORM"){
+				content = "";
+				htmlContent='<div id=' + nodeId + 'Label  class="bubble"><div class="waveformContent ' + type + 'Wrapper"><strong class="nodeContent">'+ content+ '</strong></div><div class=' + type + 'Div><strong>' + nodeName + '</strong></div></div>';
+			}
 			return htmlContent;
 		}
 	};

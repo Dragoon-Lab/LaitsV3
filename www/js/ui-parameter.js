@@ -320,7 +320,63 @@ define(["dojo/_base/lang"], function (lang) {
 						"qualitativeChangeButtons": "none"
 
 					}
-				}]
+				}],
+
+			waveform: [{
+				"mode": ["STUDENT", "COACHED"],
+				"param": {
+					"showColor": true,
+					"nodeBorderSize": "3px ",
+					"createNodeButton": "none",
+					"graphButton": "none",
+					"tableButton": "none",
+					"forumButton": "none",
+					"schemaButton": "none",
+					"descButton": "none",
+					"saveButton": "none",
+					"mergeButton": "none",
+					"previewButton": "none",
+					"slidesButton": "none",
+					"lessonsLearnedButton": "none",
+					"doneButton": "inline",
+					"prettifyButton": "inline",
+					"nodeBorderCompleteColor": "gray",
+					"nodeBorderCompleteStyle": "solid ",
+					"nodeBorderInCompleteStyle": "dashed ",
+					"nodeBorderSuccessColor": "green",
+					"nodeBorderFeedbackColor": "yellow",
+					"nodeBorderFailColor": "red",
+					"qualitativeChangeButtons": "none"
+				}
+			},
+				{
+					"mode": ["TEST", "EDITOR"],
+					"param": {
+						"showColor": false,
+						"nodeBorderSize": "3px ",
+						"createNodeButton": "none",
+						"graphButton": "none",
+						"tableButton": "none",
+						"forumButton": "none",
+						"schemaButton": "none",
+						"descButton": "none",
+						"saveButton": "none",
+						"mergeButton": "none",
+						"previewButton": "none",
+						"slidesButton": "none",
+						"lessonsLearnedButton": "none",
+						"doneButton": "inline",
+						"prettifyButton": "inline",
+						"nodeBorderCompleteColor": "gray",
+						"nodeBorderCompleteStyle": "solid ",
+						"nodeBorderInCompleteStyle": "dashed ",
+						"nodeBorderSuccessColor": "gray",
+						"nodeBorderFeedbackColor": "gray",
+						"nodeBorderFailColor": "gray",
+						"qualitativeChangeButtons": "none"
+
+					}}
+			],
 		};
 
 		var config = {
@@ -333,8 +389,10 @@ define(["dojo/_base/lang"], function (lang) {
 				// iterate through all object in the activity and merge all params for given mode:
 				//console.log("In constructor", this._mode, this._activity);
 				for (var idx in parameters[this._activity]) {
-					var obj = parameters[this._activity][idx];
-					if (obj.mode.indexOf(this._mode) > -1) this._params = lang.mixin(this._params, obj.param);
+					if(parameters[this._activity].hasOwnProperty(idx)) { /*Fix to work in Safari*/
+						var obj = parameters[this._activity][idx];
+						if (obj.mode.indexOf(this._mode) > -1) this._params = lang.mixin(this._params, obj.param);
+					}
 				}
 			},
 
