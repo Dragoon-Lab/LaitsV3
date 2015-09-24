@@ -74,7 +74,7 @@
 				(!empty($fromDate)?$toTimeString:"").
 				(!empty($mode)?$modeString:"").
 				(!empty($activity)?$activityString:"").
-			"ORDER BY user asc, problem asc, activity asc, time asc, tid asc;";
+			"ORDER BY user asc, problem asc, activity asc, time asc, id asc;";
 		//	$queryString = "SELECT tid, mode, session.session_id, user, problem, time, method, message, `group` from session JOIN step ON session.session_id = step.session_id where method != 'client-message' AND mode != 'AUTHOR' AND user = 'cdluna' AND problem LIKE '%ps3-0%' ORDER BY user asc, problem asc, tid asc;";
 		//	echo $queryString;
 
@@ -157,7 +157,7 @@
 					$runningOutOfFocusTime = 0;
 				}
 				
-				//echo print_r($row)."<br/>";
+				//echo json_encode($row)."<br/>";
 				$currentSession->lastLogTime = $newMessage['time'];
 				//echo "row -> ".json_encode($row)." <- ".$upObject->sessionRunning." <br/>";
 				$stepTime = $newMessage['time'] - $oldMessage['time'];
