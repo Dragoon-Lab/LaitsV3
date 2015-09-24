@@ -483,4 +483,8 @@ span.slip{
     font-size: 13px !important;
 }
 
-.graphHintUnderLay_underlay{ display:none;}
+.graphHintUnderLay{
+    width:500px;
+}
+
+.graphHintUnderLay_underlay{ display:none; }
