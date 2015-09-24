@@ -385,7 +385,8 @@ define([
 					var urlString = '';
 					if(this.modules['sessionLink']){
 						//for devel server
-						urlString = "<a href='../index.html?u=" + user + "&m=" + this.mode[row][col] + "&sm=feedback&is=algebraic&p=" + problem + "&s=" + this.section + "&c=Continue&l=false' target='_blank' title='Click to check session'>";
+						var temp = problem.split(this.separatingSymbol);
+						urlString = "<a href='../index.html?u=" + user + "&m=" + this.mode[row][col] + "&sm=feedback&is=algebraic&p=" + temp[0] + "&a=" + temp[1] + "&s=" + this.section + "&c=Continue&l=false' target='_blank' title='Click to check session'>";
 					}
 					var complete = this.problemComplete[row][col];
 					var runningStatus = this.sessionRunning[row][col];
