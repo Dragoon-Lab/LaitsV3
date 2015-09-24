@@ -115,7 +115,10 @@ define([
             setDoneMessageShown : function(_isDoneMessageShown) {
                 this.isDoneMessageShown = _isDoneMessageShown;
             },
-			updatePosition: function()
+            setGraphHelpShown: function(_isGraphHelpShown){
+                this.model.task.properties.isGraphHelpShown = _isGraphHelpShown;
+            },
+            updatePosition: function()
 			{
 				if((this.x + this.nodeWidth) < (document.documentElement.clientWidth - this.nodeWidth))
 					this.x += this.nodeWidth;
@@ -335,6 +338,9 @@ define([
 			getLessonLearnedShown : function() {
 				return (this.model.task.properties.isLessonLearnedShown != undefined)?this.model.task.properties.isLessonLearnedShown : false;	
 			},
+            getGraphHelpShown: function(){
+                return (this.model.task.properties.isGraphHelpShown != undefined)?this.model.task.properties.isGraphHelpShown : false;
+            },
 			getTime: function(){
 				// Summary: Returns the time object from the JSON model.
 				return this.model.task.time;

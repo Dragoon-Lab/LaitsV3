@@ -482,3 +482,5 @@ span.slip{
     -o-transform: rotate(-65deg);
     font-size: 13px !important;
 }
+
+.graphHintUnderLay_underlay{ display:none;}
