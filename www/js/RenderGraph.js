@@ -209,7 +209,7 @@ define([
             };
 
             //text for correctness of solution
-			//this.dialogContent += "<p id= 'solutionMessage'>To reset sliders, close and reopen window</p><br>";
+			this.dialogContent += "<p id= 'solutionMessage'></p><br>";
 
 			this.isCorrect = false;
 			//check if the sollution is correct or not
