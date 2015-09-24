@@ -197,7 +197,6 @@ define([
             "<li>Any fixed quantity (parameters or accumulators’ initial value) can be temporarily adjusted using the sliders on the right side of this window.  "+
             "This updates the graphs/tables on the left immediately.  To reset the sliders, close and re-open the window.</li>"+
             "<li>The “static” tab appears when all graphed quantities are constant with time.  In this tab, you can select a quantity from the list and Dragoon will use it as the horizontal axis for every graph. </li>"+
-            "<li>The quantity that is used as the horizontal axis for the graphs (and the first column of the table) is determined by the menu at the top of the left side of the window. </li>"+
             "</ul></div>";
             this.dialogContent +="<button id='graphHelpButton' data-dojo-type='dijit.form.Button' type='button'  onclick='showHints()' style='float: right;'>Help</button>";
 
