@@ -88,6 +88,7 @@ define([
 			isCompleteFlag: false,
 			isLessonLearnedShown: false,
 			isDoneMessageShown: false,
+            isGraphHelpShown: false,
 			iteration: 0,
 
 			/**
@@ -339,6 +340,7 @@ define([
 				return (this.model.task.properties.isLessonLearnedShown != undefined)?this.model.task.properties.isLessonLearnedShown : false;	
 			},
             getGraphHelpShown: function(){
+                console.log("model help",this.model.task.properties);
                 return (this.model.task.properties.isGraphHelpShown != undefined)?this.model.task.properties.isGraphHelpShown : false;
             },
 			getTime: function(){
