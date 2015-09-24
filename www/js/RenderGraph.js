@@ -33,17 +33,17 @@ define([
 	"dojox/charting/plot2d/Lines",
 	"dojox/charting/plot2d/Grid",
 	"dojox/charting/widget/Legend",
-	"./calculations",
+    "./calculations",
 	"./logging",
 	"dijit/_base",
 	"dijit/layout/ContentPane",
-	"dojo/dom",
+    "dojo/dom",
 	"dojo/dom-style",
-	"./integrate",
+    "dojo/dom-class",
+    "./integrate",
 	"dijit/layout/TabContainer",
-	"dojo/parser",
 	"dojo/domReady!"
-], function(array, declare, lang, on, domAttr, registry, ComboBox, Memory, Chart, Default, Lines, Grid, Legend, calculations, logger, base, contentPane, dom, domStyle, integrate){
+], function(array, declare, lang, on, domAttr, registry, ComboBox, Memory, Chart, Default, Lines, Grid, Legend, calculations, logger, base, contentPane, dom, domStyle, domClass, integrate){
 
 	// The calculations constructor is loaded before the RenderGraph constructor
 	return declare(calculations, {
@@ -191,7 +191,24 @@ define([
 			this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' style='overflow:visible; width:40%; float:right; height:700px; background-color: #FFFFFF'>";
 			this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' style='overflow:auto'>";
 
-			//text for correctness of solution
+            this.dialogContent +="<div data-dojo-type='dijit.Dialog'  id='showHintBox' class='graphHintUnderLay' title='Graph Help'>"+
+            "<ul><li>Welcome to the graph window.  The results of the model’s computations are shown here as graphs and tables.  The model consists of inter-related numerical quantities.</li>"+
+            "<li>The left side of the window displays the quantities in the model calculated by the equations in the accumulator and function nodes.</li>"+
+            "<li>Any fixed quantity (parameters or accumulators’ initial value) can be temporarily adjusted using the sliders on the right side of this window."+
+            "This updates the graphs/tables on the left immediately.  To reset the sliders, close and re-open the window.</li>"+
+            "<li>The “static” tab appears when all graphed quantities are constant with time.  In this tab, you can select a quantity from the list and Dragoon will use it as the horizontal axis for every graph. </li>"+
+            "<li>The quantity that is used as the horizontal axis for the graphs (and the first column of the table) is determined by the menu at the top of the left side of the window. </li>"+
+            "</ul></div>";
+            this.dialogContent +="<button id='graphHelpButton' data-dojo-type='dijit.form.Button' type='button'  onclick='showHints()' style='float: right;'>Help</button>";
+
+            //function which shows the graph help dialog
+            showHints = function(){
+                dijit.byId("showHintBox").show();
+                console.log("button loaded", graphHelpButton);
+                domClass.remove(graphHelpButton, "glowNode");
+            };
+
+            //text for correctness of solution
 			this.dialogContent += "<p id= 'solutionMessage'>To reset sliders, close and reopen window</p><br>";
 
 			this.isCorrect = false;
@@ -215,6 +232,8 @@ define([
 					}					 
 				}
 			}
+
+
 			//format solution
 			this.plotVariables = this.active.timeStep.xvars.concat(
 				this.active.timeStep.functions);
@@ -1020,5 +1039,6 @@ define([
 				return text;
 			}
 		}
+
 	});
 });

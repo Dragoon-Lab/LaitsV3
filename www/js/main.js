@@ -1029,7 +1029,8 @@ define([
 							problemComplete: problemComplete
 						});
 						graph.show();
-					});
+
+                    });
 					// show table when button clicked
 					menu.add("tableButton", function(e){
 					event.stop(e);
@@ -1068,6 +1069,12 @@ define([
 						problemComplete: problemComplete
 					});
 					graph.show();
+                    console.log("graph help shown",givenModel.getGraphHelpShown());
+                    if(!givenModel.getGraphHelpShown()) {
+                        var graphHelpButton = dom.byId('graphHelpButton');
+                        domClass.add(graphHelpButton, "glowNode");
+                        givenModel.setGraphHelpShown(true);
+                    }
 				});
 
 				//the solution div which shows graph/table when closed
@@ -1247,7 +1254,8 @@ define([
 				var makeTooltip  = function(id,content){
 					new toolTip({
 						connectId: [id],
-						label: content
+						label: content,
+                        position: ['before']
 					});
 				};
 				makeTooltip('descriptionQuestionMark', " The quantity computed by the node ");
