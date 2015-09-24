@@ -390,6 +390,10 @@ define([
                     descs[7]="Tip: When a nodes input is coming from an accumulator, use its current value (the top number) in the calculation, rather than its new value.";
                     descs[8]="Repeat this process until Dragoon produces the graphs.";
                     break;
+                case "waveform":
+                    descs[0]="";
+                    descs[1]="Please click on the incomplete nodes and label each one with the waveform which represents the graph of that quantity over time.";
+                    break;
             }
             if (descs.length != 0){
                 if (typeof desc_text == "string") {
