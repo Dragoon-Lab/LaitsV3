@@ -483,6 +483,13 @@ span.slip{
     font-size: 13px !important;
 }
 
+.graphHintUnderLay{
+    width:500px;
+}
+
+.graphHintUnderLay_underlay{ display:none; }
+
+
 #waveform-container{
     max-height:300px;
     overflow: scroll;

@@ -100,7 +100,7 @@ define([
 			}
 
 			array.forEach(this._model.given.getNodes(), function (givenNode) {
-				if(this._model.given.isNodeRequired(givenNode.ID)){
+				if(this._model.given.isNodeRequired(givenNode.ID) || this._model.given.isNodeAllowed(givenNode.ID)){
 					var newNode = this.addStudentNode(givenNode.ID);
 				}
 			}, this);
@@ -250,7 +250,7 @@ define([
 
 			if(nodes){
 				array.forEach(nodes, function(node){
-					if(this._model.given.isNodeRequired(node.ID)){
+					if(this._model.given.isNodeRequired(node.ID) || this._model.given.isNodeAllowed(node.ID)){
 						var index = pv.indexOf(node.ID);
 						if(node.type != "parameter"){
 							var arr = []

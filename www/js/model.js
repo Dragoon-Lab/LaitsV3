@@ -88,6 +88,7 @@ define([
 			isCompleteFlag: false,
 			isLessonLearnedShown: false,
 			isDoneMessageShown: false,
+            isGraphHelpShown: false,
 			iteration: 0,
 
 			/**
@@ -115,7 +116,10 @@ define([
             setDoneMessageShown : function(_isDoneMessageShown) {
                 this.isDoneMessageShown = _isDoneMessageShown;
             },
-			updatePosition: function()
+            setGraphHelpShown: function(_isGraphHelpShown){
+                this.model.task.properties.isGraphHelpShown = _isGraphHelpShown;
+            },
+            updatePosition: function()
 			{
 				if((this.x + this.nodeWidth) < (document.documentElement.clientWidth - this.nodeWidth))
 					this.x += this.nodeWidth;
@@ -335,6 +339,10 @@ define([
 			getLessonLearnedShown : function() {
 				return (this.model.task.properties.isLessonLearnedShown != undefined)?this.model.task.properties.isLessonLearnedShown : false;	
 			},
+            getGraphHelpShown: function(){
+                console.log("model help",this.model.task.properties);
+                return (this.model.task.properties.isGraphHelpShown != undefined)?this.model.task.properties.isGraphHelpShown : false;
+            },
 			getTime: function(){
 				// Summary: Returns the time object from the JSON model.
 				return this.model.task.time;
@@ -1097,7 +1105,7 @@ define([
 				var plotVariables = [];
 				var nodes = this.getNodes();
 				array.forEach(nodes, function(node){
-					if((node.type == "accumulator" || node.type == "function") && (!node.genus || node.genus == "" || node.genus == "required")){
+					if((node.type == "accumulator" || node.type == "function") && (this.isNodeRequired(node.ID) || this.isNodeAllowed(node.ID))){
 						plotVariables.push(node.ID);
 					}
 				}, this);
@@ -1110,6 +1118,10 @@ define([
 					return true;
 				}
 				return false;
+			},
+			isNodeAllowed: function(id){
+				var givenNode = this.getNode(id);
+				return (givenNode.genus == "allowed");
 			},
             getRootNodes: function(){
                 var rootNodes = [];
@@ -1183,6 +1195,9 @@ define([
 					var returnValue = obj.getOptimalNode(studentID);
 					console.log("Correct node: ", returnValue);
 					return returnValue;
+				}else if(nodePart === "executionValue"){
+					var id = this.getDescriptionID(studentID);
+					return obj.given.getNode(id).executionValue[this.getIteration()];
 				}else{
 					var id = this.getDescriptionID(studentID);
 					var node = obj.given.getNode(id);
@@ -1419,6 +1434,10 @@ define([
 			isNodeRequired: function(id){
 				var descriptionID = this.getDescriptionID(id);
 				return descriptionID || obj.given.isNodeRequired(descriptionID);
+			},
+			isNodeAllowed: function(id){
+				var descriptionId = this.getDescriptionID(id);
+				return descriptionID || obj.given.isNodeAllowed(descriptionID);
 			},
 			deleteStudentNodes: function(){
 				obj.model.task.studentModelNodes = [];

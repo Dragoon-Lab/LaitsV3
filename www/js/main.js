@@ -295,9 +295,15 @@ define([
 			if(reply) givenModel.setLessonLearned(reply);
 		}); */
 		state.get("isDoneButtonShown").then(function(reply){
-			if(reply === true || reply === false)
+            console.log("reply for done",reply);
+            if(reply === true || reply === false)
 				givenModel.setDoneMessageShown(reply);
 		});
+        state.get("isGraphHelpShown").then(function(reply){
+            console.log("reply for graph",reply);
+            if(reply === true || reply === false)
+                givenModel.setGraphHelpShown(reply);
+        });
 		controllerObject.setState(state);
 
 		ready(function(){
@@ -1015,24 +1021,7 @@ define([
 					});
 					graph.show();
 
-					// show graph when button clicked
-					menu.add("graphButton", function(e){
-						event.stop(e);
-						console.debug("button clicked");
-							
-						// instantiate graph object
-						var buttonClicked = "graph";
-						//var graph = new Graph(givenModel, query.m, session, buttonClicked);
-						graph.setStateGraph(state);
-						var problemComplete = givenModel.matchesGivenSolution();
 
-						graph._logging.log('ui-action', {
-							type: "menu-choice",
-							name: "graph-button",
-							problemComplete: problemComplete
-						});
-						graph.show();
-					});
 					// show table when button clicked
 					menu.add("tableButton", function(e){
 					event.stop(e);
@@ -1071,6 +1060,13 @@ define([
 						problemComplete: problemComplete
 					});
 					graph.show();
+                    console.log("graph help shown",givenModel.getGraphHelpShown());
+                    if(!givenModel.getGraphHelpShown()) {
+                        var graphHelpButton = dom.byId('graphHelpButton');
+                        domClass.add(graphHelpButton, "glowNode");
+                        givenModel.setGraphHelpShown(true);
+                        state.put("isGraphHelpShown",true);
+                    }
 				});
 
 				//the solution div which shows graph/table when closed
@@ -1250,7 +1246,8 @@ define([
 				var makeTooltip  = function(id,content){
 					new toolTip({
 						connectId: [id],
-						label: content
+						label: content,
+                        position: ['before']
 					});
 				};
 				makeTooltip('descriptionQuestionMark', " The quantity computed by the node ");

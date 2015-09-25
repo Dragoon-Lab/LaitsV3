@@ -128,6 +128,10 @@ Student closes node editor:
 -- method: `ui-action`  
 -- message: `{"time": 61.6, "type": "close-dialog-box",
   "nodeID": "id10", "nodeComplete": true, "node": "fat content"}`  
+  
+Student completes the problem:
+-- method: `solution-step`
+-- message: `{"time": 211.2, "type": "completeness-check", "problemComplete": true}`
 
 #### Incremental activity logs
 Student opens activity popup   
@@ -140,13 +144,25 @@ Student closes activity popup.
 
 Student opens the equation box from the popup  
 -- method: `ui-action`  
--- message `{"time":6.501,"type":"open-tweak-equation","node":"net growth","nodeID":"id11"}`
+-- message `{"time":6.501,"type":"open-equation","node":"net growth","nodeID":"id11"}`
 
 Close equation box  
 -- method `ui-action`  
--- message `{"time":8.382,"type":"close-tweak-equation", "node": "net growth"}`
+-- message `{"time":8.382,"type":"close-equation", "node": "net growth"}`
 
 The student answers will be handled as it is handled for other node related solution step
+
+### Execution activity logs
+Student opens activity popup   
+-- method: `ui-action`   
+-- message: `{"time":2.255,"type":"open-tweak-popup","node":"net growth","nodeID":"id11"}`
+
+Student closes activity popup.   
+-- method: `ui-action`   
+-- message: `{"time":2.255,"type":"open-tweak-popup","node":"net growth","nodeID":"id11"}`
+
+The equation close actions will be same as incremental activity messages. The answer actions
+will be same as it is handled in construction activity using solution step.
 
 #### Author mode
 Node creation - giving values to various properties during construction step  
