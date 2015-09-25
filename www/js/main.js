@@ -1057,9 +1057,9 @@ define([
 						problemComplete: problemComplete
 					});
 					graph.show();
+					var graphHelpButton = dom.byId('graphHelpButton');
                     console.log("graph help shown",givenModel.getGraphHelpShown());
-                    if(!givenModel.getGraphHelpShown()) {
-                        var graphHelpButton = dom.byId('graphHelpButton');
+                    if(!givenModel.getGraphHelpShown()&&graphHelpButton ) {                        
                         domClass.add(graphHelpButton, "glowNode");
                         givenModel.setGraphHelpShown(true);
                         state.put("isGraphHelpShown",true);
