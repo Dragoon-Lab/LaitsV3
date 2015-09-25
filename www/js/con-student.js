@@ -73,6 +73,8 @@ define(["dojo/aspect",
 				this.initIncrementalMenu();
 			}else if(this.activityConfig.get("showExecutionEditor")){
 				this.initExecutionEditor();
+			}else if(this.activityConfig.get("showWaveformEditor")){
+				this.initWaveformEditor();
 			}
 		},
 
@@ -1052,6 +1054,97 @@ define(["dojo/aspect",
 			if(this._model.student.getIteration() <= this._model.getExecutionIterations()) {
 				this.resetIterationExecDemo();
 			}
+		},
+
+
+		/*
+		 *************************** Waveform Editor *******************************
+		 */
+		initWaveformEditor: function(){
+			console.log("---initWaveformEditor---");
+			var waveformEditorDialog = registry.byId('waveformEditor');
+
+			//Fetch array of waveforms
+			dojo.xhrGet({
+				url:"waveforms.json",
+				handleAs: "json",
+				load: lang.hitch(this, function(result){
+					this.waveforms = result;
+					if(this.waveforms.length > 0) {
+						var waveformsContainer = dom.byId("waveform-container");
+						this.waveforms.forEach(lang.hitch(this, function (w, index) {
+							var waveform = '<div id="' + w + 'Div" class="waveformItem">' +
+								'<img class="imgWaveform" alt="' + w + '" src="images/waveforms/' + w + '.png"/>' +
+								'</div>';
+							if ((index + 1) % 4 == 0) waveform += '<br/>'
+							dojo.place(waveform, waveformsContainer, "last");
+							//Add click event for waveform images except the already selected one
+							var waveFormDivDom = dom.byId(w + "Div");
+							on(waveFormDivDom, "click", lang.hitch(this, function (evt) {
+								//Set selected waveform to model
+								var selectedWaveform = evt.target;
+								var value = dojo.getAttr(selectedWaveform, 'alt');
+								if (value != null) {
+									this._model.active.setWaveformValue(this.currentID, value);
+
+									//Call process Answer
+									var directives = this._PM.processAnswer(this.currentID, 'waveformValue', value);
+									this.applyDirectives(directives);
+
+									//Update UI and Node border
+									this.updateNodeLabel(this.currentID);
+									this.colorNodeBorder(this.currentID, true);
+									waveformEditorDialog.hide();
+								}
+							}));
+						}));
+					}
+				}),
+				error: function(err){
+					console.log(err);
+				}
+			});
+
+			var showEquationButton = registry.byId("WaveformEquationButton");
+			on(showEquationButton, "click", lang.hitch(this, function () {
+				this.showEquationDialog();
+			}));
+
+			var showExplanationButton = registry.byId("WaveformExplanationButton");
+			on(showExplanationButton, 'click', lang.hitch(this, function () {
+				this.showExplanationDialog();
+			}));
+		},
+
+		showWaveformEditor: function(id){
+			this.currentID = id;
+			var nodeName = this._model.active.getName(id);
+			var value = this._model.active.getWaveformValue(id);
+			var waveformEditorDialog = registry.byId('waveformEditor');
+			waveformEditorDialog.set('title', nodeName);
+			waveformEditorDialog.show();
+
+			this.waveformHandlers = [];
+			var waveformStatus = this._model.active.getNode(id).status["waveformValue"];
+
+			dojo.query(".waveformDisabled").forEach(dojo.destroy);
+			this.waveforms.forEach(lang.hitch(this, function(w, index){
+				var waveFormDivDom = dom.byId(w+"Div");
+				if(value == w){
+					domClass.add(waveFormDivDom, "waveformSelected");
+				}else{
+					domClass.remove(waveFormDivDom,  "waveformSelected");
+				}
+				if(waveformStatus && waveformStatus.disabled) {
+					var disableOverlay = '<div class="waveformDisabled"></div>';
+					dojo.place(disableOverlay, waveFormDivDom, "first");
+					waveFormDivDom.style.pointerEvents = "none";
+				}else{
+					waveFormDivDom.style.pointerEvents = "auto";
+				}
+			}));
+
+			//Set selected answer in the editor
 		}
 	});
 });

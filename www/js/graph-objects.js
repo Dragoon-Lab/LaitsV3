@@ -116,6 +116,12 @@ define([
 			}
 			else if(showDetails === "WAVEFORM"){
 				content = "";
+				var waveformValue  = model.getWaveformValue(nodeId);
+				if(waveformValue){
+					content = "<img src='images/waveforms/"+waveformValue+".png' width=40 height=40>";
+				}else{
+					content = "<strong>?</strong>"
+				}
 				htmlContent='<div id=' + nodeId + 'Label  class="bubble"><div class="waveformContent ' + type + 'Wrapper"><strong class="nodeContent">'+ content+ '</strong></div><div class=' + type + 'Div><strong>' + nodeName + '</strong></div></div>';
 			}
 			return htmlContent;

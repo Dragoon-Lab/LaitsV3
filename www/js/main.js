@@ -513,6 +513,9 @@ define([
 					*/
                     controllerObject.showExecutionMenu(mover.node.id);
 				}
+				else if(activity_config.get("showWaveformEditor")){
+					controllerObject.showWaveformEditor(mover.node.id);
+				}
 			}, true);
 
 			/*
