@@ -1070,7 +1070,7 @@ define([
 							var waveform = '<div id="' + w + 'Div" class="waveformItem">' +
 								'<img class="imgWaveform" alt="' + w + '" src="images/waveforms/' + w + '.png"/>' +
 								'</div>';
-							if ((index + 1) % 4 == 0) waveform += '<br/>'
+							if ((index + 1) % 5 == 0) waveform += '<br/>'
 							dojo.place(waveform, waveformsContainer, "last");
 							//Add click event for waveform images except the already selected one
 							var waveFormDivDom = dom.byId(w + "Div");
@@ -1112,18 +1112,19 @@ define([
 
 		showWaveformEditor: function(id){
 			this.currentID = id;
+			var givenID = this._model.active.getDescriptionID(id);
+
 			var nodeName = this._model.active.getName(id);
 			var value = this._model.active.getWaveformValue(id);
 			var waveformEditorDialog = registry.byId('waveformEditor');
-			waveformEditorDialog.set('title', nodeName);
-			waveformEditorDialog.show();
 
-			this.waveformHandlers = [];
+			//array of handlers for waveforms
 			var waveformStatus = this._model.active.getNode(id).status["waveformValue"];
-
+			//Add handlers to the
 			dojo.query(".waveformDisabled").forEach(dojo.destroy);
 			this.waveforms.forEach(lang.hitch(this, function(w, index){
 				var waveFormDivDom = dom.byId(w+"Div");
+				//Set selected answer in the editor
 				if(value == w){
 					domClass.add(waveFormDivDom, "waveformSelected");
 				}else{
@@ -1138,7 +1139,17 @@ define([
 				}
 			}));
 
-			//Set selected answer in the editor
+			//Show Waveform editor
+			waveformEditorDialog.set('title', nodeName);
+			waveformEditorDialog.show();
+
+			var showExplanationButton = registry.byId('WaveformExplanationButton').domNode;
+			//Show hide explanation button
+			if(this._model.given.getExplanation(givenID))
+				style.set(showExplanationButton, "display", "block");
+			else
+				style.set(showExplanationButton, "display", "none");
+
 		}
 	});
 });
