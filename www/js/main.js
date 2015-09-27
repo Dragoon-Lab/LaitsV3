@@ -332,8 +332,9 @@ define([
 			//}
 
 			//set tweak directions if needed by the activity and the model has tweak directions.
-			if (activity_config.get("setTweakDirections") && (!givenModel.getInitialTweakedNode() ||
-															  !givenModel.getInitialTweakDirection())) {
+			var setTweak = activity_config.get("setTweakDirections");
+			var setExecution = activity_config.get("setExecutionValues");
+			if (setTweak && (!givenModel.getInitialTweakedNode() || !givenModel.getInitialTweakDirection())) {
 				//show a message that this problem is not right for incremental activity
 				var errorMessage = new messageBox("errorMessageBox", "error", "The author of this problem has not set up the initial "+
 																			"incremental change node, so this model cannot be done "+
@@ -341,15 +342,20 @@ define([
 																			"Please contact the author of the problem.");
 				errorMessage.show();
 				throw Error("problem does not have tweaked nodes");
-			}else if(activity_config.get("setTweakDirections") && !givenModel.given.validateTweakDirections()){
+			}else if(setExecution && givenModel.getTime().step != 1){
+				var errorMessage = new messageBox("errorMessageBox", "error", "The author of this problem has not set up the execution "+
+																			"step size and so this model cannot be done in this activity. "+
+																			"Please contact the author of the problem.");
+				errorMessage.show();
+				throw Error("time step for the problem is " + givenModel.getTime().step + " which is not 1.");
+			}else if(setTweak && !givenModel.given.validateTweakDirections()){
 				//changes to model for incremental activity
 				updateModel.calculateTweakDirections();
-			}else if(activity_config.get("setExecutionValues") && !givenModel.given.validateExecutionValues()){
+			}else if(setExecution && !givenModel.given.validateExecutionValues()){
 				//changes to model for execution activity
 				updateModel.calculateExecutionValues();
-
-
 			}
+
 			//copy problem to student model
 			if(activity_config.get("initializeStudentModel") && !givenModel.areRequiredNodesVisible()){
 				console.log("student model being initialized");
@@ -426,8 +432,8 @@ define([
 						//drawModel.addNode(givenModel.active.getNode(id));
 					}
 				});		
-			}	
-			
+			}
+
 			var drawModel = new drawmodel(givenModel.active, ui_config.get("showColor"), activity_config);
 			drawModel.setLogging(session);
 			
