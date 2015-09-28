@@ -138,8 +138,9 @@ define([
 			//			{status: s, type: m, missingNode: n/soln: solution}
 		    var choice = isActive?this.active:this.given;
 		    var node = (isActive) ? givennode.ID : givennode.descriptionID;
-		    var start = givennode.initial / 10;
-		    var stop = givennode.initial * 10;
+		    var flag = givennode.initial > 0;
+			var start = flag ? (givennode.initial / 10) : (givennode.initial * 10);
+			var stop = flag ? (givennode.initial * 10) : (givennode.initial / 10);
 		    //var step = (stop - start) / 10;
 		    var min = 0;
 		    var max = 0;
