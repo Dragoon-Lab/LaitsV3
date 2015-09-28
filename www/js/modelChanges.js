@@ -172,8 +172,10 @@ define([
 				}
 
 				if(fields.indexOf("waveform") >=0){
-					if(givenNode.type === "parameter"){
-						this._model.student.setWaveformValue(newNodeID, givenNode.waveformValue);
+					if(givenNode.waveformValue && givenNode.type !== "parameter") {
+						// Setting waveform value in student model to null if set in author model
+						//checking completeness for nodes in model.js based on this.
+						this._model.student.setWaveformValue(newNodeID, null);
 					}
 				}
 
