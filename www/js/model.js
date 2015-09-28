@@ -608,9 +608,9 @@ define([
 				var maxItr = obj.getExecutionIterations();
 				var node = this.getNode(id);
 				var val = null;
-				if(index && node.executionValue && node.executionValue.length > index){
+				if(index != undefined && node.executionValue && node.executionValue.length > index){
 					val = node.executionValue[index];
-				} else if(!index && node.executionValue && node.executionValue.length == maxItr){
+				} else if(node.executionValue && node.executionValue.length <= maxItr){
 					val = node.executionValue[(currentItr >= maxItr)? maxItr - 1: currentItr];
 				}
 
