@@ -604,18 +604,17 @@ define([
 			},
            
 			getExecutionValue: function(/* string */ id, /* number */ index){
-				var studentItr=obj.student.getIteration();
-                var maxItration=obj.getExecutionIterations();
+				var currentItr = obj.student.getIteration();
+				var maxItr = obj.getExecutionIterations();
 				var node = this.getNode(id);
-                var val = null;
-                if(index === undefined){
-                    val = node.executionValue[(studentItr>=maxItration)?maxItration-1:studentItr];
-                }
-                else if(node.executionValue && node.executionValue.length > index){
-                    val = node.executionValue[index];
-                }
+				var val = null;
+				if(index != undefined && node.executionValue && node.executionValue.length > index){
+					val = node.executionValue[index];
+				} else if(node.executionValue && node.executionValue.length <= maxItr){
+					val = node.executionValue[(currentItr >= maxItr)? maxItr - 1: currentItr];
+				}
 
-                return val;
+				return val;
             },
 			getExecutionValues: function(/* string */ id){
 				var node = this.getNode(id);
