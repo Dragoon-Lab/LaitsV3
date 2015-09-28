@@ -31,13 +31,12 @@ describe("Coached mode with correct resistor capacitor 1", function() {
     }));
 
      describe("Creating nodes:", function(){
-        it("Should create Accumulator node - Voltage across capacitor", async(function(){
-            dtest.menuCreateNode(client);
-            dtest.setNodeDescription(client, "Voltage across capacitor from top to bottom of figure");
-            dtest.popupWindowPressOk(client);
+        it("Should create Accumulator node - Voltage across capacitor", async(function(){            
+            dtest.openEditorForNode(client, "Voltage across capacitor");
             dtest.setNodeType(client, "Accumulator");
             dtest.popupWindowPressOk(client);
             dtest.setNodeInitialValue(client, 0);
+            dtest.popupWindowPressOk(client);
             dtest.setNodeUnits(client, "volts");     
             dtest.setNodeExpression(client, "Change in voltage across capacitor");
             dtest.checkExpression(client);

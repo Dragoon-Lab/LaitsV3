@@ -31,13 +31,12 @@ describe("Coached mode with correct diode resistor 2", function() {
     }));
 
      describe("Creating nodes:", function(){
-        it("Should create Function node - Current", async(function(){
-            dtest.menuCreateNode(client);
-            dtest.setNodeDescription(client, "Current through resistor, diode and battery");
-            dtest.popupWindowPressOk(client);
+        it("Should create Function node - current", async(function(){
+            dtest.openEditorForNode(client, "current");
             dtest.setNodeType(client, "Function");
             dtest.popupWindowPressOk(client);
-            dtest.setNodeUnits(client, "amps");     
+            dtest.setNodeUnits(client, "amps");
+            dtest.popupWindowPressOk(client);
             dtest.setNodeExpression(client, "voltage at VL/Resistance");
             dtest.checkExpression(client);
             dtest.nodeEditorDone(client);

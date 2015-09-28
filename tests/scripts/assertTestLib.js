@@ -67,6 +67,7 @@ exports.checkNodeValue = function(actual,expected,nodeName){
 
 exports.checkNodeValues = function(valuesToCheck, dtest, client)
 {
+	dtest.waitTime(200);
 	var values = convertArrayToMap(valuesToCheck);
 
 	var nodeName = values["nodeName"];
