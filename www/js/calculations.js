@@ -12,7 +12,7 @@
  *
  *Dragoon is distributed in the hope that it will be useful,
  *but WITHOUT ANY WARRANTY; without even the implied warranty of
- *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+ *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *GNU Lesser General Public License for more details.
  *
  *You should have received a copy of the GNU Lesser General Public License
@@ -26,37 +26,37 @@ define([
 	"dojo/_base/lang",
 	"dojo/on",
 	"dojo/dom",
-    "dojo/aspect",
+	"dojo/aspect",
 	"dijit/registry",
 	"dijit/form/HorizontalSlider",
 	"./equation",
 	"./integrate","./typechecker",
 	"./lessons-learned",
 	"dijit/form/Button",
-    "dijit/TooltipDialog",
-    "dijit/popup",
-    "dijit/focus"
+	"dijit/TooltipDialog",
+	"dijit/popup",
+	"dijit/focus"
 ], function(array, declare, lang, on, dom, aspect, registry, HorizontalSlider, equation, integrate, typechecker,lessonsLearned, Button, tooltipDialog, popup, focusUtil){
 	// Summary: 
-	//			Finds model solutions and sets up the sliders
+	//          Finds model solutions and sets up the sliders
 	// Description:
-	//			Sets up and manages the sliders; listens for and registers 
-	//			changes in the sliders; 
+	//          Sets up and manages the sliders; listens for and registers
+	//          changes in the sliders;
 	// Tags:
-	//			sliders, slider listener
+	//          sliders, slider listener
 	
 	return declare(null, {
 		
-		model: null,						// model
-		active: {},							// set current mode. TRUE = givenModel / FALSE = StudentModel
+		model: null,                        // model
+		active: {},                         // set current mode. TRUE = givenModel / FALSE = StudentModel
 		
 		/* variables specific to rendering graph and table */
-		given: {},							// object to store calculated parameters from given model
-		dialog: "",							// dialog box to be displayed
-		dialogContent: "",					// Parameter to set DOM in a dialog dynamically
-		sliders: {},						// Parameter to create slider objects
+		given: {},                          // object to store calculated parameters from given model
+		dialog: "",                         // dialog box to be displayed
+		dialogContent: "",                  // Parameter to set DOM in a dialog dynamically
+		sliders: {},                        // Parameter to create slider objects
 		_logging : null,
-		mode : null,	
+		mode : null,
 		_state : null,
 		// Parameter to hold the mode value to differentiate graphs for author and student mode.
 		constructor: function(model, mode, logging){
@@ -75,7 +75,7 @@ define([
 			 as any matching given model node of genus false.
 			 The table contains only the student nodes.
 			 */
-            this.active.timeStep = this.initializeSolution(model.active);
+			this.active.timeStep = this.initializeSolution(model.active);
 			if(!this.active.timeStep){
 				return; // abort on error in constructing timeStep
 			}
@@ -96,7 +96,7 @@ define([
 				console.log("now in given model");
 				this.given.timeStep = this.initializeSolution(model.given);
 				if(!this.given.timeStep){
-					return;	 // abort on error
+					return;  // abort on error
 				}
 				this.given.initialValues = array.map(
 					this.given.timeStep.xvars, 
@@ -116,7 +116,7 @@ define([
 		},
 		
 		initializeSolution: function(model){
-			//Summary:	Initialize solution and give a message if a cycle is found.
+			//Summary:  Initialize solution and give a message if a cycle is found.
 			var timeStep = null;
 			try{
 				timeStep = equation.initializeTimeStep(model);
@@ -133,18 +133,18 @@ define([
 		},
 		
 		findStaticSolution: function(isActive, givennode, plotVariables){
-			// Summary:	 Find solutions for all the node in plotVariables array as y axises against givennode as x axis
-			// Returns:	 an object of the form
-			//			{status: s, type: m, missingNode: n/soln: solution}
-		    var choice = isActive?this.active:this.given;
-		    var node = (isActive) ? givennode.ID : givennode.descriptionID;
-		    var flag = givennode.initial > 0;
+			// Summary:  Find solutions for all the node in plotVariables array as y axises against givennode as x axis
+			// Returns:  an object of the form
+			//          {status: s, type: m, missingNode: n/soln: solution}
+			var choice = isActive?this.active:this.given;
+			var node = (isActive) ? givennode.ID : givennode.descriptionID;
+			var flag = givennode.initial > 0;
 			var start = flag ? (givennode.initial / 10) : (givennode.initial * 10);
 			var stop = flag ? (givennode.initial * 10) : (givennode.initial / 10);
-		    //var step = (stop - start) / 10;
-		    var min = 0;
-		    var max = 0;
-		    /*var val = choice.timeStep.parameters[node], min, max;
+			//var step = (stop - start) / 10;
+			var min = 0;
+			var max = 0;
+			/*var val = choice.timeStep.parameters[node], min, max;
 				if(val==0){
 					transform = function(x){ return x; }; // identity function
 					min = -1;
@@ -162,14 +162,14 @@ define([
 					max = -2*val;
 				}*/
 
-		    var time = this.model.getTime();
-            /*
+			var time = this.model.getTime();
+			/*
 			 Calculate solution by solving differential 
 			 equation for accumulator nodes
 			 */
 			try { // we try to run the method because there might be some nodes missing and an error is generated
 				var solution;
-                if(this.model.getIntegrationMethod() == "Midpoint Method")
+				if(this.model.getIntegrationMethod() == "Midpoint Method")
 					solution = integrate.midpointMethod(
 					choice.timeStep, 
 					equation.evaluateTimeStep,
@@ -183,7 +183,7 @@ define([
 					this.model.getTime());
 			}
 			catch(err){ // we catch the correspoding error here
-            	var if_id=err.message.substr(19).trim(); //In case the name is not generated and a node id is , we have to get the name from the active object for the user to understand
+				var if_id=err.message.substr(19).trim(); //In case the name is not generated and a node id is , we have to get the name from the active object for the user to understand
 				console.log("catch error",this.model.active.getName(if_id));  
 				if(this.model.active.getName(if_id)){
 					var miss_node=this.model.active.getName(if_id); // In case a node is incomplete
@@ -199,7 +199,7 @@ define([
 			 */
 			 var step = 1;
 			var nodes = [];
-			try{			 
+			try{
 				if(plotVariables){
 					// If id is null, then make row null
 					var plotValues = array.map(plotVariables, function(x){// Initializing 
@@ -221,7 +221,7 @@ define([
 									plotValues[k].push(variables[id]);
 								}
 							});
-						}	
+						}
 					//return {times: nodes, plotValues: plotValues};
 				}else{
 					//return {status: 'solution', soln: solution};
@@ -245,7 +245,7 @@ define([
 					functionTag : "findSolution"
 				});
 				return {status: 'error', type: 'missing', missingNode: "unknown"};
-			}	
+			}
 			if(plotVariables)
 				{
 					return {times: nodes, plotValues: plotValues};
@@ -258,11 +258,11 @@ define([
 		},
 
 		findSolution: function(isActive, plotVariables){ 
-			// Summary:	 Find a solution
-			// Returns:	 an object of the form
-			//			{status: s, type: m, missingNode: n/soln: solution}
-		    var choice = isActive?this.active:this.given;
-            /*
+			// Summary:  Find a solution
+			// Returns:  an object of the form
+			//          {status: s, type: m, missingNode: n/soln: solution}
+			var choice = isActive?this.active:this.given;
+			/*
 			 Calculate solution by solving differential 
 			 equation for accumulator nodes
 			 */
@@ -284,7 +284,7 @@ define([
 			}
 			catch(err){ // we catch the correspoding error here
 				console.log(err);
-            	var if_id=err.message.substr(19).trim(); //In case the name is not generated and a node id is , we have to get the name from the active object for the user to understand
+				var if_id=err.message.substr(19).trim(); //In case the name is not generated and a node id is , we have to get the name from the active object for the user to understand
 				console.log("catch error",this.model.active.getName(if_id));  
 				var miss_field;
 				if(this.model.active.getName(if_id)){
@@ -340,7 +340,7 @@ define([
 							plotValues[k].push(variables[id]);
 						}
 					});
-				}		
+				}
 				return {times: solution.times, plotValues: plotValues};
 			}else{
 				return {status: 'solution', soln: solution};
@@ -348,8 +348,8 @@ define([
 		},
 
 		labelString: function(id){
-			// Summary:	 Return a string containing the quantity name and any units.
-			// id:	Node id for active model; null returns time label
+			// Summary:  Return a string containing the quantity name and any units.
+			// id:  Node id for active model; null returns time label
 			var label = id?this.model.active.getName(id):"time";
 			var units = id?this.model.active.getUnits(id):this.model.getUnits();
 			if(units){
@@ -359,14 +359,14 @@ define([
 		},
 
 		/* @brief: this function registers event on slider from graph and table
-		 *	graph and table-specific functionality is carried out in renderGraph/renderTable
+		 *  graph and table-specific functionality is carried out in renderGraph/renderTable
 		 */
 		registerEventOnSlider: function(slider, index, paramID, transform){
-			// Summary:	 When slider is changed, put value in textbox 
-			//			 and emit change event
+			// Summary:  When slider is changed, put value in textbox
+			//           and emit change event
 			/* 
 			 If plotting is too slow, then "change" makes the
-			 slider appear "stuck."	 Need to find some way to update
+			 slider appear "stuck."  Need to find some way to update
 			 the plots without blocking all other processes.
 			 */
 			// Can use "change" or "mouseup"
@@ -389,7 +389,7 @@ define([
 					console.log(logObj);
 					this._logging.doLogging = true;
 					this._logging.log('ui-action', logObj);
-				}	
+				}
 				// Fire an "onchange" event since the value has changed.
 				on.emit(input, "change", {});
 			}));
@@ -398,7 +398,7 @@ define([
 
 		getTime: function(){
 			// Returns time in seconds since start of session.
-			return	((new Date()).getTime() - this._startTime)/1000.0;
+			return  ((new Date()).getTime() - this._startTime)/1000.0;
 		},
 
 		_startTime: (new Date()).getTime(),
@@ -417,17 +417,17 @@ define([
 			// Using a JavaScript closure:
 			// The value of 'index' is still available when the change event is fired.
 			var index = dom.byId(textBoxID[paramID]);
-            var last_index_value={value: index.value};
-			on(index, "change",	 lang.hitch(this, function(){
+			var last_index_value={value: index.value};
+			on(index, "change",  lang.hitch(this, function(){
 				console.log("---- value box change ", this.getTime());
-                //We use a Non-numeric value check from typechecker to make sure
-                //non numeric values shouldn't be sent to graph/table for a change
-                var temp_ret=typechecker.checkInitialValue(textBoxID[paramID], last_index_value);
-                //if there is an error returned typechecker shows the error
-                //and at the same time we return without further rendering grpah/table
-                if(temp_ret.errorType) return;
-                if(this._rendering){
-					console.log("	  returning");
+				//We use a Non-numeric value check from typechecker to make sure
+				//non numeric values shouldn't be sent to graph/table for a change
+				var temp_ret=typechecker.checkInitialValue(textBoxID[paramID], last_index_value);
+				//if there is an error returned typechecker shows the error
+				//and at the same time we return without further rendering grpah/table
+				if(temp_ret.errorType) return;
+				if(this._rendering){
+					console.log("     returning");
 					return;
 				}
 				this._rendering = true;
@@ -443,12 +443,12 @@ define([
 					throw new Error("Invalid id", paramID);
 				}
 				this.findSolution(true); // Solve active model
-				console.log("	   new solution", this.getTime());
+				console.log("      new solution", this.getTime());
 				//this function is specific to graph/table
 				this.renderDialog();
 				this.renderStaticDialog(false);// Call the function without updating the author graph
 				this._rendering = false;
-				console.log("	   new plot done", this.getTime());
+				console.log("      new plot done", this.getTime());
 			}));
 		},
 
@@ -542,81 +542,78 @@ define([
 		},
 
 		/* @brief: display the graph*/
-        show: function () {
-            this.dialogWidget.show();
-            var content = this.dialogWidget.get("content").toString();
-            if(registry.byId("closeHint")) {
-                var closeHintId = registry.byId("closeHint");
-                closeHintId.destroyRecursive(false);
-            }
-            //close popup each time graph is shown
-            popup.close(problemDoneHint);
+		show: function () {
+			this.dialogWidget.show();
+			var content = this.dialogWidget.get("content").toString();
+			if(registry.byId("closeHint")) {
+				var closeHintId = registry.byId("closeHint");
+				closeHintId.destroyRecursive(false);
+			}
+			//close popup each time graph is shown
+			popup.close(problemDoneHint);
 
-            var problemDoneHint = new tooltipDialog({
-                style: "width: 300px;",
-                content: '<p>Click "Done" when you are ready to save and submit your work.</p>' +
-                ' <button type="button" data-dojo-type="dijit/form/Button" id="closeHint">Ok</button>',
-                onShow: function () {
-                    on(registry.byId('closeHint'), 'click', function () {
-                        console.log("clicked prob done hint closed");
-                        popup.close(problemDoneHint);
-                    });
-                },
-                onBlur: function(){
-                    popup.close(problemDoneHint);
-                }
-            });
+			var problemDoneHint = new tooltipDialog({
+				style: "width: 300px;",
+				content: '<p>Click "Done" when you are ready to save and submit your work.</p>' +
+				' <button type="button" data-dojo-type="dijit/form/Button" id="closeHint">Ok</button>',
+				onShow: function () {
+					on(registry.byId('closeHint'), 'click', function () {
+						console.log("clicked prob done hint closed");
+						popup.close(problemDoneHint);
+					});
+				},
+				onBlur: function(){
+					popup.close(problemDoneHint);
+				}
+			});
 
-            if (content.search("There isn't anything to plot. Try adding some accumulator or function nodes.") >= 0
-                || content.search("There is nothing to show in the table.	Please define some quantitites.") >= 0 ||
-                this.mode === "EDITOR" || this.mode === "AUTHOR" || !this.model.active.matchesGivenSolutionAndCorrect()) {
-                console.log("graph not being shown");
-                return;
-            }
-            var contentMsg = this.model.getTaskLessonsLearned();
+			if (content.search("There isn't anything to plot. Try adding some accumulator or function nodes.") >= 0
+				|| content.search("There is nothing to show in the table.   Please define some quantitites.") >= 0 ||
+				this.mode === "EDITOR" || this.mode === "AUTHOR" || !this.model.active.matchesGivenSolutionAndCorrect()) {
+				console.log("graph not being shown");
+				return;
+			}
+			var contentMsg = this.model.getTaskLessonsLearned();
 
-            console.log("content message is", contentMsg, this.model);
-            //var thisModel = this;
-            aspect.after(this.dialogWidget, "hide", lang.hitch(this,function () {
+			console.log("content message is", contentMsg, this.model);
+			//var thisModel = this;
+			aspect.after(this.dialogWidget, "hide", lang.hitch(this,function () {
 
-                if (contentMsg.length === 0 || contentMsg[0] == "") {
-                    console.log("lessons learned is empty");
-                    
-                    
-                    if(this.model.isDoneMessageShown === false) {
-                        popup.open({
-                            popup: problemDoneHint,
-                            around: dom.byId('doneButton')
-                        });
-                        this.model.isDoneMessageShown = true;
-                        this._state.put("isDoneMessageShown",true);
-                    }
-                }
-                else{
-					
-                    if(this.model.getLessonLearnedShown() === false){
-                        lessonsLearned.displayLessonsLearned(contentMsg);
+				if (contentMsg.length === 0 || contentMsg[0] == "") {
+					console.log("lessons learned is empty");
+					if(this.model.isDoneMessageShown === false) {
+						popup.open({
+							popup: problemDoneHint,
+							around: dom.byId('doneButton')
+						});
+						this.model.isDoneMessageShown = true;
+						this._state.put("isDoneMessageShown",true);
+					}
+				}
+				else{
+					if(this.model.getLessonLearnedShown() === false){
+						lessonsLearned.displayLessonsLearned(contentMsg);
 						var lessonsLearnedButton = registry.byId("lessonsLearnedButton");
 						lessonsLearnedButton.set("disabled", false);
-                        //this._state.put("isLessonLearnedShown",true);
-                        aspect.after(registry.byId("lesson"),"hide", lang.hitch(this,function () {
-                            if(this.model.isDoneMessageShown === false) {
-                                popup.open({
-                                    popup: problemDoneHint,
-                                    around: dom.byId('doneButton')
-                                });
-                                this.model.isDoneMessageShown = true;
-                                this._state.put("isDoneMessageShown",true);
-                            }
-                        }));
-                    }
-                }
-            }));
-        },
+						//this._state.put("isLessonLearnedShown",true);
+						aspect.after(registry.byId("lesson"),"hide", lang.hitch(this,function () {
+							if(this.model.isDoneMessageShown === false) {
+								popup.open({
+									popup: problemDoneHint,
+									around: dom.byId('doneButton')
+								});
+								this.model.isDoneMessageShown = true;
+								this._state.put("isDoneMessageShown",true);
+							}
+						}));
+					}
+				}
+			}));
+		},
 
 
 
-        setLogging: function(/*string*/ logging){
+		setLogging: function(/*string*/ logging){
 			this._logging = logging;
 		}
 
