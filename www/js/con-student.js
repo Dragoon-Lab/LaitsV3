@@ -1070,7 +1070,7 @@ define([
 							var waveform = '<div id="' + w + 'Div" class="waveformItem">' +
 								'<img class="imgWaveform" alt="' + w + '" src="images/waveforms/' + w + '.png"/>' +
 								'</div>';
-							if ((index + 1) % 5 == 0) waveform += '<br/>'
+							if ((index + 1) % 7 == 0) waveform += '<br/>'
 							dojo.place(waveform, waveformsContainer, "last");
 							//Add click event for waveform images except the already selected one
 							var waveFormDivDom = dom.byId(w + "Div");

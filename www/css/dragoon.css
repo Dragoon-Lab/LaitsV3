@@ -491,7 +491,7 @@ span.slip{
 
 
 #waveform-container{
-    max-height:400px;
+    max-height:300px;
     overflow: scroll;
 }
 #waveform-container .waveformItem{
