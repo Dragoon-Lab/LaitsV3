@@ -613,6 +613,15 @@ define([
 			}
 		},
 
+		updateWaveformValue: function(waveformValue){
+			if(typeof waveformValue !== 'undefined' && waveformValue != null){
+				this._model.active.setWaveformValue(this.currentID, waveformValue);
+				this.updateNodeLabel(this.currentID);
+				//Set selected value
+
+			}
+		},
+
 		updateDescription: function(descID){
 			console.log("===========>	changing node description to " + descID);
 			if(typeof descID !== 'undefined' && descID != null){
@@ -1248,6 +1257,10 @@ define([
 					}else{
 						var w = registry.byId("executionValue");
 						w.set(directive.attribute, directive.value, false);
+					}
+				}else if(directive.id == "waveformValue"){
+					if (directive.attribute == 'value') {
+						this.updateWaveformValue(directive.value);
 					}
 				}
 				else{

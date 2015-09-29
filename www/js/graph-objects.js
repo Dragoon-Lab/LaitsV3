@@ -116,6 +116,22 @@ define([
 			}
 			else if(showDetails === "WAVEFORM"){
 				content = "";
+				debugger;
+				var waveformValue = model.getWaveformValue(nodeId);
+				if(waveformValue){
+					content = "<img src='images/waveforms/"+waveformValue+".png' width=40 height=40>";
+				}else if(waveformValue === null){
+					content = "<strong>?</strong>";
+				}else{
+					if(type === "parameter")
+					{
+						var initialValue = typeof(model.getInitial(nodeId)) === "number" ? model.getInitial(nodeId) : '';
+						var unitsValue = model.getUnits(nodeId);
+						content = '<strong class="nodeContent">'+ initialValue + '<br/>'+ unitsValue +'</strong>';
+					}else{
+						content = "";
+					}
+				}
 				htmlContent='<div id=' + nodeId + 'Label  class="bubble"><div class="waveformContent ' + type + 'Wrapper"><strong class="nodeContent">'+ content+ '</strong></div><div class=' + type + 'Div><strong>' + nodeName + '</strong></div></div>';
 			}
 			return htmlContent;

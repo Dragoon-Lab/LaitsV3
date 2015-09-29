@@ -488,3 +488,35 @@ span.slip{
 }
 
 .graphHintUnderLay_underlay{ display:none; }
+
+
+#waveform-container{
+    max-height:300px;
+    overflow: scroll;
+}
+#waveform-container .waveformItem{
+    display: inline-block;
+    margin:5px;
+    width:80px;
+    height:80px;
+    position:relative;
+}
+
+.waveformItem .imgWaveform{
+    width:80px;
+    height:80px;
+}
+
+.waveformDisabled{
+    background: #777777;
+    opacity: 0.4;
+    width:80px;
+    height:80px;
+    position: absolute;
+}
+
+.waveformSelected{
+    box-shadow: 0 0 11px rgba(81, 203, 238, 1);
+    border: 3px solid rgba(81, 203, 238, 0.5);
+    border-radius: 2px;
+}

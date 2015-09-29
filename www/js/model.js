@@ -604,18 +604,17 @@ define([
 			},
            
 			getExecutionValue: function(/* string */ id, /* number */ index){
-				var studentItr=obj.student.getIteration();
-                var maxItration=obj.getExecutionIterations();
+				var currentItr = obj.student.getIteration();
+				var maxItr = obj.getExecutionIterations();
 				var node = this.getNode(id);
-                var val = null;
-                if(index === undefined){
-                    val = node.executionValue[(studentItr>=maxItration)?maxItration-1:studentItr];
-                }
-                else if(node.executionValue && node.executionValue.length > index){
-                    val = node.executionValue[index];
-                }
+				var val = null;
+				if(index != undefined && node.executionValue && node.executionValue.length > index){
+					val = node.executionValue[index];
+				} else if(node.executionValue && node.executionValue.length <= maxItr){
+					val = node.executionValue[(currentItr >= maxItr)? maxItr - 1: currentItr];
+				}
 
-                return val;
+				return val;
             },
 			getExecutionValues: function(/* string */ id){
 				var node = this.getNode(id);
@@ -1288,6 +1287,9 @@ define([
 				if(descriptionID && obj.given.getExecutionValues(descriptionID)){
 					update("executionValue");
 				}
+				if(descriptionID && obj.given.getWaveformValue(descriptionID)){
+					update("waveformValue");
+				}
 				return bestStatus;
 			},
 
@@ -1412,12 +1414,14 @@ define([
 				var hasTweaks = node.descriptionID && obj.given.getTweakDirection(node.descriptionID);
 				var hasExecutionValue = node.descriptionID && obj.given.getExecutionValues(node.descriptionID);
 				var executionIteration = (hasExecutionValue ? (node.type == "parameter" ? 0 : this.getIteration()) : 0); //execution iteration will always be 0 for parameters.
+				var hasWaveformValue = (node && typeof obj.student.getWaveformValue(node.ID) !== "undefined");
 				var equationEntered = node.type && node.type == "parameter" || node.equation;
                 executionIteration= (executionIteration<maxItr-1)?executionIteration:maxItr-1;
 
 				var toReturn = node.descriptionID && node.type &&
 					initialEntered && (!hasUnits || node.units) &&
 					equationEntered && (!hasTweaks || node.tweakDirection)
+					&&(!hasWaveformValue || node.waveformValue !== null)
 					&& (!hasExecutionValue || node.executionValue[executionIteration]);
 				if(toReturn){
 					return true;

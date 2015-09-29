@@ -32,12 +32,11 @@ describe("Coached mode with correct resistor Inductor 1", function() {
 
      describe("Creating nodes:", function(){
         it("Should create Accumulator node - Current", async(function(){
-            dtest.menuCreateNode(client);
-            dtest.setNodeDescription(client, "Current thru inductor and resistor from left to right");
-            dtest.popupWindowPressOk(client);
+            dtest.openEditorForNode(client, "Current");            
             dtest.setNodeType(client, "Accumulator");
             dtest.popupWindowPressOk(client);
             dtest.setNodeInitialValue(client, 0);
+            dtest.popupWindowPressOk(client);
             dtest.setNodeUnits(client, "amps");     
             dtest.setNodeExpression(client, "Change in current");
             dtest.checkExpression(client);
