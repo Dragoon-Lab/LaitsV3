@@ -1113,32 +1113,38 @@ define([
 		showWaveformEditor: function(id){
 			this.currentID = id;
 			var givenID = this._model.active.getDescriptionID(id);
+			if(this._model.active.getType(id) === "parameter") return;
 
 			var nodeName = this._model.active.getName(id);
 			var value = this._model.active.getWaveformValue(id);
 			var waveformEditorDialog = registry.byId('waveformEditor');
+			var waveformContainer = dom.byId('waveform-container');
 
 			//array of handlers for waveforms
 			var waveformStatus = this._model.active.getNode(id).status["waveformValue"];
-			//Add handlers to the
-			dojo.query(".waveformDisabled").forEach(dojo.destroy);
-			this.waveforms.forEach(lang.hitch(this, function(w, index){
-				var waveFormDivDom = dom.byId(w+"Div");
-				//Set selected answer in the editor
-				if(value == w){
-					domClass.add(waveFormDivDom, "waveformSelected");
-				}else{
-					domClass.remove(waveFormDivDom,  "waveformSelected");
-				}
-				if(waveformStatus && waveformStatus.disabled) {
-					var disableOverlay = '<div class="waveformDisabled"></div>';
-					dojo.place(disableOverlay, waveFormDivDom, "first");
-					waveFormDivDom.style.pointerEvents = "none";
-				}else{
-					waveFormDivDom.style.pointerEvents = "auto";
-				}
-			}));
-
+			//Add handlers to the images
+			if(typeof value !== "undefined") {
+				style.set(waveformContainer, "display", "block");
+				dojo.query(".waveformDisabled").forEach(dojo.destroy);
+				this.waveforms.forEach(lang.hitch(this, function (w, index) {
+					var waveFormDivDom = dom.byId(w + "Div");
+					//Set selected answer in the editor
+					if (value == w) {
+						domClass.add(waveFormDivDom, "waveformSelected");
+					} else {
+						domClass.remove(waveFormDivDom, "waveformSelected");
+					}
+					if (waveformStatus && waveformStatus.disabled) {
+						var disableOverlay = '<div class="waveformDisabled"></div>';
+						dojo.place(disableOverlay, waveFormDivDom, "first");
+						waveFormDivDom.style.pointerEvents = "none";
+					} else {
+						waveFormDivDom.style.pointerEvents = "auto";
+					}
+				}));
+			}else{
+				style.set(waveformContainer, "display", "none");
+			}
 			//Show Waveform editor
 			waveformEditorDialog.set('title', nodeName);
 			waveformEditorDialog.show();
@@ -1149,7 +1155,6 @@ define([
 				style.set(showExplanationButton, "display", "block");
 			else
 				style.set(showExplanationButton, "display", "none");
-
 		}
 	});
 });
