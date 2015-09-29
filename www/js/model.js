@@ -1414,14 +1414,14 @@ define([
 				var hasTweaks = node.descriptionID && obj.given.getTweakDirection(node.descriptionID);
 				var hasExecutionValue = node.descriptionID && obj.given.getExecutionValues(node.descriptionID);
 				var executionIteration = (hasExecutionValue ? (node.type == "parameter" ? 0 : this.getIteration()) : 0); //execution iteration will always be 0 for parameters.
-				var hasWaveformValue = (node.descriptionID && obj.given.getWaveformValue(node.descriptionID));
+				var hasWaveformValue = (node && typeof obj.student.getWaveformValue(node.ID) !== "undefined");
 				var equationEntered = node.type && node.type == "parameter" || node.equation;
                 executionIteration= (executionIteration<maxItr-1)?executionIteration:maxItr-1;
 
 				var toReturn = node.descriptionID && node.type &&
 					initialEntered && (!hasUnits || node.units) &&
 					equationEntered && (!hasTweaks || node.tweakDirection)
-					&&(!hasWaveformValue || node.waveformValue)
+					&&(!hasWaveformValue || node.waveformValue !== null)
 					&& (!hasExecutionValue || node.executionValue[executionIteration]);
 				if(toReturn){
 					return true;
