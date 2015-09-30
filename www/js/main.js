@@ -1244,6 +1244,25 @@ define([
 					registry.byId("authorSaveProblem").set("value", query.p);
 					dom.byId("saveMessage").innerHTML = message;
 					dialog.show();
+				} else if(givenModel.getTime().step != 1){
+					var givenTime = givenModel.getTime();
+						givenModel.setTime({
+						start: givenTime.start,
+						end: givenTime.end,
+						step: 1
+					});
+					//show crisis message that step size has been updated to 1
+					//var crisisBox = controllerObject.widgetMap("crisisAlert");
+					var directive = [{
+						id: 'crisisAlert',
+						attribute: 'title',
+						value: 'Warning'
+					},{
+						id: 'crisisAlert',
+						attribute: 'open',
+						value: 'The model you have loaded had a timestep which was not equal to one. It has been changed to one. Please open to the problem and times window and update the units of time and end time to compensate.'
+					}];
+					controllerObject.applyDirectives(directive);
 				}
 			}
 
