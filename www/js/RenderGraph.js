@@ -77,6 +77,30 @@ define([
 			/* List of variables to plot: Include functions */
 			this.active.plotVariables = this.active.timeStep.xvars.concat(
 				this.active.timeStep.functions);
+
+			//Checks if the mode is not in author mode, if not in author mode, find the "given" solution
+			if(this.mode != "AUTHOR"){
+				//check for author mode. Here we need to create just one graph.
+				this.given.plotVariables = array.map(this.active.plotVariables, function(id){
+					var givenID = this.model.active.getDescriptionID ?
+							this.model.active.getDescriptionID(id) : id;
+					// givenID should always exist.
+					console.assert(givenID, "Node '" + id + "' has no corresponding given node");
+					var givenNode = this.model.given.getNode(givenID); 
+					return givenNode && ((!givenNode.genus  || givenNode.genus === "required")? givenID : null);
+				}, this);
+
+				//Calculate solutions for given model
+				var givenSolution = this.findSolution(false, this.given.plotVariables);
+				this.isStatic = this.checkForStatic(givenSolution);
+				this.staticVar = 0;
+				if(this.isStatic)
+				{
+					staticNodes = this.checkForParameters();
+					givenSolution = this.findStaticSolution(false, staticNodes[this.staticVar], this.given.plotVariables);					
+				}
+			}
+
 			/*
 			 Match list of given model variables.
 			 If the given model node is not part of the given solution,
@@ -93,6 +117,7 @@ define([
 				this.dialogWidget.set("content", this.generateErrorMessage(activeSolution)); //We show the error message like "A Node is Missing"
 				return;
 			}
+
 			//Checks if there are graphable nodes (only applicable in author mode)
 			if(activeSolution.plotValues.length == 0)
 			{
@@ -100,8 +125,8 @@ define([
 				return;
 			}
 
-			//checks if the solution is a static solution
-			this.isStatic = this.checkForStatic(activeSolution);
+			//checks if the given solution is a static solution
+			this.isStatic = (this.mode === "AUTHOR")?this.checkForStatic(activeSolution):this.isStatic;
 			this.staticVar = 0;
 			//If solution is static, brings up the statis plot
 			if(this.isStatic)
@@ -111,24 +136,7 @@ define([
 				var staticPlot = this.findStaticSolution(true, staticNodes[this.staticVar], this.active.plotVariables);
 			}
 
-			//Checks if the mode is not in author mode, if not in author mode, find the "given" solution
-			if(this.mode != "AUTHOR"){
-				//check for author mode. Here we need to create just one graph.
-				this.given.plotVariables = array.map(this.active.plotVariables, function(id){
-					var givenID = this.model.active.getDescriptionID ?
-							this.model.active.getDescriptionID(id) : id;
-					// givenID should always exist.
-					console.assert(givenID, "Node '" + id + "' has no corresponding given node");
-					var givenNode = this.model.given.getNode(givenID); 
-					return givenNode && ((!givenNode.genus  || givenNode.genus === "required")? givenID : null);
-				}, this);
-				// Calculate solutions
-				var givenSolution = this.findSolution(false, this.given.plotVariables);
-				if(this.isStatic)
-				{
-					givenSolution = this.findStaticSolution(false, staticNodes[this.staticVar], this.given.plotVariables);					
-				}
-			}
+			
 			this.resizeWindow();
 
 
@@ -541,12 +549,12 @@ define([
 
 			array.forEach(staticNodes, function(node)
 			{
-				stateStore.put({id:node.description, name:node.description});
+				stateStore.put({id:node.name, name:node.name});
 			});
     		var comboBox = new ComboBox({
         	id: "staticSelect",
 	        name: "state",
-	        value: staticNodes[0].description,
+	        value: staticNodes[0].name,
 	        store: stateStore,
 	        searchAttr: "name"
 	    	}, "staticSelect");
@@ -905,7 +913,7 @@ define([
 			{
 				array.forEach(parameters, function(parameter){
 					
-					if(parameter.description == staticSelect.value)
+					if(parameter.name == staticSelect.value)
 					{
 						result = parameter;
 					}
@@ -916,7 +924,7 @@ define([
 				var givenParameters = this.checkForParameters(false);
 				var tempResult = givenParameters[0];
 				array.forEach(givenParameters, function(parameter){					
-					if(parameter.description == staticSelect.value)
+					if(parameter.name == staticSelect.value)
 					{
 						tempResult = parameter;
 					}
