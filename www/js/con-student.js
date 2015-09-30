@@ -172,7 +172,9 @@ define([
                 executionValue.removeOption(executionValue.getOptions());
                 //ad default option
                 executionValue.addOption({label: "select",value: "default"});
+
                 array.forEach(uniqueOptions, function (optionVal) {
+                    console.log(optionVal, typeof optionVal);
                     currentOption = [{label: "" + optionVal, value: "" + optionVal}];
                     executionValue.removeOption(currentOption);
                     executionValue.addOption(currentOption);
@@ -1089,7 +1091,10 @@ define([
 									this.updateNodeLabel(this.currentID);
 									this.colorNodeBorder(this.currentID, true);
 									waveformEditorDialog.hide();
-								}
+                                }
+                                //canShowDonePopup also handles the waveform activity with the same variable
+                                if(!this.shownDone)
+                                    this.canShowDonePopup();
 							}));
 						}));
 					}
@@ -1155,7 +1160,7 @@ define([
 				style.set(showExplanationButton, "display", "block");
 			else
 				style.set(showExplanationButton, "display", "none");
-		}
+        }
 	});
 });
 
