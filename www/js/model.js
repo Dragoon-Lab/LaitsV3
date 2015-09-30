@@ -639,13 +639,15 @@ define([
                     if((obj.given.getGenus(node.ID)!== "extra") || (obj.given.getGenus(node.ID)!== "irrelevant") )
                         var insertVal = obj.given.getExecutionValue(node.ID,studentItr);
                     if(insertVal)
-                        coll.push(insertVal);
+                        coll.push(parseFloat(insertVal));
                     if(obj.given.getType(node.ID)=== "parameter" && (obj.given.getGenus(node.ID)!== "extra")&&(obj.given.getGenus(node.ID)!== "irrelevant") )
                         var parVal = obj.given.getInitial(node.ID);
                     if(parVal)
-                        coll.push(parVal);
+                        coll.push(parseFloat(parVal));
                 });
-                return coll;
+                return coll.sort(function(a,b){
+                    return a - b;
+                });
             },
 			setSchemas: function(/* object */ schemas){
 				obj.model.task.schemas = schemas;

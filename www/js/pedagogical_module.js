@@ -831,7 +831,10 @@ define([
 
 			// Anonymous function assigned to interpret--used by most parts of the switch below
 			var interpret = function(correctAnswer){
-				if(answer === correctAnswer || correctAnswer === true){
+                //we create temporary answer and temporary correct answer both parsed as float to compare if the numbers are strings in case of execution
+                answer_temp1=parseFloat(answer);
+                correctAnswer_temp1=parseFloat(correctAnswer);
+				if(answer === correctAnswer || correctAnswer === true || answer_temp1 == correctAnswer_temp1){
 					interpretation = "correct";
 				}else{
 					if(showCorrectAnswer){
