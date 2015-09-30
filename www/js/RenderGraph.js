@@ -87,7 +87,7 @@ define([
 					// givenID should always exist.
 					console.assert(givenID, "Node '" + id + "' has no corresponding given node");
 					var givenNode = this.model.given.getNode(givenID); 
-					return givenNode && ((!givenNode.genus  || givenNode.genus === "required")? givenID : null);
+					return givenNode && ((!givenNode.genus  || givenNode.genus === "required" || givenNode.genus === "allowed")? givenID : null);
 				}, this);
 
 				//Calculate solutions for given model
@@ -136,7 +136,6 @@ define([
 				var staticPlot = this.findStaticSolution(true, staticNodes[this.staticVar], this.active.plotVariables);
 			}
 
-			
 			this.resizeWindow();
 
 
