@@ -541,12 +541,12 @@ define([
 
 			array.forEach(staticNodes, function(node)
 			{
-				stateStore.put({id:node.description, name:node.description});
+				stateStore.put({id:node.name, name:node.name});
 			});
     		var comboBox = new ComboBox({
         	id: "staticSelect",
 	        name: "state",
-	        value: staticNodes[0].description,
+	        value: staticNodes[0].name,
 	        store: stateStore,
 	        searchAttr: "name"
 	    	}, "staticSelect");
@@ -905,7 +905,7 @@ define([
 			{
 				array.forEach(parameters, function(parameter){
 					
-					if(parameter.description == staticSelect.value)
+					if(parameter.name == staticSelect.value)
 					{
 						result = parameter;
 					}
@@ -916,7 +916,7 @@ define([
 				var givenParameters = this.checkForParameters(false);
 				var tempResult = givenParameters[0];
 				array.forEach(givenParameters, function(parameter){					
-					if(parameter.description == staticSelect.value)
+					if(parameter.name == staticSelect.value)
 					{
 						tempResult = parameter;
 					}
