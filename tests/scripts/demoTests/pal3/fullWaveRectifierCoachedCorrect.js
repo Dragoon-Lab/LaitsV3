@@ -32,12 +32,11 @@ describe("Coached mode with correct full wave rectifier", function() {
 
      describe("Creating nodes:", function(){
         it("Should create Function node - V across RL", async(function(){
-            dtest.menuCreateNode(client);
-            dtest.setNodeDescription(client, "Voltage across load resistance");
-            dtest.popupWindowPressOk(client);
+            dtest.openEditorForNode(client, "V across RL");
             dtest.setNodeType(client, "Function");
             dtest.popupWindowPressOk(client);
-            dtest.setNodeUnits(client, "volts");     
+            dtest.setNodeUnits(client, "volts");
+            dtest.popupWindowPressOk(client);
             dtest.setNodeExpression(client, "Current through RL*R of RL");
             dtest.checkExpression(client);
             dtest.nodeEditorDone(client);
