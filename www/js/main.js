@@ -361,7 +361,8 @@ define([
 				//changes to model for execution activity
 				updateModel.calculateExecutionValues();
 			}
-
+			//uncomment the line below if you want to copy the author solution for testing ;)
+			//updateModel.initializeStudentModel(["description", "type", "initial", "units", "equation"]);
 			//copy problem to student model
 			if(activity_config.get("initializeStudentModel") && !givenModel.areRequiredNodesVisible()){
 				console.log("student model being initialized");
