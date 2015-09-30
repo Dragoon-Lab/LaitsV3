@@ -1089,7 +1089,10 @@ define([
 									this.updateNodeLabel(this.currentID);
 									this.colorNodeBorder(this.currentID, true);
 									waveformEditorDialog.hide();
-								}
+                                }
+                                //canShowDonePopup also handles the waveform activity with the same variable
+                                if(!this.shownDone)
+                                    this.canShowDonePopup();
 							}));
 						}));
 					}
@@ -1155,7 +1158,7 @@ define([
 				style.set(showExplanationButton, "display", "block");
 			else
 				style.set(showExplanationButton, "display", "none");
-		}
+        }
 	});
 });
 
