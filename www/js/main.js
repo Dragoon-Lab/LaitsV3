@@ -58,12 +58,13 @@ define([
 	"dijit/Dialog",
 	"./image-box",
 	"./modelChanges",
-	"./ETConnector"
+	"./ETConnector",
+	"./tutorialWidget"
 ], function(
 	array, lang, dom, geometry, style, domClass, on, aspect, ioQuery, ready, registry, toolTip, tooltipDialog, popup,
 	menu, loadSave, model, Graph, controlStudent, controlAuthor, drawmodel, logging, equation,
 	description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan,
-	activityParameters, memory, event, UI, Dialog, ImageBox, modelUpdates, ETConnector){
+	activityParameters, memory, event, UI, Dialog, ImageBox, modelUpdates, ETConnector, TutorialWidget){
 
 	/*  Summary:
 	 *			Menu controller
@@ -299,7 +300,18 @@ define([
 				givenModel.setDoneMessageShown(reply);
 		});
 		controllerObject.setState(state);
-
+		var twidget = new TutorialWidget();
+		//check if the use has already completed the tutorial
+		var tutorialState = new State(query.u, query.s, "action");
+		tutorialState.get("tutorialShown").then(function(res){
+			if(res != "" || res == "true") return;
+			twidget.setState();
+			twidget.begin(function(){
+				tutorialState.put("tutorialShown", "true");
+			}); 
+			
+		});
+		
 		ready(function(){
 			//Set Tab title
 			var taskString = givenModel.getTaskName();
@@ -1226,6 +1238,14 @@ define([
 					window.open("DragoonConcepts.html","newwindow",
 						"height=400, width=600, toolbar =no, menubar=no, scrollbars=yes, resizable=no, location=no, status=no"
 					);
+				});
+				var introTutorial = dom.byId("menuIntroTutorial");
+				on(introTutorial, "click", function(){
+					var tutorialBox = registry.byId("tutorialBox");
+					//tutorialBox.show();
+					twidget.begin(function(){
+						
+					});
 				});
 
 

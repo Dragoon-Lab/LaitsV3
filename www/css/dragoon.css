@@ -482,3 +482,23 @@ span.slip{
     -o-transform: rotate(-65deg);
     font-size: 13px !important;
 }
+.tutorialBox {
+    width:600px;
+    height: 500px;
+}
+.tutorialBox image {
+    width: 500px;
+    height: 300px;
+}
+.tutorialContent {   
+    height: 100px;
+}
+.tutorialHeading {
+    font-weight : bold;
+    margin: 2px 0px;
+    text-align: center;
+    font-size: 1.2em;
+}
+.tutorialNav{
+    text-align: center;
+}
