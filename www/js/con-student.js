@@ -1029,7 +1029,7 @@ define([
 					value: "You have completed all the values for this time step.  Click 'Ok' to proceed to the next time step."
 			    }]);			
 			} 
-			else if (isFinished & iterationNum==maxItration-1) {// In last iteration
+			else if (isFinished && iterationNum==maxItration-1 && !this.isFinalMessageShown) {// In last iteration
 				this.applyDirectives([{
 					id: "crisisAlert",
 					attribute: "title",
@@ -1039,7 +1039,8 @@ define([
 					attribute: "open",
 					value: "Good work, now Dragoon will compute the rest of the values for you and display them as a table and as a graph in the next window."
 				}]);
-			}
+			    this.isFinalMessageShown = true;
+            }
 			//console.log("model is",this._model);
 		},
 
