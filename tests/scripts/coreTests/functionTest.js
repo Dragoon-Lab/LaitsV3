@@ -91,7 +91,7 @@ describe("Test math functions:", function() {
     });
 
     after(async(function(done){
-        //dtest.endTest(client);
+        dtest.endTest(client);
     }));
 
 });
