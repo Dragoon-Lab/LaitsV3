@@ -75,7 +75,7 @@ define([
 		//dom.byId("tutorialImage2").src = this.slides[1].url;
 		//dom.byId("tutorialImage3").src = this.slides[2].url;
 	}
-	widget.prototype.begin = function(flagMode, c){
+	widget.prototype.begin = function(c){
 		this.callback = c;
 		this.currentSlide = 0;
 		this.next.set("disabled", false);
