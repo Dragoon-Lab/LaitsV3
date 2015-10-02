@@ -24,7 +24,7 @@ describe("Test author mode", function() {
     before(async(function (done) {
             dtest.openProblem(client,[
                 ["mode","AUTHOR"], 
-                ["section","login.html"], 
+                ["section","regression-testing"], 
                 ["group","autotest"]]);
     }));
 
