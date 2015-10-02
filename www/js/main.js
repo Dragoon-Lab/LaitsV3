@@ -297,9 +297,15 @@ define([
 			if(reply) givenModel.setLessonLearned(reply);
 		}); */
 		state.get("isDoneButtonShown").then(function(reply){
-			if(reply === true || reply === false)
+            console.log("reply for done",reply);
+            if(reply === true || reply === false)
 				givenModel.setDoneMessageShown(reply);
 		});
+        state.get("isGraphHelpShown").then(function(reply){
+            console.log("reply for graph",reply);
+            if(reply === true || reply === false)
+                givenModel.setGraphHelpShown(reply);
+        });
 		controllerObject.setState(state);
 		
 		
@@ -348,8 +354,9 @@ define([
 			//}
 
 			//set tweak directions if needed by the activity and the model has tweak directions.
-			if (activity_config.get("setTweakDirections") && (!givenModel.getInitialTweakedNode() ||
-															  !givenModel.getInitialTweakDirection())) {
+			var setTweak = activity_config.get("setTweakDirections");
+			var setExecution = activity_config.get("setExecutionValues");
+			if (setTweak && (!givenModel.getInitialTweakedNode() || !givenModel.getInitialTweakDirection())) {
 				//show a message that this problem is not right for incremental activity
 				var errorMessage = new messageBox("errorMessageBox", "error", "The author of this problem has not set up the initial "+
 																			"incremental change node, so this model cannot be done "+
@@ -357,15 +364,21 @@ define([
 																			"Please contact the author of the problem.");
 				errorMessage.show();
 				throw Error("problem does not have tweaked nodes");
-			}else if(activity_config.get("setTweakDirections") && !givenModel.given.validateTweakDirections()){
+			}else if(setExecution && givenModel.getTime().step != 1){
+				var errorMessage = new messageBox("errorMessageBox", "error", "The author of this problem has not set up the execution "+
+																			"step size and so this model cannot be done in this activity. "+
+																			"Please contact the author of the problem.");
+				errorMessage.show();
+				throw Error("time step for the problem is " + givenModel.getTime().step + " which is not 1.");
+			}else if(setTweak && !givenModel.given.validateTweakDirections()){
 				//changes to model for incremental activity
 				updateModel.calculateTweakDirections();
-			}else if(activity_config.get("setExecutionValues") && !givenModel.given.validateExecutionValues()){
+			}else if(setExecution && !givenModel.given.validateExecutionValues()){
 				//changes to model for execution activity
 				updateModel.calculateExecutionValues();
-
-
 			}
+			//uncomment the line below if you want to copy the author solution for testing ;)
+			//updateModel.initializeStudentModel(["description", "type", "initial", "units", "equation"]);
 			//copy problem to student model
 			if(activity_config.get("initializeStudentModel") && !givenModel.areRequiredNodesVisible()){
 				console.log("student model being initialized");
@@ -442,8 +455,8 @@ define([
 						//drawModel.addNode(givenModel.active.getNode(id));
 					}
 				});		
-			}	
-			
+			}
+
 			var drawModel = new drawmodel(givenModel.active, ui_config.get("showColor"), activity_config);
 			drawModel.setLogging(session);
 			
@@ -528,6 +541,9 @@ define([
                     }
 					*/
                     controllerObject.showExecutionMenu(mover.node.id);
+				}
+				else if(activity_config.get("showWaveformEditor")){
+					controllerObject.showWaveformEditor(mover.node.id);
 				}
 			}, true);
 
@@ -1028,24 +1044,7 @@ define([
 					});
 					graph.show();
 
-					// show graph when button clicked
-					menu.add("graphButton", function(e){
-						event.stop(e);
-						console.debug("button clicked");
-							
-						// instantiate graph object
-						var buttonClicked = "graph";
-						//var graph = new Graph(givenModel, query.m, session, buttonClicked);
-						graph.setStateGraph(state);
-						var problemComplete = givenModel.matchesGivenSolution();
 
-						graph._logging.log('ui-action', {
-							type: "menu-choice",
-							name: "graph-button",
-							problemComplete: problemComplete
-						});
-						graph.show();
-					});
 					// show table when button clicked
 					menu.add("tableButton", function(e){
 					event.stop(e);
@@ -1084,6 +1083,13 @@ define([
 						problemComplete: problemComplete
 					});
 					graph.show();
+					var graphHelpButton = dom.byId('graphHelpButton');
+                    console.log("graph help shown",givenModel.getGraphHelpShown());
+                    if(!givenModel.getGraphHelpShown()&&graphHelpButton ) {                        
+                        domClass.add(graphHelpButton, "glowNode");
+                        givenModel.setGraphHelpShown(true);
+                        state.put("isGraphHelpShown",true);
+                    }
 				});
 
 				//the solution div which shows graph/table when closed
@@ -1263,6 +1269,21 @@ define([
 					registry.byId("authorSaveProblem").set("value", query.p);
 					dom.byId("saveMessage").innerHTML = message;
 					dialog.show();
+				} else if(givenModel.getTime().step != 1){
+					var givenTime = givenModel.getTime();
+					var oldStep = givenTime.step; // Save this for use in message
+					givenModel.setTime({
+						start: givenTime.start,
+						end: givenTime.end,
+						step: 1
+					});
+					//show message on canvas that step size has been updated to 1
+					var timeStepWarning = new messageBox("errorMessageBox", "warn",
+						                                 "The model you have loaded had a timestep size which was "+oldStep+
+						                                 " instead of one. It has been changed to one. Please open to the "+
+						                                 "problem and times window and update the units of time and end time"+
+						                                 " to compensate.");
+					timeStepWarning.show();
 				}
 			}
 
@@ -1271,7 +1292,8 @@ define([
 				var makeTooltip  = function(id,content){
 					new toolTip({
 						connectId: [id],
-						label: content
+						label: content,
+                        position: ['before']
 					});
 				};
 				makeTooltip('descriptionQuestionMark', " The quantity computed by the node ");

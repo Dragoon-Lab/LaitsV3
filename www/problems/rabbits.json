@@ -50,6 +50,7 @@
                 "equation": "id2",
                 "description": "The number of rabbits in the population",
                 "explanation":"",
+                "waveformValue":"wave003",
                 "attemptCount": {
                     "description": 0,
                     "type": 0,
@@ -74,8 +75,9 @@
                 "inputs": [{"ID": "id1"}, {"ID": "id3"}],
                 "initial": null,
                 "equation": "id1 * id3",
-                "description": "The number of additional rabbits each year",
+                "description": "The number of additional rabbits each year",                
                 "explanation":"",
+                "waveformValue":"wave003",
                 "attemptCount": {
                     "description": 0,
                     "type": 0,

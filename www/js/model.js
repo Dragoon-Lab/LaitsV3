@@ -88,6 +88,7 @@ define([
 			isCompleteFlag: false,
 			isLessonLearnedShown: false,
 			isDoneMessageShown: false,
+            isGraphHelpShown: false,
 			iteration: 0,
 
 			/**
@@ -115,7 +116,10 @@ define([
             setDoneMessageShown : function(_isDoneMessageShown) {
                 this.isDoneMessageShown = _isDoneMessageShown;
             },
-			updatePosition: function()
+            setGraphHelpShown: function(_isGraphHelpShown){
+                this.model.task.properties.isGraphHelpShown = _isGraphHelpShown;
+            },
+            updatePosition: function()
 			{
 				if((this.x + this.nodeWidth) < (document.documentElement.clientWidth - this.nodeWidth))
 					this.x += this.nodeWidth;
@@ -335,6 +339,10 @@ define([
 			getLessonLearnedShown : function() {
 				return (this.model.task.properties.isLessonLearnedShown != undefined)?this.model.task.properties.isLessonLearnedShown : false;	
 			},
+            getGraphHelpShown: function(){
+                console.log("model help",this.model.task.properties);
+                return (this.model.task.properties.isGraphHelpShown != undefined)?this.model.task.properties.isGraphHelpShown : false;
+            },
 			getTime: function(){
 				// Summary: Returns the time object from the JSON model.
 				return this.model.task.time;
@@ -596,18 +604,17 @@ define([
 			},
            
 			getExecutionValue: function(/* string */ id, /* number */ index){
-				var studentItr=obj.student.getIteration();
-                var maxItration=obj.getExecutionIterations();
+				var currentItr = obj.student.getIteration();
+				var maxItr = obj.getExecutionIterations();
 				var node = this.getNode(id);
-                var val = null;
-                if(index === undefined){
-                    val = node.executionValue[(studentItr>=maxItration)?maxItration-1:studentItr];
-                }
-                else if(node.executionValue && node.executionValue.length > index){
-                    val = node.executionValue[index];
-                }
+				var val = null;
+				if(index != undefined && node.executionValue && node.executionValue.length > index){
+					val = node.executionValue[index];
+				} else if(node.executionValue && node.executionValue.length <= maxItr){
+					val = node.executionValue[(currentItr >= maxItr)? maxItr - 1: currentItr];
+				}
 
-                return val;
+				return val;
             },
 			getExecutionValues: function(/* string */ id){
 				var node = this.getNode(id);
@@ -632,13 +639,15 @@ define([
                     if((obj.given.getGenus(node.ID)!== "extra") || (obj.given.getGenus(node.ID)!== "irrelevant") )
                         var insertVal = obj.given.getExecutionValue(node.ID,studentItr);
                     if(insertVal)
-                        coll.push(insertVal);
+                        coll.push(parseFloat(insertVal));
                     if(obj.given.getType(node.ID)=== "parameter" && (obj.given.getGenus(node.ID)!== "extra")&&(obj.given.getGenus(node.ID)!== "irrelevant") )
                         var parVal = obj.given.getInitial(node.ID);
                     if(parVal)
-                        coll.push(parVal);
+                        coll.push(parseFloat(parVal));
                 });
-                return coll;
+                return coll.sort(function(a,b){
+                    return a - b;
+                });
             },
 			setSchemas: function(/* object */ schemas){
 				obj.model.task.schemas = schemas;
@@ -1280,6 +1289,9 @@ define([
 				if(descriptionID && obj.given.getExecutionValues(descriptionID)){
 					update("executionValue");
 				}
+				if(descriptionID && obj.given.getWaveformValue(descriptionID)){
+					update("waveformValue");
+				}
 				return bestStatus;
 			},
 
@@ -1404,12 +1416,14 @@ define([
 				var hasTweaks = node.descriptionID && obj.given.getTweakDirection(node.descriptionID);
 				var hasExecutionValue = node.descriptionID && obj.given.getExecutionValues(node.descriptionID);
 				var executionIteration = (hasExecutionValue ? (node.type == "parameter" ? 0 : this.getIteration()) : 0); //execution iteration will always be 0 for parameters.
+				var hasWaveformValue = (node && typeof obj.student.getWaveformValue(node.ID) !== "undefined");
 				var equationEntered = node.type && node.type == "parameter" || node.equation;
                 executionIteration= (executionIteration<maxItr-1)?executionIteration:maxItr-1;
 
 				var toReturn = node.descriptionID && node.type &&
 					initialEntered && (!hasUnits || node.units) &&
 					equationEntered && (!hasTweaks || node.tweakDirection)
+					&&(!hasWaveformValue || node.waveformValue !== null)
 					&& (!hasExecutionValue || node.executionValue[executionIteration]);
 				if(toReturn){
 					return true;

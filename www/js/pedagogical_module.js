@@ -596,6 +596,106 @@ define([
 			}
 		}
 	};
+
+	var waveformActionTable = {
+		//Summary: Action table for incremental activity popup.
+		correct: {
+			COACHED: function(obj, part){
+				state(obj, part, "correct");
+				disable(obj, "waveformValue", true);
+			},
+			feedback: function(obj, part){
+				state(obj, part, "correct");
+				disable(obj, "waveformValue", true);
+			},
+			power: function(obj, part){
+				state(obj, part, "correct");
+				disable(obj, "waveformValue", true);
+			},
+			TEST: function(obj, part){
+				state(obj, part, "correct");
+			},
+			EDITOR: function(obj, part){
+				state(obj, part, "correct");
+			}
+		},
+		firstFailure:{
+			COACHED: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "waveformValue", false);
+			},
+			feedback: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "waveformValue", false);
+			},
+			power: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "waveformValue", false);
+			},
+			TEST: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "waveformValue", false);
+			},
+			EDITOR: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "waveformValue", false);
+			}
+		},
+		secondFailure:{
+			COACHED: function(obj, part){
+				state(obj, part, "demo");
+				disable(obj, "waveformValue", true);
+			},
+			feedback: function(obj, part){
+				state(obj, part, "demo");
+				disable(obj, "waveformValue", true);
+			},
+			power: function(obj, part){
+				state(obj, part, "demo");
+				disable(obj, "waveformValue", true);
+			},
+			TEST: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "waveformValue", false);
+			},
+			EDITOR: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "waveformValue", false);
+			}
+		},
+		anotherFailure:{
+			COACHED: function(obj, part){
+				state(obj, part, "demo");
+				disable(obj, "waveformValue", true);
+			},
+			feedback: function(obj, part){
+				state(obj, part, "demo");
+				disable(obj, "waveformValue", true);
+			},
+			power: function(obj, part){
+				state(obj, part, "demo");
+				disable(obj, "waveformValue", true);
+			},
+			TEST: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "waveformValue", false);
+			},
+			EDITOR: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "waveformValue", false);
+			}
+		},
+		incorrect:{
+			TEST: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "waveformValue", false);
+			},
+			EDITOR: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "waveformValue", false);
+			}
+		}
+	}
 	/*
 	 * Add additional tables for activities that does not use node editor.
 	 */
@@ -731,7 +831,10 @@ define([
 
 			// Anonymous function assigned to interpret--used by most parts of the switch below
 			var interpret = function(correctAnswer){
-				if(answer === correctAnswer || correctAnswer === true){
+                //we create temporary answer and temporary correct answer both parsed as float to compare if the numbers are strings in case of execution
+                answer_temp1=parseFloat(answer);
+                correctAnswer_temp1=parseFloat(correctAnswer);
+				if(answer === correctAnswer || correctAnswer === true || answer_temp1 == correctAnswer_temp1){
 					interpretation = "correct";
 				}else{
 					if(showCorrectAnswer){
@@ -801,6 +904,8 @@ define([
 				case "executionValue":
 					interpret(this.model.given.getExecutionValue(givenID));
 					break;
+				case "waveformValue":
+					interpret(this.model.given.getWaveformValue(givenID));
 			}
 			/* 
 			 This is an example of logging via direct function calls
@@ -949,6 +1054,8 @@ define([
 					incrementalActionTable[interpretation][this.userType](returnObj, nodePart);
 				}else if(this.activityConfig.get("showExecutionEditor")){
 					executionActionTable[interpretation][this.userType](returnObj, nodePart);
+				}else if(this.activityConfig.get("showWaveformEditor")){
+					waveformActionTable[interpretation][this.userType](returnObj, nodePart);
 				}
 				currentStatus = this.model.given.getStatus(givenID, nodePart); //get current status set in given model
 				if (currentStatus !== "correct" && currentStatus !== "demo") {
@@ -965,7 +1072,6 @@ define([
 					returnObj.pop();
 					this._enableNext(returnObj, givenID, nodePart, lastElement);
 				}
-
 			}
 			
 			//logging pm response

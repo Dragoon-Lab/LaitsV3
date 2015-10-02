@@ -132,6 +132,7 @@ define([
 			this._model.given.getNode(givenID).attemptCount['assistanceScore'] =  this._model.given.getNode(givenID).attemptCount['assistanceScore'] || 0;
 			this._model.given.getNode(givenID).attemptCount['tweakDirection'] =  this._model.given.getNode(givenID).attemptCount['tweakDirection'] || 0;
 			this._model.given.getNode(givenID).attemptCount['executionValue'] =  this._model.given.getNode(givenID).attemptCount['executionValue'] || 0;
+			this._model.given.getNode(givenID).attemptCount['waveformValue'] =  this._model.given.getNode(givenID).attemptCount['waveformValue'] || 0;
 
 			if(this._activityConfig.get("resetAssistanceScore")){
 				var type = this._model.given.getType(givenID);
@@ -168,6 +169,14 @@ define([
 
 				if(fields.indexOf("execution") >= 0){
 					this._model.student.setExecutionValues(newNodeID, givenNode.executionValue);
+				}
+
+				if(fields.indexOf("waveform") >=0){
+					if(givenNode.waveformValue && givenNode.type !== "parameter") {
+						// Setting waveform value in student model to null if set in author model
+						//checking completeness for nodes in model.js based on this.
+						this._model.student.setWaveformValue(newNodeID, null);
+					}
 				}
 
 				if (fields.indexOf("equation") && nodeStore && givenNode.equation) {

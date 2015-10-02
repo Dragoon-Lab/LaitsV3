@@ -636,7 +636,8 @@ define([
 						"type",
 						"initial",
 						"units",
-						"equation"
+						"equation",
+						"waveform"
 					],
 
 					initializeStudentModel : true,
@@ -662,7 +663,8 @@ define([
 						"type",
 						"initial",
 						"units",
-						"equation"
+						"equation",
+						"waveform"
 					],
 
 					initializeStudentModel : true,
@@ -686,7 +688,8 @@ define([
 						"type",
 						"initial",
 						"units",
-						"equation"
+						"equation",
+						"waveform"
 					],
 
 					initializeStudentModel : true,
@@ -709,7 +712,8 @@ define([
 						"type",
 						"initial",
 						"units",
-						"equation"
+						"equation",
+						"waveform"
 					],
 
 					initializeStudentModel : true,

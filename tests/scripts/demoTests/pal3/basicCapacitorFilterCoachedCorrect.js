@@ -31,13 +31,12 @@ describe("Coached mode with correct basic capacitor filter", function() {
     }));
 
      describe("Creating nodes:", function(){
-        it("Should create Accumulator node - voltage across RL", async(function(){
-            dtest.menuCreateNode(client);
-            dtest.setNodeDescription(client, "output voltage across to the resistor RL");
-            dtest.popupWindowPressOk(client);
+        it("Should finish Accumulator node - voltage across RL", async(function(){
+            dtest.openEditorForNode(client, "voltage across RL");
             dtest.setNodeType(client, "Function");
             dtest.popupWindowPressOk(client);
-            dtest.setNodeUnits(client, "volts");     
+            dtest.setNodeUnits(client, "volts");
+            dtest.popupWindowPressOk(client);
             dtest.setNodeExpression(client, "voltage across C1");
             dtest.checkExpression(client);
             dtest.nodeEditorDone(client);

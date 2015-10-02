@@ -511,7 +511,7 @@ define([
             lang.mixin(variables, this.parameters);
 			array.forEach(this.functions, function(id){
                 variables[id] = this.parse[id].evaluate(variables);
-				variables[id] = this.parse[id].evaluate(variables , time);
+				variables[id] = this.parse[id].evaluate(variables , time-1);
 			}, this);
 			return array.map(this.xvars, function(id){
 				return this.parse[id].evaluate(variables , time);

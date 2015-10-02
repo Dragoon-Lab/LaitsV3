@@ -1066,3 +1066,14 @@ exports.closeExecutionIterationPopup = function(client){
     await(client.click("#OkButton",defer()));
     await(client.waitForVisible('#crisisAlertMessage_underlay',1000,true,defer()));
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// 13. Waveform functions
+
+exports.selectWaveform = function(client,wavstring){
+    await(client.click("#"+wavstring+"Div",defer()));
+}
+
+exports.clickWaveformEquation = function(client){
+    await(client.click("#WaveformEquationButton",defer()));
+}
