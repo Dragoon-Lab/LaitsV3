@@ -312,7 +312,7 @@ define([
 		//check if the use has already completed the tutorial
 		var twidget = new TutorialWidget();
 		var tutorialState = new State(query.u, query.s, "action");
-		if(twidget.avoidTutorial(query))
+		if(!twidget.avoidTutorial(query))
 			tutorialState.get("tutorialShown").then(function(res){
 				if(res != "" || res == "true") return;
 				twidget.setState();
