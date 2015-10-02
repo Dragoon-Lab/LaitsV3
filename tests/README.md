@@ -1,14 +1,30 @@
 #Installation Instructions
-Windows User: Windows user need to first install [cygwin](https://cygwin.com/install.html) and download make, wget packages in the set up. Then type "make install" in cygwin in LaitsV3 directory (previous directory) to install everything else.
-Mac or linux user: Type "make install" in LaitsV3 directory (previous directory) in a command prompt that supports running of make files. 
+This testing framework requires make, nodejs & node package manager (npm), java, and chromedriver to install.
 
-Updated Windows instructions:
-* It appears 1.0.8 version of fiber js (used by synchronize.js) requires you to install the latest python (> 2.5, < 3.0)
-* Install Node from https://nodejs.org/download/  (this includes npm)
-* Run "make install" in /tests/ directory.
-* Download chromedriver and add its path to your system's PATH variable
+##Linux
+* Install any of the above if they are missing.
+* Run ```make install``` in the /tests/ directory
 
+##OSX
+* OSX comes with a -pre version of node.  One of the modules used by the synchronize module only works on stable versions of node.  You'll need to install a node version manager such as [n](https://github.com/tj/n).  To install n, run: ```npm install -g n```
+* Once installed find the latest version of the even numbered release of node (e.g. 0.10.33) and install it: ```n 0.10.33```
+* Then run the "make install" in the /tests/ directory.
 
+##Windows
+* Install node from https://nodejs.org/download/  (this will include npm)
+* Install GNU Make
+* In powershell or cygwin, Run "make install" in /tests/ directory
+  * The 1.0.8 version of fiber js (used by synchronize.js) may require you to install the latest python (> 2.5, < 3.0), so if this step gives an error to that effect, install python 2 and try again.
+* Install a Java runtime environment (if needed)
+* Download chromedriver and add its path to your system's PATH variable (or put it in c:\Windows)
+
+##Your first run:
+* Before your first run you must tell the framework what path to run in.  To do this:
+  * Create a file "test-paths.js" in /test/scripts/ by making a copy of the file "example-test-paths.js" in that same directory.
+  * Edit the variable inside test-paths.js to the dragoon path on your local server
+* Now you should be ready for your first run.  Shell scripts which automate the process are located in /tests/.  If you are on Linux or OSX, call RunTests.sh.  If you are on Windows, use RunTests.bat.
+  * By default, the scripts run all scripts in /tests/scripts/coreTests and /tests/scripts/bugTests.
+  * If you pass a path as a command line argument, RunTests will run only that script (or only the contained scripts, if the path is a directory)
 
 #Information about the tests
 For testing, we use:
@@ -36,14 +52,11 @@ The shakedown test imports selenium server and thus requires selenium server to 
 #Dragoon Testing Library
 In the original version of this work, test scripts called the webdriver directly.  Unfortunately that meant that when the Dragoon interface changed, it was very likely that all of the tests would need to be re-written.  This library abstracts away details such as element names and DOM structure so that tests won't break so long as the library itself is kept up to date.
 
-Currently all of the exported library functions require at one argument: "client", the webdriver.io client.  Inside the library we use [synchronize.js](http://alexeypetrushin.github.io/synchronize/docs/index.html) to serialize the selenium calls, converting the asynchronous code into code that runs serially.
+Most of the exported library functions require at least one argument: "client", the webdriver.io client.  Inside the library we use [synchronize.js](http://alexeypetrushin.github.io/synchronize/docs/index.html) to serialize the selenium calls, converting the asynchronous code into code that runs serially.
 
-#Running tests
-First, make sure you have created test-paths.js in tests/scripts (see example-test-scripts.js above).
-
-To run through all the tests, a bash script has been provided called RunTests.sh.  This will run through every test script in the coreTests and bugTests folders.  It will also start and stop the selenium server automatically.
-
-To run individual tests, you must first run the selenium server. To run the selenium server, redirect the command prompt to the tests directory and type:
+#How the tests are run...
+(NOTE: Everything in this section is done automatically by the RunTest shell scripts.  It is provided for your reference.)
+To run individual tests, the selenium server must first be running. To run the selenium server, redirect the command prompt to the tests directory and type:
 
     java -jar selenium-server-standalone-2.45.jar -log selenium.log &
 
@@ -51,31 +64,38 @@ Then, run mocha:
 
     mocha <path-to-test(s)> -t 30000
     
-The mocha command is the test runner the -t 30000, specifies in milliseconds the amount of seconds before mocha times out. Without specifying, mocha defaults to 2 seconds which may not be enough for server to respond.
+The mocha command is the test runner.  The -t 30000, specifies in milliseconds the amount of seconds before mocha times out. We add this because mocha defaults to 2 seconds, which is generally too short for the server to respond.
 
-When you're done, you can shut down your selenium server by calling:
+After we're done, wen shut down your selenium server by calling:
 
     curl http://localhost:4444/selenium-server/driver/?cmd=shutDownSeleniumServer
 
 You can also just point your web browser at that URL and it will shut the server down.
 
-#Setup on OSX
-There are additional steps to setting this up on OSX.  For starters, OSX to come with a -pre version of node.  One of the modules used by the synchronize module only works on stable versions of node.  You'll need to install a node version manager such as [n](https://github.com/tj/n).  To install n, run:
-
-  npm install -g n
-
-Once installed find the latest version of the even numbered release of node (e.g. 0.10.33) and install it. 
-
-	n 0.10.33
-
-Then run the makefile.
-
 #Test Script List
-* shakedown.js - Test script of unit tests for dtestlib; run this to ensure everything is working before running other test files.  (Also provides an example of how to write a test script.)
-
 ##Core Tests
+These scripts test the core features of Dragoon.
+
+These test modes:
 * authorRabbits.js - Tests author mode by building a rabbits problem from scratch
+* studentCorrectRabbits.js - Solves the rabbits problem in immediate feedback mode
+* studentIncorrectRabbits.js - Solves the rabbits problem in immediate feedback mode
+* testRabbits.js - Tests delayed feedback mode
+* editorRabbits.js - Tests no feedback mode
+
+These test activities:
+* executionRabbits.js
+* executionDemoRabbits.js 
+* incrementalRabbits.js
+* incrementalDemoRabbits.js
+* waveformRabbits.js
+
+These test specific features:
 * functionTest.js - Tests for the math functions
 * graphTest.js - Tests the graph and table window
-* studentCorrectRabbits.js - Solves the rabbits problem in student mode
-* studentIncorrectRabbits.js - Solves the rabbits problem in student mode
+
+##Bug Tests
+Includes scripts which test specific bugs we found.  Put your tests for bugs here.
+
+##Demo Tests
+Longer scripts for testing specific problems before demonstrations or classroom use.  (e.g. PAL3)
