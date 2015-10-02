@@ -13,6 +13,7 @@ This testing framework requires make, nodejs & node package manager (npm), java,
 * Run ```make install``` in the /tests/ directory
 
 ##Windows
+Windows doesn't come with any of those things usually, so here are more detailed instructions:
 * Install node from https://nodejs.org/download/  (this will include npm)
 * Run ```npm install -g mocha``` to install Mocha
 * Install GNU Make
