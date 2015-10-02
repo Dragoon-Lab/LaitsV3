@@ -484,11 +484,14 @@ span.slip{
 }
 .tutorialBox {
     width:600px;
-    height: 500px;
+    height: 480px;
 }
-.tutorialBox image {
-    width: 500px;
+.tutorialBoxImage {
+    width: 580px;
     height: 300px;
+    border: 1px solid grey;
+    border-radius: 2px;
+    margin-bottom: 5px;
 }
 .tutorialContent {   
     height: 100px;

@@ -82,6 +82,7 @@ define([
 
 	// Get session parameters
 	var query = {};
+	//debugger;
 	if(window.location.search){
 		query = ioQuery.queryToObject(window.location.search.slice(1));
 	}else{
@@ -300,17 +301,20 @@ define([
 				givenModel.setDoneMessageShown(reply);
 		});
 		controllerObject.setState(state);
-		var twidget = new TutorialWidget();
+		
+		
 		//check if the use has already completed the tutorial
+		var twidget = new TutorialWidget();
 		var tutorialState = new State(query.u, query.s, "action");
-		tutorialState.get("tutorialShown").then(function(res){
-			if(res != "" || res == "true") return;
-			twidget.setState();
-			twidget.begin(function(){
-				tutorialState.put("tutorialShown", "true");
-			}); 
-			
-		});
+		if(twidget.avoidTutorial(query))
+			tutorialState.get("tutorialShown").then(function(res){
+				if(res != "" || res == "true") return;
+				twidget.setState();
+				twidget.begin(function(){
+					tutorialState.put("tutorialShown", "true");
+				}); 
+				
+			});
 		
 		ready(function(){
 			//Set Tab title
