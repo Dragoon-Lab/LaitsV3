@@ -165,36 +165,40 @@ function getUrlRoot()
 function rgbToColor(toConvert)
 {
     toConvert = toConvert.trim();
-    if(toConvert === "rgb(0,128,0)" || toConvert === "rgba(148,255,148,1)" || 
-       toConvert === "rgba(144,238,144,1)" || toConvert === "green" || toConvert === "rgb(144,238,144)")
-    {
-        return "green";
+    switch(toConvert){
+        case "green":
+        case "rgb(0,128,0)":
+        case "rgba(148,255,148,1)":
+        case "rgba(144,238,144,1)":
+        case "rgb(144,238,144)":
+            return "green";
+        case "yellow":
+        case "rgb(255,213,0)":
+        case "rgba(255,255,0,1)":
+            return "yellow";
+        case "red":
+        case "rgb(255,128,128)":
+        case "rgba(255,128,128,1)":
+            return "red";
+        case "white":
+        case "rgba(255,255,255,1)":
+            return "white";
+        case "gray": 
+        case "rgba(0,0,0,0)":
+        case "rgb(230,230,230)":
+        case "rgba(230,230,230,1)":
+        case "rgb(128,128,128)": 
+        case "rgb(128,128,128,1)":
+            return "gray";
+        case "blue":
+        case "rgb(46,254,247)":
+        case "rgb(173,216,230)":
+        case "rgba(173,216,230,1)":
+            return "blue"
+        default:
+            console.log("Could not identify color: "+toConvert);
+            return toConvert;
     }
-    else if(toConvert === "rgb(255,213,0)" || toConvert === "yellow" || toConvert === "rgba(255,255,0,1)")
-    {
-        return "yellow";
-    }
-    else if(toConvert === "rgb(255,128,128)" || toConvert === "rgba(255,128,128,1)" || toConvert === "red")
-    {
-        return "red";
-    }
-    else if(toConvert === "rgba(255,255,255,1)" || toConvert === "white")
-    {
-        return "white";
-    }
-    else if(toConvert === "rgba(0,0,0,0)" || toConvert === "gray" || toConvert === "rgb(230,230,230)" ||
-            toConvert == "rgb(230,230,230)" || toConvert == "rgba(230,230,230,1)" ||
-            toConvert === "rgb(128,128,128)" || toConvert === "rgb(128,128,128,1)")
-    {
-        return "gray";
-    }
-    else if(toConvert === "rgb(46,254,247" || toConvert === "blue" || toConvert === "rgb(173,216,230)" ||
-        toConvert === "rgba(173,216,230,1)")
-    {
-        return "blue";
-    }
-    else
-        return toConvert;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
