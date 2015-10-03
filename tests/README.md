@@ -3,15 +3,19 @@ This testing framework requires make, nodejs & node package manager (npm), java,
 
 ##Linux
 * Install any of the above if they are missing.
+* Run ```npm install -g mocha``` to install Mocha
 * Run ```make install``` in the /tests/ directory
 
 ##OSX
 * OSX comes with a -pre version of node.  One of the modules used by the synchronize module only works on stable versions of node.  You'll need to install a node version manager such as [n](https://github.com/tj/n).  To install n, run: ```npm install -g n```
 * Once installed find the latest version of the even numbered release of node (e.g. 0.10.33) and install it: ```n 0.10.33```
-* Then run the "make install" in the /tests/ directory.
+* Run ```npm install -g mocha``` to install Mocha
+* Run ```make install``` in the /tests/ directory
 
 ##Windows
+Windows doesn't come with any of those things usually, so here are more detailed instructions:
 * Install node from https://nodejs.org/download/  (this will include npm)
+* Run ```npm install -g mocha``` to install Mocha
 * Install GNU Make
 * In powershell or cygwin, Run "make install" in /tests/ directory
   * The 1.0.8 version of fiber js (used by synchronize.js) may require you to install the latest python (> 2.5, < 3.0), so if this step gives an error to that effect, install python 2 and try again.
