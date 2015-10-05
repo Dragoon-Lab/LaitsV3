@@ -483,6 +483,31 @@ span.slip{
     font-size: 13px !important;
 }
 
+.tutorialBox {
+    width:600px;
+    height: 480px;
+}
+.tutorialBoxImage {
+    width: 580px;
+    height: 300px;
+    border: 1px solid grey;
+    border-radius: 2px;
+    margin-bottom: 5px;
+}
+.tutorialContent {   
+    height: 100px;
+}
+.tutorialHeading {
+    font-weight : bold;
+    margin: 2px 0px;
+    text-align: center;
+    font-size: 1.2em;
+}
+.tutorialNav{
+    text-align: center;
+}
+
+
 .graphHintUnderLay{
     width:500px;
 }
@@ -491,7 +516,7 @@ span.slip{
 
 
 #waveform-container{
-    max-height:400px;
+    max-height:300px;
     overflow: scroll;
 }
 #waveform-container .waveformItem{

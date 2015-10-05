@@ -166,6 +166,7 @@
                 <div id="menuIntroText" data-dojo-type="dijit/MenuItem">Introduction</div>
                 <div id="menuIntroVideo" data-dojo-type="dijit/MenuItem">Intro video</div>
                 <div id="menuIntroConcept" data-dojo-type="dijit/MenuItem">Intro to Dragoon concepts</div>
+                <div id="menuIntroTutorial" data-dojo-type="dijit/MenuItem">Introduction Tutorial</div>
                 <div id="menuOldIntroVideo" data-dojo-type="dijit/MenuItem">Slightly older intro video</div>
                 <div id="menuMathFunctions" data-dojo-type="dijit/MenuItem">Math functions</div>
             </div>
@@ -564,7 +565,24 @@
         </div>
     </div> <!-- end of node editor -->
     <!-- Putting Node-Editor stuff for demo  end -->
-
+    <!-- begin of the intro tutorial -->
+    <div class="claro sameedit tutorialBox" id="tutorialBox" data-dojo-type="dijit/Dialog" title="Tutorial" >
+        <div id="container">
+            <!--<p id="tutorialHeading" class="tutorialHeading"></p> -->
+            <div id="tutorialImageContainer">
+                <image id="tutorialImage" width="580" height="300" style="border:1px solid grey" class="tutorialBoxImage"/>
+                <!--<image id="tutorialImage2" width="580" height="300" />
+                <image id="tutorialImage3" width="580" height="300" />-->
+            </div>
+            <div id="tutorialContent" class="tutorialContent"></div>
+            <div id="tutorialNav" class="tutorialNav">
+                <button id="tutorialPrev" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon" >Previous</button>
+                <button id="tutorialNext" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Next</button>
+                <button id="tutorialShow" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Show Me</button>
+            </div>
+        </div>
+    </div>
+    <!-- end of the intro tutorial -->
 
     <div class="claro slides" id="slidesBox" data-dojo-type="dijit/Dialog" title="Hints">
         <div id="buttons">

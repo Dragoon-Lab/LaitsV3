@@ -172,7 +172,9 @@ define([
                 executionValue.removeOption(executionValue.getOptions());
                 //ad default option
                 executionValue.addOption({label: "select",value: "default"});
+
                 array.forEach(uniqueOptions, function (optionVal) {
+                    console.log(optionVal, typeof optionVal);
                     currentOption = [{label: "" + optionVal, value: "" + optionVal}];
                     executionValue.removeOption(currentOption);
                     executionValue.addOption(currentOption);
@@ -1027,7 +1029,7 @@ define([
 					value: "You have completed all the values for this time step.  Click 'Ok' to proceed to the next time step."
 			    }]);			
 			} 
-			else if (isFinished & iterationNum==maxItration-1) {// In last iteration
+			else if (isFinished && iterationNum==maxItration-1 && !this.isFinalMessageShown) {// In last iteration
 				this.applyDirectives([{
 					id: "crisisAlert",
 					attribute: "title",
@@ -1037,7 +1039,8 @@ define([
 					attribute: "open",
 					value: "Good work, now Dragoon will compute the rest of the values for you and display them as a table and as a graph in the next window."
 				}]);
-			}
+			    this.isFinalMessageShown = true;
+            }
 			//console.log("model is",this._model);
 		},
 
@@ -1070,7 +1073,7 @@ define([
 							var waveform = '<div id="' + w + 'Div" class="waveformItem">' +
 								'<img class="imgWaveform" alt="' + w + '" src="images/waveforms/' + w + '.png"/>' +
 								'</div>';
-							if ((index + 1) % 5 == 0) waveform += '<br/>'
+							if ((index + 1) % 7 == 0) waveform += '<br/>'
 							dojo.place(waveform, waveformsContainer, "last");
 							//Add click event for waveform images except the already selected one
 							var waveFormDivDom = dom.byId(w + "Div");
@@ -1089,7 +1092,10 @@ define([
 									this.updateNodeLabel(this.currentID);
 									this.colorNodeBorder(this.currentID, true);
 									waveformEditorDialog.hide();
-								}
+                                }
+                                //canShowDonePopup also handles the waveform activity with the same variable
+                                if(!this.shownDone)
+                                    this.canShowDonePopup();
 							}));
 						}));
 					}
@@ -1155,7 +1161,7 @@ define([
 				style.set(showExplanationButton, "display", "block");
 			else
 				style.set(showExplanationButton, "display", "none");
-		}
+        }
 	});
 });
 

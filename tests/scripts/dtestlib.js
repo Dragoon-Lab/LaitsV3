@@ -165,36 +165,40 @@ function getUrlRoot()
 function rgbToColor(toConvert)
 {
     toConvert = toConvert.trim();
-    if(toConvert === "rgb(0,128,0)" || toConvert === "rgba(148,255,148,1)" || 
-       toConvert === "rgba(144,238,144,1)" || toConvert === "green" || toConvert === "rgb(144,238,144)")
-    {
-        return "green";
+    switch(toConvert){
+        case "green":
+        case "rgb(0,128,0)":
+        case "rgba(148,255,148,1)":
+        case "rgba(144,238,144,1)":
+        case "rgb(144,238,144)":
+            return "green";
+        case "yellow":
+        case "rgb(255,213,0)":
+        case "rgba(255,255,0,1)":
+            return "yellow";
+        case "red":
+        case "rgb(255,128,128)":
+        case "rgba(255,128,128,1)":
+            return "red";
+        case "white":
+        case "rgba(255,255,255,1)":
+            return "white";
+        case "gray": 
+        case "rgba(0,0,0,0)":
+        case "rgb(230,230,230)":
+        case "rgba(230,230,230,1)":
+        case "rgb(128,128,128)": 
+        case "rgb(128,128,128,1)":
+            return "gray";
+        case "blue":
+        case "rgb(46,254,247)":
+        case "rgb(173,216,230)":
+        case "rgba(173,216,230,1)":
+            return "blue"
+        default:
+            console.log("Could not identify color: "+toConvert);
+            return toConvert;
     }
-    else if(toConvert === "rgb(255,213,0)" || toConvert === "yellow" || toConvert === "rgba(255,255,0,1)")
-    {
-        return "yellow";
-    }
-    else if(toConvert === "rgb(255,128,128)" || toConvert === "rgba(255,128,128,1)" || toConvert === "red")
-    {
-        return "red";
-    }
-    else if(toConvert === "rgba(255,255,255,1)" || toConvert === "white")
-    {
-        return "white";
-    }
-    else if(toConvert === "rgba(0,0,0,0)" || toConvert === "gray" || toConvert === "rgb(230,230,230)" ||
-            toConvert == "rgb(230,230,230)" || toConvert == "rgba(230,230,230,1)" ||
-            toConvert === "rgb(128,128,128)" || toConvert === "rgb(128,128,128,1)")
-    {
-        return "gray";
-    }
-    else if(toConvert === "rgb(46,254,247" || toConvert === "blue" || toConvert === "rgb(173,216,230)" ||
-        toConvert === "rgba(173,216,230,1)")
-    {
-        return "blue";
-    }
-    else
-        return toConvert;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -860,18 +864,18 @@ exports.closeImageHighlighting = function (client){
 exports.nodeEditorDone = function(client){
     // Summary: Hits the "Done" button in the node editor
     await(client.click('span[id="closeButton_label"]',defer()));
-    await(client.waitForVisible('#nodeeditor_underlay',1000,true,defer()));
+    await(client.waitForVisible('#nodeeditor_underlay',1200,true,defer()));
 }
 
 exports.closeNodeEditor = function(client){
     // Summary: Closes node editor using the "x"    
     await(client.click("#nodeeditor > div.dijitDialogTitleBar > span.dijitDialogCloseIcon",defer()));
-    await(client.waitForVisible('#nodeeditor_underlay',1000,true,defer()));
+    await(client.waitForVisible('#nodeeditor_underlay',1200,true,defer()));
 }
 
 exports.nodeEditorDelete = function(client){
     await(client.click('#deleteButton',defer()));
-    await(client.waitForVisible('#nodeeditor_underlay',1000,true,defer()));
+    await(client.waitForVisible('#nodeeditor_underlay',1200,true,defer()));
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1065,4 +1069,15 @@ exports.clickExecutionEquation = function(client){
 exports.closeExecutionIterationPopup = function(client){
     await(client.click("#OkButton",defer()));
     await(client.waitForVisible('#crisisAlertMessage_underlay',1000,true,defer()));
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// 13. Waveform functions
+
+exports.selectWaveform = function(client,wavstring){
+    await(client.click("#"+wavstring+"Div",defer()));
+}
+
+exports.clickWaveformEquation = function(client){
+    await(client.click("#WaveformEquationButton",defer()));
 }

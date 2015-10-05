@@ -25,7 +25,7 @@ describe("Test math functions:", function() {
     before(async(function (done) {
             dtest.openProblem(client,[["problem","dtest-function-test"],["mode","AUTHOR"],
                                       ["user", "AutoTests"],
-                                      ["section","login.html"],
+                                      ["section","regression-testing"],
                                       ["logging","True"]]);
     }));
 
