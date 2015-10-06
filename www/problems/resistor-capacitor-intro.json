@@ -3,8 +3,8 @@
         "taskName": "resistor capacitor intro",
         "time": {
             "start": 0,
-            "end": 10,
-            "step": 0.25,
+            "end": 40,
+            "step": 1,
             "integrationMethod": "Eulers Method",
             "units": "seconds"
         },
@@ -14,16 +14,18 @@
         },
         "taskDescription": {
             "construction": [
-                "Now that you've seen how Dragoon calculates values, we will use Dragoon to construct the model we've been working with so far.",
-                "",
+                "Now that you've seen how Dragoon calculates values, we will use Dragoon to construct the model we've been working with so far.  Model construction is the most common Dragoon activity.  Your goal is:",
+                "",                
                 "Model a 500 ohm resistor in series with a 0.003 farad capacitor and a battery-switch combination that delivers either 5 volts or a short.  You are given nodes that use pulsetrain(0,5,5) to represent the switch being connected to the battery from 0 to 5 seconds and then shorted from 6 to 10 seconds.  Finish constructing the model and then view the graph of the voltage across the capacitor.",
                 "",
-                "Remember the three node types:",
+                "Remember there are three types of nodes:",
                 "* Diamonds represent parameters, which have constant values.",
                 "* Circles represent functions, whose quantity is a function its inputs (indicated by blue arrows going into the node).",
                 "* Squares represent accumulators, whose next value is the sum of its current value and a function its inputs.  ",
+                "(These and other definitions can be found in the Help menu, under \"Intro to Dragoon Concepts\")",
                 "",
-                "To get started, click on the \"Voltage across capacitor\" node to open its editor. As we saw in the previous problems, it will be an accumulator, and its value will change by the change in voltage across the capacitor.  Fill in this and all other empty fields, then click Done on the editor.  Below are some useful formulas.",
+                "To get started, click on the \"Voltage across capacitor\" node to open its editor.  You will need to select its type (you may recall this node is an accumulator), its initial value (0), its units and its equation (add the change in voltage across the capacitor).  Fill in all these fields until they are correct, then click Done on the editor.",
+                "    New nodes will appear on the screen as you use them as inputs.  Click on and complete each one until Dragoon says you are finished.  Below are some formulas which you can use to compute the expressions of the other function nodes.",
                 "",
                 "Ohm's Law:  V = I * R",
                 "",
@@ -32,10 +34,18 @@
                 "Kirchoff's Voltage Law: The algebraic sum of the voltages around a closed loop is zero."
             ],
             "incremental": [
-                "A 500 ohm resistor is in series with a 0.003 farad capacitor and a battery-switch combination that delivers either 5 volts or a short.  You are given nodes that use pulsetrain(0,5,5) to represent the switch being connected to the battery from 0 to 5 seconds and then shorted from 6 to 10 seconds."
+                "Description of circuit model:",
+                "",
+                "A 500 ohm resistor is in series with a 0.003 farad capacitor and a battery-switch combination that delivers either 5 volts or a short.  To simulate the the switch being flipped every five seconds, the special math function pulsetrain is used inside the source voltage node.  In this node, pulsetrain(0,5,5) represents the switch being connected to the battery at time zero for 5 seconds and then shorted for 5 seconds.",
+                "",
+                "Instructions:"
             ],
             "execution": [
-                "A 500 ohm resistor is in series with a 0.003 farad capacitor and a battery-switch combination that delivers either 5 volts or a short.  You are given nodes that use pulsetrain(0,5,5) to represent the switch being connected to the battery from 0 to 5 seconds and then shorted from 6 to 10 seconds."
+                "Description of circuit model:",
+                "",
+                "A 500 ohm resistor is in series with a 0.003 farad capacitor and a battery-switch combination that delivers either 5 volts or a short.  To simulate the the switch being flipped every five seconds, the special math function pulsetrain is used inside the source voltage node.  In this node, pulsetrain(0,5,5) represents the switch being connected to the battery at time zero for 5 seconds and then shorted for 5 seconds.",
+                "",
+                "Instructions:"
             ]
         },
         "lessonsLearned": [],

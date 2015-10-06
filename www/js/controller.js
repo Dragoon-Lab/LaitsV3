@@ -40,8 +40,9 @@ define([
 	"./graph-objects",
 	"./typechecker",
 	"./forum",
+	"./autocomplete",
 	"./schemas-student"
-], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, popup, registry, TooltipDialog, expression, graphObjects, typechecker, forum){
+], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, popup, registry, TooltipDialog, expression, graphObjects, typechecker, forum, AutoComplete){
 
 	/* Summary:
 	 *			Controller for the node editor, common to all modes
@@ -330,6 +331,33 @@ define([
 			array.forEach(units, function(unit){
 				u.addOption({label: unit, value: unit});
 			});
+
+			if(this.activityConfig.get('showEquationAutoComplete')){
+				var mathFunctions = dojo.xhrGet({
+					url: 'mathFunctions.json',
+					handleAs: 'json',
+					load: lang.hitch(this, function(response){
+						//get math functions
+						var mathFunctions = Object.keys(response);
+
+						//Add Node names
+						var descriptions = this._model.given.getDescriptions();
+						var nodeNames = [];
+						array.forEach(descriptions, function (desc) {
+							var name = this._model.given.getName(desc.value);
+							nodeNames.push(name)
+						}, this);
+
+						//Combine node names and math functions
+						nodeNames = nodeNames.concat(mathFunctions);
+
+						var equationAutoComplete = new AutoComplete('equationBox', nodeNames ,[' ',  '+', '-' , '/', '*', '(' , ')', ','], response);
+					}),
+					error: function(){
+
+					}
+				});
+			}
 		},
 
 		// Function called when node editor is closed.

@@ -45,6 +45,7 @@ define([
 
 					showHints: true,
 					showFeedback: true,
+					showEquationAutoComplete: true,
 
 					enable:[
 					],
@@ -70,7 +71,7 @@ define([
 					showHints: true,
 					showFeedback: true,
 					showCorrectAnswer:true,
-
+					showEquationAutoComplete: true,
 					enable:[
 					],
 
@@ -92,6 +93,7 @@ define([
 					showHints: true,
 					showFeedback: true,
 					showCorrectAnswer:true,
+					showEquationAutoComplete: true,
 					targetNodeStrategy:true,
 
 					enable:[
@@ -110,6 +112,7 @@ define([
 
 					allowDeleteNode: true,
 					allowEditNode: true,
+					showEquationAutoComplete: true,
 					enable:[
 					],
 
@@ -127,7 +130,7 @@ define([
 					allowHints:true,
 					allowDeleteNode: true,
 					allowEditNode: true,
-
+					showEquationAutoComplete: true,
 					enable:[
 					],
 
@@ -772,6 +775,7 @@ define([
 				//Graph
 				allowSliders:false,
 				plotAuthorSolution:false,
+				showEquationAutoComplete: false,
 
 				//Node Click Behavior
 				showNodeEditor:true,
