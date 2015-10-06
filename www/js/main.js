@@ -58,13 +58,12 @@ define([
 	"dijit/Dialog",
 	"./image-box",
 	"./modelChanges",
-	"./ETConnector",
-	"./tutorialWidget"
+	"./ETConnector"
 ], function(
 	array, lang, dom, geometry, style, domClass, on, aspect, ioQuery, ready, registry, toolTip, tooltipDialog, popup,
 	menu, loadSave, model, Graph, controlStudent, controlAuthor, drawmodel, logging, equation,
 	description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan,
-	activityParameters, memory, event, UI, Dialog, ImageBox, modelUpdates, ETConnector, TutorialWidget){
+	activityParameters, memory, event, UI, Dialog, ImageBox, modelUpdates, ETConnector){
 
 	/*  Summary:
 	 *			Menu controller
@@ -82,7 +81,6 @@ define([
 
 	// Get session parameters
 	var query = {};
-	//debugger;
 	if(window.location.search){
 		query = ioQuery.queryToObject(window.location.search.slice(1));
 	}else{
@@ -307,21 +305,7 @@ define([
                 givenModel.setGraphHelpShown(reply);
         });
 		controllerObject.setState(state);
-		
-		
-		//check if the use has already completed the tutorial
-		var twidget = new TutorialWidget();
-		var tutorialState = new State(query.u, query.s, "action");
-		if(!twidget.avoidTutorial(query))
-			tutorialState.get("tutorialShown").then(function(res){
-				if(res != "" || res == "true") return;
-				twidget.setState();
-				twidget.begin(function(){
-					tutorialState.put("tutorialShown", "true");
-				}); 
-				
-			});
-		
+
 		ready(function(){
 			//Set Tab title
 			var taskString = givenModel.getTaskName();
@@ -377,8 +361,7 @@ define([
 				//changes to model for execution activity
 				updateModel.calculateExecutionValues();
 			}
-			//uncomment the line below if you want to copy the author solution for testing ;)
-			//updateModel.initializeStudentModel(["description", "type", "initial", "units", "equation"]);
+
 			//copy problem to student model
 			if(activity_config.get("initializeStudentModel") && !givenModel.areRequiredNodesVisible()){
 				console.log("student model being initialized");
@@ -743,6 +726,8 @@ define([
 				makeTooltip('authorDescriptionQuestionMark', "The quantity computed by the node");
 			}
 
+
+
 			if(activity_config.get("allowSaveAs")){
 
 				var saveButton = registry.byId("saveButton");
@@ -1083,9 +1068,9 @@ define([
 						problemComplete: problemComplete
 					});
 					graph.show();
-					var graphHelpButton = dom.byId('graphHelpButton');
                     console.log("graph help shown",givenModel.getGraphHelpShown());
-                    if(!givenModel.getGraphHelpShown()&&graphHelpButton ) {                        
+                    if(!givenModel.getGraphHelpShown()) {
+                        var graphHelpButton = dom.byId('graphHelpButton');
                         domClass.add(graphHelpButton, "glowNode");
                         givenModel.setGraphHelpShown(true);
                         state.put("isGraphHelpShown",true);
@@ -1249,14 +1234,6 @@ define([
 						"height=400, width=600, toolbar =no, menubar=no, scrollbars=yes, resizable=no, location=no, status=no"
 					);
 				});
-				var introTutorial = dom.byId("menuIntroTutorial");
-				on(introTutorial, "click", function(){
-					var tutorialBox = registry.byId("tutorialBox");
-					//tutorialBox.show();
-					twidget.begin(function(){
-						
-					});
-				});
 
 
 			}
@@ -1269,21 +1246,6 @@ define([
 					registry.byId("authorSaveProblem").set("value", query.p);
 					dom.byId("saveMessage").innerHTML = message;
 					dialog.show();
-				} else if(givenModel.getTime().step != 1){
-					var givenTime = givenModel.getTime();
-					var oldStep = givenTime.step; // Save this for use in message
-					givenModel.setTime({
-						start: givenTime.start,
-						end: givenTime.end,
-						step: 1
-					});
-					//show message on canvas that step size has been updated to 1
-					var timeStepWarning = new messageBox("errorMessageBox", "warn",
-						                                 "The model you have loaded had a timestep size which was "+oldStep+
-						                                 " instead of one. It has been changed to one. Please open to the "+
-						                                 "problem and times window and update the units of time and end time"+
-						                                 " to compensate.");
-					timeStepWarning.show();
 				}
 			}
 
@@ -1324,14 +1286,17 @@ define([
 					});
 				}
 
-				/*
-				 Autosave on close window
-				 It would be more efficient if we only saved the changed node.
 
-				 Connecting to controllerObject.closeEditor causes a race condition
-				 with code in controllerObject._setUpNodeEditor that wires up closeEditor.
-				 Instead, we connect directly to the widget.
-				 */
+
+
+                /*
+                 Autosave on close window
+                 It would be more efficient if we only saved the changed node.
+
+                 Connecting to controllerObject.closeEditor causes a race condition
+                 with code in controllerObject._setUpNodeEditor that wires up closeEditor.
+                 Instead, we connect directly to the widget.
+                 */
 				aspect.after(registry.byId('nodeeditor'), "hide", function(){
 					console.log("Calling session.saveProblem");
 					if(controllerObject._mode == "AUTHOR")
@@ -1382,6 +1347,18 @@ define([
 						session.saveProblem(givenModel.model);
 				});
 			}
+
+            if(activity_config.get("allowAssignWaveFormButton")){
+                console.log("wave form button can be clicked");
+
+                    on(registry.byId("assignWaveFormButton"),"click", function(){
+                        console.log("initializing wave form assigner");
+                        controllerObject.initWaveformAssignerAuthor();
+                        console.log("showing waveform assigner")
+                        controllerObject.showWaveformAssignerAuthor(controllerObject.currentID);
+                    });
+        //       });
+            }
 
 			if(activity_config.get("targetNodeStrategy")){
 

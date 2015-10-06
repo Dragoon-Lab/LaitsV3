@@ -194,7 +194,8 @@ define([
 			units: "setUnits",
 			root: "markRootNode",
 			student: "setStudentNode",
-			modelType: "selectModel"
+			modelType: "selectModel",
+            waveForm: "assignWaveFormButton"
 		},
 		authorControls: function(){
 			console.log("++++++++ Setting AUTHOR format in Node Editor.");
@@ -209,6 +210,7 @@ define([
 			style.set('studentModelControl', 'display', 'inline-block');
 			style.set('editorLabel', 'display', 'block');
 			style.set('cancelEditorButton', 'display', 'block');
+            style.set('assignButtonBox', 'display', 'block');
 		},
 		
 		initAuthorHandles: function(){
@@ -755,6 +757,7 @@ define([
 			var descriptionWidget = registry.byId(this.controlMap.description);
 			var unitsWidget = registry.byId(this.controlMap.units);
 			var kind = registry.byId(this.controlMap.kind);
+            var waveFormButton = registry.byId(this.controlMap.waveForm);
 			
 			var value = this._model.given.getGenus(this.currentID);
 			if(!value)
@@ -1048,7 +1051,89 @@ define([
 					this._model.student.setAssistanceScore(studentNodeID, 0);
 				}
 			}
-		}
+		},
+
+        /*
+         *************************** Waveform Editor *******************************
+         */
+        initWaveformAssignerAuthor: function(){
+            console.log("---initWaveformEditor---");
+            var waveformEditorDialog = registry.byId('waveformEditor');
+
+            //Fetch array of waveforms
+            dojo.xhrGet({
+                url:"waveforms.json",
+                handleAs: "json",
+                load: lang.hitch(this, function(result){
+                    this.waveforms = result;
+                    if(this.waveforms.length > 0) {
+                        var waveformsContainer = dom.byId("waveform-container");
+                        this.waveforms.forEach(lang.hitch(this, function (w, index) {
+                            var waveform = '<div id="' + w + 'Div" class="waveformItem">' +
+                                '<img class="imgWaveform" alt="' + w + '" src="images/waveforms/' + w + '.png"/>' +
+                                '</div>';
+                            if ((index + 1) % 7 == 0) waveform += '<br/>'
+                            dojo.place(waveform, waveformsContainer, "last");
+                            //Add click event for waveform images except the already selected one
+                            var waveFormDivDom = dom.byId(w + "Div");
+                            on(waveFormDivDom, "click", lang.hitch(this, function (evt) {
+                                //Set selected waveform to model
+                                var selectedWaveform = evt.target;
+                                var value = dojo.getAttr(selectedWaveform, 'alt');
+                                if (value != null) {
+                                    waveformEditorDialog.hide();
+                                }
+                            }));
+                        }));
+                    }
+                }),
+                error: function(err){
+                    console.log(err);
+                }
+            });
+        },
+
+        showWaveformAssignerAuthor: function(id){
+            this.currentID = id;
+            if(this._model.active.getType(id) === "parameter") return;
+
+            var nodeName = this._model.active.getName(id);
+            var waveformEditorDialog = registry.byId('waveformEditor');
+            var waveformContainer = dom.byId('waveform-container');
+            style.set(waveformContainer, "display", "block");
+
+            /*
+            //array of handlers for waveforms
+            var waveformStatus = this._model.active.getNode(id).status["waveformValue"];
+            //Add handlers to the images
+            if(typeof value !== "undefined") {
+                style.set(waveformContainer, "display", "block");
+                dojo.query(".waveformDisabled").forEach(dojo.destroy);
+                this.waveforms.forEach(lang.hitch(this, function (w, index) {
+                    var waveFormDivDom = dom.byId(w + "Div");
+                    //Set selected answer in the editor
+                    if (value == w) {
+                        domClass.add(waveFormDivDom, "waveformSelected");
+                    } else {
+                        domClass.remove(waveFormDivDom, "waveformSelected");
+                    }
+                    if (waveformStatus && waveformStatus.disabled) {
+                        var disableOverlay = '<div class="waveformDisabled"></div>';
+                        dojo.place(disableOverlay, waveFormDivDom, "first");
+                        waveFormDivDom.style.pointerEvents = "none";
+                    } else {
+                        waveFormDivDom.style.pointerEvents = "auto";
+                    }
+                }));
+            }else{
+                style.set(waveformContainer, "display", "none");
+            }
+            */
+            //Show Waveform editor
+            waveformEditorDialog.set('title', nodeName);
+            waveformEditorDialog.show();
+        }
+
 
 	});
 });
