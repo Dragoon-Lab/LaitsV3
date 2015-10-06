@@ -240,7 +240,6 @@ define([
 			editorWidget.on('Change', lang.hitch(this, function(){
 				return this.disableHandlers || this.handleEditor.apply(this, arguments);
 		    }));
-		   
 
 			this.handleErrorMessage(); //binds a function to Display Error message if expression is cleared.
 		},
@@ -373,8 +372,10 @@ define([
 		},
       
         handleEditor: function(editorContent){
-			console.log("**************** in handleEditor ", editorContent);
-			this._model.given.setExplanation(this.currentID, editorContent);
+        	console.log("**************** in handleEditor ", editorContent);
+			registry.byId("OKEditorButton").on('click', lang.hitch(this, function(){
+				this._model.given.setExplanation(this.currentID, editorContent);
+		    }));
  			//consol.log('submitted w/args:\n' + dojo.toJson(editorContent, true));         
 			this.logging.log('solution-step', {
 				type: "solution-enter",
@@ -384,6 +385,7 @@ define([
 				value: editorContent
 			});
 		},
+
         handleRoot: function(root){
             // Summary: Sets the current node to be parent node
             console.log("********************* in handleRoot", root);
