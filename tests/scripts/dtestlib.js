@@ -801,7 +801,7 @@ exports.isNodeExpressionDisabled = function(client){
 
 exports.setNodeExpression = function(client,expression){
     await(client.setValue('#equationBox', expression,defer()));
-    await(client.click("#algebraic",defer()));
+    await(client.click("#equationLabel",defer()));
 }
 
 exports.expressionInsertInput = function(client){
