@@ -636,9 +636,26 @@ exports.nodeEditorOpenExplanation = function (client){
     await(client.click('#explanationButton',defer()));
 }
 
+exports.setExplanation = function (client,content){
+    warn("Not yet implemented!")
+    //The below does not work (element not found)--need to figure out how to check inside an iframe.
+    //await(client.setValue('#dijitEditorBody',content,defer()));
+}
+
+
 exports.closeExplanation = function (client){
     await(client.click("#dijit_Dialog_0 > div.dijitDialogTitleBar > span.dijitDialogCloseIcon",defer()));
     await(client.waitForVisible('#dijit_DialogUnderlay_0',1000,true,defer()));
+}
+
+exports.clickExplanationOK = function(client){
+    await(client.click('#OKEditorButton',defer()));
+    await(client.waitForVisible('#dijit_Dialog_0_underlay',1000,true,defer()));
+}
+
+exports.clickExplanationCancel = function(client){
+    await(client.click('#cancelEditorButton',defer()));
+    await(client.waitForVisible('#dijit_Dialog_0_underlay',1000,true,defer()));
 }
 
 //////////////////////////////////////////////////
@@ -686,17 +703,6 @@ exports.isNodeTypeDisabled = function(client){
 
 exports.setNodeType = function(client,type){
     selectDropdownValue(client,'#typeId',type);
-    /*await(client.click('#typeId',defer()));
-    await(client.waitForVisible('#typeId_menu',defer()));
-    var number = findDropDownByName(client, type);
-    if(number != null)
-    {
-        await(client.click('#dijit_MenuItem_' + number,defer()));
-    }
-    else
-    {
-        await(client.click('#selectKind',defer()));
-    }*/
 }
 
 //////////////////////////////////////////////////
@@ -755,17 +761,6 @@ exports.setNodeUnits = function(client,units){
         if(await(client.isVisible('#selectUnits',defer())))
         {
             selectDropdownValue(client,'#selectUnits',units);
-            /*await(client.click('#selectUnits',defer()));
-            await(client.waitForVisible('#selectUnits_menu',defer()));
-            var number = findDropDownByName(client, units);
-            if(number != null)
-            {
-                await(client.click('#dijit_MenuItem_' + number,defer()));
-            }
-            else
-            {
-                await(client.click('#selectUnits',defer()));
-            }*/
         }
         else
         {
