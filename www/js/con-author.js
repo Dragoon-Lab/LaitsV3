@@ -30,6 +30,7 @@ define([
 	'dojo/dom-style',
 	'dojo/keys',
 	'dojo/ready',
+    "dojo/on",
 	"dojo/store/Memory",
 	"dojo/aspect",
 	'dijit/registry',
@@ -37,8 +38,9 @@ define([
 	"./equation",
 	"./typechecker",
     "dojo/dom",
+    "dojo/dom-style",
 	"dojo/domReady!"
-], function(array, declare, lang, style, keys, ready, memory, aspect, registry, controller, equation, typechecker, dom){
+], function(array, declare, lang, style, keys, ready, on, memory, aspect, registry, controller, equation, typechecker, dom, domStyle){
 
 	// Summary:
 	//			MVC for the node editor, for authors
@@ -1077,9 +1079,14 @@ define([
                             //Add click event for waveform images except the already selected one
                             var waveFormDivDom = dom.byId(w + "Div");
                             on(waveFormDivDom, "click", lang.hitch(this, function (evt) {
-                                //Set selected waveform to model
                                 var selectedWaveform = evt.target;
                                 var value = dojo.getAttr(selectedWaveform, 'alt');
+                                var selectedWaveform_temp = selectedWaveform;
+                                var refplace = dom.byId("waveformStore");
+                                console.log(refplace);
+                                domStyle.set(selectedWaveform_temp,"width","50px");
+                                domStyle.set(selectedWaveform_temp,"height","50px");
+                                dojo.place(selectedWaveform_temp,refplace,"replace");
                                 if (value != null) {
                                     waveformEditorDialog.hide();
                                 }
