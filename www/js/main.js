@@ -1474,8 +1474,11 @@ define([
 	});
 	
 	function removeURLParam(param,url){
-		var paramStart = url.indexOf(param+"=");
-		if (paramStart == -1){
+		var paramStart = url.indexOf("?"+param+"=")+1;
+		if (paramStart == 0){
+			paramStart = url.indexOf("&"+param+"=")+1;
+		}
+		if (paramStart == 0){
 			return url;
 		}
 
