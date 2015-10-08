@@ -240,11 +240,11 @@ define([
 			givenEquation.on('Change', lang.hitch(this, function(){
 					return this.disableHandlers || this.handleGivenEquation.apply(this, arguments);
 			}));
-		    var editorWidget = registry.byId("editorContent");
-			editorWidget.on('Change', lang.hitch(this, function(){
-				return this.disableHandlers || this.handleEditor.apply(this, arguments);
+
+		    var OKEditorButton = registry.byId("OKEditorButton");
+		    OKEditorButton.on('click', lang.hitch(this, function(){
+		    	return this.disableHandlers || this.handleOKButton.apply(this, arguments);
 		    }));
-		   
 
 			this.handleErrorMessage(); //binds a function to Display Error message if expression is cleared.
 		},
@@ -375,11 +375,11 @@ define([
 			var editorWidget = registry.byId("editorContent");
 			editorWidget.set('value',this._model.given.getExplanation(this.currentID)); 			
 		},
-      
-        handleEditor: function(editorContent){
-			console.log("**************** in handleEditor ", editorContent);
+
+		handleOKButton: function(){debugger;
+			var editorContent=registry.byId("editorContent").value;
+			console.log("**************** in handleOKButton", editorContent);
 			this._model.given.setExplanation(this.currentID, editorContent);
- 			//consol.log('submitted w/args:\n' + dojo.toJson(editorContent, true));         
 			this.logging.log('solution-step', {
 				type: "solution-enter",
 				nodeID: this.currentID,
@@ -387,7 +387,9 @@ define([
 				node: this._model.given.getName(this.currentID),
 				value: editorContent
 			});
+
 		},
+
         handleRoot: function(root){
             // Summary: Sets the current node to be parent node
             console.log("********************* in handleRoot", root);
