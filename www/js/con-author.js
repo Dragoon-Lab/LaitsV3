@@ -38,9 +38,10 @@ define([
 	"./equation",
 	"./typechecker",
     "dojo/dom",
+    "dojo/dom-construct",
     "dojo/dom-style",
 	"dojo/domReady!"
-], function(array, declare, lang, style, keys, ready, on, memory, aspect, registry, controller, equation, typechecker, dom, domStyle){
+], function(array, declare, lang, style, keys, ready, on, memory, aspect, registry, controller, equation, typechecker, dom, domConstruct, domStyle){
 
 	// Summary:
 	//			MVC for the node editor, for authors
@@ -184,7 +185,10 @@ define([
 		    //initialize error status array to track cleared expression for given model nodes
 			this.errorStatus =[];
 			ready(this, "initAuthorHandles");
-		},
+            if(this.activityConfig.get("showWaveformEditor")) {
+                this.initWaveformAssignerAuthor();
+            }
+        },
 
 		resettableControls: ["name","description","initial","units","equation"],
 
@@ -412,12 +416,19 @@ define([
 				if(studentNode == null){
 					this.addStudentNode(this.currentID);
 				}
-			}else{
+			    //also don not show the waveform assignment button and image
+                style.set('assignButtonBox', 'display', 'none');
+                style.set('waveformStore', 'display', 'none');
+            }else{
+
 				this._model.active = this._model.given;
 				registry.byId("selectModel").set('value',"correct");
 				style.set('selectModelControl', 'display', 'none');
 				this.removeStudentNode(this.currentID);
-			}
+                //also show the waveform assignment button and image
+                style.set('assignButtonBox', 'display', 'block');
+                style.set('waveformStore', 'display', 'block');
+            }
 		},
 
 		handleSelectModel: function(modelType){
@@ -1078,18 +1089,18 @@ define([
                                 '</div>';
                             if ((index + 1) % 7 == 0) waveform += '<br/>'
                             dojo.place(waveform, waveformsContainer, "last");
+                            console.log();
                             //Add click event for waveform images except the already selected one
                             var waveFormDivDom = dom.byId(w + "Div");
                             on(waveFormDivDom, "click", lang.hitch(this, function (evt) {
                                 var selectedWaveform = evt.target;
                                 var value = dojo.getAttr(selectedWaveform, 'alt');
-                                var selectedWaveform_temp = selectedWaveform;
+                                var selectedWaveform_temp = "<img src='images/waveforms/"+value+".png' style='width: 50px; height: 50px;'/>";
                                 var refplace = dom.byId("waveformStore");
-                                console.log(refplace);
-                                domStyle.set(selectedWaveform_temp,"width","50px");
-                                domStyle.set(selectedWaveform_temp,"height","50px");
-                                dojo.place(selectedWaveform_temp,refplace,"replace");
+                                console.log(selectedWaveform);
+                                dojo.place(selectedWaveform_temp,refplace,"only");
                                 if (value != null) {
+                                    this._model.active.setWaveformValue(this.currentID, value);
                                     waveformEditorDialog.hide();
                                 }
                             }));
@@ -1142,7 +1153,5 @@ define([
             waveformEditorDialog.set('title', nodeName);
             waveformEditorDialog.show();
         }
-
-
 	});
 });

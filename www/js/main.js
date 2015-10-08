@@ -1353,7 +1353,6 @@ define([
 
                     on(registry.byId("assignWaveFormButton"),"click", function(){
                         console.log("initializing wave form assigner");
-                        controllerObject.initWaveformAssignerAuthor();
                         console.log("showing waveform assigner")
                         controllerObject.showWaveformAssignerAuthor(controllerObject.currentID);
                     });
