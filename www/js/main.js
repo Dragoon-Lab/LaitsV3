@@ -1472,4 +1472,26 @@ define([
 			}
 		});
 	});
+	
+	function removeURLParam(param,url){
+		var paramStart = url.indexOf("?"+param+"=")+1;
+		if (paramStart == 0){
+			paramStart = url.indexOf("&"+param+"=")+1;
+		}
+		if (paramStart == 0){
+			return url;
+		}
+
+		var paramEnd = url.indexOf("&",paramStart) + 1;
+		if (paramEnd == 0){
+			// it's the last parameter, just cut it
+			return url.slice(0,paramStart-1); // subtract 1 to remove the preceding & or ? as well.
+		} else {
+			return url.slice(0,paramStart)+url.slice(paramEnd,url.length);
+		}
+		
+	}
+	
+	// Remove rp= and x= parameters from browers's url history
+	window.history.replaceState("object or string","Title",removeURLParam("x",removeURLParam("rp",window.location.href)));	
 });

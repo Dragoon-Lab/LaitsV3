@@ -184,6 +184,7 @@ function rgbToColor(toConvert)
         case "rgba(255,255,255,1)":
             return "white";
         case "gray": 
+        case "rgba(229,242,254,1)":
         case "rgba(0,0,0,0)":
         case "rgb(230,230,230)":
         case "rgba(230,230,230,1)":
