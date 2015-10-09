@@ -85,7 +85,7 @@ define([
 
 		sendStatements : function(){
 			//send statement to learning record store.
-			var baseURL = 'https://pal3.ict.usc.edu/lrs/';
+			var baseURL = 'http://pal3.ict.usc.edu/lrs/';
 			var api_key = "feb46eec5cdedce5553550318ff93ea9b48ea69a";
 			var statement = {};
 			var assesmentScore = this._assessment.getAssessmentScore("dummy");
@@ -153,10 +153,10 @@ define([
 			            "scaled": assesmentScore[schema.name]
 			        },
 			        "extensions":{
-						"https://pal3.ict.usc.edu/lrs/extensions/passive": false,
-						"https://pal3.ict.usc.edu/lrs/extensions/exploreLevel": 0.9,
-						"https://pal3.ict.usc.edu/lrs/extensions/successFactor": successFactor,
-						"https://pal3.ict.usc.edu/lrs/extensions/xp": "20"
+						"http://pal3.ict.usc.edu/lrs/extensions/passive": false,
+						"http://pal3.ict.usc.edu/lrs/extensions/exploreLevel": 0.9,
+						"http://pal3.ict.usc.edu/lrs/extensions/successFactor": successFactor,
+						"http://pal3.ict.usc.edu/lrs/extensions/xp": "20"
 			        }
 		    	};
 				var stmt = new TinCan.Statement({
