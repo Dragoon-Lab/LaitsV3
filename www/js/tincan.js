@@ -154,8 +154,8 @@ define([
 			        },
 			        "extensions":{
 						"http://pal3.ict.usc.edu/lrs/extensions/passive": false,
-						"http://pal3.ict.usc.edu/lrs/extensions/exploreLevel": 0.9,
-						"http://pal3.ict.usc.edu/lrs/extensions/successFactor": successFactor,
+						"http://pal3.ict.usc.edu/lrs/extensions/exploreLevel": "0.9",
+						"http://pal3.ict.usc.edu/lrs/extensions/successFactor": String(successFactor),
 						"http://pal3.ict.usc.edu/lrs/extensions/xp": "20"
 			        }
 		    	};
