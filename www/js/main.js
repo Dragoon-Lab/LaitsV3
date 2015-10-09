@@ -59,7 +59,7 @@ define([
 	"./image-box",
 	"./modelChanges",
 	"./ETConnector",
-    "./tutorialWidget"
+	"./tutorialWidget"
 ], function(
 	array, lang, dom, geometry, style, domClass, on, aspect, ioQuery, ready, registry, toolTip, tooltipDialog, popup,
 	menu, loadSave, model, Graph, controlStudent, controlAuthor, drawmodel, logging, equation,
@@ -82,7 +82,7 @@ define([
 
 	// Get session parameters
 	var query = {};
-    //debugger;
+	//debugger;
 	if(window.location.search){
 		query = ioQuery.queryToObject(window.location.search.slice(1));
 	}else{
@@ -297,32 +297,32 @@ define([
 			if(reply) givenModel.setLessonLearned(reply);
 		}); */
 		state.get("isDoneButtonShown").then(function(reply){
-            console.log("reply for done",reply);
-            if(reply === true || reply === false)
+			console.log("reply for done",reply);
+			if(reply === true || reply === false)
 				givenModel.setDoneMessageShown(reply);
 		});
-        state.get("isGraphHelpShown").then(function(reply){
-            console.log("reply for graph",reply);
-            if(reply === true || reply === false)
-                givenModel.setGraphHelpShown(reply);
-        });
+		state.get("isGraphHelpShown").then(function(reply){
+			console.log("reply for graph",reply);
+			if(reply === true || reply === false)
+				givenModel.setGraphHelpShown(reply);
+		});
 		controllerObject.setState(state);
 
 
-        //check if the use has already completed the tutorial
-        var twidget = new TutorialWidget();
-        var tutorialState = new State(query.u, query.s, "action");
-        if(!twidget.avoidTutorial(query))
-            tutorialState.get("tutorialShown").then(function(res){
-                if(res != "" || res == "true") return;
-                twidget.setState();
-                twidget.begin(function(){
-                    tutorialState.put("tutorialShown", "true");
-                });
+		//check if the use has already completed the tutorial
+		var twidget = new TutorialWidget();
+		var tutorialState = new State(query.u, query.s, "action");
+		if(!twidget.avoidTutorial(query))
+			tutorialState.get("tutorialShown").then(function(res){
+				if(res != "" || res == "true") return;
+				twidget.setState();
+				twidget.begin(function(){
+					tutorialState.put("tutorialShown", "true");
+				});
 
-            });
+			});
 
-        ready(function(){
+		ready(function(){
 			//Set Tab title
 			var taskString = givenModel.getTaskName();
 			document.title ="Dragoon" + ((taskString) ? " - " + taskString : "");
@@ -377,8 +377,8 @@ define([
 				//changes to model for execution activity
 				updateModel.calculateExecutionValues();
 			}
-            //uncomment the line below if you want to copy the author solution for testing ;)
-            //updateModel.initializeStudentModel(["description", "type", "initial", "units", "equation"]);
+			//uncomment the line below if you want to copy the author solution for testing ;)
+			//updateModel.initializeStudentModel(["description", "type", "initial", "units", "equation"]);
 			//copy problem to student model
 			if(activity_config.get("initializeStudentModel") && !givenModel.areRequiredNodesVisible()){
 				console.log("student model being initialized");
@@ -533,14 +533,14 @@ define([
 					if(activity_config.get("demoExecution")){
 						controllerObject.showExecutionAnswer(mover.node.id);
 					}
-                    /*
-                    else if(activity_config.get("executionExercise")){
-                        var tab_data = new Graph(givenModel, query.m, session, "forExecIterations");
-                        tab_data.findSolution()
+					/*
+					else if(activity_config.get("executionExercise")){
+						var tab_data = new Graph(givenModel, query.m, session, "forExecIterations");
+						tab_data.findSolution()
 
-                    }
+					}
 					*/
-                    controllerObject.showExecutionMenu(mover.node.id);
+					controllerObject.showExecutionMenu(mover.node.id);
 				}
 				else if(activity_config.get("showWaveformEditor")){
 					controllerObject.showWaveformEditor(mover.node.id);
@@ -1059,7 +1059,7 @@ define([
 						name: "table-button"
 					});
 					table.show();
-			   	 	});
+					});
 				}
 			});
 
@@ -1085,13 +1085,13 @@ define([
 						problemComplete: problemComplete
 					});
 					graph.show();
-                    var graphHelpButton = dom.byId('graphHelpButton');
-                    console.log("graph help shown",givenModel.getGraphHelpShown());
-                    if(!givenModel.getGraphHelpShown()&&graphHelpButton ) {
-                        domClass.add(graphHelpButton, "glowNode");
-                        givenModel.setGraphHelpShown(true);
-                        state.put("isGraphHelpShown",true);
-                    }
+					var graphHelpButton = dom.byId('graphHelpButton');
+					console.log("graph help shown",givenModel.getGraphHelpShown());
+					if(!givenModel.getGraphHelpShown()&&graphHelpButton ) {
+						domClass.add(graphHelpButton, "glowNode");
+						givenModel.setGraphHelpShown(true);
+						state.put("isGraphHelpShown",true);
+					}
 				});
 
 				//the solution div which shows graph/table when closed
@@ -1251,44 +1251,44 @@ define([
 						"height=400, width=600, toolbar =no, menubar=no, scrollbars=yes, resizable=no, location=no, status=no"
 					);
 				});
-                var introTutorial = dom.byId("menuIntroTutorial");
-                on(introTutorial, "click", function(){
-                    var tutorialBox = registry.byId("tutorialBox");
-                    //tutorialBox.show();
-                    twidget.begin(function(){
+				var introTutorial = dom.byId("menuIntroTutorial");
+				on(introTutorial, "click", function(){
+					var tutorialBox = registry.byId("tutorialBox");
+					//tutorialBox.show();
+					twidget.begin(function(){
 
-                    });
-                });
+					});
+				});
 
 
 			}
 
 			if(activity_config.get("promptSaveAs")) {
-                // If we are loading a published problem in author mode, prompt user to perform a save-as immediately
-                if (!query.g) {
-                    var message = '<strong>You must choose a name and folder for the new copy of this problem.</strong>';
-                    var dialog = registry.byId("authorSaveDialog");
-                    registry.byId("authorSaveProblem").set("value", query.p);
-                    dom.byId("saveMessage").innerHTML = message;
-                    dialog.show();
-                } else if (givenModel.getTime().step != 1) {
-                    var givenTime = givenModel.getTime();
-                    var oldStep = givenTime.step; // Save this for use in message
-                    givenModel.setTime({
-                        start: givenTime.start,
-                        end: givenTime.end,
-                        step: 1
-                    });
-                    //show message on canvas that step size has been updated to 1
-                    var timeStepWarning = new messageBox("errorMessageBox", "warn",
-                        "The model you have loaded had a timestep size which was " + oldStep +
-                        " instead of one. It has been changed to one. Please open to the " +
-                        "problem and times window and update the units of time and end time" +
-                        " to compensate.");
-                    timeStepWarning.show();
+				// If we are loading a published problem in author mode, prompt user to perform a save-as immediately
+				if (!query.g) {
+					var message = '<strong>You must choose a name and folder for the new copy of this problem.</strong>';
+					var dialog = registry.byId("authorSaveDialog");
+					registry.byId("authorSaveProblem").set("value", query.p);
+					dom.byId("saveMessage").innerHTML = message;
+					dialog.show();
+				} else if (givenModel.getTime().step != 1) {
+					var givenTime = givenModel.getTime();
+					var oldStep = givenTime.step; // Save this for use in message
+					givenModel.setTime({
+						start: givenTime.start,
+						end: givenTime.end,
+						step: 1
+					});
+					//show message on canvas that step size has been updated to 1
+					var timeStepWarning = new messageBox("errorMessageBox", "warn",
+						"The model you have loaded had a timestep size which was " + oldStep +
+						" instead of one. It has been changed to one. Please open to the " +
+						"problem and times window and update the units of time and end time" +
+						" to compensate.");
+					timeStepWarning.show();
 
-                }
-            }
+				}
+			}
 
 			if(activity_config.get("showNodeEditor")){
 				// Show tips for Root in node modifier and Share Bit in Description and Time
@@ -1296,7 +1296,7 @@ define([
 					new toolTip({
 						connectId: [id],
 						label: content,
-                        position: ['before']
+						position: ['before']
 					});
 				};
 				makeTooltip('descriptionQuestionMark', " The quantity computed by the node ");
@@ -1326,14 +1326,14 @@ define([
 						registry.byId("nodeeditor").hide();
 					});
 				}
-                /*
-                 Autosave on close window
-                 It would be more efficient if we only saved the changed node.
+				/*
+				 Autosave on close window
+				 It would be more efficient if we only saved the changed node.
 
-                 Connecting to controllerObject.closeEditor causes a race condition
-                 with code in controllerObject._setUpNodeEditor that wires up closeEditor.
-                 Instead, we connect directly to the widget.
-                 */
+				 Connecting to controllerObject.closeEditor causes a race condition
+				 with code in controllerObject._setUpNodeEditor that wires up closeEditor.
+				 Instead, we connect directly to the widget.
+				 */
 				aspect.after(registry.byId('nodeeditor'), "hide", function(){
 					console.log("Calling session.saveProblem");
 					if(controllerObject._mode == "AUTHOR")
@@ -1385,16 +1385,16 @@ define([
 				});
 			}
 
-            if(activity_config.get("allowAssignWaveFormButton")){
-                console.log("wave form button can be clicked");
+			if(activity_config.get("allowAssignWaveFormButton")){
+				console.log("wave form button can be clicked");
 
-                    on(registry.byId("assignWaveFormButton"),"click", function(){
-                        console.log("initializing wave form assigner");
-                        console.log("showing waveform assigner")
-                        controllerObject.showWaveformAssignerAuthor(controllerObject.currentID);
-                    });
-        //       });
-            }
+					on(registry.byId("assignWaveFormButton"),"click", function(){
+						console.log("initializing wave form assigner");
+						console.log("showing waveform assigner")
+						controllerObject.showWaveformAssignerAuthor(controllerObject.currentID);
+					});
+		//       });
+			}
 
 			if(activity_config.get("targetNodeStrategy")){
 
