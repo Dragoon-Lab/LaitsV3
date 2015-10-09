@@ -38,10 +38,8 @@ define([
 	"./equation",
 	"./typechecker",
     "dojo/dom",
-    "dojo/dom-construct",
-    "dojo/dom-style",
 	"dojo/domReady!"
-], function(array, declare, lang, style, keys, ready, on, memory, aspect, registry, controller, equation, typechecker, dom, domConstruct, domStyle){
+], function(array, declare, lang, style, keys, ready, on, memory, aspect, registry, controller, equation, typechecker, dom){
 
 	// Summary:
 	//			MVC for the node editor, for authors
@@ -201,7 +199,8 @@ define([
 			root: "markRootNode",
 			student: "setStudentNode",
 			modelType: "selectModel",
-            waveForm: "assignWaveFormButton"
+            waveForm: "assignWaveFormButton",
+            nodeType: "typeId"
 		},
 		authorControls: function(){
 			console.log("++++++++ Setting AUTHOR format in Node Editor.");
@@ -217,6 +216,7 @@ define([
 			style.set('editorLabel', 'display', 'block');
 			style.set('cancelEditorButton', 'display', 'block');
             style.set('assignButtonBox', 'display', 'block');
+            style.set('waveButtonStore','display','none');
 		},
 		
 		initAuthorHandles: function(){
@@ -293,6 +293,7 @@ define([
 				}
 			}
 			this.enableDisableSetStudentNode();
+            this.enableDisablewaveFormAssignmentButton();
 			
 			logObj = lang.mixin({
 				type: "solution-enter",
@@ -373,6 +374,7 @@ define([
 			
 			this.logging.log('solution-step', logObj);
 			this.enableDisableSetStudentNode();
+            this.enableDisablewaveFormAssignmentButton();
 		},
 		
 		explanationHandler:function(){ 
@@ -502,7 +504,7 @@ define([
                     registry.byId(this.controlMap.initial).set("disabled", false);
 					registry.byId(this.controlMap.inputs).set("disabled", true);
 					registry.byId(this.controlMap.equation).set("disabled", true);
-				}
+                }
 				if(type == "accumulator"){
                     registry.byId(this.controlMap.initial).set("disabled", false);
                     registry.byId(this.controlMap.inputs).set("disabled", false);
@@ -522,7 +524,8 @@ define([
 				value: type,
 				usage: valueFor
 			});
-		},
+            this.enableDisablewaveFormAssignmentButton();
+        },
 
 		handleUnits: function(units){
 			console.log("**************** in handleUnits ", units);
@@ -882,7 +885,8 @@ define([
 				if(this._model.given.getEquation(this.currentID) && this._model.given.getStatus(this.currentID, "equation").status != "incorrect")
 					this.applyDirectives([{id:"equation", attribute:"status", value:"entered"}]);
 			}
-		},
+            this.enableDisablewaveFormAssignmentButton();
+        },
 		updateModelStatus: function(desc, id){
 			//stub for updateModelStatus
 			id = id || this.currentID;
@@ -1044,6 +1048,35 @@ define([
 				registry.byId(this.controlMap.student).set("disabled",true);
 			}
 		},
+
+        enableDisablewaveFormAssignmentButton: function(){
+            var name = registry.byId(this.controlMap.name).value;
+            var desc = registry.byId(this.controlMap.description).value;
+            var type = registry.byId(this.controlMap.modelType).value;
+            var ntype = registry.byId(this.controlMap.nodeType).value;
+            console.log("types",type,ntype)
+            if(name != '' && desc != ''){
+                if(ntype!=="parameter") {
+                    registry.byId(this.controlMap.waveForm).set("disabled", false);
+                    var value = this._model.active.getWaveformValue(this.currentID);
+                    if(value !== undefined){
+                        var selectedWaveform_temp = "<img src='images/waveforms/"+value+".png' style='width: 50px; height: 50px;'/>";
+                        var refplace = dom.byId("waveformStore");
+                        dojo.place(selectedWaveform_temp,refplace,"only");
+                        style.set("waveformStore","display","block");
+                    }
+
+                }
+                else{
+                    registry.byId(this.controlMap.waveForm).set("disabled",true);
+                    style.set("waveformStore","display","none");
+                }
+            }
+            else{
+                registry.byId(this.controlMap.waveForm).set("disabled",true);
+                style.set("waveformStore","display","none");
+            }
+        },
 		updateStatus: function(/*String*/control, /*String*/correctValue, /*String*/newValue){
 			//Summary: Updates the status of the student model nodes
 			var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
@@ -1099,6 +1132,7 @@ define([
                                 var refplace = dom.byId("waveformStore");
                                 console.log(selectedWaveform);
                                 dojo.place(selectedWaveform_temp,refplace,"only");
+                                style.set("waveformStore","display","block");
                                 if (value != null) {
                                     this._model.active.setWaveformValue(this.currentID, value);
                                     waveformEditorDialog.hide();
@@ -1150,7 +1184,7 @@ define([
             }
             */
             //Show Waveform editor
-            waveformEditorDialog.set('title', nodeName);
+            waveformEditorDialog.set('title', "Choose correct waveform for "+ nodeName);
             waveformEditorDialog.show();
         }
 	});

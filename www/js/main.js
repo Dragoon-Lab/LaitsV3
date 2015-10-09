@@ -1326,7 +1326,6 @@ define([
 						registry.byId("nodeeditor").hide();
 					});
 				}
-                
                 /*
                  Autosave on close window
                  It would be more efficient if we only saved the changed node.
