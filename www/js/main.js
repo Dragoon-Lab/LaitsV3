@@ -59,12 +59,13 @@ define([
 	"./image-box",
 	"./modelChanges",
 	"./ETConnector",
-	"./tutorialWidget"
+	"./tutorialWidget",
+	"./zoom-correction"
 ], function(
 	array, lang, dom, geometry, style, domClass, on, aspect, ioQuery, ready, registry, toolTip, tooltipDialog, popup,
 	menu, loadSave, model, Graph, controlStudent, controlAuthor, drawmodel, logging, equation,
 	description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan,
-	activityParameters, memory, event, UI, Dialog, ImageBox, modelUpdates, ETConnector, TutorialWidget){
+	activityParameters, memory, event, UI, Dialog, ImageBox, modelUpdates, ETConnector, TutorialWidget, ZoomCorrector){
 
 	/*  Summary:
 	 *			Menu controller
@@ -82,7 +83,6 @@ define([
 
 	// Get session parameters
 	var query = {};
-	//debugger;
 	if(window.location.search){
 		query = ioQuery.queryToObject(window.location.search.slice(1));
 	}else{
@@ -322,6 +322,7 @@ define([
 				
 			});
 		
+		ZoomCorrector.validate();
 		ready(function(){
 			//Set Tab title
 			var taskString = givenModel.getTaskName();
