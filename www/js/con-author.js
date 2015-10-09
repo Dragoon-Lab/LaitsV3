@@ -38,8 +38,9 @@ define([
 	"./equation",
 	"./typechecker",
     "dojo/dom",
+    "dojo/dom-class",
 	"dojo/domReady!"
-], function(array, declare, lang, style, keys, ready, on, memory, aspect, registry, controller, equation, typechecker, dom){
+], function(array, declare, lang, style, keys, ready, on, memory, aspect, registry, controller, equation, typechecker, dom, domClass){
 
 	// Summary:
 	//			MVC for the node editor, for authors
@@ -1155,34 +1156,29 @@ define([
             var waveformEditorDialog = registry.byId('waveformEditor');
             var waveformContainer = dom.byId('waveform-container');
             style.set(waveformContainer, "display", "block");
+            var value = this._model.active.getWaveformValue(id);
 
-            /*
             //array of handlers for waveforms
             var waveformStatus = this._model.active.getNode(id).status["waveformValue"];
             //Add handlers to the images
-            if(typeof value !== "undefined") {
-                style.set(waveformContainer, "display", "block");
-                dojo.query(".waveformDisabled").forEach(dojo.destroy);
-                this.waveforms.forEach(lang.hitch(this, function (w, index) {
-                    var waveFormDivDom = dom.byId(w + "Div");
-                    //Set selected answer in the editor
-                    if (value == w) {
-                        domClass.add(waveFormDivDom, "waveformSelected");
-                    } else {
-                        domClass.remove(waveFormDivDom, "waveformSelected");
-                    }
-                    if (waveformStatus && waveformStatus.disabled) {
-                        var disableOverlay = '<div class="waveformDisabled"></div>';
-                        dojo.place(disableOverlay, waveFormDivDom, "first");
-                        waveFormDivDom.style.pointerEvents = "none";
-                    } else {
-                        waveFormDivDom.style.pointerEvents = "auto";
-                    }
-                }));
-            }else{
-                style.set(waveformContainer, "display", "none");
-            }
-            */
+            style.set(waveformContainer, "display", "block");
+            dojo.query(".waveformDisabled").forEach(dojo.destroy);
+            this.waveforms.forEach(lang.hitch(this, function (w, index) {
+                var waveFormDivDom = dom.byId(w + "Div");
+                //Set selected answer in the editor
+                if (value == w) {
+                    domClass.add(waveFormDivDom, "waveformSelected");
+                } else {
+                    domClass.remove(waveFormDivDom, "waveformSelected");
+                }
+                if (waveformStatus && waveformStatus.disabled) {
+                    var disableOverlay = '<div class="waveformDisabled"></div>';
+                    dojo.place(disableOverlay, waveFormDivDom, "first");
+                    waveFormDivDom.style.pointerEvents = "none";
+                } else {
+                    waveFormDivDom.style.pointerEvents = "auto";
+                }
+            }));
             //Show Waveform editor
             waveformEditorDialog.set('title', "Choose correct waveform for "+ nodeName);
             waveformEditorDialog.show();
