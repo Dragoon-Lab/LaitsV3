@@ -162,12 +162,12 @@
         <button type="button" data-dojo-type="dijit/form/Button" id="prettifyButton" style="display: none">Prettify</button>
         <div data-dojo-type="dijit/PopupMenuBarItem">
             <span>Help</span>
-            <div data-dojo-type="dijit/Menu" id="menuHelp">
-                <div id="menuIntroText" data-dojo-type="dijit/MenuItem">Introduction</div>
-                <div id="menuIntroVideo" data-dojo-type="dijit/MenuItem">Intro video</div>
+            <div data-dojo-type="dijit/Menu" id="menuHelp">                
+                <div id="menuIntroTutorial" data-dojo-type="dijit/MenuItem">Introduction</div>
+                <div id="menuIntroVideo" data-dojo-type="dijit/MenuItem">Introductory video</div>
                 <div id="menuIntroConcept" data-dojo-type="dijit/MenuItem">Intro to Dragoon concepts</div>
-                <div id="menuIntroTutorial" data-dojo-type="dijit/MenuItem">Introduction Tutorial</div>
                 <div id="menuOldIntroVideo" data-dojo-type="dijit/MenuItem">Slightly older intro video</div>
+                <div id="menuIntroText" data-dojo-type="dijit/MenuItem">Introduction webpage</div>
                 <div id="menuMathFunctions" data-dojo-type="dijit/MenuItem">Math functions</div>
             </div>
         </div>
@@ -395,10 +395,10 @@
                 </div>
 
                 <div class="dijitDialogPaneActionBar">
-                    <button data-dojo-type="dijit/form/Button" type="submit" onClick="return myFormDialog.isValid();" >
+                    <button id="OKEditorButton" data-dojo-type="dijit/form/Button" type="submit" onClick="return myFormDialog.isValid();" >
                         OK
                     </button>
-                    <button id="cancelEditorButton"data-dojo-type="dijit/form/Button" type="button" onClick="myFormDialog.hide()">
+                    <button id="cancelEditorButton" data-dojo-type="dijit/form/Button" type="button" onClick="myFormDialog.hide()">
                         Cancel
                     </button>
                 </div>
@@ -517,6 +517,12 @@
                         </select>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="fieldgroup">
+            <div id="assignButtonBox" style="padding-top:0px; display: none" >
+                <button id="assignWaveFormButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon" style="float: left; margin-right: 5px;">Assign Waveform</button>
+                <div id="waveformStore" style="float: left"></div>
             </div>
         </div>
         <div class="fieldgroup">
@@ -670,7 +676,7 @@
         <div class="waveform-grid" id="waveform-container">
 
         </div>
-        <div style="min-width:250px; text-align:center">
+        <div style="min-width:250px; text-align:center" id="waveButtonStore">
             <button type="button" class="incrementalButton" data-dojo-type="dijit/form/Button"  iconClass="fa inc-button" id="WaveformEquationButton"> Show Equation</button>
             <button type="button" class="incrementalButton" data-dojo-type="dijit/form/Button"  iconClass="fa inc-button" id="WaveformExplanationButton"> Show Explanation</button>
         </div>

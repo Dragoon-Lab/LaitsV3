@@ -387,7 +387,7 @@ define([
                     descs[4]="* Squares represent accumulators, whose next value is the sum of its current value and a function its inputs.  In this activity, the current value is written at the top of the node.";
                     descs[5]="At each timestep, Dragoon will calculate the value of every function and accumulator, add them to a table and then graph them.  In this activity, we will step through this process one node at a time and fill in the nodes ourselves.";
                     descs[6]="Click on an incomplete node (one with a dashed border) and choose the correct value.  You may click the \"Show Equation\" button to see the formula used to compute the quantity of the node.  You may find it easier to start with the nodes which have values for all of their inputs.";
-                    descs[7]="Tip: When a nodes input is coming from an accumulator, use its current value (the top number) in the calculation, rather than its new value.";
+                    descs[7]="Tip: When the input of a node is coming from an accumulator, use its current value (the top number) in the calculation, rather than its new value.";
                     descs[8]="Repeat this process until Dragoon produces the graphs.";
                     break;
                 case "waveform":
