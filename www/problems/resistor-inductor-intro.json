@@ -16,7 +16,7 @@
             "construction": [
                 "Model the circuit shown, with L=4 Henries, R=5 ohms and Vo = 5 volts.  Nodes have been given to you that represent the switch being directed to the battery for 5 seconds and then to the short for 5 seconds.  Your goal is to graph the current through the inductor.",
                 "",
-                "Hint: Start by clicking Create Node and make the target node (the one you are asked to graph), then finish its inputs, then their inputs, and so forth till everything is complete.  Below are some useful formulas.",
+                "Hint: Start by clicking on the \"current\" node and constructing it.  The current will start at zero.  Then, construct its inputs, then their inputs, and so forth until Dragoon tells you your model is complete.  Below are some useful formulas:",
                 "",
                 "Ohm's Law:  V = I * R",
                 "",

@@ -314,8 +314,10 @@ input[type=radio]{
 }
 
 .messageBox-warn{
-   background-color: rgba(243,156,18,0.2);
+   background-color: antiquewhite;
    border: 2px solid #F39C12;
+    z-index: 100;
+    
 }
 
 .factorNode{
