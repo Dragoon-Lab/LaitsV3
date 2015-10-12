@@ -39,6 +39,7 @@ define([
 			this.heartbeartName = "ChildHeartbeat",
 			this.COMPLETED_VERB = "Completed",
 			this.LOADED_VERB = "Loaded";
+			this.needsToSendScore = true;
 			this.TestService = Messaging_Gateway.TestService("DragoonService");
 			this.HeartbeatService = Heartbeat_Service.HeartbeatService(null, this.HEARTBEAT_NAME, 5);
 			this.ParentPostingService = Messaging_Gateway.PostMessageGatewayStub("MainPostingGateway", null, null, parent);

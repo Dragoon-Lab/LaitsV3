@@ -410,36 +410,44 @@ define([
 					registry.byId("lessonsLearnedButton").set("disabled", false);
 			}
 
-			//GET problem-topic index for PAL problems
+			//Initialie TC, GET problem-topic index for PAL problems
 			palTopicIndex = "";
+			var tc = null;
 			var searchPattern = new RegExp('^pal3', 'i');
+			
 			if(query.m != "AUTHOR" && searchPattern.test(query.s)){
+				activity_config["PAL3"] = true;
 				var xhrArgs = {
 					url: "problems/PAL3-problem-topics.json",
 					handleAs: "json",
 					load: function(data){
 						palTopicIndex = data;
+						tc = new tincan(givenModel, controllerObject._assessment,session, palTopicIndex);
 					},
 					error: function(error){
 						console.log("error retrieving file name");
 					}
 				}
 				dojo.xhrGet(xhrArgs);
+				aspect.after(controllerObject._PM, "notifyCompleteness", function(){
+					if(!tc ||  !tc.needsToSendScore || !givenModel.isCompleteFlag) return;
+					tc.connect();
+					tc.sendStatements();
+				});
 			}
 			// setting environment for loading dragoon inside ET
 			
 			var etConnect = null;
-			var tc = null;
 			if(activity_config["ElectronixTutor"]) {
-				tc = new tincan(givenModel, controllerObject._assessment,session, palTopicIndex);
 				etConnect = new ETConnector();
 				etConnect.startService();
 				
 				// send score after student complete the model
 				aspect.after(controllerObject._PM, "notifyCompleteness", function(){
-					if(!tc ||  tc.isStatementsSend ) return;
-					tc.connect();
-					tc.sendStatements();
+					if(!etConnect ||  !etConnect.needsToSendScore || !givenModel.isCompleteFlag) return;
+					var score = controllerObject._assessment.getSuccessFactor();
+					etConnect.sendScore(score);
+					console.log("sending score(successfactor):", score);
 				});
 				
 			}
@@ -1460,21 +1468,23 @@ define([
 				}
 
 				var searchPattern = new RegExp('^pal3', 'i');
-				if(query.m != "AUTHOR" && searchPattern.test(query.s)){ // check if session name starts with pal
-					//var tc = new tincan(givenModel, controllerObject._assessment,session, palTopicIndex);
-					//Connect to learning record store
-					
+				if(activity_config["ElectronixTutor"] && tc){ // check if session name starts with pal
+					//tc = new tincan(givenModel, controllerObject._assessment,session, palTopicIndex);
+					//Connect to learning record store					
 					//Send Statements
-					if(!tc.isStatementsSend) {
+					if(tc.needsToSendScore) {
 						tc.connect();
 						tc.sendStatements();
 					}
 						
 				}
 				if(activity_config["ElectronixTutor"] && etConnect){
-					var score = controllerObject._assessment.getSuccessFactor();
-					etConnect.sendScore(score);
-					console.log("sending score(successfactor):", score);
+					if(etConnect.needsToSendsScore) {
+						var score = controllerObject._assessment.getSuccessFactor();
+						etConnect.sendScore(score);
+						console.log("sending score(successfactor):", score);
+					}
+					
 				}
 			});
 

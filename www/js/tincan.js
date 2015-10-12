@@ -53,7 +53,7 @@ define([
 			this._model = givenModel;
 			this._assessment = assessment;
 			this._session = session;
-			this.isStatementsSend = false;
+			this.needsToSendScore = true;
 		},
 
 		connect: function() {
