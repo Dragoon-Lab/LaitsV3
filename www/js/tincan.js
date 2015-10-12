@@ -53,6 +53,7 @@ define([
 			this._model = givenModel;
 			this._assessment = assessment;
 			this._session = session;
+			this.isStatementsSend = false;
 		},
 
 		connect: function() {
@@ -92,7 +93,7 @@ define([
 			var successFactor = this._assessment.getSuccessFactor();
 			var username = this._session.params.u;
 			var email = username;
-
+			var context = this;
 			var topic = this._session.params.topic || "No Topic";
 
 			if (username.indexOf("..") > 0){
@@ -180,6 +181,7 @@ define([
 					sync:true,
 					load: function(response){
 						console.log(response);
+						context.isStatementsSend = true;
 					},
 					error: function(err){
 						console.log(err);

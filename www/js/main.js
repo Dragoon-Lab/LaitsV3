@@ -429,13 +429,21 @@ define([
 			// setting environment for loading dragoon inside ET
 			
 			var etConnect = null;
+			var tc = null;
 			if(activity_config["ElectronixTutor"]) {
-				
+				tc = new tincan(givenModel, controllerObject._assessment,session, palTopicIndex);
 				etConnect = new ETConnector();
 				etConnect.startService();
 				
+				// send score after student complete the model
+				aspect.after(controllerObject._PM, "notifyCompleteness", function(){
+					if(!tc ||  tc.isStatementsSend ) return;
+					tc.connect();
+					tc.sendStatements();
+				});
+				
 			}
-
+			
 			if(activity_config.get("targetNodeStrategy")){ 
 				// Only in construction activity when in COACHED mode 
 				var rootNodes = givenModel.given.getRootNodes();
@@ -1453,11 +1461,15 @@ define([
 
 				var searchPattern = new RegExp('^pal3', 'i');
 				if(query.m != "AUTHOR" && searchPattern.test(query.s)){ // check if session name starts with pal
-					var tc = new tincan(givenModel, controllerObject._assessment,session, palTopicIndex);
+					//var tc = new tincan(givenModel, controllerObject._assessment,session, palTopicIndex);
 					//Connect to learning record store
-					tc.connect();
+					
 					//Send Statements
-					tc.sendStatements();
+					if(!tc.isStatementsSend) {
+						tc.connect();
+						tc.sendStatements();
+					}
+						
 				}
 				if(activity_config["ElectronixTutor"] && etConnect){
 					var score = controllerObject._assessment.getSuccessFactor();
