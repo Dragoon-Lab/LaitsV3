@@ -52,8 +52,10 @@ define([
 
 					allowSliders: true,
 
-					promptSaveAs:true
-				},
+					promptSaveAs:true,
+                    "allowAssignWaveFormButton": "true",
+                    showWaveformEditor : true
+                },
 
 				STUDENT:{
 					allowCreateNode:true,
