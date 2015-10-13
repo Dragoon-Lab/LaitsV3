@@ -37,7 +37,7 @@ define([
 		}, 
 		{
 			title : "Analysis of the model",
-			url : "images/ss_tutorial2.png",
+			url : "images/ss_tutorial2.gif",
 			content : "You will use Dragoon to build models that calculate graphs and tables of system quantities.  Note how the graphs change instantly as you manipulate the sliders.",
 		},
 		{
