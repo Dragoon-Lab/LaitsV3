@@ -90,6 +90,7 @@ define([
 			isDoneMessageShown: false,
             isGraphHelpShown: false,
 			iteration: 0,
+			problemReopened: false,
 
 			/**
 			 *
@@ -503,6 +504,9 @@ define([
             },
 			setExecutionIterations: function(/* number */ itr){
 				this.model.task.executionIterations = itr;
+			},
+			setProblemReopened: function(/* boolean */ flag){
+				this.problemReopened = flag;
 			}
 		};
 
@@ -769,6 +773,8 @@ define([
 					competence: {
 						errors: 0,
 						total: 0,
+						attempts: 0,
+						correctScore: 0,
 						timeSpent: 0,
 						values:{}
 					},
@@ -1300,6 +1306,14 @@ define([
 				// solution have correctness of "demo" or "correct"
 				return obj.matchesGivenSolution() &&
 					this.checkStudentNodeCorrectness();
+			},
+			getNodeIDByDescriptionID: function(/* string */ descriptionID){
+				var id;
+				var gotIt = array.some(this.getNodes(), function(node){
+					id = node.ID;
+					return node.descriptionID === descriptionID;
+				});
+				return gotIt ? id : null;
 			},
 			checkStudentNodeCorrectness: function(){
 				return array.every(this.getStudentNodesInSolution(),

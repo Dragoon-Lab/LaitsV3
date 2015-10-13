@@ -242,6 +242,9 @@ define([
 							throw new Error("Root Node Missing");
 						}
 					}
+					if(solutionGraph.hasOwnProperty("restart")){
+						givenModel.setProblemReopened(solutionGraph.restart);
+					}
 				}catch (error) {
 					var errorMessage = new messageBox("errorMessageBox", "error", error.message);
 					errorMessage.show();
