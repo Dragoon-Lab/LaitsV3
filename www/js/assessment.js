@@ -36,56 +36,39 @@ define([
 		initSchemaSession: function(){
 			array.forEach(this._schemas, function(schema){
 				this._session.logSchema(schema.schemaClass, schema.difficulty);
-				
 			}, this);
 		},
 
 		//score schema gives 1 if the student gets it correct in the first attempt, 0.5 after first wrong and if demo then gives 0
 		updateScore: function(/* string */ nodeID, /* string */ nodePart){
 			var descriptionID = this._model.student.getDescriptionID(nodeID);
-			var attempt = this._model.given.getAttemptCount(descriptionID, nodePart);
-
-			switch(attempt){
-				case 0:
-				case 1:
-					this.incrementCorrectnessScore(descriptionID, 1);
-					break;
-				case 2:
-					this.incrementCorrectnessScore(descriptionID, 0.5);
-					break;
-				default:
-					break;
-			}
+			this.incrementAccuracyScore(descriptionID, this.calculateScore(descriptionID, nodePart));
 		},
 
-		incrementCorrectnessScore: function(ID, /* number */ val){
+		incrementAccuracyScore: function(ID, /* number */ val){
 			if(this.currentScore.hasOwnProperty(ID))
 				this.currentScore[ID] += val;
 			else
 				this.currentScore[ID] = val;
 		},
 
-		setCorrectnessScore: function(/* string */ ID, /* number */ val){
-			var descriptionID = this._model.student.getDescriptionID(ID);
-			ID = descriptionID ? descriptionID : ID;
-
-			this.currentScore[ID] = val;
-		},
-
-		getSchemaAttemptCounts: function(){
-			//this._schemas = this._model.student.getSchemas();
-			array.forEach(this._schemas, function(schema){
+		getSchemaAttemptCounts: function(schemaID){
+			var schema = this._model.given.getSchema(schemaID);
+			var count = 0;
+			if(schema){
 				var nodes = schema.nodes.split(", ");
 				array.forEach(nodes, function(ID){
-					var type = this._model.given.getType(ID);
-					var unit = this._model.given.getUnits(ID);
-
-					schema.competence.attempts += this.getCount(type, unit);
+					count += this.getCount(ID);
 				}, this);
-			}, this);
+			}
+
+			return count;
 		},
 
-		getCount: function(type, unit){
+		getCount: function(givenID){
+			var type = this._model.given.getType(givenID);
+			var unit = this._model.given.getUnits(givenID);
+
 			var count =  {
 				"parameter": 4,
 				"function": 4,
@@ -107,15 +90,15 @@ define([
 				if(resultJSON.competence){
 					schema.competence = resultJSON.competence;
 				}
+				debugger;
 				//to make the jsons backward compatible
 				if(!schema.competence.hasOwnProperty("correctScore")){
 					schema.competence.correctScore = 0;
 					schema.competence.attempts = 0;
 				}
+				if(!this._model.getProblemReopened())
+					schema.competence.attempts += this.getSchemaAttemptCounts(schema.ID);
 			}, this);
-
-			if(!this._model.given.getProblemReopened)
-				this.getSchemaAttemptCounts();
 		},
 
 		updateSchema: function(/* object */ time, /* object */ errors){
@@ -192,31 +175,78 @@ define([
 			array.forEach(nodes, function(node){
 				if(!node.genus || node.genus == "required" ||
 					(node.genus == "allowed" && this._model.student.getNodeIDByDescriptionID(node.ID))){
-					var attempts = node.attemptCount;
-					total += this.getCount(node.type, node.units);
-					for(var key in attempts){
-						if(node.status.hasOwnProperty(key) &&  node.status[key] == "correct"){
-							switch (attempts[key]){
-								case 0:
-								case 1:
-									success++;
-									break;
-								case 2:
-									success += 0.5;
-									break;
-								default:
-									break;
-							}
-						}
-					}
+					//var attempts = node.attemptCount;
+					success += this.calculateNodeScore(node.ID);
+					total += this.getCount(node.ID);
 				}
 			}, this);
 
 			if(total != 0)
 				return success/total;
-			else 
+			else
 				return 0;
+		},
+
+		getSchemaSuccessFactor: function(){
+			var obj = {};
+			var cache = {};
+			array.forEach(this._schemas, function(schema){
+				var score = 0;
+				var nodes = schema.nodes.split(", ");
+				array.forEach(nodes, function(ID){
+					if(!cache.hasOwnProperty(ID)){
+						score += this.calculateNodeScore(ID);
+						cache[ID] = score;
+					} else {
+						score += cache[ID];
+					}
+				}, this);
+				var schemaClass = schema.schemaClass;
+				var total = this.getSchemaAttemptCounts(schema.ID);
+
+				if(total > 0)
+					score = score/total;
+				else
+					score = 0;
+
+				obj[schemaClass] = score;
+			}, this);
+
+			return obj;
+		},
+
+		calculateNodeScore: function(/* string */ id){
+			var node = this._model.given.getNode(id);
+			var attempts = node.attemptCount;
+			var score = 0;
+
+			for(var key in attempts){
+				score += this.calculateScore(id, key);
+			}
+
+			return score;
+		},
+
+		calculateScore: function(/* string */ id, /* string */ nodePart){
+			var attempt = this._model.given.getAttemptCount(id, nodePart);
+			var status = this._model.given.getStatus(id, nodePart);
+			var score = 0;
+
+			if(status && status == "correct"){
+				switch (attempt){
+					case 0:
+					case 1:
+						score++;
+						break;
+					case 2:
+						score += 0.5;
+						break;
+					default:
+						break;
+				}
+			}
+
+			return score;
 		}
-		
 	});
 });

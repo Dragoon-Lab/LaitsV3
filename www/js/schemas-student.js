@@ -107,6 +107,10 @@ define([
 			return this.assess.getSuccessFactor();
 		},
 
+		getSchemaSuccessFactor: function(){
+			return this.assess.getSchemaSuccessFactor();
+		},
+
 		getTime: function(nodeID){
 			var l = this.time.length;
 			for(var i = 0; i < l; i++){

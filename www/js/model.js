@@ -507,6 +507,9 @@ define([
 			},
 			setProblemReopened: function(/* boolean */ flag){
 				this.problemReopened = flag;
+			},
+			getProblemReopened: function(){
+				return this.problemReopened;
 			}
 		};
 
