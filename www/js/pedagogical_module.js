@@ -1087,7 +1087,7 @@ define([
 				logObj = {
 					checkResult: 'CORRECT',
 				};
-			}else if(checkStatus == "demo" || checkStatus == "incorrect"){
+			}else if(!checkStatus || checkStatus == "demo" || checkStatus == "incorrect"){
 				logObj = {
 					checkResult: 'INCORRECT',
 					correctValue: this.model.student.getCorrectAnswer(id, nodePart),
