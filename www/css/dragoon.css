@@ -314,8 +314,10 @@ input[type=radio]{
 }
 
 .messageBox-warn{
-   background-color: rgba(243,156,18,0.2);
+   background-color: antiquewhite;
    border: 2px solid #F39C12;
+    z-index: 100;
+    
 }
 
 .factorNode{
@@ -437,6 +439,12 @@ span.slip{
 #viewAllSchemaDialog .schemaName{
     display:inline-block;
     width:200px;
+    font-weight: bold;
+}
+
+#viewAllSchemaDialog .schemaNodes{
+    display:inline-block;
+    width:274px;
 }
 
 @keyframes glowing {

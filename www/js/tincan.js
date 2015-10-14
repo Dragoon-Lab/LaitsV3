@@ -60,7 +60,7 @@ define([
 			this.tincan = new TinCan ({
 			    	recordStores: [
 			            {
-			                endpoint:"http://pal3.ict.usc.edu/php/SubmitResourceScore.php",
+			                endpoint:"https://pal3.ict.usc.edu/php/SubmitResourceScore.php",
 			                username: "0ed3c15d57b33439145ed2684c1ba09b48a33410",
 			                password: "feb46eec5cdedce5553550318ff93ea9b48ea69a",
 			                allowFail: false
@@ -154,8 +154,8 @@ define([
 			        },
 			        "extensions":{
 						"http://pal3.ict.usc.edu/lrs/extensions/passive": false,
-						"http://pal3.ict.usc.edu/lrs/extensions/exploreLevel": 0.9,
-						"http://pal3.ict.usc.edu/lrs/extensions/successFactor": successFactor,
+						"http://pal3.ict.usc.edu/lrs/extensions/exploreLevel": "0.9",
+						"http://pal3.ict.usc.edu/lrs/extensions/successFactor": String(successFactor),
 						"http://pal3.ict.usc.edu/lrs/extensions/xp": "20"
 			        }
 		    	};
@@ -174,7 +174,7 @@ define([
 
 				//Send statement to LRS
 				dojo.xhrPost({
-					url:'http://pal3.ict.usc.edu/php/SubmitResourceScore.php',
+					url:'https://pal3.ict.usc.edu/php/SubmitResourceScore.php',
 					postData:"json="+ JSON.stringify(stmt) + "&api_key="+ api_key,
 					handleAs:'text',
 					sync:true,

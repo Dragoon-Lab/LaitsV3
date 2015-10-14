@@ -402,10 +402,15 @@ define([
 		initViewSchemasDialog: function() {
 			var schemaDialog = registry.byId("viewAllSchemaDialog");
 			var content = "";
+			var model = this._model;
 			var schemas = this._model.given.getSchemas().slice(0);
 			//Generate Rows for each schema.
 			array.forEach(schemas, function (schema) {
-				content += "<div id='row-" + schema.ID + "' class ='schemaItem'> <span class='schemaName'>" + schema.name + "</span> <button id='Delete" + schema.ID + "Button' data-dojo-type='dijit/form/Button'>Delete</button></div>";
+				var ids = schema.nodes.split(", ");
+				var names = array.map(ids, function(id) { return model.given.getName(id); }).join(", ");
+
+				content += "<div id='row-" + schema.ID + "' class ='schemaItem'> <span class='schemaName'>" + schema.name + "</span> <button id='Delete" + schema.ID + 
+				            "Button' data-dojo-type='dijit/form/Button'>Delete</button><br><span class='schemaNodes'>" + names +"</span></div>";
 			});
 
 			if (content == "") {

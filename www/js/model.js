@@ -680,6 +680,10 @@ define([
 				/* sets passed waveform string value for node id*/
 				this.getNode(id).waveformValue = value;
 			},
+            emptyWaveformValue: function(id){
+                console.log("inside",obj.given.getNode(id));
+                obj.given.getNode(id).waveformValue = undefined;
+            },
 
 			setImageMarks : function(/**string */nodeId, marks){
 				var node = obj.given.getNode(nodeId);
@@ -1070,7 +1074,7 @@ define([
 				// Summary: tracks student progress (correct, incorrect) on a given node;
 				this.getNode(id).status[part] = status;
 			},
-			isComplete: function(/*string*/ id){
+            isComplete: function(/*string*/ id){
 				// Summary: Test whether a node is completely filled out, correct or not
 				// Returns a boolean
 				// id: the node id
@@ -1388,7 +1392,7 @@ define([
 			},
 			emptyExecutionValues: function(/* string */ id){
 				var node = this.getNode(id);
-				node.executionValue = [];		
+				node.executionValue = [];
 			},
 			incrementAssistanceScore: function(/*string*/ id){
 				// Summary: Incremements a score of the amount of errors/hints that
