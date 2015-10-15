@@ -21,6 +21,7 @@
                 "C1: 0.068 Farads",
                 "C2: 0.068 Farads",
                 "RL: 100,000 Ohms",
+                "Knee voltage of D1 and D2: 0.7 (put this directly into the expressions for the diodes)",
                 "",
                 "You are given the nodes for the AC voltage generator.  Make a model to graph the output voltage (Output V)."
             ]
