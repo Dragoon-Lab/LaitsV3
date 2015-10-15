@@ -1170,13 +1170,12 @@ define([
 			}
 
 			//Wiring up history button
-			if(activity_config.get("historyButton")){debugger;
-
+			if(activity_config.get("historyButton")){
 				var historyButton = registry.byId("historyButton");				
 				menu.add("historyButton", function(e){
 					event.stop(e);
 					session.getHistory(query).then(function(history){
-					//console.log("history for now is:", history);
+						console.log("history for now is:", history);
 					})
 					//registry.byId("historyDialog").show();
 				});

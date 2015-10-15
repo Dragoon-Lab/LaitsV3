@@ -182,9 +182,7 @@ define(["dojo/_base/lang"], function (lang) {
 					"nodeBorderFeedbackColor": "yellow",
 					"nodeBorderFailColor": "red",
 					"qualitativeChangeButtons": "none",
-					"qualitativeChangeButtons": "block",
 					"historyButton": "none"
-
 				}
 			},
 				{
