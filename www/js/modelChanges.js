@@ -232,6 +232,7 @@ define([
 			if(newNodeID){
 				this._model.student.setDescriptionID(newNodeID, givenID);
 				this._model.student.setStatus(newNodeID, "description", {"disabled": true, "status": "correct"});
+				this._model.given.setStatus(givenID, "description", "correct");
 			}
 
 			return newNodeID;
