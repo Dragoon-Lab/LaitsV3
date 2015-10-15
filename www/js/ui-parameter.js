@@ -49,7 +49,8 @@ define(["dojo/_base/lang"], function (lang) {
 						"nodeBorderSuccessColor": "green",
 						"nodeBorderFeedbackColor": "yellow",
 						"nodeBorderFailColor": "red",
-						"imageButton": "none"
+						"imageButton": "none",
+						"historyButton": "none"
 
 					}
 				},
@@ -69,7 +70,8 @@ define(["dojo/_base/lang"], function (lang) {
 						"lessonsLearnedButton": "inline",
 						"doneButton": "inline",
 						"prettifyButton": "inline",
-						"imageButton": "inline"
+						"imageButton": "inline",
+						"historyButton": "inline"
 
 					}
 				},
@@ -119,7 +121,9 @@ define(["dojo/_base/lang"], function (lang) {
 						"nodeBorderSuccessColor": "green",
 						"nodeBorderFeedbackColor": "yellow",
 						"nodeBorderFailColor": "red",
-						"qualitativeChangeButtons": "block"
+						"qualitativeChangeButtons": "block",
+						"historyButton": "none"
+
 
 					}
 				},
@@ -147,7 +151,8 @@ define(["dojo/_base/lang"], function (lang) {
 						"nodeBorderSuccessColor": "gray",
 						"nodeBorderFeedbackColor": "gray",
 						"nodeBorderFailColor": "gray",
-						"qualitativeChangeButtons": "block"
+						"qualitativeChangeButtons": "block",
+						"historyButton": "none"
 					}
 				}],
 
@@ -176,7 +181,9 @@ define(["dojo/_base/lang"], function (lang) {
 					"nodeBorderSuccessColor": "green",
 					"nodeBorderFeedbackColor": "yellow",
 					"nodeBorderFailColor": "red",
-					"qualitativeChangeButtons": "none"
+					"qualitativeChangeButtons": "none",
+					"qualitativeChangeButtons": "block",
+					"historyButton": "none"
 
 				}
 			},
@@ -205,7 +212,9 @@ define(["dojo/_base/lang"], function (lang) {
 						"nodeBorderSuccessColor": "gray",
 						"nodeBorderFeedbackColor": "gray",
 						"nodeBorderFailColor": "gray",
-						"qualitativeChangeButtons": "none"
+						"qualitativeChangeButtons": "none",
+						"historyButton": "none"
+
 
 					}
 				}],
@@ -233,7 +242,9 @@ define(["dojo/_base/lang"], function (lang) {
 					"nodeBorderSuccessColor": "green",
 					"nodeBorderFeedbackColor": "yellow",
 					"nodeBorderFailColor": "red",
-					"qualitativeChangeButtons": "none"
+					"qualitativeChangeButtons": "none",
+					"historyButton": "none"
+
 				}
 			},
 				{
@@ -260,7 +271,9 @@ define(["dojo/_base/lang"], function (lang) {
 						"nodeBorderSuccessColor": "gray",
 						"nodeBorderFeedbackColor": "gray",
 						"nodeBorderFailColor": "gray",
-						"qualitativeChangeButtons": "none"
+						"qualitativeChangeButtons": "none",
+						"historyButton": "none"
+
 
 					}}
 			],
@@ -289,7 +302,9 @@ define(["dojo/_base/lang"], function (lang) {
 					"nodeBorderSuccessColor": "green",
 					"nodeBorderFeedbackColor": "yellow",
 					"nodeBorderFailColor": "red",
-					"qualitativeChangeButtons": "none"
+					"qualitativeChangeButtons": "none",
+					"historyButton": "none"
+
 				}
 			},
 				{
@@ -317,7 +332,9 @@ define(["dojo/_base/lang"], function (lang) {
 						"nodeBorderSuccessColor": "gray",
 						"nodeBorderFeedbackColor": "gray",
 						"nodeBorderFailColor": "gray",
-						"qualitativeChangeButtons": "none"
+						"qualitativeChangeButtons": "none",
+						"historyButton": "none"
+
 
 					}
 				}],
@@ -346,7 +363,9 @@ define(["dojo/_base/lang"], function (lang) {
 					"nodeBorderSuccessColor": "green",
 					"nodeBorderFeedbackColor": "yellow",
 					"nodeBorderFailColor": "red",
-					"qualitativeChangeButtons": "none"
+					"qualitativeChangeButtons": "none",
+					"historyButton": "none"
+
 				}
 			},
 				{
@@ -373,7 +392,9 @@ define(["dojo/_base/lang"], function (lang) {
 						"nodeBorderSuccessColor": "gray",
 						"nodeBorderFeedbackColor": "gray",
 						"nodeBorderFailColor": "gray",
-						"qualitativeChangeButtons": "none"
+						"qualitativeChangeButtons": "none",
+						"historyButton": "none"
+
 
 					}}
 			],

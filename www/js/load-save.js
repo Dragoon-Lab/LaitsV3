@@ -140,6 +140,26 @@ define([
 				errorMessage.show();
 			}));
 		},
+
+		getHistory: function(/*object*/ params){
+			//Summary: calls history_fetcher.php to retrieve the history of a problem object
+			//		and returns it as a json object
+			console.log("getHistory called with ", params);
+			return xhr.get(this.path + "history_fetcher.php", {
+				query: params,
+				handleAs: "json"
+			}).then(lang.hitch(this, function(history){	 
+				console.log("getHistory worked", history);			
+				return history;
+				
+			}), lang.hitch(this, function(err){
+				this.clientLog("error", {
+					message: "load history from DB error : "+err,
+					functionTag: 'getHistory'
+				});
+			}));
+		},
+
 		isProblemNameConflict: function(problemName, groupName) {
 			return xhr.post(this.path + "problems_conflict_checker.php", {
 				data: {
