@@ -88,8 +88,8 @@ define([
 			var baseURL = 'http://pal3.ict.usc.edu/lrs/';
 			var api_key = "feb46eec5cdedce5553550318ff93ea9b48ea69a";
 			var statement = {};
-			var assesmentScore = this._assessment.getAssessmentScore("dummy");
 			var successFactor = this._assessment.getSuccessFactor();
+			var schemaSuccessFactor = this._assessment.getSchemaSuccessFactor();
 			var username = this._session.params.u;
 			var email = username;
 
@@ -150,7 +150,7 @@ define([
 			        "success": this._model.student.matchesGivenSolutionAndCorrect(),
 			        "duration": this.isoDuration(this._session.calculateDuration()),
 			        "score": {
-			            "scaled": assesmentScore[schema.name]
+			            "scaled": schemaSuccessFactor[schema.name]
 			        },
 			        "extensions":{
 						"http://pal3.ict.usc.edu/lrs/extensions/passive": false,

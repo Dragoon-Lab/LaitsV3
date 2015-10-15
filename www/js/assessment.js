@@ -65,7 +65,8 @@ define([
 			return count;
 		},
 
-		getCount: function(givenID){
+
+		getCount: function(givenID){			
 			var type = this._model.given.getType(givenID);
 			var unit = this._model.given.getUnits(givenID);
 
