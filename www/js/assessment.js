@@ -66,7 +66,6 @@ define([
 		},
 
 		getCount: function(givenID){
-			debugger;
 			var type = this._model.given.getType(givenID);
 			var unit = this._model.given.getUnits(givenID);
 
@@ -91,7 +90,6 @@ define([
 				if(resultJSON.competence){
 					schema.competence = resultJSON.competence;
 				}
-				debugger;
 				//to make the jsons backward compatible
 				if(!schema.competence.hasOwnProperty("correctScore")){
 					schema.competence.correctScore = 0;
@@ -202,12 +200,9 @@ define([
 				var score = 0;
 				var nodes = schema.nodes.split(", ");
 				array.forEach(nodes, function(ID){
-					if(!cache.hasOwnProperty(ID)){
-						score += this.calculateNodeScore(ID);
-						cache[ID] = score;
-					} else {
-						score += cache[ID];
-					}
+					if(!cache.hasOwnProperty(ID))
+						cache[ID] = this.calculateNodeScore(ID);
+					score += cache[ID];
 				}, this);
 				var schemaClass = schema.schemaClass;
 				var total = this.getSchemaAttemptCounts(schema.ID);
