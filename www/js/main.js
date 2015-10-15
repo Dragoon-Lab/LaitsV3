@@ -335,7 +335,7 @@ define([
 			var menuButtons=[];
 			menuButtons.push("createNodeButton","graphButton","tableButton","forumButton",
 				"schemaButton","descButton","saveButton","mergeButton",
-				"previewButton","slidesButton","lessonsLearnedButton","resetButton","doneButton", "prettifyButton", "imageButton");
+				"previewButton","slidesButton","lessonsLearnedButton","resetButton","doneButton", "prettifyButton", "imageButton","historyButton");
 
 			array.forEach(menuButtons, function(button){
 				//setting display for each menu button
@@ -1169,6 +1169,18 @@ define([
 						contentMsg = givenModel.getTaskLessonsLearned();
 						lessonsLearned.displayLessonsLearned(contentMsg);
 					}
+				});
+			}
+
+			//Wiring up history button
+			if(activity_config.get("historyButton")){
+				var historyButton = registry.byId("historyButton");				
+				menu.add("historyButton", function(e){
+					event.stop(e);
+					session.getHistory(query).then(function(history){
+						console.log("history for now is:", history);
+					})
+					//registry.byId("historyDialog").show();
 				});
 			}
 
