@@ -66,6 +66,7 @@ define([
 		},
 
 		getCount: function(givenID){
+			debugger;
 			var type = this._model.given.getType(givenID);
 			var unit = this._model.given.getUnits(givenID);
 
@@ -115,10 +116,10 @@ define([
 						schema.competence.errors += errors.errors;
 						schema.competence.total += errors.total;
 						schema.competence.correctScore += this.currentScore[errors.given];
-						this.currentScore[errors.given] = 0;
 						//schema.competence.timeSpent += error.time
 					}
 				}, this);
+				this.currentScore[errors.given] = 0;
 			}
 
 			if(time.given){
@@ -143,15 +144,22 @@ define([
 	
 		dummy: function(){
 			array.forEach(this._schemas, function(schema){
-				var competence = 1 - (schema.competence.errors/schema.competence.total);
-				schema.competence.values.dummy = competence;
+				if(schema.competence.total > 0){
+					var competence = 1 - (schema.competence.errors/schema.competence.total);
+					schema.competence.values.dummy = competence;
+				} else {
+					schema.competence.values.dummy = 0;
+				}
 			}, this);
 		},
 
 		//score 2 calculates the score for the schema. new way of calculating rather than just from errors.
 		accuracy: function(){
 			array.forEach(this._schemas, function(schema){
-				schema.competence.values.accuracy = schema.competence.correctScore/schema.competence.attempts;
+				if(schema.competence.attempts > 0)
+					schema.competence.values.accuracy = schema.competence.correctScore/schema.competence.attempts;
+				else
+					schema.competence.values.accuracy = 0;
 			});
 		},
 
