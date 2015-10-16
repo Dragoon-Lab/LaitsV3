@@ -132,7 +132,7 @@ define([
 		this.tutorialShown = false;
 	}
 	widget.prototype.avoidTutorial = function(query){
-		if(window.location.hostname == "localhost" || window.location.hostname == "127.0.0.1")
+		if(window.location.hostname == "localhost" || window.location.hostname == "127.0.0.1" || query.l == "false")
 			return true;
 		if(query.s && query.s == "regression-testing")
 			return true;
