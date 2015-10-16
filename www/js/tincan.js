@@ -181,7 +181,7 @@ define([
 					sync:true,
 					load: function(response){
 						console.log(response);
-						context.isStatementsSend = true;
+						context.needsToSendScore = false;
 					},
 					error: function(err){
 						console.log(err);
