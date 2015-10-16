@@ -149,12 +149,12 @@ define([
 			// Adding these as private methods since other modules should not rely on model
 			// for manipulating activities.  If others need this, move to a different file.
 			_isDemoActivityType: function(activity){
-				console.log("_isDemoActivityType:"+(activity && activity.substring(activity.length-4,activity.length) == "Demo"));
+				//console.log("_isDemoActivityType:"+(activity && activity.substring(activity.length-4,activity.length) == "Demo"));
 				return (activity && activity.substring(activity.length-4,activity.length) == "Demo");
 			},
 			_convertDemoToExercise: function(activity){
 				if (obj._isDemoActivityType(activity)){
-					console.log("_convertDemoToExercise:"+activity.substring(0,activity.length-4));
+					//console.log("_convertDemoToExercise:"+activity.substring(0,activity.length-4));
 					return activity.substring(0,activity.length-4);
 				} else {
 					throw new Error("Attempted to convert non-demo activity to an exercise.");
