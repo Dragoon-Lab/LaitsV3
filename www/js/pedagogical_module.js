@@ -869,7 +869,8 @@ define([
 					}else if(this.model.isNodeVisible(studentID, answer)){
 							interpretation = "redundant";
 					}else if(this.model.isParentNode(answer) || (this.model.isNodesParentVisible(studentID, answer) && !this.checkPremature(studentID))){
-						interpretation = "optimal";
+                        console.log("vis",this.model.isNodeVisible(studentID, answer));
+                        interpretation = "optimal";
 					}else if(this.model.student.getNodes().length === 0){
 						interpretation = "notTopLevel";
 					}else{
@@ -942,7 +943,8 @@ define([
 			var solutionGiven = false;
 			var givenAnswer = answer; //keeping a copy of answer for logging purposes.
 			// Send correct answer to controller if status will be set to 'demo'
-			if(interpretation === "lastFailure" || interpretation === "secondFailure"){
+			console.log("int is",interpretation, returnObj);
+            if(interpretation === "lastFailure" || interpretation === "secondFailure"){
 				answer = this.model.student.getCorrectAnswer(id, nodePart);
 				// In case of an equation, we need to substitute variablenames in for the IDs.
 				if(nodePart == "equation"){
@@ -964,7 +966,7 @@ define([
 				}
 			}
 
-
+            console.log("flag1",returnObj);
 			// Local function that updates the status if it is not already set to "correct" or "demo"
 			var updateStatus = function(returnObj, model){
 				returnObj.forEach(function(i){
@@ -998,7 +1000,7 @@ define([
 					}
 				});
 			};
-
+            console.log("flag2",returnObj);
 			// Process answers for description
 			if(nodePart === "description"){
 				if(answer){
@@ -1032,6 +1034,7 @@ define([
 
 				}
 				// Process answers for all other node types
+                console.log("flag3",returnObj);
 			}else{
 				givenID = this.model.student.getDescriptionID(id);
 				if(this.activityConfig.get("showNodeEditor")) {
