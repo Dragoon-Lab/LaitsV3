@@ -930,7 +930,7 @@ define([
 			this._assessment = assess;
 		},
 		
-		processAnswer: function(/*string*/ id, /*string*/ nodePart, /*string | object*/ answer,/*string*/ answerString, source){
+		processAnswer: function(/*string*/ id, /*string*/ nodePart, /*string | object*/ answer,/*string*/ answerString){
 			// Summary: Pocesses a student's answers and returns if correct, 
 			//		incorrect, etc. and alerts the controller about what parts 
 			//		of the node editor should be active.
@@ -1009,13 +1009,10 @@ define([
 					descriptionTable[interpretation][this.userType](returnObj, nodePart);
                     //In the case where each node in expression is sent to pedagogical module
                     //In the case of already solved nodes, the type is being unlocked if it is part of expression
-                    //so in such cases we pass additional parameter source, in step 1 we check if it has status directives
-                    //then check if the source parameter is set , which is only set in updateinput node function
-                    if(this.model.student.getStatusDirectives(id).length>0){
+                    // so in such cases we check if the status of the node is correct then we disable the type
+                    if(this.model.given.getStatus(answer,"type")== "correct"){
                         console.log("disabled");
-                        if(source) {
-                            disable(returnObj, "type", true);
-                        }
+                        disable(returnObj, "type", true);
                     }
 					for(var i = 0; i < returnObj.length; i++){
 						if(returnObj[i].value === "correct" || returnObj[i].value === "demo"){
