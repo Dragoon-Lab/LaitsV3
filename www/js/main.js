@@ -1195,14 +1195,15 @@ define([
 
 			//Wiring up history button
 			if(activity_config.get("historyButton")){
-				var historyButton = registry.byId("historyButton");				
+				/*var historyButton = registry.byId("historyButton");	
+				historyButton.set("disabled", false);			
 				menu.add("historyButton", function(e){
 					event.stop(e);
 					session.getHistory(query).then(function(history){
 						console.log("history for now is:", history);
 					})
 					//registry.byId("historyDialog").show();
-				});
+				});*/
 			}
 
 			if(activity_config.get("allowHelp")){
@@ -1364,13 +1365,14 @@ define([
 				}
 				
 				// attaching author History widget
-				if(activity_config.get("allowHistory")) {
-					var historyWidget = new HistoryWidget();
+				/*if(activity_config.get("allowHistory")) {
+					var historyWidget = new HistoryWidget(query);
 					registry.byId("historyButton").set("disabled", false);
-					on(registry.byId("historyButton"), "click", function () {
+					on(registry.byId("historyButton"), "click", function (e) {
+						event.stop(e);
 						historyWidget.show();
 					});
-				}
+				}*/
 				/*
 				 Autosave on close window
 				 It would be more efficient if we only saved the changed node.
@@ -1494,7 +1496,7 @@ define([
 				}
 
 				var searchPattern = new RegExp('^pal3', 'i');
-				if(activity_config["ElectronixTutor"] && tc){ // check if session name starts with pal
+				if(activity_config["PAL3"] && tc){ // check if session name starts with pal
 					//tc = new tincan(givenModel, controllerObject._assessment,session, palTopicIndex);
 					//Connect to learning record store					
 					//Send Statements

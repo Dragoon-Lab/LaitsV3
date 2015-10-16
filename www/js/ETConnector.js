@@ -59,6 +59,7 @@ define([
 			this.HeartbeatService.stop();
 		},
 		sendScore : function(score){
+			debugger;
 			this.TestService.sendTestMessage(this.Frame_Name, this.COMPLETED_VERB, this.Frame_Name, score, Messaging.INFORM_ACT, {});
 			this.stopService();
 			console.log("ET service stopped");

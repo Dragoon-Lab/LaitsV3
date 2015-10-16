@@ -151,7 +151,7 @@ define([
 			        "success": this._model.student.matchesGivenSolutionAndCorrect(),
 			        "duration": this.isoDuration(this._session.calculateDuration()),
 			        "score": {
-			            "scaled": schemaSuccessFactor[schema.name]
+			            "scaled": schemaSuccessFactor[schema.schemaClass]
 			        },
 			        "extensions":{
 						"http://pal3.ict.usc.edu/lrs/extensions/passive": false,
