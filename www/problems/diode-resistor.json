@@ -12,21 +12,24 @@
             "isGraphHelpShown": true
         },
         "image": {
-            "URL": "http:\/\/www.johnloomis.org\/ece201L\/lab6\/diode1.jpg"
+            "URL": "http://www.johnloomis.org/ece201L/lab6/diode1.jpg"
         },
         "taskDescription": {
             "construction": [
-                "Model a diode in series with a resistor and a variable voltage source.  Assume the diode, D1, is not ideal, and it has a knee voltage of 0.7.  Assume the resistance of the resistor (aka R1) is 500 ohms. Nodes have been given to you that represent the varying source voltage. ",
+                "Model a diode in series with a resistor and a variable voltage source.  Assume the diode, D1, is not ideal, and it has a knee voltage of 0.7.  Assume the resistance of the resistor, R1, is 500 ohms. Nodes have been given to you that represent the varying source voltage. ",
                 "",
-                "To model the voltage across a diode we shall use the \"if\" function.  When creating that node, enter a statement of the form \"if(x>y,A,B)\" where x is the voltage across D1 when it is reverse biased, y is the knee voltage, A is the voltage across the diode when it is reverse biased and B is the voltage when it is forward biased.",
+                "To model the voltage across a diode we shall use the "if" function.  When creating that node, enter a statement of the form "if(R>K,K,R)" where R is the voltage across D1 when it is reverse biased and K is the knee voltage, which is the voltage across the diode when it is forward biased.",
                 "",
-                "Graph the current clockwise around the loop.  What happens when you vary the knee voltage and\/or the maximum source voltage?"
+                "Complete the model to view the graph of the current clockwise around the loop.  What happens when you vary the knee voltage and/or the maximum source voltage?"
             ],
             "waveform": [
-                "Here is a model of a diode in series with a resistor and a variable voltage source.  Assume the diode, D1, is not ideal, and it has a knee voltage of 0.7.  Assume the resistance of the resistor (aka R1) is 500 ohms.  The voltage source is a sine wave with a wavelength of 100 milliseconds and a peak of 5 volts."
+                "Here is a model of a diode in series with a resistor and a variable voltage source.  For each node, select the waveform that corresponds best with the node's graph.  Assume the diode, D1, is not ideal, but its knee voltage is so small that it appears on the y-axis at zero."
             ],
             "execution": [
                 "Here is a model of a diode in series with a resistor and a variable voltage source.  Assume the diode, D1, is not ideal, and it has a knee voltage of 0.7.  Assume the resistance of the resistor (aka R1) is 500 ohms.  The voltage source is a sine wave with a wavelength of 100 milliseconds and a peak of 5 volts."
+            ],
+            "incremental": [
+                "Here is model of a diode in series with a resistor and a variable voltage source.  For each node, select the waveform that corresponds best with the node's graph.  Assume the diode, D1, is not ideal, but its knee voltage is so small that it appears on the y-axis at zero. "
             ]
         },
         "lessonsLearned": [],
@@ -384,7 +387,7 @@
                 "units": "volts",
                 "equation": "if(((id18>id13),id13),id18)",
                 "genus": "required",
-                "waveformValue": "wave011"
+                "waveformValue": "wave009"
             },
             {
                 "ID": "id16",
@@ -461,7 +464,7 @@
                     },
                     {
                         "ID": "id3",
-                        "label": "\/"
+                        "label": "/"
                     }
                 ],
                 "position": {
@@ -514,9 +517,10 @@
                 "description": "Current around the loop",
                 "type": "function",
                 "units": "amps",
-                "equation": "id16\/id3",
+                "equation": "id16/id3",
                 "genus": "required",
-                "waveformValue": "wave010"
+                "waveformValue": "wave010",
+                "parentNode": true
             },
             {
                 "ID": "id18",
@@ -577,7 +581,7 @@
                 "type": "function",
                 "units": "volts",
                 "equation": "id1",
-                "explanation": "If the diode were just an open circuit, then its anode (left) would be at the source voltage and its cathode (right) would be at ground. \u00a0So this voltage drop, which is measured left to right, would just be the source voltage.",
+                "explanation": "If the diode were just an open circuit, then its anode (left) would be at the source voltage and its cathode (right) would be at ground. u00a0So this voltage drop, which is measured left to right, would just be the source voltage.",
                 "genus": "required",
                 "waveformValue": "wave007"
             }
@@ -642,6 +646,43 @@
                 "initial": 100,
                 "units": "milliseconds",
                 "type": "parameter"
+            },
+            {
+                "ID": "id20",
+                "inputs": [
+                    {
+                        "ID": "id7"
+                    },
+                    {
+                        "ID": "id19"
+                    }
+                ],
+                "position": {
+                    "x": 525,
+                    "y": 216
+                },
+                "status": {
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id1",
+                "units": "volts",
+                "type": "function",
+                "equation": "id7*sinewave(id19,0)"
             }
         ],
         "schemas": [
