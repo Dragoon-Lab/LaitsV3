@@ -45,6 +45,7 @@ define([
 
 			this.assess.updateSchema(this.currentNodeTime, this.currentNodeErrors);
 			this.assess.dummy();
+			this.assess.accuracy();
 			this.assess.saveSchema(nodeID);
 
 			this.resetNodeValues();
@@ -56,10 +57,15 @@ define([
 			this.currentNodeErrors = this.addNodeErrors(nodeID);
 
 			this.startTime();
+			//this.assess.setCorrectnessScore(nodeID, 0);
 		},
 
 		//function called at every pedagogical module check
-		updateError: function(/* string */ nodePart, /* boolean */ isCorrect){
+		updateError: function(/* string */ nodeID, /* string */ nodePart, /* boolean */ isCorrect){
+			if(isCorrect == "correct"){
+				this.assess.updateScore(nodeID, nodePart);
+			}
+
 			if(isCorrect == "demo" || isCorrect == "incorrect"){
 				this.currentNodeErrors.errors++;
 			} 
@@ -99,6 +105,10 @@ define([
 
 		getSuccessFactor: function(){
 			return this.assess.getSuccessFactor();
+		},
+
+		getSchemaSuccessFactor: function(){
+			return this.assess.getSchemaSuccessFactor();
 		},
 
 		getTime: function(nodeID){
