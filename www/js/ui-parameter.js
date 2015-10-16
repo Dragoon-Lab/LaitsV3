@@ -376,7 +376,7 @@ define(["dojo/_base/lang"], function (lang) {
 						"qualitativeChangeButtons": "none"
 
 					}}
-			],
+			]
 		};
 
 		var config = {

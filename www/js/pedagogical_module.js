@@ -1085,7 +1085,7 @@ define([
 			}
 			if(checkStatus == "correct"){
 				logObj = {
-					checkResult: 'CORRECT',
+					checkResult: 'CORRECT'
 				};
 			}else if(checkStatus == "demo" || checkStatus == "incorrect"){
 				logObj = {

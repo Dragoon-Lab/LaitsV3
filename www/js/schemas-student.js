@@ -84,7 +84,7 @@ define([
 					given: "",
 					start: new Date(),
 					end: null,
-					difference: 0,
+					difference: 0
 				};
 
 				this.time.push(newTime);
