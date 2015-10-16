@@ -69,7 +69,8 @@ define(["dojo/_base/lang"], function (lang) {
 						"lessonsLearnedButton": "inline",
 						"doneButton": "inline",
 						"prettifyButton": "inline",
-						"imageButton": "inline"
+						"imageButton": "inline",
+						"historyButton": "inline"
 
 					}
 				},

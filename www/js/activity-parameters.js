@@ -39,7 +39,7 @@ define([
 					allowPreview:true,
 					allowPrettify:true,
 					allowHelp: true,
-
+					allowHistory : true,
 					allowDeleteNode: true,
 					allowEditNode: true,
 
@@ -752,7 +752,7 @@ define([
 				allowPrettify: false,
 				allowHelp: false,
 				allowLessonsLearned: false,
-
+				allowHistory : false,
 				//Node
 				allowDeleteNode: false,
 				allowEditNode: false,

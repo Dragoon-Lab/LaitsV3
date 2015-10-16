@@ -60,12 +60,13 @@ define([
 	"./modelChanges",
 	"./ETConnector",
 	"./tutorialWidget",
-	"./zoom-correction"
+	"./zoom-correction",
+	"./history-widget"
 ], function(
 	array, lang, dom, geometry, style, domClass, on, aspect, ioQuery, ready, registry, toolTip, tooltipDialog, popup,
 	menu, loadSave, model, Graph, controlStudent, controlAuthor, drawmodel, logging, equation,
 	description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan,
-	activityParameters, memory, event, UI, Dialog, ImageBox, modelUpdates, ETConnector, TutorialWidget, ZoomCorrector){
+	activityParameters, memory, event, UI, Dialog, ImageBox, modelUpdates, ETConnector, TutorialWidget, ZoomCorrector, HistoryWidget){
 
 	/*  Summary:
 	 *			Menu controller
@@ -335,7 +336,7 @@ define([
 			var menuButtons=[];
 			menuButtons.push("createNodeButton","graphButton","tableButton","forumButton",
 				"schemaButton","descButton","saveButton","mergeButton",
-				"previewButton","slidesButton","lessonsLearnedButton","resetButton","doneButton", "prettifyButton", "imageButton");
+				"previewButton","slidesButton","lessonsLearnedButton","resetButton","doneButton", "prettifyButton", "imageButton", "historyButton");
 
 			array.forEach(menuButtons, function(button){
 				//setting display for each menu button
@@ -1343,6 +1344,15 @@ define([
 						//delete node from model and remove from display
 						drawModel.deleteNode(controllerObject.currentID);
 						registry.byId("nodeeditor").hide();
+					});
+				}
+				
+				// attaching author History widget
+				if(activity_config.get("allowHistory")) {
+					var historyWidget = new HistoryWidget();
+					registry.byId("historyButton").set("disabled", false);
+					on(registry.byId("historyButton"), "click", function () {
+						historyWidget.show();
 					});
 				}
 				/*
