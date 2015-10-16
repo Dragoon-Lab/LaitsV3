@@ -38,7 +38,7 @@ define([
         constructor: function(/*model*/ givenModel,/*string*/ activity){
             this.givenModel = givenModel;
             this.timeObj = givenModel.getTime();
-            this.bufferDescription = null;
+            this.bufferDescription = {};
             this._activity=activity;
             this._initHandles();
         },
@@ -61,9 +61,14 @@ define([
             dom.byId("authorSetLessonsLearned").value = this.serialize(
                 this.givenModel.getTaskLessonsLearned() ? this.givenModel.getTaskLessonsLearned() : ""
             );
-            this.bufferDescription = {};
+
+            // initialize the problem statement buffers:           
+            array.forEach(Object.keys(this.givenModel.model.task.taskDescription),function(activity){
+               this.bufferDescription[activity] = this.givenModel.getTaskDescription(activity);
+            }, this);
+            
             dom.byId("authorSetDescription").value = this.serialize(
-                this.givenModel.getTaskDescription(registry.byId("authorSetDescriptionType").get("value")) ? this.givenModel.getTaskDescription(registry.byId("authorSetDescriptionType").get("value")) : ""  
+                 this.bufferDescription[registry.byId("authorSetDescriptionType").get("value")]
             );
              // Populating parameter field
             var list=[]; //list of all required parameters[{label: "growth rate",value: "id3"},...]
@@ -157,7 +162,7 @@ define([
 
                 };
             }));
-             setDescription.on("change", lang.hitch(this, function(data){
+            setDescription.on("change", lang.hitch(this, function(data){
                 var activityType = registry.byId("authorSetDescriptionType").get("value");
                 var tin = dom.byId("authorSetDescription").value;
                 var tin_sanitize = tin.split("\n");
@@ -174,18 +179,18 @@ define([
             
             getActivityType.on("change", lang.hitch(this,function(event){
              
-               var activityValue = getActivityType.get("value");
-               //check for the value in buffer
-               if(this.bufferDescription[activityValue]) 
-                    dom.byId("authorSetDescription").value = this.serialize(
-                        this.bufferDescription[activityValue]
-                    );
-               else
-                    dom.byId("authorSetDescription").value = this.serialize(
-                            this.givenModel.getTaskDescription(activityValue) ? this.givenModel.getTaskDescription(activityValue) : ""  
-                        );
-               return; 
+                var activityValue = getActivityType.get("value");
+
+                // check buffer first and update buffer if it's empty
+                if(!this.bufferDescription[activityValue]) {
+                    this.bufferDescription[activityValue] = this.givenModel.getTaskDescription(activityValue);
+                }
+
+                // fill box with value from buffer
+                dom.byId("authorSetDescription").value = this.serialize(this.bufferDescription[activityValue]);
+                return; 
             }));
+
             //for share bit checkbox
             var descCheckButton = registry.byId("authorProblemCheck");
             console.log("descCheckButton",descCheckButton);
