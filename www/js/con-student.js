@@ -191,7 +191,7 @@ define([
 			//getDescriptionID using variable name
 			var descID = this._model.given.getNodeIDByName(variable);
             console.log(id,descID,this._model.given.getName(descID));
-			var directives = this._PM.processAnswer(id, 'description', descID, this._model.given.getName(descID),"expression");
+			var directives = this._PM.processAnswer(id, 'description', descID, this._model.given.getName(descID),"solveExpression");
 			// Need to send to PM and update status, but don't actually
 			// apply directives since they are for a different node.
 			array.forEach(directives, function (directive) {

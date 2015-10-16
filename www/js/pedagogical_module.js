@@ -869,7 +869,6 @@ define([
 					}else if(this.model.isNodeVisible(studentID, answer)){
 							interpretation = "redundant";
 					}else if(this.model.isParentNode(answer) || (this.model.isNodesParentVisible(studentID, answer) && !this.checkPremature(studentID))){
-                        console.log("vis",this.model.isNodeVisible(studentID, answer));
                         interpretation = "optimal";
 					}else if(this.model.student.getNodes().length === 0){
 						interpretation = "notTopLevel";
@@ -931,12 +930,14 @@ define([
 			this._assessment = assess;
 		},
 		
-		processAnswer: function(/*string*/ id, /*string*/ nodePart, /*string | object*/ answer,/*string*/ answerString){
+		processAnswer: function(/*string*/ id, /*string*/ nodePart, /*string | object*/ answer,/*string*/ answerString, source){
 			// Summary: Pocesses a student's answers and returns if correct, 
 			//		incorrect, etc. and alerts the controller about what parts 
 			//		of the node editor should be active.
 			//
 			// Tags: Private
+            var actual_id = this.model.student.getDescriptionID(id);
+            console.log("actual id is",actual_id);
 			var interpretation = this._getInterpretation(id, nodePart, answer);
 			var returnObj = [], currentStatus;
 			var givenID;  // ID of the correct node, if it exists
@@ -1006,6 +1007,16 @@ define([
 				if(answer){
 					givenID = answer;
 					descriptionTable[interpretation][this.userType](returnObj, nodePart);
+                    //In the case where each node in expression is sent to pedagogical module
+                    //In the case of already solved nodes, the type is being unlocked if it is part of expression
+                    //so in such cases we pass additional parameter source, in step 1 we check if it has status directives
+                    //then check if the source parameter is set , which is only set in updateinput node function
+                    if(this.model.student.getStatusDirectives(id).length>0){
+                        console.log("disabled");
+                        if(source) {
+                            disable(returnObj, "type", true);
+                        }
+                    }
 					for(var i = 0; i < returnObj.length; i++){
 						if(returnObj[i].value === "correct" || returnObj[i].value === "demo"){
 							currentStatus = this.model.given.getStatus(givenID, nodePart); //get current status set in given model
