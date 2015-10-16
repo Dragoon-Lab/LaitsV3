@@ -368,7 +368,7 @@ define([
                     descs[4]= "* The equals sign means the quantity will remain the same despite the change.";
                     descs[5]= "* The question mark means the quantity will sometimes be greater and sometimes be less than its original value.";
                     descs[6]= "In this model the value of the parameter, "+ this.givenModel.given.getName(this.givenModel.getInitialTweakedNode()) + ", has been "+ this.givenModel.getInitialTweakDirection() +"d. You must now choose the correct label for each of the function and accumulator nodes using the symbols listed above.";
-                    descs[7]= "For this demonstration, Dragoon highlight the node you should label next.  When you click on that node, Dragoon will label it for you.  You can then click the \"Show Equation\" button to see why the node was given the label.";
+                    descs[7]= "For this demonstration, Dragoon will highlight the node that should be labeled next.  When you click on that node, Dragoon will label it for you.  You can then click the \"Show Equation\" button to see why the node was given the label.";
                     break;
                 case "executionDemo":
                     descs[0]="";

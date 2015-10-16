@@ -37,7 +37,7 @@ define([
 		}, 
 		{
 			title : "Analysis of the model",
-			url : "images/ss_tutorial2.png",
+			url : "images/ss_tutorial2.gif",
 			content : "You will use Dragoon to build models that calculate graphs and tables of system quantities.  Note how the graphs change instantly as you manipulate the sliders.",
 		},
 		{
@@ -132,7 +132,7 @@ define([
 		this.tutorialShown = false;
 	}
 	widget.prototype.avoidTutorial = function(query){
-		if(window.location.hostname == "localhost" || window.location.hostname == "127.0.0.1")
+		if(window.location.hostname == "localhost" || window.location.hostname == "127.0.0.1" || query.l == "false")
 			return true;
 		if(query.s && query.s == "regression-testing")
 			return true;

@@ -90,6 +90,7 @@ define([
 			isDoneMessageShown: false,
             isGraphHelpShown: false,
 			iteration: 0,
+			problemReopened: false,
 
 			/**
 			 *
@@ -503,6 +504,12 @@ define([
             },
 			setExecutionIterations: function(/* number */ itr){
 				this.model.task.executionIterations = itr;
+			},
+			setProblemReopened: function(/* boolean */ flag){
+				this.problemReopened = flag;
+			},
+			getProblemReopened: function(){
+				return this.problemReopened;
 			}
 		};
 
@@ -676,6 +683,10 @@ define([
 				/* sets passed waveform string value for node id*/
 				this.getNode(id).waveformValue = value;
 			},
+            emptyWaveformValue: function(id){
+                console.log("inside",obj.given.getNode(id));
+                obj.given.getNode(id).waveformValue = undefined;
+            },
 
 			setImageMarks : function(/**string */nodeId, marks){
 				var node = obj.given.getNode(nodeId);
@@ -769,6 +780,8 @@ define([
 					competence: {
 						errors: 0,
 						total: 0,
+						attempts: 0,
+						correctScore: 0,
 						timeSpent: 0,
 						values:{}
 					},
@@ -1064,7 +1077,7 @@ define([
 				// Summary: tracks student progress (correct, incorrect) on a given node;
 				this.getNode(id).status[part] = status;
 			},
-			isComplete: function(/*string*/ id){
+            isComplete: function(/*string*/ id){
 				// Summary: Test whether a node is completely filled out, correct or not
 				// Returns a boolean
 				// id: the node id
@@ -1301,6 +1314,14 @@ define([
 				return obj.matchesGivenSolution() &&
 					this.checkStudentNodeCorrectness();
 			},
+			getNodeIDByDescriptionID: function(/* string */ descriptionID){
+				var id;
+				var gotIt = array.some(this.getNodes(), function(node){
+					id = node.ID;
+					return node.descriptionID === descriptionID;
+				});
+				return gotIt ? id : null;
+			},
 			checkStudentNodeCorrectness: function(){
 				return array.every(this.getStudentNodesInSolution(),
 					function(studentNode){
@@ -1374,7 +1395,7 @@ define([
 			},
 			emptyExecutionValues: function(/* string */ id){
 				var node = this.getNode(id);
-				node.executionValue = [];		
+				node.executionValue = [];
 			},
 			incrementAssistanceScore: function(/*string*/ id){
 				// Summary: Incremements a score of the amount of errors/hints that

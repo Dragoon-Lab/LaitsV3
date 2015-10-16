@@ -439,6 +439,12 @@ span.slip{
 #viewAllSchemaDialog .schemaName{
     display:inline-block;
     width:200px;
+    font-weight: bold;
+}
+
+#viewAllSchemaDialog .schemaNodes{
+    display:inline-block;
+    width:274px;
 }
 
 @keyframes glowing {
