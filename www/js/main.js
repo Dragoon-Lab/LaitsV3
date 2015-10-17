@@ -1497,9 +1497,6 @@ define([
 
 				var searchPattern = new RegExp('^pal3', 'i');
 				if(activity_config["PAL3"] && tc){ // check if session name starts with pal
-					//tc = new tincan(givenModel, controllerObject._assessment,session, palTopicIndex);
-					//Connect to learning record store					
-					//Send Statements
 					if(tc.needsToSendScore) {
 						tc.connect();
 						tc.sendStatements();
@@ -1512,7 +1509,8 @@ define([
 						etConnect.sendScore(score);
 						console.log("sending score(successfactor):", score);
 					}
-					
+					else 
+						etConnect.stopService();
 				}
 			});
 
