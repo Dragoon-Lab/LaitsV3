@@ -1363,16 +1363,16 @@ define([
 						registry.byId("nodeeditor").hide();
 					});
 				}
-				
+				//debugger;
 				// attaching author History widget
-				/*if(activity_config.get("allowHistory")) {
-					var historyWidget = new HistoryWidget(query);
+				if(activity_config.get("allowHistory")) {
+					var historyWidget = new HistoryWidget(query, session.sessionId);
 					registry.byId("historyButton").set("disabled", false);
 					on(registry.byId("historyButton"), "click", function (e) {
 						event.stop(e);
 						historyWidget.show();
 					});
-				}*/
+				}
 				/*
 				 Autosave on close window
 				 It would be more efficient if we only saved the changed node.

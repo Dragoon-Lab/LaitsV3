@@ -21,13 +21,12 @@ define([
 		};
 	}
 
-	var widget = function(params, path){
+	var widget = function(params, session_id, path){
 		this.params = params;
-		this.path = path || "";
-		this.template = template;
-		
+		this.path = path || "";		
 		this.dialog = null;
-		
+		this.current_id = session_id;
+		this.sessions = null;
 	}
 	widget.prototype.show = function(){
 		//every time user clicks on History button it should get the refreshed results.
@@ -39,35 +38,18 @@ define([
 				
 				return; 
 			}
-			var html = "";
-			/*for(var k in Object.keys(data)){
+			context.sessions = data;
+			var html = "<table style=' margin: 1em 0; min-width: 300px;'> <tr> <th style='text-align: left;display: table-cell;padding: .25em .5em; font-weight: bold'> Session ID </th> <th style='text-align: left;display: table-cell;padding: .25em .5em; font-weight: bold'> Time </th><th style='text-align: left;display: table-cell;padding: .25em .5em; font-weight: bold'> User </th><th style='text-align: left;display: table-cell;padding: .25em .5em; font-weight: bold'> Action </th></tr>";
+			for(var k in Object.keys(data)){
 				html += context.createRowHTML(data[k]);
-			}*/
-			debugger;
-			
-			
-			var dd = dojox.dtl;
-
-			var context = new dd.Context({
-				items: ["apple", "banana", "lemon"],
-				unplugged: "Torrey"
-			});
-			var template = new dd.Template("{% for item in items %}{% cycle 'Hot' 'Diarrhea' unplugged 'Extra' %} Pocket. {% endfor %}");
-			html = template.render(context);
-			
-			
-			var dynamic_template = new DTL.Template(template);
-			var c = new DTL_Context({
-				name : "world",
-				data : ['Tushar', 'tushar-jain@live.com'],
-				sessions : html
-			});
+			}
+			html += "</table>";
 			context.dialog = new Dialog({
 				title : "History",
 				content : html,
-				style : "width: 600px; font-size:14px; "
+				style : "width: 600px; font-size:14px;"
 			}); 
-			debugger;
+			context.initHandlers();
 			context.dialog.show();
 		});
 	},
@@ -100,11 +82,39 @@ define([
 		td.setAttribute("style", "text-align: left;display: table-cell;padding: .25em .5em;");
 		tr.appendChild(td);
 		td = document.createElement("td");
-		td.innerText = data["author"];			
+		td.innerText = data["user"];			
+		td.setAttribute("style", "text-align: left;display: table-cell;padding: .25em .5em;");
+		tr.appendChild(td);
+		
+		td = document.createElement("td");
 		td.setAttribute("style", "text-align: left;display: table-cell;padding: .25em .5em;");
 		tr.appendChild(td);
 		tr.setAttribute("style", "border-top: 1px solid #ddd;border-bottom: 1px solid #ddd;");
+		if(this.current_id == data['session_id']){
+			td.appendChild(document.createTextNode('Current'));
+			return tr.outerHTML;
+		}
+		var btn = document.createElement('button');
+		btn.setAttribute('data-dojo-type',"dijit/form/Button");
+		btn.setAttribute('id' ,'btn_' + data['session_id']);
+		btn.innerText = "Load";
+		
+		td.appendChild(btn);
 		return tr.outerHTML;
+	}
+	widget.prototype.loadHandler = function(e){
+		var label = e.target.id;
+		var session_id = label.slice(3,label.indexOf('_label'));
+		window.location = window.location.href + "&sid=" + session_id;
+	}
+	widget.prototype.initHandlers = function(){
+		var sessions = this.sessions;		
+		for(var k in Object.keys(sessions)){		
+				var btn = dom.byId('btn_' + sessions[k]['session_id']);
+				if(!btn) continue;
+				on(btn, 'click', this.loadHandler);
+				
+		}
 	}
 	return widget;
 } );
