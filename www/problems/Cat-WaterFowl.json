@@ -1,0 +1,305 @@
+{
+    "task": {
+        "taskName": "Cat-WaterFowl",
+        "time": {
+            "start": 0,
+            "end": 6,
+            "step": 0.1,
+            "units": "years",
+            "integrationMethod": "Eulers Method"
+        },
+        "properties": {
+            "phase": "Challenge",
+            "type": "Whole",
+            "isGraphHelpShown": true
+        },
+        "image": {
+            "URL": "http:\/\/media.treehugger.com\/assets\/images\/2011\/10\/cat-eating-bird.jpg"
+        },
+        "taskDescription": {
+            "construction": [
+                " The urban lake is home to two interacting populations: the water fowl and domestic cat. The urban lake starts with a population of 10 water fowl and 2 domestic cats. The water fowl birth rate is 2 per year per bird, while cat predation on water fowl causes 30% population decrease per year per cat. Similarly, domestic cat births increase the cat population size by 9% for each bird each year, and the cat population decreases naturally at a rate of 1 per cat per year. Thus, the water fowl population serves as a resource (i.e. food) for the domestic cats and the size of the cat population directly affects the number of birds that die each year (e.g. doubling the cat population doubles the number of birds that die each year). The water fowl population is an important supplementary source of food needed to support a larger cat population and the size of the water fowl population directly affects the number of cats that are born each year. Goal: Graph the water fowl and domestic cat populations over 6 years. Explore how changing initial population size, birth rate, and death rate of the two populations affect population dynamics. "
+            ]
+        },
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id5"
+                    },
+                    {
+                        "ID": "id7"
+                    }
+                ],
+                "position": {
+                    "x": 519.73444197179,
+                    "y": 377.57609748543
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "Bird Births Per Year",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of new water fowl added to the population each year",
+                "equation": "id5 * id7"
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id5"
+                    },
+                    {
+                        "ID": "id8"
+                    },
+                    {
+                        "ID": "id6"
+                    }
+                ],
+                "position": {
+                    "x": 484,
+                    "y": 231
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "Bird Deaths Per Year",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of water fowl removed from the population each year",
+                "equation": "id5 * id8 * id6"
+            },
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id5"
+                    },
+                    {
+                        "ID": "id9"
+                    },
+                    {
+                        "ID": "id6"
+                    }
+                ],
+                "position": {
+                    "x": 795.52064096202,
+                    "y": 160.85845436961
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "Cat Births Per Year",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of new cats added to the population each year",
+                "equation": "id5 * id9 * id6"
+            },
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id10"
+                    },
+                    {
+                        "ID": "id6"
+                    }
+                ],
+                "position": {
+                    "x": 952.8135835237,
+                    "y": 370.79698935535
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "Cat Deaths Per Year",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of cats removed from the population each year",
+                "equation": "id6 * id10"
+            },
+            {
+                "ID": "id5",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    },
+                    {
+                        "ID": "id2"
+                    }
+                ],
+                "position": {
+                    "x": 760,
+                    "y": 441
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "Water Fowl",
+                "type": "accumulator",
+                "parentNode": true,
+                "units": "",
+                "description": "The population size of the water fowl",
+                "initial": 10,
+                "equation": "id1 - id2"
+            },
+            {
+                "ID": "id6",
+                "inputs": [
+                    {
+                        "ID": "id3"
+                    },
+                    {
+                        "ID": "id4"
+                    }
+                ],
+                "position": {
+                    "x": 906,
+                    "y": 263
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "Domestic Cats",
+                "type": "accumulator",
+                "parentNode": false,
+                "units": "",
+                "description": "The population size of the domestic cats",
+                "initial": 2,
+                "equation": "id3 - id4"
+            },
+            {
+                "ID": "id7",
+                "inputs": [],
+                "position": {
+                    "x": 410,
+                    "y": 457.57609748543
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "Bird Birth Rate",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The birth rate coefficient for the water fowl population",
+                "initial": 2
+            },
+            {
+                "ID": "id8",
+                "inputs": [],
+                "position": {
+                    "x": 517.85607910156,
+                    "y": 58.179302215576
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "Bird Death Rate",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The death rate coefficient for the water fowl population",
+                "initial": 0.3
+            },
+            {
+                "ID": "id9",
+                "inputs": [],
+                "position": {
+                    "x": 899.79697609991,
+                    "y": 50
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "Cat Birth Rate",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The birth rate coefficient for the cat population",
+                "initial": 0.09
+            },
+            {
+                "ID": "id10",
+                "inputs": [],
+                "position": {
+                    "x": 1062.7827097608,
+                    "y": 453.53807900205
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "Cat Death Rate",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The death rate coefficient for the cat population",
+                "initial": 1
+            }
+        ],
+        "studentModelNodes": [],
+        "lessonsLearned": [],
+        "increment": [
+            {
+                "tweakedNode": "defaultSelect",
+                "tweakDirection": "defaultSelect"
+            }
+        ]
+    }
+}

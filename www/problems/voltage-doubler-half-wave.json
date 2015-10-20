@@ -12,7 +12,7 @@
             "isGraphHelpShown": true
         },
         "image": {
-            "URL": "http:\/\/webpages.charter.net\/dawill\/Images\/Doubler2.png"
+            "URL": "http://webpages.charter.net/dawill/Images/Doubler2.png"
         },
         "taskDescription": {
             "construction": [
@@ -358,7 +358,7 @@
                     },
                     {
                         "ID": "id10",
-                        "label": "\/"
+                        "label": "/"
                     }
                 ],
                 "position": {
@@ -411,7 +411,7 @@
                 "description": "Voltage subtracted from C1",
                 "type": "function",
                 "units": "volts",
-                "equation": "id9\/id10",
+                "equation": "id9/id10",
                 "genus": "required"
             },
             {
@@ -544,7 +544,7 @@
                     },
                     {
                         "ID": "id8",
-                        "label": "\/"
+                        "label": "/"
                     }
                 ],
                 "position": {
@@ -597,7 +597,7 @@
                 "description": "Current through the load resistor",
                 "type": "function",
                 "units": "amps",
-                "equation": "id4\/id8",
+                "equation": "id4/id8",
                 "genus": "required"
             },
             {
@@ -780,7 +780,7 @@
                 "units": "volts",
                 "equation": "id11",
                 "genus": "required",
-                "explanation": "This is the voltage with respect to ground at the junction between C1, D1 and D2.\u00a0"
+                "explanation": "This is the voltage with respect to ground at the junction between C1, D1 and D2.u00a0"
             },
             {
                 "ID": "id16",
@@ -1049,7 +1049,7 @@
                     },
                     {
                         "ID": "id24",
-                        "label": "\/"
+                        "label": "/"
                     }
                 ],
                 "position": {
@@ -1102,7 +1102,7 @@
                 "description": "Voltage subracted from C2",
                 "type": "function",
                 "units": "volts",
-                "equation": "id23\/id24",
+                "equation": "id23/id24",
                 "genus": "required"
             },
             {
@@ -1179,7 +1179,7 @@
                     },
                     {
                         "ID": "id8",
-                        "label": "\/"
+                        "label": "/"
                     }
                 ],
                 "position": {
@@ -1232,7 +1232,7 @@
                 "description": "Current thru load resist from C2",
                 "type": "function",
                 "units": "amps",
-                "equation": "id19\/id8",
+                "equation": "id19/id8",
                 "genus": "required"
             },
             {
@@ -1358,7 +1358,7 @@
                 "units": "volts",
                 "equation": "id3+id4",
                 "genus": "required",
-                "explanation": "If diode D1 were an open circuit (i.e., reverse biased), then this would be the voltage across it, measured from the top (cathode) to the bottom (anode). \u00a0"
+                "explanation": "If diode D1 were an open circuit (i.e., reverse biased), then this would be the voltage across it, measured from the top (cathode) to the bottom (anode). u00a0"
             }
         ],
         "studentModelNodes": [
