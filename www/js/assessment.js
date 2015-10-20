@@ -72,10 +72,9 @@ define([
 				var node = this._model.given.getNode(givenID);
 				var properties = this._activityConfig.get("properties");
 				var count = 0;
-
 				array.forEach(properties, function(property){
 					//checking if given node has a value and status is not entered while copying the node.
-					if(node.hasOwnProperty(property) && node[property] != "" &&
+					if(node.hasOwnProperty(property) && (node[property] != "" && node[property] != null) &&
 						(!node.status.hasOwnProperty(property) || node.status[property] != "entered")){
 						if(typeof(node[property]) == "object"){
 							count += node[property].length;

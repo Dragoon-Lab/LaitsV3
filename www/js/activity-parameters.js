@@ -80,7 +80,7 @@ define([
 						"description",
 						"type",
 						"initial",
-						"unit",
+						"units",
 						"equation"
 					],
 					plotAuthorSolution:true
@@ -110,7 +110,7 @@ define([
 						"description",
 						"type",
 						"initial",
-						"unit",
+						"units",
 						"equation"
 					],
 					plotAuthorSolution:true
@@ -135,7 +135,7 @@ define([
 						"description",
 						"type",
 						"initial",
-						"unit",
+						"units",
 						"equation"
 					],
 					plotAuthorSolution:true
@@ -158,7 +158,7 @@ define([
 						"description",
 						"type",
 						"initial",
-						"unit",
+						"units",
 						"equation"
 					],
 
