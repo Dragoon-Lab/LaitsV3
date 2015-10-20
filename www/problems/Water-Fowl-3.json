@@ -1,0 +1,361 @@
+{
+    "task": {
+        "taskName": "Water-Fowl-3",
+        "time": {
+            "start": 0,
+            "end": 100,
+            "step": 1,
+            "units": "years",
+            "integrationMethod": "Eulers Method"
+        },
+        "properties": {
+            "phase": "Challenge",
+            "type": "Whole",
+            "isGraphHelpShown": true
+        },
+        "image": {
+            "URL": "http:\/\/2.bp.blogspot.com\/-21aiVfnI_80\/TldvSODH7iI\/AAAAAAAADZ0\/JGRHqrWadNk\/s1600\/Funny+fat+birds1.jpg"
+        },
+        "taskDescription": {
+            "construction": " Let's include even more specific information on how population dynamics can be constraint by environmental factors. The urban lake starts with a population of 10 water fowl and the population growth rate is the birth rate (40% per year) minus the death rate (17% per year). The maximum number of water fowl that the urban lake can support (K) now depends directly on the quantity of the renewable resource (e.g. if there is only 20 hg of the resource, then the lake can only support a maximum of 20 individual water fowl). The quantity of the renewable resource starts out at 100 hg and is renewed by 60% per year and 2% of the resource is consumed by each water fowl per year. Goal: Graph the water fowl population and quantity of the resource over 10 years. Hint: Enter constant to the Hundred Thousandth decimal place. Use the logistic equation form (K-N)\/K to calculate environmental resistance, p. 242 "
+        },
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id6"
+                    },
+                    {
+                        "ID": "id10"
+                    },
+                    {
+                        "ID": "id2"
+                    }
+                ],
+                "position": {
+                    "x": 940.40790915259,
+                    "y": 177.45783926469
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "births per year",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of new water fowl added to the population each year",
+                "equation": "id6 * id10 * id2"
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id5"
+                    },
+                    {
+                        "ID": "id9"
+                    }
+                ],
+                "position": {
+                    "x": 640,
+                    "y": 92
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "proportion capacity remaining",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The proportion of the unutilized ecosystem carrying capacity",
+                "equation": "id5 \/ id9"
+            },
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id9"
+                    },
+                    {
+                        "ID": "id11"
+                    }
+                ],
+                "position": {
+                    "x": 544.29975296372,
+                    "y": 328.34507371341
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "renew per year",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of new resources added to the resource pool each year",
+                "equation": "id9 * id11"
+            },
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id12"
+                    },
+                    {
+                        "ID": "id6"
+                    },
+                    {
+                        "ID": "id9"
+                    }
+                ],
+                "position": {
+                    "x": 822.83419415542,
+                    "y": 445.86104638207
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "consump per year",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of resources consumed each year",
+                "equation": "id12 * id6 * id9"
+            },
+            {
+                "ID": "id5",
+                "inputs": [
+                    {
+                        "ID": "id6"
+                    },
+                    {
+                        "ID": "id9"
+                    }
+                ],
+                "position": {
+                    "x": 747,
+                    "y": 118
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "capacity remaining",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The amount of the ecosystem carrying capacity not utilized by the water fowl population",
+                "equation": "id9 - id6"
+            },
+            {
+                "ID": "id6",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    },
+                    {
+                        "ID": "id7"
+                    }
+                ],
+                "position": {
+                    "x": 955.01519061355,
+                    "y": 341.88125364341
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "water fowl",
+                "type": "accumulator",
+                "parentNode": true,
+                "units": "",
+                "description": "The water fowl population size",
+                "initial": 10,
+                "equation": "id1 - id7"
+            },
+            {
+                "ID": "id7",
+                "inputs": [
+                    {
+                        "ID": "id6"
+                    },
+                    {
+                        "ID": "id8"
+                    }
+                ],
+                "position": {
+                    "x": 1110.9473956113,
+                    "y": 397.0688911934
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "deaths per year",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of water fowl removed from the population each year",
+                "equation": "id8 * id6"
+            },
+            {
+                "ID": "id8",
+                "inputs": [],
+                "position": {
+                    "x": 1238.7797365263,
+                    "y": 441.67713535136
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "death rate",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The maximum rate of death of water fowl",
+                "initial": 0.17
+            },
+            {
+                "ID": "id9",
+                "inputs": [
+                    {
+                        "ID": "id3"
+                    },
+                    {
+                        "ID": "id4"
+                    }
+                ],
+                "position": {
+                    "x": 708.8658560199,
+                    "y": 328.63988510004
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "resource",
+                "type": "accumulator",
+                "parentNode": false,
+                "units": "",
+                "description": "The size of the resource pool (hg) available to the water fowl",
+                "initial": 100,
+                "equation": "id3 - id4"
+            },
+            {
+                "ID": "id10",
+                "inputs": [],
+                "position": {
+                    "x": 1005.0059483148,
+                    "y": 50
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "birth rate",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The maximum rate of birth of water fowl",
+                "initial": 0.4
+            },
+            {
+                "ID": "id11",
+                "inputs": [],
+                "position": {
+                    "x": 410,
+                    "y": 327.09281093814
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "renew rate",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The maximum rate that the resource is renewed",
+                "initial": 0.6
+            },
+            {
+                "ID": "id12",
+                "inputs": [],
+                "position": {
+                    "x": 806.25448899349,
+                    "y": 588.23881547321
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "consump rate",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The maximum rate that the resource is consumed",
+                "initial": 0.02
+            }
+        ],
+        "studentModelNodes": [],
+        "lessonsLearned": [],
+        "increment": [
+            {
+                "tweakedNode": "defaultSelect",
+                "tweakDirection": "defaultSelect"
+            }
+        ]
+    }
+}
