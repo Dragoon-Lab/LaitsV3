@@ -869,7 +869,7 @@ define([
 					}else if(this.model.isNodeVisible(studentID, answer)){
 							interpretation = "redundant";
 					}else if(this.model.isParentNode(answer) || (this.model.isNodesParentVisible(studentID, answer) && !this.checkPremature(studentID))){
-						interpretation = "optimal";
+                        interpretation = "optimal";
 					}else if(this.model.student.getNodes().length === 0){
 						interpretation = "notTopLevel";
 					}else{
@@ -936,13 +936,16 @@ define([
 			//		of the node editor should be active.
 			//
 			// Tags: Private
+            var actual_id = this.model.student.getDescriptionID(id);
+            console.log("actual id is",actual_id);
 			var interpretation = this._getInterpretation(id, nodePart, answer);
 			var returnObj = [], currentStatus;
 			var givenID;  // ID of the correct node, if it exists
 			var solutionGiven = false;
 			var givenAnswer = answer; //keeping a copy of answer for logging purposes.
 			// Send correct answer to controller if status will be set to 'demo'
-			if(interpretation === "lastFailure" || interpretation === "secondFailure"){
+			console.log("int is",interpretation, returnObj);
+            if(interpretation === "lastFailure" || interpretation === "secondFailure"){
 				answer = this.model.student.getCorrectAnswer(id, nodePart);
 				// In case of an equation, we need to substitute variablenames in for the IDs.
 				if(nodePart == "equation"){
@@ -964,7 +967,7 @@ define([
 				}
 			}
 
-
+            console.log("flag1",returnObj);
 			// Local function that updates the status if it is not already set to "correct" or "demo"
 			var updateStatus = function(returnObj, model){
 				returnObj.forEach(function(i){
@@ -998,12 +1001,19 @@ define([
 					}
 				});
 			};
-
+            console.log("flag2",returnObj);
 			// Process answers for description
 			if(nodePart === "description"){
 				if(answer){
 					givenID = answer;
 					descriptionTable[interpretation][this.userType](returnObj, nodePart);
+                    //In the case where each node in expression is sent to pedagogical module
+                    //In the case of already solved nodes, the type is being unlocked if it is part of expression
+                    // so in such cases we check if the status of the node is correct then we disable the type
+                    if(this.model.given.getStatus(answer,"type")== "correct"){
+                        console.log("disabled");
+                        disable(returnObj, "type", true);
+                    }
 					for(var i = 0; i < returnObj.length; i++){
 						if(returnObj[i].value === "correct" || returnObj[i].value === "demo"){
 							currentStatus = this.model.given.getStatus(givenID, nodePart); //get current status set in given model
@@ -1032,6 +1042,7 @@ define([
 
 				}
 				// Process answers for all other node types
+                console.log("flag3",returnObj);
 			}else{
 				givenID = this.model.student.getDescriptionID(id);
 				if(this.activityConfig.get("showNodeEditor")) {
