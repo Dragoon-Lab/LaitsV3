@@ -53,6 +53,7 @@ define([
 			this._model = givenModel;
 			this._assessment = assessment;
 			this._session = session;
+			this.needsToSendScore = true;
 		},
 
 		connect: function() {
@@ -88,11 +89,11 @@ define([
 			var baseURL = 'http://pal3.ict.usc.edu/lrs/';
 			var api_key = "feb46eec5cdedce5553550318ff93ea9b48ea69a";
 			var statement = {};
-			var assesmentScore = this._assessment.getAssessmentScore("dummy");
 			var successFactor = this._assessment.getSuccessFactor();
+			var schemaSuccessFactor = this._assessment.getSchemaSuccessFactor();
 			var username = this._session.params.u;
 			var email = username;
-
+			var context = this;
 			var topic = this._session.params.topic || "No Topic";
 
 			if (username.indexOf("..") > 0){
@@ -150,7 +151,7 @@ define([
 			        "success": this._model.student.matchesGivenSolutionAndCorrect(),
 			        "duration": this.isoDuration(this._session.calculateDuration()),
 			        "score": {
-			            "scaled": assesmentScore[schema.name]
+			            "scaled": schemaSuccessFactor[schema.schemaClass]
 			        },
 			        "extensions":{
 						"http://pal3.ict.usc.edu/lrs/extensions/passive": false,
@@ -180,6 +181,7 @@ define([
 					sync:true,
 					load: function(response){
 						console.log(response);
+						context.needsToSendScore = false;
 					},
 					error: function(err){
 						console.log(err);

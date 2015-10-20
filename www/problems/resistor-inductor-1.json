@@ -1,20 +1,33 @@
 {
     "task": {
-        "taskName": "Model RL Series Circuits",
+        "taskName": "resistor-inductor-1",
         "time": {
             "start": 0,
-            "end": 10,
+            "end": 100,
             "step": 1,
             "integrationMethod": "Eulers Method",
             "units": "seconds"
         },
-        "properties": {},
-        "image": {
-            "URL": "http:\/\/i.imgur.com\/dNNguAS.png"
+        "properties": {
+            "isGraphHelpShown": true
         },
-        "taskDescription": [
-            "Model the circuit shown, with L=4 Henries, R=5 ohms and Vo = 5 volts.  Nodes have been given to you that use pulsetrain(0,5,5) to represent the switch being directed to the battery for 5 seconds and then to the short for 5 seconds.  Use Kirchhoff's Voltage Law to determine the voltage across the inductor and Ohm's Law to determine the voltage across the resistor.  Graph the current through the inductor.  "
-        ],
+        "image": {
+            "URL": "http://i.imgur.com/dNNguAS.png"
+        },
+        "taskDescription": {
+            "construction": [
+                "Model the circuit shown, with L=500 Henries, R=50 ohms and Vo = 5 volts.  Nodes have been given to you that use pulsetrain(0,50,50) to represent the switch being directed to the battery for 50 seconds and then to the short for 50 seconds.  Use Kirchhoff's Voltage Law to determine the voltage across the inductor and Ohm's Law to determine the voltage across the resistor.  Finish the model and view the graph of the current through the inductor."
+            ],
+            "incremental": [
+                "In the model of the circuit shown L=500 Henries, R=50 ohms and Vo = 5 volts.  Nodes have been given that use pulsetrain(0,50,50) to represent the switch being directed to the battery for 50 seconds and then to the short for 50 seconds."
+            ],
+            "execution": [
+                "In the model of the circuit shown L=500 Henries, R=50 ohms and Vo = 5 volts.  Nodes have been given that use pulsetrain(0,50,50) to represent the switch being directed to the battery for 50 seconds and then to the short for 50 seconds."
+            ],
+            "waveform": [
+                "Model the circuit shown, with L=500 Henries, R=50 ohms and Vo = 5 volts.  Nodes have been given to you that use pulsetrain(0,50,50) to represent the switch being directed to the battery for 50 seconds and then to the short for 50 seconds.  Use Kirchhoff's Voltage Law to determine the voltage across the inductor and Ohm's Law to determine the voltage across the resistor.  Finish the model and view the graph of the current through the inductor."
+            ]
+        },
         "lessonsLearned": [],
         "givenModelNodes": [
             {
@@ -89,7 +102,7 @@
                     },
                     {
                         "ID": "id4",
-                        "label": "\/"
+                        "label": "/"
                     }
                 ],
                 "position": {
@@ -140,7 +153,7 @@
                 "description": "change in inductor-resistor current",
                 "type": "function",
                 "units": "amps",
-                "equation": "id3\/id4",
+                "equation": "id3/id4",
                 "imageMarks": [
                     "142 , 2 , 135 , 71"
                 ]
@@ -263,7 +276,7 @@
                 "equation": "",
                 "type": "parameter",
                 "parentNode": false,
-                "initial": 4,
+                "initial": 500,
                 "units": "henries",
                 "imageMarks": [
                     "268 , 73 , -114 , -70"
@@ -324,7 +337,7 @@
                 "genus": "required",
                 "type": "function",
                 "units": "volts",
-                "equation": "id8*pulsetrain((0,5),5)",
+                "equation": "id8*pulsetrain((0,50),50)",
                 "imageMarks": [
                     "182 , 149 , 69 , 108",
                     "252 , 255 , -65 , -89",
@@ -449,7 +462,7 @@
                 "equation": "",
                 "type": "parameter",
                 "parentNode": false,
-                "initial": 5,
+                "initial": 50,
                 "units": "ohms",
                 "imageMarks": [
                     "32 , 2 , 75 , 84"
@@ -583,24 +596,6 @@
         ],
         "schemas": [
             {
-                "ID": "schema4",
-                "schemaClass": "inductor_behavior",
-                "name": "Inductor Behavior",
-                "competence": {
-                    "errors": 0,
-                    "total": 0,
-                    "timeSpent": 0,
-                    "values": {}
-                },
-                "nodes": "id4, id3, id2",
-                "rates": {},
-                "difficulty": {
-                    "isolation": 1,
-                    "cues": 0,
-                    "phrases": 0
-                }
-            },
-            {
                 "ID": "schema5",
                 "schemaClass": "resistor_behavior",
                 "name": "Resistor Behavior",
@@ -637,16 +632,18 @@
                 }
             },
             {
-                "ID": "schema9",
+                "ID": "schema11",
                 "schemaClass": "ohms_law",
                 "name": "Ohm's Law: Voltage",
                 "competence": {
                     "errors": 0,
                     "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id6, id1, id7",
+                "nodes": "id6",
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,
@@ -655,22 +652,50 @@
                 }
             },
             {
-                "ID": "schema10",
+                "ID": "schema12",
                 "schemaClass": "kirchoff_voltage_law",
                 "name": "Kirchoff's Voltage Law",
                 "competence": {
                     "errors": 0,
                     "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id3, id6, id5",
+                "nodes": "id3",
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,
                     "cues": 1,
                     "phrases": 1
                 }
+            },
+            {
+                "ID": "schema16",
+                "schemaClass": "inductor_behavior",
+                "name": "Inductor Behavior",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id2, id4, id3, id1",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 0
+                }
+            }
+        ],
+        "increment": [
+            {
+                "tweakedNode": "defaultSelect",
+                "tweakDirection": "defaultSelect"
             }
         ]
     }

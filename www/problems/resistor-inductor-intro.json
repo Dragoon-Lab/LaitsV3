@@ -1,26 +1,28 @@
 {
     "task": {
-        "taskName": "resistor inductor intro",
+        "taskName": "resistor-inductor-intro",
         "time": {
             "start": 0,
             "end": 60,
-            "step": 0.1,
+            "step": 1,
             "integrationMethod": "Eulers Method",
             "units": "seconds"
         },
-        "properties": {},
+        "properties": {
+            "isGraphHelpShown": true
+        },
         "image": {
-            "URL": "http:\/\/i.imgur.com\/dNNguAS.png"
+            "URL": "http://i.imgur.com/dNNguAS.png"
         },
         "taskDescription": {
             "construction": [
-                "Model the circuit shown, with L=4 Henries, R=5 ohms and Vo = 5 volts.  Nodes have been given to you that represent the switch being directed to the battery for 5 seconds and then to the short for 5 seconds.  Your goal is to graph the current through the inductor.",
+                "Model the circuit shown, with L=4 Henries, R=5 ohms and Vo = 5 volts.  Nodes have been given to you that represent the switch being directed to the battery for 5  seconds and then to the short for 5 seconds.  Your goal is to graph the current through the inductor.",
                 "",
-                "Hint: Start by clicking on the \"current\" node and constructing it.  The current will start at zero.  Then, construct its inputs, then their inputs, and so forth until Dragoon tells you your model is complete.  Below are some useful formulas:",
+                "Hint: Start by clicking on the "current" node and constructing it.  The current will start at zero.  Then, construct its inputs, then their inputs, and so forth until Dragoon tells you your model is complete.  Below are some useful formulas:",
                 "",
                 "Ohm's Law:  V = I * R",
                 "",
-                "Inductance: L = V \/ I",
+                "Inductance: L = V / I",
                 "",
                 "Kirchoff's Voltage Law: The algebraic sum of the voltages around a closed loop is zero."
             ]
@@ -96,7 +98,7 @@
                     },
                     {
                         "ID": "id4",
-                        "label": "\/"
+                        "label": "/"
                     }
                 ],
                 "position": {
@@ -147,7 +149,7 @@
                 "description": "change in inductor-resistor current",
                 "type": "function",
                 "units": "amps",
-                "equation": "id3\/id4"
+                "equation": "id3/id4"
             },
             {
                 "ID": "id3",
@@ -503,7 +505,128 @@
                 "equation": "id9*pulsetrain((0,5),5)"
             }
         ],
-        "schemas": [],
+        "schemas": [
+            {
+                "ID": "schema8",
+                "schemaClass": "rl_in_series_behavior",
+                "name": "Resistor Inductor in Series Behavior",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id2, id3, id4, id6, id7",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema9",
+                "schemaClass": "inductor_behavior",
+                "name": "Inductor Behavior",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id2, id3, id4",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema10",
+                "schemaClass": "resistor_behavior",
+                "name": "Resistor Behavior",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id7, id6",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema11",
+                "schemaClass": "kirchoff_voltage_law",
+                "name": "Kirchoff's Voltage Law",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id3",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema12",
+                "schemaClass": "ohms_law",
+                "name": "Ohm's Law: Voltage",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id6",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema13",
+                "schemaClass": "dragoon_interactions",
+                "name": "Dragoon Interactions",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id1, id2, id3, id4, id7, id6",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            }
+        ],
         "increment": [
             {
                 "tweakedNode": "defaultSelect",

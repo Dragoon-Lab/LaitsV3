@@ -327,8 +327,8 @@
 				"example" : ""
 			},
 			{
-				"name" : "Transistor Behavior",
-				"id" : "transistor_behavior",
+				"name" : "CE Transistor Behavior",
+				"id" : "CE_transistor_behavior",
 				"template" : "",
 				"example" : ""
 			},
@@ -342,6 +342,18 @@
 				"name" : "CE Transistor Battery Bias Behavior",
 				"id" : "CE_transistor_battery_bias_bhvr",
 				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "CE Transistor Voltage Divider Bias Behavior",
+				"id" : "CE_trnsstr_vltg_div_bias_bhvr",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Dragoon Interactions",
+				"id" : "dragoon_interactions",
+				"template" : "Used to track skill with Dragoon.",
 				"example" : ""
 			}
 		]
