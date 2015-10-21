@@ -285,9 +285,6 @@ define([
 			controllerObject._PM.setLogging(session);  // Set up direct logging in PM
 		}
 		controllerObject.setLogging(session); // set up direct logging in controller
-		if(query.m != 'AUTHOR'){
-			controllerObject.setAssessment(session); //set up assessment for student.
-		}
 		equation.setLogging(session);
 
 		/*
@@ -484,6 +481,9 @@ define([
 			var drawModel = new drawmodel(givenModel.active, ui_config.get("showColor"), activity_config);
 			drawModel.setLogging(session);
 			
+			if(query.m != 'AUTHOR'){
+				controllerObject.setAssessment(session); //set up assessment for student.
+			}
 			// add mouse enter and mouse leave event for every new node	
 			var iBoxController = new ImageBox(givenModel.getImageURL(), givenModel);
 			
@@ -650,7 +650,6 @@ define([
 					around: dom.byId('prettifyButton')
 				});
 			});
-
 			//Remove nodes from student model(if added) when author deletes the node from given model
 			if(controllerObject._mode == "AUTHOR"){
 				aspect.after(drawModel,

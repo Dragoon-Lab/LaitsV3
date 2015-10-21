@@ -101,7 +101,7 @@ define([
 
 		setAssessment: function (session) {
 			if (this._model.active.getSchemas()) {
-				this._assessment = new schemaStudent(this._model, session);
+				this._assessment = new schemaStudent(this._model, session, this.activityConfig);
 			}
 
 			this._PM.setAssessment(this._assessment);
@@ -823,6 +823,7 @@ define([
 		resetIterationExecDemo: function(){
 			var studId = this._model.active.getNodes();
 			var nowHighLighted = this.currentHighLight;
+			var iteration = this._model.student.getIteration();
 			studId.forEach(lang.hitch(this, function (newId) {
 				var givenID = this._model.active.getDescriptionID(newId.ID);
 				//remove the glow for current highlighted node as a part of reset
@@ -836,13 +837,12 @@ define([
 					this.colorNodeBorder(newId.ID, true);
                     if(this.activityConfig.get("executionExercise")) {
                         this._model.active.getNode(newId.ID).status["executionValue"]=null;
-						this._model.given.getNode(givenID).status["executionValue"]=null;
                         registry.byId("executionValue").set("disabled", false);
                     }
 
 					this._model.given.getNode(givenID).attemptCount['assistanceScore'] = 0;
 					this._model.given.getNode(givenID).attemptCount['tweakDirection'] = 0;
-					this._model.given.getNode(givenID).attemptCount['executionValue'] = 0;
+					this._model.given.getNode(givenID).attemptCount['executionValue'][iteration] = 0;
 
 					//Update Node Label
 					this.updateNodeLabel(newId.ID);

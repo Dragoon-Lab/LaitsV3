@@ -1263,7 +1263,6 @@ define([
 
 			if(nodes){
 				var ids = [];
-				
 				//sets up the complete nodes so that we know the exhaustive node IDs and their types.
 				array.forEach(nodes, function(node, counter){
 					ids[counter] = node.ID;
@@ -1281,92 +1280,11 @@ define([
 						default:
 							break;
 					}
-					
+
 					if(useTweakNode && node.descriptionID == tweakedNode){
 						studentTweakedNode = node.ID;
 					}
 				});
-
-				var checkString = function(str, id1, id2){
-					if(str.indexOf(id1) >= 0)
-						return id1;
-					else if(str.indexOf(id2) >= 0)
-						return id2;
-					else
-						return "";
-				};
-
-				//places id2 before or after id1 as given by the position, position values are "before" or "after"
-				var putString = function(str, id1, id2, position){
-					var index;
-					var index1 = str.indexOf(id1);
-					var index2 = str.indexOf(id2);
-
-					if(index2 >= 0){
-						//basically means that both ids are in the string
-						return str;
-					}
-
-					var getIndex = function(){
-						var arr = str.split(" ");
-						var i = 0;
-						array.some(arr, function(r, count){
-							i = count;
-							return r.indexOf(id1) >= 0;
-						});
-
-						var j;
-						switch(position){
-							case "before":
-								j = i-1;
-								break;
-							case "after":
-								j = i+1;
-								break;
-							default:
-								j = i;
-						}
-
-						sum = j; //j is added to take care of the spaces that are in after node ids. which are lost in split
-						for(var i = 0; i <= j; i++){
-							sum += arr[i].length;
-						}
-
-						return sum;
-					};
-
-					var l = str.length;
-					var returnString = "";
-					switch(position){
-						default:
-						case "before":
-							if(index1 == 0)
-								returnString = id2 + " " + str;
-							else {
-								//this means that there is already a node that is supposed to be complete before we do this.
-								var index = index1 - 1;
-								if(str[index] != " "){
-									index = getIndex();
-								}
-								returnString = str.slice(0, index) +"="+ id2 + str.slice(index, str.length);
-
-							}
-							break;
-						case "after":
-							if(index1 == str.length - id1.length)
-								returnString = str + " " +id2;
-							else{
-								var index = index1 + id1.length + 1;
-								if(str[index] != " "){
-									index = getIndex();
-								}
-								returnString = str.slice(0, index) + id2 + "=" + str.slice(index, str.length);
-							}
-							break;
-					}
-
-					return returnString;
-				}
 
 				//the priority of the ids is same. So it checks for the position. Which ever is on the left will be done first.
 				//Uses insertion sort based on position.
@@ -1417,65 +1335,44 @@ define([
 				var str = [];
 				var hierarchyString = "";
 				var hierarchy = [];
-				var relativeOrderF = [];
-				//make hierarchy of the nodes based on inputs.
-				array.forEach(functionID, function(id){
-					var n = nodes[ids.indexOf(id)];
-					var inputs = n.inputs;
-					var nodeAddedFlag = false;
-					array.forEach(inputs, function(input){
-						if(functionID.indexOf(input.ID) >= 0){
-							var flag = true;
-							//check if some relative order already has the one of the nodes.
-							array.forEach(relativeOrderF, function(s, counter){
-								var temp = checkString(s, n.ID, input.ID);
+				var nodesChecked = [];
 
-								if(temp == n.ID){
-								s = putString(s, n.ID, input.ID, "before");
-									flag = false;
-								} else if (temp == input.ID) {
-									s = putString(s, input.ID, n.ID, "after");
-									flag = false;
-								}
-
-								relativeOrderF[counter] = s;
-							}, this);
-
-							if(flag){
-								relativeOrderF.push(input.ID + " " + n.ID);
+				hierarchy[0] = parameterID.concat(accumulatorID);
+				var i = 0;
+				var nodesCopy = dojo.clone(nodes);
+				while(nodesChecked.length < functionID.length){
+					hierarchy[i+1] = [];
+					array.forEach(functionID, function(id, j){
+						var index = ids.indexOf(id);
+						var n = nodesCopy[index];
+						var inputs = n.inputs;
+						var inputsCopy = dojo.clone(inputs);
+						var k = inputsCopy.length-1;
+						for(k; k >= 0; k--){
+							if(hierarchy[i].indexOf(inputsCopy[k].ID) >= 0){
+								n.inputs.splice(k, 1);
 							}
-							nodeAddedFlag = true;
+						}
+						if(nodesChecked.indexOf(id) < 0 && n.inputs.length == 0){
+							nodesChecked.push(id);
+							hierarchy[i+1].push(id);
 						}
 					}, this);
-
-					if(!nodeAddedFlag){
-						//means that none of the inputs were function hence the priority will be 0 for this
-						var checkID = array.some(relativeOrderF, function(s){
-							return (s.indexOf(id) >= 0);
-						});
-
-						if(!checkID){
-							relativeOrderF.push(id);
-						}
-					}
-				}, this);
-
-				//create the complete hierarchy of functions using relative order.
-				if(relativeOrderF){
-					array.forEach(relativeOrderF, function(s){
-						var arr = s.split(" ");
-						array.forEach(arr, function(id, counter){
-							if(hierarchy && hierarchy[counter]){
-								if(hierarchy[counter].indexOf(id) < 0)
-									hierarchy[counter] += ("=" + id);
-							} else {
-								hierarchy[counter] = id;
-							}
-						}, this);
-					}, this);
-
-					console.log("function nodes order is ", hierarchy);
+					i++;
 				}
+
+				var temp = [];
+				for(i = 1; i<hierarchy.length; i++){
+					var str = "";
+					for(j = 0; j<hierarchy[i].length; j++){
+						str += hierarchy[i][j]+"=";
+					}
+					str = str.substring(0, str.length-1);
+					temp.push(str);
+				}
+
+				hierarchy = temp;
+
 				//now we just prioritize all the functions. hierarchy array has ids which are at same levels in the model.
 				//Each row either has ids in the form id10=id13 or id11. All these nodes are functions.
 				if(hierarchy){
