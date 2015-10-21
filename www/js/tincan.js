@@ -122,7 +122,11 @@ define([
 			
 			//Create a new Statement for every schema associated with the problem 
 			var schemas = this._model.active.getSchemas();
+			var debugReport = "Overall success factor: "+successFactor+"\n";
+			var debugScoreSum = 0;
 			array.forEach(schemas, lang.hitch(this, function(schema){ 
+				debugReport += "Success factor for "+ schema.schemaClass+": "+schemaSuccessFactor[schema.schemaClass]+"\n";
+				debugScoreSum += schemaSuccessFactor[schema.schemaClass];
 				statement.context = {
 						"contextActivities": {
 				           "category": [{
@@ -188,6 +192,8 @@ define([
 					}
 				});
 			}));
+			debugReport += "PAL3 Score: " + (debugScoreSum / ( schemas.length || 1 ));
+			console.log(debugReport);
 		},
 
 		isoDuration: function(milliseconds) {
