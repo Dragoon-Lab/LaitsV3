@@ -132,7 +132,7 @@ The categories are *name*, *short name*, *id*, *short id*:
 - solutionGraph, sg  (for serialized solution graph)
 - action, ac
 - mode, m (value is a [major mode](major-modes.md))
-- sessionId, x, sid (see [Logging Format](logs-structure.md))
+- sessionId, x (see [Logging Format](logs-structure.md))
 - subMode, sm (Dragoon state)
 - inputStyle, is (Dragoon state)
 - apropos, aps (state category)
