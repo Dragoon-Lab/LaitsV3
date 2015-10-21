@@ -114,9 +114,9 @@ define([
 			
 			statement['object'] = {
 							"objectType": "Activity",
-							"id" : baseURL+ "activities/"+ this._model.getTaskName(),
+							"id" : baseURL+ "activities/"+ this.getResourceName(),
 					        "definition": {
-					            "name": { "en-US": this._model.getTaskName() }
+					            "name": { "en-US": this.getResourceName() }
 					        }
 						  };			
 			
@@ -199,6 +199,30 @@ define([
 		isoDuration: function(milliseconds) {
    			var d = new Date(milliseconds);
    			return 'P' + 'T' + d.getUTCHours() + 'H' + d.getUTCMinutes() + 'M' + d.getUTCSeconds() +'S';
-		}		
+		},
+
+		getResourceName: function(){
+			var problemName = this._session.params.p;
+			switch(problemName){
+				case "resistor-capacitor-intro":
+					if(this._session.params.a == "executionDemo"){
+						return "Dragoon Introduction Part 1";
+					} else if (this.session.params.a == "execution") {
+						return "Dragoon Introduction Part 2";
+					} else {
+						return "Dragoon Introduction Part 3";
+					}
+				case "resistor-inductor-intro":
+					return "Dragoon Introduction Part 4";
+				default:
+					if (this._session.params.a == "waveform"){
+						return this._model.getTaskName().replace("Model a","Identify Waveforms:");
+					} else {
+						return this._model.getTaskName();
+					}
+					
+			}
+		}
+
 	});
 });
