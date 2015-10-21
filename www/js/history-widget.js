@@ -10,50 +10,65 @@ define([
 	"dijit/Dialog",
 	"dojo/request/xhr",
 	"dojo/_base/json",
-	"dojo/_base/lang",
-	"dojox/dtl",
-	"dojox/dtl/Context"
-], function(declare, parser, _WidgetBase, dom, ready, registry, on, style, Dialog, xhr, lang, json, DTL, DTL_Context){
-	if(!("_getTemplateString" in DTL.text)){
-		DTL.text._getTemplateString = DTL.text.getTemplateString;
-		DTL.text.getTemplateString = function(file){
-			return DTL.text._getTemplateString(file).replace(/(\r?\n)$/, ''); // remove optional trailing newline from template HTML file to make testing consistent
-		};
-	}
-
-	var widget = function(params, session_id, path){
-		this.params = params;
-		this.path = path || "";		
-		this.dialog = null;
-		this.current_id = session_id;
-		this.sessions = null;
-	}
-	widget.prototype.show = function(){
-		//every time user clicks on History button it should get the refreshed results.
+	"dojo/_base/lang"
+], function(declare, parser, _WidgetBase, dom, ready, registry, on, style, Dialog, xhr, json, lang){
+	return declare(null, {
+		params : null,
+		path : null,		
+		dialog : null,
+		current_id : null,
+		sessions : null,
+		HTMLBuilder : [],
+		constructor : function(params, session_id, path){
+			this.params = params;
+			this.path = path || "";		
+			this.dialog = null;
+			this.current_id = session_id;
+			this.sessions = null;
+			this.HTMLBuilder = [];
+			this.HTMLBuilder.push("<tr>");
+			this.HTMLBuilder.push("<td style='text-align: left;display: table-cell;padding: .25em .5em;'>");
+			this.HTMLBuilder.push("</td>");
+			this.HTMLBuilder.push("</tr>");
+		},
 		
-		var response  = this.getHistory();
-		var context  = this;
-		response.then(function(data){
-			if(data == null ){
-				
-				return; 
-			}
-			context.sessions = data;
-			var html = "<table style=' margin: 1em 0; min-width: 300px;'> <tr> <th style='text-align: left;display: table-cell;padding: .25em .5em; font-weight: bold'> Session ID </th> <th style='text-align: left;display: table-cell;padding: .25em .5em; font-weight: bold'> Time </th><th style='text-align: left;display: table-cell;padding: .25em .5em; font-weight: bold'> User </th><th style='text-align: left;display: table-cell;padding: .25em .5em; font-weight: bold'> Action </th></tr>";
-			for(var k in Object.keys(data)){
-				html += context.createRowHTML(data[k]);
-			}
-			html += "</table>";
-			context.dialog = new Dialog({
-				title : "History",
-				content : html,
-				style : "width: 600px; font-size:14px;"
-			}); 
-			context.initHandlers();
-			context.dialog.show();
-		});
-	},
-	widget.prototype.getHistory = function(){
+		show : function(){
+			//every time user clicks on History button it should get the refreshed results.
+		
+			var response  = this.getHistory();
+			var context  = this;
+			response.then(function(data){
+				var html =  null;
+				if(data == null ){
+					html = "<p> There are no saved sessions for this model </p>";
+				}
+				else {
+					context.sessions = data;
+					html = "<table style=' margin: 1em 0; min-width: 300px;'> <tr> <th style='text-align: left;display: table-cell;padding: .25em .5em; font-weight: bold'> Session ID </th> <th style='text-align: left;display: table-cell;padding: .25em .5em; font-weight: bold'> Time </th>"
+					html += "<th style='text-align: left;display: table-cell;padding: .25em .5em; font-weight: bold'> Nodes </th><th style='text-align: left;display: table-cell;padding: .25em .5em; font-weight: bold'> User </th><th style='text-align: left;display: table-cell;padding: .25em .5em; font-weight: bold'> Action </th></tr>";
+					for(var k in Object.keys(data)){
+						html += context.createRowHTML(data[k]);
+					}
+					html += "</table>";
+				}
+				// creating the dialog object after the history event is triggered. 
+				context.dialog = new Dialog({
+					title : "History",
+					content : html,
+					style : "min-width: 450px; font-size:14px;"
+				}); 
+				context.initHandlers();
+				context.dialog.show();
+			});
+		},
+		getHash : function(data){
+			var hash_32 = CryptoJS.SHA256(data);
+			var hash_int = hash_32.words[7] >>> 16;
+			//check for the collisions
+			return "S" + hash_int;
+			
+		},
+		getHistory : function(){
 			//Summary: calls history_fetcher.php to retrieve the history of a problem object
 			//		and returns it as a json object
 			console.log("getHistory called with ", this.params);
@@ -70,51 +85,40 @@ define([
 					functionTag: 'getHistory'
 				});
 			}));
-	}
-	widget.prototype.createRowHTML = function(data){
-		var tr = document.createElement("tr");
-		var td = document.createElement("td");
-		td.innerText = data["session_id"];			
-		td.setAttribute("style", "text-align: left;display: table-cell;padding: .25em .5em;");
-		tr.appendChild(td);
-		td = document.createElement("td");
-		td.innerText = data["time"];			
-		td.setAttribute("style", "text-align: left;display: table-cell;padding: .25em .5em;");
-		tr.appendChild(td);
-		td = document.createElement("td");
-		td.innerText = data["user"];			
-		td.setAttribute("style", "text-align: left;display: table-cell;padding: .25em .5em;");
-		tr.appendChild(td);
+		},
+		createRowHTML : function(data){
+			var html = this.HTMLBuilder[0];
+			html += this.HTMLBuilder[1] + this.getHash(data["session_id"]) + this.HTMLBuilder[2];			
+			html += this.HTMLBuilder[1] + data["time"]; + this.HTMLBuilder[2];	
+			var solution_json = JSON.parse(data["solution_graph"]);
+			var count = (solution_json) ? solution_json['givenModelNodes'].length : 0;
+			html += this.HTMLBuilder[1] + count + this.HTMLBuilder[2];	
+			html += this.HTMLBuilder[1] + data["user"] + this.HTMLBuilder[2];	
 		
-		td = document.createElement("td");
-		td.setAttribute("style", "text-align: left;display: table-cell;padding: .25em .5em;");
-		tr.appendChild(td);
-		tr.setAttribute("style", "border-top: 1px solid #ddd;border-bottom: 1px solid #ddd;");
-		if(this.current_id == data['session_id']){
-			td.appendChild(document.createTextNode('Current'));
-			return tr.outerHTML;
+			if(this.current_id == data['session_id']){
+				html += this.HTMLBuilder[1] + "Current" + this.HTMLBuilder[2] + this.HTMLBuilder[3] ;	
+				return html;
+			}
+			var btn = document.createElement('button');
+			btn.setAttribute('data-dojo-type',"dijit/form/Button");
+			btn.setAttribute('id' ,'btn_' + data['session_id']);
+			btn.innerText = "Load";
+			html += this.HTMLBuilder[1] + btn.outerHTML + this.HTMLBuilder[2];
+			return html;
+		},
+		loadHandler : function(e){
+			var label = e.target.id;
+			var session_id = label.slice(3,label.indexOf('_label'));
+			window.location = window.location.href + "&sid=" + session_id;
+		},
+		initHandlers : function(){
+			var sessions = this.sessions;		
+			for(var k in Object.keys(sessions)){		
+					var btn = dom.byId('btn_' + sessions[k]['session_id']);
+					if(!btn) continue;
+					on(btn, 'click', this.loadHandler);
+					
+			}
 		}
-		var btn = document.createElement('button');
-		btn.setAttribute('data-dojo-type',"dijit/form/Button");
-		btn.setAttribute('id' ,'btn_' + data['session_id']);
-		btn.innerText = "Load";
-		
-		td.appendChild(btn);
-		return tr.outerHTML;
-	}
-	widget.prototype.loadHandler = function(e){
-		var label = e.target.id;
-		var session_id = label.slice(3,label.indexOf('_label'));
-		window.location = window.location.href + "&sid=" + session_id;
-	}
-	widget.prototype.initHandlers = function(){
-		var sessions = this.sessions;		
-		for(var k in Object.keys(sessions)){		
-				var btn = dom.byId('btn_' + sessions[k]['session_id']);
-				if(!btn) continue;
-				on(btn, 'click', this.loadHandler);
-				
-		}
-	}
-	return widget;
+	})
 } );
