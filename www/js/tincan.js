@@ -192,8 +192,9 @@ define([
 					}
 				});
 			}));
-			debugReport += "PAL3 Score: " + (debugScoreSum / ( schemas.length || 1 ));
+			debugReport += "PAL3 score should be: " + (debugScoreSum / ( schemas.length || 1 ));
 			console.log(debugReport);
+			debugger;
 		},
 
 		isoDuration: function(milliseconds) {

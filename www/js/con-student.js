@@ -1038,7 +1038,7 @@ define([
 				}, {
 					id: "crisisAlert",
 					attribute: "open",
-					value: "Good work, now Dragoon will compute the rest of the values for you and display them as a table and as a graph in the next window."
+					value: "Good work, now Dragoon will compute the rest of the values for you and display them as a table and as a graph in the next window. Explore the graph window, and close it when you are done."
 				}]);
 			    this.isFinalMessageShown = true;
             }
