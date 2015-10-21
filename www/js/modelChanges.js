@@ -191,12 +191,24 @@ define([
 					var equation = givenNode.equation;
 					var midStore = [];
 					var i=1;
-					array.forEach(givenNode.inputs, function (input) {
-						var studentNodeID = nodeStore[input.ID];
+					var orderedInput = [];
+					array.forEach(givenNode.inputs, function(input){
+						var id = input.ID.substring(2, input.ID.length);
+						var i = 0;
+						for(i; i<orderedInput.length; i++){
+							if(orderedInput[i] < id)
+								break;
+						}
+
+						orderedInput.splice(i, 0, id);
+					});
+					array.forEach(orderedInput, function (input) {
+						var inputID = "id"+input;
+						var studentNodeID = nodeStore[inputID];
 						if (studentNodeID) {
 							inputs.push({"ID": studentNodeID});
-							var regexp = "(" + input.ID + ")([^0-9]?)";
-							var re = new RegExp(regexp);
+							var regexp = "(" + inputID + ")([^0-9]?)";
+							var re = new RegExp(regexp, 'g');//g will replace all instances
 							midStore[i] = studentNodeID;
 							equation = equation.replace(re, "ms"+i+ "$2");
 						} else {
@@ -207,7 +219,8 @@ define([
 
 					if (isExpressionValid) {
 						for(var j=1;j<=midStore.length;j++){
-							equation = equation.replace("ms"+j,midStore[j]);
+							while(equation.indexOf("ms"+j) >=0)
+								equation = equation.replace("ms"+j,midStore[j]);
 						}
 						this._model.student.setInputs(inputs, newNodeID);
 						this._model.student.setEquation(newNodeID, equation);
