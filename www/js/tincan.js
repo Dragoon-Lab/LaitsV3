@@ -148,7 +148,7 @@ define([
 				                }
 				            }]			            	
 				        },
-				    	"revision" : this._session.params.u
+				    	"revision" : this._session.params.rid
 				    };
 				statement.result =  {
 			        "completion": this._model.matchesGivenSolution(),
