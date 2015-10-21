@@ -208,7 +208,7 @@ define([
 				case "resistor-capacitor-intro":
 					if(this._session.params.a == "executionDemo"){
 						return "Dragoon Introduction Part 1";
-					} else if (this.session.params.a == "execution") {
+					} else if (this._session.params.a == "execution") {
 						return "Dragoon Introduction Part 2";
 					} else {
 						return "Dragoon Introduction Part 3";
