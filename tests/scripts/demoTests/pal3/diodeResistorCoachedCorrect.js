@@ -25,41 +25,51 @@ var async = sync.asyncIt;
 describe("Coached mode with correct diode resistor 2", function() {
 
     before(async(function (done) {
-            dtest.openProblem(client,[["problem","diode-resistor-2"],["mode","COACHED"],
+            dtest.openProblem(client,[["problem","diode-resistor"],["mode","COACHED"],
                                       ["section","PAL3-test"],
                                       ["logging","true"]]);
     }));
 
      describe("Creating nodes:", function(){
-        it("Should create Function node - current", async(function(){
-            dtest.openEditorForNode(client, "current");
+        it("Should create Function node - I around loop", async(function(){
+            dtest.openEditorForNode(client, "I around loop");
             dtest.setNodeType(client, "Function");
             dtest.popupWindowPressOk(client);
             dtest.setNodeUnits(client, "amps");
             dtest.popupWindowPressOk(client);
-            dtest.setNodeExpression(client, "voltage at VL/Resistance");
+            dtest.setNodeExpression(client, "V across R1/R of R1");
             dtest.checkExpression(client);
             dtest.nodeEditorDone(client);
         }));
 
-         it("Should fill in function node - voltage at VL", async(function(){
-            dtest.openEditorForNode(client, "voltage at VL");
+        it("Should fill in function node - V across R1", async(function(){
+            dtest.openEditorForNode(client, "V across R1");
             dtest.setNodeType(client, "Function");
             dtest.setNodeUnits(client, "volts");
-            dtest.setNodeExpression(client, "max(0,voltage source)");
+            dtest.setNodeExpression(client, "Source V-V across D1");
             dtest.checkExpression(client);
             dtest.nodeEditorDone(client);
 
         }));
 
-         it("Should fill in parameter node - Resistance", async(function(){
-            dtest.openEditorForNode(client, "Resistance");
+        it("Should fill in parameter node - R of R1", async(function(){
+            dtest.openEditorForNode(client, "R of R1");
             dtest.setNodeType(client, "Parameter");
             dtest.setNodeInitialValue(client, 500);
             dtest.setNodeUnits(client, "ohms");
             dtest.nodeEditorDone(client);
             dtest.popupWindowPressOk(client);
         }));
+
+        it("Should fill in parameter node - V across D1", async(function(){
+            dtest.openEditorForNode(client, "V across D1");
+            dtest.setNodeType(client, "Function");
+            dtest.setNodeUnits(client, "volts");
+            dtest.setNodeExpression(client, "Source V-V across D1");
+            dtest.nodeEditorDone(client);
+            dtest.popupWindowPressOk(client);
+        }));
+
     });
 
     describe("Checking node colors", function(){
