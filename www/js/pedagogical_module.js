@@ -1326,7 +1326,7 @@ define([
 				var hierarchy = [];
 				var nodesChecked = [];
 
-				hierarchy[0] = parameterID;
+				hierarchy[0] = parameterID.concat(accumulatorID);
 				var i = 0;
 				var nodesCopy = dojo.clone(nodes);
 				while(nodesChecked.length < functionID.length){
