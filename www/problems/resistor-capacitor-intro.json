@@ -1,6 +1,6 @@
 {
     "task": {
-        "taskName": "resistor-capacitor-intro",
+        "taskName": "Resistor Capacitor Intro",
         "time": {
             "start": 0,
             "end": 40,
@@ -24,9 +24,9 @@
                 "* Diamonds represent parameters, which have constant values.",
                 "* Circles represent functions, whose quantity is a function its inputs (indicated by blue arrows going into the node).",
                 "* Squares represent accumulators, whose next value is the sum of its current value and a function its inputs.  ",
-                "(These and other definitions can be found in the Help menu, under "Intro to Dragoon Concepts")",
+                "(These and other definitions can be found in the Help menu, under 'Intro to Dragoon Concepts')",
                 "",
-                "To get started, click on the "Voltage across capacitor" node to open its editor.  You will need to select its type (you may recall this node is an accumulator), its initial value (0), its units and its equation (add the change in voltage across the capacitor).  Fill in all these fields until they are correct, then click Done on the editor.",
+                "To get started, click on the 'Voltage across capacitor' node to open its editor.  You will need to select its type (you may recall this node is an accumulator), its initial value (0), its units and its equation (add the change in voltage across the capacitor).  Fill in all these fields until they are correct, then click Done on the editor.",
                 "    New nodes will appear on the screen as you use them as inputs.  Click on and complete each one until Dragoon says you are finished.  Below are some formulas which you can use to compute the expressions of the other function nodes.",
                 "",
                 "Ohm's Law:  V = I * R",
