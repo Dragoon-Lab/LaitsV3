@@ -1478,7 +1478,7 @@ define([
 					initialEntered && (!hasUnits || node.units) &&
 					equationEntered && (!hasTweaks || node.tweakDirection)
 					&&(!hasWaveformValue || node.waveformValue !== null)
-					&& (!hasExecutionValue || node.executionValue[executionIteration]);
+					&& (!hasExecutionValue || (node.executionValue && node.executionValue[executionIteration]));
 				if(toReturn){
 					return true;
 				}
