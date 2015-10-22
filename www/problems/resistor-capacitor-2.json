@@ -1,6 +1,6 @@
 {
     "task": {
-        "taskName": "resistor-capacitor-2",
+        "taskName": "Model RC Series Circuits (milliseconds)",
         "time": {
             "start": 0,
             "end": 100,
