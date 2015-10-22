@@ -10,8 +10,9 @@ define([
 	"dijit/Dialog",
 	"dojo/request/xhr",
 	"dojo/_base/json",
-	"dojo/_base/lang"
-], function(declare, parser, _WidgetBase, dom, ready, registry, on, style, Dialog, xhr, json, lang){
+	"dojo/_base/lang",
+	'dojo/aspect'
+], function(declare, parser, _WidgetBase, dom, ready, registry, on, style, Dialog, xhr, json, lang, aspect){
 	return declare(null, {
 		params : null,
 		path : null,		
@@ -44,7 +45,8 @@ define([
 				}
 				else {
 					context.sessions = data;
-					html = "<table style=' margin: 1em 0; min-width: 300px;'> <tr> <th style='text-align: left;display: table-cell;padding: .25em .5em; font-weight: bold'> Session ID </th> <th style='text-align: left;display: table-cell;padding: .25em .5em; font-weight: bold'> Time </th>"
+					html = "<table style=' margin: 1em 0; min-width: 300px;' id='tbl_history'> <tr> <th style='text-align: left;display: table-cell;padding: .25em .5em; font-weight: bold'> Session ID </th>"
+					html += "<th style='text-align: left;display: table-cell;padding: .25em .5em; font-weight: bold'> Time </th>";
 					html += "<th style='text-align: left;display: table-cell;padding: .25em .5em; font-weight: bold'> Nodes </th><th style='text-align: left;display: table-cell;padding: .25em .5em; font-weight: bold'> User </th><th style='text-align: left;display: table-cell;padding: .25em .5em; font-weight: bold'> Action </th></tr>";
 					for(var k in Object.keys(data)){
 						html += context.createRowHTML(data[k]);
@@ -57,6 +59,7 @@ define([
 					content : html,
 					style : "min-width: 450px; font-size:14px;"
 				}); 
+
 				context.initHandlers();
 				context.dialog.show();
 			});
@@ -99,26 +102,36 @@ define([
 				html += this.HTMLBuilder[1] + "Current" + this.HTMLBuilder[2] + this.HTMLBuilder[3] ;	
 				return html;
 			}
-			var btn = document.createElement('button');
-			btn.setAttribute('data-dojo-type',"dijit/form/Button");
-			btn.setAttribute('id' ,'btn_' + data['session_id']);
-			btn.innerText = "Load";
+			var btn_id = "btn_" + data['session_id'];
+			var btn = dom.byId(btn_id);
+			if(!btn) {
+				btn = document.createElement('button');		
+				btn.setAttribute('data-dojo-type',"dijit/form/Button");
+				btn.setAttribute('id' ,btn_id);
+				btn.innerText = "Load";				
+			}
 			html += this.HTMLBuilder[1] + btn.outerHTML + this.HTMLBuilder[2];
 			return html;
 		},
 		loadHandler : function(e){
 			var label = e.target.id;
-			var session_id = label.slice(3,label.indexOf('_label'));
+			var session_id = label.slice(4,label.indexOf('_label'));
 			window.location = window.location.href + "&sid=" + session_id;
 		},
 		initHandlers : function(){
-			var sessions = this.sessions;		
+			var sessions = this.sessions;	
 			for(var k in Object.keys(sessions)){		
 					var btn = dom.byId('btn_' + sessions[k]['session_id']);
 					if(!btn) continue;
-					on(btn, 'click', this.loadHandler);
-					
+					on(btn, 'click', this.loadHandler);				
 			}
+
+			on(this.dialog, "hide", lang.hitch(this,function(e){
+				var ele = document.getElementById('tbl_history');
+				if(ele)
+					ele.parentNode.removeChild(ele);
+				this.dialog.destroyRecursive();
+			}));
 		}
 	})
 } );
