@@ -137,20 +137,23 @@
         "studentModelNodes": [],
         "schemas": [
             {
-                "ID": "schema1",
+                "ID": "schema2",
                 "schemaClass": "kirchoff_current_law",
-                "name": "Kirchoff's current law",
+                "name": "Kirchoff's Current Law",
                 "competence": {
                     "errors": 0,
                     "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id1, id2, id3, id4",
+                "nodes": "id1, id2, id4, id4",
+                "rates": {},
                 "difficulty": {
                     "isolation": 0,
-                    "cues": 0,
-                    "phrases": 0
+                    "cues": 1,
+                    "phrases": 1
                 }
             }
         ],
