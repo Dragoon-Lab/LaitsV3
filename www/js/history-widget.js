@@ -116,7 +116,7 @@ define([
 		loadHandler : function(e){
 			var label = e.target.id;
 			var session_id = label.slice(4,label.indexOf('_label'));
-			window.location = window.location.href + "&sid=" + session_id;
+			window.location = window.location.href + "&x=" + session_id;
 		},
 		initHandlers : function(){
 			var sessions = this.sessions;	

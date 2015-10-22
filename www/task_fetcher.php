@@ -97,9 +97,9 @@ function printModel($row){
        forward to published problems
 
 */
-if(isset($_GET['sid'])){
+if(isset($_GET['x'])){
   
-  $session_id = mysqli_real_escape_string($mysqli,$_GET['sid']);
+  $session_id = mysqli_real_escape_string($mysqli,$_GET['x']);
 
     $query = <<<EOT
     SELECT solution_graph, share from solutions where session_id = '$session_id'      
