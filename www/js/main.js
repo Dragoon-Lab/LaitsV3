@@ -76,10 +76,6 @@ define([
 
 	console.log("load main.js");
 
-	//remove the loading division, now that the problem is being loaded
-	var loading = document.getElementById('loadingOverlay');
-	loading.style.display = "none";
-
 	// Get session parameters
 	var query = {};
 	//debugger;
@@ -152,9 +148,6 @@ define([
 		 * removing the overlay as the actual computation does not take much time
 		 * and it causes errors to stay hidden behind the overlay which continues infinitely.
 		 */
-
-		var loading = document.getElementById('loadingOverlay');
-		loading.style.display = "none";
 
 		//display warning message if not using the supported browser and version
 		var checkBrowser = session.browser.name;
@@ -269,6 +262,7 @@ define([
 			//Set Tab title
 			var taskString = givenModel.getTaskName();
 			document.title ="Dragoon" + ((taskString) ? " - " + taskString : "");
+
 			/*
 			 * start up controller
 			 */
@@ -1498,7 +1492,12 @@ define([
 			if(activity_config.get("demoIncremental") || activity_config.get("demoExecution")) {
 				controllerObject.highlightNextNode();
 			}
+
+			//remove the loading division, now that the problem is being loaded
+			var loading = document.getElementById('loadingOverlay');
+			loading.style.display = "none";
 		});
+
 	});
 	
 	function removeURLParam(param,url){
