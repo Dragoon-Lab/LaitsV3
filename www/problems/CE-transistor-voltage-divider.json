@@ -29,12 +29,7 @@
             ]
         },
         "lessonsLearned": [],
-        "increment": [
-            {
-                "tweakedNode": "defaultSelect",
-                "tweakDirection": "defaultSelect"
-            }
-        ],
+        "increment": [],
         "executionIterations": null,
         "givenModelNodes": [
             {

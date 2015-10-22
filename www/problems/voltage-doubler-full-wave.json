@@ -1,3 +1,4 @@
+
 {
     "task": {
         "taskName": "Model a full wave voltage doubler",
@@ -29,12 +30,7 @@
             ]
         },
         "lessonsLearned": [],
-        "increment": [
-            {
-                "tweakedNode": "defaultSelect",
-                "tweakDirection": "defaultSelect"
-            }
-        ],
+        "increment": [],
         "executionIterations": null,
         "givenModelNodes": [
             {

@@ -1,3 +1,4 @@
+
 {
     "task": {
         "taskName": "Model a positive clamper",
@@ -1172,11 +1173,6 @@
                 }
             }
         ],
-        "increment": [
-            {
-                "tweakedNode": "defaultSelect",
-                "tweakDirection": "defaultSelect"
-            }
-        ]
+        "increment": []
     }
 }

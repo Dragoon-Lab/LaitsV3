@@ -1,3 +1,4 @@
+
 {
     "task": {
         "taskName": "Resistor Inductor Intro",
@@ -660,11 +661,6 @@
                 }
             }
         ],
-        "increment": [
-            {
-                "tweakedNode": "defaultSelect",
-                "tweakDirection": "defaultSelect"
-            }
-        ]
+        "increment": []
     }
 }

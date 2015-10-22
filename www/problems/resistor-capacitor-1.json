@@ -1,3 +1,4 @@
+
 {
     "task": {
         "taskName": "Model RC Series Circuits 1",
@@ -667,11 +668,6 @@
                 }
             }
         ],
-        "increment": [
-            {
-                "tweakedNode": "defaultSelect",
-                "tweakDirection": "defaultSelect"
-            }
-        ]
+        "increment": []
     }
 }
