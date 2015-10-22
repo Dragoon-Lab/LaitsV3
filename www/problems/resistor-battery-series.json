@@ -110,19 +110,22 @@
         "studentModelNodes": [],
         "schemas": [
             {
-                "ID": "schema1",
+                "ID": "schema2",
                 "schemaClass": "ohms_law",
-                "name": "Ohms law",
+                "name": "Ohm's Law: Voltage",
                 "competence": {
                     "errors": 0,
                     "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
                     "timeSpent": 0,
                     "values": {}
                 },
                 "nodes": "id1, id2, id3",
+                "rates": {},
                 "difficulty": {
-                    "isolation": 0,
-                    "cues": 0,
+                    "isolation": 1,
+                    "cues": 1,
                     "phrases": 1
                 }
             }
