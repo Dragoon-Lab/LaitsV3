@@ -1,6 +1,6 @@
 {
     "task": {
-        "taskName": "Kirchoff's Current Law",
+        "taskName": "Model Kirchoff's Current Law",
         "time": {
             "start": 0,
             "end": 10,
@@ -8,15 +8,18 @@
             "integrationMethod": "Eulers Method",
             "units": "seconds"
         },
-        "properties": {},
+        "properties": {
+            "isGraphHelpShown": true
+        },
         "image": {
             "URL": "http://upload.wikimedia.org/wikipedia/commons/4/46/KCL_-_Kirchhoff%27s_circuit_laws.svg"
         },
-        "taskDescription": [
-            "Assuming current I1 is 2 amps, I2 is 3 amps and I3 is 0.5 amps, what I4?",
-            ""
-        ],
-        "lessonsLearned": "",
+        "taskDescription": {
+            "construction": [
+                "Assuming current I1 is 2 amps, I2 is 3 amps and I3 is 0.5 amps, what is I4?"
+            ]
+        },
+        "lessonsLearned": [],
         "givenModelNodes": [
             {
                 "ID": "id1",
@@ -149,6 +152,12 @@
                     "cues": 0,
                     "phrases": 0
                 }
+            }
+        ],
+        "increment": [
+            {
+                "tweakedNode": "id1",
+                "tweakDirection": "Decrease"
             }
         ]
     }

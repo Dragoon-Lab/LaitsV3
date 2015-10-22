@@ -1,6 +1,6 @@
 {
     "task": {
-        "taskName": "Ohm's Law",
+        "taskName": "Model Ohm's Law",
         "time": {
             "start": 0,
             "end": 10,
@@ -8,16 +8,20 @@
             "integrationMethod": "Eulers Method",
             "units": "seconds"
         },
-        "properties": {},
+        "properties": {
+            "isGraphHelpShown": true
+        },
         "image": {
             "URL": "http://www.school-for-champions.com/science/images/electricity_ohms_law_dc_circuit.gif"
         },
-        "taskDescription": [
-            "Model a circuit composed of a 5 volt voltage source and a 1000 ohm resistor.  What is the current through the resistor?",
-            "",
-            ""
-        ],
-        "lessonsLearned": "",
+        "taskDescription": {
+            "construction": [
+                "Model a circuit composed of a 5 volt voltage source and a 1000 ohm resistor.  What is the current through the resistor?",
+                "",
+                ""
+            ]
+        },
+        "lessonsLearned": [],
         "givenModelNodes": [
             {
                 "ID": "id1",
@@ -121,6 +125,12 @@
                     "cues": 0,
                     "phrases": 1
                 }
+            }
+        ],
+        "increment": [
+            {
+                "tweakedNode": "id3",
+                "tweakDirection": "Increase"
             }
         ]
     }

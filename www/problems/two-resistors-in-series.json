@@ -1,6 +1,6 @@
 {
     "task": {
-        "taskName": "Kirchoff's Voltage Law",
+        "taskName": "Model Kirchoff's Voltage Law",
         "time": {
             "start": 0,
             "end": 10,
@@ -8,17 +8,21 @@
             "integrationMethod": "Eulers Method",
             "units": "seconds"
         },
-        "properties": {},
+        "properties": {
+            "isGraphHelpShown": true
+        },
         "image": {
             "URL": "http://artsites.ucsc.edu/ems/music/tech_background/o_law/Image2.gif"
         },
-        "taskDescription": [
-            "Model a circuit that has two resistors in series.  Assume that R1 is 500 ohms, R2 is 1500 ohms, and the current through R1 is 0.005 amp downward.   What is the voltage of the battery, measured with the bottom negative and the top positive?  ",
-            "",
-            "",
-            ""
-        ],
-        "lessonsLearned": "",
+        "taskDescription": {
+            "construction": [
+                "Model a circuit that has two resistors in series.  Assume that R1 is 500 ohms, R2 is 1500 ohms, and the current through R1 is 0.005 amp downward.   What is the voltage of the battery, measured with the bottom negative and the top positive?  ",
+                "",
+                "",
+                ""
+            ]
+        },
+        "lessonsLearned": [],
         "givenModelNodes": [
             {
                 "ID": "id1",
@@ -227,7 +231,7 @@
             {
                 "ID": "schema1",
                 "schemaClass": "kirchoff_voltage_law",
-				"name" : "Kirchoff's voltage law",
+                "name": "Kirchoff's voltage law",
                 "competence": {
                     "errors": 0,
                     "total": 0,
@@ -244,7 +248,7 @@
             {
                 "ID": "schema2",
                 "schemaClass": "ohms_law",
-				"name" : "Ohms law",
+                "name": "Ohms law",
                 "competence": {
                     "errors": 0,
                     "total": 0,
@@ -261,7 +265,7 @@
             {
                 "ID": "schema3",
                 "schemaClass": "ohms_law",
-				"name" : "Ohms law",
+                "name": "Ohms law",
                 "competence": {
                     "errors": 0,
                     "total": 0,
@@ -278,7 +282,7 @@
             {
                 "ID": "schema4",
                 "schemaClass": "kirchoff_current_law",
-				"name" : "Kirchoff's current law",
+                "name": "Kirchoff's current law",
                 "competence": {
                     "errors": 0,
                     "total": 0,
@@ -291,6 +295,12 @@
                     "cues": 0,
                     "phrases": 0
                 }
+            }
+        ],
+        "increment": [
+            {
+                "tweakedNode": "id7",
+                "tweakDirection": "Decrease"
             }
         ]
     }
