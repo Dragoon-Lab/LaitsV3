@@ -217,9 +217,9 @@ define([
 					return "Dragoon Introduction Part 4";
 				default:
 					if (this._session.params.a == "waveform"){
-						return this.replacePrefix(this._model.getTaskName(),"Identify Waveforms:");
+						return this.replacePrefix(this._model.getTaskName(),"Identify Waveforms of");
 					} else if (this._session.params.a == "incremental"){
-						return this.replacePrefix(this._model.getTaskName(),"Incremental Analysis:");
+						return this.replacePrefix(this._model.getTaskName(),"Incremental Analysis of");
 					} else {
 						return this._model.getTaskName();
 					}
@@ -227,8 +227,8 @@ define([
 		},
 
 		replacePrefix: function(oldTitle,newPrefix){
-			//PAL3 problem titles begin with "Model an/a/ " so we replace that part.
-			return oldTitle.replace("Model an",newPrefix).replace("Model a",newPrefix).replace("Model",newPrefix);
+			//PAL3 problem titles begin with "Model a/an.."" so we replace the first word.
+			return oldTitle.replace("Model",newPrefix);
 		}
 
 	});
