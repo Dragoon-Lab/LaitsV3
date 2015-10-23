@@ -1,6 +1,6 @@
 {
     "task": {
-        "taskName": "Model RL Series Circuits",
+        "taskName": "Model an RL Series Circuit",
         "time": {
             "start": 0,
             "end": 100,
@@ -16,7 +16,16 @@
         },
         "taskDescription": {
             "construction": [
-                "Model the circuit shown, with L=400 micro-Henries, R=50 ohms and Vo = 5 volts.  Nodes have been given to you that use pulsetrain(0,50,50) to represent the switch being directed to the battery for 50 microseconds and then to the short for another 50 microseconds.  Use Kirchhoff's Voltage Law to determine the voltage across the inductor and Ohm's Law to determine the voltage across the resistor.  Complete the model and view the graph of the current through the inductor.  "
+                "Model the circuit shown, with L=500 micro-Henries, R=50 ohms and Vo = 5 volts.  Nodes have been given to you that use pulsetrain(0,50,50) to represent the switch being directed to the battery for 50 microseconds and then to the short for another 50 microseconds.  Use Kirchhoff's Voltage Law to determine the voltage across the inductor and Ohm's Law to determine the voltage across the resistor.  Complete the model and view the graph of the current through the inductor.  "
+            ],
+            "incremental": [
+                "Model the circuit shown, with L=500 micro-Henries, R=50 ohms and Vo = 5 volts.  Nodes have been given to you that use pulsetrain(0,50,50) to represent the switch being directed to the battery for 50 microseconds and then to the short for another 50 microseconds.  Use Kirchhoff's Voltage Law to determine the voltage across the inductor and Ohm's Law to determine the voltage across the resistor.  Complete the model and view the graph of the current through the inductor.  "
+            ],
+            "execution": [
+                "Model the circuit shown, with L=500 micro-Henries, R=50 ohms and Vo = 5 volts.  Nodes have been given to you that use pulsetrain(0,50,50) to represent the switch being directed to the battery for 50 microseconds and then to the short for another 50 microseconds.  Use Kirchhoff's Voltage Law to determine the voltage across the inductor and Ohm's Law to determine the voltage across the resistor.  Complete the model and view the graph of the current through the inductor.  "
+            ],
+            "waveform": [
+                "Model the circuit shown, with L=500 micro-Henries, R=50 ohms and Vo = 5 volts.  Nodes have been given to you that use pulsetrain(0,50,50) to represent the switch being directed to the battery for 50 microseconds and then to the short for another 50 microseconds.  Use Kirchhoff's Voltage Law to determine the voltage across the inductor and Ohm's Law to determine the voltage across the resistor.  Complete the model and view the graph of the current through the inductor.  "
             ]
         },
         "lessonsLearned": [],
