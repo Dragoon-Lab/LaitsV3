@@ -1,6 +1,6 @@
 {
     "task": {
-        "taskName": "bridge-rectifier",
+        "taskName": "Model a bridge rectifier",
         "time": {
             "start": 0,
             "end": 100,
