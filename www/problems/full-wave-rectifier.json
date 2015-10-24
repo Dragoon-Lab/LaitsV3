@@ -16,7 +16,7 @@
         },
         "taskDescription": {
             "construction": [
-                "A schematic of a full wave rectifier is presented above for you to model. Nodes representing the output of the center-tapped transformer have been given to you.  Construct a model for the rectification portion of the circuit. Diodes CR1 and CR2 are real, having a knee voltage of 0.7 volts. The load resistor RL has a resistance of 1000 ohms. Finish the model and graph the output voltage across the load resistor RL"
+                "A schematic of a full wave rectifier is presented above for you to model. Nodes representing the output of the center-tapped transformer have been given to you.  Construct a model for the rectification portion of the circuit. Diodes CR1 and CR2 are real, having a knee voltage of 0.7 volts. The load resistor RL has a resistance of 1000 ohms. Finish the model and graph the current across the load resistor RL"
             ],
             "incremental": [
                 "This is a model of a full wave rectifier. It includes nodes representing the output of the center-tapped transformer. Diodes CR1 and CR2 are real, having a knee voltage of 0.7 volts. The load resistor RL has a resistance of 1000 ohms. "
@@ -381,7 +381,7 @@
                 "units": "volts",
                 "equation": "id22+id21",
                 "genus": "required",
-                "parentNode": true
+                "parentNode": false
             },
             {
                 "ID": "id12",
@@ -881,7 +881,8 @@
                 "type": "function",
                 "units": "amps",
                 "equation": "id11/id7",
-                "genus": "required"
+                "genus": "required",
+                "parentNode": true
             },
             {
                 "ID": "id24",
