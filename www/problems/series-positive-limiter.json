@@ -1,6 +1,6 @@
 {
     "task": {
-        "taskName": "Series Positive Limiter",
+        "taskName": "Model a Series Positive Limiter",
         "time": {
             "start": 0,
             "end": 200,
@@ -12,7 +12,7 @@
             "isGraphHelpShown": true
         },
         "image": {
-            "URL": "http://i.imgur.com/zViuKeM.png?1"
+            "URL": "images/PAL3/series-positive-limiter.png"
         },
         "taskDescription": {
             "construction": [

@@ -12,7 +12,7 @@
             "isGraphHelpShown": true
         },
         "image": {
-            "URL": "http://i.imgur.com/4FDlbei.png?1"
+            "URL": "images/PAL3/basic-capacitor-filter.png"
         },
         "taskDescription": {
             "construction": [
@@ -42,8 +42,8 @@
                     }
                 ],
                 "position": {
-                    "x": 489,
-                    "y": 209
+                    "x": 499,
+                    "y": 185
                 },
                 "attemptCount": {
                     "description": 0,
@@ -109,8 +109,8 @@
                     }
                 ],
                 "position": {
-                    "x": 901,
-                    "y": 417
+                    "x": 814,
+                    "y": 478
                 },
                 "attemptCount": {
                     "description": 0,
@@ -244,8 +244,8 @@
                     }
                 ],
                 "position": {
-                    "x": 1127,
-                    "y": 430
+                    "x": 1050,
+                    "y": 545
                 },
                 "attemptCount": {
                     "description": 0,
@@ -311,8 +311,8 @@
                     }
                 ],
                 "position": {
-                    "x": 1008,
-                    "y": 399
+                    "x": 932,
+                    "y": 472
                 },
                 "attemptCount": {
                     "description": 0,
@@ -557,8 +557,8 @@
                     }
                 ],
                 "position": {
-                    "x": 796,
-                    "y": 354
+                    "x": 729,
+                    "y": 417
                 },
                 "attemptCount": {
                     "description": 0,
@@ -683,8 +683,8 @@
                     }
                 ],
                 "position": {
-                    "x": 569,
-                    "y": 286
+                    "x": 570,
+                    "y": 270
                 },
                 "attemptCount": {
                     "description": 0,
@@ -804,8 +804,8 @@
                     }
                 ],
                 "position": {
-                    "x": 670,
-                    "y": 337
+                    "x": 652,
+                    "y": 343
                 },
                 "attemptCount": {
                     "description": 0,
@@ -929,8 +929,8 @@
                     }
                 ],
                 "position": {
-                    "x": 489,
-                    "y": 209
+                    "x": 499,
+                    "y": 185
                 },
                 "status": {
                     "equation": {

@@ -12,7 +12,7 @@
             "isGraphHelpShown": true
         },
         "image": {
-            "URL": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlE3HJTjtnPh6_bI6ID6KV5pz2P1m248OgQFbvUYg9LhpFGVCR"
+            "URL": "images/PAL3/CE-transistor-fixed-bias.png"
         },
         "taskDescription": {
             "construction": [
@@ -34,8 +34,8 @@
                 "ID": "id1",
                 "inputs": [],
                 "position": {
-                    "x": 819.85607910156,
-                    "y": 34.179302215576
+                    "x": 909.85607910156,
+                    "y": 27.179302215576
                 },
                 "attemptCount": {
                     "description": 0,
@@ -90,8 +90,8 @@
                 "ID": "id2",
                 "inputs": [],
                 "position": {
-                    "x": 714.85607910156,
-                    "y": 36.179302215576
+                    "x": 760.85607910156,
+                    "y": 23.179302215576
                 },
                 "attemptCount": {
                     "description": 0,
@@ -146,8 +146,8 @@
                 "ID": "id3",
                 "inputs": [],
                 "position": {
-                    "x": 601.85607910156,
-                    "y": 41.179302215576
+                    "x": 651.85607910156,
+                    "y": 25.179302215576
                 },
                 "attemptCount": {
                     "description": 0,
@@ -273,8 +273,8 @@
                     }
                 ],
                 "position": {
-                    "x": 768,
-                    "y": 183
+                    "x": 792,
+                    "y": 185
                 },
                 "attemptCount": {
                     "description": 0,
@@ -390,8 +390,8 @@
                 "ID": "id9",
                 "inputs": [],
                 "position": {
-                    "x": 959.85607910156,
-                    "y": 42.179302215576
+                    "x": 1063.8560791016,
+                    "y": 28.179302215576
                 },
                 "attemptCount": {
                     "description": 0,
@@ -568,8 +568,8 @@
                 "ID": "id12",
                 "inputs": [],
                 "position": {
-                    "x": 1091.8560791016,
-                    "y": 44.179302215576
+                    "x": 1194.8560791016,
+                    "y": 37.179302215576
                 },
                 "attemptCount": {
                     "description": 0,
@@ -687,8 +687,8 @@
                 "ID": "id14",
                 "inputs": [],
                 "position": {
-                    "x": 389.85607910156,
-                    "y": 39.179302215576
+                    "x": 449.85607910156,
+                    "y": 25.179302215576
                 },
                 "attemptCount": {
                     "description": 0,
@@ -746,8 +746,8 @@
                 "ID": "id15",
                 "inputs": [],
                 "position": {
-                    "x": 497.85607910156,
-                    "y": 39.179302215576
+                    "x": 550.85607910156,
+                    "y": 26.179302215576
                 },
                 "attemptCount": {
                     "description": 0,
@@ -814,8 +814,8 @@
                     }
                 ],
                 "position": {
-                    "x": 554,
-                    "y": 244
+                    "x": 564,
+                    "y": 249
                 },
                 "attemptCount": {
                     "description": 0,
@@ -939,8 +939,8 @@
                 "ID": "id18",
                 "inputs": [],
                 "position": {
-                    "x": 285.85607910156,
-                    "y": 99.179298400879
+                    "x": 341.85607910156,
+                    "y": 26.179302215576
                 },
                 "attemptCount": {
                     "description": 0,
@@ -1000,8 +1000,8 @@
                 "ID": "id20",
                 "inputs": [],
                 "position": {
-                    "x": 389.85607910156,
-                    "y": 39.179302215576
+                    "x": 449.85607910156,
+                    "y": 25.179302215576
                 },
                 "status": {
                     "description": {
@@ -1030,8 +1030,8 @@
                 "ID": "id25",
                 "inputs": [],
                 "position": {
-                    "x": 285.85607910156,
-                    "y": 99.179298400879
+                    "x": 341.85607910156,
+                    "y": 26.179302215576
                 },
                 "status": {
                     "description": {
