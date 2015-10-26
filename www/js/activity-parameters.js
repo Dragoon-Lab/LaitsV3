@@ -39,20 +39,23 @@ define([
 					allowPreview:true,
 					allowPrettify:true,
 					allowHelp: true,
-
+					allowHistory : true,
 					allowDeleteNode: true,
 					allowEditNode: true,
 
 					showHints: true,
 					showFeedback: true,
+					showEquationAutoComplete: true,
 
 					enable:[
 					],
 
 					allowSliders: true,
 
-					promptSaveAs:true
-				},
+					promptSaveAs:true,
+                    "allowAssignWaveFormButton": "true",
+                    showWaveformEditor : true
+                },
 
 				STUDENT:{
 					allowCreateNode:true,
@@ -68,11 +71,18 @@ define([
 					showHints: true,
 					showFeedback: true,
 					showCorrectAnswer:true,
-
+					showEquationAutoComplete: true,
 					enable:[
 					],
 
 					allowSliders: true,
+					properties: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation"
+					],
 					plotAuthorSolution:true
 				},
 
@@ -90,11 +100,19 @@ define([
 					showHints: true,
 					showFeedback: true,
 					showCorrectAnswer:true,
+					showEquationAutoComplete: true,
 					targetNodeStrategy:true,
 
 					enable:[
 					],
 					allowSliders: true,
+					properties: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation"
+					],
 					plotAuthorSolution:true
 				},
 
@@ -108,10 +126,18 @@ define([
 
 					allowDeleteNode: true,
 					allowEditNode: true,
+					showEquationAutoComplete: true,
 					enable:[
 					],
 
 					allowSliders: true,
+					properties: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation"
+					],
 					plotAuthorSolution:true
 				},
 
@@ -125,8 +151,15 @@ define([
 					allowHints:true,
 					allowDeleteNode: true,
 					allowEditNode: true,
-
+					showEquationAutoComplete: true,
 					enable:[
+					],
+					properties: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation"
 					],
 
 					allowSliders: true
@@ -161,6 +194,9 @@ define([
 					copyAuthorNodes: true,
 					setTweakDirections: true,
 					setStudentTweakDirections: true,
+					properties: [
+						"tweakDirection"
+					],
 					useTweakStatus: true
 				},
 
@@ -191,6 +227,9 @@ define([
 					copyAuthorNodes: true,
 					setTweakDirections: true,
 					setStudentTweakDirections: true,
+					properties: [
+						"tweakDirection"
+					],
 					useTweakStatus: true
 				},
 
@@ -217,6 +256,9 @@ define([
 					copyAuthorNodes: true,
 					setTweakDirections: true,
 					setStudentTweakDirections: true,
+					properties: [
+						"tweakDirection"
+					],
 					useTweakStatus: true
 				},
 
@@ -244,6 +286,9 @@ define([
 					copyAuthorNodes: true,
 					setTweakDirections: true,
 					setStudentTweakDirections: true,
+					properties: [
+						"tweakDirection"
+					],
 					useTweakStatus: true
 				}
 			},
@@ -280,6 +325,9 @@ define([
 					demoIncremental:true,
 					showPopupIfComplete: true,
 					getNodeOrder: true,
+					properties: [
+						"tweakDirection"
+					],
 					useTweakedNodeForOrdering: true
 				},
 
@@ -314,6 +362,9 @@ define([
 					demoIncremental:true,
 					useTweakedNodeForOrdering: true,
 					getNodeOrder: true,
+					properties: [
+						"tweakDirection"
+					],
 					showPopupIfComplete: true
 				},
 
@@ -343,6 +394,9 @@ define([
 					demoIncremental:true,
 					useTweakedNodeForOrdering: true,
 					getNodeOrder: true,
+					properties: [
+						"tweakDirection"
+					],
 					showPopupIfComplete: true
 				},
 
@@ -374,6 +428,9 @@ define([
 					demoIncremental:true,
 					useTweakedNodeForOrdering: true,
 					getNodeOrder: true,
+					properties: [
+						"tweakDirection"
+					],
 					showPopupIfComplete: true
 				}
 			},
@@ -408,6 +465,9 @@ define([
 					
 					setExecutionValues:true,
 					setStudentExecutionValues:true,
+					properties: [
+						"executionValue"
+					],
 					demoExecution:true
 				},
 
@@ -441,6 +501,9 @@ define([
 					copyAuthorNodes: true,
 					setExecutionValues:true,
 					setStudentExecutionValues:true,
+					properties: [
+						"executionValue"
+					],
 					demoExecution:true
 				},
 
@@ -469,6 +532,9 @@ define([
 					copyAuthorNodes: true,
 					setExecutionValues:true,
 					setStudentExecutionValues:true,
+					properties: [
+						"executionValue"
+					],
 					demoExecution:true
 				},
 
@@ -500,6 +566,9 @@ define([
 					copyAuthorNodes: true,
 					setExecutionValues:true,
 					setStudentExecutionValues:true,
+					properties: [
+						"executionValue"
+					],
 					demoExecution:true
 				}
 			},
@@ -531,7 +600,10 @@ define([
 
 					setExecutionValues:true,
 					setStudentExecutionValues:true,
-                    executionExercise: true
+					properties: [
+						"executionValue"
+					],
+					executionExercise: true
 				},
 
 				COACHED:{
@@ -561,7 +633,10 @@ define([
 					copyAuthorNodes: true,
 					setExecutionValues:true,
 					setStudentExecutionValues:true,
-                    executionExercise: true
+					properties: [
+						"executionValue"
+					],
+					executionExercise: true
                 },
 
 				TEST:{
@@ -587,7 +662,10 @@ define([
 					copyAuthorNodes: true,
 					setExecutionValues:true,
 					setStudentExecutionValues:true,
-                    executionExercise: true
+					properties: [
+						"executionValue"
+					],
+					executionExercise: true
                 },
 
 				EDITOR:{
@@ -616,7 +694,130 @@ define([
 					copyAuthorNodes: true,
 					setExecutionValues:true,
 					setStudentExecutionValues:true,
-                    executionExercise: true
+					properties: [
+						"executionValue"
+					],
+					executionExercise: true
+				}
+			},
+
+			waveform: {
+				STUDENT:{
+					allowPrettify:true,
+					allowHelp: true,
+					allowLessonsLearned:true,
+
+					allowEditNode:true,
+
+					showHints: true,
+					showFeedback: true,
+					showCorrectAnswer:true,
+					copyFields: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation",
+						"waveform"
+					],
+
+					initializeStudentModel : true,
+
+					showNodeEditor:false,
+					copyAuthorNodes: true,
+					showWaveformEditor : true,
+					properties: [
+						"waveformValue"
+					],
+					nodeDetails: "WAVEFORM"
+				},
+
+				COACHED:{
+					allowPrettify:true,
+					allowHelp: true,
+					allowLessonsLearned:true,
+
+					allowEditNode:true,
+
+					showHints: true,
+					showFeedback: true,
+					showCorrectAnswer:true,
+					copyFields: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation",
+						"waveform"
+					],
+
+					initializeStudentModel : true,
+
+					showNodeEditor:false,
+
+					showWaveformEditor : true,
+					nodeDetails: "WAVEFORM",
+					properties: [
+						"executionValue"
+					],
+					copyAuthorNodes: true
+				},
+
+				TEST:{
+					allowPrettify:true,
+					allowHelp: true,
+					allowLessonsLearned:true,
+
+					allowEditNode:true,
+					showFeedback: true,
+					copyFields: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation",
+						"waveform"
+					],
+
+					initializeStudentModel : true,
+					showNodeEditor:false,
+
+					showWaveformEditor : true,
+					nodeDetails: "WAVEFORM",
+					properties: [
+						"executionValue"
+					],
+					copyAuthorNodes: true
+				},
+
+				EDITOR:{
+					allowPrettify:true,
+					allowHelp: true,
+					allowLessonsLearned:true,
+
+					allowEditNode:true,
+					showFeedback: true,
+					copyFields: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation",
+						"waveform"
+					],
+
+					initializeStudentModel : true,
+
+					showNodeEditor:false,
+
+					showIncrementalEditor:true,
+
+					showWaveformEditor : true,
+					nodeDetails: "WAVEFORM",
+					properties: [
+						"executionValue"
+					],
+					copyAuthorNodes: true
 				}
 			}
 		};
@@ -639,7 +840,7 @@ define([
 				allowPrettify: false,
 				allowHelp: false,
 				allowLessonsLearned: false,
-
+				allowHistory : false,
 				//Node
 				allowDeleteNode: false,
 				allowEditNode: false,
@@ -662,6 +863,7 @@ define([
 				//Graph
 				allowSliders:false,
 				plotAuthorSolution:false,
+				showEquationAutoComplete: false,
 
 				//Node Click Behavior
 				showNodeEditor:true,
@@ -691,13 +893,17 @@ define([
 				setExecutionValues:false,
 				setStudentExecutionValues:false,
 				demoExecution:false,
-                executionExercise: false
+                executionExercise: false,
+
+				//Waveform Behavior
+				showWaveformEditor: false
+
 			},
 
 			constructor: function(/*string*/ mode, /*string*/ activity){
 				this._mode = mode;
 				this._activity= activity;
-				this._params = lang.mixin(this._params, activity_params[this._activity][this._mode])
+				this._params = lang.mixin(this._params, activity_params[this._activity][this._mode]);
 			},
 
 			getAllParameters: function(){

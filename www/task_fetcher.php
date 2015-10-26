@@ -80,7 +80,7 @@ EOT;
 */
 function printModel($row){
   header("Content-type: application/json");
-  print "{\"task\":$row[0],\"share\":" . ($row[1]?"true":"false") . "}";
+  print "{\"task\":$row[0],\"restart\": true, \"share\":" . ($row[1]?"true":"false") . "}";
 }
 
 /* 

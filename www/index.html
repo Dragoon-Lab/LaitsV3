@@ -155,23 +155,27 @@
                 <div id="menu_incrementalDemo" data-dojo-type="dijit/MenuItem">Incremental Demo</div>
                 <div id="menu_execution" data-dojo-type="dijit/MenuItem">Execution</div>
                 <div id="menu_executionDemo" data-dojo-type="dijit/MenuItem">Execution Demo</div>
+                <div id="menu_waveform" data-dojo-type="dijit/MenuItem">Waveform</div>
             </div>
         </div>
         <button type="button" data-dojo-type="dijit/form/Button" id="slidesButton" disabled="true" style="display: none">Hints</button>
         <button type="button" data-dojo-type="dijit/form/Button" id="prettifyButton" style="display: none">Prettify</button>
         <div data-dojo-type="dijit/PopupMenuBarItem">
             <span>Help</span>
-            <div data-dojo-type="dijit/Menu" id="menuHelp">
-                <div id="menuIntroText" data-dojo-type="dijit/MenuItem">Introduction</div>
-                <div id="menuIntroVideo" data-dojo-type="dijit/MenuItem">Intro video</div>
+            <div data-dojo-type="dijit/Menu" id="menuHelp">                
+                <div id="menuIntroTutorial" data-dojo-type="dijit/MenuItem">Introduction</div>
+                <div id="menuIntroVideo" data-dojo-type="dijit/MenuItem">Introductory video</div>
                 <div id="menuIntroConcept" data-dojo-type="dijit/MenuItem">Intro to Dragoon concepts</div>
                 <div id="menuOldIntroVideo" data-dojo-type="dijit/MenuItem">Slightly older intro video</div>
+                <div id="menuIntroText" data-dojo-type="dijit/MenuItem">Introduction webpage</div>
                 <div id="menuMathFunctions" data-dojo-type="dijit/MenuItem">Math functions</div>
             </div>
         </div>
         <button type="button" data-dojo-type="dijit/form/Button" id="lessonsLearnedButton" disabled="true" style="display: none">Lessons Learned</button>
         <button type="button" data-dojo-type="dijit/form/Button" id="resetButton" style="display: none">Reset</button>
+         <button type="button" data-dojo-type="dijit/form/Button" id="historyButton" disabled="true" style="display: none">History </button>
         <button type="button" data-dojo-type="dijit/form/Button" id="doneButton" style="display: none">Done</button>
+   
     </div> <!-- Menubar -->
 
     <div id="drawingPane" class="restrict-vscroll" data-dojo-type="dijit/layout/ContentPane" region="center">
@@ -271,6 +275,7 @@
                 <option value="construction">Construction</option>
                 <option value="incremental">Incremental</option>
                 <option value="execution">Execution</option>
+                <option value="waveform">Waveform</option>
             </select>
             <textarea id="authorSetDescription" name="authorSetDescription" data-dojo-type="dijit/form/SimpleTextarea" value="Enter Description here..."></textarea>
         </div>
@@ -392,10 +397,10 @@
                 </div>
 
                 <div class="dijitDialogPaneActionBar">
-                    <button data-dojo-type="dijit/form/Button" type="submit" onClick="return myFormDialog.isValid();" >
+                    <button id="OKEditorButton" data-dojo-type="dijit/form/Button" type="submit" onClick="return myFormDialog.isValid();" >
                         OK
                     </button>
-                    <button id="cancelEditorButton"data-dojo-type="dijit/form/Button" type="button" onClick="myFormDialog.hide()">
+                    <button id="cancelEditorButton" data-dojo-type="dijit/form/Button" type="button" onClick="myFormDialog.hide()">
                         Cancel
                     </button>
                 </div>
@@ -517,6 +522,13 @@
             </div>
         </div>
         <div class="fieldgroup">
+            <div id="assignButtonBox" style="padding-top:0px; display: none" >
+                <button id="assignWaveFormButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon" style="float: left; margin-right: 5px;">Assign Waveform</button>
+                <div id="waveformStore" style="float: left"></div>
+                <div id="removeWaveform" style="float: left; color: #ff0000; display: none; cursor: pointer; margin-left: 5px;">X</div>
+            </div>
+        </div>
+        <div class="fieldgroup">
             <label for="messageBox">Messages</label>
             <div id="messageBox" class="textscroll" data-dojo-type="dijit/layout/ContentPane"></div>
             <div class="buttonBox" style="padding-top:0px">
@@ -562,7 +574,24 @@
         </div>
     </div> <!-- end of node editor -->
     <!-- Putting Node-Editor stuff for demo  end -->
-
+    <!-- begin of the intro tutorial -->
+    <div class="claro sameedit tutorialBox" id="tutorialBox" data-dojo-type="dijit/Dialog" title="Tutorial" >
+        <div id="container">
+            <!--<p id="tutorialHeading" class="tutorialHeading"></p> -->
+            <div id="tutorialImageContainer">
+                <image id="tutorialImage" width="580" height="300" style="border:1px solid grey" class="tutorialBoxImage"/>
+                <!--<image id="tutorialImage2" width="580" height="300" />
+                <image id="tutorialImage3" width="580" height="300" />-->
+            </div>
+            <div id="tutorialContent" class="tutorialContent"></div>
+            <div id="tutorialNav" class="tutorialNav">
+                <button id="tutorialPrev" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon" >Previous</button>
+                <button id="tutorialNext" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Next</button>
+                <button id="tutorialShow" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Show Me</button>
+            </div>
+        </div>
+    </div>
+    <!-- end of the intro tutorial -->
 
     <div class="claro slides" id="slidesBox" data-dojo-type="dijit/Dialog" title="Hints">
         <div id="buttons">
@@ -645,6 +674,18 @@
     </div>
     <!--end of Execution popup-->
 
+    <!-- start of Waveform Editor -->
+    <div class="claro sameedit" data-dojo-type="dijit/Dialog" id="waveformEditor">
+        <div class="waveform-grid" id="waveform-container">
+
+        </div>
+        <div style="min-width:250px; text-align:center" id="waveButtonStore">
+            <button type="button" class="incrementalButton" data-dojo-type="dijit/form/Button"  iconClass="fa inc-button" id="WaveformEquationButton"> Show Equation</button>
+            <button type="button" class="incrementalButton" data-dojo-type="dijit/form/Button"  iconClass="fa inc-button" id="WaveformExplanationButton"> Show Explanation</button>
+        </div>
+    </div>
+    <!-- end of Waveform Editor -->
+
     <div class="claro sameedit" id="viewAllSchemaDialog" data-dojo-type="dijit/Dialog" title="Edit Schemas" style="width:300px;">
     </div>
 </div>  <!-- main -->
@@ -663,5 +704,6 @@
 <script type="text/javascript" src="ET/Core/messaging.js"></script>
 <script type="text/javascript" src="ET/Core/messaging-gateway.js"></script>
 <script type="text/javascript" src="ET/Services/Orchestration/heartbeat-service.js"></script>
+<script type="text/javascript" src="js/util/sha256.js"></script>
 </body>
 </html>

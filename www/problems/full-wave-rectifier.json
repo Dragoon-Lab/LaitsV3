@@ -1,6 +1,6 @@
 {
     "task": {
-        "taskName": "Model a Full Wave Rectifier",
+        "taskName": "Model a full wave rectifier",
         "time": {
             "start": 0,
             "end": 81,
@@ -8,21 +8,34 @@
             "integrationMethod": "Eulers Method",
             "units": "milliseconds"
         },
-        "properties": {},
-        "image": {
-            "URL": "http:\/\/i.imgur.com\/S4uMPZE.png?1"
+        "properties": {
+            "isGraphHelpShown": true
         },
-        "taskDescription": [
-            "The input to the center-tapped transformer is an AC voltage with a wavelength of 40 milliseconds and a maximum peak voltage of 10 volts.  The transformer is wound so that there is a 1:1 ratio of turns between the primary and each half of the secondary.  Diodes CR1 and CR2 are real, having a knee voltage of 0.7 volts. The diodes have a resistance of 10^8 ohms when they are reverse biased and 10 ohms when they are forward biased.The load resistor RL has a resistance of 1000 ohms. Graph the output voltage across the load resistor RL"
-        ],
+        "image": {
+            "URL": "images/PAL3/full-wave-rectifier.png"
+        },
+        "taskDescription": {
+            "construction": [
+                "A schematic of a full wave rectifier is presented above for you to model. Nodes representing the output of the center-tapped transformer have been given to you.  Construct a model for the rectification portion of the circuit. Diodes CR1 and CR2 are real, having a knee voltage of 0.7 volts. The load resistor RL has a resistance of 1000 ohms. Finish the model and graph the current across the load resistor RL"
+            ],
+            "incremental": [
+                "This is a model of a full wave rectifier. It includes nodes representing the output of the center-tapped transformer. Diodes CR1 and CR2 are real, having a knee voltage of 0.7 volts. The load resistor RL has a resistance of 1000 ohms. "
+            ],
+            "execution": [
+                "This is a model of a full wave rectifier. It includes nodes representing the output of the center-tapped transformer. Diodes CR1 and CR2 are real, having a knee voltage of 0.7 volts. The load resistor RL has a resistance of 1000 ohms."
+            ],
+            "waveform": [
+                "This is a model of a full wave rectifier. It includes nodes representing the output of the center-tapped transformer. Diodes CR1 and CR2 are real, having a knee voltage of 0.7 volts. The load resistor RL has a resistance of 1000 ohms. "
+            ]
+        },
         "lessonsLearned": [],
         "givenModelNodes": [
             {
                 "ID": "id1",
                 "inputs": [],
                 "position": {
-                    "x": 721.33093261719,
-                    "y": 32.330951690674
+                    "x": 713.85607910156,
+                    "y": 34.179302215576
                 },
                 "attemptCount": {
                     "description": 0,
@@ -79,11 +92,14 @@
                 "inputs": [
                     {
                         "ID": "id1"
+                    },
+                    {
+                        "ID": "id20"
                     }
                 ],
                 "position": {
-                    "x": 811,
-                    "y": 159
+                    "x": 645,
+                    "y": 149
                 },
                 "attemptCount": {
                     "description": 0,
@@ -129,15 +145,15 @@
                 "type": "function",
                 "description": "input voltage source",
                 "units": "volts",
-                "equation": "id1*sinewave(40,0)",
+                "equation": "id1*sinewave(id20,0)",
                 "genus": "required"
             },
             {
                 "ID": "id3",
                 "inputs": [],
                 "position": {
-                    "x": 854.33093261719,
-                    "y": 35.330951690674
+                    "x": 876.85607910156,
+                    "y": 40.179302215576
                 },
                 "attemptCount": {
                     "description": 0,
@@ -193,8 +209,8 @@
                 "ID": "id4",
                 "inputs": [],
                 "position": {
-                    "x": 533.33093261719,
-                    "y": 32.330951690674
+                    "x": 399.85607910156,
+                    "y": 42.179302215576
                 },
                 "attemptCount": {
                     "description": 0,
@@ -229,6 +245,12 @@
                     },
                     "units": {
                         "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
                     }
                 },
                 "name": "knee voltage of CR2",
@@ -241,133 +263,11 @@
                 "description": "knee voltage of CR2"
             },
             {
-                "ID": "id5",
-                "inputs": [
-                    {
-                        "ID": "id12"
-                    },
-                    {
-                        "ID": "id3"
-                    }
-                ],
-                "position": {
-                    "x": 1047,
-                    "y": 370
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "tweakedDirection": 0,
-                    "assistanceScore": 0
-                },
-                "status": {
-                    "root": {
-                        "disabled": false
-                    },
-                    "name": {
-                        "status": "entered"
-                    },
-                    "type": {
-                        "status": "entered"
-                    },
-                    "initial": {
-                        "disabled": true,
-                        "status": ""
-                    },
-                    "inputs": {
-                        "disabled": false
-                    },
-                    "equation": {
-                        "disabled": false,
-                        "status": "entered"
-                    },
-                    "units": {
-                        "status": "entered"
-                    },
-                    "kind": {
-                        "status": "entered"
-                    },
-                    "description": {
-                        "status": "entered"
-                    }
-                },
-                "name": "R of CR1",
-                "type": "function",
-                "units": "ohms",
-                "equation": "if(((id12>id3),10),(10^8))",
-                "genus": "required",
-                "description": "R of CR1"
-            },
-            {
-                "ID": "id6",
-                "inputs": [
-                    {
-                        "ID": "id13"
-                    },
-                    {
-                        "ID": "id4"
-                    }
-                ],
-                "position": {
-                    "x": 491,
-                    "y": 354
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "tweakedDirection": 0,
-                    "assistanceScore": 0
-                },
-                "status": {
-                    "root": {
-                        "disabled": false
-                    },
-                    "name": {
-                        "status": "entered"
-                    },
-                    "description": {
-                        "status": "entered"
-                    },
-                    "type": {
-                        "status": "entered"
-                    },
-                    "initial": {
-                        "disabled": true,
-                        "status": ""
-                    },
-                    "inputs": {
-                        "disabled": false
-                    },
-                    "equation": {
-                        "disabled": false,
-                        "status": "entered"
-                    },
-                    "units": {
-                        "status": "entered"
-                    },
-                    "kind": {
-                        "status": "entered"
-                    }
-                },
-                "name": "R of CR2",
-                "description": "Resistance of diode CR2",
-                "type": "function",
-                "units": "ohms",
-                "equation": "if(((id13>id4),10),(10^8))",
-                "genus": "required"
-            },
-            {
                 "ID": "id7",
                 "inputs": [],
                 "position": {
-                    "x": 1016.3309326172,
-                    "y": 28.330951690674
+                    "x": 1029.8560791016,
+                    "y": 38.179302215576
                 },
                 "attemptCount": {
                     "description": 0,
@@ -420,209 +320,20 @@
                 "genus": "required"
             },
             {
-                "ID": "id8",
-                "inputs": [
-                    {
-                        "ID": "id12",
-                        "label": ""
-                    },
-                    {
-                        "ID": "id14",
-                        "label": "\/"
-                    }
-                ],
-                "position": {
-                    "x": 792,
-                    "y": 604
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "tweakedDirection": 0,
-                    "assistanceScore": 0
-                },
-                "status": {
-                    "root": {
-                        "disabled": false
-                    },
-                    "name": {
-                        "status": "entered"
-                    },
-                    "description": {
-                        "status": "entered"
-                    },
-                    "type": {
-                        "status": "entered"
-                    },
-                    "initial": {
-                        "disabled": true,
-                        "status": ""
-                    },
-                    "inputs": {
-                        "disabled": false
-                    },
-                    "equation": {
-                        "disabled": false,
-                        "status": "entered"
-                    },
-                    "kind": {
-                        "status": "entered"
-                    },
-                    "units": {
-                        "status": "entered"
-                    }
-                },
-                "name": "Current through CR1",
-                "description": "Current through diode CR1",
-                "type": "function",
-                "equation": "id12\/id14",
-                "genus": "required",
-                "units": "amps"
-            },
-            {
-                "ID": "id9",
-                "inputs": [
-                    {
-                        "ID": "id13",
-                        "label": ""
-                    },
-                    {
-                        "ID": "id15",
-                        "label": "\/"
-                    }
-                ],
-                "position": {
-                    "x": 612,
-                    "y": 598
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "tweakedDirection": 0,
-                    "assistanceScore": 0
-                },
-                "status": {
-                    "root": {
-                        "disabled": false
-                    },
-                    "name": {
-                        "status": "entered"
-                    },
-                    "type": {
-                        "status": "entered"
-                    },
-                    "initial": {
-                        "disabled": true,
-                        "status": ""
-                    },
-                    "inputs": {
-                        "disabled": false
-                    },
-                    "equation": {
-                        "disabled": false,
-                        "status": "entered"
-                    },
-                    "description": {
-                        "status": "entered"
-                    },
-                    "units": {
-                        "status": "entered"
-                    },
-                    "kind": {
-                        "status": "entered"
-                    }
-                },
-                "name": "Current through CR2",
-                "type": "function",
-                "description": "Current through diode CR2",
-                "units": "amps",
-                "genus": "required",
-                "equation": "id13\/id15"
-            },
-            {
-                "ID": "id10",
-                "inputs": [
-                    {
-                        "ID": "id8",
-                        "label": ""
-                    },
-                    {
-                        "ID": "id9",
-                        "label": ""
-                    }
-                ],
-                "position": {
-                    "x": 702,
-                    "y": 721
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "tweakedDirection": 0,
-                    "assistanceScore": 0
-                },
-                "status": {
-                    "root": {
-                        "disabled": false
-                    },
-                    "name": {
-                        "status": "entered"
-                    },
-                    "description": {
-                        "status": "entered"
-                    },
-                    "type": {
-                        "status": "entered"
-                    },
-                    "initial": {
-                        "disabled": true,
-                        "status": ""
-                    },
-                    "inputs": {
-                        "disabled": false
-                    },
-                    "equation": {
-                        "disabled": false,
-                        "status": "entered"
-                    },
-                    "units": {
-                        "status": "entered"
-                    },
-                    "kind": {
-                        "status": "entered"
-                    }
-                },
-                "name": "Current through RL",
-                "description": "Current through load resistance RL",
-                "type": "function",
-                "units": "amps",
-                "equation": "id8+id9",
-                "genus": "required"
-            },
-            {
                 "ID": "id11",
                 "inputs": [
                     {
-                        "ID": "id10",
+                        "ID": "id22",
                         "label": ""
                     },
                     {
-                        "ID": "id7",
+                        "ID": "id21",
                         "label": ""
                     }
                 ],
                 "position": {
-                    "x": 843,
-                    "y": 797
+                    "x": 639,
+                    "y": 624
                 },
                 "attemptCount": {
                     "description": 0,
@@ -664,13 +375,13 @@
                         "status": "entered"
                     }
                 },
-                "name": "V across RL",
+                "name": "Output V",
                 "description": "Voltage across load resistance",
                 "type": "function",
                 "units": "volts",
-                "equation": "id10*id7",
+                "equation": "id22+id21",
                 "genus": "required",
-                "parentNode": true
+                "parentNode": false
             },
             {
                 "ID": "id12",
@@ -681,8 +392,8 @@
                     }
                 ],
                 "position": {
-                    "x": 878,
-                    "y": 269
+                    "x": 718,
+                    "y": 219
                 },
                 "attemptCount": {
                     "description": 0,
@@ -691,7 +402,7 @@
                     "units": 0,
                     "equation": 0,
                     "tweakedDirection": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {
                     "root": {
@@ -740,8 +451,8 @@
                     }
                 ],
                 "position": {
-                    "x": 628,
-                    "y": 276
+                    "x": 574,
+                    "y": 238
                 },
                 "attemptCount": {
                     "description": 0,
@@ -750,7 +461,7 @@
                     "units": 0,
                     "equation": 0,
                     "tweakedDirection": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {
                     "root": {
@@ -791,20 +502,18 @@
                 "equation": "-id2"
             },
             {
-                "ID": "id14",
+                "ID": "id18",
                 "inputs": [
                     {
-                        "ID": "id7",
-                        "label": ""
+                        "ID": "id24"
                     },
                     {
-                        "ID": "id5",
-                        "label": ""
+                        "ID": "id4"
                     }
                 ],
                 "position": {
-                    "x": 990,
-                    "y": 480
+                    "x": 439,
+                    "y": 455
                 },
                 "attemptCount": {
                     "description": 0,
@@ -813,6 +522,8 @@
                     "units": 0,
                     "equation": 0,
                     "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
                     "assistanceScore": 0
                 },
                 "status": {
@@ -820,9 +531,6 @@
                         "disabled": false
                     },
                     "name": {
-                        "status": "entered"
-                    },
-                    "kind": {
                         "status": "entered"
                     },
                     "description": {
@@ -844,30 +552,31 @@
                     },
                     "units": {
                         "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
                     }
                 },
-                "name": "R of CR1 and RL",
-                "genus": "required",
-                "description": "R of CR1 and RL",
+                "name": "V across CR2",
+                "description": "Voltage drop across diode CR2",
                 "type": "function",
-                "units": "ohms",
-                "equation": "id7+id5"
+                "units": "volts",
+                "equation": "if(((id24>id4),id4),id24)",
+                "genus": "required"
             },
             {
-                "ID": "id15",
+                "ID": "id19",
                 "inputs": [
                     {
-                        "ID": "id6",
-                        "label": ""
+                        "ID": "id25"
                     },
                     {
-                        "ID": "id7",
-                        "label": ""
+                        "ID": "id3"
                     }
                 ],
                 "position": {
-                    "x": 542,
-                    "y": 468
+                    "x": 835,
+                    "y": 431
                 },
                 "attemptCount": {
                     "description": 0,
@@ -876,6 +585,8 @@
                     "units": 0,
                     "equation": 0,
                     "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
                     "assistanceScore": 0
                 },
                 "status": {
@@ -883,13 +594,6 @@
                         "disabled": false
                     },
                     "name": {
-                        "status": "entered"
-                    },
-                    "equation": {
-                        "status": "entered",
-                        "disabled": false
-                    },
-                    "kind": {
                         "status": "entered"
                     },
                     "description": {
@@ -905,16 +609,404 @@
                     "inputs": {
                         "disabled": false
                     },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
                     "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
                         "status": "entered"
                     }
                 },
-                "name": "R of CR2 and RL",
-                "equation": "id6+id7",
-                "genus": "required",
-                "description": "R of CR2 and RL",
+                "name": "V across CR1",
+                "description": "Voltage drop across diode CR1",
                 "type": "function",
-                "units": "ohms"
+                "units": "volts",
+                "equation": "if(((id25>id3),id3),id25)",
+                "genus": "required"
+            },
+            {
+                "ID": "id20",
+                "inputs": [],
+                "position": {
+                    "x": 519.85607910156,
+                    "y": 39.179302215576
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 1
+                },
+                "status": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "wavelength",
+                "description": "Length of sine wave input voltage",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 40,
+                "units": "milliseconds",
+                "genus": "required"
+            },
+            {
+                "ID": "id21",
+                "inputs": [
+                    {
+                        "ID": "id13",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id18",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 553,
+                    "y": 489
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "V from lower winding",
+                "description": "Output V from lower winding alone",
+                "type": "function",
+                "units": "volts",
+                "equation": "id13-id18",
+                "genus": "required",
+                "explanation": "Using superposition, this is the output voltage due to the lower winding alone."
+            },
+            {
+                "ID": "id22",
+                "inputs": [
+                    {
+                        "ID": "id12",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id19",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 726,
+                    "y": 492
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "V from upper winding",
+                "description": "Output V from upper winding alone",
+                "type": "function",
+                "units": "volts",
+                "equation": "id12-id19",
+                "genus": "required",
+                "explanation": "Using superposition, this is the output voltage if the lower winding is ignored."
+            },
+            {
+                "ID": "id23",
+                "inputs": [
+                    {
+                        "ID": "id11",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id7",
+                        "label": "/"
+                    }
+                ],
+                "position": {
+                    "x": 889,
+                    "y": 642
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "I thru R",
+                "description": "Current through resistor R",
+                "type": "function",
+                "units": "amps",
+                "equation": "id11/id7",
+                "genus": "required",
+                "parentNode": true
+            },
+            {
+                "ID": "id24",
+                "inputs": [
+                    {
+                        "ID": "id13",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 490,
+                    "y": 313
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "V across CR2 when open",
+                "description": "Voltage drop across CR2 when it is reverse biased",
+                "type": "function",
+                "units": "volts",
+                "equation": "id13",
+                "explanation": "If the diode were an open circuit, then this node represents the voltage drop across it measure from left to right. u00a0 However, there are two voltage sources in this circuit: the upper and lower windings. u00a0We can user superposition and analyze them separately. u00a0So here we just consider the lower winding as a source. u00a0<br /><br />If CR2 is open, it just sees the lower winding's voltage on its left and ground on its right, so it's voltage drop left to right is just the lower winding's voltage.u00a0",
+                "genus": "required"
+            },
+            {
+                "ID": "id25",
+                "inputs": [
+                    {
+                        "ID": "id12",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 825,
+                    "y": 289
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "V across CR1 when open",
+                "description": "Voltage drop across diode CR1 when it is reverse biased",
+                "type": "function",
+                "units": "volts",
+                "equation": "id12",
+                "explanation": "Using superposition, we ignore the lower winding and only consider the upper winding as a voltage source. u00a0The drop across CR1 from left to right if it were an open circuit is just the upper winding's voltage because the right side of CR1 would be at ground.",
+                "genus": "required"
             }
         ],
         "studentModelNodes": [
@@ -923,15 +1015,18 @@
                 "inputs": [
                     {
                         "ID": "id17"
+                    },
+                    {
+                        "ID": "id26"
                     }
                 ],
                 "position": {
-                    "x": 811,
-                    "y": 159
+                    "x": 645,
+                    "y": 149
                 },
                 "status": {
                     "equation": {
-                        "disabled": true,
+                        "disabled": false,
                         "status": "correct"
                     },
                     "description": {
@@ -950,14 +1045,14 @@
                 "descriptionID": "id2",
                 "units": "volts",
                 "type": "function",
-                "equation": "id17*sinewave(40,0)"
+                "equation": "id17*sinewave(id26,0)"
             },
             {
                 "ID": "id17",
                 "inputs": [],
                 "position": {
-                    "x": 721.33093261719,
-                    "y": 32.330951690674
+                    "x": 713.85607910156,
+                    "y": 34.179302215576
                 },
                 "status": {
                     "description": {
@@ -981,200 +1076,300 @@
                 "initial": 10,
                 "units": "volts",
                 "type": "parameter"
+            },
+            {
+                "ID": "id26",
+                "inputs": [],
+                "position": {
+                    "x": 519.85607910156,
+                    "y": 39.179302215576
+                },
+                "status": {
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id20",
+                "initial": 40,
+                "units": "milliseconds",
+                "type": "parameter"
+            },
+            {
+                "ID": "id27",
+                "inputs": [
+                    {
+                        "ID": "id16"
+                    }
+                ],
+                "position": {
+                    "x": 574,
+                    "y": 238
+                },
+                "status": {
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id13",
+                "units": "volts",
+                "type": "function",
+                "equation": "-id16"
+            },
+            {
+                "ID": "id28",
+                "inputs": [
+                    {
+                        "ID": "id16"
+                    }
+                ],
+                "position": {
+                    "x": 718,
+                    "y": 219
+                },
+                "status": {
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id12",
+                "units": "volts",
+                "type": "function",
+                "equation": "id16"
             }
         ],
         "schemas": [
             {
-                "ID": "schema2",
-                "schemaClass": "diode_behavior-forward",
-                "name": "Diode Behavior-Forward",
-                "competence": {
-                    "errors": 0,
-                    "total": 0,
-                    "timeSpent": 0,
-                    "values": {}
-                },
-                "nodes": "id5, id3",
-                "rates": {},
-                "difficulty": {
-                    "isolation": 1,
-                    "cues": 0,
-                    "phrases": 0
-                }
-            },
-            {
-                "ID": "schema4",
-                "schemaClass": "diode_behavior-reverse",
-                "name": "Diode Behavior-Reverse",
-                "competence": {
-                    "errors": 0,
-                    "total": 0,
-                    "timeSpent": 0,
-                    "values": {}
-                },
-                "nodes": "id5, id3",
-                "rates": {},
-                "difficulty": {
-                    "isolation": 1,
-                    "cues": 0,
-                    "phrases": 0
-                }
-            },
-            {
-                "ID": "schema5",
-                "schemaClass": "diode_behavior-forward",
-                "name": "Diode Behavior-Forward",
-                "competence": {
-                    "errors": 0,
-                    "total": 0,
-                    "timeSpent": 0,
-                    "values": {}
-                },
-                "nodes": "id6, id4",
-                "rates": {},
-                "difficulty": {
-                    "isolation": 1,
-                    "cues": 0,
-                    "phrases": 0
-                }
-            },
-            {
-                "ID": "schema6",
-                "schemaClass": "diode_behavior-reverse",
-                "name": "Diode Behavior-Reverse",
-                "competence": {
-                    "errors": 0,
-                    "total": 0,
-                    "timeSpent": 0,
-                    "values": {}
-                },
-                "nodes": "id6, id4",
-                "rates": {},
-                "difficulty": {
-                    "isolation": 1,
-                    "cues": 0,
-                    "phrases": 0
-                }
-            },
-            {
-                "ID": "schema11",
-                "schemaClass": "ohms_law",
-                "name": "Ohm's Law: Voltage",
-                "competence": {
-                    "errors": 0,
-                    "total": 0,
-                    "timeSpent": 0,
-                    "values": {}
-                },
-                "nodes": "id12, id14, id8",
-                "rates": {},
-                "difficulty": {
-                    "isolation": 1,
-                    "cues": 1,
-                    "phrases": 1
-                }
-            },
-            {
-                "ID": "schema12",
-                "schemaClass": "ohms_law",
-                "name": "Ohm's Law: Voltage",
-                "competence": {
-                    "errors": 0,
-                    "total": 0,
-                    "timeSpent": 0,
-                    "values": {}
-                },
-                "nodes": "id13, id15, id9",
-                "rates": {},
-                "difficulty": {
-                    "isolation": 1,
-                    "cues": 1,
-                    "phrases": 1
-                }
-            },
-            {
-                "ID": "schema14",
-                "schemaClass": "ohms_law",
-                "name": "Ohm's Law: Voltage",
-                "competence": {
-                    "errors": 0,
-                    "total": 0,
-                    "timeSpent": 0,
-                    "values": {}
-                },
-                "nodes": "id11, id7, id10",
-                "rates": {},
-                "difficulty": {
-                    "isolation": 1,
-                    "cues": 0,
-                    "phrases": 0
-                }
-            },
-            {
-                "ID": "schema16",
-                "schemaClass": "resistor_behavior",
-                "name": "Resistor Behavior",
-                "competence": {
-                    "errors": 0,
-                    "total": 0,
-                    "timeSpent": 0,
-                    "values": {}
-                },
-                "nodes": "id7",
-                "rates": {},
-                "difficulty": {
-                    "isolation": 1,
-                    "cues": 0,
-                    "phrases": 0
-                }
-            },
-            {
-                "ID": "schema17",
-                "schemaClass": "resistor_behavior",
-                "name": "Resistor Behavior",
-                "competence": {
-                    "errors": 0,
-                    "total": 0,
-                    "timeSpent": 0,
-                    "values": {}
-                },
-                "nodes": "id14",
-                "rates": {},
-                "difficulty": {
-                    "isolation": 1,
-                    "cues": 1,
-                    "phrases": 1
-                }
-            },
-            {
-                "ID": "schema18",
-                "schemaClass": "rectifier_behavior",
-                "name": "Rectifier Behavior",
-                "competence": {
-                    "errors": 0,
-                    "total": 0,
-                    "timeSpent": 0,
-                    "values": {}
-                },
-                "nodes": "id15",
-                "rates": {},
-                "difficulty": {
-                    "isolation": 1,
-                    "cues": 1,
-                    "phrases": 1
-                }
-            },
-            {
-                "ID": "schema19",
+                "ID": "schema20",
                 "schemaClass": "full_wave_rectifier_behavior",
                 "name": "Full Wave Rectifier Behavior",
                 "competence": {
                     "errors": 0,
                     "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id1, id2, id3, id4, id5, id6, id7, id8, id9, id10, id11, id12, id13, id14, id15",
+                "nodes": "id3, id4, id7, id11, id12, id13, id25, id24, id23, id22, id21, id19, id18",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema21",
+                "schemaClass": "diode_behavior-forward",
+                "name": "Diode Behavior-Forward",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id19, id3",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema22",
+                "schemaClass": "diode_behavior-forward",
+                "name": "Diode Behavior-Forward",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id18, id4",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema23",
+                "schemaClass": "diode_behavior-reverse",
+                "name": "Diode Behavior-Reverse",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id19, id3, id25",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema24",
+                "schemaClass": "diode_behavior-reverse",
+                "name": "Diode Behavior-Reverse",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id18, id4, id24",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema26",
+                "schemaClass": "kirchoff_voltage_law",
+                "name": "Kirchoff's Voltage Law",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id11",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema27",
+                "schemaClass": "kirchoff_voltage_law",
+                "name": "Kirchoff's Voltage Law",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id22",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema28",
+                "schemaClass": "kirchoff_voltage_law",
+                "name": "Kirchoff's Voltage Law",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id21",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema29",
+                "schemaClass": "ohms_law",
+                "name": "Ohm's Law: Voltage",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id23",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema30",
+                "schemaClass": "resistor_behavior",
+                "name": "Resistor Behavior",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id7, id23",
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,

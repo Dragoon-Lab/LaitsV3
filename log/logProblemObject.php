@@ -3,6 +3,7 @@
 		public $problem;
 		public $user;
 		public $mode;
+		public $activity;
 		public $totalTime; // total time for which the session is running
 		public $outOfFocusTime; // time when the window was out of focus
 		public $wastedTime; // for a long time when nothing was done, no logs for 420 seconds.
@@ -109,7 +110,7 @@
 		public $name;
 		public $sessionTimeStamp;
 		public $time = 0;
-		public $correctValue;
+		public $correctValue = array();
 		public $status = array();
 		public $answers = array();
 		public $values = array();

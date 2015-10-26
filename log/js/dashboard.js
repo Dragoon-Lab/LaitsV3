@@ -83,6 +83,7 @@ define([
 				this.query = this.modules.qObject;
 			else 
 				this.query = params;
+			this.separatingSymbol = " - ";
 		},
 
 		init: function(){
@@ -173,15 +174,16 @@ define([
 				});
 			}, function(){*/
 				array.forEach(this.objects, function(object){
+					var pa = this.getProblemActivityName(object['problem'], object['activity']);
 					if(problems.length > 0){
 						var problemExist = array.some(problems, function(problem){
-							return object['problem'] == problem;
+							return pa == problem;
 						});
 						if(!problemExist){
-							problems.push(object['problem']);
+							problems.push(pa);
 						}
 					} else {
-						problems.push(object['problem']);
+						problems.push(pa);
 					}
 				}, this);
 			//});
@@ -198,23 +200,46 @@ define([
 
 			var index = 0;
 			array.forEach(this.problems, function(problem){
+				var temp;
+				var activity = "";
+				if(problem.indexOf(this.separatingSymbol) >= 0){
+					temp = problem.split(this.separatingSymbol);
+					activity = temp[1];
+					problem = temp[0];
+				}
+
 				var breakOut = false;
 				for(var p in allProblems){
 					var obj = allProblems[p];
 					if(obj[problem]){
-						names[index] = obj[problem];
+						names[index] = this.getProblemActivityName(obj[problem], this.getActivityName(activity));
 						breakOut = true;
 						break;
 					}
 				}
 
 				if(!breakOut){
-					names[index] = problem;
+					names[index] = this.getProblemActivityName(problem, this.getActivityName(activity));
 				}
 				index++;
 			}, this);
 
 			return names;
+		},
+
+		getProblemActivityName: function(problem, activity){
+			return activity != "" ? (problem + this.separatingSymbol + activity) : problem;
+		},
+
+		getActivityName: function(activity){
+			var activityNames = {
+				"incremental": "Tweak Exercise",
+				"incrementalDemo": "Tweak Demo",
+				"execution": "Execution Exercise",
+				"executionDemo": "Execution Demo"
+			};
+
+			return (activityNames.hasOwnProperty(activity)?activityNames[activity]:"");
 		},
 
 		getFile: function(fileName){
@@ -234,7 +259,8 @@ define([
 		getRenderingData: function(){
 			array.forEach(this.objects, function(upObject){
 				var userIndex = array.indexOf(this.users, upObject['user']);
-				var problemIndex = array.indexOf(this.problems, upObject['problem']);
+				var pa = this.getProblemActivityName(upObject['problem'], upObject['activity']);
+				var problemIndex = array.indexOf(this.problems, pa);
 				if(userIndex >= 0 && problemIndex >= 0){
 					this.mode[userIndex][problemIndex] = upObject['mode'];
 					//this.timeSpent[userIndex][problemIndex] = (number.round(upObject['totalTime']*10))/10+ " - " + (number.round(upObject['outOfFocusTime']*10))/10;
@@ -359,7 +385,8 @@ define([
 					var urlString = '';
 					if(this.modules['sessionLink']){
 						//for devel server
-						urlString = "<a href='../index.html?u=" + user + "&m=" + this.mode[row][col] + "&sm=feedback&is=algebraic&p=" + problem + "&s=" + this.section + "&c=Continue&l=false' target='_blank' title='Click to check session'>";
+						var temp = problem.split(this.separatingSymbol);
+						urlString = "<a href='../index.html?u=" + user + "&m=" + this.mode[row][col] + "&sm=feedback&is=algebraic&p=" + temp[0] + "&a=" + temp[1] + "&s=" + this.section + "&c=Continue&l=false' target='_blank' title='Click to check session'>";
 					}
 					var complete = this.problemComplete[row][col];
 					var runningStatus = this.sessionRunning[row][col];

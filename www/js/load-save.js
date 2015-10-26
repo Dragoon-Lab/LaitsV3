@@ -33,8 +33,9 @@ define([
 	"dojo/request/xhr",
 	"dojo/_base/json",
 	"dojo/_base/lang",
-	"./message-box"
-], function(declare, xhr, json, lang, messageBox){
+	"./message-box",
+	"dojo/_base/array"
+], function(declare, xhr, json, lang, messageBox,array){
 	// Summary:
 	//			Loads and saves sessions and sets up logging
 	// Description:
@@ -112,6 +113,14 @@ define([
 				handleAs: "json"
 			}).then(lang.hitch(this, function(model_object){	 // this makes loadProblem blocking?
 				console.log("loadFromDB worked", model_object);
+
+				// Setting the assistant score back to zero when not in construction mode
+				if(this.params.a!=="construction"){
+					array.forEach(model_object.task.givenModelNodes, function (node) {
+						node.attemptCount.assistanceScore=0
+					});
+				}
+				
 				return model_object;
 			}), lang.hitch(this, function(err){
 				this.clientLog("error", {
@@ -131,6 +140,8 @@ define([
 				errorMessage.show();
 			}));
 		},
+
+
 		isProblemNameConflict: function(problemName, groupName) {
 			return xhr.post(this.path + "problems_conflict_checker.php", {
 				data: {

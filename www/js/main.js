@@ -58,12 +58,15 @@ define([
 	"dijit/Dialog",
 	"./image-box",
 	"./modelChanges",
-	"./ETConnector"
+	"./ETConnector",
+	"./tutorialWidget",
+	"./zoom-correction",
+	"./history-widget"
 ], function(
 	array, lang, dom, geometry, style, domClass, on, aspect, ioQuery, ready, registry, toolTip, tooltipDialog, popup,
 	menu, loadSave, model, Graph, controlStudent, controlAuthor, drawmodel, logging, equation,
 	description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan,
-	activityParameters, memory, event, UI, Dialog, ImageBox, modelUpdates, ETConnector){
+	activityParameters, memory, event, UI, Dialog, ImageBox, modelUpdates, ETConnector, TutorialWidget, ZoomCorrector, HistoryWidget){
 
 	/*  Summary:
 	 *			Menu controller
@@ -240,6 +243,9 @@ define([
 							throw new Error("Root Node Missing");
 						}
 					}
+					if(solutionGraph.hasOwnProperty("restart")){
+						givenModel.setProblemReopened(solutionGraph.restart);
+					}
 				}catch (error) {
 					var errorMessage = new messageBox("errorMessageBox", "error", error.message);
 					errorMessage.show();
@@ -279,9 +285,6 @@ define([
 			controllerObject._PM.setLogging(session);  // Set up direct logging in PM
 		}
 		controllerObject.setLogging(session); // set up direct logging in controller
-		if(query.m != 'AUTHOR'){
-			controllerObject.setAssessment(session); //set up assessment for student.
-		}
 		equation.setLogging(session);
 
 		/*
@@ -295,10 +298,33 @@ define([
 			if(reply) givenModel.setLessonLearned(reply);
 		}); */
 		state.get("isDoneButtonShown").then(function(reply){
+			console.log("reply for done",reply);
 			if(reply === true || reply === false)
 				givenModel.setDoneMessageShown(reply);
 		});
+		state.get("isGraphHelpShown").then(function(reply){
+			console.log("reply for graph",reply);
+			if(reply === true || reply === false)
+				givenModel.setGraphHelpShown(reply);
+		});
 		controllerObject.setState(state);
+
+
+		//check if the use has already completed the tutorial
+		var twidget = new TutorialWidget();
+		var tutorialState = new State(query.u, query.s, "action");
+		if(!twidget.avoidTutorial(query))
+			tutorialState.get("tutorialShown").then(function(res){
+				if(res != "" || res == "true") return;
+				twidget.setState();
+				twidget.begin(function(){
+					tutorialState.put("tutorialShown", "true");
+				});
+
+			});
+
+		
+		//ZoomCorrector.validate();
 
 		ready(function(){
 			//Set Tab title
@@ -310,7 +336,8 @@ define([
 			var menuButtons=[];
 			menuButtons.push("createNodeButton","graphButton","tableButton","forumButton",
 				"schemaButton","descButton","saveButton","mergeButton",
-				"previewButton","slidesButton","lessonsLearnedButton","resetButton","doneButton", "prettifyButton", "imageButton");
+				"previewButton","slidesButton","lessonsLearnedButton","resetButton","doneButton", "prettifyButton", "imageButton","historyButton");
+
 
 			array.forEach(menuButtons, function(button){
 				//setting display for each menu button
@@ -332,8 +359,9 @@ define([
 			//}
 
 			//set tweak directions if needed by the activity and the model has tweak directions.
-			if (activity_config.get("setTweakDirections") && (!givenModel.getInitialTweakedNode() ||
-															  !givenModel.getInitialTweakDirection())) {
+			var setTweak = activity_config.get("setTweakDirections");
+			var setExecution = activity_config.get("setExecutionValues");
+			if (setTweak && (!givenModel.getInitialTweakedNode() || !givenModel.getInitialTweakDirection())) {
 				//show a message that this problem is not right for incremental activity
 				var errorMessage = new messageBox("errorMessageBox", "error", "The author of this problem has not set up the initial "+
 																			"incremental change node, so this model cannot be done "+
@@ -341,15 +369,21 @@ define([
 																			"Please contact the author of the problem.");
 				errorMessage.show();
 				throw Error("problem does not have tweaked nodes");
-			}else if(activity_config.get("setTweakDirections") && !givenModel.given.validateTweakDirections()){
+			}else if(setExecution && givenModel.getTime().step != 1){
+				var errorMessage = new messageBox("errorMessageBox", "error", "The author of this problem has not set up the execution "+
+																			"step size and so this model cannot be done in this activity. "+
+																			"Please contact the author of the problem.");
+				errorMessage.show();
+				throw Error("time step for the problem is " + givenModel.getTime().step + " which is not 1.");
+			}else if(setTweak && !givenModel.given.validateTweakDirections()){
 				//changes to model for incremental activity
 				updateModel.calculateTweakDirections();
-			}else if(activity_config.get("setExecutionValues") && !givenModel.given.validateExecutionValues()){
+			}else if(setExecution && !givenModel.given.validateExecutionValues()){
 				//changes to model for execution activity
 				updateModel.calculateExecutionValues();
-
-
 			}
+			//uncomment the line below if you want to copy the author solution for testing ;)
+			//updateModel.initializeStudentModel(["description", "type", "initial", "units", "equation"]);
 			//copy problem to student model
 			if(activity_config.get("initializeStudentModel") && !givenModel.areRequiredNodesVisible()){
 				console.log("student model being initialized");
@@ -378,32 +412,48 @@ define([
 					registry.byId("lessonsLearnedButton").set("disabled", false);
 			}
 
-			//GET problem-topic index for PAL problems
+			//Initialie TC, GET problem-topic index for PAL problems
 			palTopicIndex = "";
+			var tc = null;
 			var searchPattern = new RegExp('^pal3', 'i');
+			
 			if(query.m != "AUTHOR" && searchPattern.test(query.s)){
+				activity_config["PAL3"] = true;
 				var xhrArgs = {
 					url: "problems/PAL3-problem-topics.json",
 					handleAs: "json",
 					load: function(data){
 						palTopicIndex = data;
+						tc = new tincan(givenModel, controllerObject._assessment,session, palTopicIndex);
 					},
 					error: function(error){
 						console.log("error retrieving file name");
 					}
 				}
 				dojo.xhrGet(xhrArgs);
+				aspect.after(controllerObject._PM, "notifyCompleteness", function(){
+					if(!tc ||  !tc.needsToSendScore || !givenModel.isCompleteFlag) return;
+					tc.connect();
+					tc.sendStatements();
+				});
 			}
 			// setting environment for loading dragoon inside ET
 			
 			var etConnect = null;
 			if(activity_config["ElectronixTutor"]) {
-				
 				etConnect = new ETConnector();
 				etConnect.startService();
 				
+				// send score after student complete the model
+				aspect.after(controllerObject._PM, "notifyCompleteness", function(){
+					if(!etConnect ||  !etConnect.needsToSendScore || !givenModel.isCompleteFlag) return;
+					var score = controllerObject._assessment.getSuccessFactor();
+					etConnect.sendScore(score);
+					console.log("sending score(successfactor):", score);
+				});
+				
 			}
-
+			
 			if(activity_config.get("targetNodeStrategy")){ 
 				// Only in construction activity when in COACHED mode 
 				var rootNodes = givenModel.given.getRootNodes();
@@ -426,11 +476,14 @@ define([
 						//drawModel.addNode(givenModel.active.getNode(id));
 					}
 				});		
-			}	
-			
+			}
+
 			var drawModel = new drawmodel(givenModel.active, ui_config.get("showColor"), activity_config);
 			drawModel.setLogging(session);
 			
+			if(query.m != 'AUTHOR'){
+				controllerObject.setAssessment(session); //set up assessment for student.
+			}
 			// add mouse enter and mouse leave event for every new node	
 			var iBoxController = new ImageBox(givenModel.getImageURL(), givenModel);
 			
@@ -504,14 +557,17 @@ define([
 					if(activity_config.get("demoExecution")){
 						controllerObject.showExecutionAnswer(mover.node.id);
 					}
-                    /*
-                    else if(activity_config.get("executionExercise")){
-                        var tab_data = new Graph(givenModel, query.m, session, "forExecIterations");
-                        tab_data.findSolution()
+					/*
+					else if(activity_config.get("executionExercise")){
+						var tab_data = new Graph(givenModel, query.m, session, "forExecIterations");
+						tab_data.findSolution()
 
-                    }
+					}
 					*/
-                    controllerObject.showExecutionMenu(mover.node.id);
+					controllerObject.showExecutionMenu(mover.node.id);
+				}
+				else if(activity_config.get("showWaveformEditor")){
+					controllerObject.showWaveformEditor(mover.node.id);
 				}
 			}, true);
 
@@ -594,7 +650,6 @@ define([
 					around: dom.byId('prettifyButton')
 				});
 			});
-
 			//Remove nodes from student model(if added) when author deletes the node from given model
 			if(controllerObject._mode == "AUTHOR"){
 				aspect.after(drawModel,
@@ -710,6 +765,8 @@ define([
 					"Midpoint - Best for continuous functions <br>");
 				makeTooltip('authorDescriptionQuestionMark', "The quantity computed by the node");
 			}
+
+
 
 			if(activity_config.get("allowSaveAs")){
 
@@ -1012,24 +1069,7 @@ define([
 					});
 					graph.show();
 
-					// show graph when button clicked
-					menu.add("graphButton", function(e){
-						event.stop(e);
-						console.debug("button clicked");
-							
-						// instantiate graph object
-						var buttonClicked = "graph";
-						//var graph = new Graph(givenModel, query.m, session, buttonClicked);
-						graph.setStateGraph(state);
-						var problemComplete = givenModel.matchesGivenSolution();
 
-						graph._logging.log('ui-action', {
-							type: "menu-choice",
-							name: "graph-button",
-							problemComplete: problemComplete
-						});
-						graph.show();
-					});
 					// show table when button clicked
 					menu.add("tableButton", function(e){
 					event.stop(e);
@@ -1042,7 +1082,7 @@ define([
 						name: "table-button"
 					});
 					table.show();
-			   	 	});
+					});
 				}
 			});
 
@@ -1068,6 +1108,13 @@ define([
 						problemComplete: problemComplete
 					});
 					graph.show();
+					var graphHelpButton = dom.byId('graphHelpButton');
+					console.log("graph help shown",givenModel.getGraphHelpShown());
+					if(!givenModel.getGraphHelpShown()&&graphHelpButton ) {
+						domClass.add(graphHelpButton, "glowNode");
+						givenModel.setGraphHelpShown(true);
+						state.put("isGraphHelpShown",true);
+					}
 				});
 
 				//the solution div which shows graph/table when closed
@@ -1143,6 +1190,19 @@ define([
 						lessonsLearned.displayLessonsLearned(contentMsg);
 					}
 				});
+			}
+
+			//Wiring up history button
+			if(activity_config.get("historyButton")){
+				/*var historyButton = registry.byId("historyButton");	
+				historyButton.set("disabled", false);			
+				menu.add("historyButton", function(e){
+					event.stop(e);
+					session.getHistory(query).then(function(history){
+						console.log("history for now is:", history);
+					})
+					//registry.byId("historyDialog").show();
+				});*/
 			}
 
 			if(activity_config.get("allowHelp")){
@@ -1227,18 +1287,42 @@ define([
 						"height=400, width=600, toolbar =no, menubar=no, scrollbars=yes, resizable=no, location=no, status=no"
 					);
 				});
+				var introTutorial = dom.byId("menuIntroTutorial");
+				on(introTutorial, "click", function(){
+					var tutorialBox = registry.byId("tutorialBox");
+					//tutorialBox.show();
+					twidget.begin(function(){
+
+					});
+				});
 
 
 			}
 
-			if(activity_config.get("promptSaveAs")){
+			if(activity_config.get("promptSaveAs")) {
 				// If we are loading a published problem in author mode, prompt user to perform a save-as immediately
-				if(!query.g) {
+				if (!query.g) {
 					var message = '<strong>You must choose a name and folder for the new copy of this problem.</strong>';
 					var dialog = registry.byId("authorSaveDialog");
 					registry.byId("authorSaveProblem").set("value", query.p);
 					dom.byId("saveMessage").innerHTML = message;
 					dialog.show();
+				} else if (givenModel.getTime().step != 1) {
+					var givenTime = givenModel.getTime();
+					var oldStep = givenTime.step; // Save this for use in message
+					givenModel.setTime({
+						start: givenTime.start,
+						end: givenTime.end,
+						step: 1
+					});
+					//show message on canvas that step size has been updated to 1
+					var timeStepWarning = new messageBox("errorMessageBox", "warn",
+						"The model you have loaded had a timestep size which was " + oldStep +
+						" instead of one. It has been changed to one. Please open to the " +
+						"problem and times window and update the units of time and end time" +
+						" to compensate.");
+					timeStepWarning.show();
+
 				}
 			}
 
@@ -1247,7 +1331,8 @@ define([
 				var makeTooltip  = function(id,content){
 					new toolTip({
 						connectId: [id],
-						label: content
+						label: content,
+						position: ['before']
 					});
 				};
 				makeTooltip('descriptionQuestionMark', " The quantity computed by the node ");
@@ -1277,7 +1362,16 @@ define([
 						registry.byId("nodeeditor").hide();
 					});
 				}
-
+				//debugger;
+				// attaching author History widget
+				if(activity_config.get("allowHistory")) {
+					var historyWidget = new HistoryWidget(query, session.sessionId);
+					registry.byId("historyButton").set("disabled", false);
+					on(registry.byId("historyButton"), "click", function (e) {
+						event.stop(e);
+						historyWidget.show();
+					});
+				}
 				/*
 				 Autosave on close window
 				 It would be more efficient if we only saved the changed node.
@@ -1337,6 +1431,17 @@ define([
 				});
 			}
 
+			if(activity_config.get("allowAssignWaveFormButton")){
+				console.log("wave form button can be clicked");
+
+					on(registry.byId("assignWaveFormButton"),"click", function(){
+						console.log("initializing wave form assigner");
+						console.log("showing waveform assigner")
+						controllerObject.showWaveformAssignerAuthor(controllerObject.currentID);
+					});
+		//       });
+			}
+
 			if(activity_config.get("targetNodeStrategy")){
 
 				function checkForHint(){
@@ -1390,17 +1495,21 @@ define([
 				}
 
 				var searchPattern = new RegExp('^pal3', 'i');
-				if(query.m != "AUTHOR" && searchPattern.test(query.s)){ // check if session name starts with pal
-					var tc = new tincan(givenModel, controllerObject._assessment,session, palTopicIndex);
-					//Connect to learning record store
-					tc.connect();
-					//Send Statements
-					tc.sendStatements();
+				if(activity_config["PAL3"] && tc){ // check if session name starts with pal
+					if(tc.needsToSendScore) {
+						tc.connect();
+						tc.sendStatements();
+					}
+						
 				}
 				if(activity_config["ElectronixTutor"] && etConnect){
-					var score = controllerObject._assessment.getSuccessFactor();
-					etConnect.sendScore(score);
-					console.log("sending score(successfactor):", score);
+					if(etConnect.needsToSendsScore) {
+						var score = controllerObject._assessment.getSuccessFactor();
+						etConnect.sendScore(score);
+						console.log("sending score(successfactor):", score);
+					}
+					else 
+						etConnect.stopService();
 				}
 			});
 
@@ -1426,4 +1535,26 @@ define([
 			}
 		});
 	});
+	
+	function removeURLParam(param,url){
+		var paramStart = url.indexOf("?"+param+"=")+1;
+		if (paramStart == 0){
+			paramStart = url.indexOf("&"+param+"=")+1;
+		}
+		if (paramStart == 0){
+			return url;
+		}
+
+		var paramEnd = url.indexOf("&",paramStart) + 1;
+		if (paramEnd == 0){
+			// it's the last parameter, just cut it
+			return url.slice(0,paramStart-1); // subtract 1 to remove the preceding & or ? as well.
+		} else {
+			return url.slice(0,paramStart)+url.slice(paramEnd,url.length);
+		}
+		
+	}
+	
+	// Remove rp= and x= parameters from browers's url history
+	window.history.replaceState("object or string","Title",removeURLParam("x",removeURLParam("rp",window.location.href)));	
 });

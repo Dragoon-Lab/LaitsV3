@@ -32,12 +32,11 @@ describe("Coached mode with correct static zener diode regulator", function() {
 
      describe("Creating nodes:", function(){
         it("Should create Accumulator node - R of Zener", async(function(){
-            dtest.menuCreateNode(client);
-            dtest.setNodeDescription(client, "Resistance of the Zener diode");
-            dtest.popupWindowPressOk(client);
+            dtest.openEditorForNode(client, "R of Zener");
             dtest.setNodeType(client, "Function");
             dtest.popupWindowPressOk(client);
-            dtest.setNodeUnits(client, "ohms");     
+            dtest.setNodeUnits(client, "ohms");
+            dtest.popupWindowPressOk(client);
             dtest.setNodeExpression(client, "V across Zener/Current thru Zener");
             dtest.checkExpression(client);
             dtest.nodeEditorDone(client);

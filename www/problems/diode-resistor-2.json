@@ -399,7 +399,7 @@
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id3,id4",
+                "nodes": "id3, id4",
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,
@@ -417,7 +417,7 @@
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id5,id4",
+                "nodes": "id5, id4",
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,
@@ -435,7 +435,7 @@
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id5,id4",
+                "nodes": "id5, id4",
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,
@@ -453,7 +453,7 @@
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id5,id4",
+                "nodes": "id5, id4",
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,

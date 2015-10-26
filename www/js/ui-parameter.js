@@ -49,7 +49,8 @@ define(["dojo/_base/lang"], function (lang) {
 						"nodeBorderSuccessColor": "green",
 						"nodeBorderFeedbackColor": "yellow",
 						"nodeBorderFailColor": "red",
-						"imageButton": "none"
+						"imageButton": "none",
+						"historyButton": "none"
 
 					}
 				},
@@ -65,11 +66,12 @@ define(["dojo/_base/lang"], function (lang) {
 						"saveButton": "inline",
 						"mergeButton": "inline",
 						"previewButton": "inline",
-						"slidesButton": "inline",
-						"lessonsLearnedButton": "inline",
+						"slidesButton": "none",
+						"lessonsLearnedButton": "none",
 						"doneButton": "inline",
 						"prettifyButton": "inline",
-						"imageButton": "inline"
+						"imageButton": "inline",
+						"historyButton": "inline"
 
 					}
 				},
@@ -119,7 +121,9 @@ define(["dojo/_base/lang"], function (lang) {
 						"nodeBorderSuccessColor": "green",
 						"nodeBorderFeedbackColor": "yellow",
 						"nodeBorderFailColor": "red",
-						"qualitativeChangeButtons": "block"
+						"qualitativeChangeButtons": "block",
+						"historyButton": "none"
+
 
 					}
 				},
@@ -147,7 +151,8 @@ define(["dojo/_base/lang"], function (lang) {
 						"nodeBorderSuccessColor": "gray",
 						"nodeBorderFeedbackColor": "gray",
 						"nodeBorderFailColor": "gray",
-						"qualitativeChangeButtons": "block"
+						"qualitativeChangeButtons": "block",
+						"historyButton": "none"
 					}
 				}],
 
@@ -176,8 +181,8 @@ define(["dojo/_base/lang"], function (lang) {
 					"nodeBorderSuccessColor": "green",
 					"nodeBorderFeedbackColor": "yellow",
 					"nodeBorderFailColor": "red",
-					"qualitativeChangeButtons": "none"
-
+					"qualitativeChangeButtons": "none",
+					"historyButton": "none"
 				}
 			},
 				{
@@ -205,7 +210,9 @@ define(["dojo/_base/lang"], function (lang) {
 						"nodeBorderSuccessColor": "gray",
 						"nodeBorderFeedbackColor": "gray",
 						"nodeBorderFailColor": "gray",
-						"qualitativeChangeButtons": "none"
+						"qualitativeChangeButtons": "none",
+						"historyButton": "none"
+
 
 					}
 				}],
@@ -233,7 +240,9 @@ define(["dojo/_base/lang"], function (lang) {
 					"nodeBorderSuccessColor": "green",
 					"nodeBorderFeedbackColor": "yellow",
 					"nodeBorderFailColor": "red",
-					"qualitativeChangeButtons": "none"
+					"qualitativeChangeButtons": "none",
+					"historyButton": "none"
+
 				}
 			},
 				{
@@ -260,7 +269,9 @@ define(["dojo/_base/lang"], function (lang) {
 						"nodeBorderSuccessColor": "gray",
 						"nodeBorderFeedbackColor": "gray",
 						"nodeBorderFailColor": "gray",
-						"qualitativeChangeButtons": "none"
+						"qualitativeChangeButtons": "none",
+						"historyButton": "none"
+
 
 					}}
 			],
@@ -289,7 +300,9 @@ define(["dojo/_base/lang"], function (lang) {
 					"nodeBorderSuccessColor": "green",
 					"nodeBorderFeedbackColor": "yellow",
 					"nodeBorderFailColor": "red",
-					"qualitativeChangeButtons": "none"
+					"qualitativeChangeButtons": "none",
+					"historyButton": "none"
+
 				}
 			},
 				{
@@ -317,10 +330,72 @@ define(["dojo/_base/lang"], function (lang) {
 						"nodeBorderSuccessColor": "gray",
 						"nodeBorderFeedbackColor": "gray",
 						"nodeBorderFailColor": "gray",
-						"qualitativeChangeButtons": "none"
+						"qualitativeChangeButtons": "none",
+						"historyButton": "none"
+
 
 					}
-				}]
+				}],
+
+			waveform: [{
+				"mode": ["STUDENT", "COACHED"],
+				"param": {
+					"showColor": true,
+					"nodeBorderSize": "3px ",
+					"createNodeButton": "none",
+					"graphButton": "none",
+					"tableButton": "none",
+					"forumButton": "none",
+					"schemaButton": "none",
+					"descButton": "none",
+					"saveButton": "none",
+					"mergeButton": "none",
+					"previewButton": "none",
+					"slidesButton": "none",
+					"lessonsLearnedButton": "none",
+					"doneButton": "inline",
+					"prettifyButton": "inline",
+					"nodeBorderCompleteColor": "gray",
+					"nodeBorderCompleteStyle": "solid ",
+					"nodeBorderInCompleteStyle": "dashed ",
+					"nodeBorderSuccessColor": "green",
+					"nodeBorderFeedbackColor": "yellow",
+					"nodeBorderFailColor": "red",
+					"qualitativeChangeButtons": "none",
+					"historyButton": "none"
+
+				}
+			},
+				{
+					"mode": ["TEST", "EDITOR"],
+					"param": {
+						"showColor": false,
+						"nodeBorderSize": "3px ",
+						"createNodeButton": "none",
+						"graphButton": "none",
+						"tableButton": "none",
+						"forumButton": "none",
+						"schemaButton": "none",
+						"descButton": "none",
+						"saveButton": "none",
+						"mergeButton": "none",
+						"previewButton": "none",
+						"slidesButton": "none",
+						"lessonsLearnedButton": "none",
+						"doneButton": "inline",
+						"prettifyButton": "inline",
+						"nodeBorderCompleteColor": "gray",
+						"nodeBorderCompleteStyle": "solid ",
+						"nodeBorderInCompleteStyle": "dashed ",
+						"nodeBorderSuccessColor": "gray",
+						"nodeBorderFeedbackColor": "gray",
+						"nodeBorderFailColor": "gray",
+						"qualitativeChangeButtons": "none",
+						"historyButton": "none"
+
+
+					}}
+			],
 		};
 
 		var config = {
@@ -333,8 +408,10 @@ define(["dojo/_base/lang"], function (lang) {
 				// iterate through all object in the activity and merge all params for given mode:
 				//console.log("In constructor", this._mode, this._activity);
 				for (var idx in parameters[this._activity]) {
-					var obj = parameters[this._activity][idx];
-					if (obj.mode.indexOf(this._mode) > -1) this._params = lang.mixin(this._params, obj.param);
+					if(parameters[this._activity].hasOwnProperty(idx)) { /*Fix to work in Safari*/
+						var obj = parameters[this._activity][idx];
+						if (obj.mode.indexOf(this._mode) > -1) this._params = lang.mixin(this._params, obj.param);
+					}
 				}
 			},
 

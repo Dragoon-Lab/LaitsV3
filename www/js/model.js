@@ -88,7 +88,9 @@ define([
 			isCompleteFlag: false,
 			isLessonLearnedShown: false,
 			isDoneMessageShown: false,
+            isGraphHelpShown: false,
 			iteration: 0,
+			problemReopened: false,
 
 			/**
 			 *
@@ -115,7 +117,10 @@ define([
             setDoneMessageShown : function(_isDoneMessageShown) {
                 this.isDoneMessageShown = _isDoneMessageShown;
             },
-			updatePosition: function()
+            setGraphHelpShown: function(_isGraphHelpShown){
+                this.model.task.properties.isGraphHelpShown = _isGraphHelpShown;
+            },
+            updatePosition: function()
 			{
 				if((this.x + this.nodeWidth) < (document.documentElement.clientWidth - this.nodeWidth))
 					this.x += this.nodeWidth;
@@ -144,12 +149,12 @@ define([
 			// Adding these as private methods since other modules should not rely on model
 			// for manipulating activities.  If others need this, move to a different file.
 			_isDemoActivityType: function(activity){
-				console.log("_isDemoActivityType:"+(activity && activity.substring(activity.length-4,activity.length) == "Demo"));
+				//console.log("_isDemoActivityType:"+(activity && activity.substring(activity.length-4,activity.length) == "Demo"));
 				return (activity && activity.substring(activity.length-4,activity.length) == "Demo");
 			},
 			_convertDemoToExercise: function(activity){
 				if (obj._isDemoActivityType(activity)){
-					console.log("_convertDemoToExercise:"+activity.substring(0,activity.length-4));
+					//console.log("_convertDemoToExercise:"+activity.substring(0,activity.length-4));
 					return activity.substring(0,activity.length-4);
 				} else {
 					throw new Error("Attempted to convert non-demo activity to an exercise.");
@@ -335,6 +340,10 @@ define([
 			getLessonLearnedShown : function() {
 				return (this.model.task.properties.isLessonLearnedShown != undefined)?this.model.task.properties.isLessonLearnedShown : false;	
 			},
+            getGraphHelpShown: function(){
+                console.log("model help",this.model.task.properties);
+                return (this.model.task.properties.isGraphHelpShown != undefined)?this.model.task.properties.isGraphHelpShown : false;
+            },
 			getTime: function(){
 				// Summary: Returns the time object from the JSON model.
 				return this.model.task.time;
@@ -491,10 +500,16 @@ define([
 				this.model.task.lessonsLearned = lessonsLearned;
 			},
             setIncrements: function(/*string*/ node, /*string*/ direction){
-				this.model.task.increment = [{tweakedNode:node, tweakDirection: direction}];
+            	this.model.task.increment= (node=="defaultSelect" || direction=="defaultSelect")?[]:[{tweakedNode:node, tweakDirection: direction}];
             },
 			setExecutionIterations: function(/* number */ itr){
 				this.model.task.executionIterations = itr;
+			},
+			setProblemReopened: function(/* boolean */ flag){
+				this.problemReopened = flag;
+			},
+			getProblemReopened: function(){
+				return this.problemReopened;
 			}
 		};
 
@@ -596,24 +611,30 @@ define([
 			},
            
 			getExecutionValue: function(/* string */ id, /* number */ index){
-				var studentItr=obj.student.getIteration();
-                var maxItration=obj.getExecutionIterations();
+				var currentItr = obj.student.getIteration();
+				var maxItr = obj.getExecutionIterations();
 				var node = this.getNode(id);
-                var val = null;
-                if(index === undefined){
-                    val = node.executionValue[(studentItr>=maxItration)?maxItration-1:studentItr];
-                }
-                else if(node.executionValue && node.executionValue.length > index){
-                    val = node.executionValue[index];
-                }
+				var val = null;
+				if(index != undefined && node.executionValue && node.executionValue.length > index){
+					val = node.executionValue[index];
+				} else if(node.executionValue && node.executionValue.length <= maxItr){
+					val = node.executionValue[(currentItr >= maxItr)? maxItr - 1: currentItr];
+				}
 
-                return val;
+				return val;
             },
 			getExecutionValues: function(/* string */ id){
 				var node = this.getNode(id);
 
 				return node && node.executionValue;
 			},
+
+			getWaveformValue: function( /* string */ id){
+				/* returns waveform string for given node id*/
+				var node = this.getNode(id);
+				return node && node.waveformValue;
+			},
+
 			setExecutionValues: function(/* string */ id, /* array */ values){
 				this.getNode(id).executionValue = values;
 			},
@@ -625,13 +646,15 @@ define([
                     if((obj.given.getGenus(node.ID)!== "extra") || (obj.given.getGenus(node.ID)!== "irrelevant") )
                         var insertVal = obj.given.getExecutionValue(node.ID,studentItr);
                     if(insertVal)
-                        coll.push(insertVal);
+                        coll.push(parseFloat(insertVal));
                     if(obj.given.getType(node.ID)=== "parameter" && (obj.given.getGenus(node.ID)!== "extra")&&(obj.given.getGenus(node.ID)!== "irrelevant") )
                         var parVal = obj.given.getInitial(node.ID);
                     if(parVal)
-                        coll.push(parVal);
+                        coll.push(parseFloat(parVal));
                 });
-                return coll;
+                return coll.sort(function(a,b){
+                    return a - b;
+                });
             },
 			setSchemas: function(/* object */ schemas){
 				obj.model.task.schemas = schemas;
@@ -655,6 +678,12 @@ define([
 				// Summary: sets the "X" and "Y" values of a node's position
 				this.getNode(id).position = positionObject;
 			},
+
+			setWaveformValue: function(/* string */ id , /* string */ value){
+				/* sets passed waveform string value for node id*/
+				this.getNode(id).waveformValue = value;
+			},
+
 			setImageMarks : function(/**string */nodeId, marks){
 				var node = obj.given.getNode(nodeId);
 				if(!node) return null;
@@ -731,6 +760,7 @@ define([
 						equation: 0,
 						tweakedDirection: 0,
 						executionValue: 0,
+						waveformValue: null,
 						assistanceScore: 0
 					},
 					status: {}
@@ -746,6 +776,8 @@ define([
 					competence: {
 						errors: 0,
 						total: 0,
+						attempts: 0,
+						correctScore: 0,
 						timeSpent: 0,
 						values:{}
 					},
@@ -933,11 +965,28 @@ define([
 			getGivenID: function(/*string*/ id){
 				return id;
 			},
-			getAttemptCount: function(/*string*/ id, /*string*/ part){
-				return this.getNode(id).attemptCount[part];
+			getAttemptCount: function(/*string*/ id, /*string*/ part, /* boolean */ ignoreExecution){
+				/*
+				*	changes to handle execution value status and attempt count as an array.
+				*	ignoreExecution if set to true will send the complete array as status/attemptCount 
+				*	otherwise the status/attemptCount will be as per the current iteration only.
+				*/
+				if(ignoreExecution || part != "executionValue")
+					return this.getNode(id).attemptCount[part];
+				else{
+					var node = this.getNode(id);
+					var itr = obj.student.getIteration();
+					return (node.attemptCount[part] && node.attemptCount[part][itr])?
+					node.attemptCount[part][itr]:0;
+				}
 			},
-			getStatus: function(/*string*/ id, /*string*/ nodePart){
-				return this.getNode(id).status[nodePart];
+			getStatus: function(/*string*/ id, /*string*/ part, /* boolean */ ignoreExecution){
+				if(ignoreExecution || part != "executionValue")
+					return this.getNode(id).status[part];
+				else{
+					return this.getNode(id).status[part]?
+					this.getNode(id).status[part][obj.student.getIteration()]:undefined;
+				}
 			},
 			getParent: function(/*string*/ id){
 				return this.getNode(id).parentNode;
@@ -1014,7 +1063,15 @@ define([
 				this.getNode(id).equation = equation;
 			},
 			setAttemptCount: function(/*string*/ id, /*string*/ part, /*string*/ count){
-				this.getNode(id).attemptCount[part] = count;
+				if(part != "executionValue")
+					this.getNode(id).attemptCount[part] = count;
+				else{
+					var node = this.getNode(id);
+					if(node.attemptCount[part] == undefined){
+						node.attemptCount[part] = [];
+					}
+					node.attemptCount[part][obj.student.getIteration()] = count;
+				}
 			},
 			setSchemaDifficulty: function(/* string */ schemaID, /* string */ diffPart, /* binary */ value){
 				var schema = this.getSchema(schemaID);
@@ -1039,8 +1096,19 @@ define([
 			},
 			setStatus: function(/*string*/ id, /*string*/ part, /*string*/ status){
 				// Summary: tracks student progress (correct, incorrect) on a given node;
-				this.getNode(id).status[part] = status;
+				if(part != "executionValue")
+					this.getNode(id).status[part] = status;
+				else{
+					var node = this.getNode(id);
+					if(!node.status.hasOwnProperty(part) || node.status[part] == undefined){
+						node.status[part] = [];
+					}
+					node.status[part][obj.student.getIteration()] = status;
+				}
 			},
+            emptyWaveform: function(id){
+                obj.model.task.wave = [];
+            },
 			isComplete: function(/*string*/ id){
 				// Summary: Test whether a node is completely filled out, correct or not
 				// Returns a boolean
@@ -1083,7 +1151,7 @@ define([
 				var plotVariables = [];
 				var nodes = this.getNodes();
 				array.forEach(nodes, function(node){
-					if((node.type == "accumulator" || node.type == "function") && (!node.genus || node.genus == "" || node.genus == "required")){
+					if((node.type == "accumulator" || node.type == "function") && (this.isNodeRequired(node.ID) || this.isNodeAllowed(node.ID))){
 						plotVariables.push(node.ID);
 					}
 				}, this);
@@ -1096,6 +1164,10 @@ define([
 					return true;
 				}
 				return false;
+			},
+			isNodeAllowed: function(id){
+				var givenNode = this.getNode(id);
+				return (givenNode.genus == "allowed");
 			},
             getRootNodes: function(){
                 var rootNodes = [];
@@ -1169,6 +1241,9 @@ define([
 					var returnValue = obj.getOptimalNode(studentID);
 					console.log("Correct node: ", returnValue);
 					return returnValue;
+				}else if(nodePart === "executionValue"){
+					var id = this.getDescriptionID(studentID);
+					return obj.given.getNode(id).executionValue[this.getIteration()];
 				}else{
 					var id = this.getDescriptionID(studentID);
 					var node = obj.given.getNode(id);
@@ -1259,6 +1334,9 @@ define([
 				if(descriptionID && obj.given.getExecutionValues(descriptionID)){
 					update("executionValue");
 				}
+				if(descriptionID && obj.given.getWaveformValue(descriptionID)){
+					update("waveformValue");
+				}
 				return bestStatus;
 			},
 
@@ -1267,6 +1345,14 @@ define([
 				// solution have correctness of "demo" or "correct"
 				return obj.matchesGivenSolution() &&
 					this.checkStudentNodeCorrectness();
+			},
+			getNodeIDByDescriptionID: function(/* string */ descriptionID){
+				var id;
+				var gotIt = array.some(this.getNodes(), function(node){
+					id = node.ID;
+					return node.descriptionID === descriptionID;
+				});
+				return gotIt ? id : null;
 			},
 			checkStudentNodeCorrectness: function(){
 				return array.every(this.getStudentNodesInSolution(),
@@ -1341,7 +1427,7 @@ define([
 			},
 			emptyExecutionValues: function(/* string */ id){
 				var node = this.getNode(id);
-				node.executionValue = [];		
+				node.executionValue = [];
 			},
 			incrementAssistanceScore: function(/*string*/ id){
 				// Summary: Incremements a score of the amount of errors/hints that
@@ -1383,13 +1469,15 @@ define([
 				var hasTweaks = node.descriptionID && obj.given.getTweakDirection(node.descriptionID);
 				var hasExecutionValue = node.descriptionID && obj.given.getExecutionValues(node.descriptionID);
 				var executionIteration = (hasExecutionValue ? (node.type == "parameter" ? 0 : this.getIteration()) : 0); //execution iteration will always be 0 for parameters.
+				var hasWaveformValue = (node && typeof obj.student.getWaveformValue(node.ID) !== "undefined");
 				var equationEntered = node.type && node.type == "parameter" || node.equation;
                 executionIteration= (executionIteration<maxItr-1)?executionIteration:maxItr-1;
 
 				var toReturn = node.descriptionID && node.type &&
 					initialEntered && (!hasUnits || node.units) &&
 					equationEntered && (!hasTweaks || node.tweakDirection)
-					&& (!hasExecutionValue || node.executionValue[executionIteration]);
+					&&(!hasWaveformValue || node.waveformValue !== null)
+					&& (!hasExecutionValue || (node.executionValue && node.executionValue[executionIteration]));
 				if(toReturn){
 					return true;
 				}
@@ -1400,6 +1488,10 @@ define([
 			isNodeRequired: function(id){
 				var descriptionID = this.getDescriptionID(id);
 				return descriptionID || obj.given.isNodeRequired(descriptionID);
+			},
+			isNodeAllowed: function(id){
+				var descriptionId = this.getDescriptionID(id);
+				return descriptionID || obj.given.isNodeAllowed(descriptionID);
 			},
 			deleteStudentNodes: function(){
 				obj.model.task.studentModelNodes = [];

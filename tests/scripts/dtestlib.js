@@ -165,36 +165,41 @@ function getUrlRoot()
 function rgbToColor(toConvert)
 {
     toConvert = toConvert.trim();
-    if(toConvert === "rgb(0,128,0)" || toConvert === "rgba(148,255,148,1)" || 
-       toConvert === "rgba(144,238,144,1)" || toConvert === "green" || toConvert === "rgb(144,238,144)")
-    {
-        return "green";
+    switch(toConvert){
+        case "green":
+        case "rgb(0,128,0)":
+        case "rgba(148,255,148,1)":
+        case "rgba(144,238,144,1)":
+        case "rgb(144,238,144)":
+            return "green";
+        case "yellow":
+        case "rgb(255,213,0)":
+        case "rgba(255,255,0,1)":
+            return "yellow";
+        case "red":
+        case "rgb(255,128,128)":
+        case "rgba(255,128,128,1)":
+            return "red";
+        case "white":
+        case "rgba(255,255,255,1)":
+            return "white";
+        case "gray": 
+        case "rgba(229,242,254,1)":
+        case "rgba(0,0,0,0)":
+        case "rgb(230,230,230)":
+        case "rgba(230,230,230,1)":
+        case "rgb(128,128,128)": 
+        case "rgb(128,128,128,1)":
+            return "gray";
+        case "blue":
+        case "rgb(46,254,247)":
+        case "rgb(173,216,230)":
+        case "rgba(173,216,230,1)":
+            return "blue"
+        default:
+            console.log("Could not identify color: "+toConvert);
+            return toConvert;
     }
-    else if(toConvert === "rgb(255,213,0)" || toConvert === "yellow" || toConvert === "rgba(255,255,0,1)")
-    {
-        return "yellow";
-    }
-    else if(toConvert === "rgb(255,128,128)" || toConvert === "rgba(255,128,128,1)" || toConvert === "red")
-    {
-        return "red";
-    }
-    else if(toConvert === "rgba(255,255,255,1)" || toConvert === "white")
-    {
-        return "white";
-    }
-    else if(toConvert === "rgba(0,0,0,0)" || toConvert === "gray" || toConvert === "rgb(230,230,230)" ||
-            toConvert == "rgb(230,230,230)" || toConvert == "rgba(230,230,230,1)" ||
-            toConvert === "rgb(128,128,128)" || toConvert === "rgb(128,128,128,1)")
-    {
-        return "gray";
-    }
-    else if(toConvert === "rgb(46,254,247" || toConvert === "blue" || toConvert === "rgb(173,216,230)" ||
-        toConvert === "rgba(173,216,230,1)")
-    {
-        return "blue";
-    }
-    else
-        return toConvert;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -227,7 +232,7 @@ exports.openProblem = function(client,parameters){
     var problem = "&p=" + (paramMap["problem"] || getDate());
     var mode = "&m=" + (paramMap["mode"]);
     var section = "&s=" + (paramMap["section"] || "autotest");
-    var nodeEditorMode = "&is=" + (paramMap["submode"] ||  "algebraic");
+    var nodeEditorMode = "&is=" + (paramMap["submode"] ||  "algebraic");    
     var activity; 
     if (paramMap["activity"] === undefined){
         activity = "&a=construction";
@@ -236,6 +241,12 @@ exports.openProblem = function(client,parameters){
     } else {
         activity = ""
     }
+
+    var restart = paramMap["restart"] == "on" ? "&rp=on" : "";
+
+    // Special PAL3 parameters
+    var revisionID = paramMap["revisionID"]!==undefined ? ("&rid="+paramMap["revisionID"]) : "";
+    var topic = paramMap["topic"] !==undefined ? ("&topic="+paramMap["topic"]) : "";
 
     // optional parts
 
@@ -255,7 +266,7 @@ exports.openProblem = function(client,parameters){
     // possible TODO: allow power user mode.
 
     var url = urlRoot + '?' + user + section + problem + mode + nodeEditorMode + group + logging + activity +
-              "&c=Continue";
+              revisionID + topic + restart;
     
     // Reset the dropdown counter:
     lastDropdownID = 0;
@@ -632,9 +643,26 @@ exports.nodeEditorOpenExplanation = function (client){
     await(client.click('#explanationButton',defer()));
 }
 
+exports.setExplanation = function (client,content){
+    warn("Not yet implemented!")
+    //The below does not work (element not found)--need to figure out how to check inside an iframe.
+    //await(client.setValue('#dijitEditorBody',content,defer()));
+}
+
+
 exports.closeExplanation = function (client){
     await(client.click("#dijit_Dialog_0 > div.dijitDialogTitleBar > span.dijitDialogCloseIcon",defer()));
     await(client.waitForVisible('#dijit_DialogUnderlay_0',1000,true,defer()));
+}
+
+exports.clickExplanationOK = function(client){
+    await(client.click('#OKEditorButton',defer()));
+    await(client.waitForVisible('#dijit_Dialog_0_underlay',1000,true,defer()));
+}
+
+exports.clickExplanationCancel = function(client){
+    await(client.click('#cancelEditorButton',defer()));
+    await(client.waitForVisible('#dijit_Dialog_0_underlay',1000,true,defer()));
 }
 
 //////////////////////////////////////////////////
@@ -682,17 +710,6 @@ exports.isNodeTypeDisabled = function(client){
 
 exports.setNodeType = function(client,type){
     selectDropdownValue(client,'#typeId',type);
-    /*await(client.click('#typeId',defer()));
-    await(client.waitForVisible('#typeId_menu',defer()));
-    var number = findDropDownByName(client, type);
-    if(number != null)
-    {
-        await(client.click('#dijit_MenuItem_' + number,defer()));
-    }
-    else
-    {
-        await(client.click('#selectKind',defer()));
-    }*/
 }
 
 //////////////////////////////////////////////////
@@ -751,17 +768,6 @@ exports.setNodeUnits = function(client,units){
         if(await(client.isVisible('#selectUnits',defer())))
         {
             selectDropdownValue(client,'#selectUnits',units);
-            /*await(client.click('#selectUnits',defer()));
-            await(client.waitForVisible('#selectUnits_menu',defer()));
-            var number = findDropDownByName(client, units);
-            if(number != null)
-            {
-                await(client.click('#dijit_MenuItem_' + number,defer()));
-            }
-            else
-            {
-                await(client.click('#selectUnits',defer()));
-            }*/
         }
         else
         {
@@ -797,7 +803,7 @@ exports.isNodeExpressionDisabled = function(client){
 
 exports.setNodeExpression = function(client,expression){
     await(client.setValue('#equationBox', expression,defer()));
-    await(client.click("#algebraic",defer()));
+    await(client.click("#equationLabel",defer()));
 }
 
 exports.expressionInsertInput = function(client){
@@ -860,18 +866,18 @@ exports.closeImageHighlighting = function (client){
 exports.nodeEditorDone = function(client){
     // Summary: Hits the "Done" button in the node editor
     await(client.click('span[id="closeButton_label"]',defer()));
-    await(client.waitForVisible('#nodeeditor_underlay',1000,true,defer()));
+    await(client.waitForVisible('#nodeeditor_underlay',1200,true,defer()));
 }
 
 exports.closeNodeEditor = function(client){
     // Summary: Closes node editor using the "x"    
     await(client.click("#nodeeditor > div.dijitDialogTitleBar > span.dijitDialogCloseIcon",defer()));
-    await(client.waitForVisible('#nodeeditor_underlay',1000,true,defer()));
+    await(client.waitForVisible('#nodeeditor_underlay',1200,true,defer()));
 }
 
 exports.nodeEditorDelete = function(client){
     await(client.click('#deleteButton',defer()));
-    await(client.waitForVisible('#nodeeditor_underlay',1000,true,defer()));
+    await(client.waitForVisible('#nodeeditor_underlay',1200,true,defer()));
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1065,4 +1071,15 @@ exports.clickExecutionEquation = function(client){
 exports.closeExecutionIterationPopup = function(client){
     await(client.click("#OkButton",defer()));
     await(client.waitForVisible('#crisisAlertMessage_underlay',1000,true,defer()));
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// 13. Waveform functions
+
+exports.selectWaveform = function(client,wavstring){
+    await(client.click("#"+wavstring+"Div",defer()));
+}
+
+exports.clickWaveformEquation = function(client){
+    await(client.click("#WaveformEquationButton",defer()));
 }

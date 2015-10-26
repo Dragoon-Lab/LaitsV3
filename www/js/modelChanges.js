@@ -100,7 +100,7 @@ define([
 			}
 
 			array.forEach(this._model.given.getNodes(), function (givenNode) {
-				if(this._model.given.isNodeRequired(givenNode.ID)){
+				if(this._model.given.isNodeRequired(givenNode.ID) || this._model.given.isNodeAllowed(givenNode.ID)){
 					var newNode = this.addStudentNode(givenNode.ID);
 				}
 			}, this);
@@ -126,9 +126,13 @@ define([
 			}
 
 			//BACKWARD COMPATIBILITY: add a field for tweakDirection and executionValue and set it to zero in the given nodes if not already present
+			this._model.given.getNode(givenID).waveformValue = this._model.given.getNode(givenID).waveformValue || null;
+			this._model.given.getNode(givenID).executionValue = this._model.given.getNode(givenID).executionValue || 0;
+
 			this._model.given.getNode(givenID).attemptCount['assistanceScore'] =  this._model.given.getNode(givenID).attemptCount['assistanceScore'] || 0;
 			this._model.given.getNode(givenID).attemptCount['tweakDirection'] =  this._model.given.getNode(givenID).attemptCount['tweakDirection'] || 0;
-			this._model.given.getNode(givenID).attemptCount['executionValue'] =  this._model.given.getNode(givenID).attemptCount['executionValue'] || 0;
+			this._model.given.getNode(givenID).attemptCount['executionValue'] =  this._model.given.getNode(givenID).attemptCount['executionValue'] || [];
+			this._model.given.getNode(givenID).attemptCount['waveformValue'] =  this._model.given.getNode(givenID).attemptCount['waveformValue'] || 0;
 
 			if(this._activityConfig.get("resetAssistanceScore")){
 				var type = this._model.given.getType(givenID);
@@ -143,28 +147,42 @@ define([
 					this._model.student.setInitial(newNodeID, givenNode.initial);
 					if (givenNode.type === "parameter" || givenNode.type === "accumulator") {
 						this._model.student.setStatus(newNodeID, "initial", {"disabled": true, "status": "correct"});
+						this._model.given.setStatus(givenID, "initial", "entered");
 					}
 				}
 
-				if(fields.indexOf("units") >= 0){
+				if(fields.indexOf("units") >= 0 && givenNode.units){
 					this._model.student.setUnits(newNodeID, givenNode.units);
 					if (typeof givenNode.units !== "undefined") {
 						this._model.student.setStatus(newNodeID, "units", {"disabled": true, "status": "correct"});
+						this._model.given.setStatus(givenID, "units", "entered");
 					}
 				}
 
 				if(fields.indexOf("type") >= 0){
 					this._model.student.setType(newNodeID, givenNode.type);
 					this._model.student.setStatus(newNodeID, "type", {"disabled": true, "status": "correct"});
+					this._model.given.setStatus(givenID, "type", "entered");
 				}
 
 				if(fields.indexOf("tweak") >= 0){
 					//this.setStudentTweakDirection(givenNode.ID, newNodeID);
 					this._model.student.setTweakDirection(newNodeID, givenNode.tweakDirection);
+					this._model.given.setStatus(givenID, "tweak", "entered");
 				}
 
 				if(fields.indexOf("execution") >= 0){
 					this._model.student.setExecutionValues(newNodeID, givenNode.executionValue);
+					this._model.given.setStatus(givenID, "execution", "entered");
+				}
+
+				if(fields.indexOf("waveform") >=0){
+					if(givenNode.waveformValue && givenNode.type !== "parameter") {
+						// Setting waveform value in student model to null if set in author model
+						//checking completeness for nodes in model.js based on this.
+						this._model.student.setWaveformValue(newNodeID, null);
+						this._model.given.setStatus(givenID, "waveform", "entered");
+					}
 				}
 
 				if (fields.indexOf("equation") && nodeStore && givenNode.equation) {
@@ -173,12 +191,24 @@ define([
 					var equation = givenNode.equation;
 					var midStore = [];
 					var i=1;
-					array.forEach(givenNode.inputs, function (input) {
-						var studentNodeID = nodeStore[input.ID];
+					var orderedInput = [];
+					array.forEach(givenNode.inputs, function(input){
+						var id = input.ID.substring(2, input.ID.length);
+						var i = 0;
+						for(i; i<orderedInput.length; i++){
+							if(orderedInput[i] < id)
+								break;
+						}
+
+						orderedInput.splice(i, 0, id);
+					});
+					array.forEach(orderedInput, function (input) {
+						var inputID = "id"+input;
+						var studentNodeID = nodeStore[inputID];
 						if (studentNodeID) {
 							inputs.push({"ID": studentNodeID});
-							var regexp = "(" + input.ID + ")([^0-9]?)";
-							var re = new RegExp(regexp);
+							var regexp = "(" + inputID + ")([^0-9]?)";
+							var re = new RegExp(regexp, 'g');//g will replace all instances
 							midStore[i] = studentNodeID;
 							equation = equation.replace(re, "ms"+i+ "$2");
 						} else {
@@ -189,7 +219,8 @@ define([
 
 					if (isExpressionValid) {
 						for(var j=1;j<=midStore.length;j++){
-							equation = equation.replace("ms"+j,midStore[j]);
+							while(equation.indexOf("ms"+j) >=0)
+								equation = equation.replace("ms"+j,midStore[j]);
 						}
 						this._model.student.setInputs(inputs, newNodeID);
 						this._model.student.setEquation(newNodeID, equation);
@@ -197,6 +228,7 @@ define([
 							"disabled": true,
 							"status": "correct"
 						});
+						this._model.given.setStatus(givenID, "equation", "entered");
 					} else {
 						this._model.student.setInputs([], newNodeID);
 						this._model.student.setEquation(newNodeID, "");
@@ -220,6 +252,7 @@ define([
 			if(newNodeID){
 				this._model.student.setDescriptionID(newNodeID, givenID);
 				this._model.student.setStatus(newNodeID, "description", {"disabled": true, "status": "correct"});
+				this._model.given.setStatus(givenID, "description", "entered");
 			}
 
 			return newNodeID;
@@ -240,7 +273,7 @@ define([
 
 			if(nodes){
 				array.forEach(nodes, function(node){
-					if(this._model.given.isNodeRequired(node.ID)){
+					if(this._model.given.isNodeRequired(node.ID) || this._model.given.isNodeAllowed(node.ID)){
 						var index = pv.indexOf(node.ID);
 						if(node.type != "parameter"){
 							var arr = []
@@ -280,6 +313,7 @@ define([
 						this._model.student.setExecutionValues(node.ID, this._model.given.getExecutionValues(node.descriptionID));
 						//this._model.student.setStatus(node.ID, {});
 						this._model.student.setAssistanceScore(node.ID, 1);
+						this._model.given.setStatus(this._model.active.getDescriptionID(node.ID), "executionValue", "entered");
 					} else {
 						this._model.student.setExecutionValues(node.ID, []);
 					}
@@ -318,9 +352,11 @@ define([
 			if(givenID == this._model.getInitialTweakedNode()) {
 				this._model.student.setTweakDirection(studentID, this._model.getInitialTweakDirection());
 				this._model.student.setAssistanceScore(studentID, 1);
+				this._model.given.setStatus(givenID, "tweakDirection", "entered");
 			} else if(this._model.given.getType(givenID) == "parameter"){
 				this._model.student.setTweakDirection(studentID, "Stays-Same");
 				this._model.student.setAssistanceScore(studentID, 1);
+				this._model.given.setStatus(givenID, "tweakDirection", "entered");
 			} else {
 				this._model.student.setTweakDirection(studentID, "");
 			}

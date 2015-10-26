@@ -117,7 +117,7 @@
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id1,id2",
+                "nodes": "id1, id2",
                 "difficulty": {
                     "isolation": 0,
                     "cues": 0,

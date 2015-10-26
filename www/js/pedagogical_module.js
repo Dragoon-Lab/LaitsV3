@@ -596,6 +596,106 @@ define([
 			}
 		}
 	};
+
+	var waveformActionTable = {
+		//Summary: Action table for incremental activity popup.
+		correct: {
+			COACHED: function(obj, part){
+				state(obj, part, "correct");
+				disable(obj, "waveformValue", true);
+			},
+			feedback: function(obj, part){
+				state(obj, part, "correct");
+				disable(obj, "waveformValue", true);
+			},
+			power: function(obj, part){
+				state(obj, part, "correct");
+				disable(obj, "waveformValue", true);
+			},
+			TEST: function(obj, part){
+				state(obj, part, "correct");
+			},
+			EDITOR: function(obj, part){
+				state(obj, part, "correct");
+			}
+		},
+		firstFailure:{
+			COACHED: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "waveformValue", false);
+			},
+			feedback: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "waveformValue", false);
+			},
+			power: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "waveformValue", false);
+			},
+			TEST: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "waveformValue", false);
+			},
+			EDITOR: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "waveformValue", false);
+			}
+		},
+		secondFailure:{
+			COACHED: function(obj, part){
+				state(obj, part, "demo");
+				disable(obj, "waveformValue", true);
+			},
+			feedback: function(obj, part){
+				state(obj, part, "demo");
+				disable(obj, "waveformValue", true);
+			},
+			power: function(obj, part){
+				state(obj, part, "demo");
+				disable(obj, "waveformValue", true);
+			},
+			TEST: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "waveformValue", false);
+			},
+			EDITOR: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "waveformValue", false);
+			}
+		},
+		anotherFailure:{
+			COACHED: function(obj, part){
+				state(obj, part, "demo");
+				disable(obj, "waveformValue", true);
+			},
+			feedback: function(obj, part){
+				state(obj, part, "demo");
+				disable(obj, "waveformValue", true);
+			},
+			power: function(obj, part){
+				state(obj, part, "demo");
+				disable(obj, "waveformValue", true);
+			},
+			TEST: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "waveformValue", false);
+			},
+			EDITOR: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "waveformValue", false);
+			}
+		},
+		incorrect:{
+			TEST: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "waveformValue", false);
+			},
+			EDITOR: function(obj, part){
+				state(obj, part, "incorrect");
+				disable(obj, "waveformValue", false);
+			}
+		}
+	}
 	/*
 	 * Add additional tables for activities that does not use node editor.
 	 */
@@ -731,7 +831,10 @@ define([
 
 			// Anonymous function assigned to interpret--used by most parts of the switch below
 			var interpret = function(correctAnswer){
-				if(answer === correctAnswer || correctAnswer === true){
+                //we create temporary answer and temporary correct answer both parsed as float to compare if the numbers are strings in case of execution
+                answer_temp1=parseFloat(answer);
+                correctAnswer_temp1=parseFloat(correctAnswer);
+				if(answer === correctAnswer || correctAnswer === true || answer_temp1 == correctAnswer_temp1){
 					interpretation = "correct";
 				}else{
 					if(showCorrectAnswer){
@@ -751,16 +854,22 @@ define([
 				case "description":
 					this.descriptionCounter++;
 
-					if(this.model.given.getGenus(answer) && this.model.given.getGenus(answer) != "required"){
-						array.forEach(this.model.given.getNodes(), function(extra){
-							if(answer === extra.ID && extra.genus && extra.genus != "allowed"){
+					if(this.model.given.getGenus(answer) && (this.model.given.getGenus(answer) != "required" && this.model.given.getGenus(answer) != "allowed")){
+						/*array.forEach(this.model.given.getNodes(), function(extra){
+							if(answer === extra.ID && extra.genus){
 								interpretation = extra.genus;
 							}
-						});
+						});*/
+						/**
+						/* we have already eliminated the correct cases of required and allowed so other three can be given to the interpretation as is.
+						/* this is what is being done in the above loop as well. If there is any issue then we can remove this line.
+						/* and un comment the above loop
+						**/
+						interpretation = this.model.given.getGenus(answer);
 					}else if(this.model.isNodeVisible(studentID, answer)){
 							interpretation = "redundant";
 					}else if(this.model.isParentNode(answer) || (this.model.isNodesParentVisible(studentID, answer) && !this.checkPremature(studentID))){
-						interpretation = "optimal";
+                        interpretation = "optimal";
 					}else if(this.model.student.getNodes().length === 0){
 						interpretation = "notTopLevel";
 					}else{
@@ -795,6 +904,8 @@ define([
 				case "executionValue":
 					interpret(this.model.given.getExecutionValue(givenID));
 					break;
+				case "waveformValue":
+					interpret(this.model.given.getWaveformValue(givenID));
 			}
 			/* 
 			 This is an example of logging via direct function calls
@@ -825,13 +936,16 @@ define([
 			//		of the node editor should be active.
 			//
 			// Tags: Private
+            var actual_id = this.model.student.getDescriptionID(id);
+            console.log("actual id is",actual_id);
 			var interpretation = this._getInterpretation(id, nodePart, answer);
 			var returnObj = [], currentStatus;
 			var givenID;  // ID of the correct node, if it exists
 			var solutionGiven = false;
 			var givenAnswer = answer; //keeping a copy of answer for logging purposes.
 			// Send correct answer to controller if status will be set to 'demo'
-			if(interpretation === "lastFailure" || interpretation === "secondFailure"){
+			console.log("int is",interpretation, returnObj);
+            if(interpretation === "lastFailure" || interpretation === "secondFailure"){
 				answer = this.model.student.getCorrectAnswer(id, nodePart);
 				// In case of an equation, we need to substitute variablenames in for the IDs.
 				if(nodePart == "equation"){
@@ -843,17 +957,17 @@ define([
 					}else
 						console.error("Unexpected null from model.getCorrectAnswer().");
 				}else{
-
-                    if(this.activityConfig.get("executionExercise")){
+					//do not need this as getCorrectAnswer gives the correct answer for execution activity
+                    /*if(this.activityConfig.get("executionExercise")){
                         var itr = this.model.student.getIteration();
                         answer = answer[itr];
-                    }
+                    }*/
 					returnObj.push({id: nodePart, attribute: "value", value: answer});
 					solutionGiven = true;
 				}
 			}
 
-
+            console.log("flag1",returnObj);
 			// Local function that updates the status if it is not already set to "correct" or "demo"
 			var updateStatus = function(returnObj, model){
 				returnObj.forEach(function(i){
@@ -887,12 +1001,19 @@ define([
 					}
 				});
 			};
-
+            console.log("flag2",returnObj);
 			// Process answers for description
 			if(nodePart === "description"){
 				if(answer){
 					givenID = answer;
 					descriptionTable[interpretation][this.userType](returnObj, nodePart);
+                    //In the case where each node in expression is sent to pedagogical module
+                    //In the case of already solved nodes, the type is being unlocked if it is part of expression
+                    // so in such cases we check if the status of the node is correct then we disable the type
+                    if(this.model.given.getStatus(answer,"type")== "correct"){
+                        console.log("disabled");
+                        disable(returnObj, "type", true);
+                    }
 					for(var i = 0; i < returnObj.length; i++){
 						if(returnObj[i].value === "correct" || returnObj[i].value === "demo"){
 							currentStatus = this.model.given.getStatus(givenID, nodePart); //get current status set in given model
@@ -921,6 +1042,7 @@ define([
 
 				}
 				// Process answers for all other node types
+                console.log("flag3",returnObj);
 			}else{
 				givenID = this.model.student.getDescriptionID(id);
 				if(this.activityConfig.get("showNodeEditor")) {
@@ -943,6 +1065,8 @@ define([
 					incrementalActionTable[interpretation][this.userType](returnObj, nodePart);
 				}else if(this.activityConfig.get("showExecutionEditor")){
 					executionActionTable[interpretation][this.userType](returnObj, nodePart);
+				}else if(this.activityConfig.get("showWaveformEditor")){
+					waveformActionTable[interpretation][this.userType](returnObj, nodePart);
 				}
 				currentStatus = this.model.given.getStatus(givenID, nodePart); //get current status set in given model
 				if (currentStatus !== "correct" && currentStatus !== "demo") {
@@ -959,7 +1083,6 @@ define([
 					returnObj.pop();
 					this._enableNext(returnObj, givenID, nodePart, lastElement);
 				}
-
 			}
 			
 			//logging pm response
@@ -975,7 +1098,7 @@ define([
 				logObj = {
 					checkResult: 'CORRECT',
 				};
-			}else if(checkStatus == "demo" || checkStatus == "incorrect"){
+			}else if(!checkStatus || checkStatus == "demo" || checkStatus == "incorrect"){
 				logObj = {
 					checkResult: 'INCORRECT',
 					correctValue: this.model.student.getCorrectAnswer(id, nodePart),
@@ -994,7 +1117,7 @@ define([
 			this.logging.log('solution-step', logObj);
 			
 			if(this._assessment && this._assessment.currentNodeTime){
-				this._assessment.updateError(nodePart, checkStatus);
+				this._assessment.updateError(id, nodePart, checkStatus);
 			}
 
 			console.log("**** PM returning:\n", returnObj);
@@ -1140,7 +1263,6 @@ define([
 
 			if(nodes){
 				var ids = [];
-				
 				//sets up the complete nodes so that we know the exhaustive node IDs and their types.
 				array.forEach(nodes, function(node, counter){
 					ids[counter] = node.ID;
@@ -1158,92 +1280,11 @@ define([
 						default:
 							break;
 					}
-					
+
 					if(useTweakNode && node.descriptionID == tweakedNode){
 						studentTweakedNode = node.ID;
 					}
 				});
-
-				var checkString = function(str, id1, id2){
-					if(str.indexOf(id1) >= 0)
-						return id1;
-					else if(str.indexOf(id2) >= 0)
-						return id2;
-					else
-						return "";
-				};
-
-				//places id2 before or after id1 as given by the position, position values are "before" or "after"
-				var putString = function(str, id1, id2, position){
-					var index;
-					var index1 = str.indexOf(id1);
-					var index2 = str.indexOf(id2);
-
-					if(index2 >= 0){
-						//basically means that both ids are in the string
-						return str;
-					}
-
-					var getIndex = function(){
-						var arr = str.split(" ");
-						var i = 0;
-						array.some(arr, function(r, count){
-							i = count;
-							return r.indexOf(id1) >= 0;
-						});
-
-						var j;
-						switch(position){
-							case "before":
-								j = i-1;
-								break;
-							case "after":
-								j = i+1;
-								break;
-							default:
-								j = i;
-						}
-
-						sum = j; //j is added to take care of the spaces that are in after node ids. which are lost in split
-						for(var i = 0; i <= j; i++){
-							sum += arr[i].length;
-						}
-
-						return sum;
-					};
-
-					var l = str.length;
-					var returnString = "";
-					switch(position){
-						default:
-						case "before":
-							if(index1 == 0)
-								returnString = id2 + " " + str;
-							else {
-								//this means that there is already a node that is supposed to be complete before we do this.
-								var index = index1 - 1;
-								if(str[index] != " "){
-									index = getIndex();
-								}
-								returnString = str.slice(0, index) +"="+ id2 + str.slice(index, str.length);
-
-							}
-							break;
-						case "after":
-							if(index1 == str.length - id1.length)
-								returnString = str + " " +id2;
-							else{
-								var index = index1 + id1.length + 1;
-								if(str[index] != " "){
-									index = getIndex();
-								}
-								returnString = str.slice(0, index) + id2 + "=" + str.slice(index, str.length);
-							}
-							break;
-					}
-
-					return returnString;
-				}
 
 				//the priority of the ids is same. So it checks for the position. Which ever is on the left will be done first.
 				//Uses insertion sort based on position.
@@ -1294,65 +1335,44 @@ define([
 				var str = [];
 				var hierarchyString = "";
 				var hierarchy = [];
-				var relativeOrderF = [];
-				//make hierarchy of the nodes based on inputs.
-				array.forEach(functionID, function(id){
-					var n = nodes[ids.indexOf(id)];
-					var inputs = n.inputs;
-					var nodeAddedFlag = false;
-					array.forEach(inputs, function(input){
-						if(functionID.indexOf(input.ID) >= 0){
-							var flag = true;
-							//check if some relative order already has the one of the nodes.
-							array.forEach(relativeOrderF, function(s, counter){
-								var temp = checkString(s, n.ID, input.ID);
+				var nodesChecked = [];
 
-								if(temp == n.ID){
-								s = putString(s, n.ID, input.ID, "before");
-									flag = false;
-								} else if (temp == input.ID) {
-									s = putString(s, input.ID, n.ID, "after");
-									flag = false;
-								}
-
-								relativeOrderF[counter] = s;
-							}, this);
-
-							if(flag){
-								relativeOrderF.push(input.ID + " " + n.ID);
+				hierarchy[0] = parameterID.concat(accumulatorID);
+				var i = 0;
+				var nodesCopy = dojo.clone(nodes);
+				while(nodesChecked.length < functionID.length){
+					hierarchy[i+1] = [];
+					array.forEach(functionID, function(id, j){
+						var index = ids.indexOf(id);
+						var n = nodesCopy[index];
+						var inputs = n.inputs;
+						var inputsCopy = dojo.clone(inputs);
+						var k = inputsCopy.length-1;
+						for(k; k >= 0; k--){
+							if(hierarchy[i].indexOf(inputsCopy[k].ID) >= 0){
+								n.inputs.splice(k, 1);
 							}
-							nodeAddedFlag = true;
+						}
+						if(nodesChecked.indexOf(id) < 0 && n.inputs.length == 0){
+							nodesChecked.push(id);
+							hierarchy[i+1].push(id);
 						}
 					}, this);
-
-					if(!nodeAddedFlag){
-						//means that none of the inputs were function hence the priority will be 0 for this
-						var checkID = array.some(relativeOrderF, function(s){
-							return (s.indexOf(id) >= 0);
-						});
-
-						if(!checkID){
-							relativeOrderF.push(id);
-						}
-					}
-				}, this);
-
-				//create the complete hierarchy of functions using relative order.
-				if(relativeOrderF){
-					array.forEach(relativeOrderF, function(s){
-						var arr = s.split(" ");
-						array.forEach(arr, function(id, counter){
-							if(hierarchy && hierarchy[counter]){
-								if(hierarchy[counter].indexOf(id) < 0)
-									hierarchy[counter] += ("=" + id);
-							} else {
-								hierarchy[counter] = id;
-							}
-						}, this);
-					}, this);
-
-					console.log("function nodes order is ", hierarchy);
+					i++;
 				}
+
+				var temp = [];
+				for(i = 1; i<hierarchy.length; i++){
+					var str = "";
+					for(j = 0; j<hierarchy[i].length; j++){
+						str += hierarchy[i][j]+"=";
+					}
+					str = str.substring(0, str.length-1);
+					temp.push(str);
+				}
+
+				hierarchy = temp;
+
 				//now we just prioritize all the functions. hierarchy array has ids which are at same levels in the model.
 				//Each row either has ids in the form id10=id13 or id11. All these nodes are functions.
 				if(hierarchy){

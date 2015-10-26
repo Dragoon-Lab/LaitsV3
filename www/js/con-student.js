@@ -25,7 +25,8 @@
  * Student mode-specific handlers
  */
 
-define(["dojo/aspect",
+define([
+	"dojo/aspect",
 	"dojo/_base/array",
 	'dojo/_base/declare',
 	"dojo/_base/lang",
@@ -73,6 +74,8 @@ define(["dojo/aspect",
 				this.initIncrementalMenu();
 			}else if(this.activityConfig.get("showExecutionEditor")){
 				this.initExecutionEditor();
+			}else if(this.activityConfig.get("showWaveformEditor")){
+				this.initWaveformEditor();
 			}
 		},
 
@@ -98,7 +101,7 @@ define(["dojo/aspect",
 
 		setAssessment: function (session) {
 			if (this._model.active.getSchemas()) {
-				this._assessment = new schemaStudent(this._model, session);
+				this._assessment = new schemaStudent(this._model, session, this.activityConfig);
 			}
 
 			this._PM.setAssessment(this._assessment);
@@ -169,7 +172,9 @@ define(["dojo/aspect",
                 executionValue.removeOption(executionValue.getOptions());
                 //ad default option
                 executionValue.addOption({label: "select",value: "default"});
+
                 array.forEach(uniqueOptions, function (optionVal) {
+                    console.log(optionVal, typeof optionVal);
                     currentOption = [{label: "" + optionVal, value: "" + optionVal}];
                     executionValue.removeOption(currentOption);
                     executionValue.addOption(currentOption);
@@ -185,6 +190,7 @@ define(["dojo/aspect",
 			console.log("updating nodes student controller");
 			//getDescriptionID using variable name
 			var descID = this._model.given.getNodeIDByName(variable);
+            console.log(id,descID,this._model.given.getName(descID));
 			var directives = this._PM.processAnswer(id, 'description', descID, this._model.given.getName(descID));
 			// Need to send to PM and update status, but don't actually
 			// apply directives since they are for a different node.
@@ -712,6 +718,10 @@ define(["dojo/aspect",
 						popup.close(problemDoneHint);
 					}
 				});
+				this.logging.log('solution-step', {
+					type: "completeness-check",
+					problemComplete: isFinished
+				});
 				var res=popup.open({
 					popup: problemDoneHint,
 					around: dom.byId('doneButton')
@@ -813,6 +823,7 @@ define(["dojo/aspect",
 		resetIterationExecDemo: function(){
 			var studId = this._model.active.getNodes();
 			var nowHighLighted = this.currentHighLight;
+			var iteration = this._model.student.getIteration();
 			studId.forEach(lang.hitch(this, function (newId) {
 				var givenID = this._model.active.getDescriptionID(newId.ID);
 				//remove the glow for current highlighted node as a part of reset
@@ -826,13 +837,12 @@ define(["dojo/aspect",
 					this.colorNodeBorder(newId.ID, true);
                     if(this.activityConfig.get("executionExercise")) {
                         this._model.active.getNode(newId.ID).status["executionValue"]=null;
-						this._model.given.getNode(givenID).status["executionValue"]=null;
                         registry.byId("executionValue").set("disabled", false);
                     }
 
 					this._model.given.getNode(givenID).attemptCount['assistanceScore'] = 0;
 					this._model.given.getNode(givenID).attemptCount['tweakDirection'] = 0;
-					this._model.given.getNode(givenID).attemptCount['executionValue'] = 0;
+					this._model.given.getNode(givenID).attemptCount['executionValue'][iteration] = 0;
 
 					//Update Node Label
 					this.updateNodeLabel(newId.ID);
@@ -879,19 +889,15 @@ define(["dojo/aspect",
 				this.closeExecutionMenu();
 			});
 			var executionValue = registry.byId("executionValue");
-
 			//for change in the select values
-			executionValue.on('Change', lang.hitch(this, function () {
+			executionValue.on('change', lang.hitch(this, function () {
 				var currentValue = this._model.active.getExecutionValue(this.currentID) || "";
 				if(executionValue.value !== "default" && currentValue !== executionValue.value) {
 					//var givenID = this._model.active.getDescriptionID(id);
 					var answer = executionValue.value;
+					this._model.active.setExecutionValue(this.currentID, answer);
 					var result = this._PM.processAnswer(this.currentID, "executionValue", answer);
 					this.applyDirectives(result);
-
-					//Set correct answer in model
-					this._model.active.setExecutionValue(this.currentID, answer);
-					registry.byId("executionValue").set("selected", answer);
 
 					//Update Node Label
 					this.updateNodeLabel(this.currentID);
@@ -916,13 +922,6 @@ define(["dojo/aspect",
 			} else {
 				if (!this.activityConfig.get("showPopupIfComplete") || (this.activityConfig.get("showPopupIfComplete")
 					&& this._model.active.isComplete(id))) {
-					//logging for pop up start
-					this.logging.log('ui-action', {
-						type: "open-execution-popup",
-						node: this._model.active.getName(this.currentID),
-						nodeID: this.currentID
-					});
-
 					//set node name
 					dom.byId("executionNodeName").innerHTML = "<strong>" + nodeName + "</strong>";
 					var executionValue = registry.byId("executionValue");
@@ -1031,7 +1030,7 @@ define(["dojo/aspect",
 					value: "You have completed all the values for this time step.  Click 'Ok' to proceed to the next time step."
 			    }]);			
 			} 
-			else if (isFinished & iterationNum==maxItration-1) {// In last iteration
+			else if (isFinished && iterationNum==maxItration-1 && !this.isFinalMessageShown) {// In last iteration
 				this.applyDirectives([{
 					id: "crisisAlert",
 					attribute: "title",
@@ -1039,9 +1038,10 @@ define(["dojo/aspect",
 				}, {
 					id: "crisisAlert",
 					attribute: "open",
-					value: "Good work, now Dragoon will compute the rest of the values for you and display them as a table and as a graph in the next window."
+					value: "Good work, now Dragoon will compute the rest of the values for you and display them as a table and as a graph in the next window. Explore the graph window, and close it when you are done."
 				}]);
-			}
+			    this.isFinalMessageShown = true;
+            }
 			//console.log("model is",this._model);
 		},
 
@@ -1052,7 +1052,117 @@ define(["dojo/aspect",
 			if(this._model.student.getIteration() <= this._model.getExecutionIterations()) {
 				this.resetIterationExecDemo();
 			}
-		}
+		},
+
+
+		/*
+		 *************************** Waveform Editor *******************************
+		 */
+		initWaveformEditor: function(){
+			console.log("---initWaveformEditor---");
+			var waveformEditorDialog = registry.byId('waveformEditor');
+
+			//Fetch array of waveforms
+			dojo.xhrGet({
+				url:"waveforms.json",
+				handleAs: "json",
+				load: lang.hitch(this, function(result){
+					this.waveforms = result;
+					if(this.waveforms.length > 0) {
+						var waveformsContainer = dom.byId("waveform-container");
+						this.waveforms.forEach(lang.hitch(this, function (w, index) {
+							var waveform = '<div id="' + w + 'Div" class="waveformItem">' +
+								'<img class="imgWaveform" alt="' + w + '" src="images/waveforms/' + w + '.png"/>' +
+								'</div>';
+							if ((index + 1) % 7 == 0) waveform += '<br/>'
+							dojo.place(waveform, waveformsContainer, "last");
+							//Add click event for waveform images except the already selected one
+							var waveFormDivDom = dom.byId(w + "Div");
+							on(waveFormDivDom, "click", lang.hitch(this, function (evt) {
+								//Set selected waveform to model
+								var selectedWaveform = evt.target;
+								var value = dojo.getAttr(selectedWaveform, 'alt');
+								if (value != null) {
+									this._model.active.setWaveformValue(this.currentID, value);
+
+									//Call process Answer
+									var directives = this._PM.processAnswer(this.currentID, 'waveformValue', value);
+									this.applyDirectives(directives);
+
+									//Update UI and Node border
+									this.updateNodeLabel(this.currentID);
+									this.colorNodeBorder(this.currentID, true);
+									waveformEditorDialog.hide();
+                                }
+                                //canShowDonePopup also handles the waveform activity with the same variable
+                                if(!this.shownDone)
+                                    this.canShowDonePopup();
+							}));
+						}));
+					}
+				}),
+				error: function(err){
+					console.log(err);
+				}
+			});
+
+			var showEquationButton = registry.byId("WaveformEquationButton");
+			on(showEquationButton, "click", lang.hitch(this, function () {
+				this.showEquationDialog();
+			}));
+
+			var showExplanationButton = registry.byId("WaveformExplanationButton");
+			on(showExplanationButton, 'click', lang.hitch(this, function () {
+				this.showExplanationDialog();
+			}));
+		},
+
+		showWaveformEditor: function(id){
+			this.currentID = id;
+			var givenID = this._model.active.getDescriptionID(id);
+			if(this._model.active.getType(id) === "parameter") return;
+
+			var nodeName = this._model.active.getName(id);
+			var value = this._model.active.getWaveformValue(id);
+			var waveformEditorDialog = registry.byId('waveformEditor');
+			var waveformContainer = dom.byId('waveform-container');
+
+			//array of handlers for waveforms
+			var waveformStatus = this._model.active.getNode(id).status["waveformValue"];
+			//Add handlers to the images
+			if(typeof value !== "undefined") {
+				style.set(waveformContainer, "display", "block");
+				dojo.query(".waveformDisabled").forEach(dojo.destroy);
+				this.waveforms.forEach(lang.hitch(this, function (w, index) {
+					var waveFormDivDom = dom.byId(w + "Div");
+					//Set selected answer in the editor
+					if (value == w) {
+						domClass.add(waveFormDivDom, "waveformSelected");
+					} else {
+						domClass.remove(waveFormDivDom, "waveformSelected");
+					}
+					if (waveformStatus && waveformStatus.disabled) {
+						var disableOverlay = '<div class="waveformDisabled"></div>';
+						dojo.place(disableOverlay, waveFormDivDom, "first");
+						waveFormDivDom.style.pointerEvents = "none";
+					} else {
+						waveFormDivDom.style.pointerEvents = "auto";
+					}
+				}));
+			}else{
+				style.set(waveformContainer, "display", "none");
+			}
+			//Show Waveform editor
+			waveformEditorDialog.set('title', nodeName);
+			waveformEditorDialog.show();
+
+			var showExplanationButton = registry.byId('WaveformExplanationButton').domNode;
+			//Show hide explanation button
+			if(this._model.given.getExplanation(givenID))
+				style.set(showExplanationButton, "display", "block");
+			else
+				style.set(showExplanationButton, "display", "none");
+        }
 	});
 });
 

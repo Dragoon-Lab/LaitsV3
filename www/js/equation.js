@@ -71,24 +71,49 @@ define([
 					functionTag : 'areEquivalent'
 				});
 			}
-			
+
 			var givenParse = Parser.parse(givenEqn, seed);
 			var givenVals = {};
+			var givenParse1;
+			//check if any of the nodes in the given equation are optional nodes.
+			if(givenParse){
+				var allowedIDs = [];
+				array.forEach(givenParse.variables(), function(id){
+					if(model.given.getGenus(id) == "allowed")
+						allowedIDs.push(id);
+				}, this);
+
+				if(allowedIDs.length > 0){
+					var newEquation;
+					array.forEach(allowedIDs, function(ID){
+						var eq = model.given.getEquation(ID);
+						newEquation = givenEqn.replace(ID, eq);
+					});
+					if(newEquation)
+						givenParse1 = Parser.parse(newEquation, seed);
+				}
+			}
+
 			var flag = true;
 			var i = 0;
 			while(flag && i < count){
 				array.forEach(model.given.getNodes(), function(node){
 					/* Parameter and accumulator nodes are treated as independent. */
-					if((!node.genus || node.genus === "required")/* && (node.type == 'parameter' || node.type == 'accumulator')*/){
+					if((!node.genus || node.genus === "required" || node.genus === "allowed")/* && (node.type == 'parameter' || node.type == 'accumulator')*/){
 						givenVals[node.ID] = (Math.random()*2 - 1)*factor; //converts value beween 0 and 1 to -factor to factor
 					}
 				});
 				var valsCopy = dojo.clone(givenVals);
-
 				var givenResult = this.getEquationValue(givenParse, model, givenVals, "given", seed, 0);
 				var studentResult = this.getEquationValue(student, model, givenVals, "solution", seed, 0);
 
 				flag = Math.abs(studentResult - givenResult) <= 10e-10 * Math.abs(studentResult + givenResult);
+
+				if(allowedIDs.length > 0 && !flag){
+					//we need to check the new equation as well in that case
+					var givenResult1 = this.getEquationValue(givenParse1, model, givenVals, "given", seed, 0);
+					flag = Math.abs(studentResult - givenResult1) <= 10e-10 * Math.abs(studentResult + givenResult1);
+				}
 
 				if(!isFinite(studentResult)){// Handel devide by zero in student mode
 					flag=false;
@@ -399,7 +424,7 @@ define([
 				// Include all nodes that belong in the solution.
 				// Additionally we only include nodes that are complete,
 				// except for units.
-				if((!node.genus || node.genus === "required") && model.isComplete(node.ID)){
+				if((!node.genus || node.genus === "required" || node.genus === "allowed") && model.isComplete(node.ID)){
 					switch(node.type){
 					case "parameter":
 						// No equation to parse
@@ -486,7 +511,7 @@ define([
             lang.mixin(variables, this.parameters);
 			array.forEach(this.functions, function(id){
                 variables[id] = this.parse[id].evaluate(variables);
-				variables[id] = this.parse[id].evaluate(variables , time);
+				variables[id] = this.parse[id].evaluate(variables , time-1);
 			}, this);
 			return array.map(this.xvars, function(id){
 				return this.parse[id].evaluate(variables , time);

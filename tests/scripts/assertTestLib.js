@@ -45,16 +45,18 @@ function convertArrayToMap(assocArray){
 }
 exports.checkTableValues = function(name, col, values,dtest,client){
 	var correct = true;
+	var incorrectValues = "";
 	for(var i  = 0; i < values.length; i++)
 	{
-		if(!(dtest.tableGetValue(client, i, col) == values[i]))
+		var tableValue = dtest.tableGetValue(client, i, col);
+		if(!(tableValue == values[i]))
 		{
+			incorrectValues += ("Expected " + values[i] + " but got "+tableValue+"\n");
 			correct = false;
 		}
 	}
-
 	assert(correct === true,
-		"Value(s) in the \"" + name + "\" column were incorrect");
+		"Value(s) in the \"" + name + "\" column were incorrect:\n" + incorrectValues);
 }
 
 exports.checkNodeValue = function(actual,expected,nodeName){
@@ -65,6 +67,7 @@ exports.checkNodeValue = function(actual,expected,nodeName){
 
 exports.checkNodeValues = function(valuesToCheck, dtest, client)
 {
+	dtest.waitTime(200);
 	var values = convertArrayToMap(valuesToCheck);
 
 	var nodeName = values["nodeName"];

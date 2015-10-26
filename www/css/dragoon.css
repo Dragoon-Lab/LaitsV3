@@ -314,8 +314,10 @@ input[type=radio]{
 }
 
 .messageBox-warn{
-   background-color: rgba(243,156,18,0.2);
+   background-color: antiquewhite;
    border: 2px solid #F39C12;
+    z-index: 100;
+    
 }
 
 .factorNode{
@@ -437,6 +439,12 @@ span.slip{
 #viewAllSchemaDialog .schemaName{
     display:inline-block;
     width:200px;
+    font-weight: bold;
+}
+
+#viewAllSchemaDialog .schemaNodes{
+    display:inline-block;
+    width:274px;
 }
 
 @keyframes glowing {
@@ -481,4 +489,91 @@ span.slip{
     -ms-transform: rotate(-65deg);
     -o-transform: rotate(-65deg);
     font-size: 13px !important;
+}
+
+.tutorialBox {
+    width:600px;
+    height: 480px;
+}
+.tutorialBoxImage {
+    width: 580px;
+    height: 300px;
+    border: 1px solid grey;
+    border-radius: 2px;
+    margin-bottom: 5px;
+}
+.tutorialContent {   
+    height: 100px;
+}
+.tutorialHeading {
+    font-weight : bold;
+    margin: 2px 0px;
+    text-align: center;
+    font-size: 1.2em;
+}
+.tutorialNav{
+    text-align: center;
+}
+
+
+.graphHintUnderLay{
+    width:500px;
+}
+
+.graphHintUnderLay_underlay{ display:none; }
+
+
+#waveform-container{
+    max-height:300px;
+    overflow: scroll;
+}
+#waveform-container .waveformItem{
+    display: inline-block;
+    margin:5px;
+    width:80px;
+    height:80px;
+    position:relative;
+}
+
+.waveformItem .imgWaveform{
+    width:80px;
+    height:80px;
+}
+
+.waveformDisabled{
+    background: #777777;
+    opacity: 0.4;
+    width:80px;
+    height:80px;
+    position: absolute;
+}
+
+.waveformSelected{
+    box-shadow: 0 0 11px rgba(81, 203, 238, 1);
+    border: 3px solid rgba(81, 203, 238, 0.5);
+    border-radius: 2px;
+}
+
+#suggestionsDiv{
+    position: absolute;
+    background-color: #fff;
+    max-height: 100px;
+    overflow: scroll;
+    z-index:5;
+    box-shadow: 0 4px 12px #333333;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    color: #444444;
+    font-style: italic;
+    margin-top:1px;
+}
+
+.suggestionsItem{
+    padding: 5px;
+    border-bottom: 1px solid #E0E0E0;
+    cursor: pointer;
+}
+
+.suggestionsItem.selected , .suggestionsItem:hover{
+    background-color: #abd6ff;
 }
