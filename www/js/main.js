@@ -59,12 +59,14 @@ define([
 	"./image-box",
 	"./modelChanges",
 	"./ETConnector",
-	"./tutorialWidget"
+	"./tutorialWidget",
+	"./zoom-correction",
+	"./history-widget"
 ], function(
 	array, lang, dom, geometry, style, domClass, on, aspect, ioQuery, ready, registry, toolTip, tooltipDialog, popup,
 	menu, loadSave, model, Graph, controlStudent, controlAuthor, drawmodel, logging, equation,
 	description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan,
-	activityParameters, memory, event, UI, Dialog, ImageBox, modelUpdates, ETConnector, TutorialWidget){
+	activityParameters, memory, event, UI, Dialog, ImageBox, modelUpdates, ETConnector, TutorialWidget, ZoomCorrector, HistoryWidget){
 
 	/*  Summary:
 	 *			Menu controller
@@ -78,7 +80,6 @@ define([
 
 	// Get session parameters
 	var query = {};
-	//debugger;
 	if(window.location.search){
 		query = ioQuery.queryToObject(window.location.search.slice(1));
 	}else{
@@ -258,6 +259,7 @@ define([
 
 
 
+
 		ready(function(){
 			//Set Tab title
 			var taskString = givenModel.getTaskName();
@@ -324,12 +326,14 @@ define([
 
 				});
 
+
 			//This array is used later to called the setSelected function for all the buttons in the menu bar
 			//moved this at the start so that the buttons flicker at the start rather than at the end.
 			var menuButtons=[];
 			menuButtons.push("createNodeButton","graphButton","tableButton","forumButton",
 				"schemaButton","descButton","saveButton","mergeButton",
 				"previewButton","slidesButton","lessonsLearnedButton","resetButton","doneButton", "prettifyButton", "imageButton","historyButton");
+
 
 			array.forEach(menuButtons, function(button){
 				//setting display for each menu button
@@ -404,32 +408,48 @@ define([
 					registry.byId("lessonsLearnedButton").set("disabled", false);
 			}
 
-			//GET problem-topic index for PAL problems
+			//Initialie TC, GET problem-topic index for PAL problems
 			palTopicIndex = "";
+			var tc = null;
 			var searchPattern = new RegExp('^pal3', 'i');
+			
 			if(query.m != "AUTHOR" && searchPattern.test(query.s)){
+				activity_config["PAL3"] = true;
 				var xhrArgs = {
 					url: "problems/PAL3-problem-topics.json",
 					handleAs: "json",
 					load: function(data){
 						palTopicIndex = data;
+						tc = new tincan(givenModel, controllerObject._assessment,session, palTopicIndex);
 					},
 					error: function(error){
 						console.log("error retrieving file name");
 					}
 				}
 				dojo.xhrGet(xhrArgs);
+				aspect.after(controllerObject._PM, "notifyCompleteness", function(){
+					if(!tc ||  !tc.needsToSendScore || !givenModel.isCompleteFlag) return;
+					tc.connect();
+					tc.sendStatements();
+				});
 			}
 			// setting environment for loading dragoon inside ET
 			
 			var etConnect = null;
 			if(activity_config["ElectronixTutor"]) {
-				
 				etConnect = new ETConnector();
 				etConnect.startService();
 				
+				// send score after student complete the model
+				aspect.after(controllerObject._PM, "notifyCompleteness", function(){
+					if(!etConnect ||  !etConnect.needsToSendScore || !givenModel.isCompleteFlag) return;
+					var score = controllerObject._assessment.getSuccessFactor();
+					etConnect.sendScore(score);
+					console.log("sending score(successfactor):", score);
+				});
+				
 			}
-
+			
 			if(activity_config.get("targetNodeStrategy")){ 
 				// Only in construction activity when in COACHED mode 
 				var rootNodes = givenModel.given.getRootNodes();
@@ -457,6 +477,9 @@ define([
 			var drawModel = new drawmodel(givenModel.active, ui_config.get("showColor"), activity_config);
 			drawModel.setLogging(session);
 			
+			if(query.m != 'AUTHOR'){
+				controllerObject.setAssessment(session); //set up assessment for student.
+			}
 			// add mouse enter and mouse leave event for every new node	
 			var iBoxController = new ImageBox(givenModel.getImageURL(), givenModel);
 			
@@ -623,7 +646,6 @@ define([
 					around: dom.byId('prettifyButton')
 				});
 			});
-
 			//Remove nodes from student model(if added) when author deletes the node from given model
 			if(controllerObject._mode == "AUTHOR"){
 				aspect.after(drawModel,
@@ -1168,14 +1190,15 @@ define([
 
 			//Wiring up history button
 			if(activity_config.get("historyButton")){
-				var historyButton = registry.byId("historyButton");				
+				/*var historyButton = registry.byId("historyButton");	
+				historyButton.set("disabled", false);			
 				menu.add("historyButton", function(e){
 					event.stop(e);
 					session.getHistory(query).then(function(history){
 						console.log("history for now is:", history);
 					})
 					//registry.byId("historyDialog").show();
-				});
+				});*/
 			}
 
 			if(activity_config.get("allowHelp")){
@@ -1335,6 +1358,16 @@ define([
 						registry.byId("nodeeditor").hide();
 					});
 				}
+				//debugger;
+				// attaching author History widget
+				if(activity_config.get("allowHistory")) {
+					var historyWidget = new HistoryWidget(query, session.sessionId);
+					registry.byId("historyButton").set("disabled", false);
+					on(registry.byId("historyButton"), "click", function (e) {
+						event.stop(e);
+						historyWidget.show();
+					});
+				}
 				/*
 				 Autosave on close window
 				 It would be more efficient if we only saved the changed node.
@@ -1458,17 +1491,21 @@ define([
 				}
 
 				var searchPattern = new RegExp('^pal3', 'i');
-				if(query.m != "AUTHOR" && searchPattern.test(query.s)){ // check if session name starts with pal
-					var tc = new tincan(givenModel, controllerObject._assessment,session, palTopicIndex);
-					//Connect to learning record store
-					tc.connect();
-					//Send Statements
-					tc.sendStatements();
+				if(activity_config["PAL3"] && tc){ // check if session name starts with pal
+					if(tc.needsToSendScore) {
+						tc.connect();
+						tc.sendStatements();
+					}
+						
 				}
 				if(activity_config["ElectronixTutor"] && etConnect){
-					var score = controllerObject._assessment.getSuccessFactor();
-					etConnect.sendScore(score);
-					console.log("sending score(successfactor):", score);
+					if(etConnect.needsToSendsScore) {
+						var score = controllerObject._assessment.getSuccessFactor();
+						etConnect.sendScore(score);
+						console.log("sending score(successfactor):", score);
+					}
+					else 
+						etConnect.stopService();
 				}
 			});
 

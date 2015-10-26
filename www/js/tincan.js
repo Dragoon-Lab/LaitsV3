@@ -53,6 +53,7 @@ define([
 			this._model = givenModel;
 			this._assessment = assessment;
 			this._session = session;
+			this.needsToSendScore = true;
 		},
 
 		connect: function() {
@@ -92,7 +93,7 @@ define([
 			var schemaSuccessFactor = this._assessment.getSchemaSuccessFactor();
 			var username = this._session.params.u;
 			var email = username;
-
+			var context = this;
 			var topic = this._session.params.topic || "No Topic";
 
 			if (username.indexOf("..") > 0){
@@ -113,15 +114,19 @@ define([
 			
 			statement['object'] = {
 							"objectType": "Activity",
-							"id" : baseURL+ "activities/"+ this._model.getTaskName(),
+							"id" : baseURL+ "activities/"+ this.getResourceName(),
 					        "definition": {
-					            "name": { "en-US": this._model.getTaskName() }
+					            "name": { "en-US": this.getResourceName() }
 					        }
 						  };			
 			
 			//Create a new Statement for every schema associated with the problem 
 			var schemas = this._model.active.getSchemas();
+			var debugReport = "Overall success factor: "+successFactor+"\n";
+			var debugScoreSum = 0;
 			array.forEach(schemas, lang.hitch(this, function(schema){ 
+				debugReport += "Success factor for "+ schema.schemaClass+": "+schemaSuccessFactor[schema.schemaClass]+"\n";
+				debugScoreSum += schemaSuccessFactor[schema.schemaClass];
 				statement.context = {
 						"contextActivities": {
 				           "category": [{
@@ -143,14 +148,14 @@ define([
 				                }
 				            }]			            	
 				        },
-				    	"revision" : this._session.params.u
+				    	"revision" : this._session.params.rid
 				    };
 				statement.result =  {
 			        "completion": this._model.matchesGivenSolution(),
 			        "success": this._model.student.matchesGivenSolutionAndCorrect(),
 			        "duration": this.isoDuration(this._session.calculateDuration()),
 			        "score": {
-			            "scaled": schemaSuccessFactor[schema.name]
+			            "scaled": schemaSuccessFactor[schema.schemaClass]
 			        },
 			        "extensions":{
 						"http://pal3.ict.usc.edu/lrs/extensions/passive": false,
@@ -180,17 +185,51 @@ define([
 					sync:true,
 					load: function(response){
 						console.log(response);
+						context.needsToSendScore = false;
 					},
 					error: function(err){
 						console.log(err);
 					}
 				});
 			}));
+			debugReport += "PAL3 score should be: " + (debugScoreSum / ( schemas.length || 1 ));
+			console.log(debugReport);
+			debugger;
 		},
 
 		isoDuration: function(milliseconds) {
    			var d = new Date(milliseconds);
    			return 'P' + 'T' + d.getUTCHours() + 'H' + d.getUTCMinutes() + 'M' + d.getUTCSeconds() +'S';
-		}		
+		},
+
+		getResourceName: function(){
+			var problemName = this._session.params.p;
+			switch(problemName){
+				case "resistor-capacitor-intro":
+					if(this._session.params.a == "executionDemo"){
+						return "Dragoon Introduction Part 1";
+					} else if (this._session.params.a == "execution") {
+						return "Dragoon Introduction Part 2";
+					} else {
+						return "Dragoon Introduction Part 3";
+					}
+				case "resistor-inductor-intro":
+					return "Dragoon Introduction Part 4";
+				default:
+					if (this._session.params.a == "waveform"){
+						return this.replacePrefix(this._model.getTaskName(),"Identify Waveforms of");
+					} else if (this._session.params.a == "incremental"){
+						return this.replacePrefix(this._model.getTaskName(),"Incremental Analysis of");
+					} else {
+						return this._model.getTaskName();
+					}
+			}
+		},
+
+		replacePrefix: function(oldTitle,newPrefix){
+			//PAL3 problem titles begin with "Model a/an.."" so we replace the first word.
+			return oldTitle.replace("Model",newPrefix);
+		}
+
 	});
 });

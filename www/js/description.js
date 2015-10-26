@@ -38,7 +38,7 @@ define([
         constructor: function(/*model*/ givenModel,/*string*/ activity){
             this.givenModel = givenModel;
             this.timeObj = givenModel.getTime();
-            this.bufferDescription = null;
+            this.bufferDescription = {};
             this._activity=activity;
             this._initHandles();
         },
@@ -61,9 +61,14 @@ define([
             dom.byId("authorSetLessonsLearned").value = this.serialize(
                 this.givenModel.getTaskLessonsLearned() ? this.givenModel.getTaskLessonsLearned() : ""
             );
-            this.bufferDescription = {};
+
+            // initialize the problem statement buffers:           
+            array.forEach(Object.keys(this.givenModel.model.task.taskDescription),function(activity){
+               this.bufferDescription[activity] = this.givenModel.getTaskDescription(activity);
+            }, this);
+            
             dom.byId("authorSetDescription").value = this.serialize(
-                this.givenModel.getTaskDescription(registry.byId("authorSetDescriptionType").get("value")) ? this.givenModel.getTaskDescription(registry.byId("authorSetDescriptionType").get("value")) : ""  
+                 this.bufferDescription[registry.byId("authorSetDescriptionType").get("value")]
             );
              // Populating parameter field
             var list=[]; //list of all required parameters[{label: "growth rate",value: "id3"},...]
@@ -157,7 +162,7 @@ define([
 
                 };
             }));
-             setDescription.on("change", lang.hitch(this, function(data){
+            setDescription.on("change", lang.hitch(this, function(data){
                 var activityType = registry.byId("authorSetDescriptionType").get("value");
                 var tin = dom.byId("authorSetDescription").value;
                 var tin_sanitize = tin.split("\n");
@@ -174,18 +179,18 @@ define([
             
             getActivityType.on("change", lang.hitch(this,function(event){
              
-               var activityValue = getActivityType.get("value");
-               //check for the value in buffer
-               if(this.bufferDescription[activityValue]) 
-                    dom.byId("authorSetDescription").value = this.serialize(
-                        this.bufferDescription[activityValue]
-                    );
-               else
-                    dom.byId("authorSetDescription").value = this.serialize(
-                            this.givenModel.getTaskDescription(activityValue) ? this.givenModel.getTaskDescription(activityValue) : ""  
-                        );
-               return; 
+                var activityValue = getActivityType.get("value");
+
+                // check buffer first and update buffer if it's empty
+                if(!this.bufferDescription[activityValue]) {
+                    this.bufferDescription[activityValue] = this.givenModel.getTaskDescription(activityValue);
+                }
+
+                // fill box with value from buffer
+                dom.byId("authorSetDescription").value = this.serialize(this.bufferDescription[activityValue]);
+                return; 
             }));
+
             //for share bit checkbox
             var descCheckButton = registry.byId("authorProblemCheck");
             console.log("descCheckButton",descCheckButton);
@@ -374,8 +379,8 @@ define([
                     descs[0]="";
                     descs[1]="Welcome to a demonstration of Dragoon.  In this activity we use a completed model to show you how Dragoon calculates values for the quantities in the model.  Each shape on the screen is a node representing a quantity:";
                     descs[2]="* Diamonds represent parameters, which have constant values.";
-                    descs[3]="* Circles represent functions, whose quantity is a function its inputs (indicated by blue arrows going into the node).";
-                    descs[4]="* Squares represent accumulators, whose next value is the sum of its current value and a function its inputs.  In this activity, the current value is written at the top of the node.";
+                    descs[3]="* A circle represents a function, whose value is a function its inputs (indicated by blue arrows going into the node).";
+                    descs[4]="* A square represents an accumulator, whose next value is the sum of its current value and its inputs.  In this activity, the current value is written at the top of the node and the next value appears below it.";
                     descs[5]="At each timestep, Dragoon will calculate the value of every function and accumulator, add them to a table and then graph them.  In this activity, we will step through this process one node at a time.   Click on the highlighted node and Dragoon will compute its value.  Click the \"Show Equation\" button to see the formula used to compute that node.  It should make sense to you.";
                     descs[6]="Repeat this process until Dragoon produces the graphs.";
                     break;
@@ -383,8 +388,8 @@ define([
                     descs[0]="";
                     descs[1]="In this activity we will calculate the values for the quantities in the model.  Recall that each shape on the screen is a node representing a quantity:";
                     descs[2]="* Diamonds represent parameters, which have constant values.";
-                    descs[3]="* Circles represent functions, whose quantity is a function its inputs (indicated by blue arrows going into the node).";
-                    descs[4]="* Squares represent accumulators, whose next value is the sum of its current value and a function its inputs.  In this activity, the current value is written at the top of the node.";
+                    descs[3]="* A circle represents a function, whose value is a function its inputs (indicated by blue arrows going into the node).";
+                    descs[4]="* A square represents an accumulator, whose next value is the sum of its current value and its inputs.  In this activity, the current value is written at the top of the node and the next value appears below it.";
                     descs[5]="At each timestep, Dragoon will calculate the value of every function and accumulator, add them to a table and then graph them.  In this activity, we will step through this process one node at a time and fill in the nodes ourselves.";
                     descs[6]="Click on an incomplete node (one with a dashed border) and choose the correct value.  You may click the \"Show Equation\" button to see the formula used to compute the quantity of the node.  You may find it easier to start with the nodes which have values for all of their inputs.";
                     descs[7]="Tip: When the input of a node is coming from an accumulator, use its current value (the top number) in the calculation, rather than its new value.";

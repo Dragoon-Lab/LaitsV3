@@ -1,9 +1,9 @@
 {
     "task": {
-        "taskName": "Model a Diode",
+        "taskName": "Model a Series Positive Limiter",
         "time": {
             "start": 0,
-            "end": 300,
+            "end": 200,
             "step": 1,
             "integrationMethod": "Eulers Method",
             "units": "milliseconds"
@@ -12,207 +12,29 @@
             "isGraphHelpShown": true
         },
         "image": {
-            "URL": "images/PAL3/diode-resistor.png"
+            "URL": "images/PAL3/series-positive-limiter.png"
         },
         "taskDescription": {
             "construction": [
-                "Model a diode in series with a resistor and a variable voltage source.  Assume the diode, D1, is not ideal, and it has a knee voltage of 0.7.  Assume the resistance of the resistor, R1, is 500 ohms. Nodes have been given to you that represent the varying source voltage. ",
-                "",
-                "To model the voltage across a diode we shall use the 'if' function.  When creating that node, enter a statement of the form 'if(R>K,K,R)' where R is the voltage across D1 when it is reverse biased and K is the knee voltage, which is the voltage across the diode when it is forward biased.",
-                "",
-                "Complete the model to view the graph of the current clockwise around the loop.  What happens when you vary the knee voltage and/or the maximum source voltage?"
-            ],
-            "waveform": [
-                "Here is a model of a diode in series with a resistor and a variable voltage source.  For each node, select the waveform that corresponds best with the node's graph.  Assume the diode, D1, is not ideal, but its knee voltage is so small that it appears on the y-axis at zero."
-            ],
-            "execution": [
-                "Here is a model of a diode in series with a resistor and a variable voltage source.  Assume the diode, D1, is not ideal, and it has a knee voltage of 0.7.  Assume the resistance of the resistor (aka R1) is 500 ohms.  The voltage source is a sine wave with a wavelength of 100 milliseconds and a peak of 5 volts."
+                "Construct a model of the given schematic.  You are given nodes for the AC input voltage.  Assume that the diode, D, is not ideal and has a knee voltage of 0.7 v.  Assume that the resistor, R, has resistance of 1000 ohms.  Complete the model and view the graph of the current through the resistor."
             ],
             "incremental": [
-                "Here is model of a diode in series with a resistor and a variable voltage source.  For each node, select the waveform that corresponds best with the node's graph.  Assume the diode, D1, is not ideal, but its knee voltage is so small that it appears on the y-axis at zero. "
+                "This is a model for a series positive limiter with an AC input voltage.  Assume that the diode, D, is not ideal and has a knee voltage."
+            ],
+            "waveform": [
+                "Here is a model of the given schematic.  Although the diode is not ideal, assume that the knee voltage is so small that it looks like zero on the y-axis when graphed.  "
             ]
         },
         "lessonsLearned": [],
+        "increment": [],
+        "executionIterations": null,
         "givenModelNodes": [
             {
                 "ID": "id1",
-                "inputs": [
-                    {
-                        "ID": "id2"
-                    },
-                    {
-                        "ID": "id8"
-                    }
-                ],
-                "position": {
-                    "x": 525,
-                    "y": 216
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 1
-                },
-                "status": {
-                    "root": {
-                        "disabled": false
-                    },
-                    "name": {
-                        "status": "entered"
-                    },
-                    "kind": {
-                        "status": "entered"
-                    },
-                    "description": {
-                        "status": "entered"
-                    },
-                    "units": {
-                        "status": "entered"
-                    },
-                    "equation": {
-                        "status": "entered",
-                        "disabled": false
-                    },
-                    "type": {
-                        "status": "entered"
-                    },
-                    "initial": {
-                        "disabled": true,
-                        "status": ""
-                    },
-                    "inputs": {
-                        "disabled": false
-                    }
-                },
-                "name": "Source V",
-                "genus": "required",
-                "description": "Source of variable voltage",
-                "type": "function",
-                "units": "volts",
-                "equation": "id2*sinewave(id8,0)",
-                "waveformValue": "wave007"
-            },
-            {
-                "ID": "id2",
                 "inputs": [],
                 "position": {
-                    "x": 449.33096313477,
-                    "y": 47.330951690674
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 1
-                },
-                "status": {
-                    "root": {
-                        "disabled": true
-                    },
-                    "name": {
-                        "status": "entered"
-                    },
-                    "kind": {
-                        "status": "entered"
-                    },
-                    "description": {
-                        "status": "entered"
-                    },
-                    "units": {
-                        "status": "entered"
-                    },
-                    "initial": {
-                        "status": "entered",
-                        "disabled": false
-                    },
-                    "type": {
-                        "status": "entered"
-                    },
-                    "inputs": {
-                        "disabled": true,
-                        "status": ""
-                    },
-                    "equation": {
-                        "disabled": true,
-                        "status": ""
-                    }
-                },
-                "name": "Source max volts",
-                "description": "The maximum absolute value of the variable voltage",
-                "genus": "required",
-                "equation": "",
-                "type": "parameter",
-                "parentNode": false,
-                "initial": 5,
-                "units": "volts"
-            },
-            {
-                "ID": "id3",
-                "inputs": [],
-                "position": {
-                    "x": 833.85607910156,
-                    "y": 52.179302215576
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": {
-                    "root": {
-                        "disabled": true
-                    },
-                    "name": {
-                        "status": "entered"
-                    },
-                    "kind": {
-                        "status": "entered"
-                    },
-                    "description": {
-                        "status": "entered"
-                    },
-                    "units": {
-                        "status": "entered"
-                    },
-                    "initial": {
-                        "status": "entered",
-                        "disabled": false
-                    },
-                    "type": {
-                        "status": "entered"
-                    },
-                    "inputs": {
-                        "disabled": true,
-                        "status": ""
-                    },
-                    "equation": {
-                        "disabled": true,
-                        "status": ""
-                    }
-                },
-                "name": "R of R1",
-                "genus": "required",
-                "description": "Resistance of resistor R1",
-                "equation": "",
-                "type": "parameter",
-                "parentNode": false,
-                "initial": 500,
-                "units": "ohms"
-            },
-            {
-                "ID": "id8",
-                "inputs": [],
-                "position": {
-                    "x": 598.85607910156,
-                    "y": 42.179302215576
+                    "x": 510.85607910156,
+                    "y": 44.179302215576
                 },
                 "attemptCount": {
                     "description": 0,
@@ -221,8 +43,6 @@
                     "units": 0,
                     "equation": 0,
                     "tweakedDirection": 0,
-                    "executionValue": 0,
-                    "waveformValue": null,
                     "assistanceScore": 1
                 },
                 "status": {
@@ -257,20 +77,82 @@
                         "status": "entered"
                     }
                 },
-                "name": "wavelength",
-                "description": "Wavelength of the supply voltage",
+                "name": "Max input voltage",
+                "description": "Maximum input voltage value",
                 "equation": "",
                 "type": "parameter",
                 "parentNode": false,
-                "initial": 100,
-                "units": "milliseconds",
+                "initial": 5,
+                "units": "volts",
                 "genus": "required"
             },
             {
-                "ID": "id13",
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    },
+                    {
+                        "ID": "id9"
+                    }
+                ],
+                "position": {
+                    "x": 616,
+                    "y": 181
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "assistanceScore": 1
+                },
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "AC voltage source",
+                "description": "input voltage source",
+                "type": "function",
+                "units": "volts",
+                "equation": "id1*sinewave(id9,0)",
+                "genus": "required",
+                "waveformValue": "wave007"
+            },
+            {
+                "ID": "id4",
                 "inputs": [],
                 "position": {
-                    "x": 715.85607910156,
+                    "x": 810.85607910156,
                     "y": 48.179302215576
                 },
                 "attemptCount": {
@@ -280,8 +162,6 @@
                     "units": 0,
                     "equation": 0,
                     "tweakedDirection": 0,
-                    "executionValue": 0,
-                    "waveformValue": null,
                     "assistanceScore": 0
                 },
                 "status": {
@@ -316,94 +196,208 @@
                         "status": "entered"
                     }
                 },
-                "name": "Knee voltage",
-                "description": "Knee voltage of diode D1",
+                "name": "Resistance of R",
+                "description": "Resistance of resistor",
                 "equation": "",
                 "type": "parameter",
                 "parentNode": false,
+                "initial": 1000,
+                "units": "ohms",
+                "genus": "required"
+            },
+            {
+                "ID": "id6",
+                "inputs": [],
+                "position": {
+                    "x": 376.85607910156,
+                    "y": 53.179302215576
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "Knee voltage",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "description": "knee voltage of the diode",
                 "initial": 0.7,
                 "units": "volts",
                 "genus": "required"
             },
             {
-                "ID": "id14",
+                "ID": "id8",
                 "inputs": [
                     {
-                        "ID": "id18"
-                    },
-                    {
-                        "ID": "id13"
-                    }
-                ],
-                "position": {
-                    "x": 751,
-                    "y": 339
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "tweakedDirection": 0,
-                    "executionValue": 0,
-                    "waveformValue": null,
-                    "assistanceScore": 0
-                },
-                "status": {
-                    "root": {
-                        "disabled": false
-                    },
-                    "name": {
-                        "status": "entered"
-                    },
-                    "description": {
-                        "status": "entered"
-                    },
-                    "type": {
-                        "status": "entered"
-                    },
-                    "initial": {
-                        "disabled": true,
-                        "status": ""
-                    },
-                    "inputs": {
-                        "disabled": false
-                    },
-                    "equation": {
-                        "disabled": false,
-                        "status": "entered"
-                    },
-                    "units": {
-                        "status": "entered"
-                    },
-                    "kind": {
-                        "status": "entered"
-                    }
-                },
-                "name": "V across D1",
-                "description": "Voltage drop across diode D1",
-                "type": "function",
-                "units": "volts",
-                "equation": "if(((id18>id13),id13),id18)",
-                "genus": "required",
-                "waveformValue": "wave009"
-            },
-            {
-                "ID": "id16",
-                "inputs": [
-                    {
-                        "ID": "id1",
+                        "ID": "id2",
                         "label": ""
                     },
                     {
-                        "ID": "id14",
+                        "ID": "id10",
                         "label": "-"
                     }
                 ],
                 "position": {
-                    "x": 589,
-                    "y": 416
+                    "x": 701,
+                    "y": 367
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    }
+                },
+                "name": "Output V",
+                "type": "function",
+                "units": "volts",
+                "equation": "id2-id10",
+                "genus": "required",
+                "description": "output voltage across resistor R",
+                "waveformValue": "wave009"
+            },
+            {
+                "ID": "id9",
+                "inputs": [],
+                "position": {
+                    "x": 695.85607910156,
+                    "y": 47.179302215576
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 1
+                },
+                "status": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "Wavelength",
+                "description": "Length of sine wave source voltage",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 50,
+                "units": "milliseconds",
+                "genus": "required"
+            },
+            {
+                "ID": "id10",
+                "inputs": [
+                    {
+                        "ID": "id12"
+                    },
+                    {
+                        "ID": "id6"
+                    }
+                ],
+                "position": {
+                    "x": 586,
+                    "y": 343
                 },
                 "attemptCount": {
                     "description": 0,
@@ -447,29 +441,30 @@
                         "status": "entered"
                     }
                 },
-                "name": "V across R1",
-                "description": "Voltage drop across resistor R1",
+                "name": "V across D",
+                "description": "Voltage drop across the diode",
                 "type": "function",
                 "units": "volts",
-                "equation": "id1-id14",
+                "equation": "if(((id12<(-id6)),(-id6)),id12)",
                 "genus": "required",
+                "explanation": "Because the drop is measured from anode (left) to cathode (right), the diode is forward biased when the drop is sufficiently negative.",
                 "waveformValue": "wave010"
             },
             {
-                "ID": "id17",
+                "ID": "id11",
                 "inputs": [
                     {
-                        "ID": "id16",
+                        "ID": "id8",
                         "label": ""
                     },
                     {
-                        "ID": "id3",
+                        "ID": "id4",
                         "label": "/"
                     }
                 ],
                 "position": {
-                    "x": 826,
-                    "y": 494
+                    "x": 822,
+                    "y": 400
                 },
                 "attemptCount": {
                     "description": 0,
@@ -513,26 +508,26 @@
                         "status": "entered"
                     }
                 },
-                "name": "I around loop",
-                "description": "Current around the loop",
+                "name": "I thru R",
+                "description": "Current thru resistor R",
                 "type": "function",
                 "units": "amps",
-                "equation": "id16/id3",
+                "equation": "id8/id4",
                 "genus": "required",
-                "waveformValue": "wave010",
-                "parentNode": true
+                "parentNode": true,
+                "waveformValue": "wave009"
             },
             {
-                "ID": "id18",
+                "ID": "id12",
                 "inputs": [
                     {
-                        "ID": "id1",
+                        "ID": "id2",
                         "label": ""
                     }
                 ],
                 "position": {
-                    "x": 652,
-                    "y": 272
+                    "x": 493,
+                    "y": 260
                 },
                 "attemptCount": {
                     "description": 0,
@@ -576,23 +571,23 @@
                         "status": "entered"
                     }
                 },
-                "name": "V across D1 when open",
-                "description": "Voltage drop across diode D1 when it is reverse biased",
+                "name": "V across D when open",
+                "description": "V across the diode when it is reverse biased",
                 "type": "function",
                 "units": "volts",
-                "equation": "id1",
-                "explanation": "If the diode were just an open circuit, then its anode (left) would be at the source voltage and its cathode (right) would be at ground. So this voltage drop, which is measured left to right, would just be the source voltage.",
+                "equation": "id2",
+                "explanation": "If the diode were an open circuit, then its right side (anode) would be a ground and its left side (cathode) would be at the AC input voltage. This voltage drop is measured from left to right, so the quantity is equal to the input voltage.",
                 "genus": "required",
                 "waveformValue": "wave007"
             }
         ],
         "studentModelNodes": [
             {
-                "ID": "id7",
+                "ID": "id13",
                 "inputs": [],
                 "position": {
-                    "x": 449.33096313477,
-                    "y": 47.330951690674
+                    "x": 510.85607910156,
+                    "y": 44.179302215576
                 },
                 "status": {
                     "description": {
@@ -612,17 +607,17 @@
                         "status": "correct"
                     }
                 },
-                "descriptionID": "id2",
+                "descriptionID": "id1",
                 "initial": 5,
                 "units": "volts",
                 "type": "parameter"
             },
             {
-                "ID": "id19",
+                "ID": "id17",
                 "inputs": [],
                 "position": {
-                    "x": 598.85607910156,
-                    "y": 42.179302215576
+                    "x": 695.85607910156,
+                    "y": 47.179302215576
                 },
                 "status": {
                     "description": {
@@ -642,24 +637,24 @@
                         "status": "correct"
                     }
                 },
-                "descriptionID": "id8",
-                "initial": 100,
+                "descriptionID": "id9",
+                "initial": 50,
                 "units": "milliseconds",
                 "type": "parameter"
             },
             {
-                "ID": "id20",
+                "ID": "id18",
                 "inputs": [
                     {
-                        "ID": "id7"
+                        "ID": "id13"
                     },
                     {
-                        "ID": "id19"
+                        "ID": "id17"
                     }
                 ],
                 "position": {
-                    "x": 525,
-                    "y": 216
+                    "x": 616,
+                    "y": 181
                 },
                 "status": {
                     "equation": {
@@ -679,15 +674,15 @@
                         "status": "correct"
                     }
                 },
-                "descriptionID": "id1",
+                "descriptionID": "id2",
                 "units": "volts",
                 "type": "function",
-                "equation": "id7*sinewave(id19,0)"
+                "equation": "id13*sinewave(id17,0)"
             }
         ],
         "schemas": [
             {
-                "ID": "schema5",
+                "ID": "schema4",
                 "schemaClass": "diode_behavior-forward",
                 "name": "Diode Behavior-Forward",
                 "competence": {
@@ -696,7 +691,7 @@
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id14, id13",
+                "nodes": "id6, id10",
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,
@@ -705,7 +700,7 @@
                 }
             },
             {
-                "ID": "schema6",
+                "ID": "schema5",
                 "schemaClass": "diode_behavior-reverse",
                 "name": "Diode Behavior-Reverse",
                 "competence": {
@@ -714,7 +709,7 @@
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id18, id14, id13",
+                "nodes": "id10, id6",
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,
@@ -732,7 +727,43 @@
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id3, id16",
+                "nodes": "id4",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
+                    "phrases": 0
+                }
+            },
+            {
+                "ID": "schema12",
+                "schemaClass": "diode_behavior-reverse",
+                "name": "Diode Behavior-Reverse",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id12, id10, id6",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema13",
+                "schemaClass": "resistor_behavior",
+                "name": "Resistor Behavior",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id4, id11, id8",
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,
@@ -741,34 +772,38 @@
                 }
             },
             {
-                "ID": "schema10",
-                "schemaClass": "kirchoff_voltage_law",
-                "name": "Kirchoff's Voltage Law",
+                "ID": "schema16",
+                "schemaClass": "series_pos_limiter_behavior",
+                "name": "Series Positive Limiter Behavior",
                 "competence": {
                     "errors": 0,
                     "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id16",
+                "nodes": "id4, id6, id8, id10, id11, id12",
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,
-                    "cues": 1,
+                    "cues": 0,
                     "phrases": 1
                 }
             },
             {
-                "ID": "schema11",
+                "ID": "schema17",
                 "schemaClass": "ohms_law",
                 "name": "Ohm's Law: Voltage",
                 "competence": {
                     "errors": 0,
                     "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id17",
+                "nodes": "id11",
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,
@@ -777,16 +812,18 @@
                 }
             },
             {
-                "ID": "schema12",
-                "schemaClass": "zener_diode_behavior-reverse",
-                "name": "Zener Diode Behavior-Reverse",
+                "ID": "schema18",
+                "schemaClass": "kirchoff_voltage_law",
+                "name": "Kirchoff's Voltage Law",
                 "competence": {
                     "errors": 0,
                     "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id13, id14, id18",
+                "nodes": "id8",
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,
@@ -794,7 +831,6 @@
                     "phrases": 1
                 }
             }
-        ],
-        "increment": []
+        ]
     }
 }

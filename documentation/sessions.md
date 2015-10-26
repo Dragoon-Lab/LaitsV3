@@ -144,6 +144,9 @@ The categories are *name*, *short name*, *id*, *short id*:
 - logger
 - level
 - share
+- restartProblem, rp (if "on", tells Dragoon to load the problem with the original student model)
+- topic (the topic to which a problem belongs - PAL3 only)
+- revisionID, rid (session identifier created and used only by PAL3)
 
 For mysql database table column names, we will replace camelCase with
 underscores: `sessionId` -> `session_id`, `userId` -> `user_id`, *et cetera*.

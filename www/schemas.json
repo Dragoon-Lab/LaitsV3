@@ -349,6 +349,12 @@
 				"id" : "CE_trnsstr_vltg_div_bias_bhvr",
 				"template" : "",
 				"example" : ""
+			},
+			{
+				"name" : "Dragoon Interactions",
+				"id" : "dragoon_interactions",
+				"template" : "Used to track skill with Dragoon.",
+				"example" : ""
 			}
 		]
 	},

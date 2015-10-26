@@ -172,9 +172,10 @@
             </div>
         </div>
         <button type="button" data-dojo-type="dijit/form/Button" id="lessonsLearnedButton" disabled="true" style="display: none">Lessons Learned</button>
-         <button type="button" data-dojo-type="dijit/form/Button" id="historyButton" style="display: none">History</button>
         <button type="button" data-dojo-type="dijit/form/Button" id="resetButton" style="display: none">Reset</button>
+         <button type="button" data-dojo-type="dijit/form/Button" id="historyButton" disabled="true" style="display: none">History </button>
         <button type="button" data-dojo-type="dijit/form/Button" id="doneButton" style="display: none">Done</button>
+   
     </div> <!-- Menubar -->
 
     <div id="drawingPane" class="restrict-vscroll" data-dojo-type="dijit/layout/ContentPane" region="center">
@@ -703,5 +704,6 @@
 <script type="text/javascript" src="ET/Core/messaging.js"></script>
 <script type="text/javascript" src="ET/Core/messaging-gateway.js"></script>
 <script type="text/javascript" src="ET/Services/Orchestration/heartbeat-service.js"></script>
+<script type="text/javascript" src="js/util/sha256.js"></script>
 </body>
 </html>

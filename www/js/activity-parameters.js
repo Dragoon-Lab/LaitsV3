@@ -39,7 +39,7 @@ define([
 					allowPreview:true,
 					allowPrettify:true,
 					allowHelp: true,
-
+					allowHistory : true,
 					allowDeleteNode: true,
 					allowEditNode: true,
 
@@ -76,6 +76,13 @@ define([
 					],
 
 					allowSliders: true,
+					properties: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation"
+					],
 					plotAuthorSolution:true
 				},
 
@@ -99,6 +106,13 @@ define([
 					enable:[
 					],
 					allowSliders: true,
+					properties: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation"
+					],
 					plotAuthorSolution:true
 				},
 
@@ -117,6 +131,13 @@ define([
 					],
 
 					allowSliders: true,
+					properties: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation"
+					],
 					plotAuthorSolution:true
 				},
 
@@ -132,6 +153,13 @@ define([
 					allowEditNode: true,
 					showEquationAutoComplete: true,
 					enable:[
+					],
+					properties: [
+						"description",
+						"type",
+						"initial",
+						"units",
+						"equation"
 					],
 
 					allowSliders: true
@@ -166,6 +194,9 @@ define([
 					copyAuthorNodes: true,
 					setTweakDirections: true,
 					setStudentTweakDirections: true,
+					properties: [
+						"tweakDirection"
+					],
 					useTweakStatus: true
 				},
 
@@ -196,6 +227,9 @@ define([
 					copyAuthorNodes: true,
 					setTweakDirections: true,
 					setStudentTweakDirections: true,
+					properties: [
+						"tweakDirection"
+					],
 					useTweakStatus: true
 				},
 
@@ -222,6 +256,9 @@ define([
 					copyAuthorNodes: true,
 					setTweakDirections: true,
 					setStudentTweakDirections: true,
+					properties: [
+						"tweakDirection"
+					],
 					useTweakStatus: true
 				},
 
@@ -249,6 +286,9 @@ define([
 					copyAuthorNodes: true,
 					setTweakDirections: true,
 					setStudentTweakDirections: true,
+					properties: [
+						"tweakDirection"
+					],
 					useTweakStatus: true
 				}
 			},
@@ -285,6 +325,9 @@ define([
 					demoIncremental:true,
 					showPopupIfComplete: true,
 					getNodeOrder: true,
+					properties: [
+						"tweakDirection"
+					],
 					useTweakedNodeForOrdering: true
 				},
 
@@ -319,6 +362,9 @@ define([
 					demoIncremental:true,
 					useTweakedNodeForOrdering: true,
 					getNodeOrder: true,
+					properties: [
+						"tweakDirection"
+					],
 					showPopupIfComplete: true
 				},
 
@@ -348,6 +394,9 @@ define([
 					demoIncremental:true,
 					useTweakedNodeForOrdering: true,
 					getNodeOrder: true,
+					properties: [
+						"tweakDirection"
+					],
 					showPopupIfComplete: true
 				},
 
@@ -379,6 +428,9 @@ define([
 					demoIncremental:true,
 					useTweakedNodeForOrdering: true,
 					getNodeOrder: true,
+					properties: [
+						"tweakDirection"
+					],
 					showPopupIfComplete: true
 				}
 			},
@@ -413,6 +465,9 @@ define([
 					
 					setExecutionValues:true,
 					setStudentExecutionValues:true,
+					properties: [
+						"executionValue"
+					],
 					demoExecution:true
 				},
 
@@ -446,6 +501,9 @@ define([
 					copyAuthorNodes: true,
 					setExecutionValues:true,
 					setStudentExecutionValues:true,
+					properties: [
+						"executionValue"
+					],
 					demoExecution:true
 				},
 
@@ -474,6 +532,9 @@ define([
 					copyAuthorNodes: true,
 					setExecutionValues:true,
 					setStudentExecutionValues:true,
+					properties: [
+						"executionValue"
+					],
 					demoExecution:true
 				},
 
@@ -505,6 +566,9 @@ define([
 					copyAuthorNodes: true,
 					setExecutionValues:true,
 					setStudentExecutionValues:true,
+					properties: [
+						"executionValue"
+					],
 					demoExecution:true
 				}
 			},
@@ -536,7 +600,10 @@ define([
 
 					setExecutionValues:true,
 					setStudentExecutionValues:true,
-                    executionExercise: true
+					properties: [
+						"executionValue"
+					],
+					executionExercise: true
 				},
 
 				COACHED:{
@@ -566,7 +633,10 @@ define([
 					copyAuthorNodes: true,
 					setExecutionValues:true,
 					setStudentExecutionValues:true,
-                    executionExercise: true
+					properties: [
+						"executionValue"
+					],
+					executionExercise: true
                 },
 
 				TEST:{
@@ -592,7 +662,10 @@ define([
 					copyAuthorNodes: true,
 					setExecutionValues:true,
 					setStudentExecutionValues:true,
-                    executionExercise: true
+					properties: [
+						"executionValue"
+					],
+					executionExercise: true
                 },
 
 				EDITOR:{
@@ -621,7 +694,10 @@ define([
 					copyAuthorNodes: true,
 					setExecutionValues:true,
 					setStudentExecutionValues:true,
-                    executionExercise: true
+					properties: [
+						"executionValue"
+					],
+					executionExercise: true
 				}
 			},
 
@@ -650,6 +726,9 @@ define([
 					showNodeEditor:false,
 					copyAuthorNodes: true,
 					showWaveformEditor : true,
+					properties: [
+						"waveformValue"
+					],
 					nodeDetails: "WAVEFORM"
 				},
 
@@ -678,6 +757,9 @@ define([
 
 					showWaveformEditor : true,
 					nodeDetails: "WAVEFORM",
+					properties: [
+						"executionValue"
+					],
 					copyAuthorNodes: true
 				},
 
@@ -702,6 +784,9 @@ define([
 
 					showWaveformEditor : true,
 					nodeDetails: "WAVEFORM",
+					properties: [
+						"executionValue"
+					],
 					copyAuthorNodes: true
 				},
 
@@ -729,6 +814,9 @@ define([
 
 					showWaveformEditor : true,
 					nodeDetails: "WAVEFORM",
+					properties: [
+						"executionValue"
+					],
 					copyAuthorNodes: true
 				}
 			}
@@ -752,7 +840,7 @@ define([
 				allowPrettify: false,
 				allowHelp: false,
 				allowLessonsLearned: false,
-
+				allowHistory : false,
 				//Node
 				allowDeleteNode: false,
 				allowEditNode: false,
@@ -815,7 +903,7 @@ define([
 			constructor: function(/*string*/ mode, /*string*/ activity){
 				this._mode = mode;
 				this._activity= activity;
-				this._params = lang.mixin(this._params, activity_params[this._activity][this._mode])
+				this._params = lang.mixin(this._params, activity_params[this._activity][this._mode]);
 			},
 
 			getAllParameters: function(){

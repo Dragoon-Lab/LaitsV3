@@ -1,53 +1,34 @@
 {
     "task": {
-        "taskName": "Resistor Capacitor Intro",
+        "taskName": "Model an RC Series Circuit (milliseconds)",
         "time": {
             "start": 0,
-            "end": 40,
+            "end": 100,
             "step": 1,
             "integrationMethod": "Eulers Method",
-            "units": "seconds"
+            "units": "milliseconds"
         },
         "properties": {
             "isGraphHelpShown": true
         },
         "image": {
-            "URL": "images/PAL3/resistor-capacitor-1.png"
+            "URL": "images/PAL3/resistor-capacitor-2.png"
         },
         "taskDescription": {
             "construction": [
-                "Now that you've seen how Dragoon calculates values, we will use Dragoon to construct the model we've been working with so far.  Model construction is the most common Dragoon activity.  Your goal is:",
+                "Model a 3300 ohm resistor in series with a 0.003 milli-farad (mF) capacitor and a battery-switch combination that delivers either 5 volts or a short.  You are given nodes that use pulsetrain(0,50,50) to represent the switch being closed from 0 to 50 milliseconds and then open from 51 to 100 milliseconds.  Finish the model and view the graph of the voltage across the capacitor. When the capacitor discharges, does its voltage reach 1.85 volts (36.7% of 5 volts) at the RC constant of 9.9 milliseconds (3300*0.003)?  Does the RC constant work for the charging period as well?  ",
                 "",
-                "Model a 500 ohm resistor in series with a 0.003 farad capacitor and a battery-switch combination that delivers either 5 volts or a short.  You are given nodes that use pulsetrain(0,5,5) to represent the switch being connected to the battery from 0 to 5 seconds and then shorted from 6 to 10 seconds.  Finish constructing the model and then view the graph of the voltage across the capacitor.",
-                "",
-                "Remember there are three types of nodes:",
-                "* Diamonds represent parameters, which have constant values.",
-                "* Circles represent functions, whose quantity is a function its inputs (indicated by blue arrows going into the node).",
-                "* Squares represent accumulators, whose next value is the sum of its current value and a function its inputs.  ",
-                "(These and other definitions can be found in the Help menu, under 'Intro to Dragoon Concepts')",
-                "",
-                "To get started, click on the 'Voltage across capacitor' node to open its editor.  You will need to select its type (you may recall this node is an accumulator), its initial value (0), its units and its equation (add the change in voltage across the capacitor).  Fill in all these fields until they are correct, then click Done on the editor.",
-                "    New nodes will appear on the screen as you use them as inputs.  Click on and complete each one until Dragoon says you are finished.  Below are some formulas which you can use to compute the expressions of the other function nodes.",
-                "",
-                "Ohm's Law:  V = I * R",
-                "",
-                "Capacitance: C = I / V",
-                "",
-                "Kirchoff's Voltage Law: The algebraic sum of the voltages around a closed loop is zero."
-            ],
-            "incremental": [
-                "Description of circuit model:",
-                "",
-                "A 500 ohm resistor is in series with a 0.003 farad capacitor and a battery-switch combination that delivers either 5 volts or a short.  To simulate the the switch being flipped every five seconds, the special math function pulsetrain is used inside the source voltage node.  In this node, pulsetrain(0,5,5) represents the switch being connected to the battery at time zero for 5 seconds and then shorted for 5 seconds.",
-                "",
-                "Instructions:"
+                "Note:  If the resistance is always in ohms, then when the capacitance is in Farads, the RC constant is in seconds.  When the capacitance is in mF, then the RC constant is in msec.  When the capacitance is in micro-farads, then the RC constant is in micro-seconds."
             ],
             "execution": [
-                "Description of circuit model:",
+                "Model a 3300 ohm resistor in series with a 0.003 milli-farad (mF) capacitor and a battery-switch combination that delivers either 5 volts or a short.  You are given nodes that use pulsetrain(0,50,50) to represent the switch being closed from 0 to 50 milliseconds and then open from 51 to 100 milliseconds.  Use Kirchhoff's Voltage Law to determine the voltage across the resistor, and use Ohm's Law to calculate the current across the resistor. Finish the model and view the graph of the voltage across the capacitor.  When the capacitor discharges, does its voltage reach 1.85 volts (36.7% of 5 volts) at the RC constant of 9.9 milliseconds (3300*0.003)?  Does the RC constant work for the charging period as well?  ",
                 "",
-                "A 500 ohm resistor is in series with a 0.003 farad capacitor and a battery-switch combination that delivers either 5 volts or a short.  To simulate the the switch being flipped every five seconds, the special math function pulsetrain is used inside the source voltage node.  In this node, pulsetrain(0,5,5) represents the switch being connected to the battery at time zero for 5 seconds and then shorted for 5 seconds.",
+                "Note:  If the resistance is always in ohms, then when the capacitance is in Farads, the RC constant is in seconds.  When the capacitance is in mF, then the RC constant is in msec.  When the capacitance is in micro-farads, then the RC constant is in micro-seconds."
+            ],
+            "incremental": [
+                "Model a 3300 ohm resistor in series with a 0.003 milli-farad (mF) capacitor and a battery-switch combination that delivers either 5 volts or a short.  You are given nodes that use pulsetrain(0,50,50) to represent the switch being closed from 0 to 50 milliseconds and then open from 51 to 100 milliseconds.  Use Kirchhoff's Voltage Law to determine the voltage across the resistor, and use Ohm's Law to calculate the current across the resistor.  Finish the model and view the graph of the voltage across the capacitor.  When the capacitor discharges, does its voltage reach 1.85 volts (36.7% of 5 volts) at the RC constant of 9.9 milliseconds (3300*0.003)?  Does the RC constant work for the charging period as well?  ",
                 "",
-                "Instructions:"
+                "Note:  If the resistance is always in ohms, then when the capacitance is in Farads, the RC constant is in seconds.  When the capacitance is in mF, then the RC constant is in msec.  When the capacitance is in micro-farads, then the RC constant is in micro-seconds."
             ]
         },
         "lessonsLearned": [],
@@ -61,8 +42,8 @@
                     }
                 ],
                 "position": {
-                    "x": 707,
-                    "y": 47
+                    "x": 608,
+                    "y": 53
                 },
                 "attemptCount": {
                     "description": 0,
@@ -110,7 +91,10 @@
                 "initial": 0,
                 "units": "volts",
                 "equation": "id2",
-                "parentNode": true
+                "parentNode": true,
+                "imageMarks": [
+                    "206 , 78 , 76 , 35"
+                ]
             },
             {
                 "ID": "id2",
@@ -125,8 +109,8 @@
                     }
                 ],
                 "position": {
-                    "x": 783,
-                    "y": 488
+                    "x": 641,
+                    "y": 605
                 },
                 "attemptCount": {
                     "description": 0,
@@ -172,7 +156,10 @@
                 "type": "function",
                 "units": "volts",
                 "equation": "id3/id4",
-                "genus": "required"
+                "genus": "required",
+                "imageMarks": [
+                    "208 , 82 , 74 , 30"
+                ]
             },
             {
                 "ID": "id3",
@@ -187,8 +174,8 @@
                     }
                 ],
                 "position": {
-                    "x": 648,
-                    "y": 358
+                    "x": 444,
+                    "y": 507
                 },
                 "attemptCount": {
                     "description": 0,
@@ -234,14 +221,17 @@
                 "genus": "required",
                 "type": "function",
                 "units": "amps",
-                "equation": "id5/id6"
+                "equation": "id5/id6",
+                "imageMarks": [
+                    "229 , 36 , 32 , 27"
+                ]
             },
             {
                 "ID": "id4",
                 "inputs": [],
                 "position": {
-                    "x": 987.85607910156,
-                    "y": 44.179302215576
+                    "x": 750.85607910156,
+                    "y": 37.179302215576
                 },
                 "attemptCount": {
                     "description": 0,
@@ -289,8 +279,11 @@
                 "type": "parameter",
                 "parentNode": false,
                 "initial": 0.003,
-                "units": "farads",
-                "genus": "required"
+                "units": "mF",
+                "genus": "required",
+                "imageMarks": [
+                    "198 , 78 , 84 , 33"
+                ]
             },
             {
                 "ID": "id5",
@@ -305,8 +298,8 @@
                     }
                 ],
                 "position": {
-                    "x": 545,
-                    "y": 277
+                    "x": 527,
+                    "y": 357
                 },
                 "attemptCount": {
                     "description": 0,
@@ -352,14 +345,17 @@
                 "type": "function",
                 "units": "volts",
                 "genus": "required",
-                "equation": "id9-id1"
+                "equation": "id9-id1",
+                "imageMarks": [
+                    "146 , 28 , 79 , 42"
+                ]
             },
             {
                 "ID": "id6",
                 "inputs": [],
                 "position": {
-                    "x": 856.85607910156,
-                    "y": 34.179302215576
+                    "x": 369.33096313477,
+                    "y": 41.330951690674
                 },
                 "attemptCount": {
                     "description": 0,
@@ -369,22 +365,56 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                },
                 "name": "Resistance of resistor",
                 "description": "Resistance of resistor",
                 "equation": "",
                 "type": "parameter",
                 "parentNode": false,
-                "initial": 500,
+                "initial": 3300,
                 "units": "ohms",
-                "genus": "required"
+                "genus": "required",
+                "imageMarks": [
+                    "152 , 34 , 64 , 42"
+                ]
             },
             {
                 "ID": "id8",
                 "inputs": [],
                 "position": {
-                    "x": 340.85607910156,
-                    "y": 33.179302215576
+                    "x": 486.33096313477,
+                    "y": 39.330951690674
                 },
                 "attemptCount": {
                     "description": 0,
@@ -394,7 +424,38 @@
                     "equation": 0,
                     "assistanceScore": 1
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                },
                 "name": "battery voltage",
                 "description": "battery voltage",
                 "equation": "",
@@ -402,7 +463,10 @@
                 "parentNode": false,
                 "initial": 5,
                 "units": "volts",
-                "genus": "required"
+                "genus": "required",
+                "imageMarks": [
+                    "13 , 70 , 68 , 46"
+                ]
             },
             {
                 "ID": "id9",
@@ -412,8 +476,8 @@
                     }
                 ],
                 "position": {
-                    "x": 473,
-                    "y": 135
+                    "x": 493,
+                    "y": 201
                 },
                 "attemptCount": {
                     "description": 0,
@@ -459,7 +523,10 @@
                 "description": "Voltage from battery-switch combination",
                 "type": "function",
                 "units": "volts",
-                "equation": "id8*pulsetrain((0,5),5)"
+                "equation": "id8*pulsetrain((0,50),50)",
+                "imageMarks": [
+                    "14 , 74 , 69 , 39"
+                ]
             }
         ],
         "studentModelNodes": [
@@ -467,8 +534,8 @@
                 "ID": "id10",
                 "inputs": [],
                 "position": {
-                    "x": 340.85607910156,
-                    "y": 33.179302215576
+                    "x": 486.33096313477,
+                    "y": 39.330951690674
                 },
                 "status": {
                     "description": {
@@ -501,8 +568,8 @@
                     }
                 ],
                 "position": {
-                    "x": 473,
-                    "y": 135
+                    "x": 493,
+                    "y": 201
                 },
                 "status": {
                     "equation": {
@@ -530,67 +597,7 @@
         ],
         "schemas": [
             {
-                "ID": "schema2",
-                "schemaClass": "capacitor_behavior",
-                "name": "Capacitor Behavior",
-                "competence": {
-                    "errors": 0,
-                    "total": 0,
-                    "attempts": 0,
-                    "correctScore": 0,
-                    "timeSpent": 0,
-                    "values": {}
-                },
-                "nodes": "id2, id4, id1",
-                "rates": {},
-                "difficulty": {
-                    "isolation": 1,
-                    "cues": 0,
-                    "phrases": 0
-                }
-            },
-            {
-                "ID": "schema3",
-                "schemaClass": "resistor_behavior",
-                "name": "Resistor Behavior",
-                "competence": {
-                    "errors": 0,
-                    "total": 0,
-                    "attempts": 0,
-                    "correctScore": 0,
-                    "timeSpent": 0,
-                    "values": {}
-                },
-                "nodes": "id5, id6",
-                "rates": {},
-                "difficulty": {
-                    "isolation": 1,
-                    "cues": 0,
-                    "phrases": 0
-                }
-            },
-            {
-                "ID": "schema4",
-                "schemaClass": "rc_in_series_behavior",
-                "name": "Resistor Capacitor in Series Behavior",
-                "competence": {
-                    "errors": 0,
-                    "total": 0,
-                    "attempts": 0,
-                    "correctScore": 0,
-                    "timeSpent": 0,
-                    "values": {}
-                },
-                "nodes": "id1, id2, id3, id4, id5, id6",
-                "rates": {},
-                "difficulty": {
-                    "isolation": 1,
-                    "cues": 0,
-                    "phrases": 1
-                }
-            },
-            {
-                "ID": "schema5",
+                "ID": "schema22",
                 "schemaClass": "kirchoff_voltage_law",
                 "name": "Kirchoff's Voltage Law",
                 "competence": {
@@ -605,12 +612,12 @@
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,
-                    "cues": 1,
+                    "cues": 0,
                     "phrases": 1
                 }
             },
             {
-                "ID": "schema6",
+                "ID": "schema24",
                 "schemaClass": "ohms_law",
                 "name": "Ohm's Law: Voltage",
                 "competence": {
@@ -625,14 +632,14 @@
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,
-                    "cues": 1,
+                    "cues": 0,
                     "phrases": 1
                 }
             },
             {
-                "ID": "schema7",
-                "schemaClass": "dragoon_interactions",
-                "name": "Dragoon Interactions",
+                "ID": "schema25",
+                "schemaClass": "capacitor_behavior",
+                "name": "Capacitor Behavior",
                 "competence": {
                     "errors": 0,
                     "total": 0,
@@ -641,11 +648,51 @@
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id1, id2, id3, id4, id5, id6",
+                "nodes": "id1, id4, id3",
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,
                     "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema26",
+                "schemaClass": "resistor_behavior",
+                "name": "Resistor Behavior",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id6, id3, id5",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema32",
+                "schemaClass": "rc_in_series_behavior",
+                "name": "Resistor Capacitor in Series Behavior",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id6, id1, id2, id3, id4, id5",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 0,
                     "phrases": 1
                 }
             }

@@ -1,18 +1,19 @@
 #!/bin/bash
 
 if [ "$1" == --help ]; then
-	echo Usage: $0 [version-number] [folder-name]
+        echo Usage: $0 '<'version-number'> <'folder-name'>'
 
 else
-    sudo rm -rf $1
+    rm -rf $1
     echo unzipping...
-    sudo mkdir $1
-    sudo unzip -o -q $1'.zip' -d $1
-    sudo rm -rf $2/
-    sudo mv $1/ $2/
+    mkdir $1
 
-    sudo ln -s ../../../www/problems ./$2/www/problems
-    sudo ln -s ../../../www/images ./$2/www/images
-
-    sudo cp ../db_user_password ./$2/db_user_password
+    unzip -oq $1'.zip' -d $1
+    rm -rf $2/
+    mv $1/ $2/
+    echo setting up symlinks...
+    ln -s ../../../demo/www/problems ./$2/www/problems
+    ln -s ../../../demo/www/images ./$2/www/images
+    echo copying db_user_password
+    cp ../demo/db_user_password ./$2/db_user_password
 fi
