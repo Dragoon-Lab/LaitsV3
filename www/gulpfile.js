@@ -122,7 +122,7 @@ gulp.task('build', ['dojoBuild'], function (done){
 
 gulp.task('dojoBuild', ['clean'],  shell.task(config.buildPath + ' --profile '+ config.buildProfile +' > ../release/'+ config.buildOutputFile));
 
-gulp.task('clean', shell.task(['mkdir ../release/' ]));
+gulp.task('clean', shell.task(['mkdir -p ../release/' ]));
 
 gulp.task('deploy', scpRelease);
 
