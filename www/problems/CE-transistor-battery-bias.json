@@ -496,7 +496,8 @@
                 "description": "Voltage across collector-emitter",
                 "equation": "id1-id11",
                 "genus": "required",
-                "waveformValue": "wave017"
+                "waveformValue": "wave017",
+                "parentNode": true
             },
             {
                 "ID": "id14",
