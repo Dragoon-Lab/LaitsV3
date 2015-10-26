@@ -1,6 +1,6 @@
 {
     "task": {
-        "taskName": "CE-transistor-voltage-divider",
+        "taskName": "Model a Voltage Divider Bias CE Transistor",
         "time": {
             "start": 0,
             "end": 150,
@@ -271,8 +271,8 @@
                 "ID": "id7",
                 "inputs": [],
                 "position": {
-                    "x": 990.85607910156,
-                    "y": 39.179302215576
+                    "x": 1092.8560791016,
+                    "y": 26.179302215576
                 },
                 "attemptCount": {
                     "description": 0,
@@ -327,8 +327,8 @@
                 "ID": "id8",
                 "inputs": [],
                 "position": {
-                    "x": 830.85607910156,
-                    "y": 49.179302215576
+                    "x": 868.85607910156,
+                    "y": 38.179302215576
                 },
                 "attemptCount": {
                     "description": 0,
@@ -386,8 +386,8 @@
                 "ID": "id9",
                 "inputs": [],
                 "position": {
-                    "x": 905.85607910156,
-                    "y": 33.179302215576
+                    "x": 965.85607910156,
+                    "y": 25.179302215576
                 },
                 "attemptCount": {
                     "description": 0,
@@ -445,8 +445,8 @@
                 "ID": "id10",
                 "inputs": [],
                 "position": {
-                    "x": 1146.8560791016,
-                    "y": 58.179302215576
+                    "x": 1232.8560791016,
+                    "y": 49.179302215576
                 },
                 "attemptCount": {
                     "description": 0,
@@ -1071,7 +1071,8 @@
                 "units": "amps",
                 "equation": "id18/(1+id10)",
                 "genus": "required",
-                "waveformValue": "wave000"
+                "waveformValue": "wave000",
+                "parentNode": true
             },
             {
                 "ID": "id20",
