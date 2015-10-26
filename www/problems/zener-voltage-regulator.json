@@ -29,12 +29,7 @@
             ]
         },
         "lessonsLearned": [],
-        "increment": [
-            {
-                "tweakedNode": "defaultSelect",
-                "tweakDirection": "defaultSelect"
-            }
-        ],
+        "increment": [],
         "executionIterations": null,
         "givenModelNodes": [
             {
@@ -577,7 +572,7 @@
                     }
                 },
                 "name": "I thru load if ZD open",
-                "description": "Current through the load is ZD is reverse biased",
+                "description": "Current through the load if ZD is reverse biased",
                 "type": "function",
                 "units": "amps",
                 "equation": "id3/id8",
@@ -710,7 +705,7 @@
                 "units": "volts",
                 "equation": "if(((id10>id12),id12),id10)",
                 "genus": "required",
-                "parentNode": true,
+                "parentNode": false,
                 "waveformValue": "wave000"
             },
             {
@@ -1032,7 +1027,8 @@
                 "type": "function",
                 "units": "amps",
                 "equation": "id14-id15",
-                "genus": "required"
+                "genus": "required",
+                "parentNode": true
             }
         ],
         "studentModelNodes": [
