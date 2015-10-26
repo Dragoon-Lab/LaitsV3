@@ -19,6 +19,7 @@ nblibraries.properties
 Thumbs.db
 db_user_password
 db_research_user_password
+ssh_user_password
 *.jar
 *~
 /Dragoon/nbproject/private/
@@ -42,6 +43,8 @@ www/php-test.php
 
 www/util/
 
+www/node_modules
+
 .idea/
 
 tests/npm/
@@ -52,6 +55,9 @@ tests/selenium.log
 tests/chromedriver
 tests/node/
 tests/scripts/test-paths.js
+
+release/*
+!release/server-build.sh
 
 *.swp
 log/thesis

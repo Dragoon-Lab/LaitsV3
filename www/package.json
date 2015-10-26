@@ -1,0 +1,45 @@
+{
+  "name": "dragoon",
+  "version": "1.0.0",
+  "description": "Node modules for dragoon",
+  "main": "gulpfile.js",
+  "dependencies": {},
+  "devDependencies": {
+    "browser-sync": "^2.9.10",
+    "gulp": "^3.9.0",
+    "gulp-cached": "^1.1.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-exec": "^2.1.2",
+    "gulp-html-replace": "^1.5.4",
+    "gulp-jshint": "^1.11.2",
+    "gulp-jshint-cached": "^1.4.2",
+    "gulp-livereload": "^3.8.0",
+    "gulp-mocha": "^2.1.3",
+    "gulp-replace": "^0.5.4",
+    "gulp-requirejs": "^0.1.3",
+    "gulp-rimraf": "^0.2.0",
+    "gulp-scp2": "^0.2.0",
+    "gulp-shell": "^0.5.0",
+    "gulp-util": "^3.0.6",
+    "gulp-webdriver": "^1.0.1",
+    "gulp-zip": "^3.0.2",
+    "jshint-stylish": "^2.0.1",
+    "mocha": "^2.3.3"
+  },
+  "scripts": {
+    "start": "sudo gulp",
+    "build": "sudo gulp build",
+    "test": "sudo ../tests/RunTests.sh",
+    "deploy": "sudo gulp deploy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dragoon-Lab/LaitsV3.git"
+  },
+  "author": "Dragoon",
+  "license": "LGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/Dragoon-Lab/LaitsV3/issues"
+  },
+  "homepage": "https://github.com/Dragoon-Lab/LaitsV3#readme"
+}
