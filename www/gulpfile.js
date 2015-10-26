@@ -150,7 +150,6 @@ function generateZip(){
 }
 
 function scpRelease(){
-	shutdownSelenium();
 	getUserPassword();
 	console.log("Deploying on "+ config.hostname);
 	gulp.src(config.releasePath+".zip").pipe(scp({
@@ -165,7 +164,7 @@ function scpRelease(){
 
 function shutdownSelenium(){
 	console.log("Shutting down selenuim...")
-	gulp.src(config.releasePath+".zip").on("end" , shell.task('curl localhost:4444/selenium-server/driver/?cmd=shutDownSeleniumServer'));
+	shell.task('curl localhost:4444/selenium-server/driver/?cmd=shutDownSeleniumServer');
 }
 
 function getUserPassword(){
