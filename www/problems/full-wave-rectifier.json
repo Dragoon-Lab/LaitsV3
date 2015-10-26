@@ -943,7 +943,7 @@
                 "type": "function",
                 "units": "volts",
                 "equation": "id13",
-                "explanation": "If the diode were an open circuit, then this node represents the voltage drop across it measure from left to right. u00a0 However, there are two voltage sources in this circuit: the upper and lower windings. u00a0We can user superposition and analyze them separately. u00a0So here we just consider the lower winding as a source. u00a0<br /><br />If CR2 is open, it just sees the lower winding's voltage on its left and ground on its right, so it's voltage drop left to right is just the lower winding's voltage.u00a0",
+                "explanation": "If the diode were an open circuit, then this node represents the voltage drop across it measure from left to right.  However, there are two voltage sources in this circuit: the upper and lower windings. We can user superposition and analyze them separately. So here we just consider the lower winding as a source. <br /><br />If CR2 is open, it just sees the lower winding's voltage on its left and ground on its right, so it's voltage drop left to right is just the lower winding's voltage.",
                 "genus": "required"
             },
             {
@@ -1005,7 +1005,7 @@
                 "type": "function",
                 "units": "volts",
                 "equation": "id12",
-                "explanation": "Using superposition, we ignore the lower winding and only consider the upper winding as a voltage source. u00a0The drop across CR1 from left to right if it were an open circuit is just the upper winding's voltage because the right side of CR1 would be at ground.",
+                "explanation": "Using superposition, we ignore the lower winding and only consider the upper winding as a voltage source. The drop across CR1 from left to right if it were an open circuit is just the upper winding's voltage because the right side of CR1 would be at ground.",
                 "genus": "required"
             }
         ],

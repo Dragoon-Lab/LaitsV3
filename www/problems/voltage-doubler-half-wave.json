@@ -775,7 +775,7 @@
                 "units": "volts",
                 "equation": "id11",
                 "genus": "required",
-                "explanation": "This is the voltage with respect to ground at the junction between C1, D1 and D2.u00a0"
+                "explanation": "This is the voltage with respect to ground at the junction between C1, D1 and D2."
             },
             {
                 "ID": "id16",
@@ -1353,7 +1353,7 @@
                 "units": "volts",
                 "equation": "id3+id4",
                 "genus": "required",
-                "explanation": "If diode D1 were an open circuit (i.e., reverse biased), then this would be the voltage across it, measured from the top (cathode) to the bottom (anode). u00a0"
+                "explanation": "If diode D1 were an open circuit (i.e., reverse biased), then this would be the voltage across it, measured from the top (cathode) to the bottom (anode). "
             }
         ],
         "studentModelNodes": [
