@@ -1,0 +1,108 @@
+{
+  "task": {
+    "taskName": "zebra population growth 1",
+    "time": {
+      "start": 1950,
+      "end": 1970,
+      "step": 1,
+      "integrationMethod": "Eulers Method",
+      "units": "years"
+    },
+    "properties": {
+      
+    },
+    "image": {
+      "URL": "images/zebra-1.jpg"
+    },
+    "taskDescription": {
+      "construction": [
+        "Now that you've seen how Dragoon calculates values, we will use Dragoon to build the model we saw before.  Building models is the most common Dragoon activity.  Create the model we worked with before by clicking on the nodes on the screen and filling in their values inside.",
+        "",
+        "Zebra Population Growth - Level 1",
+        "Assumptions:",
+        "- The zebra population is 20 in the first year (1950).",
+        "- Births are the only change in the population. Deaths, immigration, and emigration do not occur.",
+        "- There are unlimited resources.",
+        "- The number of zebra births each year is 2."
+      ],
+      "execution": [
+        "Zebra Population Growth Model",
+        "Assumptions:",
+        "- The zebra population is 20 in the first year (1950).",
+        "- Births are the only change in the population. Deaths, immigration, and emigration do not occur.",
+        "- There are unlimited resources.",
+        "- The number of zebra births each year is 2.",
+        "",
+        "Instructions:"
+      ]
+    },
+    "lessonsLearned": "",
+    "givenModelNodes": [
+      {
+        "ID": "id1",
+        "inputs": [
+          {
+            "ID": "id3",
+            "label": ""
+          }
+        ],
+        "position": {
+          "x": 400,
+          "y": 100
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": {
+          
+        },
+        "name": "Zebra Population",
+        "description": "the number of zebras in the population",
+        "type": "accumulator",
+        "initial": 20,
+        "parentNode": true,
+        "equation": "id3",
+        "genus": "required"
+      },
+      {
+        "ID": "id3",
+        "inputs": [
+          
+        ],
+        "position": {
+          "x": 585.33093261719,
+          "y": 132.33096313477
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": {
+          
+        },
+        "name": "Zebra Births",
+        "description": "the number of zebras born each year",
+        "equation": "",
+        "type": "parameter",
+        "parentNode": false,
+        "initial": 2,
+        "genus": "required"
+      }
+    ],
+    "studentModelNodes": [
+      
+    ],
+    "schemas": [
+      
+    ]
+  }
+}
