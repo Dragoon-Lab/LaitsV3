@@ -377,7 +377,7 @@
                 "type": "function",
                 "units": "volts",
                 "equation": "id10*id12",
-                "waveformValue": "wave017"
+                "waveformValue": "wave008"
             },
             {
                 "ID": "id12",
@@ -496,7 +496,7 @@
                 "description": "Voltage across collector-emitter",
                 "equation": "id1-id11",
                 "genus": "required",
-                "waveformValue": "wave017",
+                "waveformValue": "wave008",
                 "parentNode": true
             },
             {
