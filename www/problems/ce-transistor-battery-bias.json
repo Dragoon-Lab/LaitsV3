@@ -1,6 +1,6 @@
 {
     "task": {
-        "taskName": "Model a Battery Biased CE Transistor Amplifier",
+        "taskName": "Model a Battery Biased CE Transistor",
         "time": {
             "start": 0,
             "end": 320,
@@ -676,7 +676,7 @@
                 "units": "amps",
                 "equation": "(-id19)/id15",
                 "genus": "required",
-                "explanation": "To calculate the current into the base, we use superposition. One voltage source is the base bias, and the other is the signal. ",
+                "explanation": "To calculate the current into the base, we use superposition. u00a0One voltage source is the base bias, and the other is the signal.",
                 "waveformValue": "wave017"
             },
             {
