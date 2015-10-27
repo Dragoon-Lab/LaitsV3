@@ -595,7 +595,7 @@
                 "units": "volts",
                 "equation": "id10-id11",
                 "genus": "required",
-                "explanation": "When charged, voltage is positive on top and negative on bottom. u00a0u00a0"
+                "explanation": "When charged, voltage is positive on top and negative on bottom. "
             },
             {
                 "ID": "id10",
@@ -791,7 +791,7 @@
                 "units": "volts",
                 "equation": "id1+id9",
                 "genus": "required",
-                "explanation": "The top of C2 is positive when it is charged and this side is attached to the bottom of the transformer. u00a0So when the AC signal is high, this is like having two batteries in series, so their voltages sum."
+                "explanation": "The top of C2 is positive when it is charged and this side is attached to the bottom of the transformer. So when the AC signal is high, this is like having two batteries in series, so their voltages sum."
             },
             {
                 "ID": "id13",
@@ -1281,7 +1281,7 @@
                 "units": "volts",
                 "equation": "id13-id1",
                 "genus": "required",
-                "explanation": "Usually, the expression is &quot;AC input - V across D&quot; u00a0and this is applied from bottom to top like C1. u00a0However, the wires are reversed for C2, so we use -(AC input - V across D2) which simplifies to &quot;V across D2 - AC input."
+                "explanation": "Usually, the expression is &quot;AC input - V across D&quot; and this is applied from bottom to top like C1. However, the wires are reversed for C2, so we use -(AC input - V across D2) which simplifies to &quot;V across D2 - AC input."
             }
         ],
         "studentModelNodes": [

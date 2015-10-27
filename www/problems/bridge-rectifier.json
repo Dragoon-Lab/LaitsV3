@@ -82,7 +82,7 @@
                 "units": "volts",
                 "equation": "sinewave(50,0)*10",
                 "genus": "required",
-                "explanation": "Assume that the bottom of the input is tied to ground, like normal household AC power. u00a0Thus, the top of the input oscilates around zero."
+                "explanation": "Assume that the bottom of the input is tied to ground, like normal household AC power. Thus, the top of the input oscilates around zero."
             },
             {
                 "ID": "id2",
@@ -198,7 +198,7 @@
                 "units": "volts",
                 "equation": "id1",
                 "genus": "required",
-                "explanation": "On the positive phase, D1 conducts but the current can't get to ground because D2 is open, so the left side of D3 is positive and the right is at ground. u00a0This is a positive drop.<br /><br />On the negative phase, D4 conducts and so does D3, so the left side of D2 is negative and the right side is at. u00a0This is a rise, that is, a negative drop.<br /><br />thus, the drop left to right equals the input voltage.u00a0"
+                "explanation": "On the positive phase, D1 conducts but the current can't get to ground because D2 is open, so the left side of D3 is positive and the right is at ground. This is a positive drop.<br /><br />On the negative phase, D4 conducts and so does D3, so the left side of D2 is negative and the right side is at. This is a rise, that is, a negative drop.<br /><br />thus, the drop left to right equals the input voltage."
             },
             {
                 "ID": "id5",
@@ -313,7 +313,7 @@
                 "units": "volts",
                 "equation": "if(((id15>0.7),0.7),id15)",
                 "genus": "required",
-                "explanation": "The drop is from left to right, so the diode conducts when the drop is positive.u00a0"
+                "explanation": "The drop is from left to right, so the diode conducts when the drop is positive."
             },
             {
                 "ID": "id7",
@@ -560,7 +560,7 @@
                 "description": "voltage across D3 when reverse biased",
                 "type": "function",
                 "equation": "-id1",
-                "explanation": "On the positive phase of the input, there is a negative voltage drop measured from the left (anode) to the right (cathode). u00a0This is because D1 is forward biased, so the cathode has a higher voltage than the anode which makes the drop negative. u00a0<br /><br />On the negative phase of the input, D4 is forward biased but the load has no connection to ground, so both its terminals are negative. u00a0Thus, the voltage drop across D3 is positive during the negative phase of the input voltage. <br /><br />In short, the voltage drop when D3 is open just tracks the input voltage.",
+                "explanation": "On the positive phase of the input, there is a negative voltage drop measured from the left (anode) to the right (cathode). This is because D1 is forward biased, so the cathode has a higher voltage than the anode which makes the drop negative. <br /><br />On the negative phase of the input, D4 is forward biased but the load has no connection to ground, so both its terminals are negative. Thus, the voltage drop across D3 is positive during the negative phase of the input voltage. <br /><br />In short, the voltage drop when D3 is open just tracks the input voltage.",
                 "genus": "required",
                 "units": "volts"
             },
@@ -622,7 +622,7 @@
                 "description": "V from D3",
                 "type": "function",
                 "units": "volts",
-                "explanation": "Because the anode of D3 is at ground, and the voltage drop is left to right, a positive voltage drop means that the anode is higher than the cathode, so the cathode must be negative. u00a0Thus, to get the voltage relative to ground at the cathode, subtract the voltage drop from ground.",
+                "explanation": "Because the anode of D3 is at ground, and the voltage drop is left to right, a positive voltage drop means that the anode is higher than the cathode, so the cathode must be negative. Thus, to get the voltage relative to ground at the cathode, subtract the voltage drop from ground.",
                 "equation": "-id5",
                 "genus": "required"
             },
@@ -684,7 +684,7 @@
                 "description": "voltage across D1 when it is open",
                 "type": "function",
                 "units": "volts",
-                "explanation": "During the positive phase, D1 sees a positive voltage on its anode and ground on its cathode, so it it were open, this would be a positive voltage drop equal to the positive input voltage. u00a0During the negative phase, D1 would see a negative on its anode and ground on its cathode, so it would see a negative voltage drop equal to the negative input voltage.",
+                "explanation": "During the positive phase, D1 sees a positive voltage on its anode and ground on its cathode, so it it were open, this would be a positive voltage drop equal to the positive input voltage. During the negative phase, D1 would see a negative on its anode and ground on its cathode, so it would see a negative voltage drop equal to the negative input voltage.",
                 "equation": "id1",
                 "genus": "required"
             },
@@ -812,7 +812,7 @@
                 "description": "voltage across diode D4 when its open",
                 "type": "function",
                 "units": "volts",
-                "explanation": "When D4 is treated as an open, then on the positive phase, its left end (anode) is at ground via the load and D3, while its right end (cathode) is positive. u00a0Thus, the drop measures left to right is negative. u00a0It should be a drop, but its a rise.<br /><br />On the negative phase, its right end is negative, but the whole rest of the circuit is at ground, so the drop is positive. u00a0It really is a drop.<br /><br />Thus, the drop equals the negative of the input voltage.",
+                "explanation": "When D4 is treated as an open, then on the positive phase, its left end (anode) is at ground via the load and D3, while its right end (cathode) is positive. Thus, the drop measures left to right is negative. It should be a drop, but its a rise.<br /><br />On the negative phase, its right end is negative, but the whole rest of the circuit is at ground, so the drop is positive. It really is a drop.<br /><br />Thus, the drop equals the negative of the input voltage.",
                 "equation": "-id1",
                 "genus": "required"
             },
@@ -942,7 +942,7 @@
                 "description": "V from D2",
                 "units": "volts",
                 "type": "function",
-                "explanation": "The right side of D2 is a ground, so when the drop is positive, the left side is higher than the right. u00a0Thus, the left side is just the drop."
+                "explanation": "The right side of D2 is a ground, so when the drop is positive, the left side is higher than the right. Thus, the left side is just the drop."
             },
             {
                 "ID": "id18",

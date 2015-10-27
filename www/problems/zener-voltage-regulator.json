@@ -29,12 +29,7 @@
             ]
         },
         "lessonsLearned": [],
-        "increment": [
-            {
-                "tweakedNode": "defaultSelect",
-                "tweakDirection": "defaultSelect"
-            }
-        ],
+        "increment": [],
         "executionIterations": null,
         "givenModelNodes": [
             {
@@ -235,7 +230,7 @@
                     "tweakedDirection": 0,
                     "executionValue": 0,
                     "waveformValue": null,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {
                     "root": {
@@ -263,6 +258,9 @@
                         "status": ""
                     },
                     "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
                         "status": "entered"
                     }
                 },
@@ -291,7 +289,7 @@
                     "tweakedDirection": 0,
                     "executionValue": 0,
                     "waveformValue": null,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {
                     "root": {
@@ -319,6 +317,9 @@
                         "status": ""
                     },
                     "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
                         "status": "entered"
                     }
                 },
@@ -354,7 +355,7 @@
                     "tweakedDirection": 0,
                     "executionValue": 0,
                     "waveformValue": null,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {
                     "root": {
@@ -577,7 +578,7 @@
                     }
                 },
                 "name": "I thru load if ZD open",
-                "description": "Current through the load is ZD is reverse biased",
+                "description": "Current through the load if ZD is reverse biased",
                 "type": "function",
                 "units": "amps",
                 "equation": "id3/id8",
@@ -710,7 +711,7 @@
                 "units": "volts",
                 "equation": "if(((id10>id12),id12),id10)",
                 "genus": "required",
-                "parentNode": true,
+                "parentNode": false,
                 "waveformValue": "wave000"
             },
             {
@@ -1032,7 +1033,8 @@
                 "type": "function",
                 "units": "amps",
                 "equation": "id14-id15",
-                "genus": "required"
+                "genus": "required",
+                "parentNode": true
             }
         ],
         "studentModelNodes": [
@@ -1112,7 +1114,7 @@
                 },
                 "status": {
                     "equation": {
-                        "disabled": true,
+                        "disabled": false,
                         "status": "correct"
                     },
                     "description": {
@@ -1131,7 +1133,104 @@
                 "descriptionID": "id3",
                 "units": "volts",
                 "type": "function",
-                "equation": "id201+(id2*sinewave(20,0))"
+                "equation": "id21+id20*sinewave(20,0)"
+            },
+            {
+                "ID": "id23",
+                "inputs": [],
+                "position": {
+                    "x": 819.85607910156,
+                    "y": 66.179306030273
+                },
+                "status": {
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id4",
+                "initial": 8200,
+                "units": "ohms",
+                "type": "parameter"
+            },
+            {
+                "ID": "id24",
+                "inputs": [],
+                "position": {
+                    "x": 936.85607910156,
+                    "y": 69.179306030273
+                },
+                "status": {
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id5",
+                "initial": 7000,
+                "units": "ohms",
+                "type": "parameter"
+            },
+            {
+                "ID": "id25",
+                "inputs": [
+                    {
+                        "ID": "id23"
+                    },
+                    {
+                        "ID": "id24"
+                    }
+                ],
+                "position": {
+                    "x": 878,
+                    "y": 219
+                },
+                "status": {
+                    "equation": {
+                        "disabled": false,
+                        "status": "correct"
+                    },
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id6",
+                "units": "ohms",
+                "type": "function",
+                "equation": "id23+pulsetrain(0,10,25)*(id24-id23)"
             }
         ],
         "schemas": [

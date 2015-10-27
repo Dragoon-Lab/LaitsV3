@@ -1,6 +1,6 @@
 {
     "task": {
-        "taskName": "CE-transistor-voltage-divider",
+        "taskName": "Model a Voltage Divider Bias CE Transistor",
         "time": {
             "start": 0,
             "end": 150,
@@ -271,8 +271,8 @@
                 "ID": "id7",
                 "inputs": [],
                 "position": {
-                    "x": 990.85607910156,
-                    "y": 39.179302215576
+                    "x": 1092.8560791016,
+                    "y": 26.179302215576
                 },
                 "attemptCount": {
                     "description": 0,
@@ -327,8 +327,8 @@
                 "ID": "id8",
                 "inputs": [],
                 "position": {
-                    "x": 830.85607910156,
-                    "y": 49.179302215576
+                    "x": 868.85607910156,
+                    "y": 38.179302215576
                 },
                 "attemptCount": {
                     "description": 0,
@@ -386,8 +386,8 @@
                 "ID": "id9",
                 "inputs": [],
                 "position": {
-                    "x": 905.85607910156,
-                    "y": 33.179302215576
+                    "x": 965.85607910156,
+                    "y": 25.179302215576
                 },
                 "attemptCount": {
                     "description": 0,
@@ -445,8 +445,8 @@
                 "ID": "id10",
                 "inputs": [],
                 "position": {
-                    "x": 1146.8560791016,
-                    "y": 58.179302215576
+                    "x": 1232.8560791016,
+                    "y": 49.179302215576
                 },
                 "attemptCount": {
                     "description": 0,
@@ -738,7 +738,7 @@
                 "name": "Approx I thru R1 and R2",
                 "description": "Approximate current thru R1 and R2",
                 "type": "function",
-                "explanation": "This is an approximation because it ignores the current going into the base of the transistor. u00a0However, the base current turns out to be so small (6 micro amps) that it can be ignored compared to the 200 micro amps flowing through the voltage divider.",
+                "explanation": "This is an approximation because it ignores the current going into the base of the transistor. However, the base current turns out to be so small (6 micro amps) that it can be ignored compared to the 200 micro amps flowing through the voltage divider.",
                 "units": "amps",
                 "equation": "id12/id13",
                 "genus": "required",
@@ -1071,7 +1071,8 @@
                 "units": "amps",
                 "equation": "id18/(1+id10)",
                 "genus": "required",
-                "waveformValue": "wave000"
+                "waveformValue": "wave000",
+                "parentNode": true
             },
             {
                 "ID": "id20",

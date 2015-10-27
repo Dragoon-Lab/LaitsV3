@@ -581,7 +581,7 @@
                 "type": "function",
                 "units": "volts",
                 "equation": "id1",
-                "explanation": "If the diode were just an open circuit, then its anode (left) would be at the source voltage and its cathode (right) would be at ground. u00a0So this voltage drop, which is measured left to right, would just be the source voltage.",
+                "explanation": "If the diode were just an open circuit, then its anode (left) would be at the source voltage and its cathode (right) would be at ground. So this voltage drop, which is measured left to right, would just be the source voltage.",
                 "genus": "required",
                 "waveformValue": "wave007"
             }
