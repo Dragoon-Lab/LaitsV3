@@ -792,7 +792,7 @@ define([
 								  {name: "Group 3-Transportation Challenges", id:"grp_3"},
 								  {name: "Group 4-Water Challenges", id:"grp_4"},
 								  {name: "Group 5-Parks Challenges", id:"grp_5"},
-								  {name: "Group 6-Transportation Challenges", id:"grp_6"}]
+								  {name: "Group 6-Transportation Challenges", id:"grp_6"}];
 				}
 				var saveGroupMem = new memory({data: saveGroupArr});
 				saveGroupCombo.set("store", saveGroupMem);
@@ -922,12 +922,12 @@ define([
 					event.stop(e);
 					registry.byId("authorMergeDialog").show();
 					var combo = registry.byId("authorMergeGroup");
-					var arr=[{name: "Private("+query.u+")", id: "Private"},
-						{name: "Public", id: "Public"},
-						{name:"Official Problems",id:"Official Problems"}
+					var arr=[{name: "Private("+query.u+")", id: "query.u"},
+						{name: "public", id: "public"},
+						{name:"Official Problems",id:""}
 					];
 					// TODO: move this data to a json, or pull from forum database (longer term)
-					//       be sure to change the other sos326_f15 reference in the merge code as well!
+					//       be sure to change the other sos326_f15 reference in the save as code as well!
 					if (query.s == "sos326_f15"){
 						arr=[	{name: "Group 1-Water Challenges", id:"grp_1"},
 								{name: "Group 2-Parks Challenges", id:"grp_2"},
