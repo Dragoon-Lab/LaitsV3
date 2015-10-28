@@ -738,7 +738,7 @@
                 "name": "Approx I thru R1 and R2",
                 "description": "Approximate current thru R1 and R2",
                 "type": "function",
-                "explanation": "This is an approximation because it ignores the current going into the base of the transistor. However, the base current turns out to be so small (6 micro amps) that it can be ignored compared to the 200 micro amps flowing through the voltage divider.",
+                "explanation": "This is an approximation because it ignores the current going into the base of the transistor. u00a0However, the base current turns out to be so small (6 micro amps) that it can be ignored compared to the 200 micro amps flowing through the voltage divider.",
                 "units": "amps",
                 "equation": "id12/id13",
                 "genus": "required",
@@ -1456,7 +1456,7 @@
                 "units": "amps",
                 "equation": "id27*id10",
                 "genus": "required",
-                "waveformValue": "wave007"
+                "waveformValue": "wave008"
             },
             {
                 "ID": "id29",
