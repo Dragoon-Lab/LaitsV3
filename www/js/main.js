@@ -781,11 +781,26 @@ define([
 
 				// Set the default save as folder parameters
 				var saveGroupCombo = registry.byId("authorSaveGroup");
-				var saveGroupArr=[{name: "Private("+query.u+")", id: "Private"},
-					{name: "public", id: "Public"}];
+				var saveGroupArr = [{name: "Private("+query.u+")", id: query.u},
+									{name: "public", id: "public"}];
+
+				// TODO: move this data to a json, or pull from forum database (longer term)
+				//       be sure to change the other sos326_f15 reference in the merge code as well!
+				if (query.s == "sos326_f15"){
+					saveGroupArr=[{name: "Group 1-Water Challenges", id:"grp_1"},
+								  {name: "Group 2-Parks Challenges", id:"grp_2"},
+								  {name: "Group 3-Transportation Challenges", id:"grp_3"},
+								  {name: "Group 4-Water Challenges", id:"grp_4"},
+								  {name: "Group 5-Parks Challenges", id:"grp_5"},
+								  {name: "Group 6-Transportation Challenges", id:"grp_6"}];
+				}
 				var saveGroupMem = new memory({data: saveGroupArr});
 				saveGroupCombo.set("store", saveGroupMem);
-				saveGroupCombo.set("value","Private("+query.u+")")//default to private
+				if (query.s == "sos326_f15"){
+					saveGroupCombo.set("value","Group 1-Water Challenges");
+				} else{
+					saveGroupCombo.set("value","Private("+query.u+")")//default to private
+				}
 
 				//Author Save Dialog
 				on(registry.byId("saveCloseButton"), "click", function(){
@@ -804,8 +819,9 @@ define([
 					}else if(problemName && problemName.length > 0 && problemName.length<=50 && checkProblemName.test(problemName)){
 						var checkHyphen = new RegExp('^[\-]+$');
 						if(!checkHyphen.test(problemName)){
-							if (groupName.split("(")[0]+"("=="Private("){
-								groupName=groupName.split(")")[0].substr(8);//Privte(username)=>username
+							var results = saveGroupMem.query({name:groupName});
+							if (results.length > 0){
+								groupName = results[0].id;
 							}
 							session.saveAsProblem(givenModel.model,problemName,groupName);
 						}
@@ -825,6 +841,10 @@ define([
 				on(registry.byId("authorSaveProblem"), "blur", function() {
 					var problemName = registry.byId("authorSaveProblem").value;
 					var groupName = registry.byId("authorSaveGroup").value;
+					var results = saveGroupMem.query({name:groupName});
+					if (results.length > 0){
+						groupName = results[0].id;
+					}
 					session.isProblemNameConflict(problemName,groupName).then(function(isConflict) {
 						if(isConflict) {
 							registry.byId("saveCloseButton").set("disabled",true);
@@ -838,6 +858,10 @@ define([
 				on(registry.byId("authorSaveGroup"), "blur", function() {
 					var problemName = registry.byId("authorSaveProblem").value;
 					var groupName = registry.byId("authorSaveGroup").value;
+					var results = saveGroupMem.query({name:groupName});
+					if (results.length > 0){
+						groupName = results[0].id;
+					}
 					session.isProblemNameConflict(problemName,groupName).then(function(isConflict) {
 						if(isConflict) {
 							registry.byId("saveCloseButton").set("disabled",true);
@@ -898,10 +922,20 @@ define([
 					event.stop(e);
 					registry.byId("authorMergeDialog").show();
 					var combo = registry.byId("authorMergeGroup");
-					var arr=[{name: "Private("+query.u+")", id: "Private"},
-						{name: "Public", id: "Public"},
-						{name:"Official Problems",id:"Official Problems"}
+					var arr=[{name: "Private("+query.u+")", id: "query.u"},
+						{name: "public", id: "public"},
+						{name:"Official Problems",id:""}
 					];
+					// TODO: move this data to a json, or pull from forum database (longer term)
+					//       be sure to change the other sos326_f15 reference in the save as code as well!
+					if (query.s == "sos326_f15"){
+						arr=[	{name: "Group 1-Water Challenges", id:"grp_1"},
+								{name: "Group 2-Parks Challenges", id:"grp_2"},
+								{name: "Group 3-Transportation Challenges", id:"grp_3"},
+								{name: "Group 4-Water Challenges", id:"grp_4"},
+								{name: "Group 5-Parks Challenges", id:"grp_5"},
+								{name: "Group 6-Transportation Challenges", id:"grp_6"}];
+					}
 					var m = new memory({data: arr});
 					combo.set("store", m);
 					combo.set("value","Private("+query.u+")")//setting the default
@@ -909,6 +943,11 @@ define([
 
 				on(registry.byId("mergeDialogButton"),"click",function(){
 					var group = registry.byId("authorMergeGroup").value;
+					var results = saveGroupMem.query({name:group});
+					if (results.length > 0){
+						group = results[0].id;
+					}
+
 					var section = registry.byId("authorMergeSection").value;
 					var problem = registry.byId("authorMergeProblem").value;
 					if(!problem){
