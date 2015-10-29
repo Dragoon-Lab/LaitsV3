@@ -16,7 +16,7 @@
         },
         "taskDescription": {
             "construction": [
-                "A battery, zener diode and resistor are connected in series as shown.  Note that the battery's negative terminal is attached to the anode of the diode.  Construct a model of the circuit assuming that the battery is 12 volts, the resistor is 400 ohms and the breakdown voltage of the zener diode is 10 volts."
+                "A battery, zener diode and resistor are connected in series as shown.  Note that the battery's negative terminal is attached to the anode of the diode.  Assume that the battery is 12 volts, the resistor is 400 ohms, and the breakdown voltage of the zener diode is 10 volts. Complete the model and view the graph of the current around the loop."
             ],
             "incremental": [
                 "A battery, zener diode and resistor are connected in series as shown.  Note that the battery's negative terminal is attached to the anode of the diode."
