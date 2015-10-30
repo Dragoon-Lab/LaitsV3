@@ -232,7 +232,7 @@ exports.openProblem = function(client,parameters){
     var problem = "&p=" + (paramMap["problem"] || getDate());
     var mode = "&m=" + (paramMap["mode"]);
     var section = "&s=" + (paramMap["section"] || "autotest");
-    var nodeEditorMode = "&is=" + (paramMap["submode"] ||  "algebraic");
+    var nodeEditorMode = "&is=" + (paramMap["submode"] ||  "algebraic");    
     var activity; 
     if (paramMap["activity"] === undefined){
         activity = "&a=construction";
@@ -241,6 +241,12 @@ exports.openProblem = function(client,parameters){
     } else {
         activity = ""
     }
+
+    var restart = paramMap["restart"] == "on" ? "&rp=on" : "";
+
+    // Special PAL3 parameters
+    var revisionID = paramMap["revisionID"]!==undefined ? ("&rid="+paramMap["revisionID"]) : "";
+    var topic = paramMap["topic"] !==undefined ? ("&topic="+paramMap["topic"]) : "";
 
     // optional parts
 
@@ -260,7 +266,7 @@ exports.openProblem = function(client,parameters){
     // possible TODO: allow power user mode.
 
     var url = urlRoot + '?' + user + section + problem + mode + nodeEditorMode + group + logging + activity +
-              "&c=Continue";
+              revisionID + topic + restart;
     
     // Reset the dropdown counter:
     lastDropdownID = 0;

@@ -26,8 +26,10 @@ define([
 ], function(declare, array, json, schemaSession){
 	return declare(null, {
 		currentScore: {},
-		constructor: function(/* object */ model, /* object */ session){
+		countCache: {},
+		constructor: function(/* object */ model, /* object */ session, /* object */ activityConfig){
 			this._model = model;
+			this._activityConfig = activityConfig;
 			this._session = new schemaSession(session);
 			this.initSchema();
 			this.initSchemaSession();
@@ -65,18 +67,26 @@ define([
 			return count;
 		},
 
+		getCount: function(givenID){
+			if(!this.countCache.hasOwnProperty(givenID)){
+				var node = this._model.given.getNode(givenID);
+				var properties = this._activityConfig.get("properties");
+				var count = 0;
+				array.forEach(properties, function(property){
+					//checking if given node has a value and status is not entered while copying the node.
+					if(node.hasOwnProperty(property) && (node[property] != "" && node[property] != null) &&
+						(!node.status.hasOwnProperty(property) || node.status[property] != "entered")){
+						if(typeof(node[property]) == "object"){
+							count += node[property].length;
+						} else {
+							count++;
+						}
+					}
+				});
 
-		getCount: function(givenID){			
-			var type = this._model.given.getType(givenID);
-			var unit = this._model.given.getUnits(givenID);
-
-			var count =  {
-				"parameter": 4,
-				"function": 4,
-				"accumulator": 5
-			};
-
-			return unit ? count[type] : count[type] - 1;
+				this.countCache[givenID] = count;
+			}
+			return this.countCache[givenID];
 		},
 
 		initSchema: function(){
@@ -114,7 +124,8 @@ define([
 					if(schema.nodes.indexOf(errors.given) >= 0){
 						schema.competence.errors += errors.errors;
 						schema.competence.total += errors.total;
-						schema.competence.correctScore += this.currentScore[errors.given];
+						schema.competence.correctScore += this.currentScore.hasOwnProperty(errors.given) ? 
+															this.currentScore[errors.given] : 0;
 						//schema.competence.timeSpent += error.time
 					}
 				}, this);
@@ -183,7 +194,7 @@ define([
 				if(!node.genus || node.genus == "required" ||
 					(node.genus == "allowed" && this._model.student.getNodeIDByDescriptionID(node.ID))){
 					//var attempts = node.attemptCount;
-					success += this.calculateNodeScore(node.ID);
+					success += this.calculateNodeScore(node.ID, true);
 					total += this.getCount(node.ID);
 				}
 			}, this);
@@ -202,7 +213,7 @@ define([
 				var nodes = schema.nodes.split(", ");
 				array.forEach(nodes, function(ID){
 					if(!cache.hasOwnProperty(ID))
-						cache[ID] = this.calculateNodeScore(ID);
+						cache[ID] = this.calculateNodeScore(ID, true);
 					score += cache[ID];
 				}, this);
 				var schemaClass = schema.schemaClass;
@@ -219,24 +230,25 @@ define([
 			return obj;
 		},
 
-		calculateNodeScore: function(/* string */ id){
+		calculateNodeScore: function(/* string */ id, /* boolean */ ignoreExecution){
 			var node = this._model.given.getNode(id);
 			var attempts = node.attemptCount;
 			var score = 0;
 
 			for(var key in attempts){
-				score += this.calculateScore(id, key);
+				score += this.calculateScore(id, key, ignoreExecution);
 			}
 
 			return score;
 		},
 
-		calculateScore: function(/* string */ id, /* string */ nodePart){
-			var attempt = this._model.given.getAttemptCount(id, nodePart);
-			var status = this._model.given.getStatus(id, nodePart);
+		calculateScore: function(/* string */ id, /* string */ nodePart, /* boolean */ ignoreExecution){
+			var attempt = this._model.given.getAttemptCount(id, nodePart, ignoreExecution);
+			var status = this._model.given.getStatus(id, nodePart, ignoreExecution);
 			var score = 0;
 
-			if(status && status == "correct"){
+			var updateScore = function(attempt){
+				var score = 0;
 				switch (attempt){
 					case 0:
 					case 1:
@@ -248,6 +260,16 @@ define([
 					default:
 						break;
 				}
+				return score;
+			};
+
+			if(typeof(status) == "object"){
+				array.forEach(status, function(s, index){
+					if(s == "correct")
+						score += updateScore(attempt[index]);
+				});
+			} else if(status && status == "correct"){
+				score += updateScore(attempt);
 			}
 
 			return score;

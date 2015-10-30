@@ -149,12 +149,12 @@ define([
 			// Adding these as private methods since other modules should not rely on model
 			// for manipulating activities.  If others need this, move to a different file.
 			_isDemoActivityType: function(activity){
-				console.log("_isDemoActivityType:"+(activity && activity.substring(activity.length-4,activity.length) == "Demo"));
+				//console.log("_isDemoActivityType:"+(activity && activity.substring(activity.length-4,activity.length) == "Demo"));
 				return (activity && activity.substring(activity.length-4,activity.length) == "Demo");
 			},
 			_convertDemoToExercise: function(activity){
 				if (obj._isDemoActivityType(activity)){
-					console.log("_convertDemoToExercise:"+activity.substring(0,activity.length-4));
+					//console.log("_convertDemoToExercise:"+activity.substring(0,activity.length-4));
 					return activity.substring(0,activity.length-4);
 				} else {
 					throw new Error("Attempted to convert non-demo activity to an exercise.");
@@ -500,7 +500,7 @@ define([
 				this.model.task.lessonsLearned = lessonsLearned;
 			},
             setIncrements: function(/*string*/ node, /*string*/ direction){
-				this.model.task.increment = [{tweakedNode:node, tweakDirection: direction}];
+            	this.model.task.increment= (node=="defaultSelect" || direction=="defaultSelect")?[]:[{tweakedNode:node, tweakDirection: direction}];
             },
 			setExecutionIterations: function(/* number */ itr){
 				this.model.task.executionIterations = itr;
@@ -683,10 +683,6 @@ define([
 				/* sets passed waveform string value for node id*/
 				this.getNode(id).waveformValue = value;
 			},
-            emptyWaveformValue: function(id){
-                console.log("inside",obj.given.getNode(id));
-                obj.given.getNode(id).waveformValue = undefined;
-            },
 
 			setImageMarks : function(/**string */nodeId, marks){
 				var node = obj.given.getNode(nodeId);
@@ -969,11 +965,28 @@ define([
 			getGivenID: function(/*string*/ id){
 				return id;
 			},
-			getAttemptCount: function(/*string*/ id, /*string*/ part){
-				return this.getNode(id).attemptCount[part];
+			getAttemptCount: function(/*string*/ id, /*string*/ part, /* boolean */ ignoreExecution){
+				/*
+				*	changes to handle execution value status and attempt count as an array.
+				*	ignoreExecution if set to true will send the complete array as status/attemptCount 
+				*	otherwise the status/attemptCount will be as per the current iteration only.
+				*/
+				if(ignoreExecution || part != "executionValue")
+					return this.getNode(id).attemptCount[part];
+				else{
+					var node = this.getNode(id);
+					var itr = obj.student.getIteration();
+					return (node.attemptCount[part] && node.attemptCount[part][itr])?
+					node.attemptCount[part][itr]:0;
+				}
 			},
-			getStatus: function(/*string*/ id, /*string*/ nodePart){
-				return this.getNode(id).status[nodePart];
+			getStatus: function(/*string*/ id, /*string*/ part, /* boolean */ ignoreExecution){
+				if(ignoreExecution || part != "executionValue")
+					return this.getNode(id).status[part];
+				else{
+					return this.getNode(id).status[part]?
+					this.getNode(id).status[part][obj.student.getIteration()]:undefined;
+				}
 			},
 			getParent: function(/*string*/ id){
 				return this.getNode(id).parentNode;
@@ -1050,7 +1063,15 @@ define([
 				this.getNode(id).equation = equation;
 			},
 			setAttemptCount: function(/*string*/ id, /*string*/ part, /*string*/ count){
-				this.getNode(id).attemptCount[part] = count;
+				if(part != "executionValue")
+					this.getNode(id).attemptCount[part] = count;
+				else{
+					var node = this.getNode(id);
+					if(node.attemptCount[part] == undefined){
+						node.attemptCount[part] = [];
+					}
+					node.attemptCount[part][obj.student.getIteration()] = count;
+				}
 			},
 			setSchemaDifficulty: function(/* string */ schemaID, /* string */ diffPart, /* binary */ value){
 				var schema = this.getSchema(schemaID);
@@ -1075,9 +1096,20 @@ define([
 			},
 			setStatus: function(/*string*/ id, /*string*/ part, /*string*/ status){
 				// Summary: tracks student progress (correct, incorrect) on a given node;
-				this.getNode(id).status[part] = status;
+				if(part != "executionValue")
+					this.getNode(id).status[part] = status;
+				else{
+					var node = this.getNode(id);
+					if(!node.status.hasOwnProperty(part) || node.status[part] == undefined){
+						node.status[part] = [];
+					}
+					node.status[part][obj.student.getIteration()] = status;
+				}
 			},
-            isComplete: function(/*string*/ id){
+            emptyWaveform: function(id){
+                obj.model.task.wave = [];
+            },
+			isComplete: function(/*string*/ id){
 				// Summary: Test whether a node is completely filled out, correct or not
 				// Returns a boolean
 				// id: the node id
@@ -1445,7 +1477,7 @@ define([
 					initialEntered && (!hasUnits || node.units) &&
 					equationEntered && (!hasTweaks || node.tweakDirection)
 					&&(!hasWaveformValue || node.waveformValue !== null)
-					&& (!hasExecutionValue || node.executionValue[executionIteration]);
+					&& (!hasExecutionValue || (node.executionValue && node.executionValue[executionIteration]));
 				if(toReturn){
 					return true;
 				}

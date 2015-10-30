@@ -101,7 +101,7 @@ define([
 
 		setAssessment: function (session) {
 			if (this._model.active.getSchemas()) {
-				this._assessment = new schemaStudent(this._model, session);
+				this._assessment = new schemaStudent(this._model, session, this.activityConfig);
 			}
 
 			this._PM.setAssessment(this._assessment);
@@ -190,6 +190,7 @@ define([
 			console.log("updating nodes student controller");
 			//getDescriptionID using variable name
 			var descID = this._model.given.getNodeIDByName(variable);
+            console.log(id,descID,this._model.given.getName(descID));
 			var directives = this._PM.processAnswer(id, 'description', descID, this._model.given.getName(descID));
 			// Need to send to PM and update status, but don't actually
 			// apply directives since they are for a different node.
@@ -726,6 +727,13 @@ define([
 					around: dom.byId('doneButton')
 				});
 				this.shownDone = true;
+
+				// Trigger notify completeness since we're done.
+				// Construction triggers this when the node editor closes instead.
+				if (this.activityConfig.getActivity() != "construction"){
+					var directives = this._PM.notifyCompleteness(this._model);
+					this.applyDirectives(directives);
+				}
 			}
 		},
 
@@ -822,6 +830,7 @@ define([
 		resetIterationExecDemo: function(){
 			var studId = this._model.active.getNodes();
 			var nowHighLighted = this.currentHighLight;
+			var iteration = this._model.student.getIteration();
 			studId.forEach(lang.hitch(this, function (newId) {
 				var givenID = this._model.active.getDescriptionID(newId.ID);
 				//remove the glow for current highlighted node as a part of reset
@@ -835,13 +844,12 @@ define([
 					this.colorNodeBorder(newId.ID, true);
                     if(this.activityConfig.get("executionExercise")) {
                         this._model.active.getNode(newId.ID).status["executionValue"]=null;
-						this._model.given.getNode(givenID).status["executionValue"]=null;
                         registry.byId("executionValue").set("disabled", false);
                     }
 
 					this._model.given.getNode(givenID).attemptCount['assistanceScore'] = 0;
 					this._model.given.getNode(givenID).attemptCount['tweakDirection'] = 0;
-					this._model.given.getNode(givenID).attemptCount['executionValue'] = 0;
+					this._model.given.getNode(givenID).attemptCount['executionValue'][iteration] = 0;
 
 					//Update Node Label
 					this.updateNodeLabel(newId.ID);
@@ -1037,7 +1045,7 @@ define([
 				}, {
 					id: "crisisAlert",
 					attribute: "open",
-					value: "Good work, now Dragoon will compute the rest of the values for you and display them as a table and as a graph in the next window."
+					value: "Good work, now Dragoon will compute the rest of the values for you and display them as a table and as a graph in the next window. Explore the graph window, and close it when you are done."
 				}]);
 			    this.isFinalMessageShown = true;
             }

@@ -29,8 +29,8 @@ define([
 		currentNodeTime: null,
 		currentNodeErrors: null,
 
-		constructor: function(/* object */ model, /* object */session){
-			this.assess = new assessment(model, session);
+		constructor: function(/* object */ model, /* object */session, /* object */ activityParams){
+			this.assess = new assessment(model, session, activityParams);
 		},
 
 		/* three function below are the major times when user can be called. 

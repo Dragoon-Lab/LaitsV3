@@ -1,20 +1,33 @@
 {
     "task": {
-        "taskName": "Model RL Series Circuits",
+        "taskName": "Model an RL Series Circuit",
         "time": {
             "start": 0,
-            "end": 10,
+            "end": 100,
             "step": 1,
             "integrationMethod": "Eulers Method",
-            "units": "seconds"
+            "units": "microseconds"
         },
-        "properties": {},
+        "properties": {
+            "isGraphHelpShown": true
+        },
         "image": {
-            "URL": "http:\/\/i.imgur.com\/dNNguAS.png"
+            "URL": "http://i.imgur.com/dNNguAS.png"
         },
-        "taskDescription": [
-            "Model the circuit shown, with L=4 Henries, R=5 ohms and Vo = 5 volts.  Nodes have been given to you that use pulsetrain(0,5,5) to represent the switch being directed to the battery for 5 seconds and then to the short for 5 seconds.  Use Kirchhoff's Voltage Law to determine the voltage across the inductor and Ohm's Law to determine the voltage across the resistor.  Graph the current through the inductor.  "
-        ],
+        "taskDescription": {
+            "construction": [
+                "Model the circuit shown, with L=500 micro-Henries, R=50 ohms and Vo = 5 volts.  Nodes have been given to you that use pulsetrain(0,50,50) to represent the switch being directed to the battery for 50 microseconds and then to the short for another 50 microseconds.  Use Kirchhoff's Voltage Law to determine the voltage across the inductor and Ohm's Law to determine the voltage across the resistor.  Complete the model and view the graph of the current through the inductor.  "
+            ],
+            "incremental": [
+                "Model the circuit shown, with L=500 micro-Henries, R=50 ohms and Vo = 5 volts.  Nodes have been given to you that use pulsetrain(0,50,50) to represent the switch being directed to the battery for 50 microseconds and then to the short for another 50 microseconds.  Use Kirchhoff's Voltage Law to determine the voltage across the inductor and Ohm's Law to determine the voltage across the resistor.  Complete the model and view the graph of the current through the inductor.  "
+            ],
+            "execution": [
+                "Model the circuit shown, with L=500 micro-Henries, R=50 ohms and Vo = 5 volts.  Nodes have been given to you that use pulsetrain(0,50,50) to represent the switch being directed to the battery for 50 microseconds and then to the short for another 50 microseconds.  Use Kirchhoff's Voltage Law to determine the voltage across the inductor and Ohm's Law to determine the voltage across the resistor.  Complete the model and view the graph of the current through the inductor.  "
+            ],
+            "waveform": [
+                "Model the circuit shown, with L=500 micro-Henries, R=50 ohms and Vo = 5 volts.  Nodes have been given to you that use pulsetrain(0,50,50) to represent the switch being directed to the battery for 50 microseconds and then to the short for another 50 microseconds.  Use Kirchhoff's Voltage Law to determine the voltage across the inductor and Ohm's Law to determine the voltage across the resistor.  Complete the model and view the graph of the current through the inductor.  "
+            ]
+        },
         "lessonsLearned": [],
         "givenModelNodes": [
             {
@@ -26,8 +39,8 @@
                     }
                 ],
                 "position": {
-                    "x": 687,
-                    "y": 64
+                    "x": 739,
+                    "y": 63
                 },
                 "attemptCount": {
                     "description": 0,
@@ -89,12 +102,12 @@
                     },
                     {
                         "ID": "id4",
-                        "label": "\/"
+                        "label": "/"
                     }
                 ],
                 "position": {
-                    "x": 639,
-                    "y": 498
+                    "x": 794,
+                    "y": 350
                 },
                 "attemptCount": {
                     "description": 0,
@@ -140,7 +153,7 @@
                 "description": "change in inductor-resistor current",
                 "type": "function",
                 "units": "amps",
-                "equation": "id3\/id4",
+                "equation": "id3/id4",
                 "imageMarks": [
                     "142 , 2 , 135 , 71"
                 ]
@@ -158,8 +171,8 @@
                     }
                 ],
                 "position": {
-                    "x": 842,
-                    "y": 421
+                    "x": 627,
+                    "y": 283
                 },
                 "attemptCount": {
                     "description": 0,
@@ -214,8 +227,8 @@
                 "ID": "id4",
                 "inputs": [],
                 "position": {
-                    "x": 554.33093261719,
-                    "y": 59.330951690674
+                    "x": 935.85607910156,
+                    "y": 54.179302215576
                 },
                 "attemptCount": {
                     "description": 0,
@@ -263,8 +276,8 @@
                 "equation": "",
                 "type": "parameter",
                 "parentNode": false,
-                "initial": 4,
-                "units": "henries",
+                "initial": 500,
+                "units": "micro-Heneries",
                 "imageMarks": [
                     "268 , 73 , -114 , -70"
                 ]
@@ -277,8 +290,8 @@
                     }
                 ],
                 "position": {
-                    "x": 940,
-                    "y": 250
+                    "x": 531,
+                    "y": 201
                 },
                 "attemptCount": {
                     "description": 0,
@@ -324,7 +337,7 @@
                 "genus": "required",
                 "type": "function",
                 "units": "volts",
-                "equation": "id8*pulsetrain((0,5),5)",
+                "equation": "id8*pulsetrain((0,50),50)",
                 "imageMarks": [
                     "182 , 149 , 69 , 108",
                     "252 , 255 , -65 , -89",
@@ -344,8 +357,8 @@
                     }
                 ],
                 "position": {
-                    "x": 769,
-                    "y": 236
+                    "x": 699,
+                    "y": 173
                 },
                 "attemptCount": {
                     "description": 0,
@@ -400,8 +413,8 @@
                 "ID": "id7",
                 "inputs": [],
                 "position": {
-                    "x": 849.33093261719,
-                    "y": 51.330951690674
+                    "x": 570.85607910156,
+                    "y": 45.179302215576
                 },
                 "attemptCount": {
                     "description": 0,
@@ -449,7 +462,7 @@
                 "equation": "",
                 "type": "parameter",
                 "parentNode": false,
-                "initial": 5,
+                "initial": 50,
                 "units": "ohms",
                 "imageMarks": [
                     "32 , 2 , 75 , 84"
@@ -459,8 +472,8 @@
                 "ID": "id8",
                 "inputs": [],
                 "position": {
-                    "x": 958.33093261719,
-                    "y": 52.330951690674
+                    "x": 434.85607910156,
+                    "y": 48.179302215576
                 },
                 "attemptCount": {
                     "description": 0,
@@ -520,8 +533,8 @@
                 "ID": "id9",
                 "inputs": [],
                 "position": {
-                    "x": 958.33093261719,
-                    "y": 52.330951690674
+                    "x": 434.85607910156,
+                    "y": 48.179302215576
                 },
                 "status": {
                     "description": {
@@ -554,12 +567,12 @@
                     }
                 ],
                 "position": {
-                    "x": 940,
-                    "y": 250
+                    "x": 531,
+                    "y": 201
                 },
                 "status": {
                     "equation": {
-                        "disabled": true,
+                        "disabled": false,
                         "status": "correct"
                     },
                     "description": {
@@ -578,7 +591,7 @@
                 "descriptionID": "id5",
                 "units": "volts",
                 "type": "function",
-                "equation": "id9*pulsetrain((0,5),5)"
+                "equation": "id9*pulsetrain(0,50,50)"
             }
         ],
         "schemas": [
@@ -637,16 +650,18 @@
                 }
             },
             {
-                "ID": "schema9",
-                "schemaClass": "ohms_law",
-                "name": "Ohm's Law: Voltage",
+                "ID": "schema11",
+                "schemaClass": "kirchoff_voltage_law",
+                "name": "Kirchoff's Voltage Law",
                 "competence": {
                     "errors": 0,
                     "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id6, id1, id7",
+                "nodes": "id3",
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,
@@ -655,16 +670,18 @@
                 }
             },
             {
-                "ID": "schema10",
-                "schemaClass": "kirchoff_voltage_law",
-                "name": "Kirchoff's Voltage Law",
+                "ID": "schema12",
+                "schemaClass": "ohms_law",
+                "name": "Ohm's Law: Voltage",
                 "competence": {
                     "errors": 0,
                     "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id3, id6, id5",
+                "nodes": "id6",
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,
@@ -672,6 +689,7 @@
                     "phrases": 1
                 }
             }
-        ]
+        ],
+        "increment": []
     }
 }

@@ -114,15 +114,19 @@ define([
 			
 			statement['object'] = {
 							"objectType": "Activity",
-							"id" : baseURL+ "activities/"+ this._model.getTaskName(),
+							"id" : baseURL+ "activities/"+ this.getResourceName(),
 					        "definition": {
-					            "name": { "en-US": this._model.getTaskName() }
+					            "name": { "en-US": this.getResourceName() }
 					        }
 						  };			
 			
 			//Create a new Statement for every schema associated with the problem 
 			var schemas = this._model.active.getSchemas();
+			var debugReport = "Overall success factor: "+successFactor+"\n";
+			var debugScoreSum = 0;
 			array.forEach(schemas, lang.hitch(this, function(schema){ 
+				debugReport += "Success factor for "+ schema.schemaClass+": "+schemaSuccessFactor[schema.schemaClass]+"\n";
+				debugScoreSum += schemaSuccessFactor[schema.schemaClass];
 				statement.context = {
 						"contextActivities": {
 				           "category": [{
@@ -144,7 +148,7 @@ define([
 				                }
 				            }]			            	
 				        },
-				    	"revision" : this._session.params.u
+				    	"revision" : this._session.params.rid
 				    };
 				statement.result =  {
 			        "completion": this._model.matchesGivenSolution(),
@@ -188,11 +192,44 @@ define([
 					}
 				});
 			}));
+			debugReport += "PAL3 score should be: " + (debugScoreSum / ( schemas.length || 1 ));
+			console.log(debugReport);
+			debugger;
 		},
 
 		isoDuration: function(milliseconds) {
    			var d = new Date(milliseconds);
    			return 'P' + 'T' + d.getUTCHours() + 'H' + d.getUTCMinutes() + 'M' + d.getUTCSeconds() +'S';
-		}		
+		},
+
+		getResourceName: function(){
+			var problemName = this._session.params.p;
+			switch(problemName){
+				case "resistor-capacitor-intro":
+					if(this._session.params.a == "executionDemo"){
+						return "Dragoon Introduction Part 1";
+					} else if (this._session.params.a == "execution") {
+						return "Dragoon Introduction Part 2";
+					} else {
+						return "Dragoon Introduction Part 3";
+					}
+				case "resistor-inductor-intro":
+					return "Dragoon Introduction Part 4";
+				default:
+					if (this._session.params.a == "waveform"){
+						return this.replacePrefix(this._model.getTaskName(),"Identify Waveforms of");
+					} else if (this._session.params.a == "incremental"){
+						return this.replacePrefix(this._model.getTaskName(),"Incremental Analysis of");
+					} else {
+						return this._model.getTaskName();
+					}
+			}
+		},
+
+		replacePrefix: function(oldTitle,newPrefix){
+			//PAL3 problem titles begin with "Model a/an.."" so we replace the first word.
+			return oldTitle.replace("Model",newPrefix);
+		}
+
 	});
 });
