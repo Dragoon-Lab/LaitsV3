@@ -392,8 +392,8 @@
             },
             {
                 "ID": "schema3",
-                "schemaClass": "",
-                "name": "",
+                "schemaClass": "exponential_transfer",
+                "name": "Exponential",
                 "competence": {
                     "errors": 0,
                     "total": 0,
@@ -426,8 +426,8 @@
             },
             {
                 "ID": "schema5",
-                "schemaClass": "",
-                "name": "",
+                "schemaClass": "linear_transfer",
+                "name": "Linear",
                 "competence": {
                     "errors": 0,
                     "total": 0,

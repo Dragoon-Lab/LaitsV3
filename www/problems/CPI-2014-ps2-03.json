@@ -172,8 +172,8 @@
             },
             {
                 "ID": "schema2",
-                "schemaClass": "",
-                "name": "",
+                "schemaClass": "linear_transfer",
+                "name": "Linear",
                 "competence": {
                     "errors": 0,
                     "total": 0,
