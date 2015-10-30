@@ -92,7 +92,9 @@
                 "units": "volts",
                 "equation": "id2",
                 "parentNode": true,
-                "imageMarks": []
+                "imageMarks": [
+                    "206 , 78 , 76 , 35"
+                ]
             },
             {
                 "ID": "id2",
@@ -155,7 +157,10 @@
                 "units": "volts",
                 "equation": "id3/id4",
                 "genus": "required",
-                "imageMarks": []
+                "imageMarks": [
+                    "208 , 82 , 74 , 30"
+                ]
+
             },
             {
                 "ID": "id3",
@@ -218,7 +223,9 @@
                 "type": "function",
                 "units": "amps",
                 "equation": "id5/id6",
-                "imageMarks": []
+                "imageMarks": [
+                    "229 , 36 , 32 , 27"
+                ]
             },
             {
                 "ID": "id4",
@@ -275,7 +282,10 @@
                 "initial": 0.003,
                 "units": "mF",
                 "genus": "required",
-                "imageMarks": []
+
+                "imageMarks": [
+                    "198 , 78 , 84 , 33"
+                ]
             },
             {
                 "ID": "id5",
@@ -338,7 +348,11 @@
                 "units": "volts",
                 "genus": "required",
                 "equation": "id9-id1",
-                "imageMarks": []
+
+                "imageMarks": [
+                    "146 , 28 , 79 , 42"
+                ]
+
             },
             {
                 "ID": "id6",
@@ -395,7 +409,11 @@
                 "initial": 3300,
                 "units": "ohms",
                 "genus": "required",
-                "imageMarks": []
+
+                "imageMarks": [
+                    "152 , 34 , 64 , 42"
+                ]
+
             },
             {
                 "ID": "id8",
@@ -452,7 +470,11 @@
                 "initial": 5,
                 "units": "volts",
                 "genus": "required",
-                "imageMarks": []
+
+                "imageMarks": [
+                    "13 , 70 , 68 , 46"
+                ]
+
             },
             {
                 "ID": "id9",
@@ -510,7 +532,11 @@
                 "type": "function",
                 "units": "volts",
                 "equation": "id8*pulsetrain((0,50),50)",
-                "imageMarks": []
+
+                "imageMarks": [
+                    "14 , 74 , 69 , 39"
+                ]
+
             }
         ],
         "studentModelNodes": [
@@ -576,7 +602,8 @@
                 "descriptionID": "id9",
                 "units": "volts",
                 "type": "function",
-                "equation": "id10*pulsetrain((0,5),5)"
+                "equation": "id10*pulsetrain((0,50),50)"
+
             }
         ],
         "schemas": [
