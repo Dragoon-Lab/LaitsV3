@@ -888,13 +888,17 @@ define([
             this.enableDisablewaveFormAssignmentButton(this.currentID);
         },
 		updateModelStatus: function(desc, id){
+			/* Removing setStatus for author model nodes
+			 * We do not need to set any status
+			 */
+
 			//stub for updateModelStatus
-			id = id || this.currentID;
-			if(this.validStatus[desc.attribute]){
-				var opt = this._model.given.getStatus(id, desc.id) ? this._model.given.getStatus(id, desc.id) : {};
-				opt[desc.attribute] = desc.value;
-				this._model.given.setStatus(id, desc.id, opt);
-			}
+			// id = id || this.currentID;
+			//if(this.validStatus[desc.attribute]){
+			//	var opt = this._model.given.getStatus(id, desc.id) ? this._model.given.getStatus(id, desc.id) : {};
+			//	opt[desc.attribute] = desc.value;
+			//	this._model.given.setStatus(id, desc.id, opt);
+			//}
 		},
 
 		getModelType: function(){
