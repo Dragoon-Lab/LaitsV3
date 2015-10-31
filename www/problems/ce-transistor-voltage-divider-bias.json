@@ -1456,7 +1456,7 @@
                 "units": "amps",
                 "equation": "id27*id10",
                 "genus": "required",
-                "waveformValue": "wave007"
+                "waveformValue": "wave008"
             },
             {
                 "ID": "id29",

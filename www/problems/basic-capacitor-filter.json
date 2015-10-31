@@ -158,9 +158,7 @@
                 "genus": "required",
                 "description": "voltage added to the capacitor",
                 "units": "volts",
-                "imageMarks": [
-                    "158 , 19 , 47 , 29"
-                ]
+                "imageMarks": []
             },
             {
                 "ID": "id4",
@@ -293,9 +291,7 @@
                 "genus": "required",
                 "description": "voltage removed from the capacitor",
                 "units": "volts",
-                "imageMarks": [
-                    "161 , 23 , 110 , 81"
-                ],
+                "imageMarks": [],
                 "waveformValue": "wave000"
             },
             {
@@ -422,9 +418,7 @@
                 "genus": "required",
                 "description": "capacitance of capacitor C1",
                 "units": "mF",
-                "imageMarks": [
-                    "151 , 53 , 68 , 50"
-                ]
+                "imageMarks": []
             },
             {
                 "ID": "id8",
@@ -482,9 +476,7 @@
                 "genus": "required",
                 "description": "Load resistor RL",
                 "units": "ohms",
-                "imageMarks": [
-                    "222 , 52 , 55 , 50"
-                ]
+                "imageMarks": []
             },
             {
                 "ID": "id14",

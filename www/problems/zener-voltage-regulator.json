@@ -1230,7 +1230,7 @@
                 "descriptionID": "id6",
                 "units": "ohms",
                 "type": "function",
-                "equation": "id23+pulsetrain(0,10,25)*(id24-Max R of load)"
+                "equation": "id23+pulsetrain(0,10,25)*(id24-id23)"
             }
         ],
         "schemas": [
