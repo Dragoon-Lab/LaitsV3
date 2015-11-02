@@ -12,7 +12,7 @@
             "isGraphHelpShown": true
         },
         "image": {
-            "URL": "http://www.johnloomis.org/ece201L/lab6/diode1.jpg"
+            "URL": "images/PAL3/diode-resistor.png"
         },
         "taskDescription": {
             "construction": [
@@ -337,7 +337,7 @@
                 ],
                 "position": {
                     "x": 751,
-                    "y": 315
+                    "y": 339
                 },
                 "attemptCount": {
                     "description": 0,
@@ -402,8 +402,8 @@
                     }
                 ],
                 "position": {
-                    "x": 622,
-                    "y": 401
+                    "x": 589,
+                    "y": 416
                 },
                 "attemptCount": {
                     "description": 0,
@@ -531,8 +531,8 @@
                     }
                 ],
                 "position": {
-                    "x": 899,
-                    "y": 195
+                    "x": 652,
+                    "y": 272
                 },
                 "attemptCount": {
                     "description": 0,
@@ -581,7 +581,7 @@
                 "type": "function",
                 "units": "volts",
                 "equation": "id1",
-                "explanation": "If the diode were just an open circuit, then its anode (left) would be at the source voltage and its cathode (right) would be at ground. u00a0So this voltage drop, which is measured left to right, would just be the source voltage.",
+                "explanation": "If the diode were just an open circuit, then its anode (left) would be at the source voltage and its cathode (right) would be at ground. So this voltage drop, which is measured left to right, would just be the source voltage.",
                 "genus": "required",
                 "waveformValue": "wave007"
             }
@@ -795,11 +795,6 @@
                 }
             }
         ],
-        "increment": [
-            {
-                "tweakedNode": "defaultSelect",
-                "tweakDirection": "defaultSelect"
-            }
-        ]
+        "increment": []
     }
 }

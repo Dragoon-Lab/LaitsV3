@@ -1,6 +1,6 @@
 {
     "task": {
-        "taskName": "Model a Battery Biased CE Transistor Amplifier",
+        "taskName": "Model a Battery Biased CE Transistor",
         "time": {
             "start": 0,
             "end": 320,
@@ -12,7 +12,7 @@
             "isGraphHelpShown": true
         },
         "image": {
-            "URL": "http://i.imgur.com/BToFTZo.png"
+            "URL": "images/PAL3/CE-transistor-battery-bias.png"
         },
         "taskDescription": {
             "construction": [
@@ -377,7 +377,7 @@
                 "type": "function",
                 "units": "volts",
                 "equation": "id10*id12",
-                "waveformValue": "wave017"
+                "waveformValue": "wave008"
             },
             {
                 "ID": "id12",
@@ -496,7 +496,8 @@
                 "description": "Voltage across collector-emitter",
                 "equation": "id1-id11",
                 "genus": "required",
-                "waveformValue": "wave017"
+                "waveformValue": "wave008",
+                "parentNode": true
             },
             {
                 "ID": "id14",
@@ -675,7 +676,7 @@
                 "units": "amps",
                 "equation": "(-id19)/id15",
                 "genus": "required",
-                "explanation": "To calculate the current into the base, we use superposition. u00a0One voltage source is the base bias, and the other is the signal. u00a0",
+                "explanation": "To calculate the current into the base, we use superposition. u00a0One voltage source is the base bias, and the other is the signal.",
                 "waveformValue": "wave017"
             },
             {
@@ -976,11 +977,6 @@
                 }
             }
         ],
-        "increment": [
-            {
-                "tweakedNode": "defaultSelect",
-                "tweakDirection": "defaultSelect"
-            }
-        ]
+        "increment": []
     }
 }

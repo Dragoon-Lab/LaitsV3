@@ -12,11 +12,11 @@
             "isGraphHelpShown": true
         },
         "image": {
-            "URL": "http://i.imgur.com/Z5SP5Aw.png?1"
+            "URL": "images/PAL3/half-wave-rectifier.png"
         },
         "taskDescription": {
             "construction": [
-                "The nodes corresponding to the input voltage across the secondary winding of the transformer T1 are given to you.  Construct a model for the rectification portion of the circuit.  Diode CR1 is non-ideal, having a knee voltage of 0.7 volts.  The load resistor RL has a resistance of 1000 ohms.  Finish the model and view the graph of the output voltage across the load resistor RL"
+                "The nodes corresponding to the input voltage across the secondary winding of the transformer T1 are given to you.  Construct a model for the rectification portion of the circuit.  Diode CR1 is non-ideal, having a knee voltage of 0.7 volts.  The load resistor RL has a resistance of 1000 ohms.  Finish the model and view the graph of the current across the load resistor RL"
             ],
             "incremental": [
                 "Here is a model for a half-wave rectifier.  Diode CR1 is non-ideal, having a knee voltage of 0.7 volts.  The load resistor RL has a resistance of 1000 ohms."
@@ -29,12 +29,7 @@
             ]
         },
         "lessonsLearned": [],
-        "increment": [
-            {
-                "tweakedNode": "defaultSelect",
-                "tweakDirection": "defaultSelect"
-            }
-        ],
+        "increment": [],
         "executionIterations": null,
         "givenModelNodes": [
             {
@@ -526,7 +521,7 @@
                 "description": "Output voltage across the load resistor Rl",
                 "equation": "id5-id7",
                 "type": "function",
-                "parentNode": true,
+                "parentNode": false,
                 "units": "volts",
                 "genus": "required",
                 "waveformValue": "wave010"
@@ -595,7 +590,8 @@
                 "units": "amps",
                 "equation": "id9/id4",
                 "genus": "required",
-                "waveformValue": "wave010"
+                "waveformValue": "wave010",
+                "parentNode": true
             }
         ],
         "studentModelNodes": [

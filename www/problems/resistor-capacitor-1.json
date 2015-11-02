@@ -1,6 +1,6 @@
 {
     "task": {
-        "taskName": "Model RC Series Circuits 1",
+        "taskName": "Model an RC Series Circuit (seconds)",
         "time": {
             "start": 0,
             "end": 20,
@@ -12,7 +12,7 @@
             "isGraphHelpShown": true
         },
         "image": {
-            "URL": "http://onlinephys.com/rc_circuit.gif"
+            "URL": "images/PAL3/resistor-capacitor-1.png"
         },
         "taskDescription": {
             "construction": [
@@ -667,11 +667,6 @@
                 }
             }
         ],
-        "increment": [
-            {
-                "tweakedNode": "defaultSelect",
-                "tweakDirection": "defaultSelect"
-            }
-        ]
+        "increment": []
     }
 }

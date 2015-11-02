@@ -304,11 +304,11 @@
     <div class="claro sameedit" data-dojo-type="dijit/Dialog" id="authorSaveDialog" title="Save As...">
         <div class="fieldgroup">
             <label for="authorSaveProblem" style="width:7em">Problem Name:</label>
-            <input id="authorSaveProblem" style="width:10em" value="0" data-dojo-type="dijit/form/TextBox"/>
+            <input id="authorSaveProblem" style="width:20em" value="0" data-dojo-type="dijit/form/TextBox"/>
         </div>
         <div class="fieldgroup">
             <label for="authorSaveGroup" style="width:7em">Folder Name:</label>
-            <select id="authorSaveGroup" style="width:10em" data-dojo-type="dijit/form/ComboBox">
+            <select id="authorSaveGroup" style="width:20em" data-dojo-type="dijit/form/ComboBox" searchAttr: "id">
             </select>
         </div>
         <div class="fieldgroup" aligh="right" id="authorSaveStatus">
@@ -704,5 +704,6 @@
 <script type="text/javascript" src="ET/Core/messaging.js"></script>
 <script type="text/javascript" src="ET/Core/messaging-gateway.js"></script>
 <script type="text/javascript" src="ET/Services/Orchestration/heartbeat-service.js"></script>
+<script type="text/javascript" src="js/util/sha256.js"></script>
 </body>
 </html>

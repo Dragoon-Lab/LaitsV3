@@ -67,7 +67,8 @@ function printHistory($row){
   header("Content-type: application/json");
   echo json_encode($row);
 }
-if(isset($_GET['u']) && isset($_GET['s']) && isset($_GET['m'])){
+
+if(isset($_GET['u']) && isset($_GET['s'])){
 	$user = mysqli_real_escape_string($mysqli,$_GET['u']);
 	$section = mysqli_real_escape_string($mysqli,$_GET['s']);
 	$mode ="AUTHOR";

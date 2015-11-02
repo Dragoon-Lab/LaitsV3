@@ -295,11 +295,6 @@
         ],
         "studentModelNodes": [],
         "lessonsLearned": [],
-        "increment": [
-            {
-                "tweakedNode": "defaultSelect",
-                "tweakDirection": "defaultSelect"
-            }
-        ]
+        "increment": []
     }
 }

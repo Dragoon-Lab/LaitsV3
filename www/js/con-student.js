@@ -727,6 +727,13 @@ define([
 					around: dom.byId('doneButton')
 				});
 				this.shownDone = true;
+
+				// Trigger notify completeness since we're done.
+				// Construction triggers this when the node editor closes instead.
+				if (this.activityConfig.getActivity() != "construction"){
+					var directives = this._PM.notifyCompleteness(this._model);
+					this.applyDirectives(directives);
+				}
 			}
 		},
 
@@ -1040,6 +1047,8 @@ define([
 					attribute: "open",
 					value: "Good work, now Dragoon will compute the rest of the values for you and display them as a table and as a graph in the next window."
 				}]);
+				// We're done, so notify  completeness
+				this.applyDirectives(this._PM.notifyCompleteness(this._model));
 			    this.isFinalMessageShown = true;
             }
 			//console.log("model is",this._model);

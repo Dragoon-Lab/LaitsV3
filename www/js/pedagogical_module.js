@@ -1176,7 +1176,7 @@ define([
 				this.logging.log('solution-step', logObj);
 
 				record.increment("problemCompleted", 1);
-				if(this.activityConfig.get("showFeedback")){
+				if(this.activityConfig.getActivity() == "construction" && this.activityConfig.get("showFeedback")){
 					// Number of problems to show the hint upon completion
 					if(record.getLocal("problemCompleted") < 3 ){
 						return	[{

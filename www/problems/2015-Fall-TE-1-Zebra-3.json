@@ -1,0 +1,292 @@
+{
+  "task": {
+    "taskName": "zebra population growth 3",
+    "time": {
+      "start": 1950,
+      "end": 1970,
+      "step": 1,
+      "integrationMethod": "Eulers Method",
+      "units": "years"
+    },
+    "properties": {
+      
+    },
+    "image": {
+      "URL": "images/zebra-3.jpg"
+    },
+    "taskDescription": [
+      "Zebra Population Growth - Level 3",
+      "Assumptions:",
+      "- The zebra population is 20 in the first year (1950).",
+      "- Births and deaths are the only change in the population. Immigration and emigration do not occur.",
+      "- The probability of a zebra giving birth (birth rate) each year is 50%.",
+      "- The probability of a zebra dying (death rate) each year is 30%.",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "lessonsLearned": "",
+    "givenModelNodes": [
+      {
+        "ID": "id1",
+        "inputs": [
+          
+        ],
+        "position": {
+          "x": 487.33096313477,
+          "y": 361.33096313477
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 1
+        },
+        "status": {
+          
+        },
+        "name": "Zebra Birth Probability",
+        "description": "The probability of a zebra giving birth during the year",
+        "equation": "",
+        "type": "parameter",
+        "parentNode": false,
+        "initial": 0.5,
+        "genus": "required"
+      },
+      {
+        "ID": "id2",
+        "inputs": [
+          {
+            "ID": "id3",
+            "label": ""
+          },
+          {
+            "ID": "id1",
+            "label": ""
+          }
+        ],
+        "position": {
+          "x": 500,
+          "y": 219
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 1
+        },
+        "status": {
+          
+        },
+        "name": "Zebra Births",
+        "description": "the number of zebras born each year",
+        "type": "function",
+        "equation": "id3*id1",
+        "genus": "required"
+      },
+      {
+        "ID": "id3",
+        "inputs": [
+          {
+            "ID": "id2",
+            "label": ""
+          },
+          {
+            "ID": "id4",
+            "label": "-"
+          }
+        ],
+        "position": {
+          "x": 654,
+          "y": 117
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": {
+          
+        },
+        "name": "Zebra Population",
+        "description": "the number of zebras in the population",
+        "type": "accumulator",
+        "initial": 20,
+        "equation": "id2-id4",
+        "genus": "required",
+        "parentNode": true
+      },
+      {
+        "ID": "id4",
+        "inputs": [
+          {
+            "ID": "id3",
+            "label": ""
+          },
+          {
+            "ID": "id5",
+            "label": ""
+          }
+        ],
+        "position": {
+          "x": 793,
+          "y": 232
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": {
+          
+        },
+        "name": "Zebra Deaths",
+        "description": "the number of zebras that die each year",
+        "type": "function",
+        "equation": "id3*id5",
+        "genus": "required"
+      },
+      {
+        "ID": "id5",
+        "inputs": [
+          
+        ],
+        "position": {
+          "x": 782.33093261719,
+          "y": 362.33096313477
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "assistanceScore": 0
+        },
+        "status": {
+          
+        },
+        "name": "Zebra Death Probability",
+        "description": "The probability of a zebra dying during the year",
+        "equation": "",
+        "type": "parameter",
+        "parentNode": false,
+        "initial": 0.3,
+        "genus": "required"
+      }
+    ],
+    "studentModelNodes": [
+      {
+        "ID": "id6",
+        "inputs": [
+          
+        ],
+        "position": {
+          "x": 654,
+          "y": 117
+        },
+        "status": {
+          "equation": {
+            "disabled": false,
+            "status": "incorrect"
+          },
+          "description": {
+            "disabled": true,
+            "status": "correct"
+          },
+          "type": {
+            "disabled": true,
+            "status": "correct"
+          },
+          "initial": {
+            "disabled": true,
+            "status": "correct"
+          }
+        },
+        "descriptionID": "id3",
+        "initial": 20,
+        "type": "accumulator",
+        "equation": ""
+      },
+      {
+        "ID": "id7",
+        "inputs": [
+          {
+            "ID": "id8"
+          },
+          {
+            "ID": "id6"
+          }
+        ],
+        "position": {
+          "x": 500,
+          "y": 219
+        },
+        "status": {
+          "equation": {
+            "disabled": false,
+            "status": "correct"
+          },
+          "description": {
+            "disabled": true,
+            "status": "correct"
+          },
+          "type": {
+            "disabled": true,
+            "status": "correct"
+          }
+        },
+        "descriptionID": "id2",
+        "type": "function",
+        "equation": "id8*id6"
+      },
+      {
+        "ID": "id8",
+        "inputs": [
+          
+        ],
+        "position": {
+          "x": 487.33096313477,
+          "y": 361.33096313477
+        },
+        "status": {
+          "description": {
+            "disabled": true,
+            "status": "correct"
+          },
+          "type": {
+            "disabled": true,
+            "status": "correct"
+          },
+          "initial": {
+            "disabled": true,
+            "status": "correct"
+          }
+        },
+        "descriptionID": "id1",
+        "initial": 0.5,
+        "type": "parameter"
+      }
+    ],
+    "schemas": [
+      
+    ]
+  }
+}

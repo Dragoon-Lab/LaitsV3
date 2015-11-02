@@ -500,7 +500,7 @@ define([
 				this.model.task.lessonsLearned = lessonsLearned;
 			},
             setIncrements: function(/*string*/ node, /*string*/ direction){
-				this.model.task.increment = [{tweakedNode:node, tweakDirection: direction}];
+            	this.model.task.increment= (node=="defaultSelect" || direction=="defaultSelect")?[]:[{tweakedNode:node, tweakDirection: direction}];
             },
 			setExecutionIterations: function(/* number */ itr){
 				this.model.task.executionIterations = itr;
