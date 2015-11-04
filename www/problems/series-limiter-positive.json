@@ -243,7 +243,7 @@
                 },
                 "name": "i thru diode and resistor",
                 "description": "currernt thru diode and resistor",
-                "explanation": "This assumes that the output load draws negligible current. \u00a0Otherwise, the current though the diode would be the sum of the current through the resistor and the load",
+                "explanation": "This assumes that the output load draws negligible current. \Otherwise, the current though the diode would be the sum of the current through the resistor and the load",
                 "type": "function",
                 "equation": "id1\/id7",
                 "genus": "required",

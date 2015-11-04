@@ -1,6 +1,6 @@
 {
     "task": {
-        "taskName": "Kirchoff's Current Law",
+        "taskName": "Model Kirchoff's Current Law",
         "time": {
             "start": 0,
             "end": 10,
@@ -8,15 +8,18 @@
             "integrationMethod": "Eulers Method",
             "units": "seconds"
         },
-        "properties": {},
+        "properties": {
+            "isGraphHelpShown": true
+        },
         "image": {
             "URL": "http://upload.wikimedia.org/wikipedia/commons/4/46/KCL_-_Kirchhoff%27s_circuit_laws.svg"
         },
-        "taskDescription": [
-            "Assuming current I1 is 2 amps, I2 is 3 amps and I3 is 0.5 amps, what I4?",
-            ""
-        ],
-        "lessonsLearned": "",
+        "taskDescription": {
+            "construction": [
+                "Assuming current I1 is 2 amps, I2 is 3 amps and I3 is 0.5 amps, what is I4?"
+            ]
+        },
+        "lessonsLearned": [],
         "givenModelNodes": [
             {
                 "ID": "id1",
@@ -134,21 +137,30 @@
         "studentModelNodes": [],
         "schemas": [
             {
-                "ID": "schema1",
+                "ID": "schema2",
                 "schemaClass": "kirchoff_current_law",
-                "name": "Kirchoff's current law",
+                "name": "Kirchoff's Current Law",
                 "competence": {
                     "errors": 0,
                     "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id1, id2, id3, id4",
+                "nodes": "id1, id2, id4, id4",
+                "rates": {},
                 "difficulty": {
                     "isolation": 0,
-                    "cues": 0,
-                    "phrases": 0
+                    "cues": 1,
+                    "phrases": 1
                 }
+            }
+        ],
+        "increment": [
+            {
+                "tweakedNode": "id1",
+                "tweakDirection": "Decrease"
             }
         ]
     }

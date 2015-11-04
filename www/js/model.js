@@ -500,7 +500,7 @@ define([
 				this.model.task.lessonsLearned = lessonsLearned;
 			},
             setIncrements: function(/*string*/ node, /*string*/ direction){
-				this.model.task.increment = [{tweakedNode:node, tweakDirection: direction}];
+            	this.model.task.increment= (node=="defaultSelect" || direction=="defaultSelect")?[]:[{tweakedNode:node, tweakDirection: direction}];
             },
 			setExecutionIterations: function(/* number */ itr){
 				this.model.task.executionIterations = itr;
@@ -683,10 +683,6 @@ define([
 				/* sets passed waveform string value for node id*/
 				this.getNode(id).waveformValue = value;
 			},
-            emptyWaveformValue: function(id){
-                console.log("inside",obj.given.getNode(id));
-                obj.given.getNode(id).waveformValue = undefined;
-            },
 
 			setImageMarks : function(/**string */nodeId, marks){
 				var node = obj.given.getNode(nodeId);
@@ -1110,7 +1106,10 @@ define([
 					node.status[part][obj.student.getIteration()] = status;
 				}
 			},
-            isComplete: function(/*string*/ id){
+            emptyWaveform: function(id){
+                obj.model.task.wave = [];
+            },
+			isComplete: function(/*string*/ id){
 				// Summary: Test whether a node is completely filled out, correct or not
 				// Returns a boolean
 				// id: the node id

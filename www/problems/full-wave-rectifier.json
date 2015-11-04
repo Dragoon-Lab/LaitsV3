@@ -12,11 +12,11 @@
             "isGraphHelpShown": true
         },
         "image": {
-            "URL": "http://i.imgur.com/S4uMPZE.png?1"
+            "URL": "images/PAL3/full-wave-rectifier.png"
         },
         "taskDescription": {
             "construction": [
-                "A schematic of a full wave rectifier is presented above for you to model. Nodes representing the output of the center-tapped transformer have been given to you.  Construct a model for the rectification portion of the circuit. Diodes CR1 and CR2 are real, having a knee voltage of 0.7 volts. The load resistor RL has a resistance of 1000 ohms. Finish the model and graph the output voltage across the load resistor RL"
+                "A schematic of a full wave rectifier is presented above for you to model. Nodes representing the output of the center-tapped transformer have been given to you.  Construct a model for the rectification portion of the circuit. Diodes CR1 and CR2 are real, having a knee voltage of 0.7 volts. The load resistor RL has a resistance of 1000 ohms. Finish the model and graph the current across the load resistor RL"
             ],
             "incremental": [
                 "This is a model of a full wave rectifier. It includes nodes representing the output of the center-tapped transformer. Diodes CR1 and CR2 are real, having a knee voltage of 0.7 volts. The load resistor RL has a resistance of 1000 ohms. "
@@ -381,7 +381,7 @@
                 "units": "volts",
                 "equation": "id22+id21",
                 "genus": "required",
-                "parentNode": true
+                "parentNode": false
             },
             {
                 "ID": "id12",
@@ -881,7 +881,8 @@
                 "type": "function",
                 "units": "amps",
                 "equation": "id11/id7",
-                "genus": "required"
+                "genus": "required",
+                "parentNode": true
             },
             {
                 "ID": "id24",
@@ -942,7 +943,7 @@
                 "type": "function",
                 "units": "volts",
                 "equation": "id13",
-                "explanation": "If the diode were an open circuit, then this node represents the voltage drop across it measure from left to right. u00a0 However, there are two voltage sources in this circuit: the upper and lower windings. u00a0We can user superposition and analyze them separately. u00a0So here we just consider the lower winding as a source. u00a0<br /><br />If CR2 is open, it just sees the lower winding's voltage on its left and ground on its right, so it's voltage drop left to right is just the lower winding's voltage.u00a0",
+                "explanation": "If the diode were an open circuit, then this node represents the voltage drop across it measure from left to right.  However, there are two voltage sources in this circuit: the upper and lower windings. We can user superposition and analyze them separately. So here we just consider the lower winding as a source. <br /><br />If CR2 is open, it just sees the lower winding's voltage on its left and ground on its right, so it's voltage drop left to right is just the lower winding's voltage.",
                 "genus": "required"
             },
             {
@@ -1004,7 +1005,7 @@
                 "type": "function",
                 "units": "volts",
                 "equation": "id12",
-                "explanation": "Using superposition, we ignore the lower winding and only consider the upper winding as a voltage source. u00a0The drop across CR1 from left to right if it were an open circuit is just the upper winding's voltage because the right side of CR1 would be at ground.",
+                "explanation": "Using superposition, we ignore the lower winding and only consider the upper winding as a voltage source. The drop across CR1 from left to right if it were an open circuit is just the upper winding's voltage because the right side of CR1 would be at ground.",
                 "genus": "required"
             }
         ],
@@ -1377,11 +1378,6 @@
                 }
             }
         ],
-        "increment": [
-            {
-                "tweakedNode": "defaultSelect",
-                "tweakDirection": "defaultSelect"
-            }
-        ]
+        "increment": []
     }
 }

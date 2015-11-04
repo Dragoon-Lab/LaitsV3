@@ -35,7 +35,7 @@ define([
 	"dojo/dom-style",
 	"dojo/ready",
 	"dojo/on",
-    "dojo/dom-construct",
+	"dojo/dom-construct",
 	"dijit/focus",
 	'dijit/registry',
 	"dijit/TooltipDialog",
@@ -153,43 +153,44 @@ define([
 				negativeInputs.addOption(option);
 			}, this);
 		},
-        //this function populates the options for the current iteration in the execution activity
-        populateExecOptions: function(id){
-            var executionValue = registry.byId("executionValue");
-            var execValStatus = this._model.active.getNode(id).status["executionValue"] || false;
-            console.log("before populating",execValStatus);
-            if(!execValStatus) {
-                console.log("start populating");
-                var ret_arr = this._model.student.getAllExecutionValues();
-                //remove duplicates if any
-                var uniqueOptions = ret_arr.filter(function (elem, pos) {
-                    return ret_arr.indexOf(elem) == pos;
-                });
-                //populate the executionValue comboBox
-                console.log("unique options", uniqueOptions, ret_arr);
+		//this function populates the options for the current iteration in the execution activity
+		populateExecOptions: function(id){
+			var executionValue = registry.byId("executionValue");
+			var execValStatus = this._model.active.getNode(id).status["executionValue"] || false;
+			console.log("before populating",execValStatus);
+			if(!execValStatus) {
+				console.log("start populating");
+				var ret_arr = this._model.student.getAllExecutionValues();
+				//remove duplicates if any
+				var uniqueOptions = ret_arr.filter(function (elem, pos) {
+					return ret_arr.indexOf(elem) == pos;
+				});
+				//populate the executionValue comboBox
+				console.log("unique options", uniqueOptions, ret_arr);
 
-                var currentOption = [];
-                executionValue.removeOption(executionValue.getOptions());
-                //ad default option
-                executionValue.addOption({label: "select",value: "default"});
+				var currentOption = [];
+				executionValue.removeOption(executionValue.getOptions());
+				//ad default option
+				executionValue.addOption({label: "select",value: "default"});
 
-                array.forEach(uniqueOptions, function (optionVal) {
-                    console.log(optionVal, typeof optionVal);
-                    currentOption = [{label: "" + optionVal, value: "" + optionVal}];
-                    executionValue.removeOption(currentOption);
-                    executionValue.addOption(currentOption);
-                });
-                uniqueOptions=[];
-            }
+				array.forEach(uniqueOptions, function (optionVal) {
+					console.log(optionVal, typeof optionVal);
+					currentOption = [{label: "" + optionVal, value: "" + optionVal}];
+					executionValue.removeOption(currentOption);
+					executionValue.addOption(currentOption);
+				});
+				uniqueOptions=[];
+			}
 
-        },
+		},
 
 
-        //  should be moved to a function in controller.js
+		//  should be moved to a function in controller.js
 		updateInputNode: function (/** auto node id **/ id, /**variable name**/ variable) {
 			console.log("updating nodes student controller");
 			//getDescriptionID using variable name
 			var descID = this._model.given.getNodeIDByName(variable);
+			//console.log(id,descID,this._model.given.getName(descID));
 			var directives = this._PM.processAnswer(id, 'description', descID, this._model.given.getName(descID));
 			// Need to send to PM and update status, but don't actually
 			// apply directives since they are for a different node.
@@ -254,7 +255,7 @@ define([
 
 			// "Initial Value" label --> "Value" for parameters
 			var type=this._model.active.getType(this.currentID);
-            if (type=="parameter") style.set('initLabel', 'display', 'none');
+			if (type=="parameter") style.set('initLabel', 'display', 'none');
 			else style.set('initLabel',"display","inline");
 
 		},
@@ -726,6 +727,13 @@ define([
 					around: dom.byId('doneButton')
 				});
 				this.shownDone = true;
+
+				// Trigger notify completeness since we're done.
+				// Construction triggers this when the node editor closes instead.
+				if (this.activityConfig.getActivity() != "construction"){
+					var directives = this._PM.notifyCompleteness(this._model);
+					this.applyDirectives(directives);
+				}
 			}
 		},
 
@@ -834,10 +842,10 @@ define([
 					//update node label and border color
 					this.updateNodeLabel(newId.ID);
 					this.colorNodeBorder(newId.ID, true);
-                    if(this.activityConfig.get("executionExercise")) {
-                        this._model.active.getNode(newId.ID).status["executionValue"]=null;
-                        registry.byId("executionValue").set("disabled", false);
-                    }
+					if(this.activityConfig.get("executionExercise")) {
+						this._model.active.getNode(newId.ID).status["executionValue"]=null;
+						registry.byId("executionValue").set("disabled", false);
+					}
 
 					this._model.given.getNode(givenID).attemptCount['assistanceScore'] = 0;
 					this._model.given.getNode(givenID).attemptCount['tweakDirection'] = 0;
@@ -929,18 +937,18 @@ define([
 					this._model.given.getExplanation(givenID) ? style.set(showExplanationButton, "display", "block") :
 						style.set(showExplanationButton, "display", "none");
 
-                    //in case of execution demo we need to show the correct answer
-                    if(this.activityConfig.get("demoExecution")) {
-                        var answer = this._model.active.getExecutionValue(id) || "";
-                        executionValue.set("value", answer);
-                    }
-                    //in case of execution activity we need to populate the options for the student to solve
-                    else if(this.activityConfig.get("executionExercise")){
+					//in case of execution demo we need to show the correct answer
+					if(this.activityConfig.get("demoExecution")) {
+						var answer = this._model.active.getExecutionValue(id) || "";
+						executionValue.set("value", answer);
+					}
+					//in case of execution activity we need to populate the options for the student to solve
+					else if(this.activityConfig.get("executionExercise")){
 						answer = this._model.active.getExecutionValue(id) || "";
-                        executionValue.set("value", answer);
+						executionValue.set("value", answer);
 						this.populateExecOptions(id);
 
-                    }
+					}
 					//enable/disable textbox and button
 					var execValStatus = this._model.active.getNode(id).status["executionValue"] || false;
 					executionValue.set("status", execValStatus.status|| "");
@@ -976,7 +984,7 @@ define([
 				//Set correct answer in model
 				this._model.active.setExecutionValue(this.currentID, answer);
 				registry.byId("executionValue").addOption({label: ""+answer, value: ""+answer});
-                registry.byId("executionValue").attr("value",answer);
+				registry.byId("executionValue").attr("value",answer);
 
 
 				//Update Node Label
@@ -988,9 +996,9 @@ define([
 			}
 		},
 
-        handleExecChange: function(val){
-            console.log("value returned is",val);
-        },
+		handleExecChange: function(val){
+			console.log("value returned is",val);
+		},
 
 		closeExecutionMenu: function (){
 			this.logging.log('ui-action', {
@@ -1027,7 +1035,7 @@ define([
 					id: "crisisAlert",
 					attribute: "open",
 					value: "You have completed all the values for this time step.  Click 'Ok' to proceed to the next time step."
-			    }]);			
+				}]);			
 			} 
 			else if (isFinished && iterationNum==maxItration-1 && !this.isFinalMessageShown) {// In last iteration
 				this.applyDirectives([{
@@ -1037,10 +1045,12 @@ define([
 				}, {
 					id: "crisisAlert",
 					attribute: "open",
-					value: "Good work, now Dragoon will compute the rest of the values for you and display them as a table and as a graph in the next window."
+					value: "Good work, now Dragoon will compute the rest of the values for you and display them as a table and as a graph in the next window. Explore the graph window, and close it when you are done."
 				}]);
-			    this.isFinalMessageShown = true;
-            }
+				// We're done, so notify  completeness
+				this.applyDirectives(this._PM.notifyCompleteness(this._model));
+				this.isFinalMessageShown = true;
+			}
 			//console.log("model is",this._model);
 		},
 
@@ -1092,10 +1102,10 @@ define([
 									this.updateNodeLabel(this.currentID);
 									this.colorNodeBorder(this.currentID, true);
 									waveformEditorDialog.hide();
-                                }
-                                //canShowDonePopup also handles the waveform activity with the same variable
-                                if(!this.shownDone)
-                                    this.canShowDonePopup();
+								}
+								//canShowDonePopup also handles the waveform activity with the same variable
+								if(!this.shownDone)
+									this.canShowDonePopup();
 							}));
 						}));
 					}
@@ -1161,7 +1171,7 @@ define([
 				style.set(showExplanationButton, "display", "block");
 			else
 				style.set(showExplanationButton, "display", "none");
-        }
+		}
 	});
 });
 
