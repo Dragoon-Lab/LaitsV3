@@ -866,7 +866,7 @@ define([
 			}
 			//color Equation widget
 			if(this._model.given.getEquation(this.currentID)){
-				if(this._model.given.getStatus(this.currentID, "equation") && this._model.given.getStatus(this.currentID, "equation").status == "incorrect"){
+				if(this._model.given.getAuthorStatus(this.currentID, "equation") && this._model.given.getAuthorStatus(this.currentID, "equation").status == "incorrect"){
 					this.applyDirectives(this.authorPM.process(this.currentID, 'equation', this._model.given.getEquation(this.currentID), false));
 				}else{
 					this.applyDirectives(this.authorPM.process(this.currentID, 'equation', this._model.given.getEquation(this.currentID), true));
@@ -882,23 +882,19 @@ define([
 					this.applyDirectives([{id:"initial", attribute:"status", value:"entered"}]);
 			}
 			if(type && type != 'parameter'){
-				if(this._model.given.getEquation(this.currentID) && this._model.given.getStatus(this.currentID, "equation").status != "incorrect")
+				if(this._model.given.getEquation(this.currentID) && this._model.given.getAuthorStatus(this.currentID, "equation").status != "incorrect")
 					this.applyDirectives([{id:"equation", attribute:"status", value:"entered"}]);
 			}
             this.enableDisablewaveFormAssignmentButton(this.currentID);
         },
 		updateModelStatus: function(desc, id){
-			/* Removing setStatus for author model nodes
-			 * We do not need to set any status
-			 */
-
 			//stub for updateModelStatus
-			// id = id || this.currentID;
-			//if(this.validStatus[desc.attribute]){
-			//	var opt = this._model.given.getStatus(id, desc.id) ? this._model.given.getStatus(id, desc.id) : {};
-			//	opt[desc.attribute] = desc.value;
-			//	this._model.given.setStatus(id, desc.id, opt);
-			//}
+			 id = id || this.currentID;
+			if(this.validStatus[desc.attribute]){
+				var opt = this._model.given.getAuthorStatus(id, desc.id) ? this._model.given.getAuthorStatus(id, desc.id) : {};
+				opt[desc.attribute] = desc.value;
+				this._model.given.setAuthorStatus(id, desc.id, opt);
+			}
 		},
 
 		getModelType: function(){

@@ -763,7 +763,8 @@ define([
 						waveformValue: null,
 						assistanceScore: 0
 					},
-					status: {}
+					status: {},
+					authorStatus: {},
 				}, options || {});
 				obj.model.task.givenModelNodes.push(newNode);
 				return newNode.ID;
@@ -988,6 +989,11 @@ define([
 					this.getNode(id).status[part][obj.student.getIteration()]:undefined;
 				}
 			},
+
+			getAuthorStatus: function(/*string*/ id, /*string*/ part){
+				return this.getNode(id).authorStatus? this.getNode(id).authorStatus[part] : undefined ;
+			},
+
 			getParent: function(/*string*/ id){
 				return this.getNode(id).parentNode;
 			},
@@ -1106,6 +1112,16 @@ define([
 					node.status[part][obj.student.getIteration()] = status;
 				}
 			},
+
+			setAuthorStatus: function(/*string*/ id, /*string*/ part, /*string*/ status){
+				// Summary: function to set the status of node editor in author mode.
+				if(!this.getNode(id).authorStatus){
+					//backward compatibility
+					this.getNode(id).authorStatus = {};
+				}
+				this.getNode(id).authorStatus[part] = status;
+			},
+
             emptyWaveform: function(id){
                 obj.model.task.wave = [];
             },
@@ -1380,6 +1396,7 @@ define([
 				}
 				return directives;
 			},
+
 			setDescriptionID: function(/*string*/ id, /*string*/ descriptionID){
 				this.getNode(id).descriptionID = descriptionID;
 			},
