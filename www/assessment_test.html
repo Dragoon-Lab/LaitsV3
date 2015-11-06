@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title>Dragoon</title>
+	<script type="text/javascript">
+		dojoConfig = {
+			isDebug: true,
+			parseOnLoad:true,
+			async: true,
+			baseUrl: "./",
+			packages: [
+				{name: "dojo", location: "dojo"},
+				{name: "dijit", location: "dijit"},
+				{name: "dojox", location: "dojox"},
+				{name: "assessment", location: "js", main:"assessment-main"}
+			]
+		};
+		if(dojoConfig.isDebug){
+			document.write('<link href="css/dragoon.css?'+ version+'" rel="stylesheet" />');
+			document.write('<scr'+'ipt src="dojo/dojo.js"></scr'+'ipt>'); 
+		} else {
+			document.write('<link href="release/css/dragoon.css?'+ version+'"  rel="stylesheet" />');
+			document.write('<scr'+'ipt src="release/dojo/dojo.js"></scr'+'ipt>');
+		}
+	</script>
+
+	<script type="type/javascript">
+		require([
+			"dijit/form/Button",
+			"dijit/form/TextBox"
+		]);
+	</script>
+</head>
+<body class="claro">
+	<div class = "main">
+		<div class = "form">
+			<div class="fieldgroup">
+				<label for="p">Problem:</label>
+				<input id="p" name="problem" value="rabbits" data-dojo-type="dijit/form/TextBox"></input>
+			</div>
+			<div class="fieldgroup">
+				<label for="s"># of Students:</label>
+				<input id="s" name="students" value="100" data-dojo-type="dijit/form/TextBox"></input>
+			</div>
+			<div class="fieldgroup">
+				<label for="t">Tag:</label>
+				<input id="t" name="tag" value="student" data-dojo-type="dijit/form/TextBox"></input>
+			</div>
+			<div class="fieldgroup" align="right">
+				<button id="submitFormButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Start Test</button>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
