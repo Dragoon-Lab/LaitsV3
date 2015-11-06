@@ -202,6 +202,10 @@ define([
 				//		Sets id for next node.
 				this.model = model;
 
+				//creating schemas array for problems which do not have the object from the start
+				if(!(this.model.task.hasOwnProperty("schemas"))){
+					this.model.task.schemas = [];
+				}
 				/*
 				 We use ids of the form "id"+integer.  This loops through
 				 all the nodes in the model and finds the lowest integer such
@@ -609,7 +613,7 @@ define([
 				if(!node["imageMarks"]) return [];
 				else return node["imageMarks"];
 			},
-           
+
 			getExecutionValue: function(/* string */ id, /* number */ index){
 				var currentItr = obj.student.getIteration();
 				var maxItr = obj.getExecutionIterations();
@@ -1038,6 +1042,10 @@ define([
 			saveSchema: function(schema){
 				obj.model.task.schemas.push(schema);
 			},
+			/*removeRates: function(/* string / schemaID){
+				var schema = this.getSchema(schemaID);
+				delete schema.rates;
+			},*/
 			setName: function(/*string*/ id, /*string*/ name){
 				this.getNode(id).name = name.trim();
 			},
@@ -1046,7 +1054,7 @@ define([
 			},
 			setExplanation: function(/*string*/ id, /*string*/ content){
 				this.getNode(id).explanation = content;
-			},            
+			},
 			setParent: function(/*string*/ id, /*bool*/ parent){
 				this.getNode(id).parentNode = parent;
 			},
@@ -1082,16 +1090,18 @@ define([
 				var l = nodesID.length;
 				index = 1;
 				var nodeString = "";
+				var schema = this.getSchema(schemaID);
 				array.forEach(nodesID, function(ID){
 					if(index == l){
 						nodeString += ID;
 					} else {
 						nodeString += ID+", ";
 					}
+
 					index++;
 				}, this);
-
 				var schema = this.getSchema(schemaID);
+
 				schema.nodes = nodeString;
 			},
 			setStatus: function(/*string*/ id, /*string*/ part, /*string*/ status){
@@ -1171,7 +1181,7 @@ define([
 			},
             getRootNodes: function(){
                 var rootNodes = [];
-                var givenNodes = this.getNodes();                   
+                var givenNodes = this.getNodes();
                 array.forEach(givenNodes, function(node){
                     if(obj.isParentNode(node.ID) && this.isNodeRequired(node.ID)){
                         rootNodes.push(node);
@@ -1212,18 +1222,15 @@ define([
 				return newNode.ID;
 			},
 
-            addSchemaTime: function(/* string */ id, /* number */ value){
+			addSchemaTime: function(/* string */ id, /* number */ value){
 				var givenID = this.getDescriptionID(id);
-
-				if(givenID){
-					var schemas = this.getSchemas();
-					if(schemas){
-						array.forEach(schemas, function(schema){
-							if(schema.nodes.indexOf(givenID) >= 0){
-								schema.competence.timeSpent += value;
-							}
-						}, this);
-					}
+				var schemas = this.getSchemas();
+				if(givenID && schemas){
+					array.forEach(schemas, function(schema){
+						if(schema.nodes.indexOf(givenID) >= 0){
+							schema.competence.timeSpent += value;
+						}
+					}, this);
 				}
 
 				return givenID;
@@ -1339,7 +1346,20 @@ define([
 				}
 				return bestStatus;
 			},
+			getSchemasForNode: function(/* string */ id){
+				var givenID = this.getDescriptionID(id);
+				var schemas = this.getSchemas;
+				var returnSchemas = [];
+				if(givenID && schemas){
+					array.forEach(schemas, function(schema){
+						if(schema.nodes.indexOf(id) >= 0){
+							returnSchemas.push(schema.schemaClass);
+						}
+					});
+				}
 
+				return returnSchemas;
+			},
 			matchesGivenSolutionAndCorrect: function() {
 				// Summary: Returns True if (1) matchesGivenSolution is true and (2) if all nodes that are part of the
 				// solution have correctness of "demo" or "correct"
@@ -1353,6 +1373,34 @@ define([
 					return node.descriptionID === descriptionID;
 				});
 				return gotIt ? id : null;
+			},
+			checkStudentNodeCorrectness: function(){
+				return array.every(this.getStudentNodesInSolution(),
+					function(studentNode){
+						var correctness = this.getCorrectness(studentNode.ID);
+						return correctness === "correct" || correctness === "demo";
+					}, this);
+			},
+			/*getSchemasFactors: function(/* string / id, /* string / nodePart){
+				var obj = [];
+
+				var givenID = this.getDescriptionID(id);
+				var schemas = this.getSchemas();
+				if(givenID){
+					array.forEach(schemas, function(schema){
+						if(schema.nodes.indexOf(givenID) >= 0){
+							obj.push(schema.rates[givenID]);
+						}
+					}, this);
+				}
+
+				return obj;
+			},*/
+			matchesGivenSolutionAndCorrect: function() {
+				// Summary: Returns True if (1) matchesGivenSolution is true and (2) if all nodes that are part of the
+				// solution have correctness of "demo" or "correct"
+				return obj.matchesGivenSolution() &&
+					this.checkStudentNodeCorrectness();
 			},
 			checkStudentNodeCorrectness: function(){
 				return array.every(this.getStudentNodesInSolution(),
@@ -1471,7 +1519,7 @@ define([
 				var executionIteration = (hasExecutionValue ? (node.type == "parameter" ? 0 : this.getIteration()) : 0); //execution iteration will always be 0 for parameters.
 				var hasWaveformValue = (node && typeof obj.student.getWaveformValue(node.ID) !== "undefined");
 				var equationEntered = node.type && node.type == "parameter" || node.equation;
-                executionIteration= (executionIteration<maxItr-1)?executionIteration:maxItr-1;
+				executionIteration= (executionIteration<maxItr-1)?executionIteration:maxItr-1;
 
 				var toReturn = node.descriptionID && node.type &&
 					initialEntered && (!hasUnits || node.units) &&

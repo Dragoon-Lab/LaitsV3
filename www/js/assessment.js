@@ -22,8 +22,9 @@ define([
 	"dojo/_base/declare", 
 	"dojo/_base/array",
 	"dojo/json",
-	"./schemas-load-save"
-], function(declare, array, json, schemaSession){
+	"./schemas-load-save",
+	"./equations"
+], function(declare, array, json, schemaSession, expressions){
 	return declare(null, {
 		currentScore: {},
 		countCache: {},
@@ -33,6 +34,8 @@ define([
 			this._session = new schemaSession(session);
 			this.initSchema();
 			this.initSchemaSession();
+			this.units = this._model.getAllUnits();
+			this.nodeCount = this._model.solution.getNodes().length;
 		},
 
 		initSchemaSession: function(){
@@ -171,6 +174,83 @@ define([
 				else
 					schema.competence.values.accuracy = 0;
 			});
+		},
+
+		bayes: function(id, nodePart, isCorrect){
+			var givenID = this._model.active.getGivenID(id);
+			if(givenID){
+				var nodeStatus = this._model.given.getStatus(givenID, nodePart);
+				if(nodeStatus == 1){ 
+					var nodeSchemas = this.getSchemasForNode(givenID);
+
+					var guessParams = this.getGuessParameter(nodeSchemas, givenID, nodePart);
+					var slipParams = this.getSlipParameter(nodeSchemas, givenID, nodePart);
+
+				}
+			}
+		},
+
+		getGuessParameter: function(schemaIDs, id, nodePart){
+			var gp = []; 
+			array.forEach(schemaIDs, function(ID){
+				var type = this._model.given.getType(id);
+				var value = this.paramTable.get(ID, type, nodePart);
+				if(value < 0){
+					value = this.calculateGuessParameter(givenID, nodePart);
+				}
+
+				gp.push(value);
+			}, this);
+
+			return gp;
+		},
+
+		getSlipParameter: function(schemaID){
+			
+		},
+
+		calculateGuessParameter: function(givenID, nodePart){
+			var value;
+			switch(nodePart){
+				case "type":
+					value = 1/3;
+					break;
+				case "initial":
+					value = 1/(this.accParCount);
+					break;
+				case "units":
+					value = 1/this.units;
+					break;
+				case "equation":
+					var equation = this._model.given.getEquation(id);
+					try {
+					var parse = expression.parse(equation);
+					} catch {
+						console.log("error in given equation for id " + id);
+						break;
+					}
+					value = 1;
+					var basicOperators = ["+", "-", "*", "/"];
+					if(parse){
+						var n = parse.variables().length;
+						value *= (1/this.nodeCount)^n;
+						var operators = parse.operators();
+						var flag = array.some(operators, function(o){
+							return basicOperators.indexOf(o) < 0;
+						});
+
+						if(flag){
+							value *= 1/29;
+						} else {
+							value *= (1/4)^operators.length;
+						}
+					}
+					break;
+				case "default";
+					return 0.3;
+			}
+			
+			return value;
 		},
 
 		getScore: function(type){
