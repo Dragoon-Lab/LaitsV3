@@ -787,13 +787,16 @@ define([
 				// TODO: move this data to a json, or pull from forum database (longer term)
 				//       be sure to change the other sos326_f15 reference in the merge code as well!
 				if (query.s == "sos326_f15"){
-					saveGroupArr=[{name: "Group 1-Water Challenges", id:"grp_1"},
-								  {name: "Group 2-Parks Challenges", id:"grp_2"},
-								  {name: "Group 3-Transportation Challenges", id:"grp_3"},
-								  {name: "Group 4-Water Challenges", id:"grp_4"},
-								  {name: "Group 5-Parks Challenges", id:"grp_5"},
-								  {name: "Group 6-Transportation Challenges", id:"grp_6"}];
-				}
+				    saveGroupArr=[{name: "Group 1-Water Challenges", id:"grp_1"},
+						  {name: "Group 2-Parks Challenges", id:"grp_2"},
+						  {name: "Group 3-Transportation Challenges", id:"grp_3"},
+						  {name: "Group 4-Water Challenges", id:"grp_4"},
+						  {name: "Group 5-Parks Challenges", id:"grp_5"},
+						  {name: "Group 6-Transportation Challenges", id:"grp_6"},
+						  {name: "Water Consensus", id:"grp_W"},
+						  {name: "Parks Consensus", id:"grp_P"},
+						  {name: "Transportation Consensus", id:"grp_T"}];
+			       }
 				var saveGroupMem = new memory({data: saveGroupArr});
 				saveGroupCombo.set("store", saveGroupMem);
 				if (query.s == "sos326_f15"){
@@ -921,7 +924,7 @@ define([
 				menu.add("mergeButton", function(e){
 					event.stop(e);
 					registry.byId("authorMergeDialog").show();
-					var combo = registry.byId("authorMergeGroup");
+				     	var combo = registry.byId("authorMergeGroup");
 					var arr=[{name: "Private("+query.u+")", id: "query.u"},
 						{name: "public", id: "public"},
 						{name:"Official Problems",id:""}
@@ -929,16 +932,26 @@ define([
 					// TODO: move this data to a json, or pull from forum database (longer term)
 					//       be sure to change the other sos326_f15 reference in the save as code as well!
 					if (query.s == "sos326_f15"){
-						arr=[	{name: "Group 1-Water Challenges", id:"grp_1"},
-								{name: "Group 2-Parks Challenges", id:"grp_2"},
-								{name: "Group 3-Transportation Challenges", id:"grp_3"},
-								{name: "Group 4-Water Challenges", id:"grp_4"},
-								{name: "Group 5-Parks Challenges", id:"grp_5"},
-								{name: "Group 6-Transportation Challenges", id:"grp_6"}];
+					    arr=[{name: "Group 1-Water Challenges", id:"grp_1"},
+						 {name: "Group 2-Parks Challenges", id:"grp_2"},
+						 {name: "Group 3-Transportation Challenges", id:"grp_3"},
+						 {name: "Group 4-Water Challenges", id:"grp_4"},
+						 {name: "Group 5-Parks Challenges", id:"grp_5"},
+						 {name: "Group 6-Transportation Challenges", id:"grp_6"},
+						 {name: "Water Consensus", id:"grp_W"},
+						 {name: "Parks Consensus", id:"grp_P"},
+						 {name: "Transportation Consensus", id:"grp_T"}];
+					    var sectionBox = registry.byId("authorMergeSection");
+					    sectionBox.set("value","sos326_f15");
+					    sectionBox.set("disabled",true);
 					}
 					var m = new memory({data: arr});
 					combo.set("store", m);
-					combo.set("value","Private("+query.u+")")//setting the default
+					if (query.s == "sos326_f15"){
+					    combo.set("value","Group 1-Water Challenges");
+					} else {
+					    combo.set("value","Private("+query.u+")"); //setting the default
+					}
 				});
 
 				on(registry.byId("mergeDialogButton"),"click",function(){
