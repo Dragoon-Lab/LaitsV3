@@ -762,7 +762,7 @@ define([
 			// Tags: Private
 			var nodeType = "";
 			if(this.showCorrectAnswer){ //For Other modes get node type from given model
-			  	nodeType = this.model.given.getType(givenNodeID); 
+				nodeType = this.model.given.getType(givenNodeID); 
 			}else{  //For EDITOR and TEST get node type from user selected answer
 				nodeType = this.model.student.getType(this.model.student.getNodeIDFor(givenNodeID));
 			}
@@ -787,14 +787,14 @@ define([
 				break;
 			case "initial":
 				if(this.model.given.getUnits(givenNodeID) && this.model.student.getUnits(this.model.student.getNodeIDFor(givenNodeID)) != this.model.given.getUnits(givenNodeID)){
-                    disable(obj, "units", false);
+					disable(obj, "units", false);
 					newPart = "units";
 				}else if(nodeType === "function" || nodeType === "accumulator"){
-                    var dat = dom.byId("equationBox").value;
-                    if(dat=="") {
-                    	disable(obj, "equation", false);
-                    }
-                    newPart = "equation";
+					var dat = dom.byId("equationBox").value;
+					if(dat=="") {
+						disable(obj, "equation", false);
+					}
+					newPart = "equation";
 				}else if(nodeType === "parameter"){
 					disable(obj, "equation", true);
 					newPart = "equation";
@@ -804,11 +804,11 @@ define([
 				if(nodeType === "parameter"){
 					disable(obj, "equation", true);
 				}else if(nodeType === "function" || nodeType === "accumulator"){
-	                var dat = dom.byId("equationBox").value;
-                    if(dat==""){
-                    	disable(obj, "equation", false);
-                    }
-			    }
+					var dat = dom.byId("equationBox").value;
+					if(dat==""){
+						disable(obj, "equation", false);
+					}
+				}
 				newPart = "equation";
 				break;
 			}
@@ -831,9 +831,9 @@ define([
 
 			// Anonymous function assigned to interpret--used by most parts of the switch below
 			var interpret = function(correctAnswer){
-                //we create temporary answer and temporary correct answer both parsed as float to compare if the numbers are strings in case of execution
-                answer_temp1=parseFloat(answer);
-                correctAnswer_temp1=parseFloat(correctAnswer);
+				//we create temporary answer and temporary correct answer both parsed as float to compare if the numbers are strings in case of execution
+				answer_temp1=parseFloat(answer);
+				correctAnswer_temp1=parseFloat(correctAnswer);
 				if(answer === correctAnswer || correctAnswer === true || answer_temp1 == correctAnswer_temp1){
 					interpretation = "correct";
 				}else{
@@ -869,7 +869,7 @@ define([
 					}else if(this.model.isNodeVisible(studentID, answer)){
 							interpretation = "redundant";
 					}else if(this.model.isParentNode(answer) || (this.model.isNodesParentVisible(studentID, answer) && !this.checkPremature(studentID))){
-                        interpretation = "optimal";
+						interpretation = "optimal";
 					}else if(this.model.student.getNodes().length === 0){
 						interpretation = "notTopLevel";
 					}else{
@@ -882,14 +882,14 @@ define([
 				case "type":
 					interpret(this.model.given.getType(givenID));
 					break;
-	            case "initial":
-	                //We check the typeof returning initial value, if it is
-	                //a number we check with the model else return correct
-	                //interpretation
+				case "initial":
+					//We check the typeof returning initial value, if it is
+					//a number we check with the model else return correct
+					//interpretation
 					if(typeof this.model.given.getInitial(givenID) === "number"){
-	                    interpret(this.model.given.getInitial(givenID));
+						interpret(this.model.given.getInitial(givenID));
 					}else{
-	                    interpretation = "correct";
+						interpretation = "correct";
 					}
 					break;
 				case "units":
@@ -936,16 +936,16 @@ define([
 			//		of the node editor should be active.
 			//
 			// Tags: Private
-            var actual_id = this.model.student.getDescriptionID(id);
-            console.log("actual id is",actual_id);
+			var actual_id = this.model.student.getDescriptionID(id);
+			console.log("actual id is",actual_id);
 			var interpretation = this._getInterpretation(id, nodePart, answer);
 			var returnObj = [], currentStatus;
 			var givenID;  // ID of the correct node, if it exists
 			var solutionGiven = false;
 			var givenAnswer = answer; //keeping a copy of answer for logging purposes.
 			// Send correct answer to controller if status will be set to 'demo'
-			console.log("int is",interpretation, returnObj);
-            if(interpretation === "lastFailure" || interpretation === "secondFailure"){
+			//console.log("int is",interpretation, returnObj);
+			if(interpretation === "lastFailure" || interpretation === "secondFailure"){
 				answer = this.model.student.getCorrectAnswer(id, nodePart);
 				// In case of an equation, we need to substitute variablenames in for the IDs.
 				if(nodePart == "equation"){
@@ -958,16 +958,16 @@ define([
 						console.error("Unexpected null from model.getCorrectAnswer().");
 				}else{
 					//do not need this as getCorrectAnswer gives the correct answer for execution activity
-                    /*if(this.activityConfig.get("executionExercise")){
-                        var itr = this.model.student.getIteration();
-                        answer = answer[itr];
-                    }*/
+					/*if(this.activityConfig.get("executionExercise")){
+						var itr = this.model.student.getIteration();
+						answer = answer[itr];
+					}*/
 					returnObj.push({id: nodePart, attribute: "value", value: answer});
 					solutionGiven = true;
 				}
 			}
 
-            console.log("flag1",returnObj);
+			//console.log("flag1",returnObj);
 			// Local function that updates the status if it is not already set to "correct" or "demo"
 			var updateStatus = function(returnObj, model){
 				returnObj.forEach(function(i){
@@ -1001,19 +1001,19 @@ define([
 					}
 				});
 			};
-            console.log("flag2",returnObj);
+			//console.log("flag2",returnObj);
 			// Process answers for description
 			if(nodePart === "description"){
 				if(answer){
 					givenID = answer;
 					descriptionTable[interpretation][this.userType](returnObj, nodePart);
-                    //In the case where each node in expression is sent to pedagogical module
-                    //In the case of already solved nodes, the type is being unlocked if it is part of expression
-                    // so in such cases we check if the status of the node is correct then we disable the type
-                    if(this.model.given.getStatus(answer,"type")== "correct"){
-                        console.log("disabled");
-                        disable(returnObj, "type", true);
-                    }
+					//In the case where each node in expression is sent to pedagogical module
+					//In the case of already solved nodes, the type is being unlocked if it is part of expression
+					// so in such cases we check if the status of the node is correct then we disable the type
+					if(this.model.given.getStatus(answer,"type")== "correct"){
+						console.log("disabled");
+						disable(returnObj, "type", true);
+					}
 					for(var i = 0; i < returnObj.length; i++){
 						if(returnObj[i].value === "correct" || returnObj[i].value === "demo"){
 							currentStatus = this.model.given.getStatus(givenID, nodePart); //get current status set in given model
@@ -1041,8 +1041,8 @@ define([
 					}	
 
 				}
-				// Process answers for all other node types
-                console.log("flag3",returnObj);
+			// Process answers for all other node types
+			//console.log("flag3",returnObj);
 			}else{
 				givenID = this.model.student.getDescriptionID(id);
 				if(this.activityConfig.get("showNodeEditor")) {
@@ -1183,7 +1183,7 @@ define([
 				this.logging.log('solution-step', logObj);
 
 				record.increment("problemCompleted", 1);
-				if(this.activityConfig.get("showFeedback")){
+				if(this.activityConfig.getActivity() == "construction" && this.activityConfig.get("showFeedback")){
 					// Number of problems to show the hint upon completion
 					if(record.getLocal("problemCompleted") < 3 ){
 						return	[{
