@@ -30,26 +30,35 @@ define([
 ], function(dom, ready, registry, on, style){
 	var widget = function(){
 		this.tutorialShown = null;
-		this.slides = [{
-			title : "Dragoon",
-			url : "images/ss_tutorial1.png",
-			content : "Dragoon is a system for creating models of dynamic systems.  The system being modeled is described on the left side of the screen.",
-		}, 
-		{
-			title : "Analysis of the model",
-			url : "images/ss_tutorial2.gif",
-			content : "You will use Dragoon to build models that calculate graphs and tables of system quantities.  Note how the graphs change instantly as you manipulate the sliders.",
-		},
-		{
-			title : "How it Works",
-			url : "images/ss_tutorial4.png",
-			content : "A Dragoon model looks like this.  The circles, diamonds and squares are called nodes, and represent quantities.    A diamond corresponds to a quantity whose value is constant but you can control it with a slider on the graph window.  A circle or square is a quantity whose value is a mathematical function of its inputs.  The incoming arrows show you which nodes are its inputs.  When you click on a node, you can see its details (and in some activities, edit them).",
-		},
-		{
-			title : "For more information",
-			url : "images/ss_tutorial5.png",
-			content : "You can go to help menu to learn more.",
-		}]; 
+		this.slides = [
+			{
+				"title" : "Dragoon",
+				"url" : "images/ss_tutorial1.png",
+				"content" : "Dragoon is a system for creating models of dynamic systems. " +
+				" The system being modeled is described on the left side of the screen."
+			},
+			{
+				"title" : "Analysis of the model",
+				"url" : "images/ss_tutorial2.gif",
+				"content" : "You will use Dragoon to build models that calculate graphs and tables of system quantities. " +
+				" Note how the graphs change instantly as you manipulate the sliders."
+			},
+			{
+				"title" : "How it Works",
+				"url" : "images/ss_tutorial4.png",
+				"content" : "A Dragoon model looks like this. " +
+				" The circles, diamonds and squares are called nodes, and represent quantities.  " +
+				"  A diamond corresponds to a quantity whose value is constant but you can control" +
+				" it with a slider on the graph window.  A circle or square is a quantity whose value is a" +
+				" mathematical function of its inputs.  The incoming arrows show you which nodes are its inputs." +
+				"  When you click on a node, you can see its details (and in some activities, edit them)."
+			},
+			{
+				"title" : "For more information",
+				"url" : "images/ss_tutorial5.png",
+				"content" : "You can go to help menu to learn more."
+			}];
+
 		this.next = registry.byId("tutorialNext");
 		this.prev = registry.byId("tutorialPrev");
 		this.show = registry.byId("tutorialShow");
