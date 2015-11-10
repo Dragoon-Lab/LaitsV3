@@ -147,7 +147,7 @@ exports.popupContainsText = function(expectedText,dtest,client){
 
 exports.canvasMessageContainsText = function(expectedText,dtest,client){
 	var messages = dtest.getCanvasMessages(client);
-	assert(messages.length == 0,"No canvas messages found!");
+	assert(messages.length != 0,"No canvas messages found!");
 	if(messages.length != 0){
 		var found = false;
 		for (var i = 0; i<messages.length; i++){

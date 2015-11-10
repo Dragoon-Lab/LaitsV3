@@ -58,16 +58,15 @@ describe("Regression test for bug 1487 - incremental crash with no error message
                                       ["activity","incremental"],
                                       ["section","regression-testing"],
                                       ["logging","true"]]);
-            dtest.waitTime(10000);
     }));
 
-    describe("Test for yellow description with incorrect choice", function(){
+    describe("Test to make sure the incremental error message appears.", function(){
         it("Should display the \"no tweaked nodes\" error message.", async(function(){
             atest.canvasMessageContainsText("has not set up the initial incremental",dtest,client);
         }));
     });
 
     after(async(function(done){
-        //dtest.endTest(client);
+        dtest.endTest(client);
     }));
 });

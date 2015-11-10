@@ -510,7 +510,8 @@ exports.getNodeInteriorText = function(client,nodeName){
 
 exports.getCanvasMessages = function(client){
     // TODO: Get all the messages; for now this only returns the first message.  
-    return [await(client.getText("#errorMessageBox-message-text-0",defer()))];
+    var msg = await(client.getText("#errorMessageBox-message-text-0",defer()));
+    return [msg];
 }
 
 
