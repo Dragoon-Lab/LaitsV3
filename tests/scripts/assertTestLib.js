@@ -144,3 +144,19 @@ exports.popupContainsText = function(expectedText,dtest,client){
 	var text = dtest.popupWindowGetText(client);
 	assert(text.indexOf(expectedText) >= 0,"Message text was \"" + text + "\", could not find \"" + expectedText+"\"");
 }
+
+exports.canvasMessageContainsText = function(expectedText,dtest,client){
+	var messages = dtest.getCanvasMessages(client);
+	assert(messages.length == 0,"No canvas messages found!");
+	if(messages.length != 0){
+		var found = false;
+		for (var i = 0; i<messages.length; i++){
+			var text = messages[i];
+			found = text.indexOf(expectedText) >= 0;
+			if(found){
+				break;
+			}
+		}
+		assert(found,"Could not find \"" + expectedText+"\" in the canvas message(s).");
+	}
+}
