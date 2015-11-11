@@ -783,6 +783,7 @@ define([
 						attempts: 0,
 						correctScore: 0,
 						timeSpent: 0,
+						bayesParams: {},
 						values:{}
 					},
 					nodes: "",
@@ -1038,6 +1039,20 @@ define([
 				}
 
 				return null;
+			},
+			getSchemasForNode: function(/* string */ givenID){
+				//var givenID = this.getDescriptionID(id);
+				var schemas = this.getSchemas();
+				var returnSchemas = [];
+				if(schemas){
+					array.forEach(schemas, function(schema){
+						if(schema.nodes.indexOf(givenID) >= 0){
+							returnSchemas.push(schema.ID);
+						}
+					});
+				}
+
+				return returnSchemas;
 			},
 			saveSchema: function(schema){
 				obj.model.task.schemas.push(schema);
@@ -1345,20 +1360,6 @@ define([
 					update("waveformValue");
 				}
 				return bestStatus;
-			},
-			getSchemasForNode: function(/* string */ id){
-				var givenID = this.getDescriptionID(id);
-				var schemas = this.getSchemas;
-				var returnSchemas = [];
-				if(givenID && schemas){
-					array.forEach(schemas, function(schema){
-						if(schema.nodes.indexOf(id) >= 0){
-							returnSchemas.push(schema.schemaClass);
-						}
-					});
-				}
-
-				return returnSchemas;
 			},
 			matchesGivenSolutionAndCorrect: function() {
 				// Summary: Returns True if (1) matchesGivenSolution is true and (2) if all nodes that are part of the

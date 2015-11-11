@@ -1,4 +1,4 @@
-define([], function(){
+define(["dojo/_base/declare"], function(declare){
 	var parameters = {
 		fast: {
 			linear_transfer:{
@@ -60,7 +60,7 @@ define([], function(){
 	
 	return declare(null, {
 		constructor: function(){
-			this.algorithm = "fast";
+			this.algorithm = "default";
 		},
 
 		get: function(schema, type, paramType, property){
