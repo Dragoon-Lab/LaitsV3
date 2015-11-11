@@ -42,10 +42,10 @@ define([
 		// function called on closing of a node
 		nodeClose: function(/* string */ nodeID){
 			this.endTime();
-
 			this.assess.updateSchema(this.currentNodeTime, this.currentNodeErrors);
 			this.assess.dummy();
 			this.assess.accuracy();
+			this.assess.bayes();
 			this.assess.saveSchema(nodeID);
 
 			this.resetNodeValues();
@@ -70,6 +70,7 @@ define([
 				this.currentNodeErrors.errors++;
 			} 
 			this.currentNodeErrors.total++;
+			this.assess.bayesParamUpdate(nodeID, nodePart, isCorrect);
 		},
 
 		startTime: function(/* string */ nodeID){
