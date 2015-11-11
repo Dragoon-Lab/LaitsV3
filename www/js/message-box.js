@@ -28,7 +28,7 @@ define([
 "dojo/dom-style",
 "dojo/dom-construct",
 "dojo/on",
-"dojo/query",
+"dojo/query"
 ], function(declare, lang, dom, style, domConstruct, on, query){
 	// Summary: 
 	//			Common message box widget
@@ -60,20 +60,21 @@ define([
 			var idCount = nl.length;
 			//Create Outer Div
 			messageOuterDiv = domConstruct.create("div", {
-				id: _container+ "message-outer-"+ idCount, 
-				class:"messageBox messageBox-"+_type });
+				"id": _container+ "message-outer-"+ idCount,
+				"class":"messageBox messageBox-"+_type });
 			_messageBox = messageOuterDiv;
 
 			//Create Message Text Div
 			var messageTextDiv  = domConstruct.create("div", {
-				id: _container + "-message-text-"+ idCount, 
-				class:"error-message", innerHTML: _message });		
+				"id": _container + "-message-text-"+ idCount,
+				"class":"error-message", innerHTML: _message });
 			domConstruct.place(messageTextDiv, messageOuterDiv , "first");
 
 			//Create Error Message Div
 			var errorMessageCloseDiv = domConstruct.create("div", { 
-				id: _container + "-message-close-"+ idCount, class:"error-message-close",
-				innerHTML: "<img src='images/close.png' width='12px' height='12px'>" });
+				"id": _container + "-message-close-"+ idCount,
+				"class":"error-message-close",
+				"innerHTML": "<img src='images/close.png' width='12px' height='12px'>" });
 			domConstruct.place(errorMessageCloseDiv, messageOuterDiv);
 
 			var handler = on(messageOuterDiv, "click", function(){
@@ -83,7 +84,7 @@ define([
 					        node: messageOuterDiv,
 					        onEnd: function(){
 					        	style.set(_messageBox, "display", "none");
-              				},
+              				}
 					    };
 					    dojo.fadeOut(fadeArgs).play();
 						if(_callback && typeof _callback == "function") _callback();
@@ -106,6 +107,6 @@ define([
 		},
 		addCallback : function(fn){
 			_callback = fn;	
-		},
+		}
 	});
 });
