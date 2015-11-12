@@ -77,7 +77,6 @@ define([
 	 */
 
 	console.log("load main.js");
-
 	// Get session parameters
 	var query = {};
 	if(window.location.search){
@@ -261,6 +260,10 @@ define([
 
 
 		ready(function(){
+			//remove the loading division, now that the problem is being loaded
+			var loading = document.getElementById('loadingOverlay');
+			loading.style.display = "none";
+
 			//Set Tab title
 			var taskString = givenModel.getTaskName();
 			document.title ="Dragoon" + ((taskString) ? " - " + taskString : "");
@@ -1568,10 +1571,6 @@ define([
 			if(activity_config.get("demoIncremental") || activity_config.get("demoExecution")) {
 				controllerObject.highlightNextNode();
 			}
-
-			//remove the loading division, now that the problem is being loaded
-			var loading = document.getElementById('loadingOverlay');
-			loading.style.display = "none";
 		});
 
 	});
