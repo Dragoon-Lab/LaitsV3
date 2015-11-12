@@ -382,8 +382,8 @@ define([
 			editorWidget.set('value',this._model.given.getExplanation(this.currentID)); 			
 		},
 
-		handleOKButton: function(){debugger;
-			var editorContent=registry.byId("editorContent").value;
+		handleOKButton: function(){
+			var editorContent=registry.byId("editorContent").value.replace(/u00A0/g," ");
 			console.log("**************** in handleOKButton", editorContent);
 			this._model.given.setExplanation(this.currentID, editorContent);
 			this.logging.log('solution-step', {
