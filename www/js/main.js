@@ -127,13 +127,12 @@ define([
 	}
 	if(activity_config && query.s === "ElectronixTutor"){
 		activity_config["ElectronixTutor"] = true;
-		if(typeof query['p1'] != 'undefined' && typeof query['p2'] != 'undefined'){
+		if(typeof query.p1 != 'undefined' && typeof query.p2 != 'undefined'){
 			// santization required
-			query.u = 'ETUser_' + query['p1'];
-			query.s = 'ETClass_' + query['p2'];
+			query.u = 'ETUser_' + query.p1;
+			query.s = 'ETClass_' + query.p2;
 		}
 	}
-	debugger
 	// Start up new session and get model object from server
 	try {
 		var session = new loadSave(query);
