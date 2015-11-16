@@ -795,7 +795,14 @@ define([
 						  {name: "Group 6-Transportation Challenges", id:"grp_6"},
 						  {name: "Water Consensus", id:"grp_W"},
 						  {name: "Parks Consensus", id:"grp_P"},
-						  {name: "Transportation Consensus", id:"grp_T"}];
+						  {name: "Transportation Consensus", id:"grp_T"},
+ 						  {name: "Whole System Group 1", id:"ws_grp_1"},
+						  {name: "Whole System Group 2", id:"ws_grp_2"},
+						  {name: "Whole System Group 3", id:"ws_grp_3"},
+						  {name: "Whole System Group 4", id:"ws_grp_4"},
+						  {name: "Whole System Group 5", id:"ws_grp_5"},
+						  {name: "Whole System Group 6", id:"ws_grp_6"}
+						  ];
 			       }
 				var saveGroupMem = new memory({data: saveGroupArr});
 				saveGroupCombo.set("store", saveGroupMem);
@@ -940,7 +947,13 @@ define([
 						 {name: "Group 6-Transportation Challenges", id:"grp_6"},
 						 {name: "Water Consensus", id:"grp_W"},
 						 {name: "Parks Consensus", id:"grp_P"},
-						 {name: "Transportation Consensus", id:"grp_T"}];
+						 {name: "Transportation Consensus", id:"grp_T"},
+						 {name: "Whole System Group 1", id:"ws_grp_1"},
+						 {name: "Whole System Group 2", id:"ws_grp_2"},
+						 {name: "Whole System Group 3", id:"ws_grp_3"},
+						 {name: "Whole System Group 4", id:"ws_grp_4"},
+						 {name: "Whole System Group 5", id:"ws_grp_5"},
+						 {name: "Whole System Group 6", id:"ws_grp_6"}];
 					    var sectionBox = registry.byId("authorMergeSection");
 					    sectionBox.set("value","sos326_f15");
 					    sectionBox.set("disabled",true);
