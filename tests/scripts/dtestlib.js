@@ -152,6 +152,10 @@ function getUrlRoot()
     {
         return 'https://dragoon.asu.edu/PAL3/index.html'
     }
+    else if(testTarget === "ET")
+    {
+        return 'https://dragoon.asu.edu/ET/index.html'
+    }
     else if(testTarget === "local")
     {
         return testPath.getLocalPath();
