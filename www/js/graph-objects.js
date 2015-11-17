@@ -116,7 +116,6 @@ define([
 			}
 			else if(showDetails === "WAVEFORM"){
 				content = "";
-				debugger;
 				var waveformValue = model.getWaveformValue(nodeId);
 				if(waveformValue){
 					content = "<img src='images/waveforms/"+waveformValue+".png' width=40 height=40>";
