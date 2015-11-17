@@ -395,7 +395,7 @@ define(["dojo/_base/lang"], function (lang) {
 
 
 					}}
-			],
+			]
 		};
 
 		var config = {

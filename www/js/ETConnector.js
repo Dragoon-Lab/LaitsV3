@@ -27,7 +27,7 @@ define([
 	"dojo/dom-class",
 	"dojo/dom-style",
 	"dojo/ready",
-	"dojo/on",	
+	"dojo/on"
 ], function(array, declare, lang, dom, domClass, style, ready,on){
 	return declare(null, {
 		constructor : function(frameTitle){

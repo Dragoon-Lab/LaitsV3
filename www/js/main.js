@@ -77,11 +77,6 @@ define([
 	 */
 
 	console.log("load main.js");
-
-	//remove the loading division, now that the problem is being loaded
-	var loading = document.getElementById('loadingOverlay');
-	loading.style.display = "none";
-
 	// Get session parameters
 	var query = {};
 	if(window.location.search){
@@ -132,8 +127,12 @@ define([
 	}
 	if(activity_config && query.s === "ElectronixTutor"){
 		activity_config["ElectronixTutor"] = true;
+		if(typeof query.p1 != 'undefined' && typeof query.p2 != 'undefined'){
+			// santization required
+			query.u = 'ETUser_' + query.p1;
+			query.s = 'ETClass_' + query.p2;
+		}
 	}
-	
 	// Start up new session and get model object from server
 	try {
 		var session = new loadSave(query);
@@ -153,9 +152,6 @@ define([
 		 * removing the overlay as the actual computation does not take much time
 		 * and it causes errors to stay hidden behind the overlay which continues infinitely.
 		 */
-
-		var loading = document.getElementById('loadingOverlay');
-		loading.style.display = "none";
 
 		//display warning message if not using the supported browser and version
 		var checkBrowser = session.browser.name;
@@ -264,73 +260,80 @@ define([
 			}
 		}		
 
-		/*
-		 * start up controller
-		 */
-
-		/*
-		 * The sub-mode of STUDENT mode can be either "feedback" or "power"
-		 * This is eventually supposed to be supplied by the student model.
-		 * In the mean time, allow it as a GET parameter.
-		 */
-		var subMode = query.sm || "feedback";
-
-		/* In principle, we could load just one controller or the other. */
-		var controllerObject = query.m == 'AUTHOR' ?
-			new controlAuthor(query.m, subMode, givenModel, query.is, ui_config, activity_config) :
-			new controlStudent(query.m, subMode, givenModel, query.is, ui_config, activity_config);
-
-		//setting up logging for different modules.
-		if(controllerObject._PM){
-			controllerObject._PM.setLogging(session);  // Set up direct logging in PM
-		}
-		controllerObject.setLogging(session); // set up direct logging in controller
-		equation.setLogging(session);
-
-		/*
-		 * Create state object
-		 */
-
-		var state = new State(query.u, query.s, "action");
-		
-		/*state.get("isLessonLearnedShown").then(function(reply) {
-
-			if(reply) givenModel.setLessonLearned(reply);
-		}); */
-		state.get("isDoneButtonShown").then(function(reply){
-			console.log("reply for done",reply);
-			if(reply === true || reply === false)
-				givenModel.setDoneMessageShown(reply);
-		});
-		state.get("isGraphHelpShown").then(function(reply){
-			console.log("reply for graph",reply);
-			if(reply === true || reply === false)
-				givenModel.setGraphHelpShown(reply);
-		});
-		controllerObject.setState(state);
 
 
-		//check if the use has already completed the tutorial
-		var twidget = new TutorialWidget();
-		var tutorialState = new State(query.u, query.s, "action");
-		if(!twidget.avoidTutorial(query))
-			tutorialState.get("tutorialShown").then(function(res){
-				if(res != "" || res == "true") return;
-				twidget.setState();
-				twidget.begin(function(){
-					tutorialState.put("tutorialShown", "true");
-				});
-
-			});
-
-		
-		//ZoomCorrector.validate();
 
 		ready(function(){
+			//remove the loading division, now that the problem is being loaded
+			var loading = document.getElementById('loadingOverlay');
+			loading.style.display = "none";
+
 			//Set Tab title
 			var taskString = givenModel.getTaskName();
 			document.title ="Dragoon" + ((taskString) ? " - " + taskString : "");
-			
+
+			/*
+			 * start up controller
+			 */
+
+			/*
+			 * The sub-mode of STUDENT mode can be either "feedback" or "power"
+			 * This is eventually supposed to be supplied by the student model.
+			 * In the mean time, allow it as a GET parameter.
+			 */
+			var subMode = query.sm || "feedback";
+
+			/* In principle, we could load just one controller or the other. */
+			var controllerObject = query.m == 'AUTHOR' ?
+				new controlAuthor(query.m, subMode, givenModel, query.is, ui_config, activity_config) :
+				new controlStudent(query.m, subMode, givenModel, query.is, ui_config, activity_config);
+
+			//setting up logging for different modules.
+			if(controllerObject._PM){
+				controllerObject._PM.setLogging(session);  // Set up direct logging in PM
+			}
+			controllerObject.setLogging(session); // set up direct logging in controller
+			if(query.m != 'AUTHOR'){
+				controllerObject.setAssessment(session); //set up assessment for student.
+			}
+			equation.setLogging(session);
+
+			/*
+			 * Create state object
+			 */
+
+			var state = new State(query.u, query.s, "action");
+
+			/*state.get("isLessonLearnedShown").then(function(reply) {
+
+			 if(reply) givenModel.setLessonLearned(reply);
+			 }); */
+			state.get("isDoneButtonShown").then(function(reply){
+				console.log("reply for done",reply);
+				if(reply === true || reply === false)
+					givenModel.setDoneMessageShown(reply);
+			});
+			state.get("isGraphHelpShown").then(function(reply){
+				console.log("reply for graph",reply);
+				if(reply === true || reply === false)
+					givenModel.setGraphHelpShown(reply);
+			});
+			controllerObject.setState(state);
+
+			//check if the use has already completed the tutorial
+			var twidget = new TutorialWidget();
+			var tutorialState = new State(query.u, query.s, "action");
+			if(!twidget.avoidTutorial(query))
+				tutorialState.get("tutorialShown").then(function(res){
+					if(res != "" || res == "true") return;
+					twidget.setState();
+					twidget.begin(function(){
+						tutorialState.put("tutorialShown", "true");
+					});
+
+				});
+
+
 			//This array is used later to called the setSelected function for all the buttons in the menu bar
 			//moved this at the start so that the buttons flicker at the start rather than at the end.
 			var menuButtons=[];
@@ -1599,6 +1602,7 @@ define([
 				controllerObject.highlightNextNode();
 			}
 		});
+
 	});
 	
 	function removeURLParam(param,url){

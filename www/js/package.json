@@ -1,0 +1,7 @@
+{
+  "name": "draggon-js",
+  "description": "Dragoon JavaScript Package",
+  "version": "0.1",
+  "main": "main",
+  "dojoBuild": "dragoon.profile.js"
+}

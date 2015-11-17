@@ -26,6 +26,7 @@ describe("Test author mode", function() {
                 ["mode","AUTHOR"], 
                 ["section","regression-testing"], 
                 ["group","autotest"]]);
+            dtest.waitTime(3000); // Extra wait for slower machines
     }));
 
     describe("Testing check on empty problem", function(){
