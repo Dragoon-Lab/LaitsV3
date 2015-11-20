@@ -1,9 +1,9 @@
 {
     "task": {
-        "taskName": "Model a Series Positive Limiter",
+        "taskName": "series-limiter-negative",
         "time": {
             "start": 0,
-            "end": 200,
+            "end": 100,
             "step": 1,
             "integrationMethod": "Eulers Method",
             "units": "milliseconds"
@@ -12,22 +12,24 @@
             "isGraphHelpShown": true
         },
         "image": {
-            "URL": "images/PAL3/series-positive-limiter.png"
+            "URL": "http://i.imgur.com/R7aEZcz.png?1"
         },
         "taskDescription": {
             "construction": [
-                "Construct a model of the given schematic.  You are given nodes for the AC input voltage.  Assume that the diode, D, is not ideal and has a knee voltage of 0.7 v.  Assume that the resistor, R, has resistance of 1000 ohms.  Complete the model and view the graph of the current through the resistor."
+                "You are given an AC input voltage.  Construct a model of given schematic.  Assume that the diode is not ideal and has a knee voltage of 0.7 v.  As the schematic (should) show, the resistor is 1000 ohms. Finish the model and view the graph of the resistor"
             ],
             "incremental": [
-                "This is a model for a series positive limiter with an AC input voltage.  Assume that the diode, D, is not ideal and has a knee voltage."
+                "You are given an AC input voltage. Assume that the diode is not ideal and has a knee voltage of 0.7 v.  As the schematic (should) show, the resistor is 1000 ohms."
+            ],
+            "execution": [
+                "You are given an AC input voltage. Assume that the diode is not ideal and has a knee voltage of 0.7 v.  As the schematic (should) show, the resistor is 1000 ohms."
             ],
             "waveform": [
-                "Here is a model of the given schematic.  Although the diode is not ideal, assume that the knee voltage is so small that it looks like zero on the y-axis when graphed.  "
+                "You are given an AC input voltage. Assume that the diode is not ideal and has a knee voltage of 0.7 v.  As the schematic (should) show, the resistor is 1000 ohms. Although the model treats the diode(s) as non-ideal and includes a knee voltage, for this activity, assume that the knee voltage is so small that it graphs as zero on the y-axis."
             ]
         },
         "lessonsLearned": [],
         "increment": [],
-        "executionIterations": null,
         "givenModelNodes": [
             {
                 "ID": "id1",
@@ -77,7 +79,7 @@
                         "status": "entered"
                     }
                 },
-                "name": "Max input voltage",
+                "name": "max input voltage",
                 "description": "Maximum input voltage value",
                 "equation": "",
                 "type": "parameter",
@@ -140,7 +142,7 @@
                         "status": "entered"
                     }
                 },
-                "name": "AC voltage source",
+                "name": "ac voltage source",
                 "description": "input voltage source",
                 "type": "function",
                 "units": "volts",
@@ -196,7 +198,7 @@
                         "status": "entered"
                     }
                 },
-                "name": "Resistance of R",
+                "name": "R of resistor",
                 "description": "Resistance of resistor",
                 "equation": "",
                 "type": "parameter",
@@ -253,7 +255,7 @@
                         "status": "entered"
                     }
                 },
-                "name": "Knee voltage",
+                "name": "knee voltage",
                 "equation": "",
                 "type": "parameter",
                 "parentNode": false,
@@ -318,13 +320,45 @@
                         "status": "entered"
                     }
                 },
-                "name": "Output V",
+                "name": "output V",
                 "type": "function",
                 "units": "volts",
                 "equation": "id2-id10",
                 "genus": "required",
                 "description": "output voltage across resistor R",
-                "waveformValue": "wave009"
+                "parentNode": true,
+                "waveformValue": "wave010",
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                }
             },
             {
                 "ID": "id9",
@@ -376,7 +410,7 @@
                         "status": "entered"
                     }
                 },
-                "name": "Wavelength",
+                "name": "wavelength",
                 "description": "Length of sine wave source voltage",
                 "equation": "",
                 "type": "parameter",
@@ -441,14 +475,45 @@
                         "status": "entered"
                     }
                 },
-                "name": "V across D",
-                "description": "Voltage drop across the diode",
+                "name": "V across D1",
+                "description": "Voltage drop across diode D1",
                 "type": "function",
                 "units": "volts",
-                "equation": "if(((id12<(-id6)),(-id6)),id12)",
+                "equation": "if(((id12>id6),id6),id12)",
                 "genus": "required",
                 "explanation": "Because the drop is measured from anode (left) to cathode (right), the diode is forward biased when the drop is sufficiently negative.",
-                "waveformValue": "wave010"
+                "waveformValue": "wave009",
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                }
             },
             {
                 "ID": "id11",
@@ -514,8 +579,38 @@
                 "units": "amps",
                 "equation": "id8/id4",
                 "genus": "required",
-                "parentNode": true,
-                "waveformValue": "wave009"
+                "waveformValue": "wave010",
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                }
             },
             {
                 "ID": "id12",
@@ -571,14 +666,45 @@
                         "status": "entered"
                     }
                 },
-                "name": "V across D when open",
+                "name": "V across D1 when open",
                 "description": "V across the diode when it is reverse biased",
                 "type": "function",
                 "units": "volts",
                 "equation": "id2",
                 "explanation": "If the diode were an open circuit, then its right side (anode) would be a ground and its left side (cathode) would be at the AC input voltage. u00a0This voltage drop is measured from left to right, so the quantity is equal to the input voltage.",
                 "genus": "required",
-                "waveformValue": "wave007"
+                "waveformValue": "wave007",
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                }
             }
         ],
         "studentModelNodes": [
@@ -613,7 +739,7 @@
                 "type": "parameter"
             },
             {
-                "ID": "id17",
+                "ID": "id16",
                 "inputs": [],
                 "position": {
                     "x": 695.85607910156,
@@ -643,13 +769,13 @@
                 "type": "parameter"
             },
             {
-                "ID": "id18",
+                "ID": "id19",
                 "inputs": [
                     {
                         "ID": "id13"
                     },
                     {
-                        "ID": "id17"
+                        "ID": "id16"
                     }
                 ],
                 "position": {
@@ -677,17 +803,19 @@
                 "descriptionID": "id2",
                 "units": "volts",
                 "type": "function",
-                "equation": "id13*sinewave(id17,0)"
+                "equation": "id13*sinewave(id16,0)"
             }
         ],
         "schemas": [
             {
-                "ID": "schema4",
+                "ID": "schema5",
                 "schemaClass": "diode_behavior-forward",
                 "name": "Diode Behavior-Forward",
                 "competence": {
                     "errors": 0,
                     "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
                     "timeSpent": 0,
                     "values": {}
                 },
@@ -700,16 +828,18 @@
                 }
             },
             {
-                "ID": "schema5",
+                "ID": "schema6",
                 "schemaClass": "diode_behavior-reverse",
                 "name": "Diode Behavior-Reverse",
                 "competence": {
                     "errors": 0,
                     "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id10, id6",
+                "nodes": "id10, id6, id12",
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,
@@ -724,10 +854,12 @@
                 "competence": {
                     "errors": 0,
                     "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id4",
+                "nodes": "id4, id11",
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,
@@ -736,45 +868,9 @@
                 }
             },
             {
-                "ID": "schema12",
-                "schemaClass": "diode_behavior-reverse",
-                "name": "Diode Behavior-Reverse",
-                "competence": {
-                    "errors": 0,
-                    "total": 0,
-                    "timeSpent": 0,
-                    "values": {}
-                },
-                "nodes": "id12, id10, id6",
-                "rates": {},
-                "difficulty": {
-                    "isolation": 1,
-                    "cues": 1,
-                    "phrases": 1
-                }
-            },
-            {
-                "ID": "schema13",
-                "schemaClass": "resistor_behavior",
-                "name": "Resistor Behavior",
-                "competence": {
-                    "errors": 0,
-                    "total": 0,
-                    "timeSpent": 0,
-                    "values": {}
-                },
-                "nodes": "id4, id11, id8",
-                "rates": {},
-                "difficulty": {
-                    "isolation": 1,
-                    "cues": 1,
-                    "phrases": 0
-                }
-            },
-            {
-                "ID": "schema16",
-                "schemaClass": "series_pos_limiter_behavior",
-                "name": "Series Positive Limiter Behavior",
+                "ID": "schema10",
+                "schemaClass": "series_neg_limiter_behavior",
+                "name": "Series Negative Limiter Behavior",
                 "competence": {
                     "errors": 0,
                     "total": 0,
@@ -792,7 +888,7 @@
                 }
             },
             {
-                "ID": "schema17",
+                "ID": "schema13",
                 "schemaClass": "ohms_law",
                 "name": "Ohm's Law: Voltage",
                 "competence": {
@@ -812,7 +908,7 @@
                 }
             },
             {
-                "ID": "schema18",
+                "ID": "schema15",
                 "schemaClass": "kirchoff_voltage_law",
                 "name": "Kirchoff's Voltage Law",
                 "competence": {
