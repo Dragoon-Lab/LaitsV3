@@ -993,7 +993,7 @@ define([
 						directives.push({
 							id: 'crisisAlert',
 							attribute: 'open',
-							value: "The old value of the accumulator is already included in the expression, so you don't have to mention it in the expression.  Only put an expression for the change in the accumulators value.",
+							value: "The old value of the accumulator is already included in the expression, so you don't have to mention it in the expression.  Only put an expression for the change in the accumulators value."
 						});
 						this.logging.log("solution-step", {
 							type: "self-referencing-accumulator",

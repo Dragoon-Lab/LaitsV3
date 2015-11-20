@@ -126,6 +126,9 @@ define([
 					{
 						var initialValue = typeof(model.getInitial(nodeId)) === "number" ? model.getInitial(nodeId) : '';
 						var unitsValue = model.getUnits(nodeId);
+						if (!unitsValue) {
+							unitsValue = '';
+						}
 						content = '<strong class="nodeContent">'+ initialValue + '<br/>'+ unitsValue +'</strong>';
 					}else{
 						content = "";

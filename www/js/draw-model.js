@@ -86,9 +86,9 @@ define([
 			this._instance = instance;
 			this._givenModel = givenModel;
 			var shapes = {
-				accumulator: "accumulator",
-				function: "function",
-				parameter: "parameter"
+				"accumulator": "accumulator",
+				"function": "function",
+				"parameter": "parameter"
 			};
 
 			// initialise draggable elements.
