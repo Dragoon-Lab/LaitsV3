@@ -124,8 +124,8 @@ define([
 					if(schema.nodes.indexOf(errors.given) >= 0){
 						schema.competence.errors += errors.errors;
 						schema.competence.total += errors.total;
-						schema.competence.correctScore += this.currentScore.hasOwnProperty(errors.given) ? 
-															this.currentScore[errors.given] : 0;
+						schema.competence.correctScore += (this.currentScore.hasOwnProperty(errors.given) ? 
+															this.currentScore[errors.given] : 0);
 						//schema.competence.timeSpent += error.time
 					}
 				}, this);

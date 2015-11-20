@@ -293,9 +293,6 @@ define([
 				controllerObject._PM.setLogging(session);  // Set up direct logging in PM
 			}
 			controllerObject.setLogging(session); // set up direct logging in controller
-			if(query.m != 'AUTHOR'){
-				controllerObject.setAssessment(session); //set up assessment for student.
-			}
 			equation.setLogging(session);
 
 			/*
