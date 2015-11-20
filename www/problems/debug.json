@@ -1,0 +1,766 @@
+{
+  "task": {
+    "taskName": "buggy-positive-clamper",
+    "time": {
+      "start": 0,
+      "end": 300,
+      "step": 1,
+      "integrationMethod": "Eulers Method",
+      "units": "seconds"
+    },
+    "properties": {},
+    "image": {
+      "URL": "http://i.imgur.com/wKuHnPo.png?1"
+    },
+    "taskDescription": {
+      "construction": ""
+    },
+    "lessonsLearned": [],
+    "increment": [
+      {
+        "tweakedNode": "defaultSelect",
+        "tweakDirection": "defaultSelect"
+      }
+    ],
+    "executionIterations": null,
+    "givenModelNodes": [
+      {
+        "ID": "id1",
+        "inputs": [
+          {
+            "ID": "id23"
+          }
+        ],
+        "position": {
+          "x": 529,
+          "y": 276
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "tweakedDirection": 0,
+          "executionValue": 0,
+          "assistanceScore": 0
+        },
+        "status": {
+          "root": {
+            "disabled": false
+          },
+          "name": {
+            "status": "entered"
+          },
+          "type": {
+            "status": "entered"
+          },
+          "initial": {
+            "disabled": true,
+            "status": ""
+          },
+          "inputs": {
+            "disabled": false,
+            "status": ""
+          },
+          "equation": {
+            "disabled": false,
+            "status": "entered"
+          },
+          "units": {
+            "status": "entered"
+          },
+          "kind": {
+            "status": "entered"
+          },
+          "description": {
+            "status": "entered"
+          }
+        },
+        "name": "R of diode",
+        "equation": "if((id23<=0,10),(10^8))",
+        "type": "function",
+        "parentNode": false,
+        "initial": "",
+        "units": "ohms",
+        "genus": "required",
+        "description": "R of diode"
+      },
+      {
+        "ID": "id5",
+        "inputs": [
+          {
+            "ID": "id6"
+          },
+          {
+            "ID": "id27"
+          }
+        ],
+        "position": {
+          "x": 628,
+          "y": 138
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "tweakedDirection": 0,
+          "executionValue": 0,
+          "assistanceScore": 0
+        },
+        "status": {
+          "root": {
+            "disabled": false
+          },
+          "name": {
+            "status": "entered"
+          },
+          "type": {
+            "status": "entered"
+          },
+          "initial": {
+            "disabled": true,
+            "status": ""
+          },
+          "inputs": {
+            "disabled": false
+          },
+          "equation": {
+            "disabled": false,
+            "status": "entered"
+          },
+          "units": {
+            "status": "entered"
+          },
+          "kind": {
+            "status": "entered"
+          },
+          "description": {
+            "status": "entered"
+          }
+        },
+        "name": "input voltage",
+        "type": "function",
+        "units": "volts",
+        "equation": "(-id6)*sinewave(id27,0)",
+        "genus": "required",
+        "description": "input voltage"
+      },
+      {
+        "ID": "id6",
+        "inputs": [],
+        "position": {
+          "x": 732.8560791015625,
+          "y": 38.17930221557617
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "tweakedDirection": 0,
+          "executionValue": 0,
+          "assistanceScore": 0
+        },
+        "status": {
+          "root": {
+            "disabled": true
+          },
+          "name": {
+            "status": "entered"
+          },
+          "type": {
+            "status": "entered"
+          },
+          "initial": {
+            "disabled": false,
+            "status": "entered"
+          },
+          "inputs": {
+            "disabled": true,
+            "status": ""
+          },
+          "equation": {
+            "disabled": true,
+            "status": ""
+          },
+          "units": {
+            "status": "entered"
+          },
+          "kind": {
+            "status": "entered"
+          },
+          "description": {
+            "status": "entered"
+          }
+        },
+        "name": "max peak",
+        "equation": "",
+        "type": "parameter",
+        "parentNode": false,
+        "initial": 5,
+        "units": "volts",
+        "genus": "required",
+        "description": "max peak"
+      },
+      {
+        "ID": "id8",
+        "inputs": [
+          {
+            "ID": "id12",
+            "label": ""
+          }
+        ],
+        "position": {
+          "x": 1038,
+          "y": 43
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "tweakedDirection": 0,
+          "executionValue": 0,
+          "assistanceScore": 0
+        },
+        "status": {
+          "root": {
+            "disabled": false
+          },
+          "name": {
+            "status": "entered"
+          },
+          "type": {
+            "status": "entered"
+          },
+          "initial": {
+            "disabled": false,
+            "status": "entered"
+          },
+          "inputs": {
+            "disabled": false
+          },
+          "equation": {
+            "disabled": false,
+            "status": "entered"
+          },
+          "kind": {
+            "status": "entered"
+          },
+          "description": {
+            "status": "entered"
+          },
+          "units": {
+            "status": "entered"
+          }
+        },
+        "name": "voltage across capacitor",
+        "type": "accumulator",
+        "genus": "required",
+        "description": "voltage across capacitor",
+        "initial": 0,
+        "units": "volts",
+        "equation": "id12"
+      },
+      {
+        "ID": "id12",
+        "inputs": [
+          {
+            "ID": "id26",
+            "label": ""
+          },
+          {
+            "ID": "id13",
+            "label": "/"
+          }
+        ],
+        "position": {
+          "x": 929,
+          "y": 576
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "tweakedDirection": 0,
+          "executionValue": 0,
+          "assistanceScore": 0
+        },
+        "status": {
+          "root": {
+            "disabled": false
+          },
+          "name": {
+            "status": "entered"
+          },
+          "kind": {
+            "status": "entered"
+          },
+          "description": {
+            "status": "entered"
+          },
+          "type": {
+            "status": "entered"
+          },
+          "initial": {
+            "disabled": true,
+            "status": ""
+          },
+          "inputs": {
+            "disabled": false
+          },
+          "equation": {
+            "disabled": false,
+            "status": "entered"
+          },
+          "units": {
+            "status": "entered"
+          }
+        },
+        "name": "change in voltage across C1",
+        "genus": "required",
+        "description": "change in voltage across C1",
+        "type": "function",
+        "units": "volts",
+        "equation": "id26/id13"
+      },
+      {
+        "ID": "id13",
+        "inputs": [],
+        "position": {
+          "x": 1164,
+          "y": 39.17930221557617
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "tweakedDirection": 0,
+          "executionValue": 0,
+          "assistanceScore": 0
+        },
+        "status": {
+          "root": {
+            "disabled": true
+          },
+          "name": {
+            "status": "entered"
+          },
+          "type": {
+            "status": "entered"
+          },
+          "initial": {
+            "disabled": false,
+            "status": "entered"
+          },
+          "inputs": {
+            "disabled": true,
+            "status": ""
+          },
+          "equation": {
+            "disabled": true,
+            "status": ""
+          },
+          "units": {
+            "status": "entered"
+          },
+          "kind": {
+            "status": "entered"
+          },
+          "description": {
+            "status": "entered"
+          }
+        },
+        "name": "C of C1",
+        "equation": "",
+        "type": "parameter",
+        "parentNode": false,
+        "initial": 0.056,
+        "units": "farads",
+        "genus": "required",
+        "description": "C of C1"
+      },
+      {
+        "ID": "id22",
+        "inputs": [
+          {
+            "ID": "id23",
+            "label": ""
+          },
+          {
+            "ID": "id1",
+            "label": "/"
+          }
+        ],
+        "position": {
+          "x": 650,
+          "y": 361
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "tweakedDirection": 0,
+          "executionValue": 0,
+          "assistanceScore": 0
+        },
+        "status": {
+          "root": {
+            "disabled": false
+          },
+          "name": {
+            "status": "entered"
+          },
+          "type": {
+            "status": "entered"
+          },
+          "initial": {
+            "disabled": true,
+            "status": ""
+          },
+          "inputs": {
+            "disabled": false
+          },
+          "equation": {
+            "disabled": false,
+            "status": "entered"
+          },
+          "kind": {
+            "status": "entered"
+          },
+          "description": {
+            "status": "entered"
+          },
+          "units": {
+            "status": "entered"
+          }
+        },
+        "name": "current through diode",
+        "type": "function",
+        "explanation": "",
+        "equation": "id23/id1",
+        "genus": "required",
+        "description": "current through diode",
+        "units": "amps"
+      },
+      {
+        "ID": "id23",
+        "inputs": [
+          {
+            "ID": "id5",
+            "label": ""
+          },
+          {
+            "ID": "id8",
+            "label": "-"
+          }
+        ],
+        "position": {
+          "x": 788,
+          "y": 265
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "tweakedDirection": 0,
+          "executionValue": 0,
+          "assistanceScore": 0
+        },
+        "status": {
+          "root": {
+            "disabled": false
+          },
+          "name": {
+            "status": "entered"
+          },
+          "type": {
+            "status": "entered"
+          },
+          "initial": {
+            "disabled": true,
+            "status": ""
+          },
+          "inputs": {
+            "disabled": false
+          },
+          "equation": {
+            "disabled": false,
+            "status": "entered"
+          },
+          "units": {
+            "status": "entered"
+          },
+          "kind": {
+            "status": "entered"
+          },
+          "description": {
+            "status": "entered"
+          }
+        },
+        "name": "ouptut voltage across R",
+        "type": "function",
+        "units": "volts",
+        "equation": "id5-id8",
+        "genus": "required",
+        "description": "voltage across R",
+        "parentNode": true
+      },
+      {
+        "ID": "id24",
+        "inputs": [],
+        "position": {
+          "x": 850.8560791015625,
+          "y": 33.17930221557617
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "tweakedDirection": 0,
+          "executionValue": 0,
+          "assistanceScore": 0
+        },
+        "status": {
+          "root": {
+            "disabled": true
+          },
+          "name": {
+            "status": "entered"
+          },
+          "type": {
+            "status": "entered"
+          },
+          "initial": {
+            "disabled": false,
+            "status": "entered"
+          },
+          "inputs": {
+            "disabled": true,
+            "status": ""
+          },
+          "equation": {
+            "disabled": true,
+            "status": ""
+          },
+          "kind": {
+            "status": "entered"
+          },
+          "description": {
+            "status": "entered"
+          },
+          "units": {
+            "status": "entered"
+          }
+        },
+        "name": "R of R1",
+        "equation": "",
+        "type": "parameter",
+        "parentNode": false,
+        "initial": 33000,
+        "genus": "required",
+        "description": "R of R1",
+        "units": "ohms"
+      },
+      {
+        "ID": "id25",
+        "inputs": [
+          {
+            "ID": "id23",
+            "label": ""
+          },
+          {
+            "ID": "id24",
+            "label": "/"
+          }
+        ],
+        "position": {
+          "x": 881,
+          "y": 355
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "tweakedDirection": 0,
+          "executionValue": 0,
+          "assistanceScore": 0
+        },
+        "status": {
+          "root": {
+            "disabled": false
+          },
+          "name": {
+            "status": "entered"
+          },
+          "type": {
+            "status": "entered"
+          },
+          "initial": {
+            "disabled": true,
+            "status": ""
+          },
+          "inputs": {
+            "disabled": false
+          },
+          "equation": {
+            "disabled": false,
+            "status": "entered"
+          },
+          "kind": {
+            "status": "entered"
+          },
+          "description": {
+            "status": "entered"
+          },
+          "units": {
+            "status": "entered"
+          }
+        },
+        "name": "current through resistor R1",
+        "type": "function",
+        "genus": "required",
+        "description": "current through resistor",
+        "equation": "id23/id24",
+        "units": "amps"
+      },
+      {
+        "ID": "id26",
+        "inputs": [
+          {
+            "ID": "id25",
+            "label": ""
+          },
+          {
+            "ID": "id22",
+            "label": ""
+          }
+        ],
+        "position": {
+          "x": 765,
+          "y": 472
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "tweakedDirection": 0,
+          "executionValue": 0,
+          "assistanceScore": 0
+        },
+        "status": {
+          "root": {
+            "disabled": false
+          },
+          "name": {
+            "status": "entered"
+          },
+          "type": {
+            "status": "entered"
+          },
+          "initial": {
+            "disabled": true,
+            "status": ""
+          },
+          "inputs": {
+            "disabled": false
+          },
+          "equation": {
+            "disabled": false,
+            "status": "entered"
+          },
+          "kind": {
+            "status": "entered"
+          },
+          "description": {
+            "status": "entered"
+          },
+          "units": {
+            "status": "entered"
+          }
+        },
+        "name": "i through c1",
+        "type": "function",
+        "equation": "id25+id22",
+        "genus": "required",
+        "description": "i through c1",
+        "units": "amps"
+      },
+      {
+        "ID": "id27",
+        "inputs": [],
+        "position": {
+          "x": 519.8560791015625,
+          "y": 39.17930221557617
+        },
+        "attemptCount": {
+          "description": 0,
+          "type": 0,
+          "initial": 0,
+          "units": 0,
+          "equation": 0,
+          "tweakedDirection": 0,
+          "executionValue": 0,
+          "assistanceScore": 0
+        },
+        "status": {
+          "root": {
+            "disabled": true
+          },
+          "name": {
+            "status": "entered"
+          },
+          "description": {
+            "status": "entered"
+          },
+          "type": {
+            "status": "entered"
+          },
+          "initial": {
+            "disabled": false,
+            "status": "entered"
+          },
+          "inputs": {
+            "disabled": true,
+            "status": ""
+          },
+          "equation": {
+            "disabled": true,
+            "status": ""
+          },
+          "kind": {
+            "status": "entered"
+          }
+        },
+        "name": "wavelength",
+        "description": "wavelength of input voltage",
+        "equation": "",
+        "type": "parameter",
+        "parentNode": false,
+        "initial": 150,
+        "genus": "required"
+      }
+    ],
+    "studentModelNodes": [],
+    "schemas": []
+  }
+}
