@@ -1,6 +1,6 @@
 {
     "task": {
-        "taskName": "Model a Battery Biased CE Transistor",
+        "taskName": "Incremental Analysis of a Battery Biased CE Transistor",
         "time": {
             "start": 0,
             "end": 320,
@@ -12,7 +12,7 @@
             "isGraphHelpShown": true
         },
         "image": {
-            "URL": "images/PAL3/CE-transistor-battery-bias.png"
+            "URL": "images/PAL3/CE-transistor-battery-bias-incremental.png"
         },
         "taskDescription": {
             "construction": [
@@ -84,8 +84,8 @@
                 "ID": "id4",
                 "inputs": [],
                 "position": {
-                    "x": 451,
-                    "y": 184
+                    "x": 407.85607910156,
+                    "y": 107.17929840088
                 },
                 "attemptCount": {
                     "description": 0,
@@ -392,8 +392,8 @@
                 "ID": "id22",
                 "inputs": [],
                 "position": {
-                    "x": 451,
-                    "y": 184
+                    "x": 407.85607910156,
+                    "y": 107.17929840088
                 },
                 "status": {
                     "equation": {

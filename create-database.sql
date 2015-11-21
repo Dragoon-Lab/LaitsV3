@@ -9,9 +9,9 @@ CREATE TABLE `session` (
   `session_id` varchar(50) NOT NULL,
   `mode` varchar(20) NOT NULL,
   `user` varchar(100) NOT NULL,
-  `section` varchar(30) NOT NULL,
+  `section` varchar(50) NOT NULL,
   `problem` varchar(50) DEFAULT NULL,
-  `group` varchar(30) DEFAULT NULL,
+  `group` varchar(50) DEFAULT NULL,
   `activity` varchar(30) DEFAULT NULL,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`session_id`)
@@ -62,8 +62,8 @@ CREATE TABLE `solutions` (
 --
 DROP TABLE IF EXISTS `state`;
 CREATE TABLE IF NOT EXISTS `state` (
-  `section` varchar(30) NOT NULL COMMENT 'Should match section in session table.',
-  `user` varchar(30) NOT NULL DEFAULT '' COMMENT 'Empty string means that this is a section-wide setting.  Otherwise, should match user in session table.',
+  `section` varchar(50) NOT NULL COMMENT 'Should match section in session table.',
+  `user` varchar(100) NOT NULL DEFAULT '' COMMENT 'Empty string means that this is a section-wide setting.  Otherwise, should match user in session table.',
   `apropos` varchar(20) NOT NULL COMMENT 'Category of quantity.',
   `property` varchar(50) NOT NULL COMMENT 'Quantity name.',
   `tid` int(10) unsigned NOT NULL COMMENT 'References tid in step table.',

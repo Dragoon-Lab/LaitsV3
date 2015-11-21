@@ -77,7 +77,6 @@ define([
 	 */
 
 	console.log("load main.js");
-
 	// Get session parameters
 	var query = {};
 	if(window.location.search){
@@ -128,8 +127,12 @@ define([
 	}
 	if(activity_config && query.s === "ElectronixTutor"){
 		activity_config["ElectronixTutor"] = true;
+		if(typeof query.p1 != 'undefined' && typeof query.p2 != 'undefined'){
+			// santization required
+			query.u = 'ETUser_' + query.p1;
+			query.s = 'ETClass_' + query.p2;
+		}
 	}
-	
 	// Start up new session and get model object from server
 	try {
 		var session = new loadSave(query);
@@ -261,6 +264,10 @@ define([
 
 
 		ready(function(){
+			//remove the loading division, now that the problem is being loaded
+			var loading = document.getElementById('loadingOverlay');
+			loading.style.display = "none";
+
 			//Set Tab title
 			var taskString = givenModel.getTaskName();
 			document.title ="Dragoon" + ((taskString) ? " - " + taskString : "");
@@ -783,13 +790,23 @@ define([
 				// TODO: move this data to a json, or pull from forum database (longer term)
 				//       be sure to change the other sos326_f15 reference in the merge code as well!
 				if (query.s == "sos326_f15"){
-					saveGroupArr=[{name: "Group 1-Water Challenges", id:"grp_1"},
-								  {name: "Group 2-Parks Challenges", id:"grp_2"},
-								  {name: "Group 3-Transportation Challenges", id:"grp_3"},
-								  {name: "Group 4-Water Challenges", id:"grp_4"},
-								  {name: "Group 5-Parks Challenges", id:"grp_5"},
-								  {name: "Group 6-Transportation Challenges", id:"grp_6"}];
-				}
+				    saveGroupArr=[{name: "Group 1-Water Challenges", id:"grp_1"},
+						  {name: "Group 2-Parks Challenges", id:"grp_2"},
+						  {name: "Group 3-Transportation Challenges", id:"grp_3"},
+						  {name: "Group 4-Water Challenges", id:"grp_4"},
+						  {name: "Group 5-Parks Challenges", id:"grp_5"},
+						  {name: "Group 6-Transportation Challenges", id:"grp_6"},
+						  {name: "Water Consensus", id:"grp_W"},
+						  {name: "Parks Consensus", id:"grp_P"},
+						  {name: "Transportation Consensus", id:"grp_T"},
+ 						  {name: "Whole System Group 1", id:"ws_grp_1"},
+						  {name: "Whole System Group 2", id:"ws_grp_2"},
+						  {name: "Whole System Group 3", id:"ws_grp_3"},
+						  {name: "Whole System Group 4", id:"ws_grp_4"},
+						  {name: "Whole System Group 5", id:"ws_grp_5"},
+						  {name: "Whole System Group 6", id:"ws_grp_6"}
+						  ];
+			       }
 				var saveGroupMem = new memory({data: saveGroupArr});
 				saveGroupCombo.set("store", saveGroupMem);
 				if (query.s == "sos326_f15"){
@@ -917,7 +934,7 @@ define([
 				menu.add("mergeButton", function(e){
 					event.stop(e);
 					registry.byId("authorMergeDialog").show();
-					var combo = registry.byId("authorMergeGroup");
+				     	var combo = registry.byId("authorMergeGroup");
 					var arr=[{name: "Private("+query.u+")", id: "query.u"},
 						{name: "public", id: "public"},
 						{name:"Official Problems",id:""}
@@ -925,16 +942,32 @@ define([
 					// TODO: move this data to a json, or pull from forum database (longer term)
 					//       be sure to change the other sos326_f15 reference in the save as code as well!
 					if (query.s == "sos326_f15"){
-						arr=[	{name: "Group 1-Water Challenges", id:"grp_1"},
-								{name: "Group 2-Parks Challenges", id:"grp_2"},
-								{name: "Group 3-Transportation Challenges", id:"grp_3"},
-								{name: "Group 4-Water Challenges", id:"grp_4"},
-								{name: "Group 5-Parks Challenges", id:"grp_5"},
-								{name: "Group 6-Transportation Challenges", id:"grp_6"}];
+					    arr=[{name: "Group 1-Water Challenges", id:"grp_1"},
+						 {name: "Group 2-Parks Challenges", id:"grp_2"},
+						 {name: "Group 3-Transportation Challenges", id:"grp_3"},
+						 {name: "Group 4-Water Challenges", id:"grp_4"},
+						 {name: "Group 5-Parks Challenges", id:"grp_5"},
+						 {name: "Group 6-Transportation Challenges", id:"grp_6"},
+						 {name: "Water Consensus", id:"grp_W"},
+						 {name: "Parks Consensus", id:"grp_P"},
+						 {name: "Transportation Consensus", id:"grp_T"},
+						 {name: "Whole System Group 1", id:"ws_grp_1"},
+						 {name: "Whole System Group 2", id:"ws_grp_2"},
+						 {name: "Whole System Group 3", id:"ws_grp_3"},
+						 {name: "Whole System Group 4", id:"ws_grp_4"},
+						 {name: "Whole System Group 5", id:"ws_grp_5"},
+						 {name: "Whole System Group 6", id:"ws_grp_6"}];
+					    var sectionBox = registry.byId("authorMergeSection");
+					    sectionBox.set("value","sos326_f15");
+					    sectionBox.set("disabled",true);
 					}
 					var m = new memory({data: arr});
 					combo.set("store", m);
-					combo.set("value","Private("+query.u+")")//setting the default
+					if (query.s == "sos326_f15"){
+					    combo.set("value","Group 1-Water Challenges");
+					} else {
+					    combo.set("value","Private("+query.u+")"); //setting the default
+					}
 				});
 
 				on(registry.byId("mergeDialogButton"),"click",function(){
@@ -1568,10 +1601,6 @@ define([
 			if(activity_config.get("demoIncremental") || activity_config.get("demoExecution")) {
 				controllerObject.highlightNextNode();
 			}
-
-			//remove the loading division, now that the problem is being loaded
-			var loading = document.getElementById('loadingOverlay');
-			loading.style.display = "none";
 		});
 
 	});
