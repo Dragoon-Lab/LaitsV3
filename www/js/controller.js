@@ -952,6 +952,11 @@ define([
 			if(parse){
 				var inputNodesList = [];
 				var cancelUpdate = false;
+				var directives = [];
+
+				var widget = registry.byId(this.controlMap.equation);
+				var inputEquation = widget.get("value");
+
 				//getDescriptionID is present only in student mode. So in author mode it will give an identity function. This is a work around in case when its in author mode at that time the given model is the actual model. So descriptionID etc are not available. 
 				var mapID = this._model.active.getDescriptionID || function(x){ return x; };
 				var unMapID = this._model.active.getNodeIDFor || function(x){ return x; };
@@ -1052,7 +1057,7 @@ define([
 						}else{
 							this._model.given.setAttemptCount(descriptionID, "unknownVar", 1);
 						}
-
+						directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
 						directives.push({id: 'message', attribute: 'append', value: "Unknown variable '" + variable + "'."});
 						this.logging.log("solution-step", {
 							type: "unknown-variable",
@@ -1065,7 +1070,11 @@ define([
 						});
 					}
 				}, this);
-
+				if(directives.length > 0){
+					this._model.active.setEquation(this.currentID, inputEquation);
+					this.applyDirectives(directives);
+					return;
+				}
 				//Check to see if there are unknown variables in parsedEquation if in student mode
 				//If unknown variable exist, do not update equation in model. 
 				//Do the same if a function node references itself.
