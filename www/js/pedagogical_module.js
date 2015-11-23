@@ -896,7 +896,11 @@ define([
 					interpret(this.model.given.getUnits(givenID));
 					break;
 				case "equation":
-					interpret(check.areEquivalent(givenID, this.model, answer));
+					try {
+						interpret(check.areEquivalent(givenID, this.model, answer));
+					}catch(ex){
+						interpretation = "firstFailure";
+					}
 					break;
 				case "tweakDirection":
 					interpret(this.model.given.getTweakDirection(givenID));

@@ -1333,7 +1333,7 @@ define([
 				var update = function(attr, sattr){
 					// node.status always exists
 					var nsa = node.status[attr];
-					if(node[sattr || attr] != null && nsa && nsa.status &&
+					if(node[sattr || attr] !== null && nsa && nsa.status &&
 						rank[nsa.status] > rank[bestStatus]){
 						bestStatus = nsa.status;
 					}

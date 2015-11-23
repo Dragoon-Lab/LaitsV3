@@ -176,9 +176,10 @@ define([
 					 at a higher level. */
 					if(!id){
 						this.logging.clientLog("assert", {
-							message:'Student variable has no match, variable name : '+variable, 
+							message:'Student variable has no match, variable name : '+variable,
 							functionTag: 'areEquivalent'
 						});
+						throw new Error('Student variable has no match, variable name : '+variable)
 					}
 					this.evalVar(id, model.solution, values);
 					solutionVals[variable] = values[id];
