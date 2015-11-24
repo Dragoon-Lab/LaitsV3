@@ -253,11 +253,32 @@ define([
 			this.updateType(type);
 			this.applyDirectives(this._PM.processAnswer(this.currentID, 'type', type));
 
-			// "Initial Value" label --> "Value" for parameters
+			// Hide the value and expression controls in the node editor, depending on the type of node
 			var type=this._model.active.getType(this.currentID);
-			if (type=="parameter") style.set('initLabel', 'display', 'none');
-			else style.set('initLabel',"display","inline");
+			this.adjustStudentNodeEditor(type);
+		},	
 
+		// Hide the value and expression controls in the node editor, depending on the type of node
+		adjustStudentNodeEditor: function(type){
+
+			if (type=="function"){
+				// style.set('valueDive','display', 'none');
+				style.set('valueDive','visibility', 'hidden');
+				style.set('expressionDiv', 'display', 'block');
+			}
+			else if (type=="parameter"){
+				// style.set('valueDive','display', 'inline');
+				style.set('valueDive','visibility', 'visible');
+				style.set('initLabel', 'display', 'none');				
+				style.set('expressionDiv', 'display', 'none');
+			}
+			else{
+				style.set('expressionDiv', 'display', 'block');
+				style.set('valueDive','visibility', 'visible');
+				// style.set('valueDive','display', 'inline');			
+				style.set('initLabel', 'display', 'inline');
+
+			}
 		},
 
 		typeSet: function (value) {

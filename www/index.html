@@ -424,11 +424,14 @@
                 <option value="accumulator">Accumulator</option>
                 <option value="function">Function</option>
             </select>
-            <span>
+            <!-- adding a div for value field to control its display in UI -->
+            <div id="valueDive" style="display:inline; visibility:visible">
+                <span>
                     <img id="initialValueQuestionMark"  class="questionMark" src="images/questionmark.png" style="padding-left:10px"/>
                     <label for="initialValue"><p id="initLabel" style="display:inline">Initial </p>Value</label>
-            </span>
-            <input id="initialValue" type="text" style="width:5em" data-dojo-type="dijit/form/TextBox">
+                </span>
+                <input id="initialValue" type="text" style="width:5em" data-dojo-type="dijit/form/TextBox">
+            </div>
              <span>
                     <img id="unitsQuestionMark"  class="questionMark" src="images/questionmark.png" style="padding-left:10px"/>
                     <label id="selectUnitsControl">Units
@@ -450,7 +453,7 @@
             <input id ="markRootNode" name ="markRootNode" data-dojo-type="dijit/form/CheckBox" value="agreed" checked="false"/>
             <img id="questionMarkRoot"  class="questionMark" src="images/questionmark.png"/>
         </div>
-        <div class="ExpressionContainer">
+        <div class="ExpressionContainer" id="expressionDiv">
             <div class="fieldgroup">
                      <span class="fixedwidth">
                          <img id="expressionBoxQuestionMark"  class="questionMark" src="images/questionmark.png"/>
