@@ -206,6 +206,14 @@ function rgbToColor(toConvert)
     }
 }
 
+function getVisibleValue(ID,client)
+{
+    if(await(client.isVisible(ID,defer()))){
+        return await(client.getValue(ID,defer()));
+    }
+    throw (ID+"was not visible when checking for its value!");
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Exported functions - The dtest API
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -724,7 +732,7 @@ exports.setNodeType = function(client,type){
 // Initial Value
 
 exports.getNodeInitialValue = function(client){
-    return await(client.getValue('#initialValue',defer()));
+    return getVisibleValue('#initialValue',client);
 }
 
 exports.getNodeInitialValueColor = function(client){
@@ -741,7 +749,7 @@ exports.isNodeInitialValueDisabled = function(client){
 
 exports.setNodeInitialValue = function(client,initialValue){
     await(client.setValue('#initialValue',initialValue.toString(),defer()));
-    await(client.click("#algebraic",defer()));
+    await(client.click("#messageBox",defer()));
 }
 
 //////////////////////////////////////////////////
@@ -793,7 +801,7 @@ exports.setNodeUnits = function(client,units){
 
 exports.getNodeExpression = function(client){
     //Summary gets the text in the expression box
-    return await(client.getValue('#equationBox',defer()));
+    return getVisibleValue('#equationBox',client);
 }
 
 exports.getNodeExpressionColor = function(client){

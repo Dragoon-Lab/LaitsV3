@@ -118,7 +118,6 @@ describe("Test mode with correct rabbits", function() {
                                     ["expectedExpression", "growth rate*population"],
                                     ["expectedDescriptionColor", "gray"],
                                     ["expectedTypeColor", "gray"],
-                                    ["expectedInitialColor", "gray"],
                                     ["expectedUnitsColor", "gray"],
                                     ["expectedExpressionColor", "white"]], dtest, client);
         }));
@@ -136,8 +135,7 @@ describe("Test mode with correct rabbits", function() {
                                     ["expectedDescriptionColor", "gray"],
                                     ["expectedTypeColor", "gray"],
                                     ["expectedInitialColor", "gray"],
-                                    ["expectedUnitsColor", "gray"],
-                                    ["expectedExpressionColor", "gray"]], dtest, client);            
+                                    ["expectedUnitsColor", "gray"]], dtest, client);
         }));
     });
 
