@@ -141,6 +141,7 @@ define([
 			var flag = givennode.initial > 0;
 			var start = flag ? (givennode.initial / 10) : (givennode.initial * 10);
 			var stop = flag ? (givennode.initial * 10) : (givennode.initial / 10);
+			var range = flag? (stop - start) : (start - stop);
 			//var step = (stop - start) / 10;
 			var min = 0;
 			var max = 0;
@@ -197,7 +198,9 @@ define([
 			 Given a solution, create an array of values for the
 			 list of plot variables.  The list may include function nodes.
 			 */
-			 var step = 1;
+
+			var step=(range>100) ? (range / 100):1; // range/step<=100
+			//var step=1;
 			var nodes = [];
 			try{
 				if(plotVariables){
