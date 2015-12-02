@@ -1131,17 +1131,17 @@ define([
 		// Hide the value and expression controls in the node editor, depending on the type of node	
 		adjustNodeEditor: function(type){
 			if (type=="function"){
-				domStyle.set('valueDive','visibility', 'hidden');
+				domStyle.set('valueDiv','visibility', 'hidden');
 				domStyle.set('expressionDiv', 'display', 'block');
 			}
 			else if (type=="parameter"){
-				domStyle.set('valueDive','visibility', 'visisble');
+				domStyle.set('valueDiv','visibility', 'visible');
 				domStyle.set('initLabel', 'display', 'none');				
 				domStyle.set('expressionDiv', 'display', 'none');
 			}
 			else{				
 				domStyle.set('expressionDiv', 'display', 'block');
-				domStyle.set('valueDive','visibility', 'visible');	
+				domStyle.set('valueDiv','visibility', 'visible');	
 				domStyle.set('initLabel', 'display', 'inline');
 			}
 		},

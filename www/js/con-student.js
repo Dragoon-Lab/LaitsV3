@@ -262,20 +262,20 @@ define([
 		adjustStudentNodeEditor: function(type){
 
 			if (type=="function"){
-				// style.set('valueDive','display', 'none');
-				style.set('valueDive','visibility', 'hidden');
+				// style.set('valueDiv','display', 'none');
+				style.set('valueDiv','visibility', 'hidden');
 				style.set('expressionDiv', 'display', 'block');
 			}
 			else if (type=="parameter"){
-				// style.set('valueDive','display', 'inline');
-				style.set('valueDive','visibility', 'visible');
+				// style.set('valueDiv','display', 'inline');
+				style.set('valueDiv','visibility', 'visible');
 				style.set('initLabel', 'display', 'none');				
 				style.set('expressionDiv', 'display', 'none');
 			}
 			else{
 				style.set('expressionDiv', 'display', 'block');
-				style.set('valueDive','visibility', 'visible');
-				// style.set('valueDive','display', 'inline');			
+				style.set('valueDiv','visibility', 'visible');
+				// style.set('valueDiv','display', 'inline');			
 				style.set('initLabel', 'display', 'inline');
 
 			}
