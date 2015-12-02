@@ -144,6 +144,6 @@ describe("Coached mode with correct diode resistor 2", function() {
         }));
     });
     after(async(function(done){
-        //dtest.endTest(client);
+        dtest.endTest(client);
     }));
 });

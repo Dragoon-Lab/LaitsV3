@@ -14,9 +14,9 @@ var client = require('webdriverio').remote({
 // import chai assertion library
 var assert = require('chai').assert;
 // import dragoon test library module
-var dtest = require('../../dtestlib.js');
+var dtest = require('../dtestlib.js');
 // import dragoon assertion library
-var atest = require('../../assertTestLib.js');
+var atest = require('../assertTestLib.js');
 // import sync library
 var sync = require('synchronize');
 // import wrapper for asynchronous functions
@@ -144,6 +144,6 @@ describe("Success Factor score test - Diode Resistor COACHED correct", function(
         }));
     });
     after(async(function(done){
-        //dtest.endTest(client);
+        dtest.endTest(client);
     }));
 });

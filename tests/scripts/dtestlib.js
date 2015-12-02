@@ -210,8 +210,9 @@ function getVisibleValue(ID,client)
 {
     if(await(client.isVisible(ID,defer()))){
         return await(client.getValue(ID,defer()));
+    } else{
+        throw (ID+" was not visible when checking for its value!");
     }
-    throw (ID+"was not visible when checking for its value!");
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

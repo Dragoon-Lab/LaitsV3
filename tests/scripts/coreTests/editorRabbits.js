@@ -93,7 +93,7 @@ describe("Editor mode with correct rabbits", function() {
             var nodeName = "population"
             dtest.openEditorForNode(client, nodeName);
 
-            atest.checkNodeValues([["nodeName", "population"],
+            atest.checkNodeValues([["nodeName", nodeName],
                                     ["expectedDescription", "The number of rabbits in the population"],
                                     ["expectedNodeType", "Accumulator"],
                                     ["expectedInitialValue", "24"],
@@ -110,8 +110,7 @@ describe("Editor mode with correct rabbits", function() {
             var nodeName = "net growth"
 
             dtest.openEditorForNode(client, nodeName);
-
-            atest.checkNodeValues([["nodeName", "net growth"],
+            atest.checkNodeValues([["nodeName", nodeName],
                                     ["expectedDescription", "The number of additional rabbits each year"],
                                     ["expectedNodeType", "Function"],
                                     ["expectedNodeUnits", "rabbits/year"],
@@ -125,9 +124,8 @@ describe("Editor mode with correct rabbits", function() {
         it("Should have correct parameter values and colors", async(function(){
             var nodeName = "growth rate";
 
-            dtest.openEditorForNode(client, "growth rate");
-
-            atest.checkNodeValues([["nodeName", "growth rate"],
+            dtest.openEditorForNode(client, nodeName);
+            atest.checkNodeValues([["nodeName", nodeName],
                                     ["expectedDescription", "The number of additional rabbits per year per rabbit"],
                                     ["expectedNodeType", "Parameter"],
                                     ["expectedInitialValue", "0.3"],
