@@ -110,6 +110,9 @@ define([
 		getSchemaSuccessFactor: function(){
 			return this.assess.getSchemaSuccessFactor();
 		},
+		getSchemasAverageFactor: function(){
+			return this.assess.getSchemasAverageFactor();
+		},
 
 		getTime: function(nodeID){
 			var l = this.time.length;

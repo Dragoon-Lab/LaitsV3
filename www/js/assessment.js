@@ -230,6 +230,17 @@ define([
 			return obj;
 		},
 
+		getSchemasAverageFactor: function(){
+			var schemaSuccessFactor = this.getSchemaSuccessFactor();
+			var scoreSum=0;
+			array.forEach(this._schemas, function(schema){ 
+				scoreSum += schemaSuccessFactor[schema.schemaClass];
+			});
+			var averageScore=scoreSum / ( this._schemas.length || 1 );
+			//consol.log("The average schamas factor returned as success factor is: ", averageScore);
+			return averageScore;
+		},
+
 		calculateNodeScore: function(/* string */ id, /* boolean */ ignoreExecution){
 			var node = this._model.given.getNode(id);
 			var attempts = node.attemptCount;
