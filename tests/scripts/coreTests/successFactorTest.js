@@ -22,7 +22,7 @@ var sync = require('synchronize');
 // import wrapper for asynchronous functions
 var async = sync.asyncIt;
 
-describe("Coached mode with correct diode resistor 2", function() {
+describe("Success Factor score test - Diode Resistor COACHED correct", function() {
 
     before(async(function (done) {
         var date = new Date();

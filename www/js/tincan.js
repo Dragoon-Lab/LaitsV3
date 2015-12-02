@@ -193,6 +193,9 @@ define([
 				});
 			}));
 			debugReport += "PAL3 score should be: " + (debugScoreSum / ( schemas.length || 1 ));
+			if(this._session.params.s == "PAL3-regression-testing"){
+				alert(debugReport);
+			}
 			console.log(debugReport);
 			debugger;
 		},

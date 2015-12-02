@@ -460,6 +460,22 @@ exports.isDonePopupVisible = function(client){
     return await(client.isVisible('#doneButton_dropdown',defer()));
 }
 
+exports.alertAccept = function(client){
+    await(client.alertAccept(defer()));
+}
+
+exports.alertDismiss = function(client){
+    await(client.alertDismiss(defer()));
+}
+
+exports.alertText = function(client){
+    return await(client.alertText(defer()));
+}
+
+exports.getScores = function(client){
+    return  exports.alertText(client).split('\n');
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 3. Canvas functions
 
@@ -882,7 +898,11 @@ exports.closeImageHighlighting = function (client){
 exports.nodeEditorDone = function(client){
     // Summary: Hits the "Done" button in the node editor
     await(client.click('span[id="closeButton_label"]',defer()));
-    await(client.waitForVisible('#nodeeditor_underlay',1200,true,defer()));
+
+    // Temporary hack because the done button doesn't resolve before the alert pops up in pal3 score 
+    // tests, so we can't wait for the underlay to go away.
+    //await(client.waitForVisible('#nodeeditor_underlay',1200,true,defer()));
+    wait(1200);  
 }
 
 exports.closeNodeEditor = function(client){

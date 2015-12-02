@@ -160,3 +160,27 @@ exports.canvasMessageContainsText = function(expectedText,dtest,client){
 		assert(found,"Could not find \"" + expectedText+"\" in the canvas message(s).");
 	}
 }
+
+exports.checkSuccessFactor = function(schema,expectedScore,dtest,client){
+	if(!schema || schema == "Overall"){
+		schema = "Overall success factor"
+	} else if (schema == "PAL3"){
+		schema = "PAL3 score should be";
+	} else{
+		schema = "Success factor for " + schema;
+	}
+	var scores = dtest.getScores(client);
+
+	var score = false;
+	for (i=0; i< scores.length; i++){
+		var scoreArr = scores[i].split(": ");		
+		if (scoreArr[0]==schema){
+			score = scoreArr[1];
+			break;
+		}
+	}
+	if (score == false){
+		throw ("Could not find score for schema "+schema);
+	}
+	return score;
+}
