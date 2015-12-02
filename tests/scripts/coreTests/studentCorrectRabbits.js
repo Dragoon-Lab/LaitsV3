@@ -121,7 +121,6 @@ describe("Student mode with correct rabbits", function() {
                                     ["expectedExpression", "growth rate*population"],
                                     ["expectedDescriptionColor", "green"],
                                     ["expectedTypeColor", "green"],
-                                    ["expectedInitialColor", "gray"],
                                     ["expectedUnitsColor", "green"],
                                     ["expectedExpressionColor", "green"]], dtest, client);
         }));
@@ -139,8 +138,7 @@ describe("Student mode with correct rabbits", function() {
                                     ["expectedDescriptionColor", "green"],
                                     ["expectedTypeColor", "green"],
                                     ["expectedInitialColor", "green"],
-                                    ["expectedUnitsColor", "green"],
-                                    ["expectedExpressionColor", "gray"]], dtest, client);            
+                                    ["expectedUnitsColor", "green"]], dtest, client);
         }));
     });
 
