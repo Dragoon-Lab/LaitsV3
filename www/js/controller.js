@@ -217,6 +217,7 @@ define([
 				var myThis = this;
 				return function(){
 					var equation = registry.byId("equationBox");
+					
 					if(equation.value && !myThis.equationEntered){
 						var directives = myThis.equationDoneHandler();
 						var isAlertShown = array.some(directives, function(directive){
@@ -885,6 +886,7 @@ define([
 		},
 
 		equationAnalysis: function(directives, ignoreUnknownTest){
+			
 			this.equationEntered = true;
 			console.log("****** enter button");
 			/*
@@ -934,7 +936,48 @@ define([
 			}
 			return null;
 		},
-
+		expressionSuggestor : function(id, answer){
+			//output: message directive, suggestion message 
+			id = this._model.active.getDescriptionID(id);
+			var givenExpression = this._model.given.getEquation(id);
+			var givenAnswer = expression.parse(givenExpression);
+			var hash = {}
+			var required = [];
+			var not_required = [];
+			var context = this;
+			givenAnswer.tokens.every(function(ele){
+				if(ele.type_ != 3) return true;
+				hash[context._model.given.getName(ele.index_)] = 'given';
+				return true;
+			});
+			answer.tokens.every(function(ele){
+				if(ele.type_ != 3) return true;
+				hash[ele.index_] = (typeof hash[ele.index_] == 'undefined') ? 'active' : false
+				return true;
+			});
+			for(var key in hash){ 
+				if(hash[key] == 'given') required.push({ 'name' : key, 'type' : 'node' });
+				if(hash[key] == 'active') not_required.push({ 'name' : key, 'type' : 'node' });
+			}
+			var r_len = required.length;
+			var nr_len = not_required.length;
+			var rsp = null; 
+			if(r_len == 0 && nr_len == 0){
+				rsp = null;
+			}
+			else if(required[r_len -1].type == not_required[nr_len -1].type) {
+				rsp = "Author does not wants you to use " + not_required.pop().name + " in this expression,"
+				rsp += " try using " + required.pop().name + " instead";
+			}
+			else if(r_len){
+				rsp = "Author wants you to use " + required.pop().name + " in the expression";
+			}
+			else {
+				rsp = "Author does not want you to use " + not_required.pop().name + " in the expression";
+			}
+			return rsp;
+						
+		},
 		createExpressionNodes: function(parse, ignoreUnknownTest){
 			/*
 			 Create Expression nodes if equation is valid and parsed sucessfully.
