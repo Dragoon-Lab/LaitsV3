@@ -125,17 +125,32 @@ gulp.task('lint', function (){
 });
 
 function runTests(done){
+	var coreTestsPassed = false;
 	gulp.src('../tests/scripts/coreTests/*.js', {read: false})	
 		.pipe(mocha({reporter: 'nyan', timeout: 30000}))
 		.once('error', function () {
-			console.log("Tests do not pass");
+			console.log("Core tests do not pass");
 			shutdownSelenium();
 			process.exit(1);
 		}).once('end', function () {
-			console.log("All tests are passing");
+			console.log("All core tests are passing");
+			coreTestsPassed = true;
+			done();
+		});
+
+	gulp.src('../tests/scripts/bugTests/*.js', {read: false})	
+		.pipe(mocha({reporter: 'nyan', timeout: 30000}))
+		.once('error', function () {
+			console.log("Bug tests do not pass");
 			shutdownSelenium();
-			conosle.log("Auto Deploying");
-			scpRelease();
+			process.exit(1);
+		}).once('end', function () {
+			console.log("All bug tests are passing");
+			shutdownSelenium();
+			if(coreTestsPassed){
+				conosle.log("Auto Deploying");
+				scpRelease();
+			}
 			done();
 		});
 }
