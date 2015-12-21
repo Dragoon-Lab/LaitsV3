@@ -102,6 +102,8 @@ define([
 			this.log("start-session", params);
 			this.browser = sayswho();
 			console.log("browser = ", this.browser.name, " version = ", this.browser.version);
+			this.zoom = 1;
+			this.step = 0.2;
 		},
 
 		loadProblem: function(/*object*/ params){
