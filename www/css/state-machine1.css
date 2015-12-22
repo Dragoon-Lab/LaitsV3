@@ -84,10 +84,10 @@
 
 .parameterWrapper{
     -webkit-transform: rotate(0deg) translateY(-50%) !important;
-    -moz-transform: rotate(0deg) translateY(-50%);
-    -ms-transform: rotate(0deg) translateY(-50%);
-    -o-transform: rotate(0deg) translateY(-50%);
-    transform: rotate(0deg) translateY(-50%);
+    -moz-transform: rotate(0deg) translateY(-50%) !important;
+    -ms-transform: rotate(0deg) translateY(-50%) !important;
+    -o-transform: rotate(0deg) translateY(-50%) !important;
+    transform: rotate(0deg) translateY(-50%) !important;
 }
 
 .functionWrapper:hover,.accumulatorWrapper:hover,.parameterWrapper:hover{

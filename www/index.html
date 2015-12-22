@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Dragoon</title>
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
@@ -175,6 +176,12 @@
         <button type="button" data-dojo-type="dijit/form/Button" id="resetButton" style="display: none">Reset</button>
          <button type="button" data-dojo-type="dijit/form/Button" id="historyButton" disabled="true" style="display: none">History </button>
         <button type="button" data-dojo-type="dijit/form/Button" id="doneButton" style="display: none">Done</button>
+		<div id="zoomButtons" class = "zoomButtons">
+			<!--<button type = "button" data-dojo-type="dijit/form/Button" id="zoomIn">Zoom In</button>
+			<button type = "button" data-dojo-type="dijit/form/Button" id="zoomOut">Zoom Out</button>-->
+			<img src = "images/zoom_in.png" id = "zoomIn" class = "zoomImage"/>
+			<img src = "images/zoom_out.png" id = "zoomOut" class = "zoomImage"/>
+		</div>
    
     </div> <!-- Menubar -->
 
