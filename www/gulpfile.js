@@ -63,11 +63,11 @@ gulp.task('watch', ['lint'], function (){
 });
 
 gulp.task('buildAndTest',['startSelenium','build'],function(done){
-	runTests(done);
+	runTestsAndDeploy(done);
 });
 
 gulp.task('test', ['startSelenium'], function(done){
-	runTests(done);
+	runTestsAndDeploy(done);
 });
 
 gulp.task('startSelenium', shell.task(config.testCommands));
@@ -124,7 +124,7 @@ gulp.task('lint', function (){
 		.pipe(jshint.reporter('jshint-stylish'));
 });
 
-function runTests(done){
+function runTestsAndDeploy(done){
 	var coreTestsPassed = false;
 	gulp.src('../tests/scripts/coreTests/*.js', {read: false})	
 		.pipe(mocha({reporter: 'nyan', timeout: 30000}))
@@ -135,24 +135,24 @@ function runTests(done){
 		}).once('end', function () {
 			console.log("All core tests are passing");
 			coreTestsPassed = true;
-			done();
+			gulp.src('../tests/scripts/bugTests/*.js', {read: false})	
+				.pipe(mocha({reporter: 'nyan', timeout: 30000}))
+				.once('error', function () {
+					console.log("Bug tests do not pass");
+					shutdownSelenium();
+					process.exit(1);
+				}).once('end', function () {
+					console.log("All bug tests are passing");
+					shutdownSelenium();
+					if(coreTestsPassed){
+						conosle.log("Auto Deploying");
+						scpRelease();
+					}
+					done();
+				});
 		});
 
-	gulp.src('../tests/scripts/bugTests/*.js', {read: false})	
-		.pipe(mocha({reporter: 'nyan', timeout: 30000}))
-		.once('error', function () {
-			console.log("Bug tests do not pass");
-			shutdownSelenium();
-			process.exit(1);
-		}).once('end', function () {
-			console.log("All bug tests are passing");
-			shutdownSelenium();
-			if(coreTestsPassed){
-				conosle.log("Auto Deploying");
-				scpRelease();
-			}
-			done();
-		});
+
 }
 
 function generateZip(){
