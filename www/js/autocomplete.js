@@ -230,7 +230,7 @@ define([
 			var value = event.target.innerText;
 			if(event.keyCode == 13){
 				var currentSelectedItem = query('#suggestionsDiv .selected');
-				value = currentSelectedItem[0].innerText;
+				value = currentSelectedItem[0].innerText || currentSelectedItem[0].innerHTML; //innerText is not a property in firefox and hence the value is undefined.
 			}
 			var pos = this.getCursorPosition();
 			var text = this._textWidget.get('value');
