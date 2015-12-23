@@ -764,7 +764,7 @@ define([
 						assistanceScore: 0
 					},
 					status: {},
-					authorStatus: {},
+					authorStatus: {}
 				}, options || {});
 				obj.model.task.givenModelNodes.push(newNode);
 				return newNode.ID;

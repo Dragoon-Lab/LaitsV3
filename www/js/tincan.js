@@ -89,7 +89,8 @@ define([
 			var baseURL = 'http://pal3.ict.usc.edu/lrs/';
 			var api_key = "feb46eec5cdedce5553550318ff93ea9b48ea69a";
 			var statement = {};
-			var successFactor = this._assessment.getSuccessFactor();
+			// var successFactor = this.getSchemasAverageFactor();
+			var successFactor=this._assessment.getSchemasAverageFactor();
 			var schemaSuccessFactor = this._assessment.getSchemaSuccessFactor();
 			var username = this._session.params.u;
 			var email = username;
@@ -193,6 +194,9 @@ define([
 				});
 			}));
 			debugReport += "PAL3 score should be: " + (debugScoreSum / ( schemas.length || 1 ));
+			if(this._session.params.s == "PAL3-regression-testing"){
+				alert(debugReport);
+			}
 			console.log(debugReport);
 			debugger;
 		},

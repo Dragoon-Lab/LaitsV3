@@ -72,66 +72,64 @@ exports.checkNodeValues = function(valuesToCheck, dtest, client)
 
 	var nodeName = values["nodeName"];
 
-	var description = dtest.getNodeDescription(client);
-	var nodeType = dtest.getNodeType(client);
-    var initialValue = dtest.getNodeInitialValue(client);
-    var nodeUnits = dtest.getNodeUnits(client);
-    var expression = dtest.getNodeExpression(client);
-
-	var descriptionColor = dtest.getNodeDescriptionColor(client);
-    var typeColor = dtest.getNodeTypeColor(client);
-    var initialColor = dtest.getNodeInitialValueColor(client);
-    var unitsColor = dtest.getNodeUnitsColor(client);
-    var expressionColor = dtest.getNodeExpressionColor(client);
-
 	if(values["expectedDescription"])
 	{
+		var description = dtest.getNodeDescription(client);
 		assert(description === values["expectedDescription"],
                 "Description was " + description + " instead of \"" + values["expectedDescription"] + "\" for node " + nodeName);
 	}
 	if(values["expectedNodeType"])
 	{
+		var nodeType = dtest.getNodeType(client);
 		assert(nodeType === values["expectedNodeType"],
                 "Node type was " + nodeType + " instead of \"" + values["expectedNodeType"] + "\" for node " + nodeName);
 	}
 	if(values["expectedInitialValue"])
 	{
+		var initialValue = dtest.getNodeInitialValue(client);
 		assert(initialValue === values["expectedInitialValue"],
                 "Initial value was " + initialValue + " instead of \"" + values["expectedInitialValue"] + "\" for node " + nodeName);
 	}
 	if(values["expectedNodeUnits"])
 	{
+    	var nodeUnits = dtest.getNodeUnits(client);
 		assert(nodeUnits === values["expectedNodeUnits"],
                 "Units were " + nodeUnits + " instead of \"" + values["expectedNodeUnits"] + "\" for node " + nodeName);
 	}
 	if(values["expectedExpression"])
 	{
+		var expression = dtest.getNodeExpression(client);
 		assert(expression === values["expectedExpression"],
                 "Expression was " + expression + "instead of \"" + values["expectedExpression"] + "\" for node " + nodeName);
 	}
 
 	if(values["expectedDescriptionColor"])
 	{
+		var descriptionColor = dtest.getNodeDescriptionColor(client);
 		assert(descriptionColor === values["expectedDescriptionColor"],
                 "Description color was " + descriptionColor + " instead of " + values["expectedDescriptionColor"] + " for node " + nodeName);
 	}
 	if(values["expectedTypeColor"])
 	{
+		var typeColor = dtest.getNodeTypeColor(client);
 		assert(typeColor === values["expectedTypeColor"],
                 "Type color was " +  typeColor + " instead of " + values["expectedTypeColor"] + " for node " + nodeName);
 	}
 	if(values["expectedInitialColor"])
 	{
+		var initialColor = dtest.getNodeInitialValueColor(client);
 		assert(initialColor === values["expectedInitialColor"],
                 "Initial value color was " + initialColor + " intead of " + values["expectedInitialColor"] + " for node " + nodeName);
 	}
 	if(values["expectedUnitsColor"])
 	{
+		var unitsColor = dtest.getNodeUnitsColor(client);
 		assert(unitsColor === values["expectedUnitsColor"],
                 "Units color was " + unitsColor + " intead of " + values["expectedUnitsColor"] + " for node " + nodeName);
 	}
 	if(values["expectedExpressionColor"])
 	{
+		var expressionColor = dtest.getNodeExpressionColor(client);
 		assert(expressionColor === values["expectedExpressionColor"],
                 "Expression color was " + expressionColor + " instead of " + values["expectedExpressionColor"] + " for node " + nodeName);
 	}
@@ -159,4 +157,28 @@ exports.canvasMessageContainsText = function(expectedText,dtest,client){
 		}
 		assert(found,"Could not find \"" + expectedText+"\" in the canvas message(s).");
 	}
+}
+
+exports.checkSuccessFactor = function(schema,expectedScore,dtest,client){
+	if(!schema || schema == "Overall"){
+		schema = "Overall success factor"
+	} else if (schema == "PAL3"){
+		schema = "PAL3 score should be";
+	} else{
+		schema = "Success factor for " + schema;
+	}
+	var scores = dtest.getScores(client);
+
+	var score = false;
+	for (i=0; i< scores.length; i++){
+		var scoreArr = scores[i].split(": ");		
+		if (scoreArr[0]==schema){
+			score = scoreArr[1];
+			break;
+		}
+	}
+	if (score == false){
+		throw ("Could not find score for schema "+schema);
+	}
+	return score;
 }

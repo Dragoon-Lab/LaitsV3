@@ -14,15 +14,15 @@ var client = require('webdriverio').remote({
 // import chai assertion library
 var assert = require('chai').assert;
 // import dragoon test library module
-var dtest = require('../../dtestlib.js');
+var dtest = require('../dtestlib.js');
 // import dragoon assertion library
-var atest = require('../../assertTestLib.js');
+var atest = require('../assertTestLib.js');
 // import sync library
 var sync = require('synchronize');
 // import wrapper for asynchronous functions
 var async = sync.asyncIt;
 
-describe("Coached mode with correct diode resistor 2", function() {
+describe("Success Factor score test - Diode Resistor COACHED correct", function() {
 
     before(async(function (done) {
         var date = new Date();

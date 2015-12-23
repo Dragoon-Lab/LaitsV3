@@ -206,7 +206,7 @@ define([
 			domStyle.set(this.domNode, 'backgroundColor', value ? colorMap[value] : '');
 		},
 
-		_setUpNodeEditor: function(){
+		_setUpNodeEditor: function(){;
 			// get Node Editor widget from tree
 			this._nodeEditor = registry.byId('nodeeditor');
 
@@ -1171,6 +1171,24 @@ define([
 			// console.log("======== setConnections fired for node" + to);
 		},
 
+		// Hide the value and expression controls in the node editor, depending on the type of node	
+		adjustNodeEditor: function(type){
+			if (type=="function"){
+				domStyle.set('valueDiv','visibility', 'hidden');
+				domStyle.set('expressionDiv', 'display', 'block');
+			}
+			else if (type=="parameter"){
+				domStyle.set('valueDiv','visibility', 'visible');
+				domStyle.set('initLabel', 'display', 'none');				
+				domStyle.set('expressionDiv', 'display', 'none');
+			}
+			else{				
+				domStyle.set('expressionDiv', 'display', 'block');
+				domStyle.set('valueDiv','visibility', 'visible');	
+				domStyle.set('initLabel', 'display', 'inline');
+			}
+		},
+
 		//show node editor
 		showNodeEditor: function(/*string*/ id){
 			//Checks if the current mode is COACHED mode and exit from node editor if all the modes are defined
@@ -1181,10 +1199,9 @@ define([
 			this.initialControlSettings(id);
 			this.populateNodeEditorFields(id);
 
-			// "Initial Value" label --> "Value" for parameters			
+			// Hide the value and expression controls in the node editor, depending on the type of node		
 			var type=this._model.active.getType(this.currentID);
-			if (type=="parameter") 	domStyle.set('initLabel', 'display', 'none');
-			else domStyle.set('initLabel',"display","inline");
+			this.adjustNodeEditor(type);
 
 			this._nodeEditor.show().then(lang.hitch(this, function(){
 				this.disableHandlers = false;

@@ -49,7 +49,7 @@ CREATE TABLE `solutions` (
   `session_id` varchar(50) NOT NULL,
   `share` BOOL NOT NULL DEFAULT 0, 
   `deleted` BOOL NOT NULL DEFAULT 0, 
-  `solution_graph` TEXT DEFAULT NULL,
+  `solution_graph` MEDIUMTEXT DEFAULT NULL,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`session_id`),
   CONSTRAINT `fk_sesssion_id` FOREIGN KEY (`session_id`) REFERENCES `session` (`session_id`) ON DELETE CASCADE ON UPDATE CASCADE

@@ -206,6 +206,15 @@ function rgbToColor(toConvert)
     }
 }
 
+function getVisibleValue(ID,client)
+{
+    if(await(client.isVisible(ID,defer()))){
+        return await(client.getValue(ID,defer()));
+    } else{
+        throw (ID+" was not visible when checking for its value!");
+    }
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Exported functions - The dtest API
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -450,6 +459,22 @@ exports.closeMenuDonePopup = function(client){
 
 exports.isDonePopupVisible = function(client){
     return await(client.isVisible('#doneButton_dropdown',defer()));
+}
+
+exports.alertAccept = function(client){
+    await(client.alertAccept(defer()));
+}
+
+exports.alertDismiss = function(client){
+    await(client.alertDismiss(defer()));
+}
+
+exports.alertText = function(client){
+    return await(client.alertText(defer()));
+}
+
+exports.getScores = function(client){
+    return  exports.alertText(client).split('\n');
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -724,7 +749,7 @@ exports.setNodeType = function(client,type){
 // Initial Value
 
 exports.getNodeInitialValue = function(client){
-    return await(client.getValue('#initialValue',defer()));
+    return getVisibleValue('#initialValue',client);
 }
 
 exports.getNodeInitialValueColor = function(client){
@@ -741,7 +766,7 @@ exports.isNodeInitialValueDisabled = function(client){
 
 exports.setNodeInitialValue = function(client,initialValue){
     await(client.setValue('#initialValue',initialValue.toString(),defer()));
-    await(client.click("#algebraic",defer()));
+    await(client.click("#messageBox",defer()));
 }
 
 //////////////////////////////////////////////////
@@ -793,7 +818,7 @@ exports.setNodeUnits = function(client,units){
 
 exports.getNodeExpression = function(client){
     //Summary gets the text in the expression box
-    return await(client.getValue('#equationBox',defer()));
+    return getVisibleValue('#equationBox',client);
 }
 
 exports.getNodeExpressionColor = function(client){
@@ -874,7 +899,11 @@ exports.closeImageHighlighting = function (client){
 exports.nodeEditorDone = function(client){
     // Summary: Hits the "Done" button in the node editor
     await(client.click('span[id="closeButton_label"]',defer()));
-    await(client.waitForVisible('#nodeeditor_underlay',1200,true,defer()));
+
+    // Temporary hack because the done button doesn't resolve before the alert pops up in pal3 score 
+    // tests, so we can't wait for the underlay to go away.
+    //await(client.waitForVisible('#nodeeditor_underlay',1200,true,defer()));
+    wait(1200);  
 }
 
 exports.closeNodeEditor = function(client){

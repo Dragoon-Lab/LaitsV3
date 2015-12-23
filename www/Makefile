@@ -25,7 +25,7 @@ ifeq ($(shell test -f dojo-install-version && cat dojo-install-version),${dojo-v
 	cd jsPlumb; git pull
 	cd math-parser; git pull
 	cd ..
-	sudo npm install
+	sudo npm update
 	@echo "call to build script goes here"
 	@echo "Updated Dojo $(dojo-version)."
 else 
