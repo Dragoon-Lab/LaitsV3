@@ -359,6 +359,7 @@ define([
 			}
 			var context = this;
 			directives.every(function(ele){
+				
 				if(ele.attribute != 'status' || ele.value != 'incorrect') return true;  
 				var d, s;
 				d = (s = context.expressionSuggestor(context.currentID, parse)) ? 

@@ -965,15 +965,15 @@ define([
 			if(r_len == 0 && nr_len == 0){
 				rsp = null;
 			}
-			else if(required[r_len -1].type == not_required[nr_len -1].type) {
-				rsp = "Author does not wants you to use " + not_required.pop().name + " in this expression,"
+			else if(r_len && nr_len && required[r_len -1].type == not_required[nr_len -1].type) {
+				rsp = "The author does not wants you to use " + not_required.pop().name + " in this expression,"
 				rsp += " try using " + required.pop().name + " instead";
 			}
 			else if(r_len){
-				rsp = "Author wants you to use " + required.pop().name + " in the expression";
+				rsp = "The author wants you to use " + required.pop().name + " in the expression";
 			}
 			else {
-				rsp = "Author does not want you to use " + not_required.pop().name + " in the expression";
+				rsp = "The author does not want you to use " + not_required.pop().name + " in the expression";
 			}
 			return rsp;
 						
