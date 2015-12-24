@@ -83,7 +83,8 @@ define([
 						"units",
 						"equation"
 					],
-					plotAuthorSolution:true
+					plotAuthorSolution:true,
+					showNodeEditorTour: true
 				},
 
 				COACHED:{
@@ -113,7 +114,8 @@ define([
 						"units",
 						"equation"
 					],
-					plotAuthorSolution:true
+					plotAuthorSolution:true,
+					showNodeEditorTour: true
 				},
 
 				TEST:{
@@ -896,7 +898,10 @@ define([
                 executionExercise: false,
 
 				//Waveform Behavior
-				showWaveformEditor: false
+				showWaveformEditor: false,
+
+				//tour
+				showNodeEditorTour: false
 
 			},
 

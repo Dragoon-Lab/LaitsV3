@@ -315,6 +315,14 @@ define([
 				if(reply === true || reply === false)
 					givenModel.setGraphHelpShown(reply);
 			});
+			if(activity_config.get("showNodeEditorTour")) {
+				state.get("NodeEditorTutorialState").then(function (resp) {
+					console.log("NodeEditorTutorialState", resp);
+					if (resp) {
+						givenModel.setNodeEditorTutorialState(resp);
+					}
+				});
+			}
 			controllerObject.setState(state);
 
 			//check if the use has already completed the tutorial
@@ -1393,7 +1401,7 @@ define([
 
 			if(activity_config.get("showNodeEditor")){
 				// Show tips for Root in node modifier and Share Bit in Description and Time
-				var makeTooltip  = function(id,content){
+				var makes  = function(id,content){
 					new toolTip({
 						connectId: [id],
 						label: content,
@@ -1482,6 +1490,20 @@ define([
 							if(directive&&(directive.value=="incorrect" || directive.value=="premature"))
 								drawModel.deleteNode(controllerObject.currentID);
 						}
+					}
+
+					if(activity_config.get("showNodeEditorTour") && controllerObject._model.active.isComplete(controllerObject.currentID)){
+						var nodeTutorialState = givenModel.getNodeEditorTutorialState();
+						var nodeType = controllerObject._model.active.getType(controllerObject.currentID);
+						if(nodeType) {
+							nodeTutorialState[nodeType] = nodeTutorialState[nodeType] ? nodeTutorialState[nodeType] : [];
+							if(nodeTutorialState[nodeType].indexOf(controllerObject.currentID) === -1){
+								nodeTutorialState[nodeType].push(controllerObject.currentID);
+							}
+							console.log("SET TUTORIAL STATE", nodeTutorialState);
+						}
+						givenModel.setNodeEditorTutorialState(nodeTutorialState);
+						state.put("NodeEditorTutorialState", nodeTutorialState)
 					}
 				});
 			}
