@@ -1443,7 +1443,7 @@ define([
 
 		generateTourSteps: function(/*String*/ givenNodeID, /*String*/ studentNodeID, /*Object*/ state) {
 
-			var steps = [];
+			var steps = {};
 			var fields = [];
 			var elements = {
 				description: "descriptionQuestionMark",
@@ -1455,12 +1455,6 @@ define([
 				units: "unitsQuestionMark",
 				operations: "operationsQuestionMark",
 				done: "closeButton"
-			};
-
-			var widgets = {
-				description: "selectDescription",
-				type: "typeId",
-				units: "selectUnits"
 			};
 
 			 if(state){
@@ -1476,10 +1470,9 @@ define([
 						var hintMessage = hint1Messages[field].replace('<authorsValue>', '<strong>' + answer + '</strong>') || "";
 						var step = {
 							element: elements[field],
-							title: nodeEditorHints[field] + '<br/><br/>' + hintMessage,
-							widget: widgets[field]
+							title: nodeEditorHints[field] + '<br/><br/>' + hintMessage
 						};
-						steps.push(step);
+						steps[field] = step;
 					}
 
 					//Type Hint
@@ -1488,21 +1481,22 @@ define([
 						answer = this.model.student.getCorrectAnswer(studentNodeID, field);
 						var count = answer === "parameter" ? 3 : 4;
 						if (!state[answer] || state[answer].length < count) {
-							hintMessage = hint1Messages[field].replace('<authorsValue>', '<strong>' + answer + '</strong>') || "";
+							var capitalize = answer.charAt(0).toUpperCase() + answer.slice(1);
+							hintMessage = hint1Messages[field].replace('<authorsValue>', '<strong>' + capitalize + '</strong>') || "";
 							var typeStep = {
 								element: elements[field],
-								title: nodeEditorHints[field] + '<br/><br/>' + hintMessage
+								title: nodeEditorHints[field] + '<br/>' + hintMessage
 							};
-							steps.push(typeStep);
+							steps[field] = typeStep;
 						}
 					}
 
 					var type = this.model.given.getType(givenNodeID);
 					var hintMessages = hint1Messages;
-					if(type === "parameter" && (state[type] && state[type].length > 1)){
+					if(type === "parameter" && (state[type] && state[type].length >= 1)){
 						hintMessages = hint2Messages;
 					}
-					else if(type !== "parameter" && (state[type] && state[type].length > 2)){
+					else if(type !== "parameter" && (state[type] && state[type].length >= 2)){
 						hintMessages = hint2Messages
 					}
 
@@ -1518,7 +1512,7 @@ define([
 											element: elements[field],
 											title: nodeEditorHints[field] + '<br/><br/>' + hintMessage
 										};
-										steps.push(step);
+										steps[field] = step;
 									}
 								}
 							}));
@@ -1539,7 +1533,7 @@ define([
 											element: elements[field],
 											title: nodeEditorHints[field] + '<br/><br/>' + hintMessage
 										};
-										steps.push(step);
+										steps[field] = step;
 									}
 								}
 							}));
@@ -1561,7 +1555,7 @@ define([
 											title: nodeEditorHints[field] + '<br/><br/>' + hintMessage
 										};
 
-										steps.push(step);
+										steps[field] = step;
 									}
 								}
 							}));
@@ -1569,17 +1563,35 @@ define([
 					}
 				}
 
-				 if(type){
+				 //Add tooltip for Done
+				 if(type && Object.keys(steps).length > 0){
 					 field = "done";
 					 var step = {
 						 element: elements[field],
 						 title: nodeEditorHints[field]
 					 };
-
-					 steps.push(step);
+					 steps[field] = step;
 				 }
 			}
-			return steps;
+
+			//add default hints for other fields
+			var allFields = Object.keys(elements);
+			array.forEach(allFields, lang.hitch(this, function(val, index){
+				if(!steps[val] && val !== "done"){
+					steps[val] = {
+						element: elements[val],
+						title: nodeEditorHints[val],
+						type: "default"
+					};
+				}
+			}));
+
+			var stepsArr = [];
+			for(s in steps){
+				stepsArr.push(steps[s]);
+			}
+
+			return stepsArr;
 		}
 	});
 });

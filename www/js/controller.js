@@ -429,6 +429,10 @@ define([
 			// update Node labels upon exit
 			this.updateNodeLabel(this.currentID);
 
+			//end the tour
+			if(this.tour){
+				this.tour.end();
+			}
 			// In case any tool tips are still open.
 			typechecker.closePops();
 			//this.disableHandlers = false;

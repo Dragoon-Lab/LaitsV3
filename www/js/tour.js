@@ -31,9 +31,8 @@ define([
 	"dojo/dom-class",
 	"dojo/query",
 	"dijit/registry",
-	"dijit/popup",
-	"dijit/TooltipDialog"
-], function(array, declare, lang, on, dom, domConstruct, style, domClass, query, registry, popup, tooltipDialog) {
+	"dijit/Tooltip"
+], function(array, declare, lang, on, dom, domConstruct, style, domClass, query, registry, Tooltip) {
 	/* Summary:
 	 *			Autocomplete widget for Textbox, displays suggestions based on user input,
 	 * Description:
@@ -60,25 +59,19 @@ define([
 		init: function(){
 			this._tooltips = [];
 			this._currentStep = null;
-			array.forEach(this._steps, lang.hitch(this, function(step, index){
-
-				var stepDialog = new tooltipDialog({
-					style: "max-width:300px",
-					content: '<div>' + step.title + '</div>',
-					onShow: function () {
-
-					},
-					onBlur: function () {
-						//popup.close(stepDialog);
-					},
-					onCancel: function(){
-						return false;
-					}
+			debugger;
+			var makeTooltip = function(s, i){
+				this._tooltips[i] = new Tooltip({
+					connectId: [s["element"]],
+					label: s["title"],
+					position: ['before-centered']
 				});
+			};
 
-				this._tooltips.push(stepDialog);
-
+			array.forEach(this._steps, lang.hitch(this, function(step, index){
+				makeTooltip.call(this, step, index);
 			}));
+
 		},
 
 		start: function(){
@@ -87,20 +80,31 @@ define([
 		},
 
 		end: function(){
-
+			if(this._currentStep !== null) {
+				var prevNode = dom.byId(this._steps[this._currentStep].element);
+				if (prevNode) {
+					Tooltip.hide(prevNode);
+				}
+			}
 		},
 
 		next: function(){
+			if(this._currentStep) {
+				var prevNode = dom.byId(this._steps[this._currentStep].element);
+				if (prevNode) {
+					Tooltip.hide(prevNode);
+				}
+			}
 			if(this._currentStep === null){
 				this._currentStep = 0;
 			}else if(this._currentStep < this._steps.length-1){
 				this._currentStep += 1;
 			}
-			popup.open({
-				popup: this._tooltips[this._currentStep],
-				around: dom.byId(this._steps[this._currentStep].element),
-				orient: ["before-centered"]
-			});
+
+			var node = dom.byId(this._steps[this._currentStep].element);
+			if(node && this._steps[this._currentStep].type !== "default") {
+				Tooltip.show(this._steps[this._currentStep].title, node, ["before-centered"]);
+			}
 		},
 
 		prev: function(){
