@@ -460,7 +460,7 @@ define([
 
 			// This cannot go in controller.js since _PM is only in
 			// con-student.	 You will need con-student to attach this
-			// to closeEditor (maybe using aspect.after?).	
+			// to closeEditor (maybe using aspect.after?).
 		},
 
 		//update the node label
@@ -1294,7 +1294,7 @@ define([
 					this.tour = null;
 				}
 			}
-			if(this.tour && directive.attribute === "status" && directive.value === "correct"){
+			if(this.tour && directive.attribute === "status" && directive.value !== "incorrect"){
 				this.tour.next();
 			}
 		},
