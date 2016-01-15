@@ -577,3 +577,12 @@ span.slip{
 .suggestionsItem.selected , .suggestionsItem:hover{
     background-color: #abd6ff;
 }
+
+.zoomImage{
+	height: 24px;
+}
+
+.zoomButtons{
+	display: none;
+	float: right;
+}
