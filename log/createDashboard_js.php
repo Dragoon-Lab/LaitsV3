@@ -30,6 +30,7 @@
 
 		function createDashboard($section, $mode, $activity, $user, $problem, $fromTime, $fromDate, $toTime, $toDate){
 			$query = $this->getQuery($section, $mode, $activity, $user, $problem, $fromTime, $fromDate, $toTime, $toDate);
+			//echo $query;
 			$result = $this->al->getResults($query);
 			$objects = null;
 			if($result->num_rows != 0)
@@ -464,7 +465,7 @@
 						$currentIndex = -1;
 
 						if($newMessage['property'] == "description"){
-							$newNode = $upObject->getNodeFromName($newMessage['node']);
+							$newNode = (array_key_exists('node', $newMessage)?($upObject->getNodeFromName($newMessage['node'])):null);
 							if($currentNode != null && count($currentNode->properties) >= 1){
 								//case when auto created. check if the currently autocreated node was not already deleted
 								$autoCreated = true;
@@ -492,7 +493,7 @@
 								$newNode->nodeExist = true;
 								$pushNodeBack = true;
 							} else if($currentNode != null){
-								$currentNode->name = $newMessage['node'];
+								$currentNode->name = (array_key_exists('node', $newMessage)?$newMessage['node']:"");
 							} else if($currentNode == null){
 								//because the description call is for none of the above cases which should mean that create node and open node messages were missing. so creating a current node.
 								$currentNode = new Node();
