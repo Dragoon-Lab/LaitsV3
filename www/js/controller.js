@@ -41,8 +41,9 @@ define([
 	"./typechecker",
 	"./forum",
 	"./autocomplete",
+	"./tour",
 	"./schemas-student"
-], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, popup, registry, TooltipDialog, expression, graphObjects, typechecker, forum, AutoComplete){
+], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, popup, registry, TooltipDialog, expression, graphObjects, typechecker, forum, AutoComplete, Tour){
 
 	/* Summary:
 	 *			Controller for the node editor, common to all modes
@@ -428,6 +429,10 @@ define([
 			// update Node labels upon exit
 			this.updateNodeLabel(this.currentID);
 
+			//end the tour
+			if(this.tour){
+				this.tour.end();
+			}
 			// In case any tool tips are still open.
 			typechecker.closePops();
 			//this.disableHandlers = false;
@@ -453,10 +458,9 @@ define([
 			if(this._previousExpression) //bug 2365
 				this._previousExpression=null; //clear the expression
 
-
 			// This cannot go in controller.js since _PM is only in
 			// con-student.	 You will need con-student to attach this
-			// to closeEditor (maybe using aspect.after?).	
+			// to closeEditor (maybe using aspect.after?).
 		},
 
 		//update the node label
@@ -1182,6 +1186,16 @@ define([
 					nodeForumBut.set("disabled", true);
 				}
 			}
+			if(this.activityConfig.get("showNodeEditorTour")) {
+				var givenNodeID = this._model.active.getDescriptionID(id);
+				var steps = this._PM.generateTourSteps(givenNodeID, id, this._model.getNodeEditorTutorialState());
+				if (steps && steps.length > 0) {
+					this.tour = new Tour(steps);
+					this.tour.start();
+				} else {
+					this.tour = null;
+				}
+			}
 		},
 
 		// Stub to be overwritten by student or author mode-specific method.
@@ -1270,6 +1284,34 @@ define([
 			this._forumparams=forum_params;
 		},
 
+		continueTour: function(directive){
+			var elements = {
+				description: "descriptionQuestionMark",
+				type: "typeQuestionMark",
+				inputs: "inputsQuestionMark",
+				equation: "expressionBoxQuestionMark",
+				checkExpression: "equationDoneButton",
+				initial: "initialValueQuestionMark",
+				units: "unitsQuestionMark",
+				operations: "operationsQuestionMark",
+				done: "closeButton"
+			};
+
+			if(directive.id === "description" && directive.attribute === "status" && directive.value === "correct"){
+				var givenNodeID = this._model.active.getDescriptionID(this.currentID);
+				var steps = this._PM.generateTourSteps(givenNodeID ,this.currentID,  this._model.getNodeEditorTutorialState());
+				if(steps && steps.length > 0) {
+					this.tour = new Tour(steps);
+				}else{
+					this.tour = null;
+				}
+			}
+			if(this.tour && directive.attribute === "status" && directive.value !== "incorrect"){
+				this.tour.removeStep(elements[directive.id]);
+				this.tour.start();
+			}
+		},
+
 		/*
 		 Take a list of directives and apply them to the Node Editor,
 		 updating the model and updating the graph.
@@ -1300,6 +1342,9 @@ define([
 						// the model and the graph.
 					}else{
 						w.set(directive.attribute, directive.value);
+						if(this.activityConfig.get("showNodeEditorTour")) {
+							this.continueTour(directive);
+						}
 					}
 				}else if(directive.id == "tweakDirection"){
 					if (directive.attribute == 'value') {

@@ -250,17 +250,15 @@ define([
 			console.log("****** Student has chosen type ", type, this);
 			if (type == 'defaultSelect')
 				return; // don't do anything if they choose default
+			// Hide the value and expression controls in the node editor, depending on the type of node
+			this.adjustStudentNodeEditor(type);
 			this.updateType(type);
 			this.applyDirectives(this._PM.processAnswer(this.currentID, 'type', type));
 
-			// Hide the value and expression controls in the node editor, depending on the type of node
-			var type=this._model.active.getType(this.currentID);
-			this.adjustStudentNodeEditor(type);
 		},	
 
 		// Hide the value and expression controls in the node editor, depending on the type of node
 		adjustStudentNodeEditor: function(type){
-
 			if (type=="function"){
 				// style.set('valueDiv','display', 'none');
 				style.set('valueDiv','visibility', 'hidden');
