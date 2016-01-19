@@ -1285,6 +1285,18 @@ define([
 		},
 
 		continueTour: function(directive){
+			var elements = {
+				description: "descriptionQuestionMark",
+				type: "typeQuestionMark",
+				inputs: "inputsQuestionMark",
+				equation: "expressionBoxQuestionMark",
+				checkExpression: "equationDoneButton",
+				initial: "initialValueQuestionMark",
+				units: "unitsQuestionMark",
+				operations: "operationsQuestionMark",
+				done: "closeButton"
+			};
+
 			if(directive.id === "description" && directive.attribute === "status" && directive.value === "correct"){
 				var givenNodeID = this._model.active.getDescriptionID(this.currentID);
 				var steps = this._PM.generateTourSteps(givenNodeID ,this.currentID,  this._model.getNodeEditorTutorialState());
@@ -1295,7 +1307,8 @@ define([
 				}
 			}
 			if(this.tour && directive.attribute === "status" && directive.value !== "incorrect"){
-				this.tour.next();
+				this.tour.removeStep(elements[directive.id]);
+				this.tour.start();
 			}
 		},
 

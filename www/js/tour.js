@@ -57,9 +57,9 @@ define([
 		},
 
 		init: function(){
+			//Initialize the tour steps and generate tooltips
 			this._tooltips = [];
 			this._currentStep = null;
-			debugger;
 			var makeTooltip = function(s, i){
 				this._tooltips[i] = new Tooltip({
 					connectId: [s["element"]],
@@ -75,11 +75,13 @@ define([
 		},
 
 		start: function(){
+			//Summary: Start the tour from first step
 			this._currentStep = null;
 			this.next();
 		},
 
 		end: function(){
+			// Summary: end the tour
 			if(this._currentStep !== null) {
 				var prevNode = dom.byId(this._steps[this._currentStep].element);
 				if (prevNode) {
@@ -89,6 +91,8 @@ define([
 		},
 
 		next: function(){
+			//Summary: Go to the next tour step
+
 			if(this._currentStep) {
 				var prevNode = dom.byId(this._steps[this._currentStep].element);
 				if (prevNode) {
@@ -108,8 +112,18 @@ define([
 		},
 
 		prev: function(){
+			//TODO: Go to the previous step
+		},
 
+		removeStep: function(step){
+			//Summary: removes a step and corresponding tooltip from the list based on element id
+			array.some(this._steps, lang.hitch(this, function(st, index){
+				if(st && st.element === step){
+					this._steps.splice(index ,1);
+					this._tooltips.splice(index, 1);
+					return true;
+				}
+			}));
 		}
-
 	});
 });
