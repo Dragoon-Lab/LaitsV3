@@ -20,7 +20,7 @@
                 "",
                 "The human population begins at 100 mature individuals, with an average birth rate of 2 per mature person and a death rate of 0.2. 75% of the humans born reach maturity. ",
                 "",
-                "For a real-world scenario-building exercise, in the "Graph" command window, change the birth rate and proportion that survive to maturity."
+                "For a real-world scenario-building exercise, in the \"Graph\" command window, change the birth rate and proportion that survive to maturity."
             ]
         },
         "lessonsLearned": [],
