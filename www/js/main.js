@@ -352,6 +352,8 @@ define([
 				}
 			}, this);
 			
+			dojo.style(dom.byId("zoomButtons"), "display", ui_config.get("zoomButtons"));
+
 			var updateModel = new modelUpdates(givenModel, query.m, session, activity_config);
 			//if (activity_config.get("setTweakDirections")){
 			//	console.log("initial tweak: "+givenModel.getInitialTweakedNode());
@@ -1362,6 +1364,57 @@ define([
 				});
 
 
+			}
+
+			if(activity_config.get("allowZoom")){
+				var body = dojo.body();
+				var pane = dom.byId("drawingPane");
+				var menuBar = dom.byId("menuBar");
+				on(dom.byId("zoomIn"), "click", function(){
+					var newZoom = session.zoom + session.step;
+					if(newZoom < 3){
+						if(checkBrowser == "Firefox"){
+							var wide = ((newZoom > 1)?(100/newZoom):100);
+							dojo.style(body, "MozTransform", "scale("+newZoom+")");
+							dojo.style(body, "transform-origin", "0 0");
+							dojo.style(menuBar, "width", wide+"%");
+							dojo.style(pane, "width", wide+"%");
+						} else {
+							dojo.style(body, "zoom", " " + newZoom*100 + "%");
+							dojo.style(pane, "width", 100+"%");
+							dojo.style(menuBar, "width", 100+"%");
+						}
+						dojo.style(pane, "top", menuBar.clientHeight + "px");
+						session.zoom = newZoom;
+					} else {
+						var errorMessage = new messageBox("errorMessageBox", "error", "This is the maximum zoom available for the window");
+						errorMessage.show();
+					}
+
+				});
+
+				on(dom.byId("zoomOut"), "click", function(){
+					var newZoom = session.zoom - session.step;
+					if(newZoom > 0.5){
+						if(checkBrowser == "Firefox"){
+							var wide = ((newZoom > 1)?(100/newZoom):100);
+							dojo.style(body, "MozTransform", "scale("+newZoom+", "+newZoom+")");
+							dojo.style(body, "transform-origin", "0 0");
+							dojo.style(menuBar, "width", wide+"%");
+							dojo.style(pane, "width", wide+"%");
+						} else {
+							dojo.style(body, "zoom", " " + newZoom*100 + "%");
+							dojo.style(pane, "width", 100+"%");
+							dojo.style(menuBar, "width", 100+"%");
+						}
+						dojo.style(pane, "top", menuBar.clientHeight + "px");
+						session.zoom = newZoom;
+					} else {
+						var errorMessage = new messageBox("errorMessageBox", "error", "This is the minimum zoom available for the window.");
+						errorMessage.show();
+					}
+
+				});
 			}
 
 			if(activity_config.get("promptSaveAs")) {

@@ -45,6 +45,8 @@ www/util/
 
 www/node_modules
 
+www/selenium.log*
+
 .idea/
 
 tests/npm/

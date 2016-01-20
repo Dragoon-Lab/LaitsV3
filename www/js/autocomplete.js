@@ -227,10 +227,10 @@ define([
 		 * Handler to select and add the item to textwidget
 		 */
 		handleSelect: function(event){
-			var value = event.target.innerText;
+			var value = event.target.innerText || event.target.innerHTML; //no innerText in firefox
 			if(event.keyCode == 13){
 				var currentSelectedItem = query('#suggestionsDiv .selected');
-				value = currentSelectedItem[0].innerText;
+				value = currentSelectedItem[0].innerText || currentSelectedItem[0].innerHTML; //innerText is not a property in firefox and hence the value is undefined.
 			}
 			var pos = this.getCursorPosition();
 			var text = this._textWidget.get('value');

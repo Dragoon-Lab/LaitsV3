@@ -50,7 +50,9 @@ define(["dojo/_base/lang"], function (lang) {
 						"nodeBorderFeedbackColor": "yellow",
 						"nodeBorderFailColor": "red",
 						"imageButton": "none",
-						"historyButton": "none"
+						"historyButton": "none",
+						"zoomButtons": "inline"
+
 
 					}
 				},
@@ -122,7 +124,9 @@ define(["dojo/_base/lang"], function (lang) {
 						"nodeBorderFeedbackColor": "yellow",
 						"nodeBorderFailColor": "red",
 						"qualitativeChangeButtons": "block",
-						"historyButton": "none"
+						"historyButton": "none",
+						"zoomButtons": "inline"
+
 
 
 					}
@@ -152,7 +156,9 @@ define(["dojo/_base/lang"], function (lang) {
 						"nodeBorderFeedbackColor": "gray",
 						"nodeBorderFailColor": "gray",
 						"qualitativeChangeButtons": "block",
-						"historyButton": "none"
+						"historyButton": "none",
+						"zoomButtons": "inline"
+
 					}
 				}],
 
@@ -182,7 +188,9 @@ define(["dojo/_base/lang"], function (lang) {
 					"nodeBorderFeedbackColor": "yellow",
 					"nodeBorderFailColor": "red",
 					"qualitativeChangeButtons": "none",
-					"historyButton": "none"
+					"historyButton": "none",
+					"zoomButtons": "inline"
+
 				}
 			},
 				{
@@ -211,7 +219,9 @@ define(["dojo/_base/lang"], function (lang) {
 						"nodeBorderFeedbackColor": "gray",
 						"nodeBorderFailColor": "gray",
 						"qualitativeChangeButtons": "none",
-						"historyButton": "none"
+						"historyButton": "none",
+						"zoomButtons": "inline"
+
 
 
 					}
@@ -241,7 +251,9 @@ define(["dojo/_base/lang"], function (lang) {
 					"nodeBorderFeedbackColor": "yellow",
 					"nodeBorderFailColor": "red",
 					"qualitativeChangeButtons": "none",
-					"historyButton": "none"
+					"historyButton": "none",
+					"zoomButtons": "inline"
+
 
 				}
 			},
@@ -270,7 +282,9 @@ define(["dojo/_base/lang"], function (lang) {
 						"nodeBorderFeedbackColor": "gray",
 						"nodeBorderFailColor": "gray",
 						"qualitativeChangeButtons": "none",
-						"historyButton": "none"
+						"historyButton": "none",
+						"zoomButtons": "inline"
+
 
 
 					}}
@@ -301,7 +315,9 @@ define(["dojo/_base/lang"], function (lang) {
 					"nodeBorderFeedbackColor": "yellow",
 					"nodeBorderFailColor": "red",
 					"qualitativeChangeButtons": "none",
-					"historyButton": "none"
+					"historyButton": "none",
+					"zoomButtons": "inline"
+
 
 				}
 			},
@@ -331,7 +347,9 @@ define(["dojo/_base/lang"], function (lang) {
 						"nodeBorderFeedbackColor": "gray",
 						"nodeBorderFailColor": "gray",
 						"qualitativeChangeButtons": "none",
-						"historyButton": "none"
+						"historyButton": "none",
+						"zoomButtons": "inline"
+
 
 
 					}
@@ -362,7 +380,9 @@ define(["dojo/_base/lang"], function (lang) {
 					"nodeBorderFeedbackColor": "yellow",
 					"nodeBorderFailColor": "red",
 					"qualitativeChangeButtons": "none",
-					"historyButton": "none"
+					"historyButton": "none",
+					"zoomButtons": "inline"
+
 
 				}
 			},
@@ -391,7 +411,9 @@ define(["dojo/_base/lang"], function (lang) {
 						"nodeBorderFeedbackColor": "gray",
 						"nodeBorderFailColor": "gray",
 						"qualitativeChangeButtons": "none",
-						"historyButton": "none"
+						"historyButton": "none",
+						"zoomButtons": "inline"
+
 
 
 					}}
