@@ -120,6 +120,9 @@ define([
             setGraphHelpShown: function(_isGraphHelpShown){
                 this.model.task.properties.isGraphHelpShown = _isGraphHelpShown;
             },
+			setNodeEditorTutorialState: function(nodeEditorTutorialState){
+				this.model.task.properties.nodeEditorTutorialState = nodeEditorTutorialState || {};
+			},
             updatePosition: function()
 			{
 				if((this.x + this.nodeWidth) < (document.documentElement.clientWidth - this.nodeWidth))
@@ -344,6 +347,9 @@ define([
                 console.log("model help",this.model.task.properties);
                 return (this.model.task.properties.isGraphHelpShown != undefined)?this.model.task.properties.isGraphHelpShown : false;
             },
+			getNodeEditorTutorialState : function(){
+				return (this.model.task.properties.nodeEditorTutorialState != undefined)?this.model.task.properties.nodeEditorTutorialState : {};
+			},
 			getTime: function(){
 				// Summary: Returns the time object from the JSON model.
 				return this.model.task.time;

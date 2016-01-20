@@ -1,5 +1,4 @@
 # Logging Format #
-sss
 This document discusses the structure of the logging and the associated table formats on the server.
 
 ## Database Table Structure ##
@@ -11,12 +10,14 @@ The logging will use the **`session`** table (see [sessions.md](sessions.md))  a
 *	`tid` – An auto-incremented integer that uniquely identifies each log event.
 *	`session_id` – foreign key. 
 *	`method` can be one of the following:
-	*	`start-session` send session ID to the server as well as the user name and section and major mode.  Normally, it will also include the problem name and the author name for custom problems.  This will create an entry in the `session` table.
-	* `open-problem` - Client asks for the problem from the server or opens a local file.  The message will include problem name and possibly section name and author name for custom problems.
-	*	`client-message` - Java/JavaScript exceptions and warnings.  Messages associated with the dragoon code itself.
-	*	`ui-action` - Actions taken by the user on the interface, such
-	    as clicking on a menu, opening the node editor, or moving a node on the canvas, that are
-	   not problem-solving steps.   We will not log keystrokes or mouse events but a level above it.
+    * `start-session` send session ID to the server as well as the user name and section and major mode.  Normally, it will also include the problem name and the author name for custom problems.  This will create an entry in the `session` table.
+    * `open-problem` - Client asks for the problem from the server or opens a local file.
+       The message will include problem name and possibly section name and author name for custom problems.
+    * `solution-step` - Student action that can be evaluated as correct/incorrect.
+    * `client-message` - Java/JavaScript exceptions and warnings.  Messages associated with the dragoon code itself.
+    * `ui-action` - Actions taken by the user on the interface, such
+       as clicking on a menu, opening the node editor, or moving a node on the canvas, that are
+       not problem-solving steps.   We will not log keystrokes or mouse events but a level above it.
  * `seek-help` -  Student request for help and the response. Not implemented yet in Dragoon (as of June 2014).
  *	`close-problem` - The student has closed the session.  This may be missing if the session was interrupted (e.g. the network connection died).
  * `window-focus` - The student window goes in and out of focus after the session has been started. 
@@ -67,7 +68,7 @@ contains the number of seconds, according to the client, that have elapsed since
 the session.
 
 We will not write a formal definition of the log message format.  Instead, we will define it via a set of
-examples. We can use the Andes logging as a staring point for creating
+examples. We can use the Andes logging as a starting point for creating
 the Dragoon log message format.  See an 
 [annotated session log for Andes](http://gideon.eas.asu.edu/web-UI/Documentation/AsuDocs/nokes-example-json.txt)
 as well as the
@@ -96,11 +97,11 @@ Student chooses a quantity in the description tab.
 -- message: `{"time": 40.2, "nodeID": "id10", "type": "enter-quantity",
   "node": "fat content", "text": "The ratio of the weight of the fat
   in a potato chip to the weight of the potato chip", "checkResult":
-  "CORRECT"}`  
+  "CORRECT"}`
 
 Student chooses node type:  
 -- method: `solution-step`  
--- message: `{"time": 53.1, "node": fat content, "nodeID": "id10", "type": "solution-checked",
+-- message: `{"time": 53.1, "node": "fat content", "nodeID": "id10", "type": "solution-checked",
   property : "type",  "value": "ACCUMULATOR", "checkResult":  "CORRECT"}`
 
 Student fills out the initial value:   
@@ -117,20 +118,20 @@ for parser errors:
 -- method: `solution-step`  
 -- message: `{"time": 60.2, "node": "fat content", "nodeID": "id10", "type": "parse-error",
   "property" : "initial-value", "value": "35%", "correctValue": "0.35", 
-  "checkResult":  "INCORRECT"}`  
+  "checkResult":  "INCORRECT"}`
 
 User deletes a node:  
--- method: `ui-action`    
+-- method: `ui-action`  
 -- message: `{"time":'65.9', "type":'node-delete', "node":'fat
    content', "nodeID": "id10", "nodeComplete": true}`
 
 Student closes node editor:  
 -- method: `ui-action`  
 -- message: `{"time": 61.6, "type": "close-dialog-box",
-  "nodeID": "id10", "nodeComplete": true, "node": "fat content"}`  
-  
-Student completes the problem:
--- method: `solution-step`
+  "nodeID": "id10", "nodeComplete": true, "node": "fat content"}`
+
+Student completes the problem:  
+-- method: `solution-step`  
 -- message: `{"time": 211.2, "type": "completeness-check", "problemComplete": true}`
 
 #### Incremental activity logs
@@ -154,12 +155,12 @@ The student answers will be handled as it is handled for other node related solu
 
 ### Execution activity logs
 Student opens activity popup   
--- method: `ui-action`   
+-- method: `ui-action`  
 -- message: `{"time":2.255,"type":"open-tweak-popup","node":"net growth","nodeID":"id11"}`
 
 Student closes activity popup.   
 -- method: `ui-action`   
--- message: `{"time":2.255,"type":"open-tweak-popup","node":"net growth","nodeID":"id11"}`
+-- message: `{"time":2.255,"type":"open-tweak-popup","node":"net growth","nodeID":"id11"}`  
 
 The equation close actions will be same as incremental activity messages. The answer actions
 will be same as it is handled in construction activity using solution step.
