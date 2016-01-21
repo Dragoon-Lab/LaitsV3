@@ -347,14 +347,27 @@ define([
 		},
 		equationDoneHandler: function () {
 			var directives = [];
-			if (this.isExpressionChanged())
+			/*if (this.isExpressionChanged())
 				return; //2365 fix, just to check pattern change, not evaluating
-			var parse = this.equationAnalysis(directives, false);
+			*/var parse = this.equationAnalysis(directives, false);
+			console.log("************",parse);
 			if (parse) {
 				var dd = this._PM.processAnswer(this.currentID, 'equation', parse, registry.byId(this.controlMap.equation).get("value"));
 				directives = directives.concat(dd);
 			}
-
+			var context = this;
+			directives.every(function(ele){
+				
+				if(ele.attribute != 'status' || ele.value != 'incorrect') return true;  
+				var d, s;
+				d = (s = context.expressionSuggestor(context.currentID, parse)) ? 
+					{ attribute : "append",
+						id : "message",
+						value : s
+					} : null;
+				directives.push(d);
+				return false;
+			})
 			this.applyDirectives(directives);
 
 			var isDemo = false;
