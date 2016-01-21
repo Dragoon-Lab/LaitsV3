@@ -1546,16 +1546,16 @@ define([
 						}
 					}
 
-					if(activity_config.get("showNodeEditorTour") && controllerObject._model.active.isComplete(controllerObject.currentID)){
+					if(activity_config.get("showNodeEditorTour") && controllerObject.incNodeTourCounter && controllerObject._model.active.isComplete(controllerObject.currentID)){
 						var nodeTutorialState = givenModel.getNodeEditorTutorialState();
+						// Increment count for nodeType when the node is completed for the first time
 						var nodeType = controllerObject._model.active.getType(controllerObject.currentID);
 						if(nodeType) {
-							nodeTutorialState[nodeType] = nodeTutorialState[nodeType] ? nodeTutorialState[nodeType] : [];
-							if(nodeTutorialState[nodeType].indexOf(controllerObject.currentID) === -1){
-								nodeTutorialState[nodeType].push(controllerObject.currentID);
-							}
-							console.log("SET TUTORIAL STATE", nodeTutorialState);
+							nodeTutorialState[nodeType] = nodeTutorialState[nodeType] ? nodeTutorialState[nodeType] : 0;
+							nodeTutorialState[nodeType] += 1;
 						}
+						console.log("SET TUTORIAL STATE", nodeTutorialState);
+						//Save tutorial state
 						givenModel.setNodeEditorTutorialState(nodeTutorialState);
 						state.put("NodeEditorTutorialState", nodeTutorialState)
 					}
