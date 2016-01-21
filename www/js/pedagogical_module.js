@@ -1492,7 +1492,7 @@ define([
 					}
 
 					// Get Node type from given model and switch hint messages if necessary
-					if (givenNodeID) {
+					if (givenNodeID && !this.checkPremature(studentNodeID)) {
 						var type = this.model.given.getType(givenNodeID);
 						if (type === "parameter" && (state[type] && state[type] >= 1)) {
 							hintMessages = hint2Messages;
