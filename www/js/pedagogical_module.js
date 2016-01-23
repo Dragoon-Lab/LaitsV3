@@ -1457,17 +1457,33 @@ define([
 				done: "closeButton"
 			};
 
-			 if(state){
+			if(state) {
 				var studentNode = this.model.student.getNode(studentNodeID);
-				var showHints = (!state["parameter"] || state["parameter"].length < 2) || (!state["accumulator"] || state["accumulator"].length < 3) || (!state["function"] || state["function"].length < 3);
+				var showHints = (!state["parameter"] || state["parameter"] < 2) || (!state["accumulator"] || state["accumulator"] < 3) || (!state["function"] || state["function"] < 3);
+				var hintMessages = hint1Messages;
+
 				if (studentNode && showHints) {
+					var statusDirectives = studentNode.status;
+
+					//Get Description and Type for the node
+					var descAnswer = this.model.student.getCorrectAnswer(studentNodeID, "description");
+					var typeAnswer = this.model.given.getType(descAnswer);
+
 					//Description Hint
 					var field = "description";
-					var statusDirectives = studentNode.status;
 					if (!statusDirectives[field] || !statusDirectives[field].status || statusDirectives[field].status === "incorrect") {
+						//Get correct answer from given model
 						var answer = this.model.student.getCorrectAnswer(studentNodeID, field);
 						answer = this.model.given.getDescription(answer);
-						var hintMessage = hint1Messages[field].replace('<authorsValue>', '<strong>' + answer + '</strong>') || "";
+						//Switch hint messages based on state
+						if (typeAnswer === "parameter" && (state[typeAnswer] && state[typeAnswer] >= 1)) {
+							hintMessages = hint2Messages;
+						}
+						else if (typeAnswer !== "parameter" && (state[typeAnswer] && state[typeAnswer] >= 2)) {
+							hintMessages = hint2Messages
+						}
+						//Generate Description tour step
+						var hintMessage = hintMessages[field].replace('<authorsValue>', '<strong>' + answer + '</strong>') || "";
 						var step = {
 							element: elements[field],
 							title: nodeEditorHints[field] + '<br/><br/>' + hintMessage
@@ -1475,105 +1491,110 @@ define([
 						steps[field] = step;
 					}
 
-					//Type Hint
-					else if (!statusDirectives["type"] || !statusDirectives["type"].status || statusDirectives["type"].status === "incorrect") {
-						field = "type";
-						answer = this.model.student.getCorrectAnswer(studentNodeID, field);
-						var count = answer === "parameter" ? 3 : 4;
-						if (!state[answer] || state[answer].length < count) {
-							var capitalize = answer.charAt(0).toUpperCase() + answer.slice(1);
-							hintMessage = hint1Messages[field].replace('<authorsValue>', '<strong>' + capitalize + '</strong>') || "";
-							var typeStep = {
-								element: elements[field],
-								title: nodeEditorHints[field] + '<br/>' + hintMessage
-							};
-							steps[field] = typeStep;
+					// Get Node type from given model and switch hint messages if necessary
+					if (givenNodeID && !this.checkPremature(studentNodeID)) {
+						var type = this.model.given.getType(givenNodeID);
+						if (type === "parameter" && (state[type] && state[type] >= 1)) {
+							hintMessages = hint2Messages;
+						}
+						else if (type !== "parameter" && (state[type] && state[type] >= 2)) {
+							hintMessages = hint2Messages
+						}
+
+
+						//Type Hint
+						if (!statusDirectives["type"] || !statusDirectives["type"].status || statusDirectives["type"].status === "incorrect") {
+							field = "type";
+							answer = this.model.student.getCorrectAnswer(studentNodeID, field);
+							var count = (answer === "parameter") ? 2 : 3;
+							if (!state[answer] || state[answer] < count) {
+								var capitalize = answer.charAt(0).toUpperCase() + answer.slice(1);
+								hintMessage = hintMessages[field].replace('<authorsValue>', '<strong>' + capitalize + '</strong>') || "";
+								var typeStep = {
+									element: elements[field],
+									title: nodeEditorHints[field] + '<br/>' + hintMessage
+								};
+								steps[field] = typeStep;
+							}
+						}
+
+
+						if (type === "parameter") {
+							fields = ["initial", "units"];
+							if (studentNode && (!state["parameter"] || state["parameter"] < 2)) {
+								array.forEach(fields, lang.hitch(this, function (field, index) {
+									if (!statusDirectives[field] || !statusDirectives[field].status || statusDirectives[field].status === "incorrect") {
+										answer = this.model.student.getCorrectAnswer(studentNodeID, field);
+										if (answer) {
+											hintMessage = hintMessages[field].replace('<authorsValue>', '<strong>' + answer + '</strong>') || "";
+											var step = {
+												element: elements[field],
+												title: nodeEditorHints[field] + '<br/><br/>' + hintMessage
+											};
+											steps[field] = step;
+										}
+									}
+								}));
+							}
+						}
+						else if (type === "function") {
+							fields = ["units", "equation"];
+							if (studentNode && (!state["function"] || state["function"] < 3)) {
+								array.forEach(fields, lang.hitch(this, function (field, index) {
+									if (!statusDirectives[field] || !statusDirectives[field].status || statusDirectives[field].status === "incorrect") {
+										answer = this.model.student.getCorrectAnswer(studentNodeID, field);
+										if (field === "equation") {
+											answer = check.convert(this.model.given, answer);
+										}
+										if (answer) {
+											hintMessage = hintMessages[field].replace('<authorsValue>', '<strong>' + answer + '</strong>') || "";
+											var step = {
+												element: elements[field],
+												title: nodeEditorHints[field] + '<br/><br/>' + hintMessage
+											};
+											steps[field] = step;
+										}
+									}
+								}));
+							}
+						}
+						else if (type === "accumulator") {
+							fields = ["initial", "units", "equation"];
+							if (studentNode && (!state["accumulator"] || state["accumulator"] < 3)) {
+								array.forEach(fields, lang.hitch(this, function (field, index) {
+									if (!statusDirectives[field] || !statusDirectives[field].status || statusDirectives[field].status === "incorrect") {
+										answer = this.model.student.getCorrectAnswer(studentNodeID, field);
+										if (field === "equation") {
+											answer = check.convert(this.model.given, answer);
+										}
+										if (answer) {
+											hintMessage = hintMessages[field].replace('<authorsValue>', '<strong>' + answer + '</strong>') || "";
+											var step = {
+												element: elements[field],
+												title: nodeEditorHints[field] + '<br/><br/>' + hintMessage
+											};
+
+											steps[field] = step;
+										}
+									}
+								}));
+							}
 						}
 					}
 
-					var type = this.model.given.getType(givenNodeID);
-					var hintMessages = hint1Messages;
-					if(type === "parameter" && (state[type] && state[type].length >= 1)){
-						hintMessages = hint2Messages;
-					}
-					else if(type !== "parameter" && (state[type] && state[type].length >= 2)){
-						hintMessages = hint2Messages
-					}
-
-					if (type === "parameter") {
-						fields = ["initial", "units"];
-						if (studentNode && (!state["parameter"] || state["parameter"].length < 3)) {
-							array.forEach(fields, lang.hitch(this, function (field, index) {
-								if (!statusDirectives[field] || !statusDirectives[field].status || statusDirectives[field].status === "incorrect") {
-									answer = this.model.student.getCorrectAnswer(studentNodeID, field);
-									if(answer) {
-										hintMessage = hintMessages[field].replace('<authorsValue>', '<strong>' + answer + '</strong>') || "";
-										var step = {
-											element: elements[field],
-											title: nodeEditorHints[field] + '<br/><br/>' + hintMessage
-										};
-										steps[field] = step;
-									}
-								}
-							}));
-						}
-					}
-					else if (type === "function") {
-						fields = ["units", "equation"];
-						if (studentNode && (!state["function"] || state["function"].length < 4)) {
-							array.forEach(fields, lang.hitch(this, function (field, index) {
-								if (!statusDirectives[field] || !statusDirectives[field].status || statusDirectives[field].status === "incorrect") {
-									answer = this.model.student.getCorrectAnswer(studentNodeID, field);
-									if (field === "equation") {
-										answer = check.convert(this.model.given, answer);
-									}
-									if(answer) {
-										hintMessage = hintMessages[field].replace('<authorsValue>', '<strong>' + answer + '</strong>') || "";
-										var step = {
-											element: elements[field],
-											title: nodeEditorHints[field] + '<br/><br/>' + hintMessage
-										};
-										steps[field] = step;
-									}
-								}
-							}));
-						}
-					}
-					else if (type === "accumulator") {
-						fields = ["initial", "units", "equation"];
-						if (studentNode && (!state["accumulator"] || state["accumulator"].length < 4)) {
-							array.forEach(fields, lang.hitch(this, function (field, index) {
-								if (!statusDirectives[field] || !statusDirectives[field].status || statusDirectives[field].status === "incorrect") {
-									answer = this.model.student.getCorrectAnswer(studentNodeID, field);
-									if (field === "equation") {
-										answer = check.convert(this.model.given, answer);
-									}
-									if(answer) {
-										hintMessage = hintMessages[field].replace('<authorsValue>', '<strong>' + answer + '</strong>') || "";
-										var step = {
-											element: elements[field],
-											title: nodeEditorHints[field] + '<br/><br/>' + hintMessage
-										};
-
-										steps[field] = step;
-									}
-								}
-							}));
-						}
+					//Add tooltip for Done
+					if (type && Object.keys(steps).length > 0) {
+						field = "done";
+						var step = {
+							element: elements[field],
+							title: nodeEditorHints[field]
+						};
+						steps[field] = step;
+					} else {
+						steps["default"] = "default";
 					}
 				}
-
-				 //Add tooltip for Done
-				 if(type && Object.keys(steps).length > 0){
-					 field = "done";
-					 var step = {
-						 element: elements[field],
-						 title: nodeEditorHints[field]
-					 };
-					 steps[field] = step;
-				 }
 			}
-
 			//add default hints for other fields
 			var allFields = Object.keys(elements);
 			array.forEach(allFields, lang.hitch(this, function(val, index){
@@ -1586,6 +1607,7 @@ define([
 				}
 			}));
 
+			//copy from object to array
 			var stepsArr = [];
 			for(s in steps){
 				stepsArr.push(steps[s]);

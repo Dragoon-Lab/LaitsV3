@@ -460,7 +460,7 @@ define([
 				this._previousExpression=null; //clear the expression
 
 			// This cannot go in controller.js since _PM is only in
-			// con-student.	 You will need con-student to attach this
+			// con-student.  You will need con-student to attach this
 			// to closeEditor (maybe using aspect.after?).
 		},
 
@@ -1235,6 +1235,11 @@ define([
 				if (steps && steps.length > 0) {
 					this.tour = new Tour(steps);
 					this.tour.start();
+					/** Check if Status counter for node editor tour be incremented
+					 *  If the tour steps returns first element as "default": flag is set to false
+					 *  else flag is true
+					 **/
+					this.incNodeTourCounter = steps[0] !== "default";
 				} else {
 					this.tour = null;
 				}
@@ -1345,6 +1350,11 @@ define([
 				var steps = this._PM.generateTourSteps(givenNodeID ,this.currentID,  this._model.getNodeEditorTutorialState());
 				if(steps && steps.length > 0) {
 					this.tour = new Tour(steps);
+					/** Check if Status counter for node editor tour be incremented
+					 *  If the tour steps returns first element as "default": flag is set to false
+					 *  else flag is true
+					 **/
+					this.incNodeTourCounter = steps[0] !== "default";
 				}else{
 					this.tour = null;
 				}
