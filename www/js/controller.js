@@ -155,6 +155,11 @@ define([
 			equation: "equationBox",
 			explanation:"explanationButton"
 		},
+		genericDivMap: {
+			initial: "initialValueDiv",
+			units: "unitDiv",
+			equation: "expressionDiv"
+		},
 		// A list of all widgets.  (The constructor mixes this with controlMap)
 		widgetMap: {
 			message: 'messageBox',
@@ -210,7 +215,7 @@ define([
 		_setUpNodeEditor: function(){;
 			// get Node Editor widget from tree
 			this._nodeEditor = registry.byId('nodeeditor');
-
+			this._nodeEditor.set("display", "block");
 			// Wire up this.closeEditor.  Aspect.around is used so we can stop hide()
 			// from firing if equation is not entered.
 			aspect.around(this._nodeEditor, "hide", lang.hitch(this, function(doHide){
@@ -1133,7 +1138,7 @@ define([
 		},
 
 		// Hide the value and expression controls in the node editor, depending on the type of node	
-		adjustNodeEditor: function(type){
+		/*adjustNodeEditor: function(type){
 			if (type=="function"){
 				domStyle.set('valueDiv','visibility', 'hidden');
 				domStyle.set('expressionDiv', 'display', 'block');
@@ -1148,7 +1153,7 @@ define([
 				domStyle.set('valueDiv','visibility', 'visible');	
 				domStyle.set('initLabel', 'display', 'inline');
 			}
-		},
+		},*/
 
 		//show node editor
 		showNodeEditor: function(/*string*/ id){
@@ -1162,7 +1167,7 @@ define([
 
 			// Hide the value and expression controls in the node editor, depending on the type of node		
 			var type=this._model.active.getType(this.currentID);
-			this.adjustNodeEditor(type);
+			//this.adjustNodeEditor(type);
 
 			this._nodeEditor.show().then(lang.hitch(this, function(){
 				this.disableHandlers = false;
@@ -1205,6 +1210,7 @@ define([
 		},
 
 		populateNodeEditorFields: function(nodeid){
+			console.log("populate node editor fields enter");
 			//populate description
 			var model = this._model.active;
 			var editor = this._nodeEditor;
@@ -1320,10 +1326,11 @@ define([
 		 */
 		applyDirectives: function(directives, noModelUpdate){
 			// Apply directives, either from PM or the controller itself.
+			var tempDirective = null;
 			array.forEach(directives, function(directive) {
 				if(!noModelUpdate)
 					this.updateModelStatus(directive);
-				if (this.widgetMap[directive.id]) {
+				if (directive.attribute != "display" && this.widgetMap[directive.id]) {
 					var w = registry.byId(this.widgetMap[directive.id]);
 					if (directive.attribute == 'value') {
 						w.set("value", directive.value, false);
@@ -1342,9 +1349,11 @@ define([
 						// the model and the graph.
 					}else{
 						w.set(directive.attribute, directive.value);
-						if(this.activityConfig.get("showNodeEditorTour")) {
-							this.continueTour(directive);
-						}
+						tempDirective = directive;
+					}
+				}else if(directive.attribute == "display"){
+					if(this.genericDivMap[directive.id]){
+						domStyle.set(this.genericDivMap[directive.id], directive.attribute, directive.value);
 					}
 				}else if(directive.id == "tweakDirection"){
 					if (directive.attribute == 'value') {
@@ -1370,6 +1379,9 @@ define([
 				}
 
 			}, this);
+			if(tempDirective && this.activityConfig.get("showNodeEditorTour")) {
+				this.continueTour(tempDirective);
+			}
 		},
 
 		// Stub to be overwritten by student or author mode-specific method.

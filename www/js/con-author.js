@@ -208,9 +208,11 @@ define([
 			style.set('nameControl', 'display', 'block');
 			style.set('descriptionControlStudent', 'display', 'none');
 			style.set('descriptionControlAuthor', 'display', 'inline-block');
-			style.set('selectUnitsControl', 'display', 'none');
+			style.set('initialValueDiv', 'display', 'inline');
+			style.set('unitDiv', 'display', 'none');
 			style.set('setUnitsControl', 'display', 'inline');
-            style.set('setRootNode', 'display', 'block')
+			style.set('setRootNode', 'display', 'block');
+			style.set('expressionDiv', 'display', 'block');
 			style.set('inputControlAuthor', 'display', 'block');
 			style.set('inputControlStudent', 'display', 'none');
 			style.set('studentModelControl', 'display', 'inline-block');
