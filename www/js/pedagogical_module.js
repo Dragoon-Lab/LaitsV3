@@ -826,7 +826,8 @@ define([
 			//
 			// Tags: Private
 			var nodeType = "";
-			if(this.showCorrectAnswer && this.enableNextFromAuthor){ //For Other modes get node type from given model
+			var postTypeProperties = ["initial", "units", "equation"];
+			if(this.showCorrectAnswer && this.enableNextFromAuthor && (postTypeProperties.indexOf(currentPart) == -1)){ //For Other modes get node type from given model
 				nodeType = this.model.given.getType(givenNodeID);
 			}else{  //For EDITOR and TEST get node type from user selected answer
 				nodeType = this.model.student.getType(this.model.student.getNodeIDFor(givenNodeID));
@@ -1206,7 +1207,7 @@ define([
 				// Activate appropriate parts of the node editor
 				var lastElement = returnObj[returnObj.length - 1].id;
 				if (lastElement === "enableNext" || lastElement === "enableRemaining") {
-					if(interpretation == "firstfailure"){
+					if(interpretation == "firstFailure"){
 						this.enableNextFromAuthor = false;
 					}
 					returnObj.pop();
@@ -1216,7 +1217,7 @@ define([
 				if(nodePart == "type"){
 					for(var i = 0; i < returnObj.length; i++){
 						if(returnObj[i].id == "displayRemaining"){
-							var tempAnswer = interpretation == "demo" ? answer : this.model.student.getType(id);
+							var tempAnswer = this.model.given.getStatus(givenID, nodePart) == "demo" ? this.model.given.getType(givenID) : answer;
 							returnObj.splice(i, 1);
 							this._display(returnObj, id, tempAnswer);
 							break;
