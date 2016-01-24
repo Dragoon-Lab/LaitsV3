@@ -46,6 +46,7 @@ define([
 		modules:{},
 		query:{}, // added if we want to send multiple queries. moving the query from main function to the global init. this init can be called again for each new function and then new table can be created. 
 		problemNames: [],
+		userProblems: [], // has per user problem names in a string, used for showing 10 closest users.
 		//sessionDetails:[],
 		decideModules: function(/* string */ type){
 			var returnModule;
@@ -76,6 +77,7 @@ define([
 			this.path = path||"";
 			var t = params['t']||"default";
 			this.modules = this.decideModules(t);
+			this.modules["showUsers"] = this.modules.hasOwnProperty("showUsers") ? this.modules["showUsers"] : -1;
 			this.section = params['s']||this.modules.qObject.s;
 			this.currentUser = params['us'];
 			//this.mode = params['m'];
@@ -84,11 +86,15 @@ define([
 			else 
 				this.query = params;
 			this.separatingSymbol = " - ";
+			this.pSymbol = "||";
 		},
 
 		init: function(){
 			this.setObjects();
 			this.users = this.getAllUsers();
+			if(this.modules["showUsers"] > 0 && this.currentUserIndex >= 0){
+				this.users = this.getClosestUsers();
+			}
 			this.problems = this.getAllProblems();
 			this.problemNames = this.getProblemNames();
 			
@@ -138,6 +144,45 @@ define([
 			});
 		},
 
+		getEditDistance: function(problemList1, problemList2){
+			p1 = problemList1.split(this.pSymbol);
+			p2 = problemList2.split(this.pSymbol);
+
+			var diff = p2.length - p1.length;
+			if(diff == undefined)
+				return 100;
+			var edit = 0;
+			array.forEach(p2, function(p){
+				if(p1.indexOf(p) < 0){
+					edit++;
+				}
+			});
+
+			return Math.abs(diff) + edit;//(diff > 0 ? (diff + edit) : -diff + edit);
+		},
+
+		getClosestUsers: function(){
+			var editDistances = [];
+			var cuProblem = this.userProblems[this.currentUserIndex];
+			console.log(cuProblem);
+
+			array.forEach(this.userProblems, function(uProblem, counter){
+				console.log(this.users[counter]);
+				editDistances.push(this.getEditDistance(cuProblem, uProblem));
+			}, this);
+
+			var tUsers = this.users.slice();
+
+			var sortFunction = function(a, b){
+				console.log(a+ " eD "+ editDistances[tUsers.indexOf(a)]+ " b "+ b + " edb " + editDistances[tUsers.indexOf(b)]);
+				return editDistances[tUsers.indexOf(a)] - editDistances[tUsers.indexOf(b)];
+			};
+
+			this.users.sort(sortFunction);
+
+			return this.users.slice(0, this.modules["showUsers"]);
+		},
+
 		setObjects: function(){
 			var obj;
 			this.getResults(this.query).then(function(results){
@@ -149,16 +194,37 @@ define([
 		getAllUsers: function(){
 			var index = 0;
 			var users = [];
+			var cuProblems = "";
+			var flag = (this.modules["showUsers"] > 0);
 			array.forEach(this.objects, function(upObject){
 				var user = upObject.user;
+				var pa;
+				if(flag)
+					pa = this.getProblemActivityName(upObject['problem'], upObject['activity']);
+
 				if(index>0 && users[index-1] != user){
 					users.push(user);
 					index++;
+					if(flag){
+						this.userProblems.push(cuProblems.substr(0, cuProblems.length - this.pSymbol.length));
+						cuProblems = pa + this.pSymbol;
+					}
 				} else if(index == 0){
 					users.push(user);
 					index++;
+					if(flag){
+						cuProblems += pa + this.pSymbol;
+					}
+				} else if(flag){
+					cuProblems += pa + this.pSymbol;
 				}
-			});
+			}, this);
+			this.userProblems.push(cuProblems.substr(0, cuProblems.length - this.pSymbol.length));
+
+			if(this.modules["showUsers"] > 0){
+				this.currentUserIndex = users.indexOf(this.currentUser);
+			}
+
 			return users;
 		},
 
@@ -173,7 +239,8 @@ define([
 					problems.push(problem);
 				});
 			}, function(){*/
-				array.forEach(this.objects, function(object){
+			array.forEach(this.objects, function(object){
+				if(this.modules["showUsers"] < 0 || this.users.indexOf(object['user']) >= 0){
 					var pa = this.getProblemActivityName(object['problem'], object['activity']);
 					if(problems.length > 0){
 						var problemExist = array.some(problems, function(problem){
@@ -185,8 +252,8 @@ define([
 					} else {
 						problems.push(pa);
 					}
-				}, this);
-			//});
+				}
+			}, this);
 			return problems;
 		},
 		
