@@ -407,6 +407,7 @@ define([
 		initialControlSettings: function (nodeid) {
 			// Apply settings from PM
 			this.applyDirectives(this._PM.newAction(), true);
+			this.applyDirectives(this._PM.newActionVisibility(), true);
 
 			// Set the selected value in the description.
 			var desc = this._model.student.getDescriptionID(nodeid);

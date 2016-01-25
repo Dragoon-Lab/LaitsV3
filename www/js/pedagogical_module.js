@@ -1293,12 +1293,6 @@ define([
 			var directives = array.map(controls, function(control){
 				return {id: control, attribute: "disabled", value: true};
 			});
-			var divs = ["initial", "units", "equation"];
-			divDirectives = [];
-			array.forEach(divs, function(div){
-				divDirectives.push({id: div, attribute: "display", value: "none"});
-			});
-			lang.mixin(directives, divDirectives);
 			// Only allow nodes of type 'function' for power users and tests.
 			//if(this.userType !== 'power' || this.mode == 'TEST')
 			//		directives.push({id: 'type', attribute: 'disableOption', value: 'function'});
@@ -1307,6 +1301,16 @@ define([
 			// directives.push({id: 'type', attribute: 'disableOption', value: 'product'});
 			return directives;
 		},
+
+		newActionVisibility: function(){
+			var divs = ["initial", "units", "equation"];
+			divDirectives = array.map(divs, function(div){
+				return {id: div, attribute: "display", value: "none"};
+			});
+
+			return divDirectives;
+		},
+
 
 		checkDoneness: function(model){
 			if(this.mode == "COACHED" && model.areRequiredNodesVisible()){
