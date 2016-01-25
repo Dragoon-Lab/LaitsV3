@@ -251,14 +251,14 @@ define([
 			if (type == 'defaultSelect')
 				return; // don't do anything if they choose default
 			// Hide the value and expression controls in the node editor, depending on the type of node
-			this.adjustStudentNodeEditor(type);
+			//this.adjustStudentNodeEditor(type);
 			this.updateType(type);
 			this.applyDirectives(this._PM.processAnswer(this.currentID, 'type', type));
 
 		},	
 
 		// Hide the value and expression controls in the node editor, depending on the type of node
-		adjustStudentNodeEditor: function(type){
+		/*adjustStudentNodeEditor: function(type){
 			if (type=="function"){
 				// style.set('valueDiv','display', 'none');
 				style.set('valueDiv','visibility', 'hidden');
@@ -277,7 +277,7 @@ define([
 				style.set('initLabel', 'display', 'inline');
 
 			}
-		},
+		},*/
 
 		typeSet: function (value) {
 			this.updateType(value);
@@ -420,12 +420,17 @@ define([
 		initialControlSettings: function (nodeid) {
 			// Apply settings from PM
 			this.applyDirectives(this._PM.newAction(), true);
+			this.applyDirectives(this._PM.newActionVisibility(), true);
 
 			// Set the selected value in the description.
 			var desc = this._model.student.getDescriptionID(nodeid);
 			console.log('description is', desc || "not set");
 			registry.byId(this.controlMap.description).set('value', desc || 'defaultSelect', false);
 
+			var type = this._model.student.getType(nodeid);
+			if(type){
+				this.applyDirectives(this._PM.getActionForType(nodeid, type));
+			}
 			/*
 			 Set color and enable/disable
 			 */

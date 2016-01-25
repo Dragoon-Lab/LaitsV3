@@ -337,23 +337,28 @@ define([
 			COACHED: function(obj, part){
 				state(obj, part, "correct");
 				message(obj, part, "correct");
+				display(obj, "displayRemaining", true);
 				disable(obj, part, true);
 				disable(obj, "enableNext", false);
 			},
 			feedback: function(obj, part){
 				state(obj, part, "correct");
 				message(obj, part, "correct");
+				display(obj, "displayRemaining", true);
 				disable(obj, part, true);
 				disable(obj, "enableRemaining", false);
 			},
 			power: function(obj, part){
+				display(obj, "displayRemaining", true);
 				disable(obj, "enableRemaining", false);
 			},
 			TEST: function(obj, part){
+				display(obj, "displayRemaining", true);
 				state(obj, part, "correct");
 				disable(obj, "enableRemaining", false);
 			},
 			EDITOR: function(obj, part){
+				display(obj, "displayRemaining", true);
 				state(obj, part, "correct");
 				disable(obj, "enableRemaining", false);
 			}
@@ -365,17 +370,22 @@ define([
 			},
 			feedback: function(obj, part){
 				state(obj, part, "incorrect");
+				display(obj, "displayRemaining", true);
 				message(obj, part, "incorrect");
+				disable(obj, "enableNext", false);
 			},
 			power: function(obj, part){
+				display(obj, "displayRemaining", true);
 				disable(obj, "enableRemaining", false);
 			},
 			TEST: function(obj, part){
 				state(obj, part, "incorrect");
+				display(obj, "displayRemaining", true);
 				disable(obj, "enableRemaining", false);
 			},
 			EDITOR: function(obj, part){
 				state(obj, part, "incorrect");
+				display(obj, "displayRemaining", true);
 				disable(obj, "enableRemaining", false);
 			}
 		},
@@ -383,24 +393,29 @@ define([
 			COACHED: function(obj, part){
 				state(obj, part, "demo");
 				message(obj, part, "lastFailure2");
+				display(obj, "displayRemaining", true);
 				disable(obj, part, true);
 				disable(obj, "enableNext", false);
 			},
 			feedback: function(obj, part){
 				state(obj, part, "demo");
 				message(obj, part, "lastFailure2");
+				display(obj, "displayRemaining", true);
 				disable(obj, part, true);
 				disable(obj, "enableRemaining", false);
 			},
 			power: function(obj, part){
+				display(obj, "displayRemaining", true);
 				disable(obj, "enableRemaining", false);
 			},
 			TEST: function(obj, part){
 				state(obj, part, "incorrect");
+				display(obj, "displayRemaining", true);
 				disable(obj, "enableRemaining", false);
 			},
 			EDITOR: function(obj, part){
 				state(obj, part, "incorrect");
+				display(obj, "displayRemaining", true);
 				disable(obj, "enableRemaining", false);
 			}
 		},
@@ -412,22 +427,27 @@ define([
 				console.error("Attempting to access actionTable after demo has been sent.");
 			},
 			power: function(obj, part){
+				display(obj, "displayRemaining", true);
 				disable(obj, "enableRemaining", false);
 			},
 			TEST: function(obj, part){
+				display(obj, "displayRemaining", true);
 				disable(obj, "enableRemaining", false);
 			},
 			EDITOR: function(obj, part){
+				display(obj, "displayRemaining", true);
 				disable(obj, "enableRemaining", false);
 			}
 		},
 		incorrect: {
 			TEST: function(obj, part){
 				state(obj, part, "incorrect");
+				display(obj, "displayRemaining", true);
 				disable(obj, "enableRemaining", false);
 			},
 			EDITOR: function(obj, part){
 				state(obj, part, "incorrect");
+				display(obj, "displayRemaining", true);
 				disable(obj, "enableRemaining", false);
 			}
 		}
@@ -767,6 +787,10 @@ define([
 		obj.push({id: nodePart, attribute: "disabled", value: disable});
 	}
 
+	function display(/*object*/ obj, /*string*/ nodeDiv, /*string*/ display){
+		obj.push({id: nodeDiv, attribute: "display", value: display});
+	}
+
 	/*****
 	 *
 	 * Builds class that is used by controller to check student answers
@@ -778,6 +802,12 @@ define([
 			this.mode = mode;
 			this.activityConfig = activityConfig;
 			this.showCorrectAnswer = this.activityConfig.get("showCorrectAnswer");
+			/*
+			* enableNextFromAuthor is used in the case when the answer is incorrect, but we want to enable the next field
+			* as per the wrong answer in student mode. See trello card https://trello.com/c/EjN4UBDU.
+			* It should always be kept true, and only in case of firstfailure in case of a type it should be changed to false.
+			*/
+			this.enableNextFromAuthor = true;
 			this.setUserType(subMode);
 		},
 		matchingID: null,
@@ -796,7 +826,8 @@ define([
 			//
 			// Tags: Private
 			var nodeType = "";
-			if(this.showCorrectAnswer){ //For Other modes get node type from given model
+			var postTypeProperties = ["initial", "units", "equation"];
+			if(this.showCorrectAnswer && this.enableNextFromAuthor && (postTypeProperties.indexOf(currentPart) == -1)){ //For Other modes get node type from given model
 				nodeType = this.model.given.getType(givenNodeID);
 			}else{  //For EDITOR and TEST get node type from user selected answer
 				nodeType = this.model.student.getType(this.model.student.getNodeIDFor(givenNodeID));
@@ -851,6 +882,39 @@ define([
 				this._enableNext(obj, givenNodeID, newPart, job);
 			}else{
 				return;
+			}
+		},
+
+		/*
+		* From January 2016, the node only shows description and type in the node
+		* This function displays the rest of the node values based after the type is correctly chosen or demoed
+		*/
+		_display: function(/*object*/ obj, /*string*/ nodeID, /*string*/ type){
+			var givenID = this.model.student.getDescriptionID(nodeID);
+			var units = this.model.given.getUnits(givenID);
+
+			switch(type){
+				case "parameter":
+					display(obj, "initial", "inline");
+					display(obj, "equation", "none");
+					if(units){
+						display(obj, "units", "inline");
+					}
+					break;
+				case "function":
+					display(obj, "initial", "none");
+					display(obj, "equation", "block");
+					if(units){
+						display(obj, "units", "inline");
+					}
+					break;
+				case "accumulator":
+					display(obj, "initial", "inline");
+					display(obj, "equation", "block");
+					if(units){
+						display(obj, "units", "inline");
+					}
+					break;
 			}
 		},
 
@@ -967,6 +1031,30 @@ define([
 
 		setAssessment: function(/* object */ assess){
 			this._assessment = assess;
+		},
+
+		getActionForType: function(id, answer){
+			/*
+			* This function gives node properties to be shown as per the values
+			* entered by the user for the node.
+			* This is called when the user reopens a node.
+			*/
+			var nodePart = "type";
+			var interpretation = this._getInterpretation(id, nodePart, answer);
+			var obj = [];
+			var returnObj = [];
+			if(nodePart == "type"){
+				nodeEditorActionTable[interpretation][this.userType](obj, nodePart);
+			}
+
+			for(var i = 0; i < obj.length; i++){
+				if(obj[i].id == "displayRemaining"){
+					this._display(returnObj, id, answer);
+					break;
+				}
+			}
+
+			return returnObj;
 		},
 
 		processAnswer: function(/*string*/ id, /*string*/ nodePart, /*string | object*/ answer,/*string*/ answerString){
@@ -1119,8 +1207,22 @@ define([
 				// Activate appropriate parts of the node editor
 				var lastElement = returnObj[returnObj.length - 1].id;
 				if (lastElement === "enableNext" || lastElement === "enableRemaining") {
+					if(interpretation == "firstFailure"){
+						this.enableNextFromAuthor = false;
+					}
 					returnObj.pop();
 					this._enableNext(returnObj, givenID, nodePart, lastElement);
+					this.enableNextFromAuthor = true;
+				}
+				if(nodePart == "type"){
+					for(var i = 0; i < returnObj.length; i++){
+						if(returnObj[i].id == "displayRemaining"){
+							var tempAnswer = this.model.given.getStatus(givenID, nodePart) == "demo" ? this.model.given.getType(givenID) : answer;
+							returnObj.splice(i, 1);
+							this._display(returnObj, id, tempAnswer);
+							break;
+						}
+					}
 				}
 			}
 
@@ -1199,6 +1301,16 @@ define([
 			// directives.push({id: 'type', attribute: 'disableOption', value: 'product'});
 			return directives;
 		},
+
+		newActionVisibility: function(){
+			var divs = ["initial", "units", "equation"];
+			divDirectives = array.map(divs, function(div){
+				return {id: div, attribute: "display", value: "none"};
+			});
+
+			return divDirectives;
+		},
+
 
 		checkDoneness: function(model){
 			if(this.mode == "COACHED" && model.areRequiredNodesVisible()){
