@@ -1402,7 +1402,9 @@ define([
 						// the model and the graph.
 					}else{
 						w.set(directive.attribute, directive.value);
-						tempDirective = directive;
+						if(directive.attribute === "status"){
+							tempDirective = directive;
+						}
 					}
 				}else if(directive.attribute == "display"){
 					if(this.genericDivMap[directive.id]){
@@ -1430,8 +1432,8 @@ define([
 						functionTag: 'applyDirectives'
 					});
 				}
-
 			}, this);
+
 			if(tempDirective && this.activityConfig.get("showNodeEditorTour")) {
 				this.continueTour(tempDirective);
 			}
