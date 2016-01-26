@@ -1463,7 +1463,7 @@ define([
 						});
 					};
 					makeTooltip('descriptionQuestionMark', " The quantity computed by the node ");
-					makeTooltip('typeQuestionMark', "Suppose you are defining a quantity called zorch: <br>"+
+					makeTooltip('typeQuestionMark', "Each quantity has a type.  To illustrate, suppose you are defining a quantity called zorch: <br>"+
 						"<ul><li>A Parameter is a quantity whose value is given to you.  If zorch=50.3, then it is a parameter.</li>"+
 						"<li> A Function is a quantity whose value is a function of the node’s inputs.<br>"+
 						"If zorch=foo*baz, then it is a Function and its inputs are foo and baz.  * means multiplication.</li>"+
