@@ -133,6 +133,23 @@
 			}
 		},
 		{
+			"names": true,
+			"display": "empty",
+			"options": true,
+			"heading": "Dashboard (Problems)",
+			"subHeading": "Click on the box to check the complete session of the student.",
+			"colors": true,
+			"sessionLink": true,
+			"completeAnalysis": false,
+			"userData": true,
+			"tName": "sosDb_s16",
+			"query": "custom",
+			"qObject": {
+				"m": "!AUTHOR",
+				"s": "sos326_s16"
+			}
+		},
+		{
 			"names": false,
 			"display": "errors",
 			"options": false,
