@@ -323,6 +323,14 @@ define([
 					}
 				});
 			}
+			if(activity_config.get("showNodeBorderTutorial")) {
+				state.get("NodeBorderTutorialState").then(function (resp) {
+					console.log("NodeBorderTutorialState", resp);
+					if (resp) {
+						givenModel.setNodeBorderTutorialState(resp);
+					}
+				});
+			}
 			controllerObject.setState(state);
 
 			//check if the use has already completed the tutorial
@@ -1559,6 +1567,14 @@ define([
 						givenModel.setNodeEditorTutorialState(nodeTutorialState);
 						state.put("NodeEditorTutorialState", nodeTutorialState)
 					}
+
+					//Show Node border Help tooltip
+					if(activity_config.get("showNodeBorderTutorial")) {
+						var nodeBorderTutorialState = givenModel.getNodeBorderTutorialState();
+						controllerObject.showNodeBorderTooltip(nodeBorderTutorialState);
+						state.put("NodeBorderTutorialState", givenModel.getNodeBorderTutorialState());
+					}
+
 				});
 			}
 
