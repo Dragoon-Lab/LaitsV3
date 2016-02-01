@@ -23,6 +23,7 @@
 
 	class Dashboard{
 		public $al;
+		public $removeUsers = array("dragoon", "avaneeshd", "bcmacnei", "acease", "jwauthor", "sachin");
 
 		function __construct($con){
 			$this->al = new AnalyzeLogs($con);
@@ -82,6 +83,16 @@
 			return $queryString;
 		}
 
+		function checkUser($n){
+			foreach($this->removeUsers as $u){
+				if(stripos($n, $u) !== false){
+					return true;
+				}
+			}
+			
+			return false;
+		}
+
 		function parseMessages($result){
 			$resetVariables = true;
 			$sessionTime; $outOfFocusTime; $timeWasted; $focustTime; $runningSessionTime; $runningOutOfFocusTime;
@@ -99,11 +110,19 @@
 			$currentSession;
 			$currentAction;
 			$first = true;
+			$stop = false;
+			$oldUser = "";
 			while($row = $result->fetch_assoc()){
 				if($first){
 					$oldRow = $row;
 					$first = false;
 				}
+				if(($stop && $oldUser == $row["user"]) || $this->checkUser($row["user"])){
+					$oldUser = $row["user"];
+					$stop = true;
+					continue;
+				}
+
 				if($resetVariables){
 					$sessionTime = 0; $outOfFocusTime = 0; $timeWasted=0; $focusTime = 0; $propertyStartTime = 0;
 					$runningSessionTime = 0; $runningOutOfFocusTime = 0;
