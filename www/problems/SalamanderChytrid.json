@@ -1,0 +1,591 @@
+{
+    "task": {
+        "taskName": "SalamanderChytrid",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 1,
+            "integrationMethod": "Eulers Method",
+            "units": "seconds"
+        },
+        "properties": {
+            "isGraphHelpShown": true
+        },
+        "image": {},
+        "taskDescription": {
+            "construction": [
+                "A type of chytrid Fungus known in short as Bd is an amphibian infectious disease that afflicts some amphibian species with 100% mortality and does no harm to others (Collins 2010).",
+                "",
+                "One way Bd is spread by bait shops that release salamanders carrying Bd into the wild (Picco & Collins 2008). ",
+                "",
+                "Let's model how the released salamanders carrying Bd and the North American Bullfrog interact.",
+                "",
+                "In a river delta, the North American Bullfrog has 100 adult females who ordinarily exhibit density independent growth. Each can each lay 20,000 eggs according to National Geographic News (2004). ",
+                "",
+                "If 50 salamanders carrying Bd are released into the river basin each season, they each can interact with and infect 2% of the bullfrog eggs. Thus, the bullfrog eggs less the infected eggs is the amount of bullfrogs reaching maturity. None of the salamanders released survive to the next season, and half of the adult female bullfrogs die each season.",
+                "",
+                "References:",
+                "",
+                "Collins, James P. "Amphibian decline and extinction: what we know and what we need to learn." Diseases of aquatic organisms 92.2-3 (2010): 93-99.",
+                "",
+                "Picco, Angela M., and James P. Collins. "Amphibian commerce as a likely source of pathogen pollution." Conservation Biology 22.6 (2008): 1582-1589.",
+                "",
+                ""Invading Bullfrogs Appear Nearly Unstoppable." National Geographic. National Geographic Society. Web. 31 Jan. 2016."
+            ]
+        },
+        "lessonsLearned": [],
+        "increment": [],
+        "executionIterations": null,
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id18",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id2",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 763.43756103516,
+                    "y": 175.97222900391
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "equation": {
+                        "disabled": false
+                    }
+                },
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    }
+                },
+                "name": "Adult Female Bullfrogs",
+                "type": "accumulator",
+                "initial": 100,
+                "equation": "id18-id2",
+                "genus": "required",
+                "description": "Adult Female Bullfrogs",
+                "parentNode": false
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id13",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 619.44445800781,
+                    "y": 174.98265075684
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "equation": {
+                        "disabled": false
+                    }
+                },
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    }
+                },
+                "name": "Bullfrog deaths",
+                "genus": "required",
+                "description": "Bullfrog deaths",
+                "type": "function",
+                "equation": "id1*id13"
+            },
+            {
+                "ID": "id4",
+                "inputs": [],
+                "position": {
+                    "x": 1130.4073486328,
+                    "y": 144.47988891602
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    }
+                },
+                "name": "Eggs per Bullfrog",
+                "initial": 20000,
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "genus": "required",
+                "description": "Eggs per Bullfrog"
+            },
+            {
+                "ID": "id13",
+                "inputs": [],
+                "position": {
+                    "x": 425.84124755859,
+                    "y": 181.47640991211
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                },
+                "name": "Death Rate",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.5,
+                "genus": "required",
+                "description": "Death Rate"
+            },
+            {
+                "ID": "id16",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id4",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 920.98962402344,
+                    "y": 168.97570800781
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    }
+                },
+                "name": "Bullfrog Eggs",
+                "genus": "required",
+                "description": "Bullfrog Eggs",
+                "type": "function",
+                "equation": "id1*id4",
+                "parentNode": true
+            },
+            {
+                "ID": "id18",
+                "inputs": [
+                    {
+                        "ID": "id16",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id21",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 763.99310302734,
+                    "y": 369.98266601562
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "equation": {
+                        "disabled": false
+                    }
+                },
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                },
+                "name": "Bullfrogs reaching Maturity",
+                "genus": "required",
+                "description": "Bullfrogs reaching Maturity",
+                "equation": "id16-id21",
+                "type": "function"
+            },
+            {
+                "ID": "id21",
+                "inputs": [
+                    {
+                        "ID": "id16",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id23",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id24",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 970.00006103516,
+                    "y": 387.98611450195
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    }
+                },
+                "name": "Eggs infected",
+                "type": "function",
+                "equation": "(id16*id23)*id24",
+                "genus": "required",
+                "description": "Proportion of Eggs infected"
+            },
+            {
+                "ID": "id23",
+                "inputs": [],
+                "position": {
+                    "x": 1149.4002685547,
+                    "y": 355.46948242188
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                },
+                "name": "Proportion of Eggs infected per salamander",
+                "genus": "required",
+                "description": "Proportion of eggs infected",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.02
+            },
+            {
+                "ID": "id24",
+                "inputs": [],
+                "position": {
+                    "x": 966.39685058594,
+                    "y": 530.46948242188
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                },
+                "name": "Salamanders added",
+                "initial": 50,
+                "genus": "required",
+                "description": "Salamanders added",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false
+            }
+        ],
+        "studentModelNodes": [],
+        "schemas": []
+    }
+}
