@@ -744,7 +744,8 @@
 					$upObject->totalSolutionChecks = $totalChecks;
 					$upObject->errorRatio = $errorRatio;
 					$upObject->slides = $slides;
-					array_push($objectArray, $upObject);
+					if($upObject->totalTime > 0)
+						array_push($objectArray, $upObject);
 				}
 				$oldRow = $row;
 				$oldMessage= $newMessage;
@@ -769,7 +770,8 @@
 			$upObject->totalSolutionChecks = $totalChecks;
 			$upObject->errorRatio = $errorRatio;
 			$upObject->slides = $slides;
-			array_push($objectArray, $upObject);
+			if($upObject->totalTime > 0)
+				array_push($objectArray, $upObject);
 			
 			return $objectArray;
 		}
