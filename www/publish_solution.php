@@ -15,7 +15,10 @@ $model = $_REQUEST["sg"];
 
 try{
 	$modelArray = json_decode($model, true);
-	$completeModel = '{ "task" : ' . $model .'}';	
+	foreach($modelArray["taskDescriotion"] as $key => $value)
+		$modelArray["taskDescriptions"][key] = addslashes($value);
+
+	$completeModel = '{ "task" : ' . $model .'}';
 	$model = json_format($completeModel); // convert messy JSON to pretty JSON
 }
 catch(Exception $e){
@@ -33,7 +36,8 @@ try {
 		throw new Exception("File with same name already exist");
 	//writing to file
 	$file = fopen($name, "w");
-	fwrite($file, stripslashes($model));
+	//fwrite($file, stripslashes($model));
+	fwrite($file, $model);
 	fclose($file); 
 	echo "done";
 	
@@ -47,8 +51,8 @@ catch(Exception $e){
 //echo "</pre>";
 
 //writing to file
-$file = fopen($name, "w");
+//$file = fopen($name, "w");
 //fwrite($file, stripslashes($model));
-fwrite($file, $model);
-fclose($file);
+//fwrite($file, $model);
+//fclose($file);
 ?>
