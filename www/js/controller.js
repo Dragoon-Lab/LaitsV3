@@ -1442,33 +1442,31 @@ define([
 
 		//Shows Node border help tooltip
 		showNodeBorderTooltip: function (state) {
+			if(registry.byId("NodeBorderTooltipPopup")){
+				registry.byId("NodeBorderTooltipPopup").destroyRecursive();
+			}
 			var isMessageShown = false;
 			//Messages to show for node border help
 			var borderMessages = {
 				"dashed": "A dashed border means your node is incomplete. Click on this node to finish entering its values.",
-				"solid": "A solid border means your node is complete, ",
-				"incorrect": "a red means one of the values inside doesn't match the author. Click on the node to try again.",
-				"demo": "a yellow means Dragoon gave you one or more of the answers.<br/> Try to get green next time!",
-				"correct": "a green means you matched the author's model successfully. Good work!",
-				"perfect": "a green center means you matched the author's model successfully with no mistakes. Great job!"
+				"incorrect": "A <strong>red</strong> border means one of the values inside doesn't match the author. Click on the node to try again.",
+				"demo": "A <strong>yellow</strong> border means Dragoon gave you one or more of the answers.<br/> Try to get green next time!",
+				"correct": "A <strong>green</strong> border means you matched the author's model successfully. Good work!",
+				"perfect": "A <strong>green filled node</strong> means you matched the author's model successfully with no mistakes. Great job!"
 			};
 
 			var message = "<div id='NodeBorderMessages' style='padding: 5px'>";
 			//Check if node is complete
 			if(this._model.active.isComplete(this.currentID)){
-				//Show Solid Border message
-				message += borderMessages["solid"];
-				state["solid"] = true;
 				//Get node correctness status
 				var correctness = this._model.active.getCorrectness(this.currentID);
 				if(correctness === "correct"){
-					message += "and ";
 					//Check for perfect node with green background
 					if(this._model.active.getAssistanceScore(this.currentID) === 0  && !state["perfect"]) {
 						message += borderMessages["perfect"];
 						state["perfect"] = true;
 						isMessageShown = true;
-					}else if(!state["correct"]){
+					}else if(this._model.active.getAssistanceScore(this.currentID) !== 0 && !state["correct"]){
 						//Correct - Green border
 						message += borderMessages[correctness];
 						state["correct"] = true;
@@ -1477,7 +1475,6 @@ define([
 				}
 				else if(correctness && !state[correctness]){
 					//Incorrect or Demo - Red or yellow border
-					message += "but ";
 					message += borderMessages[correctness];
 					state[correctness] = true;
 					isMessageShown = true;
@@ -1489,12 +1486,11 @@ define([
 				isMessageShown = true;
 			}
 
-			message += '</div><button class="fRight" type="button" data-dojo-type="dijit/form/Button" id="nodeBorderOKBtn">OK</button><div class="spacer cBoth"></div>';
-
 			if(isMessageShown) {
+				message += '</div><button class="fRight" type="button" data-dojo-type="dijit/form/Button" id="nodeBorderOKBtn">OK</button><div class="spacer cBoth"></div>';
 				var nodeBorderTooltip = new TooltipDialog({
-
-					"style": "width: 300px",
+					"id": "NodeBorderTooltipPopup",
+					"style": "width: 300px;",
 					"content": message,
 					onShow: function () {
 						console.log("Node border tooltip shown");
@@ -1503,10 +1499,6 @@ define([
 							nodeBorderTooltip.destroyRecursive();
 						});
 						focusUtil.focus(dom.byId('nodeBorderOKBtn'));
-					},
-					onBlur: function(){
-						popup.close(nodeBorderTooltip);
-						nodeBorderTooltip.destroyRecursive();
 					}
 				});
 				popup.open({
