@@ -1101,7 +1101,7 @@ define([
 						if(subID){
 							// console.log("	   substituting ", variable, " -> ", studentID);
 							parse.substitute(variable, subID);
-							inputNodesList.push({ "id": subID, "variable":variable});
+							//inputNodesList.push({ "id": subID, "variable":variable});
 						}else if(autocreationFlag){
 							//create node
 							var id = this._model.active.addNode();
