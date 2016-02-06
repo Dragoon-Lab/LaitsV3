@@ -36,6 +36,7 @@ define([
 	"dijit/popup",
 	"dijit/registry",
 	"dijit/TooltipDialog",
+	"dijit/focus",
 	"./equation",
 	"./graph-objects",
 	"./typechecker",
@@ -43,7 +44,7 @@ define([
 	"./autocomplete",
 	"./tour",
 	"./schemas-student"
-], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, popup, registry, TooltipDialog, expression, graphObjects, typechecker, forum, AutoComplete, Tour){
+], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, popup, registry, TooltipDialog, focusUtil, expression, graphObjects, typechecker, forum, AutoComplete, Tour){
 
 	/* Summary:
 	 *			Controller for the node editor, common to all modes
@@ -1456,6 +1457,77 @@ define([
 
 			if(tempDirective && this.activityConfig.get("showNodeEditorTour")) {
 				this.continueTour(tempDirective);
+			}
+		},
+
+		//Shows Node border help tooltip
+		showNodeBorderTooltip: function (state) {
+			if(registry.byId("NodeBorderTooltipPopup")){
+				registry.byId("NodeBorderTooltipPopup").destroyRecursive();
+			}
+			var isMessageShown = false;
+			//Messages to show for node border help
+			var borderMessages = {
+				"dashed": "A dashed border means your node is incomplete. Click on this node to finish entering its values.",
+				"incorrect": "A <strong>red</strong> border means one of the values inside doesn't match the author. Click on the node to try again.",
+				"demo": "A <strong>yellow</strong> border means Dragoon gave you one or more of the answers.<br/> Try to get green next time!",
+				"correct": "A <strong>green</strong> border means you matched the author's model successfully. Good work!",
+				"perfect": "A <strong>green filled node</strong> means you matched the author's model successfully with no mistakes. Great job!"
+			};
+
+			var message = "<div id='NodeBorderMessages' style='padding: 5px'>";
+			//Check if node is complete
+			if(this._model.active.isComplete(this.currentID)){
+				//Get node correctness status
+				var correctness = this._model.active.getCorrectness(this.currentID);
+				if(correctness === "correct"){
+					//Check for perfect node with green background
+					if(this._model.active.getAssistanceScore(this.currentID) === 0  && !state["perfect"]) {
+						message += borderMessages["perfect"];
+						state["perfect"] = true;
+						isMessageShown = true;
+					}else if(this._model.active.getAssistanceScore(this.currentID) !== 0 && !state["correct"]){
+						//Correct - Green border
+						message += borderMessages[correctness];
+						state["correct"] = true;
+						isMessageShown = true;
+					}
+				}
+				else if(correctness && !state[correctness]){
+					//Incorrect or Demo - Red or yellow border
+					message += borderMessages[correctness];
+					state[correctness] = true;
+					isMessageShown = true;
+				}
+			}else if(this._model.active.getType(this.currentID) && !state["dashed"]){
+				//Incomplete Node - show dashed border message
+				message += borderMessages["dashed"];
+				state["dashed"] = true;
+				isMessageShown = true;
+			}
+
+			if(isMessageShown) {
+				message += '</div><button class="fRight" type="button" data-dojo-type="dijit/form/Button" id="nodeBorderOKBtn">OK</button><div class="spacer cBoth"></div>';
+				var nodeBorderTooltip = new TooltipDialog({
+					"id": "NodeBorderTooltipPopup",
+					"style": "width: 300px;",
+					"content": message,
+					onShow: function () {
+						console.log("Node border tooltip shown");
+						on(dojo.byId('nodeBorderOKBtn'), 'click', function (e) {
+							popup.close(nodeBorderTooltip);
+							nodeBorderTooltip.destroyRecursive();
+						});
+						focusUtil.focus(dom.byId('nodeBorderOKBtn'));
+					}
+				});
+				popup.open({
+					popup: nodeBorderTooltip,
+					around: dom.byId(this.currentID)
+				});
+
+				//Save tutorial state
+				this._model.setNodeBorderTutorialState(state);
 			}
 		},
 

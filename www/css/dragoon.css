@@ -39,8 +39,18 @@ html, body, #main{
   max-width: 60ex;
   text-align: center;
 }
+/* Common Float classes */
+.fLeft{
+    float: left;
+} 
 
+.fRight{
+    float: right;
+}
 
+.cBoth{
+    clear: both;
+}
 
 /*
                         Node Editor and Description Editor
@@ -420,7 +430,7 @@ span.slip{
 }
 
 .crisisDialog{
-    z-index:2000 !important;
+    z-index:5000 !important;
 }
 
 .executionContent{
@@ -585,4 +595,9 @@ span.slip{
 .zoomButtons{
 	display: none;
 	float: right;
+}
+
+/*Fix for tooltips to appear below  the dialogboxes */
+.dijitTooltipDialogPopup {
+    z-index: 700 !important;
 }

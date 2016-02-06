@@ -86,7 +86,8 @@ define([
 						"equation"
 					],
 					plotAuthorSolution:true,
-					showNodeEditorTour: true
+					showNodeEditorTour: false,
+					showNodeBorderTutorial: true
 				},
 
 				COACHED:{
@@ -118,7 +119,8 @@ define([
 						"equation"
 					],
 					plotAuthorSolution:true,
-					showNodeEditorTour: true
+					showNodeEditorTour: true,
+					showNodeBorderTutorial: true
 				},
 
 				TEST:{
@@ -927,7 +929,8 @@ define([
 				showWaveformEditor: false,
 
 				//tour
-				showNodeEditorTour: false
+				showNodeEditorTour: false,
+				showNodeBorderTutorial: false
 
 			},
 
