@@ -1241,6 +1241,12 @@ define([
 				if (steps && steps.length > 0) {
 					this.tour = new Tour(steps);
 					this.tour.start();
+					var currentButton = this.tour._steps[0];
+					var currentStep = this.tour.getCurrentStep();
+					if(currentStep!== "default" && currentStep["type"] !== "default") {
+						domClass.toggle(dom.byId(currentButton["element"]), "active");
+					}
+
 					/** Check if Status counter for node editor tour be incremented
 					 *  If the tour steps returns first element as "default": flag is set to false
 					 *  else flag is true
@@ -1356,6 +1362,9 @@ define([
 				var givenNodeID = this._model.active.getDescriptionID(this.currentID);
 				var steps = this._PM.generateTourSteps(givenNodeID ,this.currentID,  this._model.getNodeEditorTutorialState());
 				if(steps && steps.length > 0) {
+					if(this.tour) {
+						this.tour.end();
+					}
 					this.tour = new Tour(steps);
 					/** Check if Status counter for node editor tour be incremented
 					 *  If the tour steps returns first element as "default": flag is set to false
@@ -1367,8 +1376,19 @@ define([
 				}
 			}
 			if(this.tour && directive.attribute === "status" && directive.value !== "incorrect"){
+				//Remove the step and add it to the end
+				var currentStep = this.tour.getCurrentStep();
+				if(currentStep!== "default" && currentStep["type"] !== "default") {
+					domClass.remove(dom.byId(elements[directive.id]), "active");
+				}
 				this.tour.removeStep(elements[directive.id]);
+
 				this.tour.start();
+
+				var currentButton = this.tour.getStepByIndex(0);
+				if(currentButton !== "default" && currentStep["type"] !== "default") {
+					domClass.toggle(dom.byId(currentButton["element"]), "active");
+				}
 			}
 		},
 
