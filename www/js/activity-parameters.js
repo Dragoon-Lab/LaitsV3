@@ -86,7 +86,7 @@ define([
 						"equation"
 					],
 					plotAuthorSolution:true,
-					showNodeEditorTour: true,
+					showNodeEditorTour: false,
 					showNodeBorderTutorial: true
 				},
 
