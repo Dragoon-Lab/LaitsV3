@@ -12,23 +12,22 @@
 			}
 			$fileString = file_get_contents($this->folderName.$name.".json");
 			$this->currentProblem = json_decode($fileString, true);
-			$this->setNodeSchema();
+			$this->initNodeSchema();
+			$this->setNodeSchemaNames();
 			self::$problems[$name] = json_encode($this->currentProblem, true);
 			
 			return;
 		}
 
-		private function setNodeSchema(){
+		private function initNodeSchema(){
 			$nodes = $this->getNodes();
 			$index = 0;
 			foreach($nodes as $node){
 				$node["schemas"] = array();
+				//$node["schemas2"] = array();
 				$this->pushNode($node, $index);
 				$index++;
 			}
-			
-			$this->setNodeSchemaNames();
-
 			return;
 		}
 
@@ -133,6 +132,21 @@
 			return $schemaIDs;
 		}
 
+		function getSchemaMap($name){
+			$ID = $this->getNodeID($name);
+			$schemas = $this->getSchemas();
+			$schemaIDs = array();
+
+			foreach($schemas as $schema){
+				$schemaArray = explode(", ", $schema["nodes"]);
+				if(in_array($ID, $schemaArray)){
+					$schemaIDs[$schema["ID"]] = $schema["schemaClass"];
+				}
+			}
+
+			return $schemaIDs;
+		}
+
 		static function cmp($a, $b){
 			return strcmp($a, $b);
 		}
@@ -172,17 +186,27 @@
 			return $difficultyParams;
 		}
 
-		private function setNodeName($ID, $schemaName){
+		private function setUniqueNodeName($ID, $schemaName){
 			$node = $this->getNode($ID);
 			array_push($node["schemas"], $schemaName);
 			$this->pushNode($node, -1);
 		}
 
+		private function setNodeName($ID, $schemaID, $schemaName){
+			$node = $this->getNode($ID);
+			$node["schemas2"][$schemaID] = $schemaName;
+			$this->pushNode($node, -1);
+		}
+
 		function getNodeSchemaNames($n){
 			$node = $this->getNode($n);
-
 			return ($node != null)?$node["schemas"]:null;
 		}
+
+		/*function getNodeSchemaNamesID($n){
+			$node = $this->getNode($n);
+			return ($node != null)?$node["schemas2"]:null;
+		}*/
 
 		private function setNodeSchemaNames(){
 			$schemas = $this->getSchemas();
@@ -190,11 +214,12 @@
 			foreach($schemas as $schema){
 				$nodeIDs = explode(", ", $schema["nodes"]);
 				$count = array("accumulator" => 1, "function" => 1, "parameter" => 1);
-				
+
 				foreach($nodeIDs as $ID){
 					$type = $this->getNodeType($ID);
-					$n = substr($schema["schemaClass"], 0, 4)."_".$type;
-					$this->setNodeName($ID, $n);
+					$n = explode("_", $schema["schemaClass"])[0]."_".$type;
+					//$this->setNodeName($ID, $schema["ID"], $schema["schemaClass"]);
+					$this->setUniqueNodeName($ID, $n);
 					//echo $type;
 					$count[$type]++;
 				}
@@ -231,10 +256,12 @@
 		public $pNodes = array();
 		public $name;
 		public $codeName;
+		public $schemas = array(); //holds all the schema that user made with error count
 
 		function __construct($n){
 			$this->name = $n;
 			$this->codeName = self::$name_prefix.self::$name_counter++;
+			//echo "new user created ".$n." ".$this->codeName."<br/>";
 		}
 
 		function getNode($name){
@@ -263,10 +290,41 @@
 			if($index >= 0){ 
 				$this->pNodes[$index] = $node; 
 			} else { 
-				array_push($this->pNodes, $node); 
-			} 
+				array_push($this->pNodes, $node);
+			}
 
 			return;
+		}
+
+		function pushSchema($schema){
+			$index = $this->getSchemaIndex($schema->name);
+			if($index >= 0)
+				$this->schemas[$index] = $schema;
+			else
+				array_push($this->schemas, $schema);
+
+			return;
+		}
+
+		function getSchemaIndex($name){
+			$index = 0;
+			foreach($this->schemas as $schema){
+				if($schema->name == $name)
+					return $index;
+				$index++;
+			}
+
+			return -1;
+		}
+
+		function getSchema($name){
+			forEach($this->schemas as $schema){
+				if($name == $schema->name)
+					return $schema;
+			}
+
+			$schema = new Schema($name);
+			return $schema;
 		}
 	}
 
@@ -278,6 +336,7 @@
 		public $properties = array();
 		public $propertyNames = array();
 		public $type;
+		public $schemaNames;
 		public $schemaName;
 		public $skill = array();
 
@@ -287,7 +346,7 @@
 
 		function setSkills(){
 			$s = "";
-			foreach($this->schemas as $schema){
+			foreach($this->schemas as $key => $schema){
 				$s .= explode("_", $schema)[0]."_";
 			}
 			$s1 = $s.$this->type;
@@ -298,6 +357,15 @@
 			array_push($this->skill, $this->type);
 		}
 
+		function setSchemaName(){
+			$s = "";
+			foreach($this->schemaNames as $schema){
+				$s .= explode("_", $schema)[0]."_";
+			}
+
+			$s = substr($s, 0, -1);
+			$this->schemaName = $s;
+		}
 	}
 
 	Class Property{
@@ -325,6 +393,17 @@
 				default:
 					break;
 			}
+		}
+	}
+
+	Class Schema{
+		public $errorCounts = array(); //each index represents the error count at that stage
+		public $name;
+		public $IDs = array(); //the schema IDs in the problem.
+		public $currentProblemIndexes = array(); //this schema is error for which index in for the current problem.
+
+		function __construct($n){
+			$this->name = $n;
 		}
 	}
 ?>

@@ -1137,10 +1137,11 @@ define([
 					//In the case where each node in expression is sent to pedagogical module
 					//In the case of already solved nodes, the type is being unlocked if it is part of expression
 					// so in such cases we check if the status of the node is correct then we disable the type
-					if(this.model.given.getStatus(answer,"type")== "correct"){
+					//removed due to a bug that it was creating. Check card https://trello.com/c/aHTw5zVS
+					/*if(this.model.given.getStatus(answer,"type")== "correct"){
 						console.log("disabled");
 						disable(returnObj, "type", true);
-					}
+					}*/
 					for(var i = 0; i < returnObj.length; i++){
 						if(returnObj[i].value === "correct" || returnObj[i].value === "demo"){
 							currentStatus = this.model.given.getStatus(givenID, nodePart); //get current status set in given model
