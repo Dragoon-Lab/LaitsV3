@@ -29,8 +29,10 @@
                 "-Effect per Ladybug = 0.001",
                 "",
                 "Planthoppers:",
+                "-Initial population = 500",
                 "Deaths = (Effect of Spiders + Effect of Ladybugs) x Planthopper population",
                 "Births = (Planthopper Carry Capacity - Planthopper Population) x Planthopper Birth Rate",
+                "Planthopper Birth Rate = 100%",
                 "Effect per planthopper = 0.001",
                 "Planthopper Carrying Capacity = 1000"
             ]
@@ -121,8 +123,8 @@
                     }
                 ],
                 "position": {
-                    "x": 370.55557250977,
-                    "y": 116.97917175293
+                    "x": 477,
+                    "y": 65
                 },
                 "attemptCount": {
                     "description": 0,
@@ -374,8 +376,8 @@
                 "ID": "id8",
                 "inputs": [],
                 "position": {
-                    "x": 931.39685058594,
-                    "y": 544.4798790967
+                    "x": 808.85607910156,
+                    "y": 555.17932128906
                 },
                 "attemptCount": {
                     "description": 0,
@@ -440,8 +442,8 @@
                     }
                 ],
                 "position": {
-                    "x": 704.65283203125,
-                    "y": 710.97224571087
+                    "x": 783,
+                    "y": 734
                 },
                 "attemptCount": {
                     "description": 0,
@@ -985,8 +987,8 @@
                     }
                 ],
                 "position": {
-                    "x": 388.54168701172,
-                    "y": 295.97224067759
+                    "x": 458,
+                    "y": 359
                 },
                 "attemptCount": {
                     "description": 0,
@@ -1038,8 +1040,8 @@
                 "ID": "id23",
                 "inputs": [],
                 "position": {
-                    "x": 357.40374755859,
-                    "y": 186.47641021823
+                    "x": 421.85607910156,
+                    "y": 182.17930603027
                 },
                 "attemptCount": {
                     "description": 0,
