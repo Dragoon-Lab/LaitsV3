@@ -251,13 +251,13 @@
             <select data-dojo-type="dijit/form/ComboBox" id="authorSetIntegrationMethod" name="authorSetIntegrationMethod" class="integrationMethodAuthor">
                 <option>Eulers Method</option>
                 <option>Midpoint Method</option>
-            </select> <img id="integrationMethod"  class="questionMark" src="images/questionmark.png"/>
+            </select> <img id="integrationMethod"  class="questionMark" src="images/help-active.png"/>
 
         </div>
         <div class="fieldgroup">
             <label for="authorSetImage">URL for Image:</label>
             <input id="authorSetImage"/>
-            <img id="questionMarkURL"  class="questionMark" src="images/questionmark.png"/>
+            <img id="questionMarkURL"  class="questionMark" src="images/help-active.png"/>
         </div>
 
           <div class="fieldgroup">
@@ -289,7 +289,7 @@
 
         <div class="fieldgroup">
             <label for="authorSetLessonsLearned">Lessons Learned:</label>
-            <img id="questionMarkLessons"  class="questionMark" src="images/questionmark.png"/>
+            <img id="questionMarkLessons"  class="questionMark" src="images/help-active.png"/>
             <textarea id="authorSetLessonsLearned" name="authorSetLessonsLearned" data-dojo-type="dijit/form/SimpleTextarea" value="Enter Lessons Learned here..."></textarea>
         </div>
 
@@ -297,7 +297,7 @@
         <div class="fieldgroup" style="visibility: hidden;">
             <label for="authorProblemShare" title="Share this problem with students.">Share Problem:</label>
             <input id="authorProblemShare" name="authorProblemShare" data-dojo-type="dijit/form/CheckBox" value="agreed" checked="false"/>
-            <img id="questionMarkShare"  class="questionMark" src="images/questionmark.png"/>
+            <img id="questionMarkShare"  class="questionMark" src="images/help-active.png"/>
         </div>
         <div id="publishResponse" style = "display:none;"></div>
         <div class="fieldgroup" align="right">
@@ -377,7 +377,7 @@
         <div class="fieldgroup">
             <div id="descriptionControlStudent" class="fieldgroup">
                 <span class="fixedwidth">
-                    <img id="descriptionQuestionMark"  class="questionMark" src="images/questionmark.png"/>
+                    <div id="descriptionQuestionMark" class="questionMark"></div>
                     <label for="selectDescription">Description</label>
                 </span>
                 <select id="selectDescription" data-dojo-type="dijit/form/Select">
@@ -386,7 +386,7 @@
             </div>
             <div id="descriptionControlAuthor" class="fieldgroup" style="display:none">
 	              <span class="fixedwidth">
-                      <img id="authorDescriptionQuestionMark"  class="questionMark" src="images/questionmark.png"/>
+                      <div id="authorDescriptionQuestionMark" class="questionMark"></div>
 	         <label for="setDescription">Description</label>
                   </span>
                 <input id="setDescription" data-dojo-type="dijit/form/ComboBox">
@@ -422,7 +422,7 @@
         </div>
         <div class="fieldgroup">
                 <span class="fixedwidth">
-                    <img id="typeQuestionMark"  class="questionMark" src="images/questionmark.png"/>
+                     <div id="typeQuestionMark" class="questionMark"></div>
                     <label for="typeId">Type</label>
                 </span>
             <select id="typeId" data-dojo-type="dijit/form/Select">
@@ -434,13 +434,13 @@
             <!-- adding a div for value field to control its display in UI -->
             <div id="initialValueDiv" style="display: none">
                 <span>
-                    <img id="initialValueQuestionMark"  class="questionMark" src="images/questionmark.png" style="margin-left:10px"/>
+                    <div id="initialValueQuestionMark" class="questionMark"></div>
                     <label for="initialValue"><p id="initLabel" style="display:inline">Initial </p>Value</label>
                 </span>
                 <input id="initialValue" type="text" style="width:5em" data-dojo-type="dijit/form/TextBox">
             </div>
              <div id = "unitDiv" style="display: none">
-                    <img id="unitsQuestionMark"  class="questionMark" src="images/questionmark.png" style="margin-left:10px"/>
+                    <div id="unitsQuestionMark" class="questionMark"></div>
                     <label id="selectUnitsControl">Units
                         <select id="selectUnits" data-dojo-type="dijit/form/Select">
                             <option value='defaultSelect'>No Units</option>
@@ -458,12 +458,12 @@
         <div id="setRootNode" class="fieldgroup" style="display:none">
             <label for ="markRootNode" title ="Mark this node as a root node.">Root:</label>
             <input id ="markRootNode" name ="markRootNode" data-dojo-type="dijit/form/CheckBox" value="agreed" checked="false"/>
-            <img id="questionMarkRoot"  class="questionMark" src="images/questionmark.png"/>
+            <div id="questionMarkRoot" class="questionMark"></div>
         </div>
         <div class="ExpressionContainer" id="expressionDiv" style="display: none">
             <div class="fieldgroup">
                      <span class="fixedwidth">
-                         <img id="expressionBoxQuestionMark"  class="questionMark" src="images/questionmark.png"/>
+                         <div id="expressionBoxQuestionMark" class="questionMark"></div>
                          <label for="equationBox">Expression</label>
                      </span>
                 <div class="vertical">
@@ -481,7 +481,7 @@
             </div>
             <div class="fieldgroup" id="algebraic">
                     <span class="fixedwidth">
-                        <img id="inputsQuestionMark"  class="questionMark" src="images/questionmark.png"/>
+                        <div id="inputsQuestionMark" class="questionMark"></div>
                         <label>Insert above </label>
                     </span>
                 <div class="vertical">
@@ -499,7 +499,7 @@
             </div>
             <div class="fieldgroup" id="operations">
                     <span class="fixedwidth">
-                        <img id="operationsQuestionMark"  class="questionMark" src="images/questionmark.png" style="margin:2px"/>
+                         <div id="operationsQuestionMark" class="questionMark" style="margin-top:4px;"></div>
                     </span>
 
                 <div>
