@@ -19,11 +19,12 @@
         $user = "root";
         $password = "qwerty211";
         $db_name = "laits_experiments";
+		$section = "public-workbook";
 
         $mysqli = mysqli_connect("localhost", $user, $password, $db_name);
     
         $query = <<<EOT
-        SELECT t1.user, t1.problem, t1.session_id, t2.method, t2.message FROM (SELECT user, problem, session_id, time FROM session WHERE section = "$section" AND mode = "STUDENT" AND problem IN $problemString) AS t1 JOIN (SELECT tid, method, message, session_id FROM step WHERE method = "solution-step") as t2 USING (session_id) ORDER BY user ASC, problem ASC, time ASC, tid ASC;
+        SELECT t1.user, t1.problem, t1.session_id, t2.method, t2.message FROM (SELECT user, problem, session_id, time FROM session WHERE section = "$section" AND mode = "STUDENT" AND problem IN $problemString /*AND user = "ZimeiHuo"*/) AS t1 JOIN (SELECT tid, method, message, session_id FROM step WHERE method = "solution-step") as t2 USING (session_id) ORDER BY user ASC, time ASC, problem ASC, tid ASC;
 EOT;
         //echo $query;
 
@@ -94,7 +95,7 @@ EOT;
         $n = new Node($m["node"]);
         $n->problem = $row["problem"];
         $n->schemas = $cp->getSchemaMap($m["node"]);
-        $n->schemaNames = $cp->getNodeSchemaNames($m["node"]);
+        $n->schemaNames = $cp->getSchemasForNode($m["node"]);
 		$n->setSchemaName();
 		//$n->setSkills();
 		setCurrentIndexes($cu, $n);
@@ -107,30 +108,39 @@ EOT;
 
 	function updateCount(/* user */ $cu, /* node */ $n){
 		$userSchema = null;
-		if(count($n->schemas) < 1)
+		if(count($n->schemaNames) < 1)
 			return ;
 		switch($GLOBALS["updateType"]){
 			case "equal":
 				foreach($n->schemas as $schemaID => $schema){
 					$userSchema = $cu->getSchema($schema);
-					if(!array_key_exists($schemaID, $userSchema->currentProblemIndexes))
+					if(!array_key_exists($schemaID, $userSchema->currentProblemIndexes)){
 						setCurrentIndexes($cu, $n);
+						$userSchema = $cu->getSchema($schema);
+					}
 					$userSchema->errorCounts[$userSchema->currentProblemIndexes[$schemaID]]++;
+					$cu->pushSchema($userSchema);
 				}
 				break;
 			case "oneSkill":
+				$ID = (count($n->schemaNames) == 1 ? key($n->schemas) : $n->name);
 				$userSchema = $cu->getSchema($n->schemaName);
-				if(!array_key_exists($n->name, $userSchema->currentProblemIndexes))
+				if(!array_key_exists($ID, $userSchema->currentProblemIndexes)){
 					setCurrentIndexes($cu, $n);
-				$userSchema->errorCounts[$userSchema->currentProblemIndexes[$n->name]]++;
+					$userSchema = $cu->getSchema($n->schemaName);
+				}
+				$userSchema->errorCounts[$userSchema->currentProblemIndexes[$ID]]++;
+				$cu->pushSchema($userSchema);
 				break;
 			case "ratio":
 				$counts = array();
 				$numberSchemas = count($n->schemas);
 				foreach($n->schemas as $schemaID => $schema){
 					$userSchema = $cu->getSchema($schema);
-					if(!array_key_exists($schemaID, $userSchema->currentProblemIndexes))
+					if(!array_key_exists($schemaID, $userSchema->currentProblemIndexes)){
 						setCurrentIndexes($cu, $n);
+						$userSchema = $cu->getSchema($schema);
+					}
 					$counts[$schemaID] = count($userSchema->errorCounts);
 					if($numberSchemas == 1)
 						$userSchema->errorCounts[$userSchema->currentProblemIndexes[$schemaID]]++;
@@ -140,6 +150,7 @@ EOT;
 					foreach($n->schemas as $schemaID => $schema){
 						$userSchema = $cu->getSchema($schema);
 						$userSchema->errorCounts[$userSchema->currentProblemIndexes[$schemaID]] += (($sum - $counts[$schemaID])/$sum);
+						$cu->pushSchema($userSchema);
 					}
 				}
 				break;
@@ -147,8 +158,11 @@ EOT;
 				$counts = array();
 				foreach($n->schemas as $schemaID => $schema){
 					$userSchema = $cu->getSchema($schema);
-					if(!array_key_exists($schemaID, $userSchema->currentProblemIndexes))
-						setCurrentIndexes($cu, $n);$counts[$schemaID] = count($userSchema->errorCounts);
+					if(!array_key_exists($schemaID, $userSchema->currentProblemIndexes)){
+						setCurrentIndexes($cu, $n);
+						$userSchema = $cu->getSchema($schema);
+					}
+					$counts[$schemaID] = count($userSchema->errorCounts);
 				}
 				$min = array_keys($counts, min($counts));
 				$count = count($min);
@@ -156,6 +170,7 @@ EOT;
 					foreach($min as $m){
 						$minSchema = $cu->getSchema($n->schemas[$m]);
 						$minSchema->errorCounts[$minSchema->currentProblemIndexes[$m]] += 1/$count;
+						$cu->pushSchema($minSchema);
 					}
 				}
 				break;
@@ -163,6 +178,9 @@ EOT;
 	}
 
 	function setCurrentIndexes($cu, $n){
+		if(count($n->schemaNames) == 0)
+			return ;
+
 		switch($GLOBALS["updateType"]){
 			case "equal":
 			case "ratio":
@@ -178,11 +196,12 @@ EOT;
 				}
 				break;
 			case "oneSkill":
+				$ID = (count($n->schemaNames) == 1 ? key($n->schemas) : $n->name);
 				$userSchema = $cu->getSchema($n->schemaName);
-				if(!array_key_exists($n->name, $userSchema->currentProblemIndexes)){
+				if(!array_key_exists($ID, $userSchema->currentProblemIndexes)){
 					$count = count($userSchema->errorCounts);
 					$userSchema->errorCounts[$count] = 0;
-					$userSchema->currentProblemIndexes[$n->name] = $count;
+					$userSchema->currentProblemIndexes[$ID] = $count;
 				}
 				$cu->pushSchema($userSchema);
 				break;
