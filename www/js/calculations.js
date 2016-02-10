@@ -295,7 +295,6 @@ define([
 					var miss_node_check = this.model.active.getNode(if_id);
 					var statusField =  this.model.given.getNode(if_id) !== null ? "authorStatus" : "status";
 
-					debugger;
 					if(miss_node_check[statusField]) {
 						if (!miss_node_check[statusField].description || (miss_node_check[statusField].description
 							&& (!miss_node_check[statusField].description.status ))) {
