@@ -289,7 +289,7 @@ define([
 				console.log(err);
 				var if_id=err.message.substr(19).trim(); //In case the name is not generated and a node id is , we have to get the name from the active object for the user to understand
 				console.log("catch error",this.model.active.getName(if_id));  
-				var miss_field = "description";
+				var miss_field = "expression";
 				if(this.model.active.getName(if_id)){
 					var miss_node=this.model.active.getName(if_id); // In case a node is incomplete
 					var miss_node_check = this.model.active.getNode(if_id);
