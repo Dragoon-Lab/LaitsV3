@@ -1601,7 +1601,6 @@ define([
 					if(activity_config.get("showNodeBorderTutorial")) {
 						var nodeBorderTutorialState = givenModel.getNodeBorderTutorialState();
 						controllerObject.showNodeBorderTooltip(nodeBorderTutorialState);
-						debugger;
 						state.put("NodeBorderTutorialState", givenModel.getNodeBorderTutorialState());
 					}
 
