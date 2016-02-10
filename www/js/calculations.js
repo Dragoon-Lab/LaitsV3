@@ -293,21 +293,33 @@ define([
 				if(this.model.active.getName(if_id)){
 					var miss_node=this.model.active.getName(if_id); // In case a node is incomplete
 					var miss_node_check = this.model.active.getNode(if_id);
-					if(miss_node_check.status) {
-						if (miss_node_check.status.description && miss_node_check.status.description.disabled == false) {
+					var statusField =  this.model.given.getNode(if_id) !== null ? "authorStatus" : "status";
+
+					if(miss_node_check[statusField]) {
+						if (!miss_node_check[statusField].description || (miss_node_check[statusField].description
+							&& (miss_node_check[statusField].description.status !== "entered" ||
+							miss_node_check[statusField].description.disabled == false))) {
 							miss_field = "description";
 						}
-						else if (miss_node_check.status.type &&  miss_node_check.status.type.disabled == false) {
+						else if (!miss_node_check[statusField].type || (miss_node_check[statusField].type
+							&& (miss_node_check[statusField].type.status !== "entered" ||
+							miss_node_check[statusField].type.disabled == false))) {
 							miss_field = "type";
 						}
-						else if (miss_node_check.status.equation && miss_node_check.status.equation.disabled == false) {
-							miss_field = "expression";
-						}
-						else if (miss_node_check.status.initial && miss_node_check.status.initial.disabled == false) {
+						else if (!miss_node_check[statusField].initial || (miss_node_check[statusField].initial
+							&& (miss_node_check[statusField].initial.status !== "entered" ||
+							miss_node_check[statusField].initial.disabled == false))) {
 							miss_field = "initial value";
 						}
-						else if (miss_node_check.status.units && miss_node_check.status.units.disabled == false) {
+						else if (!miss_node_check[statusField].units || (miss_node_check[statusField].units
+							&& (miss_node_check[statusField].units.status !== "entered" ||
+							miss_node_check[statusField].units.disabled == false))) {
 							miss_field = "units";
+						}
+						else if (!miss_node_check[statusField].equation || (miss_node_check[statusField].equation
+							&& (miss_node_check[statusField].equation.status !== "entered"
+							|| miss_node_check[statusField].equation.disabled == false))) {
+							miss_field = "expression";
 						}
 					}
 				}else{
