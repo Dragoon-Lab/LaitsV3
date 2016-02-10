@@ -308,13 +308,15 @@ define([
 							(miss_node_check[statusField].initial && !miss_node_check[statusField].initial.status ))) {
 							miss_field = "initial value";
 						}
-						else if (!miss_node_check[statusField].units || (miss_node_check[statusField].units
-							&& !miss_node_check[statusField].units.status )) {
-							miss_field = "units";
-						}
 						else if (miss_node_check.type !== "parameter" && (!miss_node_check[statusField].equation ||
 							(miss_node_check[statusField].equation && !miss_node_check[statusField].equation.status ))) {
 							miss_field = "expression";
+						}
+						else if (statusField !=="authorStatus" && 
+								 (!miss_node_check[statusField].units || 
+									(miss_node_check[statusField].units
+									 && !miss_node_check[statusField].units.status))) {
+							miss_field = "units";
 						}
 					}
 				}else{
