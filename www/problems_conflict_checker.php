@@ -38,7 +38,7 @@ $groupName = isset($_REQUEST['group'])?mysqli_real_escape_string($mysqli, $_REQU
 $section = isset($_REQUEST['group'])?mysqli_real_escape_string($mysqli, $_REQUEST['section']):'';
 $problemName = isset($_REQUEST['problem'])?mysqli_real_escape_string($mysqli, $_REQUEST['problem']):'';
 
-$query="SELECT count(*) as count FROM session s WHERE s.section='$section' AND s.problem='$problemName' AND s.group='$groupName'";
+$query="SELECT count(*) as count FROM session s JOIN solutions s1 ON s.session_id = s1.session_id WHERE s.section='$section' AND s.problem='$problemName' AND s.group='$groupName'";
 
 if($result = $mysqli->query($query)){
   $row = $result->fetch_row();
