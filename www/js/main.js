@@ -125,8 +125,10 @@ define([
 	}catch(error){
 		throw Error("Problem in creating activity configurations: "+error);
 	}
+
+	//activity_config.set("ElectronixTutor", false);
 	if(activity_config && query.s === "ElectronixTutor"){
-		activity_config["ElectronixTutor"] = true;
+		activity_config.set("ElectronixTutor", true);
 		if(typeof query.p1 != 'undefined' && typeof query.p2 != 'undefined'){
 			// santization required
 			query.u = 'ETUser_' + query.p1;
@@ -357,7 +359,10 @@ define([
 
 			array.forEach(menuButtons, function(button){
 				//setting display for each menu button
-				style.set(registry.byId(button).domNode, "display", ui_config.get(button));
+				if(activity_config.get("ElectronixTutor") && button == "doneButton")
+					style.set(registry.byId(button).domNode, "display", "none");
+				else
+					style.set(registry.byId(button).domNode, "display", ui_config.get(button));
 
 				/*
 				 * This is a work-around for getting a button to work inside a MenuBar.
@@ -457,7 +462,7 @@ define([
 			// setting environment for loading dragoon inside ET
 			
 			var etConnect = null;
-			if(activity_config["ElectronixTutor"]) {
+			if(activity_config.get("ElectronixTutor")){
 				etConnect = new ETConnector();
 				etConnect.startService();
 				
@@ -1535,7 +1540,6 @@ define([
 						registry.byId("nodeeditor").hide();
 					});
 				}
-				//debugger;
 				// attaching author History widget
 				if(activity_config.get("allowHistory")) {
 					var historyWidget = new HistoryWidget(query, session.sessionId);
@@ -1698,7 +1702,7 @@ define([
 					}
 						
 				}
-				if(activity_config["ElectronixTutor"] && etConnect){
+				if(activity_config.get("ElectronixTutor") && etConnect){
 					if(etConnect.needsToSendsScore) {
 						var score = controllerObject._assessment.getSuccessFactor();
 						etConnect.sendScore(score);

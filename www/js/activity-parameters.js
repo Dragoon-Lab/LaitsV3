@@ -947,7 +947,11 @@ define([
 			},
 
 			get: function(/*string*/ name){
-				return typeof this._params[name] !== "undefined" ? this._params[name] : "undefined";
+				return typeof this._params[name] !== undefined ? this._params[name] : undefined;
+			},
+
+			set: function(/*string*/ key, /*value*/ value){
+				this._params[key] = value;
 			},
 
 			getMode: function(){
