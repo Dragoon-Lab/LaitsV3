@@ -755,7 +755,8 @@ define([
 					properties: [
 						"waveformValue"
 					],
-					nodeDetails: "WAVEFORM"
+					nodeDetails: "WAVEFORM",
+					showNodeBorderTutorial: true
 				},
 
 				COACHED:{
@@ -787,7 +788,8 @@ define([
 					properties: [
 						"executionValue"
 					],
-					copyAuthorNodes: true
+					copyAuthorNodes: true,
+					showNodeBorderTutorial: true
 				},
 
 				TEST:{
