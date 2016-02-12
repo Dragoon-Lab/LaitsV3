@@ -896,7 +896,6 @@ define([
 		},
 
 		equationAnalysis: function(directives, ignoreUnknownTest){
-			
 			this.equationEntered = true;
 			console.log("****** enter button");
 			/*
@@ -912,6 +911,7 @@ define([
 			 */
 			var widget = registry.byId(this.controlMap.equation);
 			var inputEquation = widget.get("value");
+			var cancelUpdate = false;
 
 			var parse = null;
 			if (inputEquation == "") {
@@ -940,8 +940,73 @@ define([
 					checkResult: "INCORRECT",
 					message: err
 				});
+
+				return null;
 			}
-			if(parse){
+			var mapID = this._model.active.getDescriptionID || function(x){ return x; };
+			var unMapID = this._model.active.getNodeIDFor || function(x){ return x; };
+			//there is no error in parse. We check equation for validity
+			//Check 1 - accumulator equation is not set to 0, basically the type of a node should be parameter.
+			if(this._model.active.getType(this.currentID) === "accumulator" &&
+				!parse.variables().length && parse.tokens.length == 1 && parse.tokens[0].number_ == 0){
+				cancelUpdate = true;
+				directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
+				directives.push({
+					id: 'crisisAlert',
+					attribute: 'open',
+					value: "Equation of accumulator can not be set to 0. If this is the case then please change the type of the node to parameter."
+				});
+				this.logging.log("solution-step", {
+					type: "zero-equation-accumulator",
+					node: this._model.active.getName(this.currentID),
+					nodeID: this.currentID,
+					property: "equation",
+					value: inputEquation,
+					correctResult: this._model.given.getEquation(this.currentID),
+					checkResult: "INCORRECT"
+				});
+			}
+			array.forEach(parse.variables(), function(variable){
+				var givenID = this._model.given.getNodeIDByName(variable);
+				// Check 2 - Checks for nodes referencing themselves; this causes problems because
+				//		functions will always evaluate to true if they reference themselves
+				if(givenID && this._model.active.getType(this.currentID) === "function" &&
+					givenID === mapID.call(this._model.active, this.currentID)){
+					cancelUpdate = true;
+					directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
+					directives.push({id: 'message', attribute: 'append', value: "You cannot use '" + variable + "' in the equation. Function nodes cannot reference themselves."});
+					this.logging.log("solution-step", {
+						type: "self-referencing-function",
+						node: this._model.active.getName(this.currentID),
+						nodeID: this.currentID,
+						property: "equation",
+						value: inputEquation,
+						correctResult: this._model.given.getEquation(this.currentID),
+						checkResult: "INCORRECT"
+					});
+				}
+				//Check 3 - check if accumulator has a reference to itself as per the Trello card https://trello.com/c/0aqmwqqG
+				if(givenID && this._model.active.getType(this.currentID) === "accumulator" &&
+					givenID === mapID.call(this._model.active, this.currentID)){
+					cancelUpdate = true;
+					directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
+					directives.push({
+						id: 'crisisAlert',
+						attribute: 'open',
+						value: "The old value of the accumulator is already included in the expression, so you don't have to mention it in the expression.  Only put an expression for the change in the accumulators value."
+					});
+					this.logging.log("solution-step", {
+						type: "self-referencing-accumulator",
+						node: this._model.active.getName(this.currentID),
+						nodeID: this.currentID,
+						property: "equation",
+						value: inputEquation,
+						correctResult: this._model.given.getEquation(this.currentID),
+						checkResult: "INCORRECT"
+					});
+				}
+			}, this);
+			if(!cancelUpdate){
 				return parse;
 			}
 			return null;
@@ -1013,26 +1078,7 @@ define([
 				//getDescriptionID is present only in student mode. So in author mode it will give an identity function. This is a work around in case when its in author mode at that time the given model is the actual model. So descriptionID etc are not available. 
 				var mapID = this._model.active.getDescriptionID || function(x){ return x; };
 				var unMapID = this._model.active.getNodeIDFor || function(x){ return x; };
-				
-				if(this._model.active.getType(this.currentID) === "accumulator" &&
-					!parse.variables().length && parse.tokens.length == 1 && parse.tokens[0].number_ == 0){
-					cancelUpdate = true;
-					directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
-					directives.push({
-						id: 'crisisAlert',
-						attribute: 'open',
-						value: "Equation of accumulator can not be set to 0. If this is the case then please change the type of the node to parameter."
-					});
-					this.logging.log("solution-step", {
-						type: "zero-equation-accumulator",
-						node: this._model.active.getName(this.currentID),
-						nodeID: this.currentID,
-						property: "equation",
-						value: inputEquation,
-						correctResult: this._model.given.getEquation(this.currentID),
-						checkResult: "INCORRECT"
-					});
-				}
+
 				array.forEach(parse.variables(), function(variable){
 					// Test if variable name can be found in given model
 
@@ -1044,45 +1090,6 @@ define([
 					var autocreationFlag = true;
 					/*if(autocreationFlag && !this._model.active.isNode(givenID))
 					 this.autocreateNodes(variable);*/
-
-					// Checks for nodes referencing themselves; this causes problems because
-					//		functions will always evaluate to true if they reference themselves
-					if(givenID && this._model.active.getType(this.currentID) === "function" &&
-						givenID === mapID.call(this._model.active, this.currentID)){
-						cancelUpdate = true;
-						directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
-						directives.push({id: 'message', attribute: 'append', value: "You cannot use '" + variable + "' in the equation. Function nodes cannot reference themselves."});
-						this.logging.log("solution-step", {
-							type: "self-referencing-function",
-							node: this._model.active.getName(this.currentID),
-							nodeID: this.currentID,
-							property: "equation",
-							value: inputEquation,
-							correctResult: this._model.given.getEquation(this.currentID),
-							checkResult: "INCORRECT"
-						});
-					}
-
-					//check if accumulator has a reference to itself as per the Trello card https://trello.com/c/0aqmwqqG
-					if(givenID && this._model.active.getType(this.currentID) === "accumulator" &&
-						givenID === mapID.call(this._model.active, this.currentID)){
-						cancelUpdate = true;
-						directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
-						directives.push({
-							id: 'crisisAlert',
-							attribute: 'open',
-							value: "The old value of the accumulator is already included in the expression, so you don't have to mention it in the expression.  Only put an expression for the change in the accumulators value."
-						});
-						this.logging.log("solution-step", {
-							type: "self-referencing-accumulator",
-							node: this._model.active.getName(this.currentID),
-							nodeID: this.currentID,
-							property: "equation",
-							value: inputEquation,
-							correctResult: this._model.given.getEquation(this.currentID),
-							checkResult: "INCORRECT"
-						});
-					}
 					// The variable "descriptionID" is the corresponding givenModelNodeID from the model (it is not equal to the givenID used here).
 					// The variable "badVarCount" is used to track the number of times a user has attempted to use an incorrect variable to prevent
 					//		him or her from being stuck indefinitely.
@@ -1132,6 +1139,11 @@ define([
 						}
 						directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
 						directives.push({id: 'message', attribute: 'append', value: "Unknown variable '" + variable + "'."});
+						directives.push({
+							id: 'crisisAlert',
+							attribute: 'open',
+							value: "Unknown variable '" + variable + "' entered in equation."
+						});
 						this.logging.log("solution-step", {
 							type: "unknown-variable",
 							node: this._model.active.getName(this.currentID),

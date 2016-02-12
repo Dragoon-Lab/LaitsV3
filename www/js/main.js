@@ -462,7 +462,7 @@ define([
 			// setting environment for loading dragoon inside ET
 			
 			var etConnect = null;
-			if(activity_config.get("ElectronixTutor")) {
+			if(activity_config.get("ElectronixTutor")){
 				etConnect = new ETConnector();
 				etConnect.startService();
 				
@@ -1531,7 +1531,6 @@ define([
 						registry.byId("nodeeditor").hide();
 					});
 				}
-				//debugger;
 				// attaching author History widget
 				if(activity_config.get("allowHistory")) {
 					var historyWidget = new HistoryWidget(query, session.sessionId);
@@ -1606,7 +1605,6 @@ define([
 					if(activity_config.get("showNodeBorderTutorial")) {
 						var nodeBorderTutorialState = givenModel.getNodeBorderTutorialState();
 						controllerObject.showNodeBorderTooltip(nodeBorderTutorialState);
-						debugger;
 						state.put("NodeBorderTutorialState", givenModel.getNodeBorderTutorialState());
 					}
 
