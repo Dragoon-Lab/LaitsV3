@@ -126,7 +126,7 @@ define([
 		throw Error("Problem in creating activity configurations: "+error);
 	}
 
-	activity_config.set("ElectronixTutor", false);
+	//activity_config.set("ElectronixTutor", false);
 	if(activity_config && query.s === "ElectronixTutor"){
 		activity_config.set("ElectronixTutor", true);
 		if(typeof query.p1 != 'undefined' && typeof query.p2 != 'undefined'){
@@ -462,7 +462,7 @@ define([
 			// setting environment for loading dragoon inside ET
 			
 			var etConnect = null;
-			if(activity_config["ElectronixTutor"]) {
+			if(activity_config.get("ElectronixTutor")) {
 				etConnect = new ETConnector();
 				etConnect.startService();
 				
@@ -1694,7 +1694,7 @@ define([
 					}
 						
 				}
-				if(activity_config["ElectronixTutor"] && etConnect){
+				if(activity_config.get("ElectronixTutor") && etConnect){
 					if(etConnect.needsToSendsScore) {
 						var score = controllerObject._assessment.getSuccessFactor();
 						etConnect.sendScore(score);
