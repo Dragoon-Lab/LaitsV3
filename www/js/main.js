@@ -125,8 +125,10 @@ define([
 	}catch(error){
 		throw Error("Problem in creating activity configurations: "+error);
 	}
+
+	activity_config.set("ElectronixTutor", false);
 	if(activity_config && query.s === "ElectronixTutor"){
-		activity_config["ElectronixTutor"] = true;
+		activity_config.set("ElectronixTutor", true);
 		if(typeof query.p1 != 'undefined' && typeof query.p2 != 'undefined'){
 			// santization required
 			query.u = 'ETUser_' + query.p1;
@@ -357,7 +359,10 @@ define([
 
 			array.forEach(menuButtons, function(button){
 				//setting display for each menu button
-				style.set(registry.byId(button).domNode, "display", ui_config.get(button));
+				if(activity_config.get("ElectronixTutor") && button == "doneButton")
+					style.set(registry.byId(button).domNode, "display", "none");
+				else
+					style.set(registry.byId(button).domNode, "display", ui_config.get(button));
 
 				/*
 				 * This is a work-around for getting a button to work inside a MenuBar.

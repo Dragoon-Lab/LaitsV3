@@ -948,6 +948,10 @@ define([
 				return typeof this._params[name] !== "undefined" ? this._params[name] : "undefined";
 			},
 
+			set: function(/*string*/ key, /*value*/ value){
+				this._params[key] = value;
+			},
+
 			getMode: function(){
 				return this._mode;
 			},
