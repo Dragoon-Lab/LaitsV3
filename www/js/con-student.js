@@ -386,20 +386,22 @@ define([
 			// applyDirectives updates equationBox, but not equationText:
 			dom.byId("equationText").innerHTML = value;
 
-			var directives = [];
-			// Parse and update model, connections, etc.
-			var parse = this.equationAnalysis(directives);
-			// Generally, since this is the correct solution, there should be no directives
-			this.applyDirectives(directives);
+			if(value != ""){
+				var directives = [];
+				// Parse and update model, connections, etc.
+				var parse = this.equationAnalysis(directives);
+				// Generally, since this is the correct solution, there should be no directives
+				this.applyDirectives(directives);
 
-			//Set equation and process answer
-			var parsedEquation = parse.toString(true);
-			this._model.active.setEquation(this.currentID, parsedEquation);
-			var dd = this._PM.processAnswer(this.currentID, 'equation', parse, registry.byId(this.controlMap.equation).get("value"));
-			this.applyDirectives(dd);
+				//Set equation and process answer
+				var parsedEquation = parse.toString(true);
+				this._model.active.setEquation(this.currentID, parsedEquation);
+				var dd = this._PM.processAnswer(this.currentID, 'equation', parse, registry.byId(this.controlMap.equation).get("value"));
+				this.applyDirectives(dd);
 
-			//Create expression nodes for parsed equation
-			this.createExpressionNodes(parse);
+				//Create expression nodes for parsed equation
+				this.createExpressionNodes(parse);
+			}
 		},
 
 		//Set description for autocreated Nodes

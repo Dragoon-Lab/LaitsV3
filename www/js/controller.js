@@ -912,6 +912,8 @@ define([
 			var widget = registry.byId(this.controlMap.equation);
 			var inputEquation = widget.get("value");
 			var cancelUpdate = false;
+			var resetEquation = false;
+			var descriptionID = this._model.active.getDescriptionID(this.currentID);
 
 			var parse = null;
 			if (inputEquation == "") {
@@ -968,8 +970,49 @@ define([
 			}
 			array.forEach(parse.variables(), function(variable){
 				var givenID = this._model.given.getNodeIDByName(variable);
+				var badVarCount = "";
 				// Check 2 - Checks for nodes referencing themselves; this causes problems because
 				//		functions will always evaluate to true if they reference themselves
+				if(!givenID){
+					if(!ignoreUnknownTest){
+						// Check for number of unknown var, only in student mode.
+						badVarCount = this._model.given.getAttemptCount(descriptionID, "unknownVar");
+					}
+					cancelUpdate = true;  // Don't update model or send ot PM.
+
+					// The following if statement prevents a user from being endlessly stuck if he/she is using an incorrect variable.
+					//		To organize this better in the future we may want to move this check into another file with the code from
+					//		pedagogical_module.js that is responsible for deciding the correctness of a student's response.
+					if(badVarCount){
+						this._model.given.setAttemptCount(descriptionID, "unknownVar", badVarCount+1);
+						if(badVarCount < 3){
+							resetEquation = true;
+						} else {
+							this._model.given.setAttemptCount(descriptionID, "equation", badVarCount+1);
+							cancelUpdate = false;
+						}
+					}else{
+						this._model.given.setAttemptCount(descriptionID, "unknownVar", 1);
+						resetEquation = true;
+					}
+					//directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
+					directives.push({id: 'message', attribute: 'append', value: "Unknown variable '" + variable + "'."});
+					directives.push({
+						id: 'crisisAlert',
+						attribute: 'open',
+						value: "Unknown variable '" + variable + "' entered in equation."
+					});
+					this.logging.log("solution-step", {
+						type: "unknown-variable",
+						node: this._model.active.getName(this.currentID),
+						nodeID: this.currentID,
+						property: "equation",
+						value: inputEquation,
+						correctResult: this._model.given.getEquation(this.currentID),
+						checkResult: "INCORRECT"
+					});
+				}
+
 				if(givenID && this._model.active.getType(this.currentID) === "function" &&
 					givenID === mapID.call(this._model.active, this.currentID)){
 					cancelUpdate = true;
@@ -1006,6 +1049,11 @@ define([
 					});
 				}
 			}, this);
+
+			if(resetEquation){
+				this._model.student.setEquation(this.currentID, "");
+				directives.push({id: 'equation', attribute: 'value', value: ""});
+			}
 			if(!cancelUpdate){
 				return parse;
 			}
@@ -1095,14 +1143,15 @@ define([
 					//		him or her from being stuck indefinitely.
 
 					var descriptionID = "";
-					var badVarCount = "";
-					if (!ignoreUnknownTest) {
+					//var badVarCount = "";
+					/*if (!ignoreUnknownTest) {
 						// Check for number of unknown var, only in student mode.
 						descriptionID = this._model.active.getDescriptionID(this.currentID);
 						badVarCount = this._model.given.getAttemptCount(descriptionID, "unknownVar");
-					}
+					}*/
 
-					if(givenID || ignoreUnknownTest || badVarCount > 3){
+					if(givenID){
+						//|| ignoreUnknownTest || badVarCount > 3){
 						// Test if variable has been defined already
 						var subID = unMapID.call(this._model.active, givenID);
 						if(subID){
@@ -1119,40 +1168,9 @@ define([
 							//get Node ID and substitute in equation
 							var subID2 = unMapID.call(this._model.active, givenID||id);
 							parse.substitute(variable, subID2); //this should handle createInputs and connections to automatic node
-						}else{
+						}/*else{
 							directives.push({id: 'message', attribute: 'append', value: "Quantity '" + variable + "' not defined yet."});
-						}
-					}else{
-						cancelUpdate = true;  // Don't update model or send ot PM.
-
-						// The following if statement prevents a user from being endlessly stuck if he/she is using an incorrect variable. 
-						//		To organize this better in the future we may want to move this check into another file with the code from 
-						//		pedagogical_module.js that is responsible for deciding the correctness of a student's response.
-						if(badVarCount){
-							this._model.given.setAttemptCount(descriptionID, "unknownVar", badVarCount+1);
-
-							if(badVarCount > 2){
-								this._model.given.setAttemptCount(descriptionID, "equation", badVarCount+1);
-							}
-						}else{
-							this._model.given.setAttemptCount(descriptionID, "unknownVar", 1);
-						}
-						directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
-						directives.push({id: 'message', attribute: 'append', value: "Unknown variable '" + variable + "'."});
-						directives.push({
-							id: 'crisisAlert',
-							attribute: 'open',
-							value: "Unknown variable '" + variable + "' entered in equation."
-						});
-						this.logging.log("solution-step", {
-							type: "unknown-variable",
-							node: this._model.active.getName(this.currentID),
-							nodeID: this.currentID,
-							property: "equation",
-							value: inputEquation,
-							correctResult: this._model.given.getEquation(this.currentID),
-							checkResult: "INCORRECT"
-						});
+						}*/
 					}
 				}, this);
 				if(directives.length > 0){
