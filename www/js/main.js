@@ -1465,6 +1465,15 @@ define([
 				}
 			}
 
+			if(activity_config.get("showWaveformEditor")){
+				aspect.after(registry.byId('waveformEditor'), "hide", function(){
+					if(activity_config.get("showNodeBorderTutorial")) {
+						var nodeBorderTutorialState = givenModel.getNodeBorderTutorialState();
+						controllerObject.showNodeBorderTooltip(nodeBorderTutorialState);
+						state.put("NodeBorderTutorialState", givenModel.getNodeBorderTutorialState());
+					}
+				});
+			}
 
 			if(activity_config.get("showNodeEditor")){
 				//Initialize Tooltips
@@ -1540,6 +1549,7 @@ define([
 						historyWidget.show();
 					});
 				}
+
 				/*
 				 Autosave on close window
 				 It would be more efficient if we only saved the changed node.

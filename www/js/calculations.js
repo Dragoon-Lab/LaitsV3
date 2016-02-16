@@ -289,29 +289,35 @@ define([
 				console.log(err);
 				var if_id=err.message.substr(19).trim(); //In case the name is not generated and a node id is , we have to get the name from the active object for the user to understand
 				console.log("catch error",this.model.active.getName(if_id));  
-				var miss_field;
+				var miss_field = "expression";
 				if(this.model.active.getName(if_id)){
 					var miss_node=this.model.active.getName(if_id); // In case a node is incomplete
 					var miss_node_check = this.model.active.getNode(if_id);
-					if(miss_node_check.status.description.disabled == false)
-					{
-						miss_field = "description";
-					}
-					else if(miss_node_check.status.type.disabled == false)
-					{
-						miss_field = "type";
-					}
-					else if(miss_node_check.status.equation.disabled == false)
-					{
-						miss_field = "expression";
-					}
-					else if(miss_node_check.status.initial.disabled == false)
-					{
-						miss_field = "initial value";
-					}
-					else if(miss_node_check.status.units.disabled == false)
-					{
-						miss_field = "units";
+					var statusField =  this.model.given.getNode(if_id) !== null ? "authorStatus" : "status";
+
+					if(miss_node_check[statusField]) {
+						if (!miss_node_check[statusField].description || (miss_node_check[statusField].description
+							&& (!miss_node_check[statusField].description.status ))) {
+							miss_field = "description";
+						}
+						else if (!miss_node_check[statusField].type || (miss_node_check[statusField].type
+							&& !miss_node_check[statusField].type.status )) {
+							miss_field = "type";
+						}
+						else if (miss_node_check.type !== "function" && (!miss_node_check[statusField].initial ||
+							(miss_node_check[statusField].initial && !miss_node_check[statusField].initial.status ))) {
+							miss_field = "initial value";
+						}
+						else if (miss_node_check.type !== "parameter" && (!miss_node_check[statusField].equation ||
+							(miss_node_check[statusField].equation && !miss_node_check[statusField].equation.status ))) {
+							miss_field = "expression";
+						}
+						else if (statusField !=="authorStatus" && 
+								 (!miss_node_check[statusField].units || 
+									(miss_node_check[statusField].units
+									 && !miss_node_check[statusField].units.status))) {
+							miss_field = "units";
+						}
 					}
 				}else{
 					miss_node=if_id;
