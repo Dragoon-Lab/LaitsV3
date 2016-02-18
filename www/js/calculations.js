@@ -464,8 +464,10 @@ define([
 		/*
 		 * @brief: create slider object for graphs and table
 		 */
-		createSliderAndDialogObject: function(){
+		createSliders: function(){
 			var units;
+			var slidersContent = dom.byId("SliderPane").innerHTML;
+
 			var sliderVars = lang.clone(this.active.timeStep.parameters);
 			for(var j=0; j<this.active.timeStep.xvars.length; j++){
 				sliderVars[this.active.timeStep.xvars[j]] = this.active.initialValues[j];
@@ -517,26 +519,28 @@ define([
 				//create label for name of a textbox
 				//create input for a textbox
 				//create div for embedding a slider
-				this.dialogContent += "<label id=\"labelGraph_" + paramID + "\">" + labelText + " = " + "</label>";
+				slidersContent += "<label id=\"labelGraph_" + paramID + "\">" + labelText + " = " + "</label>";
 				// The input element does not have an end tag so we can't use
 				// this.createDom().
 				// Set width as number of characters.
-				this.dialogContent += "<input id=\"" + textBoxID[paramID] + "\" type=\"text\" size=10 value=\"" + sliderVars[paramID] + "\">";
+				slidersContent += "<input id=\"" + textBoxID[paramID] + "\" type=\"text\" size=10 value=\"" + sliderVars[paramID] + "\">";
 				units = this.model.active.getUnits(paramID);
 				if(units){
-					this.dialogContent += " " + units;
+					slidersContent += " <div id=\"sliderUnits_"+ paramID +"\">" + units + "</div>";
 				}
-				this.dialogContent += "<br>";
+				slidersContent += "<br>";
 				// DOM id for slider <div>
 				sliderID[paramID] = this.sliderID + "_" + paramID;
-				this.dialogContent += "<div id='" + sliderID[paramID] + "'> " + "</div>";
+				slidersContent += "<div id='" + sliderID[paramID] + "'> " + "</div>";
 			}
-			this.dialogContent += "</div></div></div>";
-			var dialogWidget = registry.byId("solution");
-			dialogWidget.set("title", this.model.getTaskName() + " - " + this.type);
-			// Attach contents of dialog box to DOM all at once
-			console.log(dialogWidget);
-			dialogWidget.set("content", this.dialogContent);
+			slidersContent += "</div></div></div>";
+			var sliderPane = registry.byId("SliderPane");
+			sliderPane.set("content", slidersContent);
+
+			//dialogWidget.set("title", this.model.getTaskName() + " - " + this.type);
+			//// Attach contents of dialog box to DOM all at once
+			//console.log(dialogWidget);
+			//dialogWidget.set("content", this.dialogContent);
 
 			// Attach slider widget to DOM
 			for(paramID in sliderVars){
