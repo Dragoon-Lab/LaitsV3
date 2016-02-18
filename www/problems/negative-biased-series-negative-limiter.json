@@ -416,7 +416,7 @@
                         "disabled": false
                     }
                 },
-                "explanation": "The output voltage is also the midpoint voltage of a voltage divider formed by the diode (top half) and the resistor and battery (bottom half). u00a0To get the voltage at the midpoint, we subtract the voltage drop across the top half from the voltage at the top terminal of the voltage divider, which is also the input voltage."
+                "explanation": "The output voltage is also the midpoint voltage of a voltage divider formed by the diode (top half) and the resistor and battery (bottom half). To get the voltage at the midpoint, we subtract the voltage drop across the top half from the voltage at the top terminal of the voltage divider, which is also the input voltage."
             },
             {
                 "ID": "id9",
@@ -539,7 +539,7 @@
                 "units": "volts",
                 "equation": "if(((id12>id6),id6),id12)",
                 "genus": "required",
-                "explanation": "Because the voltage drop is measured from left to right, and the anode is on the left, the diode is forward biased when the voltage drop exceeds the knee voltage. u00a0When diode is forward biased, then the drop across it is zero--its a short circuit. u00a0When the diode is reverse biased, then the drop across it is just what it would be if the diode were removed, making an open.u00a0",
+                "explanation": "Because the voltage drop is measured from left to right, and the anode is on the left, the diode is forward biased when the voltage drop exceeds the knee voltage. When diode is forward biased, then the drop across it is zero--its a short circuit. When the diode is reverse biased, then the drop across it is just what it would be if the diode were removed, making an open.",
                 "waveformValue": "wave009",
                 "authorStatus": {
                     "root": {
@@ -670,7 +670,7 @@
                         "disabled": false
                     }
                 },
-                "explanation": "In order to be consistent with the voltage drop across the resistor, which is measured top to bottom, the current is measured so that positive means upward flow. u00a0Thus, it is simply I=V/R by Ohm's law."
+                "explanation": "In order to be consistent with the voltage drop across the resistor, which is measured top to bottom, the current is measured so that positive means upward flow. Thus, it is simply I=V/R by Ohm's law."
             },
             {
                 "ID": "id12",
@@ -735,7 +735,7 @@
                 "type": "function",
                 "units": "volts",
                 "equation": "id2-id16",
-                "explanation": "If the diode were an open circuit, then its right side (cathode) would be at the bias voltage (-5 volts) and its left side (anode) would be at the AC input voltage. u00a0This voltage drop is measured from left to right, so the quantity is equal to the input voltage minus the bias voltage.",
+                "explanation": "If the diode were an open circuit, then its right side (cathode) would be at the bias voltage (-5 volts) and its left side (anode) would be at the AC input voltage. This voltage drop is measured from left to right, so the quantity is equal to the input voltage minus the bias voltage.",
                 "genus": "required",
                 "waveformValue": "wave018",
                 "authorStatus": {

@@ -91,7 +91,7 @@
                 "equation": "id2*sinewave(id10,0)",
                 "genus": "required",
                 "description": "Voltage relative to ground of top input",
-                "explanation": "This is the voltage relative to ground of the upper terminal of the input. u00a0The lower terminal is at ground.",
+                "explanation": "This is the voltage relative to ground of the upper terminal of the input. The lower terminal is at ground.",
                 "waveformValue": "wave007"
             },
             {
@@ -335,7 +335,7 @@
                 "units": "volts",
                 "equation": "id23-id12",
                 "genus": "required",
-                "explanation": "This is the voltage of the right side of the capacitor relative to the left side. u00a0In the positive clamper, it should always be positive, indicating that the right side is at a higher voltage than the left side.",
+                "explanation": "This is the voltage of the right side of the capacitor relative to the left side. In the positive clamper, it should always be positive, indicating that the right side is at a higher voltage than the left side.",
                 "waveformValue": "wave000"
             },
             {
@@ -775,7 +775,7 @@
                 "units": "volts",
                 "equation": "if(((id26>id19),id19),id26)",
                 "genus": "required",
-                "explanation": "This is the actual voltage drop across the diode. u00a0When the diode is forward biased, it is just the knee voltage, but because this quantity is measure from the cathode (top) to the anode (bottom), then voltage drop is <i>minus</i>u00a0the knee voltage. u00a0When the diode is reverse biased, then it acts like an open circuit, so its drop is the input drop: V across D1 when open.",
+                "explanation": "This is the actual voltage drop across the diode. When the diode is forward biased, it is just the knee voltage, but because this quantity is measure from the cathode (top) to the anode (bottom), then voltage drop is <i>minus</i>the knee voltage. When the diode is reverse biased, then it acts like an open circuit, so its drop is the input drop: V across D1 when open.",
                 "waveformValue": "wave016"
             },
             {
@@ -842,7 +842,7 @@
                 "units": "volts",
                 "equation": "id1+id11",
                 "genus": "required",
-                "explanation": "This is the voltage drop across diode D1 when it is reverse biased. u00a0It is measured from the top (cathode) to the bottom (anode) of the diode. u00a0Thus, when this voltage is sufficiently negative, the diode will become forward biased.",
+                "explanation": "This is the voltage drop across diode D1 when it is reverse biased. It is measured from the top (cathode) to the bottom (anode) of the diode. Thus, when this voltage is sufficiently negative, the diode will become forward biased.",
                 "waveformValue": "wave016"
             },
             {
@@ -909,7 +909,7 @@
                 "units": "volts",
                 "equation": "id9-id1",
                 "genus": "required",
-                "explanation": "This is the drop across the capacitor that the applied voltages exert. u00a0It is measured from right (output voltage) to left (input voltage). u00a0 The capacitor charges itself up to meet this voltage, but it lags by one time tick.",
+                "explanation": "This is the drop across the capacitor that the applied voltages exert. It is measured from right (output voltage) to left (input voltage).  The capacitor charges itself up to meet this voltage, but it lags by one time tick.",
                 "waveformValue": "wave000"
             }
         ],

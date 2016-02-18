@@ -706,7 +706,7 @@
                 "type": "function",
                 "units": "volts",
                 "equation": "id2-id16",
-                "explanation": "If the diode were an open circuit, then its right side (anode) would be a ground and its left side (cathode) would be at the AC input voltage. u00a0This voltage drop is measured from left to right, so the quantity is equal to the input voltage.",
+                "explanation": "If the diode were an open circuit, then its right side (anode) would be a ground and its left side (cathode) would be at the AC input voltage. This voltage drop is measured from left to right, so the quantity is equal to the input voltage.",
                 "genus": "required",
                 "waveformValue": "wave020",
                 "authorStatus": {
