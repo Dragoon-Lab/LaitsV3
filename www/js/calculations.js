@@ -290,6 +290,8 @@ define([
 				var if_id=err.message.substr(19).trim(); //In case the name is not generated and a node id is , we have to get the name from the active object for the user to understand
 				console.log("catch error",this.model.active.getName(if_id));  
 				var miss_field = "expression";
+				var error_type = "missing";
+				var unknown_node = if_id;
 				if(this.model.active.getName(if_id)){
 					var miss_node=this.model.active.getName(if_id); // In case a node is incomplete
 					var miss_node_check = this.model.active.getNode(if_id);
@@ -318,11 +320,27 @@ define([
 									 && !miss_node_check[statusField].units.status))) {
 							miss_field = "units";
 						}
+
+					}
+				} else if(if_id.indexOf("id") < 0){
+					var studentNodes = this.model.active.getNodes();
+					if(studentNodes){
+						error_type = "unknown";
+						var gotIt = array.some(studentNodes, function(node){
+							miss_node = this.model.active.getName(node.ID);
+							return (node.equation.indexOf(if_id) >= 0);
+						}, this);
+
+						if(!gotIt){
+							miss_node = if_id;
+						} else {
+							miss_field = "expression";
+						}
 					}
 				}else{
 					miss_node=if_id;
 				}
-				return {status: 'error', type: 'missing', missingNode: miss_node, missingField: miss_field};
+				return {status: 'error', type: error_type, missingNode: miss_node, missingField: miss_field, unknownNode: unknown_node};
 			}
 			//console.log(solution);
 			/*

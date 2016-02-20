@@ -985,17 +985,17 @@ define([
 					//		pedagogical_module.js that is responsible for deciding the correctness of a student's response.
 					if(badVarCount){
 						this._model.given.setAttemptCount(descriptionID, "unknownVar", badVarCount+1);
-						if(badVarCount < 3){
-							resetEquation = true;
-						} else {
+						if(badVarCount > 2){
+							//resetEquation = true;
+						//} else {
 							this._model.given.setAttemptCount(descriptionID, "equation", badVarCount+1);
 							cancelUpdate = false;
 						}
 					}else{
 						this._model.given.setAttemptCount(descriptionID, "unknownVar", 1);
-						resetEquation = true;
+						//resetEquation = true;
 					}
-					//directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
+					directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
 					directives.push({id: 'message', attribute: 'append', value: "Unknown variable '" + variable + "'."});
 					directives.push({
 						id: 'crisisAlert',
@@ -1051,8 +1051,11 @@ define([
 			}, this);
 
 			if(resetEquation){
-				this._model.student.setEquation(this.currentID, "");
+				this._model.active.setEquation(this.currentID, "");
 				directives.push({id: 'equation', attribute: 'value', value: ""});
+			} else if(cancelUpdate){
+				//in case we are not calling the pm then we need to save the equation to the model.
+				this._model.active.setEquation(this.currentID, inputEquation);
 			}
 			if(!cancelUpdate){
 				return parse;

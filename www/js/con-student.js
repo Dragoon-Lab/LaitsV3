@@ -365,7 +365,7 @@ define([
 						} : null;
 					directives.push(d);
 					return false;
-				})
+				});
 			}
 			console.log(directives);
 			this.applyDirectives(directives);

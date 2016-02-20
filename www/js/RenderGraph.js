@@ -114,7 +114,10 @@ define([
             console.log(activeSolution);
             if(activeSolution.status == "error" && activeSolution.type == "missing") {
 				// Return value from findSlution in calculation, returns an array and we check for status and any missing nodes
-				this.dialogWidget.set("content", this.generateErrorMessage(activeSolution)); //We show the error message like "A Node is Missing"
+				this.dialogWidget.set("content", this.generateMissingErrorMessage(activeSolution)); //We show the error message like "A Node is Missing"
+				return;
+			} else if(activeSolution.status == "error" && activeSolution.type == "unknown") {
+				this.dialogWidget.set("content", this.generateUnknownErrorMessage(activeSolution)); //We show the error message like "A Node is Missing"
 				return;
 			}
 
@@ -395,7 +398,7 @@ define([
                 var modStatus = true;
                 array.forEach(this.model.active.getNodes(), function (thisnode) {
                     if(thisModel.model.active.getType(thisnode.ID)=="function" || thisModel.model.active.getType(thisnode.ID)=="accumulator"){
-                        thisModel.dialogWidget.set("content", this.generateErrorMessage(thisModel.model.active.getName(thisnode.ID)));
+                        thisModel.dialogWidget.set("content", this.generateMissingErrorMessage(thisModel.model.active.getName(thisnode.ID)));
                         modStatus = false;
                         return;
                     }
@@ -607,11 +610,16 @@ define([
 		},
 
 		//helper method for error messages
-		generateErrorMessage: function(solution)
+		generateMissingErrorMessage: function(solution)
 		{
 			return "content", "<div>Not all nodes have been completed. For example, "
 			       + solution.missingNode + " has an empty "+ solution.missingField +
 			       " field.</div>";
+		},
+		generateUnknownErrorMessage: function(solution){
+			return "content", "<div>There is an <b>unknown node "+ solution.unknownNode +
+				"</b> used in the <b>"+ solution.missingField +" field</b> of the <b>" + solution.missingNode +
+				" node</b>. Please check the spelling of all the nodes you have entered in the expression</div>";
 		},
 
 		resizeWindow: function(){
@@ -972,8 +980,12 @@ define([
 			var tableString="";
 			var solution = this.findSolution(true, this.plotVariables); // Return value from findSlution in calculation, returns an array and we check for status and any missing nodes
 			if(solution.status=="error" && solution.type=="missing"){
-				this.dialogWidget.set("content", "<div>Not all nodes have been completed. For example, \""+solution.missingNode+"\" is not yet fully defined."); //We show the error message like "A Node is Missing"
+				this.dialogWidget.set("content", this.generateMissingErrorMessage(solution));
+				//"<div>Not all nodes have been completed. For example, \""+solution.missingNode+"\" is not yet fully defined."); //We show the error message like "A Node is Missing"
 				// Not sure what the return should be here
+				return "";
+			} else if(solution.status == "error" && solution.type == "unknwon"){
+				this.dialogWidget.set("content", this.generateUnknownErrorMessage(solution));
 				return "";
 			}
 			var j = 0;
