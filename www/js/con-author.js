@@ -493,7 +493,7 @@ define([
 					if(this._model.active.getInitial(studentNodeID) === "number"){
 						var initialNode = registry.byId(this.controlMap.initial);
 						initialNode.set("value", "");
-						this._model.active.setInitial(studentNodeID, "");
+						this._model.active.setInitial(studentNodeID, null);
 					}
 					registry.byId(this.controlMap.inputs).set("disabled", false);
 					registry.byId(this.controlMap.equation).set("disabled", false);
