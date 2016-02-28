@@ -33,10 +33,8 @@ define([
 	"./integrate","./typechecker",
 	"./lessons-learned",
 	"dijit/form/Button",
-	"dijit/TooltipDialog",
-	"dijit/popup",
 	"dijit/focus"
-], function(array, declare, lang, on, dom, aspect, registry, HorizontalSlider, equation, integrate, typechecker,lessonsLearned, Button, tooltipDialog, popup, focusUtil){
+], function(array, declare, lang, on, dom, aspect, registry, HorizontalSlider, equation, integrate, typechecker,lessonsLearned, Button, focusUtil){
 	// Summary: 
 	//          Finds model solutions and sets up the sliders
 	// Description:
@@ -572,6 +570,9 @@ define([
 		show: function () {
 			this.dialogWidget.show();
 			var content = this.dialogWidget.get("content").toString();
+			/*
+			this code should be in main.js and has been moved there.
+			We shouldnt do things on the main window through the graph window. - Sachin Grover
 			if(registry.byId("closeHint")) {
 				var closeHintId = registry.byId("closeHint");
 				closeHintId.destroyRecursive(false);
@@ -592,7 +593,7 @@ define([
 				onBlur: function(){
 					popup.close(problemDoneHint);
 				}
-			});
+			});*/
 
 			if (content.search("There isn't anything to plot. Try adding some accumulator or function nodes.") >= 0
 				|| content.search("There is nothing to show in the table.   Please define some quantitites.") >= 0 ||
@@ -600,7 +601,7 @@ define([
 				console.log("graph not being shown");
 				return;
 			}
-			var contentMsg = this.model.getTaskLessonsLearned();
+			/*var contentMsg = this.model.getTaskLessonsLearned();
 
 			console.log("content message is", contentMsg, this.model);
 			//var thisModel = this;
@@ -608,7 +609,7 @@ define([
 
 				if (contentMsg.length === 0 || contentMsg[0] == "") {
 					console.log("lessons learned is empty");
-					if(this.model.isDoneMessageShown === false) {
+					if(this.model.isDoneMessageShown === false && ) {
 						popup.open({
 							popup: problemDoneHint,
 							around: dom.byId('doneButton')
@@ -635,7 +636,7 @@ define([
 						}));
 					}
 				}
-			}));
+			}));*/
 		},
 
 
