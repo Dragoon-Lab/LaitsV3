@@ -79,7 +79,7 @@ gulp.task('build', ['dojoBuild'], function (done){
 		'./ET/**/*.*',
 		'./Liviz/**/*.*',
 		'./tincan/**/*.*',
-		'./sha/**/*.*',
+		'./cryptoJS/**/*.*',
 		'./publicLogin/*/*.*',
 		'./jsPlumb/lib/**/*.*',
 		'./jsPlumb/demo/**/*.*',
