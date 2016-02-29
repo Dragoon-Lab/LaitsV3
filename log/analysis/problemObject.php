@@ -257,6 +257,7 @@
 		public $name;
 		public $codeName;
 		public $schemas = array(); //holds all the schema that user made with error count
+		public $currentProblemNodes = 0;
 
 		function __construct($n){
 			$this->name = $n;
