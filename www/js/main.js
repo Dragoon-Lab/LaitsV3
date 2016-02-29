@@ -1139,31 +1139,17 @@ define([
 					style.set(tableButton.domNode, "display","inline-block");
 
 					// instantiate graph object to show the graph after clicking OK
-					var buttonClicked = "graph";
-					var graph = new Graph(givenModel, query.m, session, buttonClicked);
-					graph.setStateGraph(state);
-					var problemComplete = givenModel.matchesGivenSolution();
+					startGraph();
 
-					graph._logging.log('ui-action', {
-						type: "menu-choice",
-						name: "show-graph",
-						problemComplete: problemComplete
+					//adding the event now so that graph opens up again when graph button is clicked.
+					menu.add("graphButton", function(e){
+						event.stop(e);
+						startGraph();
 					});
-					graph.show();
 
-
-					// show table when button clicked
 					menu.add("tableButton", function(e){
-					event.stop(e);
-					console.debug("table button clicked");
-					var buttonClicked = "table";
-					var table = new Graph(givenModel, query.m, session, buttonClicked);
-					table.setStateGraph(state);
-					table._logging.log('ui-action', {
-						type: "menu-choice",
-						name: "table-button"
-					});
-					table.show();
+						event.stop(e);
+						startTable();
 					});
 				}
 			});
@@ -1192,79 +1178,93 @@ define([
 				state.put("isDoneMessageShown",true);
 			};
 
+			var startGraph = function(){
+				// instantiate graph object
+				console.debug("button clicked");
+				var buttonClicked = "graph";
+				var graph = new Graph(givenModel, query.m, session, buttonClicked);
+				graph.setStateGraph(state);
+				var problemComplete = givenModel.matchesGivenSolution();
+					graph._logging.log('ui-action', {
+					type: "menu-choice",
+					name: "graph-button",
+					problemComplete: problemComplete
+				});
+				var dialogWidget = registry.byId("solution");
+
+				var content = dialogWidget.get("content").toString();
+				if(registry.byId("closeHint")) {
+					var closeHintId = registry.byId("closeHint");
+					closeHintId.destroyRecursive(false);
+				}
+					//close popup each time graph is shown
+				if(problemDoneHint)
+					popup.close(problemDoneHint);
+				graph.show();
+
+				var graphHelpButton = dom.byId('graphHelpButton');
+				console.log("graph help shown",givenModel.getGraphHelpShown());
+				if(!givenModel.getGraphHelpShown()&&graphHelpButton ) {
+					domClass.add(graphHelpButton, "glowNode");
+					givenModel.setGraphHelpShown(true);
+					state.put("isGraphHelpShown",true);
+				}
+			};
+
+			var startTable = function(){
+				console.debug("table button clicked");
+				var buttonClicked = "table";
+				var table = new Graph(givenModel, query.m, session, buttonClicked);
+				table.setStateGraph(state);
+				table._logging.log('ui-action', {
+					type: "menu-choice",
+					name: "table-button"
+				});
+				table.show();
+			};
+
+
 			if(activity_config.get("allowGraph")){
-		
 				var graphButton = registry.byId("graphButton");
 				graphButton.set("disabled", false);
 
 				// show graph when button clicked
 				menu.add("graphButton", function(e){
 					event.stop(e);
-					console.debug("button clicked");
-							
-					// instantiate graph object
-					var buttonClicked = "graph";
-					var graph = new Graph(givenModel, query.m, session, buttonClicked);
-					graph.setStateGraph(state);
-					var problemComplete = givenModel.matchesGivenSolution();
-
-					graph._logging.log('ui-action', {
-						type: "menu-choice",
-						name: "graph-button",
-						problemComplete: problemComplete
-					});
-					var dialogWidget = registry.byId("solution");
-					var content = dialogWidget.get("content").toString();
-					if(registry.byId("closeHint")) {
-						var closeHintId = registry.byId("closeHint");
-						closeHintId.destroyRecursive(false);
-					}
-
-					//close popup each time graph is shown
-					if(problemDoneHint)
-						popup.close(problemDoneHint);
-					graph.show();
-
-					var graphHelpButton = dom.byId('graphHelpButton');
-					console.log("graph help shown",givenModel.getGraphHelpShown());
-					if(!givenModel.getGraphHelpShown()&&graphHelpButton ) {
-						domClass.add(graphHelpButton, "glowNode");
-						givenModel.setGraphHelpShown(true);
-						state.put("isGraphHelpShown",true);
-					}
-				});
-
-				//the solution div which shows graph/table when closed
-				//should disable all the pop ups
-				aspect.after(registry.byId('solution'), "hide", function(){
-					console.log("Calling graph/table to be closed");
-					controllerObject.logging.log('ui-action', {
-						type: "menu-choice",
-						name: "graph-closed"
-					});
-					typechecker.closePops();
-					var contentMsg = givenModel.getTaskLessonsLearned();
-
-					if (contentMsg.length === 0 || contentMsg[0] == "") {
-						console.log("lessons learned is empty");
-						if(ui_config.get("doneButton") != "none" && givenModel.isDoneMessageShown === false) {
-							showProblemDoneHint();
-						}
-					}else{
-						if(givenModel.getLessonLearnedShown() === false){
-							lessonsLearned.displayLessonsLearned(contentMsg);
-							var lessonsLearnedButton = registry.byId("lessonsLearnedButton");
-							lessonsLearnedButton.set("disabled", false);
-							//this._state.put("isLessonLearnedShown",true);
-							aspect.after(registry.byId("lesson"),"hide", lang.hitch(this,function () {
-								if(ui_config.get("doneButton") != "none" && givenModel.isDoneMessageShown === false) {
-									showProblemDoneHint();
-								}
-							}));
-						}
-					}
+					startGraph();
 				});
 			}
+
+			//the solution div which shows graph/table when closed
+			//should disable all the pop ups
+			aspect.after(registry.byId('solution'), "hide", function(){
+				console.log("Calling graph/table to be closed");
+				controllerObject.logging.log('ui-action', {
+					type: "menu-choice",
+					name: "graph-closed"
+				});
+				typechecker.closePops();
+				var contentMsg = givenModel.getTaskLessonsLearned();
+
+				if (contentMsg.length === 0 || contentMsg[0] == "") {
+					console.log("lessons learned is empty");
+					if(ui_config.get("doneButton") != "none" && givenModel.isDoneMessageShown === false) {
+						showProblemDoneHint();
+					}
+				}else{
+					if(givenModel.getLessonLearnedShown() === false){
+						lessonsLearned.displayLessonsLearned(contentMsg);
+						var lessonsLearnedButton = registry.byId("lessonsLearnedButton");
+						lessonsLearnedButton.set("disabled", false);
+						//this._state.put("isLessonLearnedShown",true);
+						aspect.after(registry.byId("lesson"),"hide", lang.hitch(this,function () {
+							if(ui_config.get("doneButton") != "none" && givenModel.isDoneMessageShown === false) {
+								showProblemDoneHint();
+							}
+						}));
+					}
+				}
+			});
 
 			if(activity_config.get("allowTable")){
 				var tableButton = registry.byId("tableButton");
@@ -1273,15 +1273,7 @@ define([
 				// show table when button clicked
 				menu.add("tableButton", function(e){
 					event.stop(e);
-					console.debug("table button clicked");
-					var buttonClicked = "table";
-					var table = new Graph(givenModel, query.m, session, buttonClicked);
-					table.setStateGraph(state);
-					table._logging.log('ui-action', {
-						type: "menu-choice",
-						name: "table-button"
-					});
-					table.show();
+					startTable();
 				});
 			}
 
