@@ -911,9 +911,6 @@ define([
 			 */
 			var widget = registry.byId(this.controlMap.equation);
 			var inputEquation = widget.get("value");
-			var cancelUpdate = false;
-			var resetEquation = false;
-			var descriptionID = this._model.active.getDescriptionID(this.currentID);
 
 			var parse = null;
 			if (inputEquation == "") {
@@ -945,6 +942,15 @@ define([
 
 				return null;
 			}
+			//rest of the analysis is only needed for the student mode. So returning in case the active model is not student.
+			if(this._model.active != this._model.student){
+				return parse;
+			}
+
+			var cancelUpdate = false;
+			var resetEquation = false;
+			var descriptionID = this._model.student.getDescriptionID(this.currentID);
+
 			var mapID = this._model.active.getDescriptionID || function(x){ return x; };
 			var unMapID = this._model.active.getNodeIDFor || function(x){ return x; };
 			//there is no error in parse. We check equation for validity
@@ -1153,7 +1159,7 @@ define([
 						badVarCount = this._model.given.getAttemptCount(descriptionID, "unknownVar");
 					}*/
 
-					if(givenID){
+					if(givenID || ignoreUnknownTest){
 						//|| ignoreUnknownTest || badVarCount > 3){
 						// Test if variable has been defined already
 						var subID = unMapID.call(this._model.active, givenID);
