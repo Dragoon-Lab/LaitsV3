@@ -651,13 +651,6 @@ define([
 					this._incrementalMenu.onBlur = lang.hitch(this, function () {
 						this.closeIncrementalMenu();
 					});
-
-					if(this.activityConfig.get("demoIncremental")) {
-						console.log("can show done popup called inside inc demo");
-						if(!this.shownDone){
-							this.canShowDonePopup();
-						}
-					}
 				}
 			}
 		},
@@ -701,7 +694,6 @@ define([
 
 					//Close popup
 					that.closeIncrementalMenu(true);
-					that.canShowDonePopup();
 				});
 			});
 
@@ -730,7 +722,9 @@ define([
 
 		},
 
-		canShowDonePopup: function () {
+		//code moved to main.js as events should be handled there.
+		//added an aspect.after for each node menu close for every activity and that is how done message is shown - Sachin Grover
+		/*canShowDonePopup: function () {
 			studId = this._model.active.getNodes();
 			var isFinished = true;
 			studId.forEach(lang.hitch(this, function (newId) {
@@ -774,7 +768,7 @@ define([
 					this.applyDirectives(directives);
 				}
 			}
-		},
+		},*/
 
 		highlightNextNode: function () {
 			if (this.activityConfig.get("demoIncremental") || this.activityConfig.get("demoExecution")) {
@@ -1142,9 +1136,6 @@ define([
 									this.colorNodeBorder(this.currentID, true);
 									waveformEditorDialog.hide();
 								}
-								//canShowDonePopup also handles the waveform activity with the same variable
-								if(!this.shownDone)
-									this.canShowDonePopup();
 							}));
 						}));
 					}

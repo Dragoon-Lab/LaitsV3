@@ -1223,6 +1223,14 @@ define([
 				table.show();
 			};
 
+			var notifyCompleteness = function(){
+				// Trigger notify completeness since we're done.
+				// Construction triggers this when the node editor closes instead.
+				if (this.activityConfig.getActivity() != "construction"){
+					var directives = this._PM.notifyCompleteness(this._model);
+					this.applyDirectives(directives);
+				}
+			};
 
 			if(activity_config.get("allowGraph")){
 				var graphButton = registry.byId("graphButton");
@@ -1268,6 +1276,22 @@ define([
 							}
 						}
 					}
+				}
+			});
+
+			aspect.after(registry.byId('incrementalMenu'), "hide", function(){
+				if(activity_config.get("showDoneMessage") && ui_config.get("doneButton") != "none" &&
+					givenModel.student.matchesGivenSolutionAndCorrect()){
+					showProblemDoneHint();
+					notifyCompleteness();
+				}
+			});
+
+			aspect.after(registry.byId('waveformEditor'), "hide", function(){
+				if(activity_config.get("showDoneMessage") && ui_config.get("doneButton") != "none" &&
+					givenModel.student.matchesGivenSolutionAndCorrect()){
+					showProblemDoneHint();
+					notifyCompleteness();
 				}
 			});
 
