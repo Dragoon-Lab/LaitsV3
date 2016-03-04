@@ -1185,7 +1185,7 @@ define([
 				var graph = new Graph(givenModel, query.m, session, buttonClicked);
 				graph.setStateGraph(state);
 				var problemComplete = givenModel.matchesGivenSolution();
-					graph._logging.log('ui-action', {
+				graph._logging.log('ui-action', {
 					type: "menu-choice",
 					name: "graph-button",
 					problemComplete: problemComplete
@@ -1197,7 +1197,7 @@ define([
 					var closeHintId = registry.byId("closeHint");
 					closeHintId.destroyRecursive(false);
 				}
-					//close popup each time graph is shown
+				//close popup each time graph is shown
 				if(problemDoneHint)
 					popup.close(problemDoneHint);
 				graph.show();
@@ -1244,24 +1244,29 @@ define([
 					name: "graph-closed"
 				});
 				typechecker.closePops();
-				var contentMsg = givenModel.getTaskLessonsLearned();
+				if(activity_config.get("showDoneMessage")){
+					var problemComplete = givenModel.student.matchesGivenSolutionAndCorrect();
+					if(problemComplete){
+						var contentMsg = givenModel.getTaskLessonsLearned();
 
-				if (contentMsg.length === 0 || contentMsg[0] == "") {
-					console.log("lessons learned is empty");
-					if(ui_config.get("doneButton") != "none" && givenModel.isDoneMessageShown === false) {
-						showProblemDoneHint();
-					}
-				}else{
-					if(givenModel.getLessonLearnedShown() === false){
-						lessonsLearned.displayLessonsLearned(contentMsg);
-						var lessonsLearnedButton = registry.byId("lessonsLearnedButton");
-						lessonsLearnedButton.set("disabled", false);
-						//this._state.put("isLessonLearnedShown",true);
-						aspect.after(registry.byId("lesson"),"hide", lang.hitch(this,function () {
+						if (contentMsg.length === 0 || contentMsg[0] == "") {
+							console.log("lessons learned is empty");
 							if(ui_config.get("doneButton") != "none" && givenModel.isDoneMessageShown === false) {
 								showProblemDoneHint();
 							}
-						}));
+						}else{
+							if(givenModel.getLessonLearnedShown() === false){
+								lessonsLearned.displayLessonsLearned(contentMsg);
+								var lessonsLearnedButton = registry.byId("lessonsLearnedButton");
+								lessonsLearnedButton.set("disabled", false);
+								//this._state.put("isLessonLearnedShown",true);
+								aspect.after(registry.byId("lesson"),"hide", lang.hitch(this,function () {
+								if(ui_config.get("doneButton") != "none" && givenModel.isDoneMessageShown === false) {
+										showProblemDoneHint();
+									}
+								}));
+							}
+						}
 					}
 				}
 			});
