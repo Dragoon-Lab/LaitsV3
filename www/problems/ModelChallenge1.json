@@ -1,0 +1,1292 @@
+{
+    "task": {
+        "taskName": "Pangolin Population",
+        "time": {
+            "start": 0,
+            "end": 12,
+            "step": 1,
+            "integrationMethod": "Eulers Method",
+            "units": "months"
+        },
+        "properties": {
+            "isGraphHelpShown": true
+        },
+        "image": {
+            "URL": "http:\/\/i.telegraph.co.uk\/multimedia\/archive\/03180\/pangolin_3180820b.jpg"
+        },
+        "taskDescription": {
+            "construction": [
+                "Pangolins in Africa are facing severe loss of population thanks to the effects of poachers who consider their meat a delicacy, predators, and deforestation. Poachers have been shown to be the cause of a loss of 8% of pangolin population per year, while predators are able to kill 3 pangolins per month.",
+                "In 2008, a one-year study took place using a population of 200 pangolins. Pangolins mate only once each year, from the spring to autumn seasons. Besides that, they remain solitary. Each African Pangolin birth produces only one offspring. It is estimated that 60% of Pangolins grow to be sexually mature.",
+                "The effect of deforestation on Pangolins is based on loss of their primary food source (ants) as well as shelter. At the beginning of the study, there were 2,500 bushes in the area studied that Pangolins use as shelter. These bushes are being lost at a rate of 2%. The Ant Death Rate is a function of Ants eaten times effect of deforestation on ants. Deforestation affects 30% of ants. Adult Pangolins are able to eat 4% of the ant population per day.",
+                "There are roughly 40,000,000 ants in the habitat studied at the beginning of the study. Ants in this study lay about 1000 eggs per day, of which there is a 90% success rate for birthing successfully. Throughout the study, ants have died from being eaten and from other causes. 4000 ants died from other causes per day."
+            ],
+            "incremental": [
+                "I am cool"
+            ]
+        },
+        "lessonsLearned": [],
+        "increment": [],
+        "executionIterations": null,
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id3",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 495,
+                    "y": 178
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    }
+                },
+                "name": "Pangolin Population",
+                "type": "accumulator",
+                "initial": 200,
+                "equation": "id2-id3",
+                "genus": "required",
+                "description": "Pangolin Population"
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id4",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id7",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 421,
+                    "y": 187
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": false,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    }
+                },
+                "name": "Pangolin Births",
+                "type": "accumulator",
+                "genus": "required",
+                "description": "Pangolin Births",
+                "equation": "id4*id7",
+                "parentNode": false,
+                "initial": 1
+            },
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id8",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 580,
+                    "y": 94
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    }
+                },
+                "name": "Pangolin Deaths",
+                "type": "function",
+                "equation": "id1*id8",
+                "genus": "required",
+                "description": "Pangolin Deaths"
+            },
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id21",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id3",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 452,
+                    "y": 461
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": false,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    }
+                },
+                "name": "Sexually Mature Pangolins",
+                "genus": "required",
+                "description": "Sexually Mature Pangolins",
+                "type": "accumulator",
+                "equation": "id21-id3",
+                "parentNode": false,
+                "initial": 200
+            },
+            {
+                "ID": "id5",
+                "inputs": [],
+                "position": {
+                    "x": 887.85607910156,
+                    "y": 199.17930603027
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "units": {
+                        "status": ""
+                    }
+                },
+                "name": "Effect of Predators",
+                "genus": "required",
+                "description": "Effect of Predators",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 3,
+                "units": ""
+            },
+            {
+                "ID": "id7",
+                "inputs": [
+                    {
+                        "ID": "id4",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id2",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 425,
+                    "y": 320
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    }
+                },
+                "name": "Pangolin Birth Rate",
+                "genus": "required",
+                "description": "Pangolin Birth Rate",
+                "equation": "id4*id2",
+                "type": "function",
+                "parentNode": false
+            },
+            {
+                "ID": "id8",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id10",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id5",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id9",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 613,
+                    "y": 212
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                },
+                "name": "Pangolin Death Rate",
+                "genus": "required",
+                "description": "Pangolin Death Rate",
+                "equation": "id1*((id10*id5)*id9)",
+                "type": "function"
+            },
+            {
+                "ID": "id9",
+                "inputs": [
+                    {
+                        "ID": "id14",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id15",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 694,
+                    "y": 331
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    }
+                },
+                "name": "Effect of Deforestation on Pangolins",
+                "genus": "required",
+                "description": "Effect of Deforestation",
+                "type": "function",
+                "equation": "id14*id15"
+            },
+            {
+                "ID": "id10",
+                "inputs": [],
+                "position": {
+                    "x": 797.85607910156,
+                    "y": 65.179306030273
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "units": {
+                        "status": ""
+                    }
+                },
+                "name": "Effect of Poachers",
+                "genus": "required",
+                "description": "Effect of Poachers",
+                "type": "parameter",
+                "units": "",
+                "equation": "",
+                "parentNode": false,
+                "initial": 0.08
+            },
+            {
+                "ID": "id11",
+                "inputs": [],
+                "position": {
+                    "x": 916,
+                    "y": 403
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": ""
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "incorrect"
+                    }
+                },
+                "genus": "required",
+                "description": "Bush Population",
+                "name": "Bush Population",
+                "type": "accumulator",
+                "initial": 2500,
+                "equation": "*Trees Loss Rate"
+            },
+            {
+                "ID": "id12",
+                "inputs": [
+                    {
+                        "ID": "id19",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id20",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 649,
+                    "y": 421
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "equation": {
+                        "disabled": false
+                    }
+                },
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": false,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    }
+                },
+                "name": "Ant Population",
+                "genus": "required",
+                "description": "Ant Population",
+                "equation": "id19-id20",
+                "type": "accumulator",
+                "parentNode": false,
+                "initial": 40000000
+            },
+            {
+                "ID": "id14",
+                "inputs": [
+                    {
+                        "ID": "id25",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id24",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 693,
+                    "y": 539
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    }
+                },
+                "name": "Ant Death Rate",
+                "genus": "required",
+                "description": "Loss of Ants",
+                "type": "function",
+                "equation": "id25*id24"
+            },
+            {
+                "ID": "id15",
+                "inputs": [
+                    {
+                        "ID": "id11",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id16",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 790,
+                    "y": 296
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    }
+                },
+                "name": "Pangolin Shelter",
+                "genus": "required",
+                "description": "Pangolin Shelter",
+                "type": "function",
+                "equation": "id11*id16"
+            },
+            {
+                "ID": "id16",
+                "inputs": [],
+                "position": {
+                    "x": 915.85607910156,
+                    "y": 557.17929077148
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    }
+                },
+                "name": "Bush Loss Rate",
+                "type": "parameter",
+                "equation": "",
+                "parentNode": false,
+                "initial": 0.02,
+                "genus": "required",
+                "description": "Trees Loss Rate"
+            },
+            {
+                "ID": "id18",
+                "inputs": [
+                    {
+                        "ID": "id12",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 569.85607910156,
+                    "y": 570.17932128906
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": false,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    }
+                },
+                "name": "Ant Eggs",
+                "genus": "required",
+                "description": "Ant Eggs",
+                "initial": 1000,
+                "equation": "id12",
+                "type": "accumulator",
+                "parentNode": false
+            },
+            {
+                "ID": "id19",
+                "inputs": [
+                    {
+                        "ID": "id18",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 442,
+                    "y": 606
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    }
+                },
+                "name": "Ant Births",
+                "genus": "required",
+                "description": "Ant Births",
+                "type": "accumulator",
+                "initial": 1000,
+                "equation": "id18"
+            },
+            {
+                "ID": "id20",
+                "inputs": [
+                    {
+                        "ID": "id25",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id26",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 779,
+                    "y": 438
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    }
+                },
+                "name": "Ant Deaths",
+                "genus": "required",
+                "description": "Ant Deaths",
+                "type": "function",
+                "equation": "id25*id26"
+            },
+            {
+                "ID": "id21",
+                "inputs": [],
+                "position": {
+                    "x": 529.85607910156,
+                    "y": 397.17929077148
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                },
+                "name": "Pangolins Growing to Sexual Maturity",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.6,
+                "genus": "required",
+                "description": "Pangolins Growing to Sexual Maturity"
+            },
+            {
+                "ID": "id24",
+                "inputs": [],
+                "position": {
+                    "x": 749.85607910156,
+                    "y": 715.17932128906
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                },
+                "name": "Effect of Deforestation on Ants",
+                "genus": "required",
+                "description": "Effect of Deforestation on Ants",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.3
+            },
+            {
+                "ID": "id25",
+                "inputs": [],
+                "position": {
+                    "x": 805.85607910156,
+                    "y": 553.17929077148
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                },
+                "name": "Ants Eaten",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.04,
+                "genus": "required",
+                "description": "Ants Eaten"
+            },
+            {
+                "ID": "id26",
+                "inputs": [],
+                "position": {
+                    "x": 855.85607910156,
+                    "y": 455.17929077148
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                },
+                "name": "Ant Deaths Due To Other Causes",
+                "type": "parameter",
+                "equation": "",
+                "parentNode": false,
+                "initial": 4000,
+                "genus": "required",
+                "description": "Ant Deaths Due To Other Causes"
+            }
+        ],
+        "studentModelNodes": [],
+        "schemas": []
+    }
+}

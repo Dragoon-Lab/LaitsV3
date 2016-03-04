@@ -19,10 +19,10 @@
                 "Please construct a model of the positive clamper shown in the schematic.  Nodes for the AC input source voltage have been constructed already.  Assume the diode is not ideal, and it has a knee voltage of 0.7 volts. The resistance of R1 is 33000 ohms and the capacitance of C1 is 0.068 Farads.  Finish the model and view the graph of the output voltage.  How would it be different if the diode were ideal (i.e., knee voltage = 0)?"
             ],
             "incremental": [
-                "Here is a model of the positive clamper.  Nodes for the AC input source voltage have been constructed already.  Assume the diode is not ideal, and it has a knee voltage of 0.7 volts. The resistance of R1 is 33000 ohms and the capacitance of C1 is 0.068 Farads.  "
+                "Here is a model of the positive clamper. Assume the diode is not ideal, and it has a knee voltage of 0.7 volts. The resistance of R1 is 33000 ohms and the capacitance of C1 is 0.068 Farads.  "
             ],
             "execution": [
-                "Here is a model of the positive clamper.  Nodes for the AC input source voltage have been constructed already.  Assume the diode is not ideal, and it has a knee voltage of 0.7 volts. The resistance of R1 is 33000 ohms and the capacitance of C1 is 0.068 Farads."
+                "Here is a model of the positive clamper. Assume the diode is not ideal, and it has a knee voltage of 0.7 volts. The resistance of R1 is 33000 ohms and the capacitance of C1 is 0.068 Farads."
             ],
             "waveform": [
                 "Here is a model of a positive clamper.  Assume the diode is not ideal, and it has a knee voltage of 0.7 volts. The resistance of R1 is 33000 ohms and the capacitance of C1 is 0.068 Farads.  Although the model treats the diode(s) as non-ideal and includes a knee voltage, for this activity, assume that the knee voltage is so small that it graphs as zero on the y-axis. "

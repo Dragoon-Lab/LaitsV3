@@ -19,13 +19,13 @@
                 "Create a model for the battery-bias transistor amp shown in the schematic.  Nodes for the signal generator have been constructed already.  Assume the base battery is 0.71 volts and the collector battery is 15 volts. For the transistor, assume beta is 100, the knee voltage of the BE junction is 0.7 volts, and the resistance of the BE junction when forward biased is 100 ohms.  Finish the model and view the graph of the output voltage, that is, the voltage at the collector."
             ],
             "incremental": [
-                "A battery-bias transistor amp is shown in the schematic.  Nodes for the signal generator have been constructed already.  For this activity, assume a DC input.  Assume the base battery is 0.71 volts and the collector battery is 15 volts. For the transistor, assume beta is 100, the knee voltage of the BE junction is 0.7 volts, and the resistance of the BE junction when forward biased is 100 ohms."
+                "A battery-bias transistor amp is shown in the schematic. For this activity, assume a DC input.  Assume the base battery is 0.71 volts and the collector battery is 15 volts. For the transistor, assume beta is 100, the knee voltage of the BE junction is 0.7 volts, and the resistance of the BE junction when forward biased is 100 ohms."
             ],
             "execution": [
-                "A battery-bias transistor amp is shown in the schematic.  Nodes for the signal generator have been constructed already.  Assume the base battery is 0.71 volts and the collector battery is 15 volts. For the transistor, assume beta is 100, the knee voltage of the BE junction is 0.7 volts, and the resistance of the BE junction when forward biased is 100 ohms."
+                "A battery-bias transistor amp is shown in the schematic. Assume the base battery is 0.71 volts and the collector battery is 15 volts. For the transistor, assume beta is 100, the knee voltage of the BE junction is 0.7 volts, and the resistance of the BE junction when forward biased is 100 ohms."
             ],
             "waveform": [
-                "A battery-bias transistor amp is shown in the schematic.  Nodes for the signal generator have been constructed already.  Assume the base battery is 0.71 volts and the collector battery is 15 volts. For the transistor, assume beta is 100, the knee voltage of the BE junction is 0.7 volts, and the resistance of the BE junction when forward biased is 100 ohms."
+                "A battery-bias transistor amp is shown in the schematic. Assume the base battery is 0.71 volts and the collector battery is 15 volts. For the transistor, assume beta is 100, the knee voltage of the BE junction is 0.7 volts, and the resistance of the BE junction when forward biased is 100 ohms."
             ]
         },
         "lessonsLearned": [],

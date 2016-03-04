@@ -25,7 +25,7 @@
                 "This is a model for a fixed-bias transistor amp.  The model has an AC input and treats the capacitor as a short for this exercise.  Assume RB is 180Kohms, RL is 1Kohm, and VCC is 10 volts.  For the transistor, assume beta is 100, the knee voltage of the BE junction is 0.7 volts, and the resistance of the BE junction when forward biased is 100 ohms. Assume the load resistor RL has a 1000 ohm resistance. "
             ],
             "incremental": [
-                "This is a model for a fixed-bias transistor amp.  The model has an AC input and treats the capacitor as a short for this exercise.  Assume RB is 180Kohms, RL is 1Kohm, and VCC is 10 volts.  For the transistor, assume beta is 100, the knee voltage of the BE junction is 0.7 volts, and the resistance of the BE junction when forward biased is 100 ohms. Assume the load resistor RL has a 1000 ohm resistance. ccc"
+                "This is a model for a fixed-bias transistor amp.  The model has an AC input and treats the capacitor as a short for this exercise.  Assume RB is 180Kohms, RL is 1Kohm, and VCC is 10 volts.  For the transistor, assume beta is 100, the knee voltage of the BE junction is 0.7 volts, and the resistance of the BE junction when forward biased is 100 ohms. Assume the load resistor RL has a 1000 ohm resistance."
             ]
         },
         "lessonsLearned": [],

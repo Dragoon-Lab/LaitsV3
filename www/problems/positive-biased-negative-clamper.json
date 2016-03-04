@@ -19,13 +19,13 @@
                 "Please construct a model of the positive biased negative clamper shown in the schematic.  Nodes for the AC input source voltage have been constructed already.  Assume the diode is not ideal, and it has a knee voltage of 0.7 volts. In this circuit, R1 is 33000 ohms, C1 is 0.068 Farads and the bias voltage Eb is 5 volts.  Finish the model and view the graph of the output voltage."
             ],
             "incremental": [
-                "Please construct a model of the positive biased negative clamper shown in the schematic.  Nodes for the AC input source voltage have been constructed already.  Assume the diode is not ideal, and it has a knee voltage of 0.7 volts. In this circuit, R1 is 33000 ohms, C1 is 0.068 Farads and the bias voltage Eb is 5 volts.  "
+                "A model of the positive biased negative clamper is given as shown in the schematic. Assume the diode is not ideal, and it has a knee voltage of 0.7 volts. In this circuit, R1 is 33000 ohms, C1 is 0.068 Farads and the bias voltage Eb is 5 volts.  "
             ],
             "execution": [
-                "Please construct a model of the positive biased negative clamper shown in the schematic.  Nodes for the AC input source voltage have been constructed already.  Assume the diode is not ideal, and it has a knee voltage of 0.7 volts. In this circuit,  R1 is 33000 ohms, C1 is 0.068 Farads and the bias voltage Eb is 5 volts.  "
+                "A model of the positive biased negative clamper is given as shown in the schematic. Assume the diode is not ideal, and it has a knee voltage of 0.7 volts. In this circuit,  R1 is 33000 ohms, C1 is 0.068 Farads and the bias voltage Eb is 5 volts.  "
             ],
             "waveform": [
-                "Please construct a model of the positive biased negative clamper shown in the schematic.  Nodes for the AC input source voltage have been constructed already. In this circuit, R1 is 33000 ohms, C1 is 0.068 Farads and the bias voltage Eb is 5 volts.  Although the model treats the diode as non-ideal and includes a knee voltage, for this activity, assume that the knee voltage is so small that it graphs as zero on the y-axis."
+                "A model of the positive biased negative clamper is given as shown in the schematic. In this circuit, R1 is 33000 ohms, C1 is 0.068 Farads and the bias voltage Eb is 5 volts.  Although the model treats the diode as non-ideal and includes a knee voltage, for this activity, assume that the knee voltage is so small that it graphs as zero on the y-axis."
             ]
         },
         "lessonsLearned": [],
