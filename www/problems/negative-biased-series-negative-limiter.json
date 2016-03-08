@@ -19,7 +19,7 @@
                 "You are given an AC input voltage.  Construct a model of given schematic.  Assume that the diode is not ideal and has a knee voltage of 0.7 v.  The resistance of the resistor is 1000 ohms, the bias voltage is -5 volts and there is no load across the output. Graph the current through the resistor."
             ],
             "waveform": [
-                "You are given an AC input voltage.  Construct a model of given schematic.  Assume that the diode is not ideal and has a knee voltage of 0.7 v.  As the schematic (should) show, the resistance of the resistor is 1000 ohms and the d.c bias voltage is 5 volts. Graph the current through the resistor."
+                "You are given an AC input voltage.  Assume that the diode is not ideal and has a knee voltage of 0.7 v.  As the schematic (should) show, the resistance of the resistor is 1000 ohms and the d.c bias voltage is 5 volts. Graph the current through the resistor."
             ]
         },
         "lessonsLearned": [],
