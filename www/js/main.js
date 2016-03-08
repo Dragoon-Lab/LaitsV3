@@ -1666,6 +1666,9 @@ define([
 				checkForHint();
 				aspect.after(drawModel, "deleteNode", lang.hitch(this, checkForHint));
 				aspect.after(registry.byId("nodeeditor"), "hide", lang.hitch(this, checkForHint));
+
+				// Delete premature nodes for Coached Mode - Target node strategy
+				aspect.after(controllerObject, "deleteNode", lang.hitch(drawModel, drawModel.deleteNode));
 			}
 			/*
 			 * Add Done Button to Menu
