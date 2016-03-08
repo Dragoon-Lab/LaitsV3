@@ -1,11 +1,12 @@
 <?php
 	include "problemObject.php";
 	$checkValidity = false;
+	//$checkValidity = true;
 	$updateType = "equal";
 	$updateType = "oneSkill";
-	$updateType = "minimum";
-	$updateType = "ratio";
-	$updateType = "problem";
+	//$updateType = "minimum";
+	//$updateType = "ratio";
+	//$updateType = "problem";
 	//$updateType = "nodeType";
 	//$updateType = "nodeTypePerProblem";
 	main();
@@ -26,7 +27,7 @@
 
 		$mysqli = mysqli_connect("localhost", $user, $password, $db_name);
 		$query = <<<EOT
-		SELECT t1.user, t1.problem, t1.session_id, t2.method, t2.message FROM (SELECT user, problem, session_id, time FROM session WHERE section = "$section" AND mode = "STUDENT" AND problem IN $problemString /*AND user = "ZimeiHuo"*/) AS t1 JOIN (SELECT tid, method, message, session_id FROM step WHERE method = "solution-step") as t2 USING (session_id) ORDER BY user ASC, time ASC, problem ASC, tid ASC;
+		SELECT t1.user, t1.problem, t1.session_id, t2.method, t2.message FROM (SELECT user, problem, session_id, time FROM session WHERE section = "$section" AND mode = "STUDENT" AND problem IN $problemString /*AND (user = "ghazal1" OR user = "ginour1871")*/) AS t1 JOIN (SELECT tid, method, message, session_id FROM step WHERE method = "solution-step") as t2 USING (session_id) ORDER BY user ASC, time ASC, problem ASC, tid ASC;
 EOT;
 		//echo $query;
 
@@ -41,6 +42,7 @@ EOT;
 		$count = 0;
 		$timeArray = array();
 		$oldMessage = null;
+		$currentProblem;
 		while($row = $result->fetch_assoc()){
 			$message = json_decode($row["message"], true);
 			if($first){
@@ -55,10 +57,17 @@ EOT;
 			if($message['type'] === "solution-check"){
 				//check for new user
 				if($currentUser == null || $currentUser->name != $row['user']){
-					if($currentNode != null)
+					if($count > 0){
+						if(isValid($currentUser, $count, $timeArray)){
+							updateCount($currentUser, $oldRow["problem"], $currentNode, $count);
+						}
+						$count = 0;
+					}
+					if($currentNode != null){
 						$currentUser->pushNode($currentNode);
+					}
 					if($currentUser != null){
-						normalize($currentUser, $oldRow['problem']);
+						normalize($currentUser);
 						array_push($users, $currentUser);
 					}
 					$currentUser = new User($row["user"]);
@@ -70,7 +79,15 @@ EOT;
 					$timeArray = array();
 					$cp = new Problem($row["problem"]);
 				} else if($oldRow['problem'] != $row['problem']){
-					normalize($currentUser, $oldRow['problem']);
+					if($count > 0){
+						if(isValid($currentUser, $count, $timeArray)){
+							updateCount($currentUser, $oldRow["problem"], $currentNode, $count);
+						}
+						$count = 0;
+					}
+					$currentProblem = $row["problem"];
+					//echo json_encode($currentUser)."<br/><br/>";
+					//normalize($currentUser, $oldRow['problem']);
 					$cp = new Problem($row["problem"]);
 					$currentUser->currentProblemNodes = 0;
 					resetSchemas($currentUser);
@@ -83,10 +100,17 @@ EOT;
 				if($currentNode == null){
 					$currentNode = createNode($cp, $currentUser, $row);
 				} else if($currentNode->name != $message['node']){
+					if($count > 0){
+						if(isValid($currentUser, $count, $timeArray)){
+							updateCount($currentUser, $row["problem"], $currentNode, $count);
+						}
+						$count = 0;
+					}
 					$currentUser->pushNode($currentNode);
 					$tempNode = $currentUser->getNode($message['node']);
 					if($tempNode != null){
 						$currentNode = $tempNode;
+						setCurrentIndexes($currentUser, $row['problem'], $currentNode);
 					} else {
 						$currentNode = createNode($cp, $currentUser, $row);
 					}
@@ -96,8 +120,9 @@ EOT;
 				if(array_key_exists("checkResult", $message) && $message["checkResult"] == "CORRECT"){
 					if($count > 0){
 						array_push($timeArray, $message["time"]);
-						if(isValid($currentUser, $count, $timeArray))
-							updateCount($currentUser, $currentNode, $count);
+						if(isValid($currentUser, $count, $timeArray)){
+							updateCount($currentUser, $row["problem"], $currentNode, $count);
+						}
 						$count = 0;
 						$timeArray = array();
 					}
@@ -110,8 +135,9 @@ EOT;
 					if(!in_array($message['time'], $timeArray))
 						array_push($timeArray, $message['time']);
 					if($checkNext){
-						if(isValid($currentUser, $count, $timeArray))
-							updateCount($currentUser, $currentNode, $count);
+						if(isValid($currentUser, $count, $timeArray)){
+							updateCount($currentUser, $row["problem"], $currentNode, $count);
+						}
 						$count = 0;
 						$timeArray = array($oldMessage['time'], $message['time']);
 					}
@@ -120,12 +146,20 @@ EOT;
 					$count++;
 				}
 			} else if($message["type"] === "self-referencing-accumulator" || $message["type"] === "self-referencing-function"){
-				updateCount($currentUser, $currentNode, 1);
+				updateCount($currentUser, $row["problem"], $currentNode, 1);
 			}
 
 			$oldRow = $row;
 			$oldMessage = $message;
 		}
+		if($count > 0){
+			if(isValid($currentUser, $count, $timeArray)){
+				updateCount($currentUser, $currentProblem, $currentNode, $count);
+			}
+			$count = 0;
+		}
+		$currentUser->pushNode($currentNode);
+		normalize($currentUser);
 		array_push($users, $currentUser);
 		echo (json_encode($users));
 		return $users;
@@ -141,34 +175,35 @@ EOT;
 		$cu->currentProblemNodes++;
 		//$n->setSkills();
 		$n->type = $cp->getNodeType($m["node"]);
-		setCurrentIndexes($cu, $n);
+		setCurrentIndexes($cu, $row['problem'], $n);
 		//$n->difficultyParams = $cp->getDifficultyParams($m["node"]);
 		//$n->setSkills();
 
 		return $n;
 	}
 
-	function updateCount(/* user */ $cu, /* node */ $n, /* number */ $c){
+	function updateCount(/* user */ $cu, /* problem name */ $p, /* node */ $n, /* number */ $c){
 		$userSchema = null;
 		if(count($n->schemaNames) < 1)
 			return ;
 		switch($GLOBALS["updateType"]){
 			case "equal":
 				foreach($n->schemas as $schemaID => $schema){
+					$schemaIndex = indexName($p, $schemaID);
 					$userSchema = $cu->getSchema($schema);
-					if(!array_key_exists($schemaID, $userSchema->currentProblemIndexes)){
-						setCurrentIndexes($cu, $n);
+					if(!array_key_exists($schemaIndex, $userSchema->currentProblemIndexes)){
+						setCurrentIndexes($cu, $p, $n);
 						$userSchema = $cu->getSchema($schema);
 					}
-					$userSchema->errorCounts[$userSchema->currentProblemIndexes[$schemaID]] += $c;
+					$userSchema->errorCounts[$userSchema->currentProblemIndexes[$schemaIndex]] += $c;
 					$cu->pushSchema($userSchema);
 				}
 				break;
 			case "oneSkill":
-				$ID = (count($n->schemaNames) == 1 ? key($n->schemas) : $n->name);
+				$ID = (count($n->schemaNames) == 1 ? indexName($p, key($n->schemas)) : $n->name);
 				$userSchema = $cu->getSchema($n->schemaName);
 				if(!array_key_exists($ID, $userSchema->currentProblemIndexes)){
-					setCurrentIndexes($cu, $n);
+					setCurrentIndexes($cu, $p, $n);
 					$userSchema = $cu->getSchema($n->schemaName);
 				}
 				$userSchema->errorCounts[$userSchema->currentProblemIndexes[$ID]] += $c;
@@ -178,20 +213,22 @@ EOT;
 				$counts = array();
 				$numberSchemas = count($n->schemas);
 				foreach($n->schemas as $schemaID => $schema){
+					$schemaIndex = indexName($p, $schemaID);
 					$userSchema = $cu->getSchema($schema);
-					if(!array_key_exists($schemaID, $userSchema->currentProblemIndexes)){
-						setCurrentIndexes($cu, $n);
+					if(!array_key_exists($schemaIndex, $userSchema->currentProblemIndexes)){
+						setCurrentIndexes($cu, $p, $n);
 						$userSchema = $cu->getSchema($schema);
 					}
-					$counts[$schemaID] = count($userSchema->errorCounts);
+					$counts[$schema] = count($userSchema->errorCounts);
 					if($numberSchemas == 1)
-						$userSchema->errorCounts[$userSchema->currentProblemIndexes[$schemaID]] += $c;
+						$userSchema->errorCounts[$userSchema->currentProblemIndexes[$schemaIndex]] += $c;
 				}
 				if($numberSchemas > 1){
 					$sum = ($numberSchemas - 1) * array_sum($counts);
 					foreach($n->schemas as $schemaID => $schema){
+						$schemaIndex = indexName($p, $schemaID);
 						$userSchema = $cu->getSchema($schema);
-						$userSchema->errorCounts[$userSchema->currentProblemIndexes[$schemaID]] += ($c*(($sum - $counts[$schemaID])/$sum));
+						$userSchema->errorCounts[$userSchema->currentProblemIndexes[$schemaIndex]] += ($c*(($sum - $counts[$schema])/$sum));
 						$cu->pushSchema($userSchema);
 					}
 				}
@@ -199,9 +236,10 @@ EOT;
 			case "minimum":
 				$counts = array();
 				foreach($n->schemas as $schemaID => $schema){
+					$schemaIndex = indexName($p, $schemaID);
 					$userSchema = $cu->getSchema($schema);
-					if(!array_key_exists($schemaID, $userSchema->currentProblemIndexes)){
-						setCurrentIndexes($cu, $n);
+					if(!array_key_exists($schemaIndex, $userSchema->currentProblemIndexes)){
+						setCurrentIndexes($cu, $p, $n);
 						$userSchema = $cu->getSchema($schema);
 					}
 					$counts[$schemaID] = count($userSchema->errorCounts);
@@ -211,15 +249,16 @@ EOT;
 				if($count > 0){
 					foreach($min as $m){
 						$minSchema = $cu->getSchema($n->schemas[$m]);
-						$minSchema->errorCounts[$minSchema->currentProblemIndexes[$m]] += $c/$count;
+						$minSchema->errorCounts[$minSchema->currentProblemIndexes[indexName($p, $m)]] += $c/$count;
 						$cu->pushSchema($minSchema);
 					}
 				}
 				break;
 			case "problem":
-				$end = end($cu->problemNames);
+				//$end = end($cu->problemNames);
 				$userSchema = $cu->getSchema("problems");
-				$userSchema->errorCounts[$userSchema->currentProblemIndexes[$end]] += $c;
+				//echo json_encode($userSchema)."<br/>";
+				$userSchema->errorCounts[$userSchema->currentProblemIndexes[$p]] += $c;
 				$cu->pushSchema($userSchema);
 				break;
 			case "nodeType":
@@ -229,14 +268,14 @@ EOT;
 				break;
 			case "nodeTypePerProblem":
 				$userSchema = $cu->getSchema($n->type);
-				$end = end($cu->problemNames);
-				$userSchema->errorCounts[$userSchema->currentProblemIndexes[$end]] += $c;
+				//$end = end($cu->problemNames);
+				$userSchema->errorCounts[$userSchema->currentProblemIndexes[$p]] += $c;
 				$cu->pushSchema($userSchema);
 				break;
 		}
 	}
 
-	function setCurrentIndexes($cu, $n){
+	function setCurrentIndexes($cu, $p, $n){
 		if(count($n->schemaNames) == 0)
 			return ;
 
@@ -245,17 +284,18 @@ EOT;
 			case "ratio":
 			case "minimum":
 				foreach($n->schemas as $schemaID => $schema){
+					$schemaIndex = indexName($p, $schemaID);
 					$userSchema = $cu->getSchema($schema);
-					if(!array_key_exists($schemaID, $userSchema->currentProblemIndexes)){
+					if(!array_key_exists($schemaIndex, $userSchema->currentProblemIndexes)){
 						$count = count($userSchema->errorCounts);
 						$userSchema->errorCounts[$count] = 0;
-						$userSchema->currentProblemIndexes[$schemaID] = $count;
+						$userSchema->currentProblemIndexes[$schemaIndex] = $count;
 					}
 					$cu->pushSchema($userSchema);
 				}
 				break;
 			case "oneSkill":
-				$ID = (count($n->schemaNames) == 1 ? key($n->schemas) : $n->name);
+				$ID = (count($n->schemaNames) == 1 ? indexName($p, key($n->schemas)) : $n->name);
 				$userSchema = $cu->getSchema($n->schemaName);
 				if(!array_key_exists($ID, $userSchema->currentProblemIndexes)){
 					$count = count($userSchema->errorCounts);
@@ -266,11 +306,11 @@ EOT;
 				break;
 			case "problem":
 				$userSchema = $cu->getSchema("problems");
-				$end = end($cu->problemNames);
-				if(!array_key_exists($end, $userSchema->currentProblemIndexes)){
+				//$end = end($cu->problemNames);
+				if(!array_key_exists($p, $userSchema->currentProblemIndexes)){
 					$count = count($userSchema->errorCounts);
 					$userSchema->errorCounts[$count] = 0;
-					$userSchema->currentProblemIndexes[$end] = $count;
+					$userSchema->currentProblemIndexes[$p] = $count;
 				}
 				$cu->pushSchema($userSchema);
 				break;
@@ -285,11 +325,11 @@ EOT;
 				break;
 			case "nodeTypePerProblem":
 				$userSchema = $cu->getSchema($n->type);
-				$end = end($cu->problemNames);
-				if(!array_key_exists($end, $userSchema->currentProblemIndexes)){
+				//$end = end($cu->problemNames);
+				if(!array_key_exists($p, $userSchema->currentProblemIndexes)){
 					$count = count($userSchema->errorCounts);
 					$userSchema->errorCounts[$count] = 0;
-					$userSchema->currentProblemIndexes[$end] = $count;
+					$userSchema->currentProblemIndexes[$p] = $count;
 				}
 				$cu->pushSchema($userSchema);
 				break;
@@ -331,38 +371,37 @@ EOT;
 
 	function resetSchemas($cu){
 		foreach($cu->schemas as $schema){
-			$schema->currentProblemIndexes = array();
+			//$schema->currentProblemIndexes = array();
 			$cu->pushSchema($schema);
 		}
 	}
 
-	function normalize($cu, $problem){
-		$count = ($GLOBALS["updateType"] == "problem" ? $cu->currentProblemNodes : array());
-		switch($GLOBALS["updateType"]){
-			case "problem":
-				$userSchema = $cu->getSchema("problems");
-				$userSchema->errorCounts[$userSchema->currentProblemIndexes[$problem]]/$count;
-				$cu->pushSchema($userSchema);
-				break;
-			case "nodeTypePerProblem":
-				$nodes = $cu->pNodes;
-				foreach($nodes as $node){
-					$type = $node->type;
-					if($node->problem == $problem){
-						if(!array_key_exists($type, $count))
-							$count[$type] = 0;
-						$count[$type]++;
-					}
-				}
-				foreach($count as $type => $c){
-					$userSchema = $cu->getSchema($type);
-					$userSchema->errorCounts[$userSchema->currentProblemIndexes[$problem]]/$c;
-					$cu->pushSchema($userSchema);
-				}
-				break;
-			default:
-				break;
+	function indexName($p, $s){
+		return $p."_".$s;
+	}
 
+	function normalize($cu){
+		foreach($cu->problemNames as $problem){
+			switch($GLOBALS["updateType"]){
+				case "problem":
+					$count = $cu->getNodeCount($problem);
+					$userSchema = $cu->getSchema("problems");
+					if($count > 0)
+						$userSchema->errorCounts[$userSchema->currentProblemIndexes[$problem]] /= $count;
+					$cu->pushSchema($userSchema);
+					break;
+				case "nodeTypePerProblem":
+					$count = $cu->getProblemNodeType($problem);
+					foreach($count as $type => $c){
+						$userSchema = $cu->getSchema($type);
+						if($c > 0)
+							$userSchema->errorCounts[$userSchema->currentProblemIndexes[$problem]] /= $c;
+						$cu->pushSchema($userSchema);
+					}
+					break;
+				default:
+					break;
+			}
 		}
 	}
 
@@ -383,9 +422,11 @@ EOT;
 				$schemas[$schema->name] .= $str;
 			}
 		}
-		
+		$string = "";
+		if($GLOBALS["checkValidity"])
+			$string = "_gaming_removed";
 		foreach($schemas as $schemaName => $schemaData){
-			$name = $schemaName."_".$GLOBALS["updateType"].".xls";
+			$name = $schemaName."_".$GLOBALS["updateType"].$string.".xls";
 			$file = fopen($name, "w");
 			fwrite($file, $schemaData);
 			fclose($file);

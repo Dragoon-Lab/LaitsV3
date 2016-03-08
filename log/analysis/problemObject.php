@@ -262,7 +262,7 @@
 		function __construct($n){
 			$this->name = $n;
 			$this->codeName = self::$name_prefix.self::$name_counter++;
-			//echo "new user created ".$n." ".$this->codeName."<br/>";
+			echo "new user created ".$n." ".$this->codeName."<br/>";
 		}
 
 		function getNode($name){
@@ -326,6 +326,39 @@
 
 			$schema = new Schema($name);
 			return $schema;
+		}
+
+		function getProblemNodes($problem){
+			$nodes = array();
+			foreach($this->pNodes as $node){
+				if($node->problem == $problem)
+					array_push($nodes, $node);
+			}
+
+			return $nodes;
+		}
+
+		function getProblemNodeType($problem){
+			$count = array();
+			foreach($this->pNodes as $node){
+				if($node->problem == $problem){
+					if(!array_key_exists($node->type, $count))
+						$count[$node->type] = 0;
+					$count[$node->type]++;
+				}
+			}
+
+			return $count;
+		}
+
+		function getNodeCount($problem){
+			$count = 0;
+			foreach($this->pNodes as $node){
+				if($node->problem == $problem)
+					$count++;
+			}
+
+			return $count;
 		}
 	}
 
