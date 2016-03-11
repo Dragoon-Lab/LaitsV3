@@ -19,13 +19,13 @@
                 "This voltage doubler is driven by an AC voltage source,as shown above.  Assume the AC source is 60 volts at its peak and has a wavelength of 18 ms.  Nodes for this source have been given to you.  The capacitors are both 0.068 Farads, and the load is 10,000 Ohms.  The diodes have a knee voltage of 0.7 volts, which you can include insider their expressions to avoid the clutter of separate knee voltage nodes.  Finish the model and view the graph of the output voltage."
             ],
             "incremental": [
-                "This voltage doubler is driven by an AC voltage source,as shown above.  Assume the AC source is 60 volts at its peak and has a wavelength of 18 ms.  Nodes for this source have been given to you.  The capacitors are both 0.068 Farads, and the load is 10,000 ohms.  The diodes have a knee voltage of 0.7 volts, which is included in their expressions."
+                "This voltage doubler is driven by an AC voltage source,as shown above.  Assume the AC source is 60 volts at its peak and has a wavelength of 18 ms.  The capacitors are both 0.068 Farads, and the load is 10,000 ohms.  The diodes have a knee voltage of 0.7 volts, which is included in their expressions."
             ],
             "execution": [
-                "This voltage doubler is driven by an AC voltage source,as shown above.  Assume the AC source is 60 volts at its peak and has a wavelength of 18 ms.  Nodes for this source have been given to you.  The capacitors are both 0.068 Farads, and the load is 10,000 ohms.  The diodes have a knee voltage of 0.7 volts, which is included in their expressions."
+                "This voltage doubler is driven by an AC voltage source,as shown above.  Assume the AC source is 60 volts at its peak and has a wavelength of 18 ms.  The capacitors are both 0.068 Farads, and the load is 10,000 ohms.  The diodes have a knee voltage of 0.7 volts, which is included in their expressions."
             ],
             "waveform": [
-                "This voltage doubler is driven by an AC voltage source,as shown above.  Assume the AC source is 60 volts at its peak and has a wavelength of 18 ms.  Nodes for this source have been given to you.  The capacitors are both 0.068 Farads, and the load is 10,000 ohms.  The diodes have a knee voltage of 0.7 volts, which is included in their expressions."
+                "This voltage doubler is driven by an AC voltage source,as shown above.  Assume the AC source is 60 volts at its peak and has a wavelength of 18 ms.  The capacitors are both 0.068 Farads, and the load is 10,000 ohms.  The diodes have a knee voltage of 0.7 volts, which is included in their expressions."
             ]
         },
         "lessonsLearned": [],

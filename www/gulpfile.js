@@ -79,6 +79,7 @@ gulp.task('build', ['dojoBuild'], function (done){
 		'./ET/**/*.*',
 		'./Liviz/**/*.*',
 		'./tincan/**/*.*',
+		'./cryptoJS/**/*.*',
 		'./publicLogin/*/*.*',
 		'./jsPlumb/lib/**/*.*',
 		'./jsPlumb/demo/**/*.*',
@@ -151,8 +152,6 @@ function runTestsAndDeploy(done){
 					done();
 				});
 		});
-
-
 }
 
 function generateZip(){

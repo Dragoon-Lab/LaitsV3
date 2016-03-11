@@ -25,7 +25,7 @@
                 "This is a model for a fixed-bias transistor amp.  The model has an AC input and treats the capacitor as a short for this exercise.  Assume RB is 180Kohms, RL is 1Kohm, and VCC is 10 volts.  For the transistor, assume beta is 100, the knee voltage of the BE junction is 0.7 volts, and the resistance of the BE junction when forward biased is 100 ohms. Assume the load resistor RL has a 1000 ohm resistance. "
             ],
             "incremental": [
-                "This is a model for a fixed-bias transistor amp.  The input voltage is DC for this exercise.  Assume RB is 180Kohms, RL is 1Kohm, and VCC is 10 volts.  For the transistor, assume beta is 100, the knee voltage of the BE junction is 0.7 volts, and the resistance of the BE junction when forward biased is 100 ohms. Assume the load resistor RL has a 1000 ohm resistance. ccc"
+                "This is a model for a fixed-bias transistor amp.  The input voltage is DC for this exercise.  Assume RB is 180Kohms, RL is 1Kohm, and VCC is 10 volts.  For the transistor, assume beta is 100, the knee voltage of the BE junction is 0.7 volts, and the resistance of the BE junction when forward biased is 100 ohms. Assume the load resistor RL has a 1000 ohm resistance. "
             ]
         },
         "lessonsLearned": [],
@@ -802,7 +802,7 @@
                 "units": "amps",
                 "equation": "id4/id15",
                 "genus": "required",
-                "explanation": "Because the transistor amplifies the base current, but the signal is given in volts, we need to know the resistance of the base-emitter junction in order to see how much base current the signal voltage will cause. u00a0I'm just guessing 100 ohms for the forward-biased base-emitter junction. u00a0If there were an emitter resistor, this assumption may not be necessary.",
+                "explanation": "Because the transistor amplifies the base current, but the signal is given in volts, we need to know the resistance of the base-emitter junction in order to see how much base current the signal voltage will cause. I'm just guessing 100 ohms for the forward-biased base-emitter junction. If there were an emitter resistor, this assumption may not be necessary.",
                 "waveformValue": "wave007"
             },
             {
@@ -869,7 +869,7 @@
                 "units": "amps",
                 "equation": "id6+id16",
                 "genus": "required",
-                "explanation": "To calculate the current into the base, we use superposition. u00a0One voltage source is the base bias, and the other is the signal. u00a0",
+                "explanation": "To calculate the current into the base, we use superposition. One voltage source is the base bias, and the other is the signal.",
                 "waveformValue": "wave017"
             }
         ],

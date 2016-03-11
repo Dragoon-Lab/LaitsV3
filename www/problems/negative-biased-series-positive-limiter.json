@@ -381,7 +381,7 @@
                         "disabled": false
                     }
                 },
-                "explanation": "The diode forms the upper half of a voltage divider, and the resistor and battery form the lower half. u00a0The bottom terminal of the voltage divider is at ground. To calculate the voltage at the midpoint, which is also the output voltage, we just take the voltage at the top terminal of the voltage divider (= the input voltage) and subtract the voltage drop across the top of half."
+                "explanation": "The diode forms the upper half of a voltage divider, and the resistor and battery form the lower half. The bottom terminal of the voltage divider is at ground. To calculate the voltage at the midpoint, which is also the output voltage, we just take the voltage at the top terminal of the voltage divider (= the input voltage) and subtract the voltage drop across the top of half."
             },
             {
                 "ID": "id9",
@@ -504,7 +504,7 @@
                 "units": "volts",
                 "equation": "if(((id12<(-id6)),(-id6)),id12)",
                 "genus": "required",
-                "explanation": "Because the drop is measured from anode (left) to cathode (right), the diode is forward biased when the drop is sufficiently negative. u00a0That is, when the input voltage is less than -5.7 (the battery's voltage plus the knee voltage), then the diode conducts",
+                "explanation": "Because the drop is measured from anode (left) to cathode (right), the diode is forward biased when the drop is sufficiently negative. That is, when the input voltage is less than -5.7 (the battery's voltage plus the knee voltage), then the diode conducts",
                 "waveformValue": "wave010",
                 "authorStatus": {
                     "root": {
@@ -635,7 +635,7 @@
                         "disabled": false
                     }
                 },
-                "explanation": "Current through the resistor is measured in the upward direction, because the voltage drop across the resistor is also measured from top to bottom. u00a0In this case, the voltage drop is negative so the current flows in the negative direction. u00a0The magnitude of the current is determined by Ohm's law: I=V/R"
+                "explanation": "Current through the resistor is measured in the upward direction, because the voltage drop across the resistor is also measured from top to bottom. In this case, the voltage drop is negative so the current flows in the negative direction. The magnitude of the current is determined by Ohm's law: I=V/R"
             },
             {
                 "ID": "id12",
@@ -700,7 +700,7 @@
                 "type": "function",
                 "units": "volts",
                 "equation": "id2-id16",
-                "explanation": "If the diode were an open circuit, then its right side (anode) would be at the battery voltage, which is -5 volts, and its left side (cathode) would be at the AC input voltage. u00a0This voltage drop is measured from left to right, so the quantity is equal to the input voltage minus the battery voltage. u00a0That",
+                "explanation": "If the diode were an open circuit, then its right side (anode) would be at the battery voltage, which is -5 volts, and its left side (cathode) would be at the AC input voltage. This voltage drop is measured from left to right, so the quantity is equal to the input voltage minus the battery voltage. That",
                 "genus": "required",
                 "waveformValue": "wave018",
                 "authorStatus": {
@@ -922,7 +922,7 @@
                         "disabled": false
                     }
                 },
-                "explanation": "The voltage across the resistor is measured from its top u00a0to its bottom. u00a0Thus, we subtract the voltage at the bottom from the voltage at the top. u00a0The voltage at the top is just the output voltage. u00a0The voltage at the bottom is the battery's voltage."
+                "explanation": "The voltage across the resistor is measured from its top to its bottom. Thus, we subtract the voltage at the bottom from the voltage at the top. The voltage at the top is just the output voltage. The voltage at the bottom is the battery's voltage."
             }
         ],
         "studentModelNodes": [

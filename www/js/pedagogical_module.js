@@ -1637,7 +1637,7 @@ define([
 								array.forEach(fields, lang.hitch(this, function (field, index) {
 									if (!statusDirectives[field] || !statusDirectives[field].status || statusDirectives[field].status === "incorrect") {
 										answer = this.model.student.getCorrectAnswer(studentNodeID, field);
-										if (answer !== null || answer !== undefined) {
+										if (answer !== "" && answer !== null && answer !== undefined) {
 											hintMessage = hintMessages[field].replace('<authorsValue>', '<strong>' + answer + '</strong>') || "";
 											var step = {
 												element: elements[field],
@@ -1658,7 +1658,7 @@ define([
 										if (field === "equation") {
 											answer = check.convert(this.model.given, answer);
 										}
-										if (answer !== null || answer !== undefined) {
+										if (answer !== "" && answer !== null && answer !== undefined) {
 											hintMessage = hintMessages[field].replace('<authorsValue>', '<strong>' + answer + '</strong>') || "";
 											var step = {
 												element: elements[field],
@@ -1679,7 +1679,7 @@ define([
 										if (field === "equation") {
 											answer = check.convert(this.model.given, answer);
 										}
-										if (answer !== null || answer !== undefined) {
+										if (answer !== "" && answer !== null && answer !== undefined) {
 											hintMessage = hintMessages[field].replace('<authorsValue>', '<strong>' + answer + '</strong>') || "";
 											var step = {
 												element: elements[field],
