@@ -1223,15 +1223,6 @@ define([
 				table.show();
 			};
 
-			var notifyCompleteness = function(){
-				// Trigger notify completeness since we're done.
-				// Construction triggers this when the node editor closes instead.
-				if (this.activityConfig.getActivity() != "construction"){
-					var directives = this._PM.notifyCompleteness(this._model);
-					this.applyDirectives(directives);
-				}
-			};
-
 			if(activity_config.get("allowGraph")){
 				var graphButton = registry.byId("graphButton");
 				graphButton.set("disabled", false);
@@ -1279,19 +1270,11 @@ define([
 				}
 			});
 
-			aspect.after(registry.byId('incrementalMenu'), "hide", function(){
-				if(activity_config.get("showDoneMessage") && ui_config.get("doneButton") != "none" &&
-					givenModel.student.matchesGivenSolutionAndCorrect()){
-					showProblemDoneHint();
-					notifyCompleteness();
-				}
-			});
-
 			aspect.after(registry.byId('waveformEditor'), "hide", function(){
 				if(activity_config.get("showDoneMessage") && ui_config.get("doneButton") != "none" &&
 					givenModel.student.matchesGivenSolutionAndCorrect()){
 					showProblemDoneHint();
-					notifyCompleteness();
+					controllerObject.notifyCompleteness();
 				}
 			});
 
@@ -1695,6 +1678,11 @@ define([
 				//Saving incremental activity to DB
 				//Not Saving demoIncremental activity to DB
 				aspect.after(controllerObject, "closeIncrementalMenu", function(){
+					if(activity_config.get("showDoneMessage") && ui_config.get("doneButton") != "none" &&
+						givenModel.student.matchesGivenSolutionAndCorrect()){
+						showProblemDoneHint();
+						controllerObject.notifyCompleteness();
+					}
 					if(!activity_config.get("demoIncremental"))
 						session.saveProblem(givenModel.model);
 				});

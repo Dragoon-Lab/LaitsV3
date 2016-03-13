@@ -1202,6 +1202,15 @@ define([
 			else
 				style.set(showExplanationButton, "display", "none");
 		}
+
+		notifyCompleteness: function(){
+			// Trigger notify completeness since we're done.
+			// Construction triggers this when the node editor closes instead.
+			if (this.activityConfig.getActivity() != "construction"){
+				var directives = this._PM.notifyCompleteness(this._model);
+				this.applyDirectives(directives);
+			}
+		}
 	});
 });
 
