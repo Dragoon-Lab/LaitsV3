@@ -1587,7 +1587,7 @@ define([
 			//Summary : Scan and delete the premature nodes after validating current Node equation
 
 			var node = this._model.active.getNode(this.currentID);
-			if(node.inputs) {
+			if(node && node.inputs) {
 				var prematureNodesExist = false;
 				array.forEach(node.inputs , lang.hitch(this, function(n){
 					if(this._PM.checkPremature(n.ID)){
