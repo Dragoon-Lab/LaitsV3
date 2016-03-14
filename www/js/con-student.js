@@ -1201,7 +1201,7 @@ define([
 				style.set(showExplanationButton, "display", "block");
 			else
 				style.set(showExplanationButton, "display", "none");
-		}
+		},
 
 		notifyCompleteness: function(){
 			// Trigger notify completeness since we're done.
