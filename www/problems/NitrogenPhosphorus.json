@@ -1,0 +1,1077 @@
+{
+    "task": {
+        "taskName": "Nitrogen",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 1,
+            "integrationMethod": "Eulers Method",
+            "units": "years"
+        },
+        "properties": {
+            "isGraphHelpShown": true
+        },
+        "image": {},
+        "taskDescription": {
+            "construction": [
+                "A lake with no external nitrogen inputs has an initial \"available nitrogen\" stock of 1,000 (mols). ",
+                "",
+                "95% of the \"available nitrogen\" is \"accessible\" and can be \"incorporated into plankton\". ",
+                "",
+                "Each mol of \"nitrogen incorporated in plankton\" adds to the \"Plankton Population\", which is initially 6,000.",
+                "",
+                "All of the plankton are eaten by minnows each year, and the \"minnow births\" is a result of the \"effect per plankton\"  (0.02)  x \"plankton eaten by minnows\".",
+                "",
+                "The \"minnow population\" is initially 300, and is decreased by \"minnows eaten by pike\", which which is a product of the \"minnow population\" x \"chance of pike predation\" (0.01) x the \"pike population\".",
+                "",
+                "The \"pike population\" begins with 20 pikes, and is \"pike births\" - \"pike deaths\". \"Pike births\" are the product of \"effect per minnow\" (0.1) x \"minnows eaten by pike\".",
+                "",
+                "Pike deaths are the pike population x pike death rate (0.25).",
+                "",
+                "Pike deaths also result in inputs to available nitrogen. \"Nitrogen from dead pikes\" = \"pike deaths\" x \"nitrogen per pike\", which is added to \"available nitrogen\".  Each dead pike adds 500 mols of nitrogen."
+            ]
+        },
+        "lessonsLearned": [],
+        "increment": [],
+        "executionIterations": null,
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id3",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 678.99310302734,
+                    "y": 50.972225189209
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    }
+                },
+                "name": "Pike Population",
+                "type": "accumulator",
+                "initial": 20,
+                "genus": "required",
+                "description": "Pike Population",
+                "equation": "id2-id3"
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id13",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id10",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 431.99655151367,
+                    "y": 67.986114501953
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "equation": {
+                        "disabled": false
+                    }
+                },
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                },
+                "name": "Pike Births",
+                "equation": "id13*id10",
+                "genus": "required",
+                "description": "Pike Births",
+                "type": "function"
+            },
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id7",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 898.99310302734,
+                    "y": 76.97917175293
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                },
+                "name": "Pike Deaths",
+                "equation": "id1*id7",
+                "genus": "required",
+                "description": "Pike Deaths",
+                "type": "function"
+            },
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id5",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id6",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 1062.9862060547,
+                    "y": 450.97222900391
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    }
+                },
+                "name": "Available Nitrogen",
+                "type": "accumulator",
+                "initial": 1000,
+                "genus": "required",
+                "description": "Available Nitrogen",
+                "equation": "id5-id6",
+                "parentNode": true
+            },
+            {
+                "ID": "id5",
+                "inputs": [
+                    {
+                        "ID": "id3",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id8",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 985.98962402344,
+                    "y": 260.97222900391
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                },
+                "name": "Nitrogen from Dead Pikes",
+                "equation": "id3*id8",
+                "genus": "required",
+                "description": "Phosphorus from dead Pikes",
+                "type": "function"
+            },
+            {
+                "ID": "id6",
+                "inputs": [
+                    {
+                        "ID": "id4",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id18",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 767.98614501953,
+                    "y": 607.98614501953
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                },
+                "name": "Nitrogen Incorporated into Plankton",
+                "genus": "required",
+                "description": "Plankton use",
+                "equation": "id4*id18",
+                "type": "function"
+            },
+            {
+                "ID": "id7",
+                "inputs": [],
+                "position": {
+                    "x": 1149.4002685547,
+                    "y": 48.4729347229
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    }
+                },
+                "name": "Pike Death Rate",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.25,
+                "genus": "required",
+                "description": "Pike Death Rate"
+            },
+            {
+                "ID": "id8",
+                "inputs": [],
+                "position": {
+                    "x": 1125.4073486328,
+                    "y": 222.46600341797
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                },
+                "name": "Nitrogen per Pike",
+                "initial": 500,
+                "genus": "required",
+                "description": "Nitrogen per Pike",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false
+            },
+            {
+                "ID": "id10",
+                "inputs": [],
+                "position": {
+                    "x": 587.85607910156,
+                    "y": 148.17929077148
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    }
+                },
+                "name": "Effect per Minnow",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.1,
+                "genus": "required",
+                "description": "Effect per minnow"
+            },
+            {
+                "ID": "id11",
+                "inputs": [
+                    {
+                        "ID": "id12",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id13",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 602.98614501953,
+                    "y": 374.98266601562
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    }
+                },
+                "name": "Minnow Population",
+                "type": "accumulator",
+                "initial": 300,
+                "equation": "id12-id13",
+                "genus": "required",
+                "description": "Minnow population"
+            },
+            {
+                "ID": "id12",
+                "inputs": [
+                    {
+                        "ID": "id14",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id19",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 496.99655151367,
+                    "y": 455.97222900391
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                },
+                "name": "Minnow Births",
+                "equation": "id14*id19",
+                "genus": "required",
+                "description": "Minnow Births",
+                "type": "function"
+            },
+            {
+                "ID": "id13",
+                "inputs": [
+                    {
+                        "ID": "id11",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id20",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 440.98959350586,
+                    "y": 281.97918701172
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    }
+                },
+                "name": "Minnows Eaten by Pike",
+                "genus": "required",
+                "description": "Minnow Deaths",
+                "type": "function",
+                "equation": "(id11*id1)*id20"
+            },
+            {
+                "ID": "id14",
+                "inputs": [],
+                "position": {
+                    "x": 408.39334106445,
+                    "y": 620.46948242188
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    }
+                },
+                "name": "Effect per Plankton",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.02,
+                "genus": "required",
+                "description": "Effect per Plankton"
+            },
+            {
+                "ID": "id15",
+                "inputs": [
+                    {
+                        "ID": "id6",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id19",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 608.99310302734,
+                    "y": 651.97918701172
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "equation": {
+                        "disabled": false
+                    }
+                },
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    }
+                },
+                "name": "Plankton Population",
+                "initial": 6000,
+                "type": "accumulator",
+                "equation": "id6-id19",
+                "genus": "required",
+                "description": "Plankton population"
+            },
+            {
+                "ID": "id18",
+                "inputs": [],
+                "position": {
+                    "x": 909.40032958984,
+                    "y": 591.47637939453
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    }
+                },
+                "name": "Percent of Nitrogen Accessible",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.95,
+                "genus": "required",
+                "description": "Percent of nitrogen which is accessible"
+            },
+            {
+                "ID": "id19",
+                "inputs": [
+                    {
+                        "ID": "id15",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 683.99310302734,
+                    "y": 516.97918701172
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "equation": {
+                        "disabled": false
+                    }
+                },
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                },
+                "name": "Plankton Eaten by Minnows",
+                "equation": "id15",
+                "genus": "required",
+                "description": "Plankton eaten by minnows",
+                "type": "function"
+            },
+            {
+                "ID": "id20",
+                "inputs": [],
+                "position": {
+                    "x": 664.40032958984,
+                    "y": 268.47296142578
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    }
+                },
+                "name": "Chance of Pike predation",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.01,
+                "genus": "required",
+                "description": "Chance of Pike predation"
+            }
+        ],
+        "studentModelNodes": [],
+        "schemas": []
+    }
+}
