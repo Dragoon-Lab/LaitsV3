@@ -607,6 +607,7 @@ define([
 
 		showIncrementalEditor: function (id) {
 			this.currentID = id;
+			this.isIncrementalEditorVisible = true;
 			var type = this._model.active.getType(id);
 			var givenID = this._model.active.getDescriptionID(id);
 			var nodeName = this._model.active.getName(id);
@@ -649,7 +650,8 @@ define([
 
 
 					this._incrementalMenu.onBlur = lang.hitch(this, function () {
-						this.closeIncrementalMenu();
+						if(this.isIncrementalEditorVisible)
+							this.closeIncrementalMenu();
 					});
 				}
 			}
@@ -715,6 +717,7 @@ define([
 				nodeID: this.currentID
 			});
 			this.nodeCloseAssessment(this.currentID);
+			this.isIncrementalEditorVisible = false;
 			popup.close(this._incrementalMenu);
 			if (doColorNodeBorder) {
 				this.colorNodeBorder(this.currentID, true);
