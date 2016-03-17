@@ -462,7 +462,7 @@ exports.isDonePopupVisible = function(client){
 }
 
 exports.isCrisisPopupVisible = function(client){
-    wait(100);
+    wait(200);
     var isVisible = await(client.isVisible('#crisisMessage',defer()));
     wait(100);
     return isVisible;
