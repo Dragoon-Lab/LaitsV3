@@ -1,13 +1,34 @@
-// Requires Zet, Serializable, EMACS5CompatibilityPatches
-if (typeof window === "undefined") {
-    var window = this;
+/** Message format for recording events and for real-time service communication
+    This message format primarily follows the xAPI format (https://github.com/adlnet/xAPI-Spec/blob/master/xAPI.md)
+    but is much more relaxed in the requirements for parameters. It also includes elements
+    of the FIPA messaging standard, most notably the Speech Act field (performative, http://www.fipa.org/specs/fipa00061/SC00061G.html)
+    
+    Package: SuperGLU (Generalized Learning Utilities)
+    Author: Benjamin Nye
+    License: APL 2.0
+    Version: 1.0.0
+    
+    Requires:
+        - zet.js 
+        - serialization.js
+**/
+if (typeof SuperGLU === "undefined"){
+    var SuperGLU = {};
+    if (typeof window === "undefined") {
+        var window = this;
+    }
+    window.SuperGLU = SuperGLU;
 }
 
 (function(namespace, undefined) {
+var VERSION = "1.0.0",
+    SUPERGLU_VERSION = SuperGLU.version,
+    Zet = SuperGLU.Zet,
+    Serialization = SuperGLU.Serialization;
 
 var ACCEPT_PROPOSAL_ACT, AGREE_ACT, CANCEL_ACT, CALL_FOR_PROPOSAL_ACT,
     CONFIRM_ACT, DISCONFIRM_ACT, FAILURE_ACT, INFORM_ACT, INFORM_IF_ACT,
-    INFORM_REF_ACT,  NOT_UNDERSTOOD_ACT, PROPOGATE_ACT, PROPOSE_ACT,
+    INFORM_REF_ACT,  NOT_UNDERSTOOD_ACT, PROPAGATE_ACT, PROPOSE_ACT,
     PROXY_ACT, QUERY_IF_ACT, QUERY_REF_ACT, REFUSE_ACT, REJECT_PROPOSAL_ACT,
     REQUEST_ACT, REQUEST_WHEN_ACT, REQUEST_WHENEVER_ACT, SUBSCRIBE_ACT,
     
@@ -17,6 +38,7 @@ var ACCEPT_PROPOSAL_ACT, AGREE_ACT, CANCEL_ACT, CALL_FOR_PROPOSAL_ACT,
     CONTEXT_IN_REPLY_TO_KEY, CONTEXT_REPLY_BY_KEY,
     AUTHORIZATION_KEY, SESSION_ID_KEY, 
     CONTEXT_LANGUAGE_KEY, CONTEXT_ONTOLOGY_KEY,
+    SUPERGLU_VERSION_KEY, MESSAGE_VERSION_KEY,
     SPEECH_ACT_SET, tokenizeObject, untokenizeObject;
     
 // Core Speech Acts
@@ -47,14 +69,14 @@ REFUSE_ACT = "Refuse";
 FAILURE_ACT = "Failure";
 
 // Relay Actions
-PROPOGATE_ACT = "Propogate";
+PROPAGATE_ACT = "Propagate";
 PROXY_ACT = "Proxy";
 SUBSCRIBE_ACT = "Subscribe";
 
 SPEECH_ACT_SET = {ACCEPT_PROPOSAL_ACT : true, AGREE_ACT : true, CANCEL_ACT : true, 
                   CALL_FOR_PROPOSAL_ACT : true, CONFIRM_ACT : true, DISCONFIRM_ACT : true,
                   FAILURE_ACT : true, INFORM_ACT : true, INFORM_IF_ACT : true,
-                  INFORM_REF_ACT : true,  NOT_UNDERSTOOD_ACT : true, PROPOGATE_ACT : true, 
+                  INFORM_REF_ACT : true,  NOT_UNDERSTOOD_ACT : true, PROPAGATE_ACT : true, 
                   PROPOSE_ACT : true, PROXY_ACT : true, QUERY_IF_ACT : true, 
                   QUERY_REF_ACT : true, REFUSE_ACT : true, REJECT_PROPOSAL_ACT : true,
                   REQUEST_ACT : true, REQUEST_WHEN_ACT : true, REQUEST_WHENEVER_ACT : true, 
@@ -78,17 +100,33 @@ SESSION_ID_KEY = "session-id";
 CONTEXT_LANGUAGE_KEY = 'language';
 CONTEXT_ONTOLOGY_KEY = 'ontology';
 
+SUPERGLU_VERSION_KEY = 'SuperGLU-version';
+MESSAGE_VERSION_KEY = 'message-version';
+
 tokenizeObject = Serialization.tokenizeObject;
 untokenizeObject = Serialization.untokenizeObject;
 
+/** Message format, for passing information between services
+    This is serializable, and can be cast into JSON, along with
+    any contained objects (including Messages) that are also serializable.
+**/
 Zet.declare('Message', {
-    // Base class for a SKO Group
     superclass : Serialization.Serializable,
     defineBody : function(self){
         // Private Properties
 
         // Public Properties
         
+        /** Create a Message
+            @param actor: The actor who did or would do the given action
+            @param verb: Some action that was or would be done by the actor
+            @param obj: An object or target for the action
+            @param result: The outcome of the action 
+            @param speechAct: A performative, stating why this message was sent
+            @param context: A context object for the message, with additional data
+            @param timestamp: A timestamp for when the message was created
+            @param anId: A unique Id.  If none given, one will be assigned.
+        **/
         self.construct = function construct(actor, verb, obj, result, speechAct, 
                                             context, timestamp, anId){
             self.inherited(construct, [anId]);
@@ -104,60 +142,84 @@ Zet.declare('Message', {
             self._obj = obj;
             self._result = result;
             self._speechAct = speechAct;
-            self._context = context;
             self._timestamp = timestamp;
+            if (self._timestamp == null){
+                self.updateTimestamp();
+            }
+            // Fill in version keys
+            if (!(MESSAGE_VERSION_KEY in context)){
+                context[MESSAGE_VERSION_KEY] = VERSION;
+            }
+            if (!(SUPERGLU_VERSION_KEY in context)){
+                context[SUPERGLU_VERSION_KEY] = SUPERGLU_VERSION;
+            }
+            self._context = context;
 		};
         
+        /** Get the actor for the message **/
         self.getActor = function getActor(){
             return self._actor;
         };
+        /** Set the actor for the message **/
         self.setActor = function setActor(value){
             self._actor = value;
         };
         
+        /** Get the verb for the message **/
         self.getVerb = function getVerb(){
             return self._verb;
         };
+        /** Set the verb for the message **/
         self.setVerb = function setVerb(value){
             self._verb = value;
         };
         
+        /** Get the object for the message **/
         self.getObject = function getObject(){
             return self._obj;
         };
+        /** Set the object for the message **/
         self.setObject = function setObject(value){
             self._obj = value;
         };
         
+        /** Get the result for the message **/
         self.getResult = function getResult(){
             return self._result;
         };
+        /** Set the result for the message **/
         self.setResult = function setResult(value){
             self._result = value;
         };
         
+        /** Get the speech act for the message **/
         self.getSpeechAct = function getSpeechAct(){
             return self._speechAct;
         };
+        /** Set the speech act for the message **/
         self.setSpeechAct = function setSpeechAct(value){
             self._speechAct = value;
         };
         
+        /** Get the timestamp for the message (as an ISO-format string)**/
         self.getTimestamp = function getTimestamp(){
             return self._timestamp;
         };
+        /** Set the timestamp for the message (as an ISO-format string) **/
         self.setTimestamp = function setTimestamp(value){
             self._timestamp = value;
         };
-
+        /** Update the timestamp to the current time **/
         self.updateTimestamp = function updateTimestamp(){
             self._timestamp = new Date().toISOString();
         };
         
+        /** Check if the context field has a given key **/
         self.hasContextValue = function hasContextValue(key){
             return (key in self._context) === true;
         };
-
+        
+        /** Get all the keys for the context object **/
         self.getContextKeys = function getContextKeys(){
             var key, keys;
             keys = [];
@@ -167,6 +229,7 @@ Zet.declare('Message', {
             return keys;
         };
         
+        /** Get the context value with the given key. If missing, return the default. **/
         self.getContextValue = function getContextValue(key, aDefault){
             if (!(key in self._context)){
                 return aDefault;
@@ -174,14 +237,17 @@ Zet.declare('Message', {
             return self._context[key];
         };
         
+        /** Set a context value with the given key-value pair **/
         self.setContextValue = function setContextValue(key, value){
             self._context[key] = value;
         };
         
+        /** Delete the given key from the context **/
         self.delContextValue = function delContextValue(key){
             delete self._context[key];
         };
         
+        /** Save the message to a storage token **/
         self.saveToToken = function saveToToken(){
             var key, token, newContext, hadKey;
             token = self.inherited(saveToToken);
@@ -215,6 +281,7 @@ Zet.declare('Message', {
             return token;
         };
 
+        /** Initialize the message from a storage token and some additional context (e.g., local objects) **/
         self.initializeFromToken = function initializeFromToken(token, context){
             self.inherited(initializeFromToken, [token, context]);
             self._actor = untokenizeObject(token.getitem(ACTOR_KEY, true, null), context);
@@ -228,6 +295,7 @@ Zet.declare('Message', {
     }
 });
 
+namespace.version = VERSION;
 namespace.Message = Message;
 
 namespace.SPEECH_ACT_SET = SPEECH_ACT_SET;
@@ -242,7 +310,7 @@ namespace.INFORM_ACT = INFORM_ACT;
 namespace.INFORM_IF_ACT = INFORM_IF_ACT;
 namespace.INFORM_REF_ACT = INFORM_REF_ACT;
 namespace.NOT_UNDERSTOOD_ACT = NOT_UNDERSTOOD_ACT;
-namespace.PROPOGATE_ACT = PROPOGATE_ACT;
+namespace.PROPAGATE_ACT = PROPAGATE_ACT;
 namespace.PROPOSE_ACT = PROPOSE_ACT;
 namespace.PROXY_ACT = PROXY_ACT;
 namespace.QUERY_IF_ACT = QUERY_IF_ACT;
@@ -272,4 +340,8 @@ namespace.SESSION_ID_KEY = SESSION_ID_KEY;
 namespace.CONTEXT_LANGUAGE_KEY = CONTEXT_LANGUAGE_KEY;
 namespace.CONTEXT_ONTOLOGY_KEY = CONTEXT_ONTOLOGY_KEY;
 
+namespace.SUPERGLU_VERSION_KEY = SUPERGLU_VERSION_KEY;
+namespace.MESSAGE_VERSION_KEY = MESSAGE_VERSION_KEY;
+
+SuperGLU.Messaging = namespace;
 })(window.Messaging = window.Messaging || {});

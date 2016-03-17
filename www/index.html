@@ -3,6 +3,8 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
     <title>Dragoon</title>
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
@@ -698,6 +700,8 @@
 
     <div class="claro sameedit" id="viewAllSchemaDialog" data-dojo-type="dijit/Dialog" title="Edit Schemas" style="width:300px;">
     </div>
+
+    <div id="ETContainer" style="visibility: none; width: 0; height: 0;"></div> <!-- container for SuperGLU integration for Electronix Tutor -->
 </div>  <!-- main -->
 
 <!-- import liviz -->
@@ -706,14 +710,24 @@
 <script type="text/javascript" src="Liviz/progress-view.js?v=2"></script>
 <script type="text/javascript" src="Liviz/progress-model.js?v=2"></script>
 <script type="text/javascript" src="Liviz/stopgo.js?v=2"></script>
-<script type="text/javascript" src="ET/Util/emacs5-compatibility-patches.js"></script>
-<script type="text/javascript" src="ET/Util/uuid.js"></script>
-<script type="text/javascript" src="ET/Util/encoder.js"></script>
-<script type="text/javascript" src="ET/Util/zet.js"></script>
-<script type="text/javascript" src="ET/Util/serialization.js"></script>
-<script type="text/javascript" src="ET/Core/messaging.js"></script>
-<script type="text/javascript" src="ET/Core/messaging-gateway.js"></script>
-<script type="text/javascript" src="ET/Services/Orchestration/heartbeat-service.js"></script>
 <script type="text/javascript" src="cryptoJS/sha256.js"></script>
+<!-- SuperGLU javascript files -->
+<!-- General Utilities Imports --> 
+<script type="text/javascript" src="ET/js/SuperGLU/Util/emacs5-compatibility-patches.js"></script>
+
+<!-- SuperGLU Imports -->              
+<script type="text/javascript" src="ET/js/SuperGLU/Util/uuid.js"></script>
+<script type="text/javascript" src="ET/js/SuperGLU/Util/zet.js"></script>
+<script type="text/javascript" src="ET/js/SuperGLU/super-glu.js"></script>
+<script type="text/javascript" src="ET/js/SuperGLU/Util/serialization.js"></script>
+<script type="text/javascript" src="ET/js/SuperGLU/Core/messaging.js"></script>
+<script type="text/javascript" src="ET/js/SuperGLU/Core/messaging-gateway.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.1.0/socket.io.min.js"></script>
+
+<!-- SuperGLU Services --> 
+<script type="text/javascript" src="ET/js/SuperGLU/Services/Orchestration/heartbeat-service.js"></script>
+
+<!-- Reference-Implementation Data --> 
+<script type="text/javascript" src="ET/js/reference-data.js"></script>
 </body>
 </html>
