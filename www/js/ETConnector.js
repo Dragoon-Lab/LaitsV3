@@ -23,15 +23,10 @@ define([
 	"dojo/_base/array",
 	'dojo/_base/declare',
 	"dojo/_base/lang",
-	"dojo/dom",
-	"dojo/dom-class",
-	"dojo/dom-style",
-	"dojo/ready",
-	"dojo/on",
 	"dojo/request/iframe",
 	"dojo/dom-construct",
 	"dojo/request/script"
-], function(array, declare, lang, dom, domClass, style, ready, on, iframe, domConstruct, script){
+], function(array, declare, lang, iframe, domConstruct, script){
 	return declare(null, {
 
 		/*constructor : function(frameTitle){
@@ -84,16 +79,13 @@ define([
 			this.TestService.sendTestMessage(this.FRAME_NAME, this.LOADED_VERB, window.location.href, true);
     		console.log("ET loaded message send");
 			*/
+			console.log("Start ET connect services");
 			var sourceURL = "../ET/ChildWindow.html?taskId=" + this.taskID + "&p1=" + this.p1 + "&p2=" + this.p2 + "&p3=" + this.p3 +
 				"&p4=" + this.p4 +"&p5=" + this.p5 + "&p6=" + this.p6 + "&p7=" + this.p7;
 			registry.byId("ETContainer").set("content", domConstruct.create("iframe", {
 				src: sourceURL,
 				style: "visibility: none; height:0; width:0"
 			}));
-
-			script.get("cdnjs.cloudflare.com/ajax/libs/socket.io/1.1.0/socket.io.min.js", {
-				
-			});
 
 			this.onStart();
 		},
@@ -151,6 +143,6 @@ define([
 			console.log("ET service stopped");
 		}
 		
-	})
+	});
 	
 });

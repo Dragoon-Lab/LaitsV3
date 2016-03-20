@@ -465,7 +465,7 @@ define([
 			if(activity_config.get("ElectronixTutor")){
 				etConnect = new ETConnector();
 				etConnect.startService();
-				
+
 				// send score after student complete the model
 				aspect.after(controllerObject._PM, "notifyCompleteness", function(){
 					if(!etConnect ||  !etConnect.needsToSendScore || !givenModel.isCompleteFlag) return;
@@ -474,7 +474,6 @@ define([
 					etConnect.sendScore(score);
 					console.log("sending score(successfactor):", score);
 				});
-				
 			}
 			
 			if(activity_config.get("targetNodeStrategy")){ 
