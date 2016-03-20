@@ -87,7 +87,14 @@ define([
 				style: "visibility: none; height:0; width:0"
 			}));
 
-			this.onStart();
+			script.get("//cdnjs.cloudflare.com/ajax/libs/socket.io/1.1.0/socket.io.min.js", {}).then(function(data){
+				var socketScript = domConstruct.create("script");
+				socketScript.src = data;
+				socketScript.type = "text/javascript";
+				domConstruct.place(socketScript, null, dojo.body, "last");
+
+				this.onStart();
+			});
 		},
 
 		onStart: function(){
