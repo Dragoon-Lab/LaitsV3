@@ -572,7 +572,7 @@ define([
 				IniFlag  = {status: true, value: undefined};
 			}
 			var logObj = {};
-			if(IniFlag.status){
+			if(IniFlag && IniFlag.status){
 				// If the initial value is not a number or is unchanged from
 				// previous value we dont process
 				var newInitial = IniFlag.value;
@@ -597,7 +597,7 @@ define([
 				logObj = {
 					error: false
 				};
-			}else if(IniFlag.errorType){
+			}else if(IniFlag && IniFlag.errorType){
 				logObj = {
 					error: true,
 					message: IniFlag.errorType
