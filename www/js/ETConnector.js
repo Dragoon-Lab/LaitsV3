@@ -119,7 +119,7 @@ define([
 			this.TEST_SERVICE.receiveMessage = function(msg){
 				oldReceiveMsg(msg);
 				if((msg.getSpeechAct() == Messaging.INFORM_ACT) && 
-					((msg.getVerb() = this.LOADED_VERB) || (msg.getVerb() == this.COMPLETED_VERB))){
+					((msg.getVerb() == this.LOADED_VERB) || (msg.getVerb() == this.COMPLETED_VERB))){
 					// if we want to show a message which we dont so just not doing anything in case.
 					//Keeping it for future
 				} else if((msg.getSpeechAct() == Messaging.INFORM_ACT) && 
