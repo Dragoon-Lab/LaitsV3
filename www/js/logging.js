@@ -117,8 +117,7 @@ define([
 		 event.returnValue = "To ensure that your work is saved, please hit done button before closing the window";
 	};
 	
-	baseUnload.addOnUnload(function(e){
-		event.preventDefault();
+	baseUnload.addOnUnload(function(){
 		logging.session.log('ui-action', {
 			type: "window",
 			name: "close-button"
