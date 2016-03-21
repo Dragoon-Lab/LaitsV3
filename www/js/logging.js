@@ -112,8 +112,13 @@ define([
 			type:"out-of-focus"
 		});
 	};
+
+	window.onbeforeunload = function(event){
+		 event.returnValue = "To ensure that your work is saved, please hit done button before closing the window";
+	};
 	
-	baseUnload.addOnUnload(function(){
+	baseUnload.addOnUnload(function(e){
+		event.preventDefault();
 		logging.session.log('ui-action', {
 			type: "window",
 			name: "close-button"
