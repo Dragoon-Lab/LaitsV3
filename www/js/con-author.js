@@ -468,6 +468,13 @@ define([
 		
 		handleType: function(type){
             var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
+
+            //If type is function last initial value field has to be set to null irrespective of model type to ensure
+            // that if type is changed back to Acc/Par the previous initial value should be sent for feedback
+            if(type == "function"){
+                this.lastInitial.value = null;
+            }
+
             if(this.getModelType() == "correct"){
 				// Summary: Sets the type of the current node.				
 				this.applyDirectives(this.authorPM.process(this.currentID,'type', type));
