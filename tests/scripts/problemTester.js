@@ -127,12 +127,10 @@ function generateConstructionTests(options, model){
 			["logging", options.logging]]);
 	}));
 	//Create Nodes
-	var createNodesSuite = generateCreateNodeTests();
+	var createNodesSuite = generateCreateAndCheckNodeTests();
 	parentSuite.addSuite(createNodesSuite);
 	var checkNodeBorders = generateCorrectNodeBorderAndColorTest();
 	parentSuite.addSuite(checkNodeBorders);
-	var checkNodeValues = generateCorrectNodeValuesTest();
-	parentSuite.addSuite(checkNodeValues);
 	var checkGraphWindow = generateGraphWindowTest();
 	parentSuite.addSuite(checkGraphWindow);
 
@@ -145,25 +143,29 @@ function generateConstructionTests(options, model){
 	mocha.run();
 }
 
-function generateCreateNodeTests(){
+function generateCreateAndCheckNodeTests(){
 	var mocha = new Mocha({
-		timeout: 15000
+		timeout: 20000
 	});
-	var createNodesSuite = "Create Nodes:";
+	var createNodesSuite = "Create Nodes and Check Values:";
 	var suite = Suite.create(mocha.suite, createNodesSuite);
 
 	var queue = [];
 	var visited = [];
-
+	this.nodesToCheck = [];
 	var rootNode = getRootNode();
-	var rootNodeCreated = false;
 	//Create Root Node
 	if(rootNode) {
 		queue.push(rootNode);
-		rootNodeCreated = true;
 	}else{
 		console.error("No root node found");
 		return;
+	}
+	//push given student nodes to visited
+	if(this.problem.task.studentModelNodes.length > 0){
+		this.problem.task.studentModelNodes.forEach(function(node){
+			visited.push(node.descriptionID);
+		});
 	}
 
 	while(queue.length > 0){
@@ -181,12 +183,14 @@ function generateCreateNodeTests(){
 					}
 					//Fill node editor values
 					fillNodeValues(node);
+					//Check Values
+					checkNodeValues(node);
 
 				})));
 			})(node);
 			//Add to visited
 			visited.push(node.ID);
-
+			this.nodesToCheck.push(node.name);
 			//Add inputs to the queue
 			node.inputs.forEach(function(input){
 				if(visited.indexOf(input.ID) == -1){
@@ -209,22 +213,15 @@ function generateCreateNodeTests(){
 }
 
 function generateCorrectNodeBorderAndColorTest(){
-	var nodesToCheck = [];
-	this.problem.task.givenModelNodes.forEach(function(node){
-		if((!node.genus || node.genus === "required")){
-			nodesToCheck.push(node.name);
-		}
-	});
-
 	var mocha = new Mocha({
-		timeout: 15000
+		timeout: 25000
 	});
 	var checkNodesSuite = "Check Node border and colors:";
 	var suite = Suite.create(mocha.suite, checkNodesSuite);
 	var testName = "Nodes should have correct border and fill colors";
-
+	var that = this;
 	suite.addTest(new Test(testName, async(function(){
-		nodesToCheck.forEach(function(element){
+		that.nodesToCheck.forEach(function(element){
 			//Gets values
 			var nodeBorderColor = dtest.getNodeBorderColor(client, element);
 			var nodeBorderStyle = dtest.getNodeBorderStyle(client, element);
@@ -238,31 +235,6 @@ function generateCorrectNodeBorderAndColorTest(){
 				"Node fill color for " + element + " was " + nodeFillColor + " instead of green");
 		});
 	})));
-
-	return suite;
-}
-
-function generateCorrectNodeValuesTest(){
-	var mocha = new Mocha({
-		timeout: 15000
-	});
-	var checkNodesSuite = "Check Node Values:";
-	var suite = Suite.create(mocha.suite, checkNodesSuite);
-	var testName = "Checking Node: ";
-
-	this.problem.task.givenModelNodes.forEach(function(node){
-		if(!node.genus || node.genus === "required") {
-			(function (currentNode) {
-				suite.addTest(new Test(testName + currentNode.name, async(function () {
-					checkNodeValues(currentNode);
-				})));
-			})(node);
-		}
-	});
-
-	suite.afterEach(async(function(){
-		dtest.nodeEditorDone(client);
-	}));
 
 	return suite;
 }
@@ -308,7 +280,7 @@ function openNodeEditor(/*String*/nodeName){
 
 function fillNodeValues(/*Object*/node){
 
-	if(!dtest.isNodeTypeDisabled(client)) {
+	if(!(dtest.isNodeTypeDisabled(client) && assertCorrectField(node.name , "type", dtest.getNodeTypeColor(client)))) {
 		var typeValue = node.type.charAt(0).toUpperCase() + node.type.slice(1);
 		dtest.setNodeType(client, typeValue);
 		if(dtest.isCrisisPopupVisible(client)) {
@@ -316,20 +288,20 @@ function fillNodeValues(/*Object*/node){
 		}
 	}
 
-	if(node.type !== "function" && !dtest.isNodeInitialValueDisabled(client)) {
+	if(node.type !== "function" && !(dtest.isNodeInitialValueDisabled(client) && assertCorrectField(node.name , "initial", dtest.getNodeInitialValueColor(client)))) {
 		dtest.setNodeInitialValue(client, node.initial);
 		if (dtest.isCrisisPopupVisible(client)) {
 			dtest.popupWindowPressOk(client);
 		}
 	}
 
-	if(node.units && node.units !== "" && !dtest.isNodeUnitsDisabled(client)) {
+	if(node.units && node.units !== "" && !(dtest.isNodeUnitsDisabled(client) && assertCorrectField(node.name, "units", dtest.getNodeUnitsColor(client)))) {
 		dtest.setNodeUnits(client, node.units);
 		if(dtest.isCrisisPopupVisible(client)) {
 			dtest.popupWindowPressOk(client);
 		}
 	}
-	if(node.type !== "parameter" && !dtest.isNodeExpressionDisabled(client)) {
+	if(node.type !== "parameter" && !(dtest.isNodeExpressionDisabled(client) && assertCorrectField(node.name, "equation", dtest.getNodeExpressionColor(client)))) {
 		var nodeExp = node.equation.split(' ').join('');
 		dtest.setNodeExpression(client, parseExpression(node, nodeExp));
 		dtest.checkExpression(client);
@@ -340,7 +312,7 @@ function fillNodeValues(/*Object*/node){
 }
 
 function checkNodeValues(/*Object*/node){
-	dtest.openEditorForNode(client, node.name);
+	//dtest.openEditorForNode(client, node.name);
 
 	var nodeValues = [];
 	nodeValues.push(["nodeName", node.name]);
@@ -387,20 +359,31 @@ function parseExpression(/*Object*/node, /*String*/equation){
 	//does note check validity of the equation
 
 	if(typeof equation !== "undefined" && equation != ""){
-		node.inputs.forEach(function(input){
-			var inputNode = null;
-			this.problem.task.givenModelNodes.forEach(function(n){
-				if(n.ID === input.ID){
-					inputNode = n;
-				}
-			});
-			if(inputNode){
-				var name = inputNode.name;
-				var regexp = "(" + input.ID + ")([^0-9]?)";
-				var re = new RegExp(regexp);
-				equation = equation.replace(re, name + "$2");
-			}
-		});
+				//Find all ids in the equation
+				var regexp = "(id[0-9]+)";
+				var re = new RegExp(regexp, 'g');
+				var givenModelNodes = this.problem.task.givenModelNodes;
+				// replace all occurrences of each id in the equation
+				var ids = equation.match(re);
+				ids.forEach(function(id){
+					var inputNode = null;
+					// Find matching givenmodel node
+					givenModelNodes.forEach(function (n) {
+						if (n.ID === id) {
+							inputNode = n;
+						}
+					});
+					//Replace each occurrence of id with its name
+					equation = equation.replace(new RegExp(id+"([^0-9]|$)", 'g'), function(m){
+						if(Math.floor(m[m.length-1]) == m[m.length-1]){
+							return inputNode.name ;
+						}else{
+							return inputNode.name + m[m.length-1];
+						}
+
+					});
+				});
+
 		return equation;
 	}
 	return "";
@@ -434,3 +417,6 @@ function getDate(){
 	return date;
 }
 
+function assertCorrectField(nodeName, field, color){
+	assert(color === "green", field + "for "+ nodeName +" is disabled but contains an incorrect value");
+}
