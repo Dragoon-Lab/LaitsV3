@@ -150,7 +150,7 @@ EOT;
      or trigger_error("Previous work query failed." . $mysqli->error);
 
       //Ritesh: this is piece of code to retrieve query from a copy parameter , if it is set and existing folder does not contain the specific problem
-      if($result->num_rows == 0 && $_REQUEST['cp']){
+      if($result->num_rows == 0 && isset($_REQUEST['cp'])){
           $new_group = $_REQUEST['cp'];
           $query = <<<EOT
          SELECT t1.solution_graph, t1.share FROM solutions AS t1 JOIN session AS t2 USING (session_id)
