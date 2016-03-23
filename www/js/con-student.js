@@ -232,6 +232,8 @@ define([
 				// enable forum button and activate the event
 				this.activateForumButton();
 			}
+
+			this.logging.setModelChanged(true);
 		},
 
 		explanationHandler: function () {
@@ -255,6 +257,7 @@ define([
 			this.updateType(type);
 			this.applyDirectives(this._PM.processAnswer(this.currentID, 'type', type));
 
+			this.logging.setModelChanged(true);
 		},	
 
 		// Hide the value and expression controls in the node editor, depending on the type of node
@@ -309,6 +312,8 @@ define([
 				});
 			}
 
+			this.logging.setModelChanged(true);
+
 		},
 
 		initialSet: function (value) {
@@ -333,6 +338,7 @@ define([
 			this.equationInsert(expr);
 			//restore to default  - creating select input as stateless
 			registry.byId(this.controlMap.inputs).set('value', 'defaultSelect', false);
+			this.logging.setModelChanged(true);
 		},
 		handleUnits: function (unit) {
 			console.log("*******Student has chosen unit", unit, this);
@@ -340,6 +346,7 @@ define([
 			// updating node editor and the model.
 			this._model.student.setUnits(this.currentID, unit);
 			this.applyDirectives(this._PM.processAnswer(this.currentID, 'units', unit));
+			this.logging.setModelChanged(true);
 		},
 		unitsSet: function (value) {
 			// Update the model.
@@ -379,6 +386,8 @@ define([
 			if (!isDemo) {
 				this.createExpressionNodes(parse, false);
 			}
+
+			this.logging.setModelChanged(true);
 			return directives;
 		},
 

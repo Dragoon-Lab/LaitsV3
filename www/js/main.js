@@ -1751,6 +1751,8 @@ define([
 						window.history.back();
 				}
 
+				session.setModelChanged(false);
+
 				var searchPattern = new RegExp('^pal3', 'i');
 				if(activity_config["PAL3"] && tc){ // check if session name starts with pal
 					if(tc.needsToSendScore) {
