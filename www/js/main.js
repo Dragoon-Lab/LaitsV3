@@ -29,6 +29,7 @@ define([
 	"dojo/on",
 	'dojo/aspect',
 	"dojo/io-query",
+    "dojo/query",
 	"dojo/ready",
 	'dijit/registry',
 	"dijit/Tooltip",
@@ -63,7 +64,7 @@ define([
 	"./zoom-correction",
 	"./history-widget"
 ], function(
-	array, lang, dom, geometry, style, domClass, on, aspect, ioQuery, ready, registry, toolTip, tooltipDialog, popup,
+	array, lang, dom, geometry, style, domClass, on, aspect, ioQuery, DQuery, ready, registry, toolTip, tooltipDialog, popup,
 	menu, loadSave, model, Graph, controlStudent, controlAuthor, drawmodel, logging, equation,
 	description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan,
 	activityParameters, memory, event, UI, Dialog, ImageBox, modelUpdates, ETConnector, TutorialWidget, ZoomCorrector, HistoryWidget){
@@ -713,6 +714,11 @@ define([
 				});
 			}
 
+            if(activity_config.get("allowPrettify")){
+                var prettifyButton = registry.byId("prettifyButton");
+                prettifyButton.set("disabled", false);
+            }
+
 			if(activity_config.get("allowProblemTimes")){
 				var descButton = registry.byId("descButton");
 				descButton.set("disabled", false);
@@ -728,7 +734,18 @@ define([
 						window.location.pathname.indexOf("/devel/") === 0){
 						style.set(registry.byId("problemPublishButton").domNode, "display", "inline-block");
 					}
+                    if(activity_config.get("disableTimesUnitsFields")){
+                        console.log("trying to disable the fields");
+                        DQuery("#authorDescDialog input").attr("readOnly",true);
+                        DQuery("#authorDescDialog textarea").attr("readOnly",true);
+                        dijit.byId("authorSetTimeStepUnits").readOnly = true;
+                        dijit.byId("authorSetIntegrationMethod").readOnly = true;
+                        dijit.byId("authorSetParameters").readOnly = true;
+                        dijit.byId("authorSetParamDir").readOnly=true;
+                        dijit.byId("authorSetDescriptionType").readOnly = true;
+                    }
 					registry.byId("authorDescDialog").show();
+
 				});
 
 				aspect.after(registry.byId('authorDescDialog'), "hide", function(){

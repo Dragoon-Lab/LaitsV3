@@ -172,7 +172,38 @@ define([
 					],
 
 					allowSliders: true
-				}
+				},
+                ROAUTHOR:{
+                    allowCreateNode:false,
+                    allowGraph:true,
+                    allowTable:true,
+                    allowForum:true,
+                    allowCreateSchema:true,
+                    allowProblemTimes:true,
+                    allowSaveAs:true,
+                    allowMerge: false,
+                    allowPreview:true,
+                    allowPrettify: false,
+                    allowHelp: true,
+                    allowHistory : true,
+                    allowDeleteNode: true,
+                    allowEditNode: true,
+
+                    showHints: true,
+                    showFeedback: true,
+                    showEquationAutoComplete: true,
+
+                    enable:[
+                    ],
+
+                    allowSliders: true,
+
+                    promptSaveAs:true,
+                    allowZoom: true,
+                    "allowAssignWaveFormButton": "true",
+                    showWaveformEditor : true,
+                    "disableTimesUnitsFields" : true
+                }
 			},
 
 			incremental: {
