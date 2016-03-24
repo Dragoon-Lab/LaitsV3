@@ -233,7 +233,9 @@ define([
 							}
 						});
 						if(!isAlertShown) {
-							myThis.deletePrematureNodes();
+							if(myThis.activityConfig.get("targetNodeStrategy")){
+								myThis.deletePrematureNodes();
+							}
 							doHide.apply(myThis._nodeEditor);
 							myThis.closeEditor.call(myThis);
 						}
@@ -253,7 +255,9 @@ define([
 							myThis.closeEditor.call(myThis);
 						}
 					}else{
-						myThis.deletePrematureNodes();
+						if(myThis.activityConfig.get("targetNodeStrategy")){
+							myThis.deletePrematureNodes();
+						}
 						// Else, do normal closeEditor routine and hide
 						doHide.apply(myThis._nodeEditor);
 						myThis.closeEditor.call(myThis);
