@@ -33,10 +33,8 @@ define([
 	"./integrate","./typechecker",
 	"./lessons-learned",
 	"dijit/form/Button",
-	"dijit/TooltipDialog",
-	"dijit/popup",
 	"dijit/focus"
-], function(array, declare, lang, on, dom, aspect, registry, HorizontalSlider, equation, integrate, typechecker,lessonsLearned, Button, tooltipDialog, popup, focusUtil){
+], function(array, declare, lang, on, dom, aspect, registry, HorizontalSlider, equation, integrate, typechecker,lessonsLearned, Button, focusUtil){
 	// Summary: 
 	//          Finds model solutions and sets up the sliders
 	// Description:
@@ -290,6 +288,8 @@ define([
 				var if_id=err.message.substr(19).trim(); //In case the name is not generated and a node id is , we have to get the name from the active object for the user to understand
 				console.log("catch error",this.model.active.getName(if_id));  
 				var miss_field = "expression";
+				var error_type = "missing";
+				var unknown_node = if_id;
 				if(this.model.active.getName(if_id)){
 					var miss_node=this.model.active.getName(if_id); // In case a node is incomplete
 					var miss_node_check = this.model.active.getNode(if_id);
@@ -318,11 +318,27 @@ define([
 									 && !miss_node_check[statusField].units.status))) {
 							miss_field = "units";
 						}
+
+					}
+				} else if(if_id.indexOf("id") < 0){
+					var studentNodes = this.model.active.getNodes();
+					if(studentNodes){
+						error_type = "unknown";
+						var gotIt = array.some(studentNodes, function(node){
+							miss_node = this.model.active.getName(node.ID);
+							return (node.equation.indexOf(if_id) >= 0);
+						}, this);
+
+						if(!gotIt){
+							miss_node = if_id;
+						} else {
+							miss_field = "expression";
+						}
 					}
 				}else{
 					miss_node=if_id;
 				}
-				return {status: 'error', type: 'missing', missingNode: miss_node, missingField: miss_field};
+				return {status: 'error', type: error_type, missingNode: miss_node, missingField: miss_field, unknownNode: unknown_node};
 			}
 			//console.log(solution);
 			/*
@@ -554,6 +570,9 @@ define([
 		show: function () {
 			this.dialogWidget.show();
 			var content = this.dialogWidget.get("content").toString();
+			/*
+			this code should be in main.js and has been moved there.
+			We shouldnt do things on the main window through the graph window. - Sachin Grover
 			if(registry.byId("closeHint")) {
 				var closeHintId = registry.byId("closeHint");
 				closeHintId.destroyRecursive(false);
@@ -574,7 +593,7 @@ define([
 				onBlur: function(){
 					popup.close(problemDoneHint);
 				}
-			});
+			});*/
 
 			if (content.search("There isn't anything to plot. Try adding some accumulator or function nodes.") >= 0
 				|| content.search("There is nothing to show in the table.   Please define some quantitites.") >= 0 ||
@@ -582,7 +601,7 @@ define([
 				console.log("graph not being shown");
 				return;
 			}
-			var contentMsg = this.model.getTaskLessonsLearned();
+			/*var contentMsg = this.model.getTaskLessonsLearned();
 
 			console.log("content message is", contentMsg, this.model);
 			//var thisModel = this;
@@ -590,7 +609,7 @@ define([
 
 				if (contentMsg.length === 0 || contentMsg[0] == "") {
 					console.log("lessons learned is empty");
-					if(this.model.isDoneMessageShown === false) {
+					if(this.model.isDoneMessageShown === false && ) {
 						popup.open({
 							popup: problemDoneHint,
 							around: dom.byId('doneButton')
@@ -617,7 +636,7 @@ define([
 						}));
 					}
 				}
-			}));
+			}));*/
 		},
 
 

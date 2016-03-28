@@ -453,6 +453,10 @@ define(["dojo/_base/lang"], function (lang) {
 			//returns object containing all(general and specific) config parameters for the given mode and activity
 			getAllParameters: function () {
 				return this._params;
+			},
+
+			set: function(/*string*/ name, /*any type*/ value){
+				this._params[name] = value;
 			}
 		};
 
