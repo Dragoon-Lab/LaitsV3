@@ -463,7 +463,7 @@ define([
 			
 			var etConnect = null;
 			if(activity_config.get("ElectronixTutor")){
-				etConnect = new ETConnector();
+				etConnect = new ETConnector(query);
 				etConnect.startService();
 
 				// send score after student complete the model

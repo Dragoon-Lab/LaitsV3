@@ -21,12 +21,11 @@
 // running Dragoon inside ET required to communicate with ET service through a heartbeat
 define([
 	"dojo/_base/array",
-	'dojo/_base/declare',
+	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/request/iframe",
-	"dojo/dom-construct",
-	"dojo/request/script"
-], function(array, declare, lang, iframe, domConstruct, script){
+	"dojo/dom-construct"
+], function(array, declare, lang, iframe, domConstruct){
 	return declare(null, {
 
 		/*constructor : function(frameTitle){
@@ -54,13 +53,12 @@ define([
 			this.CHILD_WINDOW = null;
 			this.TEST_SERVICE = null;
 			this.HEART_MONITOR_SERVICE = null;
-			this.CHILD_GATEWAY_ID = "ActivityFrame";
-			this.IS_CHILD_LOADED = false;
-			this.LOADING_WAIT_TIME = 60;
+			this.LOGGER_FRAME_NAME = "ETContainer";
 			this.LOADED_VERB = "Loaded";
 			this.HEARTBEAT_NAME = "ChildHearbeat";
 			this.COMPLETED_VERB = "Completed";
-			this.DUMP_LOG_VERB = "Dump Logs";
+			this.DEFAULT_FRAME_NAME = "ActivityFrame";
+			this.DEFAULT_PARENT_NAME = "MainPostingGateway";
 
 			//parameters for child window instantiation
 			this.p1 = query.p1; //user reference ID, uuid
@@ -70,6 +68,7 @@ define([
 			this.p5 = query.p5; //problem ID
 			this.p6 = query.p6; //user name
 			this.p7 = query.p7; // assistments system reference, uuid
+			this.taskId = query.taskId;
 		},
 
 		startService : function(){
@@ -80,56 +79,42 @@ define([
     		console.log("ET loaded message send");
 			*/
 			console.log("Start ET connect services");
-			var sourceURL = "../ET/ChildWindow.html?taskId=" + this.taskID + "&p1=" + this.p1 + "&p2=" + this.p2 + "&p3=" + this.p3 +
-				"&p4=" + this.p4 +"&p5=" + this.p5 + "&p6=" + this.p6 + "&p7=" + this.p7;
-			registry.byId("ETContainer").set("content", domConstruct.create("iframe", {
+			var sourceURL = "https://recommender.x-in-y.com/LoggerWindow.html";
+			dojo.byId("ETContainer").innerHTML = domConstruct.create("iframe", {
 				src: sourceURL,
 				style: "visibility: none; height:0; width:0"
-			}));
+			});
 
-			script.get("//cdnjs.cloudflare.com/ajax/libs/socket.io/1.1.0/socket.io.min.js", {}).then(function(data){
+			/*script.get("", {}).then(function(data){
 				var socketScript = domConstruct.create("script");
 				socketScript.src = data;
 				socketScript.type = "text/javascript";
 				domConstruct.place(socketScript, null, dojo.body, "last");
 
-				this.onStart();
-			});
+			});*/
+			this.onStart();
 		},
 
 		onStart: function(){
 			var gatewayScope = {};
-			gatewayScope[ReferenceData.REFERENCE_IMPLEMENTATION_VERSION_KEY] = ReferenceData.version;
-			gatewayScope[ReferenceData.USER_AGENT_KEY] = navigator.userAgent;
-			this.CHILD_GATEWAY = SuperGLU.Message_Gateway.PostMessageGatewayStub(
-				this.CHILD_GATEWAY_ID, null, null, CHILD_WINDOW);
-			this.TEST_SERVICE = SuperGLU.Message_Gateway.TestService("ParentTestService");
-			this.HEART_MONITOR_SERVICE = SuperGLU.Heartbeat_Service.HeartbeatMonitor(
-				null, [this.HEARTBEAT_NAME], 150, this.onSkipHeartbeat);
-			this.MAIN_POSTING_GATEWAY = SuperGLU.MessageGateway.PostMessageGateway(
-				"MainPostingGateway", [
-					this.CHILD_GATEWAY,
-					this.HEART_MONITOR_SERVICE,
-					this.TEST_SERVICE
-				],
-				null, gatewayScope);
-			this.HEART_MONITOR_SERVICE.start();
+			var loggingScope = {};
+			loggingScope['ASSISTments_p1'] = this.p1;
+            loggingScope['ASSISTments_p2'] = this.p2;
+            loggingScope['ASSISTments_p3'] = this.p3;
+            loggingScope['ASSISTments_p4'] = this.p4;
+            loggingScope['ASSISTments_p5'] = this.p5;
+            loggingScope['ASSISTments_p6'] = this.p6;
+            loggingScope['ASSISTments_p7'] = this.p7;
+			this.LOGGING_SERVICE = SuperGLU.Standard_ITS_Logging.StandardITSLoggingService(
+								null, this.p1, this.taskId, null, this.p7, loggingScope);
 
-			var oldReceiveMsg = this.TEST_SERVICE.receiveMessage;
-			this.TEST_SERVICE.receiveMessage = function(msg){
-				oldReceiveMsg(msg);
-				if((msg.getSpeechAct() == Messaging.INFORM_ACT) && 
-					((msg.getVerb() == this.LOADED_VERB) || (msg.getVerb() == this.COMPLETED_VERB))){
-					// if we want to show a message which we dont so just not doing anything in case.
-					//Keeping it for future
-				} else if((msg.getSpeechAct() == Messaging.INFORM_ACT) && 
-					((msg.getVerb() == this.LOADED_VERB) || (msg.getVerb() == Heartbeat_Service.HEARTBEAT_VERB))) {
-					this.IS_CHILD_LOADED = true;
-				} else if(msg.getVerb() == this.DUMP_LOG_VERB) {
-					//again keeping it just in case for future
-				}
-			};
-			setTimeout(this.onLoadingTimeout, this.LOADING_WAIT_TIME*1000);
+			this.HEARTBEAT_SERVICE = SuperGLU.Heartbeat_Service.HeartbeatService(null, this.HEARTBEAT_NAME, 30);
+			this.PARENT_POSTING_STUB = SuperGLU.Messaging_Gateway.PostMessageGatewayStub(this.PARENT_NAME, null, null, parent);
+			this.GATEWAY_SERVICE = SuperGLU.Messaging_Gateway.PostMessageGateway(this.FRAME_NAME, 
+								[this.LOGGING_SERVICE, this.HEARTBEAT_SERVICE, this.PARENT_POSTING_STUB], null, gatewayScope);
+			this.HEARTBEAT_SERVICE.start();
+			this.LOGGING_POSTING_STUB = SuperGLU.Messaging_Gateway.PostMessageGatewayStub(this.LOGGER_FRAME_NAME, this.GATEWAY_SERVICE, null, document.getElementById(this.LOGGER_FRAME_NAME).contentWindow);
+			this.LOGGING_SERVICE.sendLoadedTask(this.FRAME_NAME);
 		},
 
 		onSkipHeartbeat: function(name, monitor){
@@ -138,14 +123,15 @@ define([
 
 		onLoadingTimeout: function(){
 			if(this.IS_CHILD_LOADED !== true)
-				HEART_MONITOR_SERVICE.stop();
+				this.HEART_MONITOR_SERVICE.stop();
 		},
 
 		stopService : function(){
 			this.HeartbeatService.stop();
 		},
 		sendScore : function(score){
-			this.TestService.sendTestMessage(this.Frame_Name, this.COMPLETED_VERB, this.Frame_Name, score, Messaging.INFORM_ACT, {});
+			this.LOGGING_SERVICE.serCompletedTask(score);
+			HEARTBEAT_SERVICE.stop();
 			this.needsToSendScore = false;
 			console.log("ET service stopped");
 		}
