@@ -180,7 +180,6 @@ define([
                     allowForum:true,
                     allowCreateSchema:true,
                     allowProblemTimes:true,
-                    allowSaveAs:true,
                     allowMerge: false,
                     allowPreview:true,
                     allowPrettify: false,
@@ -197,12 +196,11 @@ define([
                     ],
 
                     allowSliders: true,
-
-                    promptSaveAs:true,
                     allowZoom: true,
                     "allowAssignWaveFormButton": "true",
                     showWaveformEditor : true,
-                    "disableTimesUnitsFields" : true
+                    "disableTimesUnitsFields" : true,
+                    "disableSchemaFields": true
                 }
 			},
 

@@ -98,7 +98,10 @@ define([
 			this.maxNodes = 0;
 
 			var nodesSelect = '<select class="nodesDropdown" id = "nodes'+ this.nodesCount+'" data-dojo-type = "dijit/form/Select">';
-			nodesSelect += '<option value="">--Select--</option>';
+            if(this.isRO)
+                nodesSelect = '<select class="nodesDropdown" id = "nodes'+ this.nodesCount+'" data-dojo-type = "dijit/form/Select" disabled>';
+			console.log("nd",this.isRO,nodesSelect);
+            nodesSelect += '<option value="">--Select--</option>';
 			if(nodes){
 				array.forEach(nodes, function(node){
 					if(!node.genus || node.genus == "required"){ 
@@ -200,10 +203,10 @@ define([
 			}
 		},
 
-		showSchemaWindow: function(){
+		showSchemaWindow: function(/*boolead*/ isROAuth){
 			//this.currentSchema = this._model.given.createSchema();
 			this.nodesCount = 0;
-
+            this.isRO = isROAuth;
 			this.resetSchema();
 			this.resetDifficulty();
 			this.initNodes();
@@ -422,6 +425,12 @@ define([
 			//Add content and show dialog.
 			schemaDialog.set("content", content);
 			schemaDialog.show();
+            if(this.isRO){
+                dijit.byId("deleteAllSchemaButton").disabled = true;
+                dijit.byId("Deleteschema1Button").disabled = true;
+                dijit.byId("saveEditSchemaButton").disabled = true;
+            }
+
 
 			//Add event handlers for delete buttons
 			array.forEach(schemas, lang.hitch(this, function(schema){

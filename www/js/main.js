@@ -734,10 +734,12 @@ define([
 						window.location.pathname.indexOf("/devel/") === 0){
 						style.set(registry.byId("problemPublishButton").domNode, "display", "inline-block");
 					}
+                    //This check has to be performed exclusively for now for ROAuthor mode property disableTimesUnitsFields
                     if(activity_config.get("disableTimesUnitsFields")){
-                        console.log("trying to disable the fields");
                         DQuery("#authorDescDialog input").attr("readOnly",true);
                         DQuery("#authorDescDialog textarea").attr("readOnly",true);
+                        dijit.byId("authorProblemCheck").disabled = true;
+                        dijit.byId("problemPublishButton").disabled = true;
                         dijit.byId("authorSetTimeStepUnits").readOnly = true;
                         dijit.byId("authorSetIntegrationMethod").readOnly = true;
                         dijit.byId("authorSetParameters").readOnly = true;
@@ -960,8 +962,16 @@ define([
 				var schema = new schemaAuthor(givenModel, session);
 				menu.add("schemaButton", function(e){
 					event.stop(e);
-					schema.showSchemaWindow();
-				});
+                    var isAuthRO = false;
+					if(activity_config.get("disableSchemaFields")){
+                        DQuery("#schemaAuthorBox input").attr("disabled",true);
+                        isAuthRO = true;
+                        dijit.byId("goToFactors").disabled = true;
+                        dijit.byId("resetSchema").disabled = true;
+                        //disabling inside view all schemas buttons
+                    }
+                    schema.showSchemaWindow(isAuthRO);
+                });
 			}
 
 			if(activity_config.get("allowMerge")){
