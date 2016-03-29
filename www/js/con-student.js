@@ -232,6 +232,8 @@ define([
 				// enable forum button and activate the event
 				this.activateForumButton();
 			}
+
+			this.logging.setModelChanged(true);
 		},
 
 		explanationHandler: function () {
@@ -255,6 +257,7 @@ define([
 			this.updateType(type);
 			this.applyDirectives(this._PM.processAnswer(this.currentID, 'type', type));
 
+			this.logging.setModelChanged(true);
 		},	
 
 		// Hide the value and expression controls in the node editor, depending on the type of node
@@ -309,6 +312,8 @@ define([
 				});
 			}
 
+			this.logging.setModelChanged(true);
+
 		},
 
 		initialSet: function (value) {
@@ -333,6 +338,7 @@ define([
 			this.equationInsert(expr);
 			//restore to default  - creating select input as stateless
 			registry.byId(this.controlMap.inputs).set('value', 'defaultSelect', false);
+			this.logging.setModelChanged(true);
 		},
 		handleUnits: function (unit) {
 			console.log("*******Student has chosen unit", unit, this);
@@ -340,6 +346,7 @@ define([
 			// updating node editor and the model.
 			this._model.student.setUnits(this.currentID, unit);
 			this.applyDirectives(this._PM.processAnswer(this.currentID, 'units', unit));
+			this.logging.setModelChanged(true);
 		},
 		unitsSet: function (value) {
 			// Update the model.
@@ -365,7 +372,7 @@ define([
 						} : null;
 					directives.push(d);
 					return false;
-				})
+				});
 			}
 			console.log(directives);
 			this.applyDirectives(directives);
@@ -379,6 +386,8 @@ define([
 			if (!isDemo) {
 				this.createExpressionNodes(parse, false);
 			}
+
+			this.logging.setModelChanged(true);
 			return directives;
 		},
 
@@ -386,20 +395,22 @@ define([
 			// applyDirectives updates equationBox, but not equationText:
 			dom.byId("equationText").innerHTML = value;
 
-			var directives = [];
-			// Parse and update model, connections, etc.
-			var parse = this.equationAnalysis(directives);
-			// Generally, since this is the correct solution, there should be no directives
-			this.applyDirectives(directives);
+			if(value != ""){
+				var directives = [];
+				// Parse and update model, connections, etc.
+				var parse = this.equationAnalysis(directives);
+				// Generally, since this is the correct solution, there should be no directives
+				this.applyDirectives(directives);
 
-			//Set equation and process answer
-			var parsedEquation = parse.toString(true);
-			this._model.active.setEquation(this.currentID, parsedEquation);
-			var dd = this._PM.processAnswer(this.currentID, 'equation', parse, registry.byId(this.controlMap.equation).get("value"));
-			this.applyDirectives(dd);
+				//Set equation and process answer
+				var parsedEquation = parse.toString(true);
+				this._model.active.setEquation(this.currentID, parsedEquation);
+				var dd = this._PM.processAnswer(this.currentID, 'equation', parse, registry.byId(this.controlMap.equation).get("value"));
+				this.applyDirectives(dd);
 
-			//Create expression nodes for parsed equation
-			this.createExpressionNodes(parse);
+				//Create expression nodes for parsed equation
+				this.createExpressionNodes(parse);
+			}
 		},
 
 		//Set description for autocreated Nodes
@@ -605,6 +616,7 @@ define([
 
 		showIncrementalEditor: function (id) {
 			this.currentID = id;
+			this.isIncrementalEditorVisible = true;
 			var type = this._model.active.getType(id);
 			var givenID = this._model.active.getDescriptionID(id);
 			var nodeName = this._model.active.getName(id);
@@ -647,15 +659,9 @@ define([
 
 
 					this._incrementalMenu.onBlur = lang.hitch(this, function () {
-						this.closeIncrementalMenu();
+						if(this.isIncrementalEditorVisible)
+							this.closeIncrementalMenu();
 					});
-
-					if(this.activityConfig.get("demoIncrementalFeatures")) {
-						console.log("can show done popup called inside inc demo");
-						if(!this.shownDone){
-							this.canShowDonePopup();
-						}
-					}
 				}
 			}
 		},
@@ -699,7 +705,6 @@ define([
 
 					//Close popup
 					that.closeIncrementalMenu(true);
-					that.canShowDonePopup();
 				});
 			});
 
@@ -721,6 +726,7 @@ define([
 				nodeID: this.currentID
 			});
 			this.nodeCloseAssessment(this.currentID);
+			this.isIncrementalEditorVisible = false;
 			popup.close(this._incrementalMenu);
 			if (doColorNodeBorder) {
 				this.colorNodeBorder(this.currentID, true);
@@ -728,7 +734,9 @@ define([
 
 		},
 
-		canShowDonePopup: function () {
+		//code moved to main.js as events should be handled there.
+		//added an aspect.after for each node menu close for every activity and that is how done message is shown - Sachin Grover
+		/*canShowDonePopup: function () {
 			studId = this._model.active.getNodes();
 			var isFinished = true;
 			studId.forEach(lang.hitch(this, function (newId) {
@@ -772,7 +780,7 @@ define([
 					this.applyDirectives(directives);
 				}
 			}
-		},
+		},*/
 
 		highlightNextNode: function () {
 			if (this.activityConfig.get("demoIncrementalFeatures") || this.activityConfig.get("demoExecutionFeatures")) {
@@ -1140,9 +1148,6 @@ define([
 									this.colorNodeBorder(this.currentID, true);
 									waveformEditorDialog.hide();
 								}
-								//canShowDonePopup also handles the waveform activity with the same variable
-								if(!this.shownDone)
-									this.canShowDonePopup();
 							}));
 						}));
 					}
@@ -1208,6 +1213,15 @@ define([
 				style.set(showExplanationButton, "display", "block");
 			else
 				style.set(showExplanationButton, "display", "none");
+		},
+
+		notifyCompleteness: function(){
+			// Trigger notify completeness since we're done.
+			// Construction triggers this when the node editor closes instead.
+			if (this.activityConfig.getActivity() != "construction"){
+				var directives = this._PM.notifyCompleteness(this._model);
+				this.applyDirectives(directives);
+			}
 		}
 	});
 });

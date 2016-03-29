@@ -54,7 +54,7 @@ define([
 
 					promptSaveAs:true,
 					allowZoom: true,
-                    "allowAssignWaveFormButton": "true",
+                    allowAssignWaveFormButton: true,
                     showWaveformEditor : true
                 },
 
@@ -72,6 +72,7 @@ define([
 					showHints: true,
 					showFeedback: true,
 					showCorrectAnswer:true,
+					showDoneMessage: true,
 					showEquationAutoComplete: true,
 					allowZoom: true,
 					enable:[
@@ -104,6 +105,7 @@ define([
 					showHints: true,
 					showFeedback: true,
 					showCorrectAnswer:true,
+					showDoneMessage: true,
 					showEquationAutoComplete: true,
 					targetNodeStrategy:true,
 					allowZoom: true,
@@ -134,6 +136,7 @@ define([
 					allowDeleteNode: true,
 					allowEditNode: true,
 					showEquationAutoComplete: true,
+					showDoneMessage: true,
 					allowZoom: true,
 					enable:[
 					],
@@ -186,6 +189,7 @@ define([
 					showHints: true,
 					showFeedback: true,
 					showCorrectAnswer:true,
+					showDoneMessage: true,
 
 					initializeStudentModel : true,
 					resetAssistanceScore : true,
@@ -221,6 +225,7 @@ define([
 					showHints: true,
 					showFeedback: true,
 					showCorrectAnswer:true,
+					showDoneMessage: true,
 
 					initializeStudentModel : true,
 					resetAssistanceScore : true,
@@ -254,6 +259,7 @@ define([
 
 					initializeStudentModel : true,
 					resetAssistanceScore : true,
+					showDoneMessage: true,
 					copyFields: [
 						"description",
 						"type",
@@ -318,6 +324,7 @@ define([
 					showHints: true,
 					showFeedback: true,
 					showCorrectAnswer:true,
+					showDoneMessage: true,
 
 					initializeStudentModel : true,
 					resetAssistanceScore : true,
@@ -356,6 +363,7 @@ define([
 					showHints: true,
 					showFeedback: true,
 					showCorrectAnswer:true,
+					showDoneMessage: true,
 
 					initializeStudentModel : true,
 					resetAssistanceScore : true,
@@ -392,6 +400,7 @@ define([
 					allowZoom: true,
 					initializeStudentModel : true,
 					resetAssistanceScore : true,
+					showDoneMessage: true,
 					copyFields: [
 						"description",
 						"type",
@@ -463,6 +472,7 @@ define([
 					showHints: true,
 					showFeedback: true,
 					showCorrectAnswer:true,
+					showDoneMessage: true,
 					copyFields: [
 						"description",
 						"type",
@@ -500,6 +510,7 @@ define([
 					showHints: true,
 					showFeedback: true,
 					showCorrectAnswer:true,
+					showDoneMessage: true,
 					copyFields: [
 						"description",
 						"type",
@@ -545,6 +556,7 @@ define([
 
 					showNodeEditor:false,
 					showPopupIfComplete: true,
+					showDoneMessage: true,
 
 					showExecutionEditor : true,
 					getNodeOrder: true,
@@ -605,6 +617,7 @@ define([
 					showHints: true,
 					showFeedback: true,
 					showCorrectAnswer:true,
+					showDoneMessage: true,
 					copyFields: [
 						"description",
 						"type",
@@ -639,6 +652,7 @@ define([
 					showHints: true,
 					showFeedback: true,
 					showCorrectAnswer:true,
+					showDoneMessage: true,
 					copyFields: [
 						"description",
 						"type",
@@ -680,6 +694,7 @@ define([
 
 					initializeStudentModel : true,
 					showNodeEditor:false,
+					showDoneMessage: true,
 
 					showExecutionEditor : true,
 					nodeDetails: "NEWVALUE",
@@ -738,6 +753,7 @@ define([
 					showHints: true,
 					showFeedback: true,
 					showCorrectAnswer:true,
+					showDoneMessage: true,
 					copyFields: [
 						"description",
 						"type",
@@ -770,6 +786,7 @@ define([
 					showHints: true,
 					showFeedback: true,
 					showCorrectAnswer:true,
+					showDoneMessage: true,
 					copyFields: [
 						"description",
 						"type",
@@ -811,6 +828,7 @@ define([
 
 					initializeStudentModel : true,
 					showNodeEditor:false,
+					showDoneMessage: true,
 
 					showWaveformEditor : true,
 					nodeDetails: "WAVEFORM",
@@ -882,6 +900,7 @@ define([
 				showFeedback:false,
 				showCorrectAnswer:false,
 				targetNodeStrategy:false,
+				showDoneMessage: false,
 
 				disableFieldOnCorrectAnswer: false,
 
