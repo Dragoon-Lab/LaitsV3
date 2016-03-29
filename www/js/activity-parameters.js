@@ -336,7 +336,7 @@ define([
 					setTweakDirections: true,
 					setStudentTweakDirections: true,
 					useTweakStatus: true,
-					demoIncremental:true,
+					demoIncrementalFeatures:true,
 					showPopupIfComplete: true,
 					getNodeOrder: true,
 					properties: [
@@ -374,7 +374,7 @@ define([
 					setTweakDirections: true,
 					setStudentTweakDirections: true,
 					useTweakStatus: true,
-					demoIncremental:true,
+					demoIncrementalFeatures:true,
 					useTweakedNodeForOrdering: true,
 					getNodeOrder: true,
 					properties: [
@@ -407,7 +407,7 @@ define([
 					setTweakDirections: true,
 					setStudentTweakDirections: true,
 					useTweakStatus: true,
-					demoIncremental:true,
+					demoIncrementalFeatures:true,
 					useTweakedNodeForOrdering: true,
 					getNodeOrder: true,
 					properties: [
@@ -442,7 +442,7 @@ define([
 					setTweakDirections: true,
 					setStudentTweakDirections: true,
 					useTweakStatus: true,
-					demoIncremental:true,
+					demoIncrementalFeatures:true,
 					useTweakedNodeForOrdering: true,
 					getNodeOrder: true,
 					properties: [
@@ -486,7 +486,7 @@ define([
 					properties: [
 						"executionValue"
 					],
-					demoExecution:true
+					demoExecutionFeatures:true
 				},
 
 				COACHED:{
@@ -523,7 +523,7 @@ define([
 					properties: [
 						"executionValue"
 					],
-					demoExecution:true
+					demoExecutionFeatures:true
 				},
 
 				TEST:{
@@ -555,7 +555,7 @@ define([
 					properties: [
 						"executionValue"
 					],
-					demoExecution:true
+					demoExecutionFeatures:true
 				},
 
 				EDITOR:{
@@ -590,7 +590,7 @@ define([
 					properties: [
 						"executionValue"
 					],
-					demoExecution:true
+					demoExecutionFeatures:true
 				}
 			},
 			execution: {
@@ -915,7 +915,7 @@ define([
 				setTweakDirections: false,
 				setStudentTweakDirections: false,
 				useTweakStatus: false,
-				demoIncremental:false,
+				demoIncrementalFeatures:false,
 				showPopupIfComplete:false,
 				useTweakedNodeForOrdering: false,
 				getNodeOrder: false,
@@ -924,7 +924,7 @@ define([
 				showExecutionEditor: false,
 				setExecutionValues:false,
 				setStudentExecutionValues:false,
-				demoExecution:false,
+				demoExecutionFeatures:false,
                 executionExercise: false,
 
 				//Waveform Behavior

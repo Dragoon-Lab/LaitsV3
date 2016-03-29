@@ -650,7 +650,7 @@ define([
 						this.closeIncrementalMenu();
 					});
 
-					if(this.activityConfig.get("demoIncremental")) {
+					if(this.activityConfig.get("demoIncrementalFeatures")) {
 						console.log("can show done popup called inside inc demo");
 						if(!this.shownDone){
 							this.canShowDonePopup();
@@ -775,7 +775,7 @@ define([
 		},
 
 		highlightNextNode: function () {
-			if (this.activityConfig.get("demoIncremental") || this.activityConfig.get("demoExecution")) {
+			if (this.activityConfig.get("demoIncrementalFeatures") || this.activityConfig.get("demoExecutionFeatures")) {
 				//Get next node in the list from PM
 				var nextID = this._PM.getNextNode();
 				if (nextID) {
@@ -975,7 +975,7 @@ define([
 						style.set(showExplanationButton, "display", "none");
 
 					//in case of execution demo we need to show the correct answer
-					if(this.activityConfig.get("demoExecution")) {
+					if(this.activityConfig.get("demoExecutionFeatures")) {
 						var answer = this._model.active.getExecutionValue(id) || "";
 						executionValue.set("value", answer);
 					}
