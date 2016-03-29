@@ -12,6 +12,7 @@
 			}
 			$fileString = file_get_contents($this->folderName.$name.".json");
 			$this->currentProblem = json_decode($fileString, true);
+			$this->currentProblem["task"]["name"] = $name;
 			$this->initNodeSchema();
 			$this->setNodeSchemaNames();
 			self::$problems[$name] = json_encode($this->currentProblem, true);
@@ -50,6 +51,10 @@
 
 		private function getSchemas(){
 			return $this->currentProblem["task"]["schemas"];
+		}
+
+		public function getName(){
+			return $this->currentProblem["task"]["name"];
 		}
 
 		public function getIndex($n){
@@ -128,6 +133,22 @@
 				}
 			}
 			usort($schemaIDs, array("Problem", "cmp"));
+
+			return $schemaIDs;
+		}
+
+		function getUniqueSchemas($name){
+			$ID = $this->getNodeID($name);
+			$schemas = $this->getSchemas();
+			$schemaIDs = array();
+
+			foreach($schemas as $schema){
+				$schemaArray = explode(", ", $schema["nodes"]);
+				if(in_array($ID, $schemaArray)){
+					if(!in_array($schema, $schemaIDs))
+						array_push($schemaIDs, $schema["schemaClass"]);
+				}
+			}
 
 			return $schemaIDs;
 		}
@@ -246,6 +267,38 @@
 			}
 
 			return $typeCount;
+		}
+
+		function getAccParNodeCount(){
+            $nodes = $this->getNodes();
+            $count = 0;
+            foreach($nodes as $node){
+                if($node->type != "function")
+                    $count++;
+            }
+
+            return $count;
+        }
+
+		function getAllUnits(){
+			$units = array();
+			$nodes = $this->getNodes();
+			foreach($nodes as $node){
+				if(!in_array($node["units"], $units, true)){
+					array_push($units, $node["units"]);
+				}
+			}
+
+			return $units;
+		}
+
+		function getPropertyValue($name, $property){
+			$node = $this->getNode($name);
+			if($node != null){
+				return $node[$property];
+			}
+
+			return null;
 		}
 	}
 

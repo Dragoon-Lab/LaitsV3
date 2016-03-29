@@ -178,6 +178,7 @@ EOT;
 		$n->type = $cp->getNodeType($m["node"]);
 		$n->problem = $row["problem"];
 		$n->schemas = $cp->getSchemasForNode($m["node"]);
+		$n->uniqueSchemas = $cp->getUniqueSchemas($m["node"]);
 		$n->schemaNames = $cp->getNodeSchemaNames($m["node"]);
 		$n->difficultyParams = $cp->getDifficultyParams($m["node"]);
 		$n->setSkills();
