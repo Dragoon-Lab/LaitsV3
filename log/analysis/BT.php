@@ -141,6 +141,36 @@
 		return $prob;
 	}
 
+	function printBTvalues($objs){
+		$data = array();
+		$tab = "\t";
+		$newLine = "\n";
+		$heading = "user".$tab."problem".$tab."node".$tab."property".$tab."status".$tab."posterior".$newLine;
+		array_push($data, $heading);
+		$fileName = "BayesianModel.csv";
+		foreach($objs as $usr){
+			$strUsr = $usr->codeName.$tab;
+			foreach($usr->pNodes as $node){
+				$strNode = $strUser.$node->problem.$tab.$node->name.$tab;
+				foreach($node->properties as $property){
+					$line = $strNode.$property->name.$tab;
+					if($property->value == "CORRECT")
+						$line .= 1.$tab;
+					else 
+						$line .= 0.$tab;
+
+					$line .= $property->posterior.$newLine;
+
+					array_push($data, $heading);
+				}
+			}
+		}
+
+		$file = fopen($fileName, "w");
+		foreach($data as $row)
+			fwrite($file, $row);
+	}
+
 	public class StudentModel{
 		private $knowledge = array();
 		private static $initialKnowledge = 0.1;
