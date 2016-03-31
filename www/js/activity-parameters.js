@@ -200,7 +200,9 @@ define([
                     "allowAssignWaveFormButton": "true",
                     showWaveformEditor : true,
                     "disableTimesUnitsFields" : true,
-                    "disableSchemaFields": true
+                    "disableSchemaFields": true,
+                    "disableNodeEditorFields": true,
+                    "restrictNodeMovement": true
                 }
 			},
 

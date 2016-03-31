@@ -287,7 +287,7 @@ define([
 			var subMode = query.sm || "feedback";
 
 			/* In principle, we could load just one controller or the other. */
-			var controllerObject = query.m == 'AUTHOR' ?
+			var controllerObject = (query.m == 'ROAUTHOR' || query.m == 'AUTHOR') ?
 				new controlAuthor(query.m, subMode, givenModel, query.is, ui_config, activity_config) :
 				new controlStudent(query.m, subMode, givenModel, query.is, ui_config, activity_config);
 
@@ -505,7 +505,7 @@ define([
 			var drawModel = new drawmodel(givenModel.active, ui_config.get("showColor"), activity_config);
 			drawModel.setLogging(session);
 			
-			if(query.m != 'AUTHOR'){
+			if(query.m != 'AUTHOR' && query.m != 'ROAUTHOR'){
 				controllerObject.setAssessment(session); //set up assessment for student.
 			}
 			// add mouse enter and mouse leave event for every new node	
@@ -566,6 +566,12 @@ define([
 				if(activity_config.get("showNodeEditor")){
 					if(mover.mouseButton != 2) { //check if not right click
 						controllerObject.showNodeEditor(mover.node.id);
+                        if(activity_config.get("disableNodeEditorFields")){
+                            DQuery("#nodeeditor input").attr("disabled",true);
+                            DQuery("#nodeeditor textarea").attr("disabled",true);
+                            dijit.byId("setName").readOnly = true;
+                            dijit.byId("selectKind").readOnly = true;
+                        }
 					}
 					if(givenModel.getImageURL())
 						registry.byId('imageButton').set('disabled', false);
@@ -958,19 +964,15 @@ define([
 			if(activity_config.get("allowCreateSchema")){
 				var schemaButton = registry.byId("schemaButton");
 				schemaButton.set("disabled", false);
-
-				var schema = new schemaAuthor(givenModel, session);
+                var isAuthRO = false;
+                if(activity_config.get("disableSchemaFields")){
+                    DQuery("#schemaAuthorBox input").attr("disabled",true);
+                    isAuthRO = true;
+                }
+                var schema = new schemaAuthor(givenModel, session, isAuthRO);
 				menu.add("schemaButton", function(e){
 					event.stop(e);
-                    var isAuthRO = false;
-					if(activity_config.get("disableSchemaFields")){
-                        DQuery("#schemaAuthorBox input").attr("disabled",true);
-                        isAuthRO = true;
-                        dijit.byId("goToFactors").disabled = true;
-                        dijit.byId("resetSchema").disabled = true;
-                        //disabling inside view all schemas buttons
-                    }
-                    schema.showSchemaWindow(isAuthRO);
+                    schema.showSchemaWindow();
                 });
 			}
 
@@ -1668,6 +1670,7 @@ define([
 					});
 		//       });
 			}
+
 
 			if(activity_config.get("targetNodeStrategy")){
 

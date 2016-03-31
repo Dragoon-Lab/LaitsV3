@@ -46,9 +46,10 @@ define([
 		currentNodes: [],
 		showFactors: false,
 
-		constructor: function(/* object */ model, /* object */ session){
+		constructor: function(/* object */ model, /* object */ session, /*Boolean*/ isAuthRO){
 			this._model = model;
 			this.schemaSession = new schemas(session, "");
+            this.isRO = isAuthRO;
 			var schemaObject;
 			this.schemaSession.getFileData("schemas.json").then(function(schemas){
 				schemaObject = schemas;
@@ -100,8 +101,7 @@ define([
 			var nodesSelect = '<select class="nodesDropdown" id = "nodes'+ this.nodesCount+'" data-dojo-type = "dijit/form/Select">';
             if(this.isRO)
                 nodesSelect = '<select class="nodesDropdown" id = "nodes'+ this.nodesCount+'" data-dojo-type = "dijit/form/Select" disabled>';
-			console.log("nd",this.isRO,nodesSelect);
-            nodesSelect += '<option value="">--Select--</option>';
+			nodesSelect += '<option value="">--Select--</option>';
 			if(nodes){
 				array.forEach(nodes, function(node){
 					if(!node.genus || node.genus == "required"){ 
@@ -135,33 +135,40 @@ define([
 			on(phrasesWidget, "change", lang.hitch(this, function(){
 				this.handleDifficulty.apply(this, arguments);
 			}));
-			
-			var gotoButtonWidget = dom.byId("goToFactors");
-			if(this.showFactors){
-				on(gotoButtonWidget, "click", lang.hitch(this, function(){
-					this.initFactorsWindow.apply(this, arguments);
-				}));
-				
-				var saveButtonWidget = dom.byId("saveSchema");
-				on(saveButtonWidget, "click", lang.hitch(this, function(){
-					this.saveSchema.apply(this, arguments);
-				}));
-			} else {
-				dom.byId("goToFactors").textContent = "Save";
-				on(gotoButtonWidget, "click", lang.hitch(this, function(){
-					this.saveSchema.apply(this, arguments);
-				}));
-			}
 
-			var resetButtonWidget = dom.byId("resetSchema");
-			on(resetButtonWidget, "click", lang.hitch(this, function(){
-				this.resetSchema.apply(this, arguments);
-			}));
+			//Before assigning functionality to the gotofactors and saveschema put a check for readonly author mode from isRo flag
+            if(this.isRO){
+                dijit.byId("goToFactors").disabled = true;
+                dijit.byId("resetSchema").disabled = true;
+            }
+            else {
+                var gotoButtonWidget = dom.byId("goToFactors");
+                if (this.showFactors) {
+                    on(gotoButtonWidget, "click", lang.hitch(this, function () {
+                        this.initFactorsWindow.apply(this, arguments);
+                    }));
 
-			var viewSchemaButton = dom.byId("showAllSchemas");
-			on(viewSchemaButton, "click", lang.hitch(this, function(){
-				this.initViewSchemasDialog();
-			}));
+                    var saveButtonWidget = dom.byId("saveSchema");
+                    on(saveButtonWidget, "click", lang.hitch(this, function () {
+                        this.saveSchema.apply(this, arguments);
+                    }));
+                } else {
+                    dom.byId("goToFactors").textContent = "Save";
+                    on(gotoButtonWidget, "click", lang.hitch(this, function () {
+                        this.saveSchema.apply(this, arguments);
+                    }));
+                }
+
+                var resetButtonWidget = dom.byId("resetSchema");
+                on(resetButtonWidget, "click", lang.hitch(this, function () {
+                    this.resetSchema.apply(this, arguments);
+                }));
+            }
+
+            var viewSchemaButton = dom.byId("showAllSchemas");
+            on(viewSchemaButton, "click", lang.hitch(this, function () {
+                this.initViewSchemasDialog();
+            }));
 		},
 
 		initNodesHandler: function(){
@@ -203,10 +210,9 @@ define([
 			}
 		},
 
-		showSchemaWindow: function(/*boolead*/ isROAuth){
+		showSchemaWindow: function(){
 			//this.currentSchema = this._model.given.createSchema();
 			this.nodesCount = 0;
-            this.isRO = isROAuth;
 			this.resetSchema();
 			this.resetDifficulty();
 			this.initNodes();
@@ -430,36 +436,36 @@ define([
                 dijit.byId("Deleteschema1Button").disabled = true;
                 dijit.byId("saveEditSchemaButton").disabled = true;
             }
+            else {
+                //Add event handlers for delete buttons
+                array.forEach(schemas, lang.hitch(this, function (schema) {
+                    var button = dom.byId("Delete" + schema.ID + "Button");
+                    on(button, 'click', lang.hitch(this, function () {
+                        dojo.destroy("row-" + schema.ID);
+                        array.forEach(schemas, lang.hitch(this, function (s, index) {
+                            if (s && s.ID == schema.ID) {
+                                schemas.splice(index, 1);
+                            }
+                        }));
+                    }));
+                }));
 
+                var deleteAllSchemaButton = dom.byId("deleteAllSchemaButton");
+                on(deleteAllSchemaButton, 'click', lang.hitch(this, function () {
+                    this._model.given.setSchemas([]);
+                    this._session.saveProblem(this._model.model);
+                    schemaDialog.hide();
+                }));
 
-			//Add event handlers for delete buttons
-			array.forEach(schemas, lang.hitch(this, function(schema){
-				var button = dom.byId("Delete"+ schema.ID +"Button");
-				on(button, 'click', lang.hitch(this, function(){
-					dojo.destroy("row-"+schema.ID);
-					array.forEach(schemas, lang.hitch(this, function(s, index){
-						if(s && s.ID == schema.ID){
-							schemas.splice(index, 1);
-						}
-					}));
-				}));
-			}));
+                //Event Handler for Save
+                var saveEditSchema = dom.byId("saveEditSchemaButton");
+                on(saveEditSchema, 'click', lang.hitch(this, function () {
+                    this._model.given.setSchemas(schemas);
+                    this._session.saveProblem(this._model.model);
+                    schemaDialog.hide();
+                }));
 
-			var deleteAllSchemaButton = dom.byId("deleteAllSchemaButton");
-			on(deleteAllSchemaButton, 'click', lang.hitch(this, function(){
-				this._model.given.setSchemas([]);
-				this._session.saveProblem(this._model.model);
-				schemaDialog.hide();
-			}));
-
-			//Event Handler for Save
-			var saveEditSchema = dom.byId("saveEditSchemaButton");
-			on(saveEditSchema, 'click', lang.hitch(this, function(){
-				this._model.given.setSchemas(schemas);
-				this._session.saveProblem(this._model.model);
-				schemaDialog.hide();
-			}));
-
+            }
 			//Event Handler for cancel
 			var cancelEditSchemas = dom.byId("cancelEditSchemaButton");
 			on(cancelEditSchemas, 'click', function(){

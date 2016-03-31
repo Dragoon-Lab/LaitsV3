@@ -1288,7 +1288,21 @@ define([
 					this.tour = null;
 				}
 			}
-		},
+		if(this.activityConfig.get("disableNodeEditorFields")) {
+            dijit.byId("typeId").disabled=true;
+            dijit.byId("setUnits").disabled = true;
+            dijit.byId("setInput").disabled = true;
+            dijit.byId("deleteButton").disabled = true;
+            dijit.byId("undoButton").disabled = true;
+            dijit.byId("explanationButton").disabled = true;
+            dijit.byId("equationDoneButton").disabled = true;
+            dijit.byId("assignWaveFormButton").disabled = true;
+            dijit.byId("plusButton").disabled = true;
+            dijit.byId("minusButton").disabled = true;
+            dijit.byId("timesButton").disabled = true;
+            dijit.byId("divideButton").disabled = true;
+        }
+        },
 
 		// Stub to be overwritten by student or author mode-specific method.
 		initialControlSettings: function(id){
@@ -1367,6 +1381,7 @@ define([
 			 Note that if equation is disabled then
 			 input, +, -, *, /, undo, and done should also be disabled.
 			 */
+
 		},
 		setLogging: function(/*string*/ logging){
 			this.logging = logging;

@@ -74,7 +74,7 @@ define([
 				/*
 				 Define the "active model" (see doucumentation/node-editor.md).
 				 */
-				obj.active = (mode == "AUTHOR") ? obj.given : obj.student;
+				obj.active = (mode == "AUTHOR" || mode == "ROAUTHOR") ? obj.given : obj.student;
 
 			},
 			// Private variables
