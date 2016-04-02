@@ -143,9 +143,9 @@
 			$schemaIDs = array();
 
 			foreach($schemas as $schema){
-				$schemaArray = explode(", ", $schema["nodes"]);
-				if(in_array($ID, $schemaArray)){
-					if(!in_array($schema, $schemaIDs))
+				$IDArray = explode(", ", $schema["nodes"]);
+				if(in_array($ID, $IDArray)){
+					if(!in_array($schema["schemaClass"], $schemaIDs))
 						array_push($schemaIDs, $schema["schemaClass"]);
 				}
 			}
@@ -166,6 +166,11 @@
 			}
 
 			return $schemaIDs;
+		}
+
+		function getValue($name, $propertyName){
+			$node = $this->getNode($name);
+			return $node != null && array_key_exists($propertyName, $node) ? $node[$propertyName] : null;
 		}
 
 		static function cmp($a, $b){
@@ -273,7 +278,7 @@
             $nodes = $this->getNodes();
             $count = 0;
             foreach($nodes as $node){
-                if($node->type != "function")
+                if($node["type"] != "function")
                     $count++;
             }
 
@@ -284,11 +289,13 @@
 			$units = array();
 			$nodes = $this->getNodes();
 			foreach($nodes as $node){
-				if(!in_array($node["units"], $units, true)){
+			//	echo json_encode($node)."<br/>";
+				if(array_key_exists("units", $node) && !in_array($node["units"], $units)){
 					array_push($units, $node["units"]);
 				}
 			}
 
+			//echo json_encode($units)."<br/>";
 			return $units;
 		}
 
@@ -299,6 +306,24 @@
 			}
 
 			return null;
+		}
+
+		function getInModelNodeRatio(){
+			$nodes = $this->getNodes();
+			$correctNodes = 0;
+			$nodeCount = 0;
+
+			foreach($nodes as $node){
+				if(!array_key_exists("genus", $node) || $node["genus"] == "" || $node["genus"] == "required")
+					$correctNodes++;
+				$nodeCount++;
+			}
+
+			return $correctNodes/$nodeCount;
+		}
+
+		function getNodeCount(){
+			return count($this->getNodes());
 		}
 	}
 
@@ -311,6 +336,7 @@
 		public $codeName;
 		public $schemas = array(); //holds all the schema that user made with error count
 		public $currentProblemNodes = 0;
+		public $model = null;
 
 		function __construct($n){
 			$this->name = $n;
@@ -419,6 +445,7 @@
 		public $problem;
 		public $name;
 		public $schemas = array();
+		public $uniqueSchemas = array();
 		public $difficultyParams = array();
 		public $properties = array();
 		public $propertyNames = array();
@@ -461,6 +488,8 @@
 		public $schemaName = array();
 		public $schemaName2 = array();
 		public $schemaName3 = array();
+		public $posterior = 0;
+		public $knowledge = array();
 
 		function __construct($n){
 			$this->name = $n;
