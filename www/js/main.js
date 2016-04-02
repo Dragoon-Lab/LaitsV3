@@ -535,13 +535,13 @@ define([
 			// updating model after lessonlearned is shown
 			aspect.after(registry.byId("lesson"), "show", function(){
 				givenModel.setLessonLearnedShown(true);
-				if(!(activity_config.get("demoExecution") || activity_config.get("demoIncremental")))
+				if(!(activity_config.get("demoExecutionFeatures") || activity_config.get("demoIncrementalFeatures")))
 					session.saveProblem(givenModel.model);
 			}); 
 
 			// Wire up send to server
 			aspect.after(drawModel, "updater", function(){
-				if(!(activity_config.get("demoExecution") || activity_config.get("demoIncremental")))
+				if(!(activity_config.get("demoExecutionFeatures") || activity_config.get("demoIncrementalFeatures")))
 					session.saveProblem(givenModel.model);
 			});
 
@@ -566,12 +566,12 @@ define([
 						registry.byId('imageButton').set('disabled', true);
 						
 				}else if(activity_config.get("showIncrementalEditor")){
-					if(activity_config.get("demoIncremental")){
+					if(activity_config.get("demoIncrementalFeatures")){
 						controllerObject.showIncrementalAnswer(mover.node.id);
 					}
 					controllerObject.showIncrementalEditor(mover.node.id);
 				}else if(activity_config.get("showExecutionEditor")){
-					if(activity_config.get("demoExecution")){
+					if(activity_config.get("demoExecutionFeatures")){
 						controllerObject.showExecutionAnswer(mover.node.id);
 					}
 					/*
@@ -1678,12 +1678,13 @@ define([
 				//Saving incremental activity to DB
 				//Not Saving demoIncremental activity to DB
 				aspect.after(controllerObject, "closeIncrementalMenu", function(){
+
 					if(activity_config.get("showDoneMessage") && ui_config.get("doneButton") != "none" &&
 						givenModel.student.matchesGivenSolutionAndCorrect()){
 						showProblemDoneHint();
 						controllerObject.notifyCompleteness();
 					}
-					if(!activity_config.get("demoIncremental"))
+					if(!activity_config.get("demoIncrementalFeatures"))
 						session.saveProblem(givenModel.model);
 				});
 			}
@@ -1723,6 +1724,9 @@ define([
 				checkForHint();
 				aspect.after(drawModel, "deleteNode", lang.hitch(this, checkForHint));
 				aspect.after(registry.byId("nodeeditor"), "hide", lang.hitch(this, checkForHint));
+
+				// Delete premature nodes for Coached Mode - Target node strategy
+				aspect.after(controllerObject, "deleteNode", lang.hitch(drawModel, drawModel.deleteNode));
 			}
 			/*
 			 * Add Done Button to Menu
@@ -1781,15 +1785,15 @@ define([
 			menu.add("resetButton", function(e){
 				event.stop(e);
 				//call resetNodeInc demo in con student to reset the nodes	
-				if(activity_config.get("demoIncremental")){
+				if(activity_config.get("demoIncrementalFeatures")){
 					controllerObject.resetNodesIncDemo();
 				}
 				//call resetNodeExec demo in con student to reset the nodes
-				if(activity_config.get("demoExecution")){
+				if(activity_config.get("demoExecutionFeatures")){
 					controllerObject.resetNodesExecDemo();
 				}
 			});
-			if(activity_config.get("demoIncremental") || activity_config.get("demoExecution")) {
+			if(activity_config.get("demoIncrementalFeatures") || activity_config.get("demoExecutionFeatures")) {
 				controllerObject.highlightNextNode();
 			}
 		});
