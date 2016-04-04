@@ -563,6 +563,7 @@ define([
 			 */
 			 
 			aspect.after(drawModel, "onClickNoMove", function(mover){
+                console.log();
 				if(activity_config.get("showNodeEditor")){
 					if(mover.mouseButton != 2) { //check if not right click
 						controllerObject.showNodeEditor(mover.node.id);

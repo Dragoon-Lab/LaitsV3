@@ -108,7 +108,7 @@
                 },
                 "status": {},
                 "name": "wavelength",
-                "description": "length of sinewave source voltage",
+                "description": "length of source voltage sine wave",
                 "type": "parameter",
                 "equation": "",
                 "parentNode": false,

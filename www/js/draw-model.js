@@ -258,9 +258,8 @@ define([
 			 Note that the names (onMoveStart, onMove, onMoveStop) are from
 			 the underlying library dojo/dnd/move, rather than jsPlumb.
 			 */
-            if(!this._activityConfig.get("restrictNodeMovement")) {
-                this.makeDraggable(vertex);
-            }
+			this.makeDraggable(vertex);
+
 			return vertex;
 		},
 
