@@ -116,9 +116,11 @@ define([
 			console.log("ET service stopped");
 		},
 
-		sendKCScore: function(){
-			console.log("Sending KC Score");
-			this.LOGGING_SERVICE.sendKCScore(kcName, score, relevenve);
+		sendKCScore: function(kcScores){
+			var KCs = Object.keys(kcScores);
+			array.forEach(KCs, lang.hitch(this, function(kc){
+				this.LOGGING_SERVICE.sendKCScore(kc, kcScores[kc], null);
+			}));
 		},
 
 		sendHint: function(){

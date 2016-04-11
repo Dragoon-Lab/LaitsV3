@@ -462,8 +462,16 @@ define([
 
 				// send score after student complete the model
 				aspect.after(controllerObject._PM, "notifyCompleteness", function(){
-					if(!etConnect ||  !etConnect.needsToSendScore || !givenModel.isCompleteFlag) return;
-					// var score = controllerObject._assessment.getSuccessFactor();
+					if(!etConnect || !givenModel.isCompleteFlag) return;
+
+					//Send KC Scores
+					var KCScores = controllerObject._assessment.getSchemaSuccessFactor();
+					if(Object.keys(KCScores).length > 0) {
+						console.log("Sending KC Scores", KCScores);
+						etConnect.sendKCScore(KCScores);
+					}
+
+					//Complete Task Score
 					var score=controllerObject._assessment.getSchemasAverageFactor();
 					etConnect.sendScore(score);
 					console.log("sending score(successfactor):", score);
@@ -1270,10 +1278,14 @@ define([
 			});
 
 			aspect.after(registry.byId('waveformEditor'), "hide", function(){
+				//Check if problem is complete should be irrelevent of done message
+				//removing out of if loop
+				controllerObject.notifyCompleteness();
+
+				//Show Done message hint
 				if(activity_config.get("showDoneMessage") && ui_config.get("doneButton") != "none" &&
 					givenModel.student.matchesGivenSolutionAndCorrect()){
 					showProblemDoneHint();
-					controllerObject.notifyCompleteness();
 				}
 			});
 
@@ -1677,10 +1689,11 @@ define([
 				//Saving incremental activity to DB
 				//Not Saving demoIncremental activity to DB
 				aspect.after(controllerObject, "closeIncrementalMenu", function(){
+					controllerObject.notifyCompleteness();
+
 					if(activity_config.get("showDoneMessage") && ui_config.get("doneButton") != "none" &&
 						givenModel.student.matchesGivenSolutionAndCorrect()){
 						showProblemDoneHint();
-						controllerObject.notifyCompleteness();
 					}
 					if(!activity_config.get("demoIncremental"))
 						session.saveProblem(givenModel.model);
