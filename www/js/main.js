@@ -1250,7 +1250,7 @@ define([
 
 						if (contentMsg.length === 0 || contentMsg[0] == "") {
 							console.log("lessons learned is empty");
-							if(ui_config.get("doneButton") != "none" && givenModel.isDoneMessageShown === false) {
+							if(ui_config.get("doneButton") != "none" && !givenModel.isDoneMessageShown) {
 								showProblemDoneHint();
 							}
 						}else{
@@ -1260,7 +1260,7 @@ define([
 								lessonsLearnedButton.set("disabled", false);
 								//this._state.put("isLessonLearnedShown",true);
 								aspect.after(registry.byId("lesson"),"hide", lang.hitch(this,function () {
-								if(ui_config.get("doneButton") != "none" && givenModel.isDoneMessageShown === false) {
+								if(ui_config.get("doneButton") != "none" && !givenModel.isDoneMessageShown) {
 										showProblemDoneHint();
 									}
 								}));
@@ -1272,7 +1272,7 @@ define([
 
 			aspect.after(registry.byId('waveformEditor'), "hide", function(){
 				if(activity_config.get("showDoneMessage") && ui_config.get("doneButton") != "none" &&
-					givenModel.student.matchesGivenSolutionAndCorrect()){
+					givenModel.student.matchesGivenSolutionAndCorrect() && !givenModel.isDoneMessageShown){
 					showProblemDoneHint();
 					controllerObject.notifyCompleteness();
 				}
@@ -1680,7 +1680,7 @@ define([
 				aspect.after(controllerObject, "closeIncrementalMenu", function(){
 
 					if(activity_config.get("showDoneMessage") && ui_config.get("doneButton") != "none" &&
-						givenModel.student.matchesGivenSolutionAndCorrect()){
+						givenModel.student.matchesGivenSolutionAndCorrect() && !givenModel.isDoneMessageShown){
 						showProblemDoneHint();
 						controllerObject.notifyCompleteness();
 					}
