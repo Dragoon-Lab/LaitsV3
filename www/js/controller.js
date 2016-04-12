@@ -1065,14 +1065,18 @@ define([
 			if(resetEquation){
 				this._model.active.setEquation(this.currentID, "");
 				directives.push({id: 'equation', attribute: 'value', value: ""});
-			} else if(cancelUpdate){
+			}
+			// changing this as it is essential to update the equation using createExpressionNodes.
+			// otherwise equation with correct nodes not converted to their corresponding id stays in the equation of the model
+			// fix for bug : https://trello.com/c/bVYAQBKT ~ Sachin Grover
+			/*else if(cancelUpdate){
 				//in case we are not calling the pm then we need to save the equation to the model.
-				this._model.active.setEquation(this.currentID, inputEquation);
-			}
-			if(!cancelUpdate){
-				return parse;
-			}
-			return null;
+				//this._model.active.setEquation(this.currentID, inputEquation);
+			}*/
+			//if(true || !cancelUpdate){
+			return parse;
+			//}
+			//return null;
 		},
 		expressionSuggestor : function(id, answer){
 			//output: message directive, suggestion message 
