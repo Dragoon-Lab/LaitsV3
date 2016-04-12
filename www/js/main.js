@@ -514,7 +514,7 @@ define([
 			iBoxController.initNodeMouseEvents();
 			// for the new nodes added during the session
 			aspect.after(drawModel, "addNode", function(vertex){
-				
+
 				var context = iBoxController;
 				console.log("AddNode Called", vertex);
 				var target = document.getElementById(vertex.ID);
@@ -561,9 +561,20 @@ define([
 			/*
 			 * Connect node editor to "click with no move" events.
 			 */
+            aspect.after(drawModel, "checkNodeClick", function(res) {
+                if(activity_config.get("showNodeEditor")){
+                    controllerObject.showNodeEditor(res.ID);
+                    if(activity_config.get("disableNodeEditorFields")){
+                        DQuery("#nodeeditor input").attr("disabled",true);
+                        DQuery("#nodeeditor textarea").attr("disabled",true);
+                        dijit.byId("setName").readOnly = true;
+                        dijit.byId("selectKind").readOnly = true;
+                    }
+                }
+            },true);
 			 
 			aspect.after(drawModel, "onClickNoMove", function(mover){
-                console.log();
+                console.log("mover",mover);
 				if(activity_config.get("showNodeEditor")){
 					if(mover.mouseButton != 2) { //check if not right click
 						controllerObject.showNodeEditor(mover.node.id);

@@ -25,16 +25,18 @@ define([
 	"dojo/_base/array", 
 	'dojo/_base/declare', 
 	'dojo/_base/lang',
+    "dojo/dom",
 	"dojo/dom-attr", 
 	"dojo/dom-construct", 
 	"dojo/dom-style",
 	"dojo/query",
+    "dojo/on",
 	"dijit/Menu", 
 	"dijit/MenuItem",
 	"./equation",
 	"./graph-objects", 
 	"jsPlumb/jsPlumb"
-], function(array, declare, lang, attr, domConstruct, domStyle, query, Menu, MenuItem, equation, graphObjects){
+], function(array, declare, lang, dom, attr, domConstruct, domStyle, query, on, Menu, MenuItem, equation, graphObjects){
 	// Summary: 
 	//			MVC for the canvas
 	// Description:
@@ -258,10 +260,26 @@ define([
 			 Note that the names (onMoveStart, onMove, onMoveStop) are from
 			 the underlying library dojo/dnd/move, rather than jsPlumb.
 			 */
-			this.makeDraggable(vertex);
+            if(!this._activityConfig.get("restrictNodeMovement"))
+			    this.makeDraggable(vertex);
+            else {
+                // The following event makes nodes clickable when draggable is disabled in RO Author Mode
+                var thisNodeID = dom.byId(node.ID);
+                console.log(thisNodeID + "created");
+                on(thisNodeID, "click", lang.hitch(this, function () {
+                    console.log(thisNodeID + "clicked");
+                    console.log("node m", vertex);
+                    this.checkNodeClick(node);
 
-			return vertex;
-		},
+                }));
+            }
+
+            return vertex;
+        },
+
+        checkNodeClick: function(node){
+        },
+
 
 		makeDraggable:function(/*vertex*/ vertex){
 			this._instance.draggable(vertex,{
@@ -413,6 +431,7 @@ define([
 		onMoveStop: function(){
 			//Check to see if the distance the node moved is less than 5 onmousemovement
 			if(this._counter <= 5){
+                console.log("arguments are",arguments);
 				this.onClickNoMove.apply(null, arguments);
 			}else {
 				this.onClickMoved.apply(null, arguments);
