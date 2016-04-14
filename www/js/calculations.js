@@ -92,7 +92,7 @@ define([
 			}, this);
 			
 			// These are not used for the tables
-			if(mode != "AUTHOR"){
+			if(mode != "AUTHOR" && mode != "ROAUTHOR"){
 				console.log("now in given model");
 				this.given.timeStep = this.initializeSolution(model.given);
 				if(!this.given.timeStep){
@@ -386,7 +386,7 @@ define([
 				//console.log(this.model.student.getName(paramID));
 				//console.log(this.mode);
 				//console.log(this.active);
-				if(this.mode != "AUTHOR")
+				if(this.mode != "AUTHOR" && this.mode != "ROAUTHOR")
 				{
 					var logObj = lang.mixin({
 						type : "solution-manipulation",
@@ -578,7 +578,7 @@ define([
 
 			if (content.search("There isn't anything to plot. Try adding some accumulator or function nodes.") >= 0
 				|| content.search("There is nothing to show in the table.   Please define some quantitites.") >= 0 ||
-				this.mode === "EDITOR" || this.mode === "AUTHOR" || !this.model.active.matchesGivenSolutionAndCorrect()) {
+				this.mode === "EDITOR" || this.mode === "AUTHOR" || this.mode === "ROAUTHOR" || !this.model.active.matchesGivenSolutionAndCorrect()) {
 				console.log("graph not being shown");
 				return;
 			}

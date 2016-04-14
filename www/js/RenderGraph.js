@@ -79,7 +79,7 @@ define([
 				this.active.timeStep.functions);
 
 			//Checks if the mode is not in author mode, if not in author mode, find the "given" solution
-			if(this.mode != "AUTHOR"){
+			if(this.mode != "AUTHOR" && this.mode != "ROAUTHOR"){
 				//check for author mode. Here we need to create just one graph.
 				this.given.plotVariables = array.map(this.active.plotVariables, function(id){
 					var givenID = this.model.active.getDescriptionID ?
@@ -126,7 +126,7 @@ define([
 			}
 
 			//checks if the given solution is a static solution
-			this.isStatic = (this.mode === "AUTHOR")?this.checkForStatic(activeSolution):this.isStatic;
+			this.isStatic = (this.mode === "AUTHOR" || this.mode === "ROAUTHOR")?this.checkForStatic(activeSolution):this.isStatic;
 			this.staticVar = 0;
 			//If solution is static, brings up the statis plot
 			if(this.isStatic)
@@ -219,7 +219,7 @@ define([
 
 			this.isCorrect = false;
 			//check if the sollution is correct or not
-			if(this.mode != "AUTHOR"  && this.mode != "EDITOR")
+			if((this.mode != "AUTHOR" && this.mode != "ROAUTHOR" )&& this.mode != "EDITOR")
 			{
 				if(this.model.active.matchesGivenSolutionAndCorrect())
 				{
@@ -244,7 +244,7 @@ define([
 			this.plotVariables = this.active.timeStep.xvars.concat(
 				this.active.timeStep.functions);
 			//checks for errors in the solution
-			if(this.mode === "AUTHOR" && this.checkForNan())
+			if((this.mode === "AUTHOR" || this.mode === "ROAUTHOR" )&& this.checkForNan())
 			{
 				this.dialogContent += "<font color='red' id = 'errorText'>The solution contains imaginary or overflowed numbers</font><br>";
 			}
@@ -347,11 +347,11 @@ define([
 						labelFunc: this.formatAxes
 						});
 
-					if(this.mode != "AUTHOR"){
+					if(this.mode != "AUTHOR" && this.mode != "ROAUTHOR"){
 						var givenID = this.model.active.getDescriptionID(id);
 					}
 
-					if(this.isCorrect || this.mode == "AUTHOR")
+					if(this.isCorrect || (this.mode == "AUTHOR" || this.mode == "ROAUTHOR"))
 					{
 						//plot chart for student node
 						charts[id].addSeries(
@@ -369,7 +369,7 @@ define([
 						);
 					}
 
-					if(this.mode != "AUTHOR"  && this.mode != "EDITOR" && this.given.plotVariables[k]){
+					if((this.mode != "AUTHOR" && this.mode != "ROAUTHOR") && this.mode != "EDITOR" && this.given.plotVariables[k]){
 						
 						charts[id].addSeries(
 							"Author's solution",
@@ -438,7 +438,7 @@ define([
 							max:obj.max
 							});
 
-						if(this.mode != "AUTHOR"){
+						if(this.mode != "AUTHOR" && this.mode != "ROAUTHOR"){
 							var givenID = this.model.active.getDescriptionID(id);
 						}
 						//plot chart for student node
@@ -447,7 +447,7 @@ define([
 							this.formatSeriesForChart(staticPlot, k),
 							{stroke: "green"}
 						);
-						if(this.mode != "AUTHOR"  && this.mode != "EDITOR" && this.given.plotVariables[k]){
+						if((this.mode != "AUTHOR" && this.mode != "ROAUTHOR") && this.mode != "EDITOR" && this.given.plotVariables[k]){
 							chartsStatic[id].addSeries(
 								"Author's solution",
 								this.formatSeriesForChart(givenPlot, k), 
@@ -689,7 +689,7 @@ define([
 		 */
 		renderDialog: function(calculationObj){
 				console.log("rendering graph and table");
-				if(this.mode != "AUTHOR")
+				if(this.mode != "AUTHOR" && this.mode != "ROAUTHOR")
 				{
 					var activeSolution = this.findSolution(true, this.active.plotVariables);
 					var givenSolution = this.findSolution(false, this.given.plotVariables);
@@ -788,7 +788,7 @@ define([
 			console.log("rendering static");
 			if(this.isStatic)
 			{
-				if(this.mode != "AUTHOR")
+				if(this.mode != "AUTHOR" && this.mode != "ROAUTHOR")
 				{
 					var staticVar = this.checkStaticVar(true);
 					var activeSolution = this.findStaticSolution(true, staticVar, this.active.plotVariables);

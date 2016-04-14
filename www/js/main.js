@@ -957,7 +957,12 @@ define([
 								var url = document.URL.replace("u=" + query.u, "u=" + query.u + "-" + timestamp);
 								url = url + "&l=false";
 								url = url.replace("a=" + query.a, "a=" + activity);
-								window.open(url.replace("m=AUTHOR", "m=STUDENT"), "newwindow");
+                                if(query.m === "AUTHOR") {
+                                    window.open(url.replace("m=AUTHOR", "m=STUDENT"), "newwindow");
+                                }
+                                if(query.m === "ROAUTHOR"){
+                                    window.open(url.replace("m=ROAUTHOR", "m=STUDENT"), "newwindow");
+                                }
 							});
 						}
 					});

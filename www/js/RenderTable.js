@@ -87,7 +87,7 @@ define([
 				return;
 			}
 
-			if(this.mode != "AUTHOR"){
+			if(this.mode != "AUTHOR" && this.mode != "ROAUTHOR"){
 				//check for author mode. Here we need to create just one graph.
 				this.given.plotVariables = array.map(this.active.plotVariables, function(id){
 					var givenID = this.model.active.getDescriptionID ?
@@ -128,7 +128,7 @@ define([
 			//create content pane for sliders
 			this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' style='overflow:auto; width:40%; float:right; height: 100%; background-color: #FFFFFF'>";
 			//text for correctness of solution
-			if(this.mode != "AUTHOR"  && this.mode != "EDITOR" && this.mode != "TEST")
+			if(this.mode != "AUTHOR"  && this.mode != "EDITOR" && this.mode != "TEST" && this.mode != "ROAUTHOR")
 			{
 				if(this.model.active.matchesGivenSolutionAndCorrect())
 				{
@@ -183,7 +183,7 @@ define([
 						title: this.labelString(id)
 						});
 
-					if(this.mode != "AUTHOR"){
+					if(this.mode != "AUTHOR" && this.mode != "ROAUTHOR"){
 						var givenID = this.model.active.getDescriptionID(id);
 					}
 					//plot chart for student node
@@ -192,7 +192,7 @@ define([
 						this.formatSeriesForChart(activeSolution, k),
 						{stroke: "green"}
 					);
-					if(this.mode != "AUTHOR"  && this.mode != "EDITOR" && this.given.plotVariables[k]){
+					if(this.mode != "AUTHOR" && this.mode != "ROAUTHOR" && this.mode != "EDITOR" && this.given.plotVariables[k]){
 						charts[id].addSeries(
 							"Author's solution",
 							this.formatSeriesForChart(givenSolution, k), {stroke: "red"}

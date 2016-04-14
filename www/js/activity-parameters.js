@@ -181,6 +181,7 @@ define([
                     allowCreateSchema:true,
                     allowProblemTimes:true,
                     allowMerge: false,
+                    allowSaveAs:true,
                     allowPreview:true,
                     allowPrettify: false,
                     allowHelp: true,
