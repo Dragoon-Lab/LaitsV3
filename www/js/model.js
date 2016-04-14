@@ -81,7 +81,7 @@ define([
 			_ID: 1,
 			_SID: 1,
 			// Public variables
-			beginX: 400,
+			beginX: 450,
 			beginY: 100,
 			nodeWidth: 100,
 			nodeHeight: 100,
