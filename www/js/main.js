@@ -1592,6 +1592,8 @@ define([
 						registry.byId("nodeeditor").hide();
 					});
 				}
+				style.set(registry.byId("deleteButton").domNode, "display", ui_config.get("nodeEditorDeleteButton"));
+
 				// attaching author History widget
 				if(activity_config.get("allowHistory")) {
 					var historyWidget = new HistoryWidget(query, session.sessionId);
