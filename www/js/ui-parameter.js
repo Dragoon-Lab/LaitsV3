@@ -51,7 +51,8 @@ define(["dojo/_base/lang"], function (lang) {
 						"nodeBorderFailColor": "red",
 						"imageButton": "none",
 						"historyButton": "none",
-						"zoomButtons": "inline"
+						"zoomButtons": "inline",
+						"nodeEditorDeleteButton": "inline"
 
 
 					}
@@ -78,7 +79,21 @@ define(["dojo/_base/lang"], function (lang) {
 					}
 				},
 				{
-					"mode": ["STUDENT", "COACHED", "TEST","EDITOR"],
+					"mode": ["COACHED"],
+					"param": {
+						"createNodeButton": "none",
+						"graphButton": "inline",
+						"tableButton": "inline",
+						"forumButton": "inline",
+						"slidesButton": "inline",
+						"prettifyButton": "inline",
+						"doneButton": "inline",
+						"lessonsLearnedButton": "inline",
+						"nodeEditorDeleteButton": "none"
+					}
+				},
+				{
+					"mode": ["STUDENT", "TEST","EDITOR"],
 					"param": {
 						"createNodeButton": "inline",
 						"graphButton": "inline",

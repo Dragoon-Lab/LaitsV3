@@ -92,14 +92,14 @@ define([
 				},
 
 				COACHED:{
-					allowCreateNode:true,
+					allowCreateNode:false,
 					allowGraph:true,
 					allowTable:true,
 					allowForum:true,
 					allowPrettify:true,
 					allowHelp: true,
 					allowLessonsLearned:true,
-					allowDeleteNode: true,
+					allowDeleteNode: false,
 					allowEditNode: true,
 
 					showHints: true,
