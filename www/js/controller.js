@@ -1605,6 +1605,11 @@ define([
 
 		nodeCloseAssessment: function(){
 			//stub over written in con-student. assessment function called at node close
+		},
+		
+		//Set ET Connector Object
+		setETConnector: function(ET){
+			this.ETConnect = ET;
 		}
 
 	});

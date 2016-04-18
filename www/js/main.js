@@ -459,6 +459,8 @@ define([
 			if(activity_config.get("ElectronixTutor")){
 				etConnect = new ETConnector(query);
 				etConnect.startService();
+				//set ET Connector in controller
+				controllerObject.setETConnector(etConnect);
 
 				// send score after student complete the model
 				aspect.after(controllerObject._PM, "notifyCompleteness", function(){

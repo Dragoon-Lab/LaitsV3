@@ -67,7 +67,6 @@ define([
 		},
 
 		onStart: function(){
-			debugger;
 			var gatewayScope = {},
 				loggingScope = {},
 				taskId = removeURLParams(null, ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7']);
@@ -133,7 +132,7 @@ define([
 			this.LOGGING_SERVICE.sendFeedback(content, stepId, helpType, contentType);
 		},
 
-		sendSubmittedAnswer : function(){
+		sendSubmittedAnswer : function(elementId, content, stepId, contentType){
 			console.log("Sending submitted answer");
 			this.LOGGING_SERVICE.sendSubmittedAnswer(elementId, content, stepId, contentType);
 		}
