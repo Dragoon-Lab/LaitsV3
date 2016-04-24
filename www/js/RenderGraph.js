@@ -617,7 +617,7 @@ define([
 			       " field.</div>";
 		},
 		generateUnknownErrorMessage: function(solution){
-			return "content", "<div>There is an <b>unknown node "+ solution.unknownNode +
+			return "content", "<div>There is an unknown node <b>"+ solution.unknownNode +
 				"</b> used in the <b>"+ solution.missingField +" field</b> of the <b>" + solution.missingNode +
 				" node</b>. Please check the spelling of all the nodes you have entered in the expression</div>";
 		},

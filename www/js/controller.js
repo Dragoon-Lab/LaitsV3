@@ -213,7 +213,7 @@ define([
 			domStyle.set(this.domNode, 'backgroundColor', value ? colorMap[value] : '');
 		},
 
-		_setUpNodeEditor: function(){;
+		_setUpNodeEditor: function(){
 			// get Node Editor widget from tree
 			this._nodeEditor = registry.byId('nodeeditor');
 			this._nodeEditor.set("display", "block");
@@ -224,7 +224,7 @@ define([
 				var myThis = this;
 				return function(){
 					var equation = registry.byId("equationBox");
-					
+
 					if(equation.value && !myThis.equationEntered){
 						var directives = myThis.equationDoneHandler();
 						var isAlertShown = array.some(directives, function(directive){
@@ -233,6 +233,9 @@ define([
 							}
 						});
 						if(!isAlertShown) {
+							if(myThis.activityConfig.get("targetNodeStrategy")){
+								myThis.deletePrematureNodes();
+							}
 							doHide.apply(myThis._nodeEditor);
 							myThis.closeEditor.call(myThis);
 						}
@@ -252,6 +255,9 @@ define([
 							myThis.closeEditor.call(myThis);
 						}
 					}else{
+						if(myThis.activityConfig.get("targetNodeStrategy")){
+							myThis.deletePrematureNodes();
+						}
 						// Else, do normal closeEditor routine and hide
 						doHide.apply(myThis._nodeEditor);
 						myThis.closeEditor.call(myThis);
@@ -1059,14 +1065,18 @@ define([
 			if(resetEquation){
 				this._model.active.setEquation(this.currentID, "");
 				directives.push({id: 'equation', attribute: 'value', value: ""});
-			} else if(cancelUpdate){
+			}
+			// changing this as it is essential to update the equation using createExpressionNodes.
+			// otherwise equation with correct nodes not converted to their corresponding id stays in the equation of the model
+			// fix for bug : https://trello.com/c/bVYAQBKT ~ Sachin Grover
+			/*else if(cancelUpdate){
 				//in case we are not calling the pm then we need to save the equation to the model.
-				this._model.active.setEquation(this.currentID, inputEquation);
-			}
-			if(!cancelUpdate){
-				return parse;
-			}
-			return null;
+				//this._model.active.setEquation(this.currentID, inputEquation);
+			}*/
+			//if(true || !cancelUpdate){
+			return parse;
+			//}
+			//return null;
 		},
 		expressionSuggestor : function(id, answer){
 			//output: message directive, suggestion message 
@@ -1110,6 +1120,7 @@ define([
 			return rsp;
 						
 		},
+
 		createExpressionNodes: function(parse, ignoreUnknownTest){
 			/*
 			 Create Expression nodes if equation is valid and parsed sucessfully.
@@ -1606,10 +1617,43 @@ define([
 		nodeCloseAssessment: function(){
 			//stub over written in con-student. assessment function called at node close
 		},
-		
+
 		//Set ET Connector Object
-		setETConnector: function(ET){
+		setETConnector: function(ET) {
 			this.ETConnect = ET;
+		},
+
+		deletePrematureNodes: function(){
+			//Summary : Scan and delete the premature nodes after validating current Node equation
+
+			var node = this._model.active.getNode(this.currentID);
+			if(node && node.inputs) {
+				var prematureNodesExist = false;
+				array.forEach(node.inputs , lang.hitch(this, function(n){
+					if(this._PM.checkPremature(n.ID)){
+						prematureNodesExist = true;
+						this.deleteNode(n.ID);
+					}
+				}));
+
+				if(prematureNodesExist){
+					var message = "Your expression did not match the author's expression, please click on <strong>"+ this._model.active.getName(this.currentID) +"</strong> to try again."
+					this.applyDirectives([{
+						id: "crisisAlert",
+						attribute: "title",
+						value: "Incorrect Expression"
+					}, {
+						id: "crisisAlert",
+						attribute: "open",
+						value: message
+					}]);
+				}
+			}
+		},
+
+		deleteNode: function(id){
+			//Stub to delete node with id by inturn calling drawmodel.deleteNode in main.js
+			return id;
 		}
 
 	});

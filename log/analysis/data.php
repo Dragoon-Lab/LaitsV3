@@ -8,7 +8,7 @@
 	$removeParameter = false; // boolean
 	$analyseByParts = "two-thirds"; //two-thirds - for first 8 problems, one-thirds for last two problems, anything else - complete data
 
-	main();
+	//main();
 	function analyzeLogs(){
 		$section = "public-workbook";
 		$allSchemas = $GLOBALS["allSchemas"];
@@ -42,7 +42,7 @@
 		$mysqli = mysqli_connect("localhost", $user, $password, $db_name);
 
 		$query = <<<EOT
-		SELECT t1.user, t1.problem, t1.session_id, t2.method, t2.message FROM (SELECT user, problem, session_id, time FROM session WHERE section = "$section" AND mode = "STUDENT" AND problem IN $problemString /*AND (user = "079544" OR user = "abratcher56")*/) AS t1 JOIN (SELECT tid, method, message, session_id FROM step WHERE method = "solution-step") as t2 USING (session_id) ORDER BY user ASC, problem ASC, time ASC, tid ASC;
+		SELECT t1.user, t1.problem, t1.session_id, t2.method, t2.message FROM (SELECT user, problem, session_id, time FROM session WHERE section = "$section" AND mode = "STUDENT" AND problem IN $problemString /*AND (user = "akhil1302" OR user = "abratcher56")*/) AS t1 JOIN (SELECT tid, method, message, session_id FROM step WHERE method = "solution-step") as t2 USING (session_id) ORDER BY user ASC, time ASC, problem ASC, tid ASC;
 EOT;
 		//echo $query;
 
@@ -53,6 +53,7 @@ EOT;
 		//$currentProperty = null;
 		$users = array();
 		$cp = null;
+		$nodePropertyCache = array();
 
 		while($row = $result->fetch_assoc()){
 			$cp = new Problem($row["problem"]);
@@ -67,6 +68,7 @@ EOT;
 				array_push($currentUser->problemNames, $row["problem"]);
 				$first = false;
 			}
+
 			if($message["type"] === "solution-check"){
 				if($currentUser == null || $currentUser->name != $row['user']){
 					if($currentNode != null && (!$removeParameter || $currentNode->type != "parameter")){
@@ -78,6 +80,7 @@ EOT;
 					}
 					//new user
 					$currentUser = new User($row['user']);
+					$nodePropertyCache = array();
 					array_push($currentUser->problemNames, $row["problem"]);
 					$cp = new Problem($row["problem"]);
 				} else if($oldRow["problem"] != $row["problem"]){
@@ -120,12 +123,16 @@ EOT;
 				if($removeParameter && $currentNode->type == "parameter")
 					continue;
 
-				if(!in_array($message["property"], $currentNode->propertyNames)){
+				if(!array_key_exists($message["node"], $nodePropertyCache))
+					$nodePropertyCache[$message["node"]] = array();
+
+				if(!in_array($message["property"], $nodePropertyCache[$message["node"]])){
+					array_push($nodePropertyCache[$message["node"]], $message["property"]);
 					if($message["property"] == "description" && (!array_key_exists("checkResult", $message) || 
 						array_key_exists("pmInterpretation", $message) && ($message["pmInterpretation"] == "extra" || $message["pmInterpretation"] == "irrelevant"))){
 						//this is the case where all the nodes have been creating and user is trying to create still available nodes.
 						continue;
-					} elseif($cp->getGenus($message["node"]) != "extra" && $cp->getGenus($message["node"]) != "irrelevant"){
+					} else if($cp->getGenus($message["node"]) != "extra" && $cp->getGenus($message["node"]) != "irrelevant"){
 					$prop = new Property($message["property"]);
 					$prop->value = $message["checkResult"];
 					array_push($currentNode->propertyNames, $message["property"]);
@@ -161,14 +168,15 @@ EOT;
 		if(!$removeParameter || $currentNode->type != "parameter")
 			array_push($currentUser->pNodes, $currentNode);
 		array_push($users, $currentUser);
-		print_r($allSchemas);
-		print_r($allSchemas2);
-		print_r($allSchemas3);
+		//print_r($allSchemas);
+		//print_r($allSchemas2);
+		//print_r($allSchemas3);
 		$GLOBALS["allSchemas"] = $allSchemas;
 		$GLOBALS["allSchemas2"] = $allSchemas2;
 		$GLOBALS["allSchemas3"] = $allSchemas3;
 		
 		mysqli_close($mysqli);
+	//	echo json_encode($users);
 		return $users;
 	}
 
@@ -178,6 +186,7 @@ EOT;
 		$n->type = $cp->getNodeType($m["node"]);
 		$n->problem = $row["problem"];
 		$n->schemas = $cp->getSchemasForNode($m["node"]);
+		$n->uniqueSchemas = $cp->getUniqueSchemas($m["node"]);
 		$n->schemaNames = $cp->getNodeSchemaNames($m["node"]);
 		$n->difficultyParams = $cp->getDifficultyParams($m["node"]);
 		$n->setSkills();
@@ -603,7 +612,8 @@ EOT;
 		$objs = analyzeLogs();
 		//echo json_encode($objs);
 		$fastData = true;
-		createDataRows($objs, $fastData);
+		//createDataRows($objs, $fastData);
 		//createFastData($objs, $fastData);
+		return $objs;
 	}
 ?>
