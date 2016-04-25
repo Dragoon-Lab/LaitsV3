@@ -1496,6 +1496,9 @@ define([
 						if(directive.attribute === "status"){
 							tempDirective = directive;
 						}
+						if(this.activityConfig.get("ElectronixTutor") && directive.id === "message"){
+							this.sendETFeedback(directives);
+						}
 					}
 				}else if(directive.attribute == "display"){
 					if(this.genericDivMap[directive.id]){
@@ -1654,6 +1657,25 @@ define([
 		deleteNode: function(id){
 			//Stub to delete node with id by inturn calling drawmodel.deleteNode in main.js
 			return id;
+		},
+
+		sendETFeedback: function(directives){
+			var field = "";
+			var content = "";
+			array.forEach(directives, function(directive){
+				if(directive.attribute ===  "status"){
+					field = directive.id;
+				}else if (directive.id === "message"){
+					content = directive.value;
+				}
+			});
+
+			var taskname = this._model.getTaskName().split(' ').join('-');
+			var nodename = this._model.active.getName(this.currentID).split(' ').join('-');
+			var step_id = taskname +'_'+ nodename +'_'+'Select'+field;
+			console.log("STEPID" + step_id);
+			this.ETConnect.sendFeedback( field, content , step_id, "text");
+
 		}
 
 	});

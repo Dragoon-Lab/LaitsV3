@@ -477,6 +477,9 @@ define([
 					var score=controllerObject._assessment.getSchemasAverageFactor();
 					etConnect.sendScore(score);
 					console.log("sending score(successfactor):", score);
+
+					//Sending percent complete after problem is complete
+					etConnect.sendCompletedAllSteps(100);
 				});
 			}
 			
@@ -1662,7 +1665,8 @@ define([
 						}
 					}
 
-					if(activity_config.get("showNodeEditorTour") && controllerObject.incNodeTourCounter && controllerObject._model.active.isComplete(controllerObject.currentID)){
+					if(activity_config.get("showNodeEditorTour") && controllerObject.incNodeTourCounter &&
+						controllerObject._model.active.isComplete(controllerObject.currentID)){
 						var nodeTutorialState = givenModel.getNodeEditorTutorialState();
 						// Increment count for nodeType when the node is completed for the first time
 						var nodeType = controllerObject._model.active.getType(controllerObject.currentID);
@@ -1681,6 +1685,16 @@ define([
 						var nodeBorderTutorialState = givenModel.getNodeBorderTutorialState();
 						controllerObject.showNodeBorderTooltip(nodeBorderTutorialState);
 						state.put("NodeBorderTutorialState", givenModel.getNodeBorderTutorialState());
+					}
+
+					//Send complete step message on close node editor
+					if(activity_config.get("ElectronixTutor") &&
+						controllerObject._model.active.isComplete(controllerObject.currentID)){
+						var taskname = query.p;
+						var nodename = controllerObject._model.active.getName(controllerObject.currentID).split(' ').join('-');
+						var step_id = taskname +"_"+ nodename;
+						// Send Complete step message
+						etConnect.send(step_id, true);
 					}
 
 				});

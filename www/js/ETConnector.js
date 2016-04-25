@@ -122,19 +122,24 @@ define([
 			}));
 		},
 
-		sendHint: function(){
-			console.log("Sending Hint");
-			this.LOGGING_SERVICE.sendHint(content, stepId, helpType, contentType);
-		},
-
-		sendFeedback: function(){
+		sendFeedback: function(elementId, content, stepId, contentType){
 			console.log("Sending Feedback");
-			this.LOGGING_SERVICE.sendFeedback(content, stepId, helpType, contentType);
+			this.LOGGING_SERVICE.sendFeedback(content, stepId, "Feedback", contentType);
 		},
 
 		sendSubmittedAnswer : function(elementId, content, stepId, contentType){
 			console.log("Sending submitted answer");
 			this.LOGGING_SERVICE.sendSubmittedAnswer(elementId, content, stepId, contentType);
+		},
+
+		sendCompletedStep: function(stepId, isComplete){
+			console.log("Sending submitted step");
+			this.LOGGING_SERVICE.sendCompletedStep(stepId, isComplete);
+		},
+
+		sendCompletedAllSteps: function(percentComplete){
+			console.log("Sending percent complete");
+			this.LOGGING_SERVICE.sendCompletedAllSteps(percentComplete);
 		}
 	});
 	
