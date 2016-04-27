@@ -25,9 +25,14 @@
  */
 
 define([
-	"dojo/_base/array", "dojo/_base/declare",
-	"dojo/_base/lang", "dojo/on", 'dojo/dom-attr',
-	"dijit/registry", "dijit/form/ComboBox", "dojo/store/Memory",
+	"dojo/_base/array",
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dojo/on",
+	'dojo/dom-attr',
+	"dijit/registry",
+	"dijit/form/ComboBox",
+	"dojo/store/Memory",
 	"dojox/charting/Chart",
 	"dojox/charting/axis2d/Default",
 	"dojox/charting/plot2d/Lines",
@@ -42,9 +47,10 @@ define([
 	"dojo/dom-style",
     "dojo/dom-class",
     "./integrate",
+	"dijit/Dialog",
 	"dijit/layout/TabContainer",
 	"dojo/domReady!"
-], function(array, declare, lang, on, domAttr, registry, ComboBox, Memory, Chart, Default, Lines, Grid, Legend, calculations, logger, base, contentPane, messageBox, dom, domStyle, domClass, integrate){
+], function(array, declare, lang, on, domAttr, registry, ComboBox, Memory, Chart, Default, Lines, Grid, Legend, calculations, logger, base, contentPane, messageBox, dom, domStyle, domClass, integrate, Dialog){
 	debugger;
 	// The calculations constructor is loaded before the RenderGraph constructor
 	return declare(calculations, {
@@ -78,25 +84,167 @@ define([
 		setStateGraph : function(state) {
 			this.setState(state);
 		},
+
+		initialize: function() {
+			console.log("graphing");
+
+			var errorMessage = "";
+			dom.byId("solutionMessage").innerHTML = "";
+			dom.byId("graphErrorMessage").innerHTML = "";
+
+			this.tabContainer = registry.byId("GraphTabContainer");
+			this.graphTab = registry.byId("GraphTab");
+			this.tableTab = registry.byId("TableTab");
+
+			domStyle.set(this.tabContainer.domNode, "display", "none");
+
+			//create tab for table, chose to have it selected or not based on the button clicked by user
+			if(this.buttonClicked == "graph")
+				this.tabContainer.selectChild(this.graphTab);
+			if(this.buttonClicked == "table")
+				this.tabContainer.selectChild(this.tableTab);
+
+
+			/* List of variables to plot: Include functions */
+			this.active.plotVariables = this.active.timeStep.xvars.concat(this.active.timeStep.functions);
+			this.plotVariables = this.active.plotVariables;
+
+			//Checks if the mode is not in author mode, if not in author mode, find the "given" solution
+			if (this.mode != "AUTHOR") {
+				//check for author mode. Here we need to create just one graph.
+				this.given.plotVariables = array.map(this.active.plotVariables, function (id) {
+					var givenID = this.model.active.getDescriptionID ?
+						this.model.active.getDescriptionID(id) : id;
+
+					// givenID should always exist.
+					console.assert(givenID, "Node '" + id + "' has no corresponding given node");
+					var givenNode = this.model.given.getNode(givenID);
+					return givenNode && ((!givenNode.genus || givenNode.genus === "required" || givenNode.genus === "allowed") ? givenID : null);
+				}, this);
+
+				//Calculate solutions for given model
+				this.givenSolution = this.findSolution(false, this.given.plotVariables);
+			}
+
+			/*
+			 Match list of given model variables.
+			 If the given model node is not part of the given solution,
+			 set variable to null to indicate that it should not
+			 be calulated.
+
+			 To include optional nodes,
+			 one would need to order them using topologicalSort
+			 */
+			this.activeSolution = this.findSolution(true, this.active.plotVariables);
+			console.log(this.activeSolution);
+
+			if (this.activeSolution.status == "error" && this.activeSolution.type == "missing") {
+				// Return value from findSlution in calculation, returns an array and we check for status and any missing nodes
+				errorMessage = this.generateMissingErrorMessage(this.activeSolution); //We show the error message like "A Node is Missing"
+				var errMessageBox = new messageBox("graphErrorMessage", "error", errorMessage);
+				errMessageBox.show();
+				return;
+			}
+
+			//Checks if there are graphable nodes (only applicable in author mode)
+			if (this.activeSolution.plotValues.length == 0) {
+				errorMessage = "Please fill in some nodes before trying to graph"; //We show the error message like "A Node is Missing"
+				var errMessageBox = new messageBox("graphErrorMessage", "error", errorMessage);
+				errMessageBox.show();
+				return;
+			}
+			dom.byId("SliderPane").innerHTML = "<div id='graphHelpButton' data-dojo-type='dijit/form/Button'  class='fRight' type='button'>Help</div>" +
+				"<div class='cBoth' id='solutionMessage'></div>";
+
+			//Check if the solution matches Authors solution
+			if (this.model.active.matchesGivenSolutionAndCorrect()){
+				this.isCorrect = true;
+			}
+			if(this.isCorrect){
+				//Correct Graph Message
+				var successMsg = new messageBox("solutionMessage", "success", "Congratulations," +
+					" your model's behavior matches the author's!");
+				successMsg.show();
+			}else{
+				//Incorrect Graph Message
+				if(this.model.active.checkStudentNodeCount() < 0)
+					errorMessage = "Some nodes that the author requires are missing from your model," +
+						" possibly because a subexpression in some node's expression needs to be turned into a node.";
+				else if(this.model.active.checkStudentNodeCount() > 0){
+					errorMessage ="Your model does not match the author's.  You may have extra nodes in your model."
+				}
+				else{
+					errorMessage = "Unfortunately, your model's behavior does not match the author's.";
+				}
+				var errMessageBox = new messageBox("solutionMessage", "error", errorMessage);
+				errMessageBox.show();
+			}
+			if(this.mode === "AUTHOR" && this.checkForNan()) {
+				var errorMessage = "The solution contains imaginary or overflowed numbers"; //We show the error message like "A Node is Missing"
+				var errMessageBox = new messageBox("graphErrorMessage", "error", errorMessage);
+				errMessageBox.show();
+			}
+
+
+			//If no errors then show Tab Container
+			domStyle.set(this.tabContainer.domNode, "display", "block");
+
+			//Create Sliders
+			this.createSliders();
+
+			//Graph Tab
+			this.initializeGraphTab();
+
+			//Table Tab
+			this.createTable(this.plotVariables);
+
+			//checks if the given solution is a static solution
+			this.isStatic = (this.mode === "AUTHOR") ? this.checkForStatic(this.activeSolution) :
+				this.checkForStatic(this.givenSolution);
+			if(this.isStatic) {
+				//add static tab if solution is static
+				this.initializeStaticTab();
+			}else{
+				//Hide static Tab
+				this.staticTab = registry.byId("StaticTab");
+				if(this.staticTab) {
+					this.tabContainer.removeChild(this.staticTab);
+					registry.byId("StaticTab").destroyRecursive();
+				}
+			}
+
+
+			////logging listeners
+			on(this.graphTab, "click", function(){
+				console.log("graph tab clicked");
+				logger.session.log('ui-action', {
+					type: "solution-manipulation",
+					name: "graph-tab"
+				});
+			});
+			on( this.tableTab , "click", function(){
+				console.log("table tab clicked");
+				logger.session.log('ui-action', {
+					type: "solution-manipulation",
+					name: "table-tab"
+				});
+			});
+
+			this.showHideGraphsHandler();
+			this.resizeWindow();
+			this.showHint();
+		},
+
 		/*
 		 * @brief: initialize Dialog/charts and sliders
 		 *
 		 */
 
-		createTable: function(plotVariables){
-			var paneText = "";
-			if(plotVariables.length>0) {
-				paneText += this.initTable();
-				paneText += this.setTableHeader();
-				paneText += this.setTableContent();
-				paneText += this.closeTable();
-			}else{
-				//Error telling there are no nodes and Table cant be rendered
-				paneText = "There is nothing to show in the table.	Please define some quantitites.";
-			}
-			this.tableTab.set("content", paneText);
-		},
-
+		/*
+		 =======================================
+		 			GRAPH FUNCTIONS
+		 =======================================
+		 */
 		createChart: function(domNode, id, xAxis, yAxis, solution, index){
 			//Chart Node
 			var chart = new Chart(domNode);
@@ -225,151 +373,6 @@ define([
 			charts[id].render();
 		},
 
-		initialize: function() {
-			console.log("graphing");
-
-			var errorMessage = "";
-			dom.byId("solutionMessage").innerHTML = "";
-			dom.byId("graphErrorMessage").innerHTML = "";
-
-			this.tabContainer = registry.byId("GraphTabContainer");
-			this.graphTab = registry.byId("GraphTab");
-			this.tableTab = registry.byId("TableTab");
-
-			domStyle.set(this.tabContainer.domNode, "display", "none");
-			dom.byId("SliderPane").innerHTML = "<div id= 'solutionMessage'></div>";
-
-			//create tab for table, chose to have it selected or not based on the button clicked by user
-			if(this.buttonClicked == "graph")
-				this.tabContainer.selectChild(this.graphTab);
-			if(this.buttonClicked == "table")
-				this.tabContainer.selectChild(this.tableTab);
-
-
-			/* List of variables to plot: Include functions */
-			this.active.plotVariables = this.active.timeStep.xvars.concat(this.active.timeStep.functions);
-			this.plotVariables = this.active.plotVariables;
-
-			//Checks if the mode is not in author mode, if not in author mode, find the "given" solution
-			if (this.mode != "AUTHOR") {
-				//check for author mode. Here we need to create just one graph.
-				this.given.plotVariables = array.map(this.active.plotVariables, function (id) {
-					var givenID = this.model.active.getDescriptionID ?
-						this.model.active.getDescriptionID(id) : id;
-
-					// givenID should always exist.
-					console.assert(givenID, "Node '" + id + "' has no corresponding given node");
-					var givenNode = this.model.given.getNode(givenID);
-					return givenNode && ((!givenNode.genus || givenNode.genus === "required" || givenNode.genus === "allowed") ? givenID : null);
-				}, this);
-
-				//Calculate solutions for given model
-				this.givenSolution = this.findSolution(false, this.given.plotVariables);
-			}
-
-			/*
-			 Match list of given model variables.
-			 If the given model node is not part of the given solution,
-			 set variable to null to indicate that it should not
-			 be calulated.
-
-			 To include optional nodes,
-			 one would need to order them using topologicalSort
-			 */
-			this.activeSolution = this.findSolution(true, this.active.plotVariables);
-			console.log(this.activeSolution);
-
-			if (this.activeSolution.status == "error" && this.activeSolution.type == "missing") {
-				// Return value from findSlution in calculation, returns an array and we check for status and any missing nodes
-				errorMessage = this.generateErrorMessage(this.activeSolution); //We show the error message like "A Node is Missing"
-				var errMessageBox = new messageBox("graphErrorMessage", "error", errorMessage);
-				errMessageBox.show();
-				return;
-			}
-
-			//Checks if there are graphable nodes (only applicable in author mode)
-			if (this.activeSolution.plotValues.length == 0) {
-				errorMessage = "Please fill in some nodes before trying to graph"; //We show the error message like "A Node is Missing"
-				var errMessageBox = new messageBox("graphErrorMessage", "error", errorMessage);
-				errMessageBox.show();
-				return;
-			}
-
-			//Check if the solution matches Authors solution
-			if (this.model.active.matchesGivenSolutionAndCorrect()){
-				this.isCorrect = true;
-			}
-			if(this.isCorrect){
-				var successMsg = new messageBox("solutionMessage", "success", "Congratulations," +
-					" your model's behavior matches the author's!");
-				successMsg.show();
-			}else{
-				if(this.model.active.checkStudentNodeCount() < 0)
-					errorMessage = "Some nodes that the author requires are missing from your model," +
-						" possibly because a subexpression in some node's expression needs to be turned into a node.";
-				else if(this.model.active.checkStudentNodeCount() > 0){
-					errorMessage ="Your model does not match the author's.  You may have extra nodes in your model."
-				}
-				else{
-					errorMessage = "Unfortunately, your model's behavior does not match the author's.";
-				}
-				var errMessageBox = new messageBox("solutionMessage", "error", errorMessage);
-				errMessageBox.show();
-			}
-			if(this.mode === "AUTHOR" && this.checkForNan()) {
-				this.dialogContent += "The solution contains imaginary or overflowed numbers";
-			}
-
-
-			//If no errors then show Tab Container
-			domStyle.set(this.tabContainer.domNode, "display", "block");
-
-			//Create Sliders
-			this.createSliders();
-
-			//Graph Tab
-			this.initializeGraphTab();
-
-			//Table Tab
-			this.createTable(this.plotVariables);
-
-			//checks if the given solution is a static solution
-			this.isStatic = (this.mode === "AUTHOR") ? this.checkForStatic(this.activeSolution) :
-				this.checkForStatic(this.givenSolution);
-			if(this.isStatic) {
-				//add static tab if solution is static
-				this.initializeStaticTab();
-			}else{
-				//Hide static Tab
-				this.staticTab = registry.byId("StaticTab");
-				if(this.staticTab) {
-					this.tabContainer.removeChild(this.staticTab);
-					registry.byId("StaticTab").destroyRecursive();
-				}
-			}
-
-
-			////logging listeners
-			on(this.graphTab, "click", function(){
-				console.log("graph tab clicked");
-				logger.session.log('ui-action', {
-					type: "solution-manipulation",
-					name: "graph-tab"
-				});
-				});
-			on( this.tableTab , "click", function(){
-				console.log("table tab clicked");
-				logger.session.log('ui-action', {
-					type: "solution-manipulation",
-					name: "table-tab"
-				});
-			});
-
-			this.showHideGraphsHandler();
-
-			this.resizeWindow();
-		},
-
 		/*
 		 * @brief: this functionformats array of node values into an array which consists of object of type
 		 * {x: timestep, y: node value from array at timstep x}
@@ -414,14 +417,25 @@ define([
 				var modStatus = true;
 				array.forEach(this.model.active.getNodes(), function (thisnode) {
 					if(thisModel.model.active.getType(thisnode.ID)=="function" || thisModel.model.active.getType(thisnode.ID)=="accumulator"){
-						thisModel.dialogWidget.set("content", this.generateErrorMessage(thisModel.model.active.getName(thisnode.ID)));
+						var errorMessage = this.generateMissingErrorMessage(thisModel.model.active.getName(thisnode.ID)); //We show the error message like "A Node is Missing"
+						var errMessageBox = new messageBox("graphErrorMessage", "error", errorMessage);
+						errMessageBox.show();
 						modStatus = false;
 					}
 				});
-				if(modStatus)
-					this.dialogWidget.set("content", "<div>There isn't anything to plot. Try adding some accumulator or function nodes.</div>"); //Error telling there are no nodes and graph cant be rendered
+				if(modStatus){
+					var errorMessage = "<div>There isn't anything to plot. Try adding some accumulator or function nodes.</div>"; //We show the error message like "A Node is Missing"
+					var errMessageBox = new messageBox("graphErrorMessage", "error", errorMessage);
+					errMessageBox.show();
+				}
 			}
 		},
+
+		/*
+		 =======================================
+		 		STATIC GRAPH FUNCTIONS
+		 =======================================
+		 */
 
 		initializeStaticTab:function(){
 			var staticContent = "";
@@ -461,6 +475,141 @@ define([
 
 			this.tabContainer.selectChild(this.staticTab);
 		},
+
+		//creates the dropdown menu for the static window
+		createComboBox: function(staticNodes){
+			var stateStore = new Memory();
+			var combo = registry.byId("staticSelect");
+			if(combo){
+				combo.destroyRecursive();
+			}
+			array.forEach(staticNodes, function(node)
+			{
+				stateStore.put({id:node.name, name:node.name});
+			});
+			var comboBox = new ComboBox({
+				id: "staticSelect",
+				name: "state",
+				value: staticNodes[0].name,
+				store: stateStore,
+				searchAttr: "name"
+			}, "staticSelectContainer");
+			//console.log(comboBox);
+			this.disableStaticSlider();
+			on(comboBox, "change", lang.hitch(this, function(){
+				this.renderStaticDialog(true);// Call the function for updating both the author graph and the student graph
+				this.disableStaticSlider();
+			}));
+		},
+
+		//checks if the solution is static
+		checkForStatic: function(solution) {
+			var values = solution.plotValues;
+			var temp = 0;
+			var isStatic = true;
+			if(values.length == 0){
+				isStatic = false;
+			}
+			array.forEach(values, function(value)
+			{
+				temp = value[0];
+				array.forEach(value, function(num)
+				{
+					if(num !== temp)
+					{
+						isStatic = false;
+					}
+					temp = num;
+				});
+			});
+			return isStatic;
+		},
+
+		//hides the slider for the variable that is selected
+		disableStaticSlider: function() {
+			var staticVar = this.checkStaticVar(true);
+			var id = staticVar.ID;
+			var parameters = this.checkForParameters(true);
+			array.forEach(parameters, function(parameter){
+				dom.byId("labelGraph_" + parameter.ID).style.display = "initial";
+				dom.byId("textGraph_" + parameter.ID).style.display = "initial";
+				dom.byId("sliderGraph_" + parameter.ID).style.display = "initial";
+				dom.byId("sliderUnits_" + parameter.ID).style.display = "initial";
+			});
+			dom.byId("labelGraph_" +id).style.display = "none";
+			dom.byId("textGraph_" + id).style.display = "none";
+			dom.byId("sliderGraph_" + id).style.display = "none";
+			dom.byId("sliderUnits_" + id).style.display = "none";
+
+		},
+
+		//changes the static graph when sliders or dropdown change
+		renderStaticDialog: function(updateAuthorGraph){
+			console.log("rendering static");
+			if(this.isStatic) {
+				var staticVar = this.checkStaticVar(true);
+				var activeSolution = this.findStaticSolution(true, staticVar, this.active.plotVariables);
+				this.givenSolution = this.findStaticSolution(false, staticVar, this.given.plotVariables);
+				//update and render the charts
+				array.forEach(this.active.plotVariables, function(id, k){
+					var inf = this.checkForInfinity(activeSolution.plotValues[k]);
+					if(inf) {
+						dom.byId("staticGraphMessage" + id).innerHTML = "The values you have chosen caused the graph to go infinite.";
+						domStyle.set("chartStatic"+id, "display", "none");
+						domStyle.set("legendStatic" + id, "display", "none");
+						domAttr.remove("staticGraphMessage"+id, "style");
+					}
+					else {
+						dom.byId("staticGraphMessage" + id).innerHTML = "";
+						this.updateChart(id, activeSolution, k, true, updateAuthorGraph);
+					}
+
+				}, this);
+			}
+		},
+
+		//checks for which variables are static
+		checkStaticVar: function(choice){	//true is active, false is given
+			var parameters = this.checkForParameters(choice);
+			var result = parameters[0];
+			var staticSelect = dom.byId("staticSelect");
+
+			if(typeof parameters[0].description != 'undefined')
+			{
+				array.forEach(parameters, function(parameter){
+
+					if(parameter.name == staticSelect.value)
+					{
+						result = parameter;
+					}
+				}, this);
+			}
+			else
+			{
+				var givenParameters = this.checkForParameters(false);
+				var tempResult = givenParameters[0];
+				array.forEach(givenParameters, function(parameter){
+					if(parameter.name == staticSelect.value)
+					{
+						tempResult = parameter;
+					}
+				}, this);
+
+				array.forEach(parameters, function(parameter){
+					if(parameter.descriptionID == tempResult.ID)
+					{
+						result = parameter;
+					}
+				}, this);
+			}
+			return result;
+		},
+
+		/*
+		 =======================================
+		 		SLIDER FUNCTIONS
+		 =======================================
+		 */
 
 		showHideGraphsHandler: function(){
 			//// The following loop makes sure legends of function node graphs are not visible initially
@@ -510,88 +659,120 @@ define([
 			}, this);
 		},
 
-		//creates the dropdown menu for the static window
-		createComboBox: function(staticNodes){
-			var stateStore = new Memory();
-			var combo = registry.byId("staticSelect");
-			if(combo){
-				combo.destroyRecursive();
-			}
-			array.forEach(staticNodes, function(node)
-			{
-				stateStore.put({id:node.name, name:node.name});
-			});
-    		var comboBox = new ComboBox({
-        	id: "staticSelect",
-	        name: "state",
-	        value: staticNodes[0].name,
-	        store: stateStore,
-	        searchAttr: "name"
-	    	}, "staticSelectContainer");
-	    	//console.log(comboBox);	    	
-			this.disableStaticSlider();
-	    	on(comboBox, "change", lang.hitch(this, function(){
-					this.renderStaticDialog(true);// Call the function for updating both the author graph and the student graph
-					this.disableStaticSlider();
-				}));
-			},
+		/*
+		 * @brief: this function re-renders dialog  when slider event is fired and
+		 * new values for student nodes are calculated
+		 */
+		renderDialog: function(){
+			console.log("rendering graph and table");
+			var activeSolution = this.findSolution(true, this.active.plotVariables);
+			//update and render the charts
+			array.forEach(this.active.plotVariables, function(id, k){
 
-		//checks if the solution is static
-		checkForStatic: function(solution) {
-			var values = solution.plotValues;
-			var temp = 0;
-			var isStatic = true;
-			if(values.length == 0){
-				isStatic = false;
+				// Calculate Min and Max values to plot on y axis based on given solution and your solution
+				var inf = this.checkForInfinity(activeSolution.plotValues[k]);
+				if(inf) {
+					dom.byId("graphMessage" + id).innerHTML = "The values you have chosen caused the graph to go infinite. (See table.)";
+				}
+				else {
+					this.updateChart(id, activeSolution, k, false);
+				}
+			}, this);
+
+			this.createTable(this.active.plotVariables);
+		},
+
+
+
+		/*
+		 =======================================
+			          TABLE FUNCTIONS
+		 =======================================
+		*/
+
+		createTable: function(plotVariables){
+			var paneText = "";
+			if(plotVariables.length>0) {
+				paneText += this.beginTable();
+				paneText += this.setTableHeader();
+				paneText += this.setTableContent();
+				paneText += this.endTable();
+			}else{
+				//Error telling there are no nodes and Table cant be rendered
+				paneText = "There is nothing to show in the table.	Please define some quantitites.";
 			}
-			array.forEach(values, function(value)
-			{
-				temp = value[0];
-				array.forEach(value, function(num)
-				{
-					if(num !== temp)
-					{
-						isStatic = false;
-					}
-					temp = num;
+			this.tableTab.set("content", paneText);
+		},
+
+		/*
+		 * @brief: function to begin table dom
+		 */
+		beginTable: function(){
+			return "<div style='overflow:visible' align='center'>" + "<table class='solution' style='overflow:visible'>";
+		},
+		
+		/*
+		 * @brief: function to close table dom
+		 */
+		endTable: function(){
+			return "</table>"+"</div>";
+		},
+		
+		/*
+		 * @brief: function to set headers of table
+		 */
+		setTableHeader: function(){
+			var i, tableString = "";
+			tableString += "<tr style='overflow:visible'>";
+			//setup xunit (unit of timesteps)
+			tableString += "<th style='overflow:visible'>" + this.labelString() + "</th>";
+			array.forEach(this.plotVariables, function(id){
+				tableString += "<th>" + this.labelString(id) + "</th>";
+			}, this);
+			tableString += "</tr>";
+			return tableString;
+		},
+		
+		/*
+		 * @brief: function to set contents of table according to node values
+		 */
+		setTableContent: function(){
+			var tableString="";
+			var errorMessage = null;
+			var solution = this.findSolution(true, this.plotVariables); // Return value from findSlution in calculation, returns an array and we check for status and any missing nodes
+			if(solution.status=="error" && solution.type=="missing"){
+				errorMessage = this.generateMissingErrorMessage(solution); //We show the error message like "A Node is Missing"
+				var errMessageBox = new messageBox("graphErrorMessage", "error", errorMessage);
+				errMessageBox.show();
+				return "";
+			}else if(solution.status == "error" && solution.type == "unknwon"){
+				errorMessage = this.generateUnknownErrorMessage(solution); //We show the error message like "A Node is Missing"
+				var errMessageBox = new messageBox("graphErrorMessage", "error", errorMessage);
+				errMessageBox.show();
+				return "";
+			}
+			var j = 0;
+			for(var i=0; i<solution.times.length; i++){
+				tableString += "<tr style='overflow:visible'>";
+				tableString += "<td align='center' style='overflow:visible' id ='row" + i + "col0'>" + solution.times[i].toPrecision(4) + "</td>";
+				//set values in table according to their table-headers
+				j = 1;
+				array.forEach(solution.plotValues, function(value){
+					tableString += "<td align='center' style='overflow:visible' id='row" + i + "col" + j + "'>" + value[i].toPrecision(3) + "</td>";
+					j++;
 				});
-			});
-			return isStatic;
+				tableString += "</tr>";
+			}
+			return tableString;
 		},
 
-		//hides the slider for the variable that is selected
-		disableStaticSlider: function() {
-			var staticVar = this.checkStaticVar(true);
-			var id = staticVar.ID;
-			var parameters = this.checkForParameters(true);
-			array.forEach(parameters, function(parameter){
-				dom.byId("labelGraph_" + parameter.ID).style.display = "initial";			
-				dom.byId("textGraph_" + parameter.ID).style.display = "initial";			
-				dom.byId("sliderGraph_" + parameter.ID).style.display = "initial";
-				dom.byId("sliderUnits_" + parameter.ID).style.display = "initial";
-			});
-			dom.byId("labelGraph_" +id).style.display = "none";			
-			dom.byId("textGraph_" + id).style.display = "none";			
-			dom.byId("sliderGraph_" + id).style.display = "none";
-			dom.byId("sliderUnits_" + id).style.display = "none";
 
-		},
 
-		//helper method for error messages
-		generateErrorMessage: function(solution) {
-			return "<div>Not all nodes have been completed. For example, "
-			       + solution.missingNode + " has an empty "+ solution.missingField +
-			       " field.</div>";
-		},
-
-		resizeWindow: function(){
-			console.log("resizing window");
-			var dialogWindow = document.getElementById("solution");
-			dialogWindow.style.height = "750px";
-			dialogWindow.style.width = "1000px";
-			dialogWindow.style.left = "0px";
-			dialogWindow.style.top = "0px";
-		},
+		/*
+		 =======================================
+		 		HELPER FUNCTIONS
+		 =======================================
+		 */
 
 		/*
 		 * @brief: this functionreturns object with min and max
@@ -625,52 +806,17 @@ define([
 			return {min: min, max: max};
 		},
 
-		/*
-		 * @brief: this functionrenders dialog again when slider event is fired and
-		 * new values for student nodes are calculated
-		 */
-		renderDialog: function(){
-			console.log("rendering graph and table");
-			var activeSolution = this.findSolution(true, this.active.plotVariables);
-			//update and render the charts
-			array.forEach(this.active.plotVariables, function(id, k){
-
-				// Calculate Min and Max values to plot on y axis based on given solution and your solution
-				var inf = this.checkForInfinity(activeSolution.plotValues[k]);
-				if(inf) {
-					dom.byId("graphMessage" + id).innerHTML = "The values you have chosen caused the graph to go infinite. (See table.)";
-				}
-				else {
-					this.updateChart(id, activeSolution, k, false);
-				}
-			}, this);
-
-			this.createTable(this.active.plotVariables);
+		//helper method for error messages
+		generateMissingErrorMessage: function(solution){
+			return "content", "<div>Not all nodes have been completed. For example, "
+			+ solution.missingNode + " has an empty "+ solution.missingField +
+			" field.</div>";
 		},
 
-		//changes the static graph when sliders or dropdown change
-		renderStaticDialog: function(updateAuthorGraph){
-			console.log("rendering static");
-			if(this.isStatic) {
-					var staticVar = this.checkStaticVar(true);
-					var activeSolution = this.findStaticSolution(true, staticVar, this.active.plotVariables);
-					this.givenSolution = this.findStaticSolution(false, staticVar, this.given.plotVariables);
-					//update and render the charts
-					array.forEach(this.active.plotVariables, function(id, k){
-						var inf = this.checkForInfinity(activeSolution.plotValues[k]);
-						if(inf) {
-							dom.byId("staticGraphMessage" + id).innerHTML = "The values you have chosen caused the graph to go infinite.";
-							domStyle.set("chartStatic"+id, "display", "none");
-							domStyle.set("legendStatic" + id, "display", "none");
-							domAttr.remove("staticGraphMessage"+id, "style");
-						}
-						else {
-							dom.byId("staticGraphMessage" + id).innerHTML = "";
-							this.updateChart(id, activeSolution, k, true, updateAuthorGraph);
-						}
-						
-					}, this);
-			}
+		generateUnknownErrorMessage: function(solution){
+			return "content", "<div>There is an unknown node <b>"+ solution.unknownNode +
+			"</b> used in the <b>"+ solution.missingField +" field</b> of the <b>" + solution.missingNode +
+			" node</b>. Please check the spelling of all the nodes you have entered in the expression</div>";
 		},
 
 		//checks if the solution goes to infinity at any point
@@ -683,95 +829,6 @@ define([
 				}
 			}, this);
 			return result;
-		},
-
-		//checks for which variables are static
-		checkStaticVar: function(choice){	//true is active, false is given 		
-			var parameters = this.checkForParameters(choice);
-			var result = parameters[0];
-			var staticSelect = dom.byId("staticSelect");
-
-			if(typeof parameters[0].description != 'undefined')
-			{
-				array.forEach(parameters, function(parameter){
-					
-					if(parameter.name == staticSelect.value)
-					{
-						result = parameter;
-					}
-				}, this);
-			}
-			else
-			{
-				var givenParameters = this.checkForParameters(false);
-				var tempResult = givenParameters[0];
-				array.forEach(givenParameters, function(parameter){					
-					if(parameter.name == staticSelect.value)
-					{
-						tempResult = parameter;
-					}
-				}, this);
-
-				array.forEach(parameters, function(parameter){
-					if(parameter.descriptionID == tempResult.ID)
-					{
-						result = parameter;
-					}
-				}, this);
-			}
-			return result;
-		}, 
-
-		initTable: function(){
-			return "<div style='overflow:visible' align='center'>" + "<table class='solution' style='overflow:visible'>";
-		},
-		
-		/*
-		 * @brief: function to close table dom
-		 */
-		closeTable: function(){
-			return "</table>"+"</div>";
-		},
-		
-		/*
-		 * @brief: function to set headers of table
-		 */
-		setTableHeader: function(){
-			var i, tableString = "";
-			tableString += "<tr style='overflow:visible'>";
-			//setup xunit (unit of timesteps)
-			tableString += "<th style='overflow:visible'>" + this.labelString() + "</th>";
-			array.forEach(this.plotVariables, function(id){
-				tableString += "<th>" + this.labelString(id) + "</th>";
-			}, this);
-			tableString += "</tr>";
-			return tableString;
-		},
-		
-		/*
-		 * @brief: function to set contents of table according to node values
-		 */
-		setTableContent: function(){
-			var tableString="";
-			var solution = this.findSolution(true, this.plotVariables); // Return value from findSlution in calculation, returns an array and we check for status and any missing nodes
-			if(solution.status=="error" && solution.type=="missing"){
-				this.dialogWidget.set("content", "<div>Not all nodes have been completed. For example, \""+solution.missingNode+"\" is not yet fully defined."); //We show the error message like "A Node is Missing"
-				// Not sure what the return should be here
-				return "";
-			}
-			var j = 0;
-			for(var i=0; i<solution.times.length; i++){
-				tableString += "<tr style='overflow:visible'>";
-				tableString += "<td align='center' style='overflow:visible' id ='row" + i + "col0'>" + solution.times[i].toPrecision(4) + "</td>";
-				//set values in table according to their table-headers
-				j = 1;
-				array.forEach(solution.plotValues, function(value){
-					tableString += "<td align='center' style='overflow:visible' id='row" + i + "col" + j + "'>" + value[i].toPrecision(3) + "</td>";
-					j++;
-				});
-				tableString += "</tr>";
-			}
-			return tableString;
 		},
 
 		//checks if any part of the solution is not a number ie imaginary
@@ -831,27 +888,32 @@ define([
 
 		//Create Hint
 		showHint: function(){
-			////create content pane for sliders
-			//this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' style='overflow:visible; width:40%; float:right; height:700px; background-color: #FFFFFF'>";
-			//this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' style='overflow:auto'>";
-			//
-			//this.dialogContent +="<div data-dojo-type='dijit.Dialog'  id='showHintBox' class='graphHintUnderLay' title='Graph Help'>"+
-			//"<ul><li>Welcome to the graph window.  The results of the model’s computations are shown here as graphs and tables.  The model consists of inter-related numerical quantities.</li>"+
-			//"<li>The left side of the window displays the quantities in the model calculated by the equations in the accumulator and function nodes.</li>"+
-			//"<li>Any fixed quantity (parameters or accumulators’ initial value) can be temporarily adjusted using the sliders on the right side of this window.  "+
-			//"This updates the graphs/tables on the left immediately.  To reset the sliders, close and re-open the window.</li>"+
-			//"<li>The “static” tab appears when all graphed quantities are constant with time.  In this tab, you can select a quantity from the list and Dragoon will use it as the horizontal axis for every graph. </li>"+
-			//"</ul></div>";
-			//this.dialogContent +="<button id='graphHelpButton' data-dojo-type='dijit.form.Button' type='button'  onclick='showHints()' style='float: right;'>Help</button>";
-			//
-			////function which shows the graph help dialog
-			//showHints = function(){
-			//   dijit.byId("showHintBox").show();
-			//   console.log("button loaded", graphHelpButton);
-			//   domClass.remove(graphHelpButton, "glowNode");
-			//};
-			//
-		}
+			var helpButton = registry.byId("graphHelpButton");
+			var helpDialog = new Dialog({
+				"class":'graphHintUnderLay',
+				"title": "Graph Help",
+				content: "<ul><li>Welcome to the graph window.  The results of the model’s computations are shown here as graphs and tables.  The model consists of inter-related numerical quantities.</li>"+
+				"<li>The left side of the window displays the quantities in the model calculated by the equations in the accumulator and function nodes.</li>"+
+				"<li>Any fixed quantity (parameters or accumulators’ initial value) can be temporarily adjusted using the sliders on the right side of this window.  "+
+				"This updates the graphs/tables on the left immediately.  To reset the sliders, close and re-open the window.</li>"+
+				"<li>The “static” tab appears when all graphed quantities are constant with time.  In this tab, you can select a quantity from the list and Dragoon will use it as the horizontal axis for every graph. </li>"+
+				"</ul>"
+			});
+			on(helpButton, "click", function(){
+				helpDialog.show();
+				domClass.remove("graphHelpButton", "glowNode");
+			});
+		},
+
+		//Resize graph window
+		resizeWindow: function(){
+			console.log("resizing window");
+			var dialogWindow = document.getElementById("solution");
+			dialogWindow.style.height = "750px";
+			dialogWindow.style.width = "1000px";
+			dialogWindow.style.left = "0px";
+			dialogWindow.style.top = "0px";
+		},
 
 	});
 });

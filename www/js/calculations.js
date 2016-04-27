@@ -526,7 +526,7 @@ define([
 				slidersContent += "<input id=\"" + textBoxID[paramID] + "\" type=\"text\" size=10 value=\"" + sliderVars[paramID] + "\">";
 				units = this.model.active.getUnits(paramID);
 				if(units){
-					slidersContent += " <div id=\"sliderUnits_"+ paramID +"\">" + units + "</div>";
+					slidersContent += " <span id=\"sliderUnits_"+ paramID +"\">" + units + "</span>";
 				}
 				slidersContent += "<br>";
 				// DOM id for slider <div>
