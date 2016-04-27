@@ -1694,7 +1694,7 @@ define([
 						var nodename = controllerObject._model.active.getName(controllerObject.currentID).split(' ').join('-');
 						var step_id = taskname +"_"+ nodename;
 						// Send Complete step message
-						etConnect.send(step_id, true);
+						etConnect.sendCompletedStep(step_id, true);
 					}
 
 				});
