@@ -89,8 +89,9 @@ define([
 			console.log("graphing");
 
 			var errorMessage = "";
-			dom.byId("solutionMessage").innerHTML = "";
+			//dom.byId("solutionMessage").innerHTML = "";
 			dom.byId("graphErrorMessage").innerHTML = "";
+			dom.byId("SliderPane").innerHTML = "";
 
 			this.tabContainer = registry.byId("GraphTabContainer");
 			this.graphTab = registry.byId("GraphTab");
@@ -141,7 +142,7 @@ define([
 			if (this.activeSolution.status == "error" && this.activeSolution.type == "missing") {
 				// Return value from findSlution in calculation, returns an array and we check for status and any missing nodes
 				errorMessage = this.generateMissingErrorMessage(this.activeSolution); //We show the error message like "A Node is Missing"
-				var errMessageBox = new messageBox("graphErrorMessage", "error", errorMessage);
+				var errMessageBox = new messageBox("graphErrorMessage", "error", errorMessage, false);
 				errMessageBox.show();
 				return;
 			}
@@ -149,7 +150,7 @@ define([
 			//Checks if there are graphable nodes (only applicable in author mode)
 			if (this.activeSolution.plotValues.length == 0) {
 				errorMessage = "Please fill in some nodes before trying to graph"; //We show the error message like "A Node is Missing"
-				var errMessageBox = new messageBox("graphErrorMessage", "error", errorMessage);
+				var errMessageBox = new messageBox("graphErrorMessage", "error", errorMessage, false);
 				errMessageBox.show();
 				return;
 			}
@@ -163,7 +164,7 @@ define([
 			if(this.isCorrect){
 				//Correct Graph Message
 				var successMsg = new messageBox("solutionMessage", "success", "Congratulations," +
-					" your model's behavior matches the author's!");
+					" your model's behavior matches the author's!", false);
 				successMsg.show();
 			}else{
 				//Incorrect Graph Message
@@ -176,12 +177,12 @@ define([
 				else{
 					errorMessage = "Unfortunately, your model's behavior does not match the author's.";
 				}
-				var errMessageBox = new messageBox("solutionMessage", "error", errorMessage);
+				var errMessageBox = new messageBox("solutionMessage", "error", errorMessage, false);
 				errMessageBox.show();
 			}
 			if(this.mode === "AUTHOR" && this.checkForNan()) {
 				var errorMessage = "The solution contains imaginary or overflowed numbers"; //We show the error message like "A Node is Missing"
-				var errMessageBox = new messageBox("graphErrorMessage", "error", errorMessage);
+				var errMessageBox = new messageBox("graphErrorMessage", "error", errorMessage, false);
 				errMessageBox.show();
 			}
 
@@ -418,14 +419,14 @@ define([
 				array.forEach(this.model.active.getNodes(), function (thisnode) {
 					if(thisModel.model.active.getType(thisnode.ID)=="function" || thisModel.model.active.getType(thisnode.ID)=="accumulator"){
 						var errorMessage = this.generateMissingErrorMessage(thisModel.model.active.getName(thisnode.ID)); //We show the error message like "A Node is Missing"
-						var errMessageBox = new messageBox("graphErrorMessage", "error", errorMessage);
+						var errMessageBox = new messageBox("graphErrorMessage", "error", errorMessage, false);
 						errMessageBox.show();
 						modStatus = false;
 					}
 				});
 				if(modStatus){
 					var errorMessage = "<div>There isn't anything to plot. Try adding some accumulator or function nodes.</div>"; //We show the error message like "A Node is Missing"
-					var errMessageBox = new messageBox("graphErrorMessage", "error", errorMessage);
+					var errMessageBox = new messageBox("graphErrorMessage", "error", errorMessage, false);
 					errMessageBox.show();
 				}
 			}
@@ -742,12 +743,12 @@ define([
 			var solution = this.findSolution(true, this.plotVariables); // Return value from findSlution in calculation, returns an array and we check for status and any missing nodes
 			if(solution.status=="error" && solution.type=="missing"){
 				errorMessage = this.generateMissingErrorMessage(solution); //We show the error message like "A Node is Missing"
-				var errMessageBox = new messageBox("graphErrorMessage", "error", errorMessage);
+				var errMessageBox = new messageBox("graphErrorMessage", "error", errorMessage, false);
 				errMessageBox.show();
 				return "";
 			}else if(solution.status == "error" && solution.type == "unknwon"){
 				errorMessage = this.generateUnknownErrorMessage(solution); //We show the error message like "A Node is Missing"
-				var errMessageBox = new messageBox("graphErrorMessage", "error", errorMessage);
+				var errMessageBox = new messageBox("graphErrorMessage", "error", errorMessage, false);
 				errMessageBox.show();
 				return "";
 			}

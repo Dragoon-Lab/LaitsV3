@@ -44,13 +44,17 @@ define([
 		_type: "error",
 		_message: null,
 		_callback: null,
+		_close : true,
 		
-		constructor: function(/* String */ container, /* String */ type, /* String */ message){
+		constructor: function(/* String */ container, /* String */ type, /* String */ message, /*Boolean*/ closable){
 		//	container: Id of the container 
 		//	type can have following values : error, success, info, warn
 			_container = container;
 			_type = type;
 			_message = message;
+			if(closable !== undefined){
+				this._close = closable;
+			}
 			this._initMessageBox();
 		},
 
@@ -70,12 +74,15 @@ define([
 				"class":"error-message", innerHTML: _message });
 			domConstruct.place(messageTextDiv, messageOuterDiv , "first");
 
-			//Create Error Message Div
-			var errorMessageCloseDiv = domConstruct.create("div", { 
-				"id": _container + "-message-close-"+ idCount,
-				"class":"error-message-close",
-				"innerHTML": "<img src='images/close.png' width='12px' height='12px'>" });
-			domConstruct.place(errorMessageCloseDiv, messageOuterDiv);
+			if(this._close) {
+				//Create Error Message Div
+				var errorMessageCloseDiv = domConstruct.create("div", {
+					"id": _container + "-message-close-" + idCount,
+					"class": "error-message-close",
+					"innerHTML": "<img src='images/close.png' width='12px' height='12px'>"
+				});
+				domConstruct.place(errorMessageCloseDiv, messageOuterDiv);
+			}
 
 			var handler = on(messageOuterDiv, "click", function(){
 			    		//Fade Out
