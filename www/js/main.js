@@ -205,7 +205,7 @@ define([
 			}
 
 			// This version of code addresses loading errors in cases where problem is empty, incomplete or has no root node in coached mode
-			if (query.m !== "AUTHOR") {
+			if (query.m !== "AUTHOR" && query.m !== "ROAUTHOR") {
 				//check if the problem is empty
 				try {
 					console.log("checking for emptiness");
@@ -564,12 +564,6 @@ define([
             aspect.after(drawModel, "checkNodeClick", function(res) {
                 if(activity_config.get("showNodeEditor")){
                     controllerObject.showNodeEditor(res.ID);
-                    if(activity_config.get("disableNodeEditorFields")){
-                        DQuery("#nodeeditor input").attr("disabled",true);
-                        DQuery("#nodeeditor textarea").attr("disabled",true);
-                        dijit.byId("setName").readOnly = true;
-                        dijit.byId("selectKind").readOnly = true;
-                    }
                 }
             },true);
 			 
@@ -578,12 +572,6 @@ define([
 				if(activity_config.get("showNodeEditor")){
 					if(mover.mouseButton != 2) { //check if not right click
 						controllerObject.showNodeEditor(mover.node.id);
-                        if(activity_config.get("disableNodeEditorFields")){
-                            DQuery("#nodeeditor input").attr("disabled",true);
-                            DQuery("#nodeeditor textarea").attr("disabled",true);
-                            dijit.byId("setName").readOnly = true;
-                            dijit.byId("selectKind").readOnly = true;
-                        }
 					}
 					if(givenModel.getImageURL())
 						registry.byId('imageButton').set('disabled', false);
