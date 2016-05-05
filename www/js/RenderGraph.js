@@ -473,7 +473,9 @@ define([
 				this.legendStatic[id] = new Legend({chart: this.chartsStatic[id]}, "legendStatic" + id);
 			}, this);
 
-			this.tabContainer.selectChild(this.staticTab);
+			if(this.buttonClicked == "graph") {
+				this.tabContainer.selectChild(this.staticTab);
+			}
 		},
 
 		//creates the dropdown menu for the static window
