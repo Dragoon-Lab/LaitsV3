@@ -108,16 +108,13 @@ define([
 
 		end: function(){
 			// Summary: end the tour
-			if(this._currentStep !== null) {
-				var prevNode = dom.byId(this._steps[this._currentStep].element);
-				if (prevNode) {
-					Tooltip.hide(prevNode);
-				}
-			}
 
-			array.forEach(this._steps, lang.hitch(this, function(step){
+			array.forEach(this._steps, lang.hitch(this, function(step, index){
 				if(step["element"]) {
 					this._clickHandlers[step["element"]].remove();
+					//hide all tooltips
+					var elemNode = dom.byId(this._steps[index].element);
+					Tooltip.hide(elemNode);
 				}
 			}));
 			this._clickHandlers = [];
@@ -168,6 +165,7 @@ define([
 			if(! domClass.contains(dom.byId(id), "active")) {
 				array.forEach(this._steps, function(step){
 					if(step["element"] === id){
+						debugger;
 						Tooltip.show(step["title"], dom.byId(id), ["before-centered"]);
 					}
 				});

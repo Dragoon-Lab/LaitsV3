@@ -29,7 +29,7 @@
                 "Here is a model of a diode in series with a resistor and a variable voltage source.  Assume the diode, D1, is not ideal, and it has a knee voltage of 0.7.  Assume the resistance of the resistor (aka R1) is 500 ohms.  The voltage source is a sine wave with a wavelength of 100 milliseconds and a peak of 5 volts."
             ],
             "incremental": [
-                "Here is model of a diode in series with a resistor and a variable voltage source.  For each node, select the waveform that corresponds best with the node's graph.  Assume the diode, D1, is not ideal, but its knee voltage is so small that it appears on the y-axis at zero. "
+                "Here is model of a diode in series with a resistor and a variable voltage source.   Assume the diode, D1, is not ideal, but its knee voltage is so small that it appears on the y-axis at zero. "
             ]
         },
         "lessonsLearned": [],

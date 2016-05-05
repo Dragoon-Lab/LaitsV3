@@ -89,7 +89,6 @@ define([
 			console.log("graphing");
 
 			var errorMessage = "";
-			//dom.byId("solutionMessage").innerHTML = "";
 			dom.byId("graphErrorMessage").innerHTML = "";
 			dom.byId("SliderPane").innerHTML = "";
 
@@ -230,10 +229,13 @@ define([
 					name: "table-tab"
 				});
 			});
-
+			//Attach handlers for graph checkbox
 			this.showHideGraphsHandler();
-			this.resizeWindow();
+
+			//Add Hint button
 			this.showHint();
+
+			this.resizeWindow();
 		},
 
 		/*
@@ -277,8 +279,7 @@ define([
 			});
 
 
-			if(this.isCorrect || this.mode == "AUTHOR")
-			{
+			if(this.isCorrect || this.mode == "AUTHOR") {
 				//plot chart for student node
 				chart.addSeries(
 					"Your solution",
@@ -286,8 +287,7 @@ define([
 					{stroke: "#5cd65c"}
 				);
 			}
-			else
-			{
+			else {
 				chart.addSeries(
 					"Your solution",
 					this.formatSeriesForChart(solution, index),
@@ -303,12 +303,10 @@ define([
 				);
 			}
 
-			if(obj.max - obj.min > (Math.pow(10,-16)) || (obj.max - obj.min === 0))
-			{
+			if(obj.max - obj.min > (Math.pow(10,-16)) || (obj.max - obj.min === 0)) {
 				chart.render();
 			}
-			else
-			{
+			else {
 				dom.byId("solutionMessage").innerHTML = "Unable to graph, please increase the number of timesteps";
 			}
 			return chart;
@@ -320,6 +318,7 @@ define([
 
 			dom.byId("graphMessage" + id).innerHTML = "";
 			var obj = this.getMinMaxFromArray(solution.plotValues[index]);
+
 
 			if(this.mode !== "AUTHOR") {
 				var givenObj = this.getMinMaxFromArray(this.givenSolution.plotValues[index]);
@@ -544,6 +543,7 @@ define([
 
 		},
 
+
 		//changes the static graph when sliders or dropdown change
 		renderStaticDialog: function(updateAuthorGraph){
 			console.log("rendering static");
@@ -751,6 +751,9 @@ define([
 				var errMessageBox = new messageBox("graphErrorMessage", "error", errorMessage, false);
 				errMessageBox.show();
 				return "";
+			} else if(solution.status == "error" && solution.type == "unknwon"){
+				this.dialogWidget.set("content", this.generateUnknownErrorMessage(solution));
+				return "";
 			}
 			var j = 0;
 			for(var i=0; i<solution.times.length; i++){
@@ -914,7 +917,7 @@ define([
 			dialogWindow.style.width = "1000px";
 			dialogWindow.style.left = "0px";
 			dialogWindow.style.top = "0px";
-		},
+		}
 
 	});
 });

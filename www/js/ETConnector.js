@@ -21,49 +21,126 @@
 // running Dragoon inside ET required to communicate with ET service through a heartbeat
 define([
 	"dojo/_base/array",
-	'dojo/_base/declare',
+	"dojo/_base/declare",
 	"dojo/_base/lang",
-	"dojo/dom",
-	"dojo/dom-class",
-	"dojo/dom-style",
-	"dojo/ready",
-	"dojo/on"
-], function(array, declare, lang, dom, domClass, style, ready,on){
+	"dojo/request/iframe",
+	"dojo/dom-construct"
+], function(array, declare, lang, iframe, domConstruct){
 	return declare(null, {
-		constructor : function(frameTitle){
-			this.TestService = null, 
-            this.GatewayService = null, 
-			this.ParentPostingService = null,
-			this.HeartbeatService = null,
-			this.frameName = frameTitle,
-			this.heartbeartName = "ChildHeartbeat",
-			this.COMPLETED_VERB = "Completed",
-			this.LOADED_VERB = "Loaded";
-			this.needsToSendScore = true;
-			this.TestService = Messaging_Gateway.TestService("DragoonService");
-			this.HeartbeatService = Heartbeat_Service.HeartbeatService(null, this.HEARTBEAT_NAME, 5);
-			this.ParentPostingService = Messaging_Gateway.PostMessageGatewayStub("MainPostingGateway", null, null, parent);
-			this.GatewayService = Messaging_Gateway.PostMessageGateway("Client Gateway (Main)", 
-				[this.TestService, this.HeartbeatService ], this.ParentPostingService);
-			console.log("Module Intialized");
-				
+
+		constructor: function(/* object */ query){
+			//parameters from ParentPage.html
+			this.LOGGING_SERVICE;                    // Test service to send messages to the parent about an activity
+			this.GATEWAY_SERVICE;                    // Gateway service for relaying messages in this frame
+			this.PARENT_POSTING_STUB;                // Stub that represents the parent frame's messaging gateway
+			this.LOGGING_POSTING_STUB;              // Stub for the logging and recommender service
+			this.HEARTBEAT_SERVICE;                  // Heartbeat service, to generate a steady heartbeat
+			this.FRAME_NAME = "ActivityFrame";       // A name to call this frame, for reporting purposes and postMessage
+			this.PARENT_NAME = "MainPostingGateway"; // A name to call the parent frame, for reporting purposes and postMessage
+			this.LOGGER_FRAME_NAME = "RecommenderLoggingGateway"; // Logging window name
+			this.LOADED_VERB = "Loaded";           // A Message verb for the "Loaded" message, which indicates that the activity loaded right
+			this.HEARTBEAT_NAME = "ChildHeartbeat";  // A Message verb for the heartbeat this frame looks for
+			this.COMPLETED_VERB = "Completed";
+
+			this.DEFAULT_FRAME_NAME = "ActivityFrame";
+			this.DEFAULT_PARENT_NAME = "MainPostingGateway";
+
 		},
+
 		startService : function(){
-			
+			/*
 			// unknown: if the all the constructor initializations are synchronous
 			this.HeartbeatService.start();
 			this.TestService.sendTestMessage(this.FRAME_NAME, this.LOADED_VERB, window.location.href, true);
     		console.log("ET loaded message send");
+			*/
+			console.log("Start ET connect services");
+			var sourceURL = "https://recommender.x-in-y.com/LoggerWindow.html";
+			var loggerIframe = domConstruct.create("iframe", {
+				"id":"RecommenderLoggingGateway",
+				name: "RecommenderLoggingGateway",
+				src: sourceURL,
+				style: "visibility: none; height:0; width:0"
+			},"ETContainer");
+
+			this.onStart();
 		},
+
+		onStart: function(){
+			var gatewayScope = {},
+				loggingScope = {},
+				taskId = removeURLParams(null, ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7']);
+			gatewayScope[ReferenceData.REFERENCE_IMPLEMENTATION_VERSION_KEY] = ReferenceData.version;
+			gatewayScope[ReferenceData.USER_AGENT_KEY] = navigator.userAgent;
+			loggingScope['ASSISTments_p1'] = getParameterByName('p1');
+			loggingScope['ASSISTments_p2'] = getParameterByName('p2');
+			loggingScope['ASSISTments_p3'] = getParameterByName('p3');
+			loggingScope['ASSISTments_p4'] = getParameterByName('p4');
+			loggingScope['ASSISTments_p5'] = getParameterByName('p5');
+			loggingScope['ASSISTments_p6'] = getParameterByName('p6');
+			loggingScope['ASSISTments_p7'] = getParameterByName('p7');
+			this.LOGGING_SERVICE = SuperGLU.Standard_ITS_Logging.StandardITSLoggingService(null,
+				getParameterByName('p1'), taskId, null, getParameterByName('p7'), loggingScope);
+			this.HEARTBEAT_SERVICE = SuperGLU.Heartbeat_Service.HeartbeatService(null, this.HEARTBEAT_NAME, 30);
+			this.PARENT_POSTING_STUB = SuperGLU.Messaging_Gateway.PostMessageGatewayStub(this.PARENT_NAME, null, null, parent);
+
+			/** Create a gateway as: GatewayId, Child Nodes (Gateways/Services/Stubs), Parent Gateway, Scope added to each message**/
+			this.GATEWAY_SERVICE = SuperGLU.Messaging_Gateway.PostMessageGateway(this.FRAME_NAME,
+				[this.LOGGING_SERVICE, this.HEARTBEAT_SERVICE, this.PARENT_POSTING_STUB],
+				null, gatewayScope);
+			this.HEARTBEAT_SERVICE.start();
+
+
+			console.log(document.getElementById(this.LOGGER_FRAME_NAME));
+			this.LOGGING_POSTING_STUB = SuperGLU.Messaging_Gateway.PostMessageGatewayStub(this.LOGGER_FRAME_NAME,
+				this.GATEWAY_SERVICE, null, document.getElementById(this.LOGGER_FRAME_NAME).contentWindow);
+			this.LOGGING_SERVICE.sendLoadedTask(this.FRAME_NAME);
+		},
+
+		onSkipHeartbeat: function(name, monitor){
+			monitor.stop();
+		},
+
+		onLoadingTimeout: function(){
+			if(this.IS_CHILD_LOADED !== true)
+				this.HEART_MONITOR_SERVICE.stop();
+		},
+
 		stopService : function(){
-			this.HeartbeatService.stop();
+			this.HEARTBEAT_SERVICE.stop();
 		},
 		sendScore : function(score){
-			this.TestService.sendTestMessage(this.Frame_Name, this.COMPLETED_VERB, this.Frame_Name, score, Messaging.INFORM_ACT, {});
-			this.needsToSendScore = false;
+			this.LOGGING_SERVICE.sendCompletedTask(score);
+			this.HEARTBEAT_SERVICE.stop();
 			console.log("ET service stopped");
+		},
+
+		sendKCScore: function(kcScores){
+			var KCs = Object.keys(kcScores);
+			array.forEach(KCs, lang.hitch(this, function(kc){
+				this.LOGGING_SERVICE.sendKCScore(kc, kcScores[kc], null);
+			}));
+		},
+
+		sendFeedback: function(elementId, content, stepId, contentType){
+			console.log("Sending Feedback");
+			this.LOGGING_SERVICE.sendFeedback(content, stepId, "Feedback", contentType);
+		},
+
+		sendSubmittedAnswer : function(elementId, content, stepId, contentType){
+			console.log("Sending submitted answer");
+			this.LOGGING_SERVICE.sendSubmittedAnswer(elementId, content, stepId, contentType);
+		},
+
+		sendCompletedStep: function(stepId, isComplete){
+			console.log("Sending submitted step");
+			this.LOGGING_SERVICE.sendCompletedStep(stepId, isComplete);
+		},
+
+		sendCompletedAllSteps: function(percentComplete){
+			console.log("Sending percent complete");
+			this.LOGGING_SERVICE.sendCompletedAllSteps(percentComplete);
 		}
-		
-	})
+	});
 	
 });

@@ -1,0 +1,77 @@
+<!-- A logging frame to insert into your activity -->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"> 
+    <title>RecommenderLoggingGateway</title>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+        
+        <!-- General Utilities Imports --> 
+        <script type="text/javascript" src="js/SuperGLU/Util/emacs5-compatibility-patches.js"></script>
+        
+        <!-- SuperGLU Imports -->              
+        <script type="text/javascript" src="js/SuperGLU/Util/uuid.js"></script>
+		<script type="text/javascript" src="js/SuperGLU/Util/zet.js"></script>
+		<script type="text/javascript" src="js/SuperGLU/super-glu.js"></script>
+		<script type="text/javascript" src="js/SuperGLU/Util/serialization.js"></script>
+		<script type="text/javascript" src="js/SuperGLU/Core/messaging.js"></script>
+		<script type="text/javascript" src="js/SuperGLU/Core/messaging-gateway.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.1.0/socket.io.min.js"></script>
+        
+        <!-- SuperGLU Services --> 
+		<script type="text/javascript" src="js/SuperGLU/Services/Orchestration/heartbeat-service.js"></script>
+        
+        <!-- Reference-Implementation Data --> 
+		<script type="text/javascript" src="js/reference-data.js"></script>
+        
+		<script type="text/javascript">
+            // Set a window name
+            window.name = "RecommenderLoggingGateway";
+            var HTTP_MESSAGING_GATEWAY,
+                MAIN_POSTING_GATEWAY,               // A gateway for relaying messages to other gateways and services (as a tree)
+                ACTIVITY_WINDOW,                    // Activity window iframe reference
+                ACTIVITY_GATEWAY,                   // An activity window gateway stub to send HTML5 messages
+                TEST_SERVICE,                       // A test service that can send simple messages and watch for messages
+                HEART_MONITOR_SERVICE,              // A heart monitor service that looks for a heartbeat named in HEARTBEAT_NAME
+                FRAME_NAME = window.name,           // Name for the current frame
+                ACTIVITY_GATEWAY_ID = "ActivityFrame";  // Name to give the postMessage gateway in the activity frame
+            
+            /** When page loaded, set up the services. **/
+            var oldOnload = window.onload;
+            window.onload = function(){
+                if (oldOnload != null){ oldOnload(); }
+
+                var gatewayScope = {};
+                    gatewayScope[ReferenceData.REFERENCE_IMPLEMENTATION_VERSION_KEY] = ReferenceData.version;
+                    gatewayScope[ReferenceData.USER_AGENT_KEY] = navigator.userAgent;
+                
+                // Set up Services and Gateways
+                ACTIVITY_WINDOW = parent;
+                ACTIVITY_GATEWAY = SuperGLU.Messaging_Gateway.PostMessageGatewayStub(ACTIVITY_GATEWAY_ID, null, null, ACTIVITY_WINDOW);
+                TEST_SERVICE = SuperGLU.Messaging_Gateway.TestService("LoggerTestService");
+			
+                /** Create a gateway as: GatewayId, Nodes (Gateways/Services/Stubs), Parent Gateway, Scope added to each message**/
+                MAIN_POSTING_GATEWAY = SuperGLU.Messaging_Gateway.PostMessageGateway(FRAME_NAME, 
+                    [ACTIVITY_GATEWAY, TEST_SERVICE], 
+                    null, gatewayScope);
+                // HTTP Gateway disabled for this example
+                //HTTP_MESSAGING_GATEWAY = Messaging_Gateway.HTTPMessagingGateway(null, [MAIN_POSTING_GATEWAY], window.location.protocol + "//" + document.domain + ':' + location.port);
+                
+                /** This Test Service is looking for a certain message. In this case, looking for "Completed"
+                    as a verb and "Inform" as the speech act (i.e., Informing that x is completed)
+                    Technically, better to subclass using Zet (examples found in messaging-gateway.js), 
+                    but this works fine too as long as you're not trying to handle anything crazy.
+                    The child frame shows an alternate example of properly subclassing the base test service.
+                **/
+                var oldReceiveMsg = TEST_SERVICE.receiveMessage;
+                TEST_SERVICE.receiveMessage = function(msg){
+                    oldReceiveMsg(msg);
+                    console.log(TEST_SERVICE.getId() + " received message.");
+                    console.log(msg);
+                };
+            };
+		</script>
+	</head>
+	<body style="width:0px;height:0px;"></body>
+</html>
+

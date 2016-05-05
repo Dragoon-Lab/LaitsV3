@@ -12,11 +12,11 @@
             "isGraphHelpShown": true
         },
         "image": {
-            "URL": "http://i.imgur.com/hu77Rlp.png?1"
+            "URL": "images\/PAL3\/positive-biased-parallel-negative-limiter.png"
         },
         "taskDescription": {
             "construction": [
-                "An AC voltage of 10 volts having a wavelength of 20 milliseconds per cycle is given as an input to the circuit as shown in the figure (input is to the left). The resistance of the resistor is 1000 ohms. The diode has a knee voltage of 0.7 volts. The DC bias voltage is 5 volts. Finish the model and view the graph of the output voltage"
+                "An AC voltage of 10 volts having a wavelength of 20 milliseconds per cycle is given as an input to the circuit as shown in the figure (input is to the left). The resistance of the resistor is 1000 ohms. The diode has a knee voltage of 0.7 volts. The DC bias voltage is 5 volts. Finish the model and view the graph of the output voltage."
             ],
             "incremental": [
                 "An AC voltage of 10 volts having a wavelength of 20 milliseconds per cycle is given as an input to the circuit as shown in the figure (input is to the left). The resistance of the resistor is 1000 ohms. The diode has a knee voltage of 0.7 volts. The DC bias voltage is 5 volts. "
@@ -87,7 +87,39 @@
                 "initial": 10,
                 "units": "volts",
                 "genus": "required",
-                "description": "max peak voltage"
+                "description": "max peak voltage",
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                }
             },
             {
                 "ID": "id2",
@@ -149,7 +181,38 @@
                 "equation": "id1*sinewave(id42,0)",
                 "genus": "required",
                 "description": "a.c input source voltage",
-                "waveformValue": "wave007"
+                "waveformValue": "wave007",
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                }
             },
             {
                 "ID": "id4",
@@ -414,7 +477,39 @@
                 "parentNode": false,
                 "initial": 20,
                 "units": "milliseconds",
-                "genus": "required"
+                "genus": "required",
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                }
             },
             {
                 "ID": "id43",
@@ -491,7 +586,7 @@
                     },
                     {
                         "ID": "id7",
-                        "label": "/"
+                        "label": "\/"
                     }
                 ],
                 "position": {
@@ -544,7 +639,7 @@
                 "description": "Current through the resistor (no load)",
                 "type": "function",
                 "units": "amps",
-                "equation": "id50/id7",
+                "equation": "id50\/id7",
                 "genus": "required",
                 "waveformValue": "wave016",
                 "authorStatus": {
@@ -577,7 +672,8 @@
                     "inputs": {
                         "disabled": false
                     }
-                }
+                },
+                "parentNode": true
             },
             {
                 "ID": "id50",
@@ -796,7 +892,7 @@
                 "units": "volts",
                 "equation": "id41+id51",
                 "genus": "required",
-                "parentNode": true,
+                "parentNode": false,
                 "waveformValue": "wave010",
                 "authorStatus": {
                     "root": {

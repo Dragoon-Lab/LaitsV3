@@ -125,10 +125,15 @@ define([
 	}catch(error){
 		throw Error("Problem in creating activity configurations: "+error);
 	}
+	var ui_config = new UI(query.m , query.a);
+	// get the UI state for the given state and activity
+	console.info("UI Parameters created:",ui_config);
+	console.log("sm ini ?",activity_config);
 
 	//activity_config.set("ElectronixTutor", false);
 	if(activity_config && query.s === "ElectronixTutor"){
 		activity_config.set("ElectronixTutor", true);
+		ui_config.set("doneButton", "none");
 		if(typeof query.p1 != 'undefined' && typeof query.p2 != 'undefined'){
 			// santization required
 			query.u = 'ETUser_' + query.p1;
@@ -182,11 +187,6 @@ define([
 		console.log("solution graph is",solutionGraph);
 
 		//if(solutionGraph) {
-
-		// get the UI state for the given state and activity
-		var ui_config = new UI(query.m , query.a);
-		console.info("UI Parameters created:",ui_config);
-		console.log("sm ini ?",activity_config);
 
 		if(solutionGraph) {
 			//loadModel does sanity check of the model coming from database. Everything should be done afterwards.
@@ -261,9 +261,6 @@ define([
 				errorMessage.show();
 			}
 		}		
-
-
-
 
 		ready(function(){
 			//remove the loading division, now that the problem is being loaded
@@ -359,10 +356,7 @@ define([
 
 			array.forEach(menuButtons, function(button){
 				//setting display for each menu button
-				if(activity_config.get("ElectronixTutor") && button == "doneButton")
-					style.set(registry.byId(button).domNode, "display", "none");
-				else
-					style.set(registry.byId(button).domNode, "display", ui_config.get(button));
+				style.set(registry.byId(button).domNode, "display", ui_config.get(button));
 
 				/*
 				 * This is a work-around for getting a button to work inside a MenuBar.
@@ -463,18 +457,30 @@ define([
 			
 			var etConnect = null;
 			if(activity_config.get("ElectronixTutor")){
-				etConnect = new ETConnector();
+				etConnect = new ETConnector(query);
 				etConnect.startService();
-				
+				//set ET Connector in controller
+				controllerObject.setETConnector(etConnect);
+
 				// send score after student complete the model
 				aspect.after(controllerObject._PM, "notifyCompleteness", function(){
-					if(!etConnect ||  !etConnect.needsToSendScore || !givenModel.isCompleteFlag) return;
-					// var score = controllerObject._assessment.getSuccessFactor();
+					if(!etConnect || !givenModel.isCompleteFlag) return;
+
+					//Send KC Scores
+					var KCScores = controllerObject._assessment.getSchemaSuccessFactor();
+					if(Object.keys(KCScores).length > 0) {
+						console.log("Sending KC Scores", KCScores);
+						etConnect.sendKCScore(KCScores);
+					}
+
+					//Complete Task Score
 					var score=controllerObject._assessment.getSchemasAverageFactor();
 					etConnect.sendScore(score);
 					console.log("sending score(successfactor):", score);
+
+					//Sending percent complete after problem is complete
+					etConnect.sendCompletedAllSteps(100);
 				});
-				
 			}
 			
 			if(activity_config.get("targetNodeStrategy")){ 
@@ -541,13 +547,13 @@ define([
 			// updating model after lessonlearned is shown
 			aspect.after(registry.byId("lesson"), "show", function(){
 				givenModel.setLessonLearnedShown(true);
-				if(!(activity_config.get("demoExecution") || activity_config.get("demoIncremental")))
+				if(!(activity_config.get("demoExecutionFeatures") || activity_config.get("demoIncrementalFeatures")))
 					session.saveProblem(givenModel.model);
 			}); 
 
 			// Wire up send to server
 			aspect.after(drawModel, "updater", function(){
-				if(!(activity_config.get("demoExecution") || activity_config.get("demoIncremental")))
+				if(!(activity_config.get("demoExecutionFeatures") || activity_config.get("demoIncrementalFeatures")))
 					session.saveProblem(givenModel.model);
 			});
 
@@ -572,12 +578,12 @@ define([
 						registry.byId('imageButton').set('disabled', true);
 						
 				}else if(activity_config.get("showIncrementalEditor")){
-					if(activity_config.get("demoIncremental")){
+					if(activity_config.get("demoIncrementalFeatures")){
 						controllerObject.showIncrementalAnswer(mover.node.id);
 					}
 					controllerObject.showIncrementalEditor(mover.node.id);
 				}else if(activity_config.get("showExecutionEditor")){
-					if(activity_config.get("demoExecution")){
+					if(activity_config.get("demoExecutionFeatures")){
 						controllerObject.showExecutionAnswer(mover.node.id);
 					}
 					/*
@@ -810,7 +816,7 @@ define([
 				// TODO: move this data to a json, or pull from forum database (longer term)
 				//       be sure to change the other sos326_f15 reference in the merge code as well!
 				if (query.s == "sos326_f15"){
-				    saveGroupArr=[{name: "Group 1-Water Challenges", id:"grp_1"},
+					saveGroupArr=[{name: "Group 1-Water Challenges", id:"grp_1"},
 						  {name: "Group 2-Parks Challenges", id:"grp_2"},
 						  {name: "Group 3-Transportation Challenges", id:"grp_3"},
 						  {name: "Group 4-Water Challenges", id:"grp_4"},
@@ -819,14 +825,14 @@ define([
 						  {name: "Water Consensus", id:"grp_W"},
 						  {name: "Parks Consensus", id:"grp_P"},
 						  {name: "Transportation Consensus", id:"grp_T"},
- 						  {name: "Whole System Group 1", id:"ws_grp_1"},
+						  {name: "Whole System Group 1", id:"ws_grp_1"},
 						  {name: "Whole System Group 2", id:"ws_grp_2"},
 						  {name: "Whole System Group 3", id:"ws_grp_3"},
 						  {name: "Whole System Group 4", id:"ws_grp_4"},
 						  {name: "Whole System Group 5", id:"ws_grp_5"},
 						  {name: "Whole System Group 6", id:"ws_grp_6"}
 						  ];
-			       }
+				   }
 				var saveGroupMem = new memory({data: saveGroupArr});
 				saveGroupCombo.set("store", saveGroupMem);
 				if (query.s == "sos326_f15"){
@@ -954,7 +960,7 @@ define([
 				menu.add("mergeButton", function(e){
 					event.stop(e);
 					registry.byId("authorMergeDialog").show();
-				     	var combo = registry.byId("authorMergeGroup");
+						var combo = registry.byId("authorMergeGroup");
 					var arr=[{name: "Private("+query.u+")", id: "query.u"},
 						{name: "public", id: "public"},
 						{name:"Official Problems",id:""}
@@ -962,7 +968,7 @@ define([
 					// TODO: move this data to a json, or pull from forum database (longer term)
 					//       be sure to change the other sos326_f15 reference in the save as code as well!
 					if (query.s == "sos326_f15"){
-					    arr=[{name: "Group 1-Water Challenges", id:"grp_1"},
+						arr=[{name: "Group 1-Water Challenges", id:"grp_1"},
 						 {name: "Group 2-Parks Challenges", id:"grp_2"},
 						 {name: "Group 3-Transportation Challenges", id:"grp_3"},
 						 {name: "Group 4-Water Challenges", id:"grp_4"},
@@ -977,16 +983,16 @@ define([
 						 {name: "Whole System Group 4", id:"ws_grp_4"},
 						 {name: "Whole System Group 5", id:"ws_grp_5"},
 						 {name: "Whole System Group 6", id:"ws_grp_6"}];
-					    var sectionBox = registry.byId("authorMergeSection");
-					    sectionBox.set("value","sos326_f15");
-					    sectionBox.set("disabled",true);
+						var sectionBox = registry.byId("authorMergeSection");
+						sectionBox.set("value","sos326_f15");
+						sectionBox.set("disabled",true);
 					}
 					var m = new memory({data: arr});
 					combo.set("store", m);
 					if (query.s == "sos326_f15"){
-					    combo.set("value","Group 1-Water Challenges");
+						combo.set("value","Group 1-Water Challenges");
 					} else {
-					    combo.set("value","Private("+query.u+")"); //setting the default
+						combo.set("value","Private("+query.u+")"); //setting the default
 					}
 				});
 
@@ -1145,78 +1151,148 @@ define([
 					style.set(tableButton.domNode, "display","inline-block");
 
 					// instantiate graph object to show the graph after clicking OK
-					var buttonClicked = "graph";
-					var graph = new Graph(givenModel, query.m, session, buttonClicked);
-					graph.setStateGraph(state);
-					var problemComplete = givenModel.matchesGivenSolution();
+					startGraph();
 
-					graph._logging.log('ui-action', {
-						type: "menu-choice",
-						name: "show-graph",
-						problemComplete: problemComplete
+					//adding the event now so that graph opens up again when graph button is clicked.
+					menu.add("graphButton", function(e){
+						event.stop(e);
+						startGraph();
 					});
-					graph.show();
 
-
-					// show table when button clicked
 					menu.add("tableButton", function(e){
-					event.stop(e);
-					console.debug("table button clicked");
-					var buttonClicked = "table";
-					var table = new Graph(givenModel, query.m, session, buttonClicked);
-					table.setStateGraph(state);
-					table._logging.log('ui-action', {
-						type: "menu-choice",
-						name: "table-button"
-					});
-					table.show();
+						event.stop(e);
+						startTable();
 					});
 				}
 			});
 
+			var problemDoneHint;
+			var showProblemDoneHint = function(){
+				problemDoneHint = new tooltipDialog({
+					style: "width: 300px;",
+					content: '<p>Click "Done" when you are ready to save and submit your work.</p>' +
+						' <button type="button" data-dojo-type="dijit/form/Button" id="closeHint">Ok</button>',
+					onShow: function () {
+						on(registry.byId('closeHint'), 'click', function () {
+							console.log("clicked prob done hint closed");
+							popup.close(problemDoneHint);
+						});
+					},
+					onBlur: function(){
+						popup.close(problemDoneHint);
+					}
+				});
+				popup.open({
+					popup: problemDoneHint,
+					around: dom.byId('doneButton')
+				});
+				givenModel.isDoneMessageShown = true;
+				state.put("isDoneMessageShown",true);
+			};
+
+			var startGraph = function(){
+				// instantiate graph object
+				console.debug("button clicked");
+				var buttonClicked = "graph";
+				var graph = new Graph(givenModel, query.m, session, buttonClicked);
+				graph.setStateGraph(state);
+				var problemComplete = givenModel.matchesGivenSolution();
+				graph._logging.log('ui-action', {
+					type: "menu-choice",
+					name: "graph-button",
+					problemComplete: problemComplete
+				});
+				var dialogWidget = registry.byId("solution");
+
+				var content = dialogWidget.get("content").toString();
+				if(registry.byId("closeHint")) {
+					var closeHintId = registry.byId("closeHint");
+					closeHintId.destroyRecursive(false);
+				}
+				//close popup each time graph is shown
+				if(problemDoneHint)
+					popup.close(problemDoneHint);
+				graph.show();
+
+				var graphHelpButton = dom.byId('graphHelpButton');
+				console.log("graph help shown",givenModel.getGraphHelpShown());
+				if(!givenModel.getGraphHelpShown()&&graphHelpButton ) {
+					domClass.add(graphHelpButton, "glowNode");
+					givenModel.setGraphHelpShown(true);
+					state.put("isGraphHelpShown",true);
+				}
+			};
+
+			var startTable = function(){
+				console.debug("table button clicked");
+				var buttonClicked = "table";
+				var table = new Graph(givenModel, query.m, session, buttonClicked);
+				table.setStateGraph(state);
+				table._logging.log('ui-action', {
+					type: "menu-choice",
+					name: "table-button"
+				});
+				table.show();
+			};
+
 			if(activity_config.get("allowGraph")){
-		
 				var graphButton = registry.byId("graphButton");
 				graphButton.set("disabled", false);
 
 				// show graph when button clicked
 				menu.add("graphButton", function(e){
 					event.stop(e);
-					console.debug("button clicked");
-							
-					// instantiate graph object
-					var buttonClicked = "graph";
-					var graph = new Graph(givenModel, query.m, session, buttonClicked);
-					graph.setStateGraph(state);
-					var problemComplete = givenModel.matchesGivenSolution();
-
-					graph._logging.log('ui-action', {
-						type: "menu-choice",
-						name: "graph-button",
-						problemComplete: problemComplete
-					});
-					graph.show();
-					var graphHelpButton = dom.byId('graphHelpButton');
-					console.log("graph help shown",givenModel.getGraphHelpShown());
-					if(!givenModel.getGraphHelpShown()&&graphHelpButton ) {
-						domClass.add(graphHelpButton, "glowNode");
-						givenModel.setGraphHelpShown(true);
-						state.put("isGraphHelpShown",true);
-					}
-				});
-
-				//the solution div which shows graph/table when closed
-				//should disable all the pop ups
-				aspect.after(registry.byId('solution'), "hide", function(){
-					
-					console.log("Calling graph/table to be closed");
-					controllerObject.logging.log('ui-action', {
-						type: "menu-choice",
-						name: "graph-closed"
-					});
-					typechecker.closePops();
+					startGraph();
 				});
 			}
+
+			//the solution div which shows graph/table when closed
+			//should disable all the pop ups
+			aspect.after(registry.byId('solution'), "hide", function(){
+				console.log("Calling graph/table to be closed");
+				controllerObject.logging.log('ui-action', {
+					type: "menu-choice",
+					name: "graph-closed"
+				});
+				typechecker.closePops();
+				if(activity_config.get("showDoneMessage")){
+					var problemComplete = givenModel.student.matchesGivenSolutionAndCorrect();
+					if(problemComplete){
+						var contentMsg = givenModel.getTaskLessonsLearned();
+
+						if (contentMsg.length === 0 || contentMsg[0] == "") {
+							console.log("lessons learned is empty");
+							if(ui_config.get("doneButton") != "none" && !givenModel.isDoneMessageShown) {
+								showProblemDoneHint();
+							}
+						}else{
+							if(givenModel.getLessonLearnedShown() === false){
+								lessonsLearned.displayLessonsLearned(contentMsg);
+								var lessonsLearnedButton = registry.byId("lessonsLearnedButton");
+								lessonsLearnedButton.set("disabled", false);
+								//this._state.put("isLessonLearnedShown",true);
+								aspect.after(registry.byId("lesson"),"hide", lang.hitch(this,function () {
+								if(ui_config.get("doneButton") != "none" && !givenModel.isDoneMessageShown) {
+										showProblemDoneHint();
+									}
+								}));
+							}
+						}
+					}
+				}
+			});
+
+			aspect.after(registry.byId('waveformEditor'), "hide", function(){
+				//Check if problem is complete should be irrelevent of done message
+				//removing out of if loop
+				controllerObject.notifyCompleteness();
+
+				//Show Done message hint
+				if(activity_config.get("showDoneMessage") && ui_config.get("doneButton") != "none" &&
+					givenModel.student.matchesGivenSolutionAndCorrect() && !givenModel.isDoneMessageShown){
+					showProblemDoneHint();
+				}
+			});
 
 			if(activity_config.get("allowTable")){
 				var tableButton = registry.byId("tableButton");
@@ -1225,15 +1301,7 @@ define([
 				// show table when button clicked
 				menu.add("tableButton", function(e){
 					event.stop(e);
-					console.debug("table button clicked");
-					var buttonClicked = "table";
-					var table = new Graph(givenModel, query.m, session, buttonClicked);
-					table.setStateGraph(state);
-					table._logging.log('ui-action', {
-						type: "menu-choice",
-						name: "table-button"
-					});
-					table.show();
+					startTable();
 				});
 			}
 
@@ -1597,7 +1665,8 @@ define([
 						}
 					}
 
-					if(activity_config.get("showNodeEditorTour") && controllerObject.incNodeTourCounter && controllerObject._model.active.isComplete(controllerObject.currentID)){
+					if(activity_config.get("showNodeEditorTour") && controllerObject.incNodeTourCounter &&
+						controllerObject._model.active.isComplete(controllerObject.currentID)){
 						var nodeTutorialState = givenModel.getNodeEditorTutorialState();
 						// Increment count for nodeType when the node is completed for the first time
 						var nodeType = controllerObject._model.active.getType(controllerObject.currentID);
@@ -1618,6 +1687,16 @@ define([
 						state.put("NodeBorderTutorialState", givenModel.getNodeBorderTutorialState());
 					}
 
+					//Send complete step message on close node editor
+					if(activity_config.get("ElectronixTutor") &&
+						controllerObject._model.active.isComplete(controllerObject.currentID)){
+						var taskname = query.p;
+						var nodename = controllerObject._model.active.getName(controllerObject.currentID).split(' ').join('-');
+						var step_id = taskname +"_"+ nodename;
+						// Send Complete step message
+						etConnect.sendCompletedStep(step_id, true);
+					}
+
 				});
 			}
 
@@ -1626,7 +1705,12 @@ define([
 				//Saving incremental activity to DB
 				//Not Saving demoIncremental activity to DB
 				aspect.after(controllerObject, "closeIncrementalMenu", function(){
-					if(!activity_config.get("demoIncremental"))
+					controllerObject.notifyCompleteness();
+					if(activity_config.get("showDoneMessage") && ui_config.get("doneButton") != "none" &&
+						givenModel.student.matchesGivenSolutionAndCorrect() && !givenModel.isDoneMessageShown){
+						showProblemDoneHint();
+					}
+					if(!activity_config.get("demoIncrementalFeatures"))
 						session.saveProblem(givenModel.model);
 				});
 			}
@@ -1666,6 +1750,9 @@ define([
 				checkForHint();
 				aspect.after(drawModel, "deleteNode", lang.hitch(this, checkForHint));
 				aspect.after(registry.byId("nodeeditor"), "hide", lang.hitch(this, checkForHint));
+
+				// Delete premature nodes for Coached Mode - Target node strategy
+				aspect.after(controllerObject, "deleteNode", lang.hitch(drawModel, drawModel.deleteNode));
 			}
 			/*
 			 * Add Done Button to Menu
@@ -1693,6 +1780,8 @@ define([
 					else
 						window.history.back();
 				}
+
+				session.setModelChanged(false);
 
 				var searchPattern = new RegExp('^pal3', 'i');
 				if(activity_config["PAL3"] && tc){ // check if session name starts with pal
@@ -1722,15 +1811,15 @@ define([
 			menu.add("resetButton", function(e){
 				event.stop(e);
 				//call resetNodeInc demo in con student to reset the nodes	
-				if(activity_config.get("demoIncremental")){
+				if(activity_config.get("demoIncrementalFeatures")){
 					controllerObject.resetNodesIncDemo();
 				}
 				//call resetNodeExec demo in con student to reset the nodes
-				if(activity_config.get("demoExecution")){
+				if(activity_config.get("demoExecutionFeatures")){
 					controllerObject.resetNodesExecDemo();
 				}
 			});
-			if(activity_config.get("demoIncremental") || activity_config.get("demoExecution")) {
+			if(activity_config.get("demoIncrementalFeatures") || activity_config.get("demoExecutionFeatures")) {
 				controllerObject.highlightNextNode();
 			}
 		});

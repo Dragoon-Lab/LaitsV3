@@ -469,7 +469,7 @@ define([
 		handleType: function(type){
             var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
             if(this.getModelType() == "correct"){
-				// Summary: Sets the type of the current node.				
+				// Summary: Sets the type of the current node.
 				this.applyDirectives(this.authorPM.process(this.currentID,'type', type));
 				if(type == 'defaultSelect' || type == ''){
 					this.logging.clientLog("error", {
@@ -480,7 +480,7 @@ define([
 				}
 				this.updateType(type);
 				//update student node status
-                this.updateStatus("type", type,  this._model.student.getType(studentNodeID));
+                if(studentNodeID) this.updateStatus("type", type,  this._model.student.getType(studentNodeID));
 
                 // "Initial Value" label --> "Value" for parameters
                 if (type=="parameter") style.set('initLabel', 'display', 'none');
@@ -493,7 +493,7 @@ define([
 					if(this._model.active.getInitial(studentNodeID) === "number"){
 						var initialNode = registry.byId(this.controlMap.initial);
 						initialNode.set("value", "");
-						this._model.active.setInitial(studentNodeID, "");
+						this._model.active.setInitial(studentNodeID, null);
 					}
 					registry.byId(this.controlMap.inputs).set("disabled", false);
 					registry.byId(this.controlMap.equation).set("disabled", false);
@@ -542,7 +542,7 @@ define([
 			}
 			else{
 				this._model.active.setUnits(this.currentID, units);
-				this.updateStatus("units", units, this._model.student.getUnits(studentNodeID));
+				if(studentNodeID) this.updateStatus("units", units, this._model.student.getUnits(studentNodeID));
 			}
 
 			//update student node status
@@ -572,7 +572,7 @@ define([
 				IniFlag  = {status: true, value: undefined};
 			}
 			var logObj = {};
-			if(IniFlag.status){
+			if(IniFlag && IniFlag.status){
 				// If the initial value is not a number or is unchanged from
 				// previous value we dont process
 				var newInitial = IniFlag.value;
@@ -597,7 +597,7 @@ define([
 				logObj = {
 					error: false
 				};
-			}else if(IniFlag.errorType){
+			}else if(IniFlag && IniFlag.errorType){
 				logObj = {
 					error: true,
 					message: IniFlag.errorType
@@ -900,7 +900,7 @@ define([
 		},
 
 		getModelType: function(){
-			return registry.byId(this.controlMap.modelType).value;
+			return (registry.byId(this.controlMap.student).checked ? registry.byId(this.controlMap.modelType).value : "correct");
 		},
 
 		addStudentNode: function(nodeid){

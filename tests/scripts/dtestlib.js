@@ -461,6 +461,19 @@ exports.isDonePopupVisible = function(client){
     return await(client.isVisible('#doneButton_dropdown',defer()));
 }
 
+exports.isCrisisPopupVisible = function(client){
+    wait(200);
+    var isVisible = await(client.isVisible('#crisisMessage',defer()));
+    wait(100);
+    return isVisible;
+}
+
+exports.nodeExists = function(client, name){
+    wait(100);
+    var exists = await(client.isExisting('#id'+ findIdbyName(client, name) , defer()));
+    return exists;
+}
+
 exports.alertAccept = function(client){
     await(client.alertAccept(defer()));
 }
@@ -654,8 +667,9 @@ exports.getNodeDescriptionColor = function(client){
 
 exports.isNodeDescriptionDisabled = function(client){
     // Summary: Returns a boolean; true if the field is disabled, false if it is enabled.
-    console.warn("Not yet implemented.");
-    return null;
+    //console.warn("Not yet implemented.");
+    var isDisabled = await(client.getAttribute("#selectDescription","disabled", defer()));
+    return isDisabled;
 }
 
 exports.setNodeDescription = function(client, description){
@@ -737,8 +751,9 @@ exports.getNodeTypeColor = function(client){
 
 exports.isNodeTypeDisabled = function(client){
     // Summary: Returns a boolean; true if the field is disabled, false if it is enabled.
-    console.warn("Not yet implemented.");
-    return null;
+    //console.warn("Not yet implemented.");
+    var isDisabled = await(client.getAttribute("#typeId","disabled", defer()));
+    return isDisabled;
 }
 
 exports.setNodeType = function(client,type){
@@ -760,8 +775,9 @@ exports.getNodeInitialValueColor = function(client){
 
 exports.isNodeInitialValueDisabled = function(client){
     // Summary: Returns a boolean; true if the field is disabled, false if it is enabled.
-    console.warn("Not yet implemented.");
-    return null;
+    //console.warn("Not yet implemented.");
+    var isDisabled = await(client.getAttribute("#initialValue","disabled", defer()));
+    return isDisabled;
 }
 
 exports.setNodeInitialValue = function(client,initialValue){
@@ -791,8 +807,9 @@ exports.getNodeUnitsColor = function(client){
 
 exports.isNodeUnitsDisabled = function(client){
     // Summary: Returns a boolean; true if the field is disabled, false if it is enabled.
-    console.warn("Not yet implemented.");
-    return null;
+    //console.warn("Not yet implemented.");
+    var isDisabled = await(client.getAttribute("#selectUnits","disabled", defer()));
+    return isDisabled;
 }
 
 
@@ -830,8 +847,9 @@ exports.getNodeExpressionColor = function(client){
 
 exports.isNodeExpressionDisabled = function(client){
     // Summary: Returns a boolean; true if the field is disabled, false if it is enabled.
-    console.warn("Not yet implemented.");
-    return null;
+    //console.warn("Not yet implemented.");
+    var isDisabled = await(client.getAttribute("#equationBox","disabled", defer()));
+    return isDisabled;
 }
 
 exports.setNodeExpression = function(client,expression){

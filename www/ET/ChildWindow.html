@@ -1,0 +1,123 @@
+<!-- Imagine this is your own web page (e.g., AutoTutor, Dragoon, BBN) -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"> 
+    <head>
+        <title>Child Activity Page</title>
+        <meta name="google" value="notranslate" />         
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <!-- General Utilities Imports -->   
+        <script type="text/javascript" src="js/SuperGLU/Util/emacs5-compatibility-patches.js"></script>
+        <script type="text/javascript" src="js/SuperGLU/Util/general-utilities.js"></script>
+        <script type="text/javascript" src="js/SuperGLU/Util/encoder.js"></script>
+
+        <!-- SuperGLU Imports -->            
+        <script type="text/javascript" src="js/SuperGLU/Util/uuid.js"></script>
+		<script type="text/javascript" src="js/SuperGLU/Util/zet.js"></script>
+		<script type="text/javascript" src="js/SuperGLU/super-glu.js"></script>  
+		<script type="text/javascript" src="js/SuperGLU/Util/serialization.js"></script>
+		<script type="text/javascript" src="js/SuperGLU/Core/messaging.js"></script>
+		<script type="text/javascript" src="js/SuperGLU/Core/messaging-gateway.js"></script>
+        
+        <!-- SuperGLU Services --> 
+		<script type="text/javascript" src="js/SuperGLU/Services/Orchestration/heartbeat-service.js"></script>
+		<script type="text/javascript" src="js/SuperGLU/Services/LoggingService/standard-its-logging.js"></script>
+
+        <!-- Reference-Implementation Data --> 
+		<script type="text/javascript" src="js/reference-data.js"></script>
+
+		<script type="text/javascript">
+			var LOGGING_SERVICE,                    // Test service to send messages to the parent about an activity
+                GATEWAY_SERVICE,                    // Gateway service for relaying messages in this frame
+                PARENT_POSTING_STUB,                // Stub that represents the parent frame's messaging gateway
+                LOGGING_POSTING_STUB,               // Stub for the logging and recommender service
+                HEARTBEAT_SERVICE,                  // Heartbeat service, to generate a steady heartbeat
+                FRAME_NAME = "ActivityFrame",       // A name to call this frame, for reporting purposes and postMessage
+                PARENT_NAME = "MainPostingGateway", // A name to call the parent frame, for reporting purposes and postMessage
+                LOGGER_FRAME_NAME = "RecommenderLoggingGateway", // Logging window name
+                LOADED_VERB = "Loaded",             // A Message verb for the "Loaded" message, which indicates that the activity loaded right
+                HEARTBEAT_NAME = "ChildHeartbeat",  // A Message verb for the heartbeat this frame looks for
+                COMPLETED_VERB = "Completed";       // A Message verb for a "Completed" message, which occurs when the activity is done  
+
+            var DEFAULT_FRAME_NAME = "ActivityFrame",
+                DEFAULT_PARENT_NAME = "MainPostingGateway";
+            
+            /** Create and hook up the child frame services, in the form:
+                MAIN_POSTING_GATEWAY [stub] (id="MainPostingGateway")
+                    - CHILD_GATEWAY (id="ActivityFrame")
+                        - LOGGING_SERVICE
+                        - HEARTBEAT_SERVICE (id=Random UUID)
+            **/
+            var gatewayScope = {},
+                loggingScope = {},
+                taskId = removeURLParams(null, ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7']);
+            gatewayScope[ReferenceData.REFERENCE_IMPLEMENTATION_VERSION_KEY] = ReferenceData.version;
+            gatewayScope[ReferenceData.USER_AGENT_KEY] = navigator.userAgent;
+            loggingScope['ASSISTments_p1'] = getParameterByName('p1');
+            loggingScope['ASSISTments_p2'] = getParameterByName('p2');
+            loggingScope['ASSISTments_p3'] = getParameterByName('p3');
+            loggingScope['ASSISTments_p4'] = getParameterByName('p4');
+            loggingScope['ASSISTments_p5'] = getParameterByName('p5');
+            loggingScope['ASSISTments_p6'] = getParameterByName('p6');
+            loggingScope['ASSISTments_p7'] = getParameterByName('p7');
+            LOGGING_SERVICE = SuperGLU.Standard_ITS_Logging.StandardITSLoggingService(null,
+                getParameterByName('p1'), taskId, null, getParameterByName('p7'), loggingScope);
+            HEARTBEAT_SERVICE = SuperGLU.Heartbeat_Service.HeartbeatService(null, HEARTBEAT_NAME, 30);
+			PARENT_POSTING_STUB = SuperGLU.Messaging_Gateway.PostMessageGatewayStub(PARENT_NAME, null, null, parent);
+            
+            /** Create a gateway as: GatewayId, Child Nodes (Gateways/Services/Stubs), Parent Gateway, Scope added to each message**/
+			GATEWAY_SERVICE = SuperGLU.Messaging_Gateway.PostMessageGateway(FRAME_NAME, 
+                [LOGGING_SERVICE, HEARTBEAT_SERVICE, PARENT_POSTING_STUB], 
+                null, gatewayScope);
+            HEARTBEAT_SERVICE.start();
+
+            /** Calculate Score **/
+            var calculateScore = function(){
+                return parseFloat(document.getElementById("MyScore").value);
+            };
+            
+            /** Function called when clicking a button
+                This broadcasts a semantic message into the gateway node
+                The message will then be relayed to various connected gateways.
+                If no other gateways exist, nothing more will occur.
+                In this case, the parent will display a message indicating receiving the message. 
+            **/
+            var onClickTheOnlyButton = function(){
+                var firstName = getParameterByName('p6'),	// This can be used to address the student by first name
+                    score = calculateScore();
+                LOGGING_SERVICE.sendCompletedTask(score);
+                HEARTBEAT_SERVICE.stop();
+            };
+            
+            // Function to run after loading the window
+            var oldOnload = window.onload;
+            window.onload = function(){
+                if (oldOnload != null){ 
+                    oldOnload();
+                }
+                console.log(document.getElementById(LOGGER_FRAME_NAME));
+                LOGGING_POSTING_STUB = SuperGLU.Messaging_Gateway.PostMessageGatewayStub(LOGGER_FRAME_NAME, 
+                    GATEWAY_SERVICE, null, document.getElementById(LOGGER_FRAME_NAME).contentWindow);
+                LOGGING_SERVICE.sendLoadedTask(FRAME_NAME);
+            };
+		</script>
+    </head>
+    <body>
+        <iframe id="RecommenderLoggingGateway" name="RecommenderLoggingGateway" src="https://recommender.x-in-y.com/LoggerWindow.html" style="width:0px;height:0px;display:none;"></iframe>
+
+        <div id="MyScoreURL">Child URL = </div>
+        <script type="text/javascript">
+            var initialText = document.getElementById("MyScoreURL").innerHTML;
+            document.getElementById("MyScoreURL").innerHTML  = initialText + window.location.href;
+        </script>
+        <!-- @TODO: Improve assessment methodology ;) -->
+        <br>
+        <div>
+            <span>Choose your score: </span> 
+            <input id="MyScore" value="0.0"></input>
+            <!-- Note: Don't need a button.  You can automatically send message whenever, 
+                 but ASSISTments will take "Completed" as a signal to close your iFrame -->
+            <button onclick="onClickTheOnlyButton();">Submit Score</button>
+        </div>
+    </body>
+</html>

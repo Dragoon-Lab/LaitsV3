@@ -104,6 +104,7 @@ define([
 			console.log("browser = ", this.browser.name, " version = ", this.browser.version);
 			this.zoom = 1;
 			this.step = 0.2;
+			this.setModelChanged(false);
 		},
 
 		loadProblem: function(/*object*/ params){
@@ -278,6 +279,10 @@ define([
 		calculateDuration: function(){
 			// Summary:	 Returns the session duration in milliseconds
 			return new Date() - this.startTime;
+		},
+
+		setModelChanged: function(/*boolean*/ flag){
+			window.isModelChanged = flag;
 		}
 	});
 });
