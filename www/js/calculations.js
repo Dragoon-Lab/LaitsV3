@@ -553,7 +553,7 @@ define([
 			var sliderPane = registry.byId("SliderPane");
 			sliderPane.set("content", slidersContent);
 
-			//dialogWidget.set("title", this.model.getTaskName() + " - " + this.type);
+			this.dialogWidget.set("title", this.model.getTaskName() + " - " + this.type);
 			//// Attach contents of dialog box to DOM all at once
 			//console.log(dialogWidget);
 			//dialogWidget.set("content", this.dialogContent);

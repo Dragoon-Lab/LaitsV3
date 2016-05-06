@@ -51,9 +51,10 @@ define([
 	"dijit/layout/TabContainer",
 	"dojo/domReady!"
 ], function(array, declare, lang, on, domAttr, registry, ComboBox, Memory, Chart, Default, Lines, Grid, Legend, calculations, logger, base, contentPane, messageBox, dom, domStyle, domClass, integrate, Dialog){
-	debugger;
+
 	// The calculations constructor is loaded before the RenderGraph constructor
 	return declare(calculations, {
+		dialogWindow: null,								// Solution Graph window
 		type: "Graph",									//Rendering type
 		textBoxID: "textGraph",							//ID for text-box DOM
 		sliderID: "sliderGraph",						//ID for slider DOM
@@ -75,7 +76,7 @@ define([
 			logger.setSession(logging);
 			console.log("***** In RenderGraph constructor");
 			console.log(logging);
-			this.resizeWindow();
+			//this.resizeWindow();
 			if(this.active.timeStep){  // Abort if there is an error in timestep.
 				this.initialize();
 			}
@@ -87,6 +88,12 @@ define([
 
 		initialize: function() {
 			console.log("graphing");
+
+			this.dialogWindow = registry.byId("solution");
+			this.hideCallback = on(this.dialogWindow, "hide", lang.hitch(this, function(){
+				debugger;
+				this.closeDialog();
+			}));
 
 			var errorMessage = "";
 			dom.byId("graphErrorMessage").innerHTML = "";
@@ -156,35 +163,37 @@ define([
 			dom.byId("SliderPane").innerHTML = "<div id='graphHelpButton' data-dojo-type='dijit/form/Button'  class='fRight' type='button'>Help</div>" +
 				"<div class='cBoth' id='solutionMessage'></div>";
 
-			//Check if the solution matches Authors solution
-			if (this.model.active.matchesGivenSolutionAndCorrect()){
-				this.isCorrect = true;
-			}
-			if(this.isCorrect){
-				//Correct Graph Message
-				var successMsg = new messageBox("solutionMessage", "success", "Congratulations," +
-					" your model's behavior matches the author's!", false);
-				successMsg.show();
-			}else{
-				//Incorrect Graph Message
-				if(this.model.active.checkStudentNodeCount() < 0)
-					errorMessage = "Some nodes that the author requires are missing from your model," +
-						" possibly because a subexpression in some node's expression needs to be turned into a node.";
-				else if(this.model.active.checkStudentNodeCount() > 0){
-					errorMessage ="Your model does not match the author's.  You may have extra nodes in your model."
+			if(this.mode != "AUTHOR"  && this.mode != "EDITOR") {
+				//Check if the solution matches Authors solution
+				if (this.model.active.matchesGivenSolutionAndCorrect()) {
+					this.isCorrect = true;
 				}
-				else{
-					errorMessage = "Unfortunately, your model's behavior does not match the author's.";
+				if (this.isCorrect) {
+					//Correct Graph Message
+					var successMsg = new messageBox("solutionMessage", "success", "Congratulations," +
+						" your model's behavior matches the author's!", false);
+					successMsg.show();
+				} else {
+					//Incorrect Graph Message
+					if (this.model.active.checkStudentNodeCount() < 0)
+						errorMessage = "Some nodes that the author requires are missing from your model," +
+							" possibly because a subexpression in some node's expression needs to be turned into a node.";
+					else if (this.model.active.checkStudentNodeCount() > 0) {
+						errorMessage = "Your model does not match the author's.  You may have extra nodes in your model."
+					}
+					else {
+						errorMessage = "Unfortunately, your model's behavior does not match the author's.";
+					}
+					var errMessageBox = new messageBox("solutionMessage", "error", errorMessage, false);
+					errMessageBox.show();
 				}
-				var errMessageBox = new messageBox("solutionMessage", "error", errorMessage, false);
-				errMessageBox.show();
 			}
+
 			if(this.mode === "AUTHOR" && this.checkForNan()) {
 				var errorMessage = "The solution contains imaginary or overflowed numbers"; //We show the error message like "A Node is Missing"
 				var errMessageBox = new messageBox("graphErrorMessage", "error", errorMessage, false);
 				errMessageBox.show();
 			}
-
 
 			//If no errors then show Tab Container
 			domStyle.set(this.tabContainer.domNode, "display", "block");
@@ -234,7 +243,6 @@ define([
 
 			//Add Hint button
 			this.showHint();
-
 			this.resizeWindow();
 		},
 
@@ -685,6 +693,17 @@ define([
 			this.createTable(this.active.plotVariables);
 		},
 
+		closeDialog: function(){
+			//Cleanup when dialog is closed
+
+			if(this.helpDialog){
+				this.helpDialog.destroyRecursive();
+			}
+			dom.byId("graphErrorMessage").innerHTML = "";
+			dom.byId("SliderPane").innerHTML = "";
+			this.hideCallback.remove();
+		},
+
 
 
 		/*
@@ -895,20 +914,24 @@ define([
 		//Create Hint
 		showHint: function(){
 			var helpButton = registry.byId("graphHelpButton");
-			var helpDialog = new Dialog({
-				"class":'graphHintUnderLay',
-				"title": "Graph Help",
-				content: "<ul><li>Welcome to the graph window.  The results of the model’s computations are shown here as graphs and tables.  The model consists of inter-related numerical quantities.</li>"+
-				"<li>The left side of the window displays the quantities in the model calculated by the equations in the accumulator and function nodes.</li>"+
-				"<li>Any fixed quantity (parameters or accumulators’ initial value) can be temporarily adjusted using the sliders on the right side of this window.  "+
-				"This updates the graphs/tables on the left immediately.  To reset the sliders, close and re-open the window.</li>"+
-				"<li>The “static” tab appears when all graphed quantities are constant with time.  In this tab, you can select a quantity from the list and Dragoon will use it as the horizontal axis for every graph. </li>"+
-				"</ul>"
-			});
-			on(helpButton, "click", function(){
-				helpDialog.show();
+
+			on(helpButton, "click", lang.hitch(this, function () {
+				if(!this.helpDialog) {
+					this.helpDialog = new Dialog({
+						"class": 'graphHintUnderLay',
+						"title": "Graph Help",
+						content: "<ul><li>Welcome to the graph window.  The results of the model’s computations are shown here as graphs and tables.  The model consists of inter-related numerical quantities.</li>" +
+						"<li>The left side of the window displays the quantities in the model calculated by the equations in the accumulator and function nodes.</li>" +
+						"<li>Any fixed quantity (parameters or accumulators’ initial value) can be temporarily adjusted using the sliders on the right side of this window.  " +
+						"This updates the graphs/tables on the left immediately.  To reset the sliders, close and re-open the window.</li>" +
+						"<li>The “static” tab appears when all graphed quantities are constant with time.  In this tab, you can select a quantity from the list and Dragoon will use it as the horizontal axis for every graph. </li>" +
+						"</ul>"
+					});
+				}
+				this.helpDialog.show();
 				domClass.remove("graphHelpButton", "glowNode");
-			});
+			}));
+
 		},
 
 		//Resize graph window
