@@ -1065,14 +1065,18 @@ define([
 			if(resetEquation){
 				this._model.active.setEquation(this.currentID, "");
 				directives.push({id: 'equation', attribute: 'value', value: ""});
-			} else if(cancelUpdate){
+			}
+			// changing this as it is essential to update the equation using createExpressionNodes.
+			// otherwise equation with correct nodes not converted to their corresponding id stays in the equation of the model
+			// fix for bug : https://trello.com/c/bVYAQBKT ~ Sachin Grover
+			/*else if(cancelUpdate){
 				//in case we are not calling the pm then we need to save the equation to the model.
-				this._model.active.setEquation(this.currentID, inputEquation);
-			}
-			if(!cancelUpdate){
-				return parse;
-			}
-			return null;
+				//this._model.active.setEquation(this.currentID, inputEquation);
+			}*/
+			//if(true || !cancelUpdate){
+			return parse;
+			//}
+			//return null;
 		},
 		expressionSuggestor : function(id, answer){
 			//output: message directive, suggestion message 
@@ -1492,6 +1496,9 @@ define([
 						if(directive.attribute === "status"){
 							tempDirective = directive;
 						}
+						if(this.activityConfig.get("ElectronixTutor") && directive.id === "message"){
+							this.sendETFeedback(directives);
+						}
 					}
 				}else if(directive.attribute == "display"){
 					if(this.genericDivMap[directive.id]){
@@ -1614,6 +1621,11 @@ define([
 			//stub over written in con-student. assessment function called at node close
 		},
 
+		//Set ET Connector Object
+		setETConnector: function(ET) {
+			this.ETConnect = ET;
+		},
+
 		deletePrematureNodes: function(){
 			//Summary : Scan and delete the premature nodes after validating current Node equation
 
@@ -1645,6 +1657,25 @@ define([
 		deleteNode: function(id){
 			//Stub to delete node with id by inturn calling drawmodel.deleteNode in main.js
 			return id;
+		},
+
+		sendETFeedback: function(directives){
+			var field = "";
+			var content = "";
+			array.forEach(directives, function(directive){
+				if(directive.attribute ===  "status"){
+					field = directive.id;
+				}else if (directive.id === "message"){
+					content = directive.value;
+				}
+			});
+
+			var taskname = this._model.getTaskName().split(' ').join('-');
+			var nodename = this._model.active.getName(this.currentID).split(' ').join('-');
+			var step_id = taskname +'_'+ nodename +'_'+'Select'+field;
+			console.log("STEPID" + step_id);
+			this.ETConnect.sendFeedback( field, content , step_id, "text");
+
 		}
 
 	});

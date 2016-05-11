@@ -233,6 +233,14 @@ define([
 				this.activateForumButton();
 			}
 
+			// Send selectedAnswer for elecronix tutor
+			if(this.activityConfig.get("ElectronixTutor")){
+				var taskname = this._model.getTaskName().split(' ').join('-');
+				var nodename = this._model.active.getName(this.currentID).split(' ').join('-');
+				var step_id = taskname +'_'+ nodename +'_'+'SelectDescription';
+				this.ETConnect.sendSubmittedAnswer('description', this._model.given.getName(selectDescription), step_id, "text");
+			}
+
 			this.logging.setModelChanged(true);
 		},
 
@@ -256,6 +264,14 @@ define([
 			//this.adjustStudentNodeEditor(type);
 			this.updateType(type);
 			this.applyDirectives(this._PM.processAnswer(this.currentID, 'type', type));
+
+			// Send selectedAnswer for elecronix tutor
+			if(this.activityConfig.get("ElectronixTutor")){
+				var taskname = this._model.getTaskName().split(' ').join('-');
+				var nodename = this._model.active.getName(this.currentID).split(' ').join('-');
+				var step_id = taskname +'_'+ nodename +'_'+'SelectType';
+				this.ETConnect.sendSubmittedAnswer('type', type , step_id, "text");
+			}
 
 			this.logging.setModelChanged(true);
 		},	
@@ -312,6 +328,14 @@ define([
 				});
 			}
 
+			// Send selectedAnswer for elecronix tutor
+			if(this.activityConfig.get("ElectronixTutor")){
+				var taskname = this._model.getTaskName().split(' ').join('-');
+				var nodename = this._model.active.getName(this.currentID).split(' ').join('-');
+				var step_id = taskname +'_'+ nodename +'_'+'SelectInitial';
+				this.ETConnect.sendSubmittedAnswer('initial', initial , step_id, "text");
+			}
+
 			this.logging.setModelChanged(true);
 
 		},
@@ -346,6 +370,16 @@ define([
 			// updating node editor and the model.
 			this._model.student.setUnits(this.currentID, unit);
 			this.applyDirectives(this._PM.processAnswer(this.currentID, 'units', unit));
+
+
+			// Send selectedAnswer for elecronix tutor
+			if(this.activityConfig.get("ElectronixTutor")){
+				var taskname = this._model.getTaskName().split(' ').join('-');
+				var nodename = this._model.active.getName(this.currentID).split(' ').join('-');
+				var step_id = taskname +'_'+ nodename +'_'+'SelectUnits';
+				this.ETConnect.sendSubmittedAnswer('unit', unit , step_id, "text");
+			}
+
 			this.logging.setModelChanged(true);
 		},
 		unitsSet: function (value) {
@@ -385,6 +419,15 @@ define([
 			}
 			if (!isDemo) {
 				this.createExpressionNodes(parse, false);
+			}
+
+
+			// Send selectedAnswer for elecronix tutor
+			if(this.activityConfig.get("ElectronixTutor")){
+				var taskname = this._model.getTaskName().split(' ').join('-');
+				var nodename = this._model.active.getName(this.currentID).split(' ').join('-');
+				var step_id = taskname +'_'+ nodename +'_'+'CheckExpression';
+				this.ETConnect.sendSubmittedAnswer('expression', registry.byId(this.controlMap.equation).get("value"), step_id, "text");
 			}
 
 			this.logging.setModelChanged(true);
@@ -705,6 +748,16 @@ define([
 
 					//Close popup
 					that.closeIncrementalMenu(true);
+
+
+					// Send selectedAnswer for elecronix tutor
+					if(that.activityConfig.get("ElectronixTutor")){
+						var taskname = that._model.getTaskName().split(' ').join('-');
+						var nodename = that._model.active.getName(that.currentID).split(' ').join('-');
+						var step_id = taskname +'_'+ nodename +'_'+'SelectTweakDirection';
+						that.ETConnect.sendSubmittedAnswer('tweakDirection', item , step_id, "text");
+					}
+
 				});
 			});
 
@@ -1147,6 +1200,14 @@ define([
 									this.updateNodeLabel(this.currentID);
 									this.colorNodeBorder(this.currentID, true);
 									waveformEditorDialog.hide();
+
+									// Send selectedAnswer for elecronix tutor
+									if(this.activityConfig.get("ElectronixTutor")){
+										var taskname = this._model.getTaskName().split(' ').join('-');
+										var nodename = this._model.active.getName(this.currentID).split(' ').join('-');
+										var step_id = taskname +'_'+ nodename +'_'+'SelectWaveform';
+										this.ETConnect.sendSubmittedAnswer('waveform', value , step_id, "text");
+									}
 								}
 							}));
 						}));

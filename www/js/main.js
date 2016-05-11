@@ -457,18 +457,30 @@ define([
 			
 			var etConnect = null;
 			if(activity_config.get("ElectronixTutor")){
-				etConnect = new ETConnector();
+				etConnect = new ETConnector(query);
 				etConnect.startService();
-				
+				//set ET Connector in controller
+				controllerObject.setETConnector(etConnect);
+
 				// send score after student complete the model
 				aspect.after(controllerObject._PM, "notifyCompleteness", function(){
-					if(!etConnect ||  !etConnect.needsToSendScore || !givenModel.isCompleteFlag) return;
-					// var score = controllerObject._assessment.getSuccessFactor();
+					if(!etConnect || !givenModel.isCompleteFlag) return;
+
+					//Send KC Scores
+					var KCScores = controllerObject._assessment.getSchemaSuccessFactor();
+					if(Object.keys(KCScores).length > 0) {
+						console.log("Sending KC Scores", KCScores);
+						etConnect.sendKCScore(KCScores);
+					}
+
+					//Complete Task Score
 					var score=controllerObject._assessment.getSchemasAverageFactor();
 					etConnect.sendScore(score);
 					console.log("sending score(successfactor):", score);
+
+					//Sending percent complete after problem is complete
+					etConnect.sendCompletedAllSteps(100);
 				});
-				
 			}
 			
 			if(activity_config.get("targetNodeStrategy")){ 
@@ -1250,7 +1262,7 @@ define([
 
 						if (contentMsg.length === 0 || contentMsg[0] == "") {
 							console.log("lessons learned is empty");
-							if(ui_config.get("doneButton") != "none" && givenModel.isDoneMessageShown === false) {
+							if(ui_config.get("doneButton") != "none" && !givenModel.isDoneMessageShown) {
 								showProblemDoneHint();
 							}
 						}else{
@@ -1260,7 +1272,7 @@ define([
 								lessonsLearnedButton.set("disabled", false);
 								//this._state.put("isLessonLearnedShown",true);
 								aspect.after(registry.byId("lesson"),"hide", lang.hitch(this,function () {
-								if(ui_config.get("doneButton") != "none" && givenModel.isDoneMessageShown === false) {
+								if(ui_config.get("doneButton") != "none" && !givenModel.isDoneMessageShown) {
 										showProblemDoneHint();
 									}
 								}));
@@ -1271,10 +1283,14 @@ define([
 			});
 
 			aspect.after(registry.byId('waveformEditor'), "hide", function(){
+				//Check if problem is complete should be irrelevent of done message
+				//removing out of if loop
+				controllerObject.notifyCompleteness();
+
+				//Show Done message hint
 				if(activity_config.get("showDoneMessage") && ui_config.get("doneButton") != "none" &&
-					givenModel.student.matchesGivenSolutionAndCorrect()){
+					givenModel.student.matchesGivenSolutionAndCorrect() && !givenModel.isDoneMessageShown){
 					showProblemDoneHint();
-					controllerObject.notifyCompleteness();
 				}
 			});
 
@@ -1651,7 +1667,8 @@ define([
 						}
 					}
 
-					if(activity_config.get("showNodeEditorTour") && controllerObject.incNodeTourCounter && controllerObject._model.active.isComplete(controllerObject.currentID)){
+					if(activity_config.get("showNodeEditorTour") && controllerObject.incNodeTourCounter &&
+						controllerObject._model.active.isComplete(controllerObject.currentID)){
 						var nodeTutorialState = givenModel.getNodeEditorTutorialState();
 						// Increment count for nodeType when the node is completed for the first time
 						var nodeType = controllerObject._model.active.getType(controllerObject.currentID);
@@ -1672,6 +1689,16 @@ define([
 						state.put("NodeBorderTutorialState", givenModel.getNodeBorderTutorialState());
 					}
 
+					//Send complete step message on close node editor
+					if(activity_config.get("ElectronixTutor") &&
+						controllerObject._model.active.isComplete(controllerObject.currentID)){
+						var taskname = query.p;
+						var nodename = controllerObject._model.active.getName(controllerObject.currentID).split(' ').join('-');
+						var step_id = taskname +"_"+ nodename;
+						// Send Complete step message
+						etConnect.sendCompletedStep(step_id, true);
+					}
+
 				});
 			}
 
@@ -1680,11 +1707,10 @@ define([
 				//Saving incremental activity to DB
 				//Not Saving demoIncremental activity to DB
 				aspect.after(controllerObject, "closeIncrementalMenu", function(){
-
+					controllerObject.notifyCompleteness();
 					if(activity_config.get("showDoneMessage") && ui_config.get("doneButton") != "none" &&
-						givenModel.student.matchesGivenSolutionAndCorrect()){
+						givenModel.student.matchesGivenSolutionAndCorrect() && !givenModel.isDoneMessageShown){
 						showProblemDoneHint();
-						controllerObject.notifyCompleteness();
 					}
 					if(!activity_config.get("demoIncrementalFeatures"))
 						session.saveProblem(givenModel.model);

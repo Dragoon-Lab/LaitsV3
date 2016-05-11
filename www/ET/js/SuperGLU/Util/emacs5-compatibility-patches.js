@@ -1,4 +1,10 @@
-// Fix for IE8, where arrays have no indexOf...
+/** Polyfill patches for non-compliant browsers for EMACS5
+    Package: SuperGLU
+    Author: Benjamin Nye
+    License: APL 2.0
+**/
+
+/** Fix for IE8 and under, where arrays have no indexOf... **/
 var indexOf = function(needle) {
     if(typeof Array.prototype.indexOf === 'function') {
         indexOf = Array.prototype.indexOf;
@@ -17,11 +23,12 @@ var indexOf = function(needle) {
     return indexOf.call(this, needle);
 };
 
+/** Fix for IE8 and under, where arrays have no indexOf... **/
 Object.values = function(obj){
     return (Object.keys(obj)).map(function(key){return obj[key];});
 };
 
-// Fill in toISOString if not defined (Thanks, IE8)
+/** Fill in toISOString if not defined (Thanks, IE8) **/
 if ( !Date.prototype.toISOString ) {
   ( function() {
 
@@ -47,7 +54,7 @@ if ( !Date.prototype.toISOString ) {
   }() );
 }
 
-// Object.create polyfill
+/** Object.create polyfill **/
 if (!Object.create) {
     Object.create = (function(){
         function F(){}
@@ -62,10 +69,11 @@ if (!Object.create) {
     })();
 }
 
-// Console-polyfill. MIT license.
-// Attribution: Paul Miller
-// https://github.com/paulmillr/console-polyfill
-// Make it safe to do console.log() always.
+/** Console-polyfill. MIT license.
+    Attribution: Paul Miller
+    https://github.com/paulmillr/console-polyfill
+    Make it safe to do console.log() always.
+**/
 (function(con) {
   'use strict';
   var prop, method;

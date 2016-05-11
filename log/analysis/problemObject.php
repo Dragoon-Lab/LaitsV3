@@ -12,6 +12,7 @@
 			}
 			$fileString = file_get_contents($this->folderName.$name.".json");
 			$this->currentProblem = json_decode($fileString, true);
+			$this->currentProblem["task"]["name"] = $name;
 			$this->initNodeSchema();
 			$this->setNodeSchemaNames();
 			self::$problems[$name] = json_encode($this->currentProblem, true);
@@ -50,6 +51,10 @@
 
 		private function getSchemas(){
 			return $this->currentProblem["task"]["schemas"];
+		}
+
+		public function getName(){
+			return $this->currentProblem["task"]["name"];
 		}
 
 		public function getIndex($n){
@@ -132,6 +137,22 @@
 			return $schemaIDs;
 		}
 
+		function getUniqueSchemas($name){
+			$ID = $this->getNodeID($name);
+			$schemas = $this->getSchemas();
+			$schemaIDs = array();
+
+			foreach($schemas as $schema){
+				$IDArray = explode(", ", $schema["nodes"]);
+				if(in_array($ID, $IDArray)){
+					if(!in_array($schema["schemaClass"], $schemaIDs))
+						array_push($schemaIDs, $schema["schemaClass"]);
+				}
+			}
+
+			return $schemaIDs;
+		}
+
 		function getSchemaMap($name){
 			$ID = $this->getNodeID($name);
 			$schemas = $this->getSchemas();
@@ -145,6 +166,11 @@
 			}
 
 			return $schemaIDs;
+		}
+
+		function getValue($name, $propertyName){
+			$node = $this->getNode($name);
+			return $node != null && array_key_exists($propertyName, $node) ? $node[$propertyName] : null;
 		}
 
 		static function cmp($a, $b){
@@ -247,6 +273,58 @@
 
 			return $typeCount;
 		}
+
+		function getAccParNodeCount(){
+            $nodes = $this->getNodes();
+            $count = 0;
+            foreach($nodes as $node){
+                if($node["type"] != "function")
+                    $count++;
+            }
+
+            return $count;
+        }
+
+		function getAllUnits(){
+			$units = array();
+			$nodes = $this->getNodes();
+			foreach($nodes as $node){
+			//	echo json_encode($node)."<br/>";
+				if(array_key_exists("units", $node) && !in_array($node["units"], $units)){
+					array_push($units, $node["units"]);
+				}
+			}
+
+			//echo json_encode($units)."<br/>";
+			return $units;
+		}
+
+		function getPropertyValue($name, $property){
+			$node = $this->getNode($name);
+			if($node != null){
+				return $node[$property];
+			}
+
+			return null;
+		}
+
+		function getInModelNodeRatio(){
+			$nodes = $this->getNodes();
+			$correctNodes = 0;
+			$nodeCount = 0;
+
+			foreach($nodes as $node){
+				if(!array_key_exists("genus", $node) || $node["genus"] == "" || $node["genus"] == "required")
+					$correctNodes++;
+				$nodeCount++;
+			}
+
+			return $correctNodes/$nodeCount;
+		}
+
+		function getNodeCount(){
+			return count($this->getNodes());
+		}
 	}
 
 	Class User{
@@ -258,6 +336,7 @@
 		public $codeName;
 		public $schemas = array(); //holds all the schema that user made with error count
 		public $currentProblemNodes = 0;
+		public $model = null;
 
 		function __construct($n){
 			$this->name = $n;
@@ -366,6 +445,7 @@
 		public $problem;
 		public $name;
 		public $schemas = array();
+		public $uniqueSchemas = array();
 		public $difficultyParams = array();
 		public $properties = array();
 		public $propertyNames = array();
@@ -408,6 +488,8 @@
 		public $schemaName = array();
 		public $schemaName2 = array();
 		public $schemaName3 = array();
+		public $posterior = 0;
+		public $knowledge = array();
 
 		function __construct($n){
 			$this->name = $n;
