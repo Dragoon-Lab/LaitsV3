@@ -79,8 +79,10 @@ define([
 	console.log("load main.js");
 	// Get session parameters
 	var query = {};
-	if(window.location.search){
-		query = ioQuery.queryToObject(window.location.search.slice(1));
+	//this change will keep it backward compatible
+	//as $_REQUEST is used at the place instead of $_POST.
+	if(dom.byId("query").value){
+		query = ioQuery.queryToObject(dom.byId("query").value);
 	}else{
 		console.warn("Should have method for logging this to Apache log files.");
 		console.warn("Dragoon log files won't work since we can't set up a session.");
