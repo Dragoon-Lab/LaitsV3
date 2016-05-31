@@ -1496,7 +1496,8 @@ define([
 						if(directive.attribute === "status"){
 							tempDirective = directive;
 						}
-						if(this.activityConfig.get("ElectronixTutor") && directive.id === "message"){
+						if(this.activityConfig.get("ElectronixTutor") && directive.id === "message"
+							&& this._mode !== "AUTHOR"){
 							this.sendETFeedback(directives);
 						}
 					}

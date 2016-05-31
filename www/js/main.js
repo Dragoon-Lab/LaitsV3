@@ -433,7 +433,7 @@ define([
 			palTopicIndex = "";
 			var tc = null;
 			var searchPattern = new RegExp('^pal3', 'i');
-			if(query.m != "AUTHOR" && searchPattern.test(query.s)){
+			if(query.m !== "AUTHOR" && searchPattern.test(query.s)){
 				activity_config["PAL3"] = true;
 				var xhrArgs = {
 					url: "problems/PAL3-problem-topics.json",
@@ -456,7 +456,7 @@ define([
 			// setting environment for loading dragoon inside ET
 			
 			var etConnect = null;
-			if(activity_config.get("ElectronixTutor")){
+			if(activity_config.get("ElectronixTutor") && query.m !== "AUTHOR"){
 				etConnect = new ETConnector(query);
 				etConnect.startService();
 				//set ET Connector in controller
