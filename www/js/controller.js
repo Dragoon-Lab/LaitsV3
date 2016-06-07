@@ -213,7 +213,7 @@ define([
 			domStyle.set(this.domNode, 'backgroundColor', value ? colorMap[value] : '');
 		},
 
-		_setUpNodeEditor: function(){;
+		_setUpNodeEditor: function(){
 			// get Node Editor widget from tree
 			this._nodeEditor = registry.byId('nodeeditor');
 			this._nodeEditor.set("display", "block");
