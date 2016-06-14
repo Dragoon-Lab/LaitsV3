@@ -29,7 +29,7 @@ define([
 	"dojo/on",
 	'dojo/aspect',
 	"dojo/io-query",
-    "dojo/query",
+	"dojo/query",
 	"dojo/ready",
 	'dijit/registry',
 	"dijit/Tooltip",
@@ -38,7 +38,7 @@ define([
 	"./menu",
 	"./load-save",
 	"./model",
-	"./RenderGraph",	
+	"./RenderGraph",
 	"./con-student",
 	"./con-author",
 	"./draw-model",
@@ -92,7 +92,7 @@ define([
 		throw Error("please retry, insufficient information");
 	}
 
-	// PAL3 HACK - for pal3 sections only!	
+	// PAL3 HACK - for pal3 sections only!
 	if (query.s.substring(0,4) === "PAL3"){
 		console.log("In pal3 hack, query.a: " + query.a)
 		if(query.a === "" || query.a === undefined || query.a === null){
@@ -110,7 +110,7 @@ define([
 				query.a = "construction";
 			}
 		}
-	}	
+	}
 
 	//Load Activity Parameters
 	//query.a gives the input activity through url
@@ -120,7 +120,7 @@ define([
 		query.a = "construction";
 	}
 	var activity_config;
-	try{		
+	try{
 		activity_config = new activityParameters(query.m, query.a);
 		console.log("ACTIVITY PARAMS", activity_config);
 	}catch(error){
@@ -261,7 +261,7 @@ define([
 				var errorMessage = new messageBox("errorMessageBox", "error", "Problem not found.");
 				errorMessage.show();
 			}
-		}		
+		}
 
 		ready(function(){
 			//remove the loading division, now that the problem is being loaded
@@ -367,7 +367,7 @@ define([
 					console.log(button+" _setSelected called with ", arg);
 				}
 			}, this);
-			
+
 			dojo.style(dom.byId("zoomButtons"), "display", ui_config.get("zoomButtons"));
 
 			var updateModel = new modelUpdates(givenModel, query.m, session, activity_config);
@@ -423,7 +423,7 @@ define([
 				controllerObject._PM.setNodeCounter();
 			}
 
-			
+
 			// update the menu bar based on model state
 			if(query.m != "AUTHOR") {
 				if(givenModel.getLessonLearnedShown())
@@ -455,7 +455,7 @@ define([
 				});
 			}
 			// setting environment for loading dragoon inside ET
-			
+
 			var etConnect = null;
 			if(activity_config.get("ElectronixTutor") && query.m !== "AUTHOR"){
 				etConnect = new ETConnector(query);
@@ -483,40 +483,40 @@ define([
 					etConnect.sendCompletedAllSteps(100);
 				});
 			}
-			
-			if(activity_config.get("targetNodeStrategy")){ 
-				// Only in construction activity when in COACHED mode 
+
+			if(activity_config.get("targetNodeStrategy")){
+				// Only in construction activity when in COACHED mode
 				var rootNodes = givenModel.given.getRootNodes();
-				var studentNodes = givenModel.active.getNodes();	
+				var studentNodes = givenModel.active.getNodes();
 
 				// Getting existing nodes
-				var currentNodes=[]; 
+				var currentNodes=[];
 				array.forEach(studentNodes,function(node){
 					currentNodes.push(node.descriptionID);
-				});				
+				});
 
 				// Creating the root node if missing
 				array.forEach(rootNodes, function(rootNode){
 					if (currentNodes.indexOf(rootNode.ID)<0){ // Checks if any root node is missing
 						var id=updateModel.copyGivenNode(rootNode.ID);
-						// var id = givenModel.active.addNode();				
+						// var id = givenModel.active.addNode();
 						// givenModel.student.setDescriptionID(id, rootNode.ID);
 						// givenModel.student.setStatus(id, "description", {"disabled": true, "status": "correct"});
 						// givenModel.student.setStatus(id, "type", {"disabled": false});
 						//drawModel.addNode(givenModel.active.getNode(id));
 					}
-				});		
+				});
 			}
 
 			var drawModel = new drawmodel(givenModel.active, ui_config.get("showColor"), activity_config);
 			drawModel.setLogging(session);
-			
+
 			if(query.m != 'AUTHOR' && query.m != 'ROAUTHOR'){
 				controllerObject.setAssessment(session); //set up assessment for student.
 			}
-			// add mouse enter and mouse leave event for every new node	
+			// add mouse enter and mouse leave event for every new node
 			var iBoxController = new ImageBox(givenModel.getImageURL(), givenModel);
-			
+
 			iBoxController.initNodeMouseEvents();
 			// for the new nodes added during the session
 			aspect.after(drawModel, "addNode", function(vertex){
@@ -539,7 +539,7 @@ define([
 				});
 
 			}, true);
-			
+
 			// Wire up drawing new node
 			aspect.after(controllerObject, "addNode",
 				lang.hitch(drawModel, drawModel.addNode),
@@ -550,7 +550,7 @@ define([
 				givenModel.setLessonLearnedShown(true);
 				if(!(activity_config.get("demoExecutionFeatures") || activity_config.get("demoIncrementalFeatures")))
 					session.saveProblem(givenModel.model);
-			}); 
+			});
 
 			// Wire up send to server
 			aspect.after(drawModel, "updater", function(){
@@ -567,14 +567,14 @@ define([
 			/*
 			 * Connect node editor to "click with no move" events.
 			 */
-            aspect.after(drawModel, "checkNodeClick", function(res) {
-                if(activity_config.get("showNodeEditor")){
-                    controllerObject.showNodeEditor(res.ID);
-                }
-            },true);
-			 
+			aspect.after(drawModel, "checkNodeClick", function(res) {
+				if(activity_config.get("showNodeEditor")){
+					controllerObject.showNodeEditor(res.ID);
+				}
+			},true);
+
 			aspect.after(drawModel, "onClickNoMove", function(mover){
-                console.log("mover",mover);
+				console.log("mover",mover);
 				if(activity_config.get("showNodeEditor")){
 					if(mover.mouseButton != 2) { //check if not right click
 						controllerObject.showNodeEditor(mover.node.id);
@@ -583,7 +583,7 @@ define([
 						registry.byId('imageButton').set('disabled', false);
 					else
 						registry.byId('imageButton').set('disabled', true);
-						
+
 				}else if(activity_config.get("showIncrementalEditor")){
 					if(activity_config.get("demoIncrementalFeatures")){
 						controllerObject.showIncrementalAnswer(mover.node.id);
@@ -726,10 +726,10 @@ define([
 				});
 			}
 
-            if(activity_config.get("allowPrettify")){
-                var prettifyButton = registry.byId("prettifyButton");
-                prettifyButton.set("disabled", false);
-            }
+			if(activity_config.get("allowPrettify")){
+				var prettifyButton = registry.byId("prettifyButton");
+				prettifyButton.set("disabled", false);
+			}
 
 			if(activity_config.get("allowProblemTimes")){
 				var descButton = registry.byId("descButton");
@@ -746,27 +746,27 @@ define([
 						window.location.pathname.indexOf("/devel/") === 0){
 						style.set(registry.byId("problemPublishButton").domNode, "display", "inline-block");
 					}
-                    //This check has to be performed exclusively for now for ROAuthor mode property disableTimesUnitsFields
-                    if(activity_config.get("disableTimesUnitsFields")){
-                        DQuery("#authorDescDialog input").attr("readOnly",true);
-                        DQuery("#authorDescDialog textarea").attr("readOnly",true);
-                        dijit.byId("authorProblemCheck").disabled = true;
-                        dijit.byId("problemPublishButton").disabled = true;
-                        dijit.byId("authorSetTimeStepUnits").readOnly = true;
-                        dijit.byId("authorSetIntegrationMethod").readOnly = true;
-                        dijit.byId("authorSetParameters").readOnly = true;
-                        dijit.byId("authorSetParamDir").readOnly=true;
-                        dijit.byId("authorSetDescriptionType").readOnly = true;
-                    }
+					//This check has to be performed exclusively for now for ROAuthor mode property disableTimesUnitsFields
+					if(activity_config.get("disableTimesUnitsFields")){
+						DQuery("#authorDescDialog input").attr("readOnly",true);
+						DQuery("#authorDescDialog textarea").attr("readOnly",true);
+						dijit.byId("authorProblemCheck").disabled = true;
+						dijit.byId("problemPublishButton").disabled = true;
+						dijit.byId("authorSetTimeStepUnits").readOnly = true;
+						dijit.byId("authorSetIntegrationMethod").readOnly = true;
+						dijit.byId("authorSetParameters").readOnly = true;
+						dijit.byId("authorSetParamDir").readOnly=true;
+						dijit.byId("authorSetDescriptionType").readOnly = true;
+					}
 					registry.byId("authorDescDialog").show();
 
 				});
 
 				aspect.after(registry.byId('authorDescDialog'), "hide", function(){
 					console.log("Saving Description/Timestep edits");
-					
+
 					session.saveProblem(givenModel.model);
-				
+
 					if(iBoxController) iBoxController.updateImage(givenModel.getImageURL());
 					if(imgMarker) imgMarker.updateImage(givenModel.getImageURL());
 				});
@@ -951,12 +951,12 @@ define([
 								var url = document.URL.replace("u=" + query.u, "u=" + query.u + "-" + timestamp);
 								url = url + "&l=false";
 								url = url.replace("a=" + query.a, "a=" + activity);
-                                if(query.m === "AUTHOR") {
-                                    window.open(url.replace("m=AUTHOR", "m=STUDENT"), "newwindow");
-                                }
-                                if(query.m === "ROAUTHOR"){
-                                    window.open(url.replace("m=ROAUTHOR", "m=STUDENT"), "newwindow");
-                                }
+								if(query.m === "AUTHOR") {
+									window.open(url.replace("m=AUTHOR", "m=STUDENT"), "newwindow");
+								}
+								if(query.m === "ROAUTHOR"){
+									window.open(url.replace("m=ROAUTHOR", "m=STUDENT"), "newwindow");
+								}
 							});
 						}
 					});
@@ -975,16 +975,14 @@ define([
 			if(activity_config.get("allowCreateSchema")){
 				var schemaButton = registry.byId("schemaButton");
 				schemaButton.set("disabled", false);
-                var isAuthRO = false;
-                if(activity_config.get("disableSchemaFields")){
-                    DQuery("#schemaAuthorBox input").attr("disabled",true);
-                    isAuthRO = true;
-                }
-                var schema = new schemaAuthor(givenModel, session, isAuthRO);
+				if(activity_config.get("disableSchemaFields")){
+					DQuery("#schemaAuthorBox input").attr("disabled",true);
+				}
+				var schema = new schemaAuthor(givenModel, session, activity_config.get("disableSchemaFields"));
 				menu.add("schemaButton", function(e){
 					event.stop(e);
-                    schema.showSchemaWindow();
-                });
+					schema.showSchemaWindow();
+				});
 			}
 
 			if(activity_config.get("allowMerge")){
@@ -1080,7 +1078,7 @@ define([
 
 				// Image Highlighting events
 				var imgMarker = new ImageBox(givenModel.getImageURL(), givenModel);
-				
+
 
 				on(registry.byId('markImageAdd'), "click", function(event){
 					event.preventDefault();
@@ -1118,7 +1116,7 @@ define([
 						errorDialog.show();
 						return;
 					}
-					
+
 					imgMarker.initMarkImageDialog(controllerObject);
 					// check if image is initialilzed in ImageBox, if it was not initialized before, initialize it nw
 					//if(!imgMarker.url) imgMarker.initMarkImageDialog(controllerObject);
@@ -1363,7 +1361,7 @@ define([
 					controllerObject.setForum(query);
 				}
 			}
-			
+
 			if(activity_config.get("allowLessonsLearned")){
 
 				//Enable the lessonsLearnedButton
@@ -1384,8 +1382,8 @@ define([
 
 			//Wiring up history button
 			if(activity_config.get("historyButton")){
-				/*var historyButton = registry.byId("historyButton");	
-				historyButton.set("disabled", false);			
+				/*var historyButton = registry.byId("historyButton");
+				historyButton.set("disabled", false);
 				menu.add("historyButton", function(e){
 					event.stop(e);
 					session.getHistory(query).then(function(history){
@@ -1766,7 +1764,7 @@ define([
 			if(activity_config.get("targetNodeStrategy")){
 
 				function checkForHint(){
-					var rootNodes = givenModel.given.getRootNodes();					
+					var rootNodes = givenModel.given.getRootNodes();
 
 					//check if all present nodes are complete but model is node complete
 					var studentNodes = givenModel.active.getNodes();
@@ -1783,7 +1781,7 @@ define([
 						domClass.add(dom.byId("createNodeButton"), "glowButton");
 					}
 				}
-		
+
 				checkForHint();
 				aspect.after(drawModel, "deleteNode", lang.hitch(this, checkForHint));
 				aspect.after(registry.byId("nodeeditor"), "hide", lang.hitch(this, checkForHint));
@@ -1826,7 +1824,7 @@ define([
 						tc.connect();
 						tc.sendStatements();
 					}
-						
+
 				}
 				if(activity_config.get("ElectronixTutor") && etConnect){
 					if(etConnect.needsToSendsScore) {
@@ -1834,7 +1832,7 @@ define([
 						etConnect.sendScore(score);
 						console.log("sending score(successfactor):", score);
 					}
-					else 
+					else
 						etConnect.stopService();
 				}
 			});
@@ -1847,7 +1845,7 @@ define([
 			});
 			menu.add("resetButton", function(e){
 				event.stop(e);
-				//call resetNodeInc demo in con student to reset the nodes	
+				//call resetNodeInc demo in con student to reset the nodes
 				if(activity_config.get("demoIncrementalFeatures")){
 					controllerObject.resetNodesIncDemo();
 				}
@@ -1862,7 +1860,7 @@ define([
 		});
 
 	});
-	
+
 	function removeURLParam(param,url){
 		var paramStart = url.indexOf("?"+param+"=")+1;
 		if (paramStart == 0){
@@ -1879,9 +1877,9 @@ define([
 		} else {
 			return url.slice(0,paramStart)+url.slice(paramEnd,url.length);
 		}
-		
+
 	}
-	
+
 	// Remove rp= and x= parameters from browers's url history
-	window.history.replaceState("object or string","Title",removeURLParam("x",removeURLParam("rp",window.location.href)));	
+	window.history.replaceState("object or string","Title",removeURLParam("x",removeURLParam("rp",window.location.href)));
 });
