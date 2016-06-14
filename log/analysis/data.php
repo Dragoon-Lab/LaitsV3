@@ -5,14 +5,28 @@
 	$allSchemas2 = array(); //schema(4)_node type(3)
 	$allSchemas3 = array();//"line_description", "line_type", "line_initial", "line_equation", "expo_description", "expo_type", "expo_equation", "expo_initial", "expo_units", "line_units", "acce_description", "acce_type", "acce_initial", "acce_equation"); //schema(4)_property
 	$allSchemas4 = array("description", "type", "initial", "units", "equation");
+	$removeParameter = false; // boolean
+	$analyseByParts = "two-thirds"; //two-thirds - for first 8 problems, one-thirds for last two problems, anything else - complete data
 
-	main();
+	//main();
 	function analyzeLogs(){
 		$section = "public-workbook";
 		$allSchemas = $GLOBALS["allSchemas"];
 		$allSchemas2 = $GLOBALS["allSchemas2"];
 		$allSchemas3 = $GLOBALS["allSchemas3"];
-		$prob = array(/*"rabbits-sum15",*/ "111", "107", "CPI-2014-ps2-01","isle3-sum15-study", "retirement-sum15","CPI-2014-ps2-02","CPI-2014-ps2-04","CPI-2014-ps3-03","CPI-2014-ps4-02", "CPI-2014-ps3-07", "CPI-2014-ps5-04");
+		$removeParameter = $GLOBALS["removeParameter"];
+		$prob = null;
+		switch($GLOBALS["analyseByParts"]){
+			case "two-thirds":
+				$prob = array(/*"rabbits-sum15",*/ "111", "107", "CPI-2014-ps2-01","isle3-sum15-study", "retirement-sum15","CPI-2014-ps2-02","CPI-2014-ps2-04","CPI-2014-ps3-03", "CPI-2014-ps4-02");
+				break;
+			case "one-thirds":
+				$prob = array("CPI-2014-ps3-07", "CPI-2014-ps5-04");
+				break;
+			default:
+				$prob = array(/*"rabbits-sum15",*/ "111", "107", "CPI-2014-ps2-01","isle3-sum15-study", "retirement-sum15","CPI-2014-ps2-02","CPI-2014-ps2-04","CPI-2014-ps3-03","CPI-2014-ps4-02", "CPI-2014-ps3-07", "CPI-2014-ps5-04");
+				break;
+		}
 		//$prob = array("CPI-2014-ps5-04");
 
 		$str = '(';
@@ -23,12 +37,12 @@
 		//database variables
 		$user = "root";
 		$password = "qwerty211";
-		$db_name = "laits_experiments";
+		$db_name = "laits_spring15";
 
 		$mysqli = mysqli_connect("localhost", $user, $password, $db_name);
-		
+
 		$query = <<<EOT
-		SELECT t1.user, t1.problem, t1.session_id, t2.method, t2.message FROM (SELECT user, problem, session_id, time FROM session WHERE section = "$section" AND mode = "STUDENT" AND problem IN $problemString) AS t1 JOIN (SELECT tid, method, message, session_id FROM step WHERE method = "solution-step") as t2 USING (session_id) ORDER BY user ASC, problem ASC, time ASC, tid ASC;
+		SELECT t1.user, t1.problem, t1.session_id, t2.method, t2.message FROM (SELECT user, problem, session_id, time FROM session WHERE section = "$section" AND mode = "STUDENT" AND problem IN $problemString /*AND (user = "akhil1302" OR user = "abratcher56")*/) AS t1 JOIN (SELECT tid, method, message, session_id FROM step WHERE method = "solution-step") as t2 USING (session_id) ORDER BY user ASC, time ASC, problem ASC, tid ASC;
 EOT;
 		//echo $query;
 
@@ -39,6 +53,7 @@ EOT;
 		//$currentProperty = null;
 		$users = array();
 		$cp = null;
+		$nodePropertyCache = array();
 
 		while($row = $result->fetch_assoc()){
 			$cp = new Problem($row["problem"]);
@@ -53,16 +68,26 @@ EOT;
 				array_push($currentUser->problemNames, $row["problem"]);
 				$first = false;
 			}
+
 			if($message["type"] === "solution-check"){
 				if($currentUser == null || $currentUser->name != $row['user']){
+					if($currentNode != null && (!$removeParameter || $currentNode->type != "parameter")){
+						array_push($currentUser->pNodes, $currentNode);
+						$currentNode = null;
+					}
 					if($currentUser != null){
 						array_push($users, $currentUser);
 					}
 					//new user
 					$currentUser = new User($row['user']);
+					$nodePropertyCache = array();
 					array_push($currentUser->problemNames, $row["problem"]);
 					$cp = new Problem($row["problem"]);
 				} else if($oldRow["problem"] != $row["problem"]){
+					if($currentNode != null && (!$removeParameter || $currentNode->type != "parameter")){
+						array_push($currentUser->pNodes, $currentNode);
+						$currentNode = null;
+					}
 					$cp = new Problem($row["problem"]);
 					if(!in_array($row["problem"], $currentUser->problemNames)){
 						array_push($currentUser->problemNames, $row["problem"]);
@@ -81,7 +106,8 @@ EOT;
 						array_push($currentUser->pNodes, $currentNode);
 					}*/
 					$currentNode->setSkills();
-					array_push($currentUser->pNodes, $currentNode);
+					if(!$removeParameter || $currentNode->type != "parameter")
+						array_push($currentUser->pNodes, $currentNode);
 					$tempNode = $currentUser->getNode($message["node"]);
 					$currentNode = createNode($cp, $row);
 					if($tempNode != null){
@@ -94,12 +120,19 @@ EOT;
 					}
 				}
 
-				if(!in_array($message["property"], $currentNode->propertyNames)){
+				if($removeParameter && $currentNode->type == "parameter")
+					continue;
+
+				if(!array_key_exists($message["node"], $nodePropertyCache))
+					$nodePropertyCache[$message["node"]] = array();
+
+				if(!in_array($message["property"], $nodePropertyCache[$message["node"]])){
+					array_push($nodePropertyCache[$message["node"]], $message["property"]);
 					if($message["property"] == "description" && (!array_key_exists("checkResult", $message) || 
 						array_key_exists("pmInterpretation", $message) && ($message["pmInterpretation"] == "extra" || $message["pmInterpretation"] == "irrelevant"))){
 						//this is the case where all the nodes have been creating and user is trying to create still available nodes.
 						continue;
-					} elseif($cp->getGenus($message["node"]) != "extra" && $cp->getGenus($message["node"]) != "irrelevant"){
+					} else if($cp->getGenus($message["node"]) != "extra" && $cp->getGenus($message["node"]) != "irrelevant"){
 					$prop = new Property($message["property"]);
 					$prop->value = $message["checkResult"];
 					array_push($currentNode->propertyNames, $message["property"]);
@@ -132,38 +165,42 @@ EOT;
 			$oldRow = $row;
 		}
 		$currentNode->setSkills();
-		array_push($currentUser->pNodes, $currentNode);
+		if(!$removeParameter || $currentNode->type != "parameter")
+			array_push($currentUser->pNodes, $currentNode);
 		array_push($users, $currentUser);
-		print_r($allSchemas);
-		print_r($allSchemas2);
-		print_r($allSchemas3);
+		//print_r($allSchemas);
+		//print_r($allSchemas2);
+		//print_r($allSchemas3);
 		$GLOBALS["allSchemas"] = $allSchemas;
 		$GLOBALS["allSchemas2"] = $allSchemas2;
 		$GLOBALS["allSchemas3"] = $allSchemas3;
 		
 		mysqli_close($mysqli);
+	//	echo json_encode($users);
 		return $users;
 	}
 
 	function createNode($cp, $row){
 		$m = json_decode($row["message"], true);
 		$n = new Node($m["node"]);
+		$n->type = $cp->getNodeType($m["node"]);
 		$n->problem = $row["problem"];
 		$n->schemas = $cp->getSchemasForNode($m["node"]);
+		$n->uniqueSchemas = $cp->getUniqueSchemas($m["node"]);
 		$n->schemaNames = $cp->getNodeSchemaNames($m["node"]);
 		$n->difficultyParams = $cp->getDifficultyParams($m["node"]);
-		//$n->setSkills();
-		$n->type = $cp->getNodeType($m["node"]);
+		$n->setSkills();
 
 		return $n;
 	}
 
 	function createDataRows($objs, $fastData){
 		$fileName = "data.train.xls";
-		$includeDifficulty = true;
+		$includeDifficulty = false;
 		//$fileName = "data.test.xls";
 		if($fastData){
-			$fileName = ".cvs";
+			$fileName = ($GLOBALS["removeParameter"]?"_parameter_removed":"").
+							($GLOBALS["analyseByParts"] != "" ?("_".$GLOBALS["analyseByParts"]):"").".csv";
 		}
 		
 		$allSchemas = $GLOBALS["allSchemas"];
@@ -191,7 +228,7 @@ EOT;
 			$schemaExist = "1";
 			$schemaNotExist = "0";
 			//$propertyCorrect = ""
-			$kcString = "tran_feature_";
+			$kcString = "*features_";
 		}
 		if(!$fastData){
 			$text = "user".$tab."skill".$tab;
@@ -513,7 +550,7 @@ EOT;
 	}
 
 	function createFastData($objs, $fastData){
-		$fileName = "data.cvs";
+		$fileName = "data.csv";
 		$allSchemas = $GLOBALS["allSchemas3"];
 		$data = array();
 		$tab = "\t";
@@ -574,8 +611,9 @@ EOT;
 	function  main(){
 		$objs = analyzeLogs();
 		//echo json_encode($objs);
-		$fastData = false;
-		createDataRows($objs, $fastData);
+		$fastData = true;
+		//createDataRows($objs, $fastData);
 		//createFastData($objs, $fastData);
+		return $objs;
 	}
 ?>

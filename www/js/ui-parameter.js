@@ -51,7 +51,8 @@ define(["dojo/_base/lang"], function (lang) {
 						"nodeBorderFailColor": "red",
 						"imageButton": "none",
 						"historyButton": "none",
-						"zoomButtons": "inline"
+						"zoomButtons": "inline",
+						"nodeEditorDeleteButton": "inline"
 
 
 					}
@@ -99,7 +100,21 @@ define(["dojo/_base/lang"], function (lang) {
                     }
                 },
 				{
-					"mode": ["STUDENT", "COACHED", "TEST","EDITOR"],
+					"mode": ["COACHED"],
+					"param": {
+						"createNodeButton": "none",
+						"graphButton": "inline",
+						"tableButton": "inline",
+						"forumButton": "inline",
+						"slidesButton": "inline",
+						"prettifyButton": "inline",
+						"doneButton": "inline",
+						"lessonsLearnedButton": "inline",
+						"nodeEditorDeleteButton": "none"
+					}
+				},
+				{
+					"mode": ["STUDENT", "TEST","EDITOR"],
 					"param": {
 						"createNodeButton": "inline",
 						"graphButton": "inline",
@@ -474,6 +489,10 @@ define(["dojo/_base/lang"], function (lang) {
 			//returns object containing all(general and specific) config parameters for the given mode and activity
 			getAllParameters: function () {
 				return this._params;
+			},
+
+			set: function(/*string*/ name, /*any type*/ value){
+				this._params[name] = value;
 			}
 		};
 

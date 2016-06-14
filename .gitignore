@@ -62,4 +62,4 @@ release/*
 !./server-build.sh
 
 *.swp
-log/thesis
+log/analysis/results

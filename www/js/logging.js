@@ -112,6 +112,12 @@ define([
 			type:"out-of-focus"
 		});
 	};
+
+	window.onbeforeunload = function(event){
+		if(window.isModelChanged && window.getComputedStyle(document.getElementById("doneButton")).display !== "none"){
+			event.returnValue = "To ensure that your work is saved, please hit Done button before closing the window.";
+		}
+	};
 	
 	baseUnload.addOnUnload(function(){
 		logging.session.log('ui-action', {

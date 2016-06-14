@@ -611,6 +611,7 @@
                 "equation": "id17/id4",
                 "genus": "required",
                 "waveformValue": "wave010",
+                "parentNode": true,
                 "authorStatus": {
                     "root": {
                         "disabled": false

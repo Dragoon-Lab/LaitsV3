@@ -224,7 +224,7 @@ define([
 				var myThis = this;
 				return function(){
 					var equation = registry.byId("equationBox");
-					
+
 					if(equation.value && !myThis.equationEntered){
 						var directives = myThis.equationDoneHandler();
 						var isAlertShown = array.some(directives, function(directive){
@@ -233,6 +233,9 @@ define([
 							}
 						});
 						if(!isAlertShown) {
+							if(myThis.activityConfig.get("targetNodeStrategy")){
+								myThis.deletePrematureNodes();
+							}
 							doHide.apply(myThis._nodeEditor);
 							myThis.closeEditor.call(myThis);
 						}
@@ -252,6 +255,9 @@ define([
 							myThis.closeEditor.call(myThis);
 						}
 					}else{
+						if(myThis.activityConfig.get("targetNodeStrategy")){
+							myThis.deletePrematureNodes();
+						}
 						// Else, do normal closeEditor routine and hide
 						doHide.apply(myThis._nodeEditor);
 						myThis.closeEditor.call(myThis);
@@ -911,7 +917,6 @@ define([
 			 */
 			var widget = registry.byId(this.controlMap.equation);
 			var inputEquation = widget.get("value");
-			var cancelUpdate = false;
 
 			var parse = null;
 			if (inputEquation == "") {
@@ -943,6 +948,15 @@ define([
 
 				return null;
 			}
+			//rest of the analysis is only needed for the student mode. So returning in case the active model is not student.
+			if(this._model.active != this._model.student){
+				return parse;
+			}
+
+			var cancelUpdate = false;
+			var resetEquation = false;
+			var descriptionID = this._model.student.getDescriptionID(this.currentID);
+
 			var mapID = this._model.active.getDescriptionID || function(x){ return x; };
 			var unMapID = this._model.active.getNodeIDFor || function(x){ return x; };
 			//there is no error in parse. We check equation for validity
@@ -968,8 +982,49 @@ define([
 			}
 			array.forEach(parse.variables(), function(variable){
 				var givenID = this._model.given.getNodeIDByName(variable);
+				var badVarCount = "";
 				// Check 2 - Checks for nodes referencing themselves; this causes problems because
 				//		functions will always evaluate to true if they reference themselves
+				if(!givenID){
+					if(!ignoreUnknownTest){
+						// Check for number of unknown var, only in student mode.
+						badVarCount = this._model.given.getAttemptCount(descriptionID, "unknownVar");
+					}
+					cancelUpdate = true;  // Don't update model or send ot PM.
+
+					// The following if statement prevents a user from being endlessly stuck if he/she is using an incorrect variable.
+					//		To organize this better in the future we may want to move this check into another file with the code from
+					//		pedagogical_module.js that is responsible for deciding the correctness of a student's response.
+					if(badVarCount){
+						this._model.given.setAttemptCount(descriptionID, "unknownVar", badVarCount+1);
+						if(badVarCount > 2){
+							//resetEquation = true;
+						//} else {
+							this._model.given.setAttemptCount(descriptionID, "equation", badVarCount+1);
+							cancelUpdate = false;
+						}
+					}else{
+						this._model.given.setAttemptCount(descriptionID, "unknownVar", 1);
+						//resetEquation = true;
+					}
+					directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
+					directives.push({id: 'message', attribute: 'append', value: "Unknown variable '" + variable + "'."});
+					directives.push({
+						id: 'crisisAlert',
+						attribute: 'open',
+						value: "Unknown variable '" + variable + "' entered in equation."
+					});
+					this.logging.log("solution-step", {
+						type: "unknown-variable",
+						node: this._model.active.getName(this.currentID),
+						nodeID: this.currentID,
+						property: "equation",
+						value: inputEquation,
+						correctResult: this._model.given.getEquation(this.currentID),
+						checkResult: "INCORRECT"
+					});
+				}
+
 				if(givenID && this._model.active.getType(this.currentID) === "function" &&
 					givenID === mapID.call(this._model.active, this.currentID)){
 					cancelUpdate = true;
@@ -1006,10 +1061,22 @@ define([
 					});
 				}
 			}, this);
-			if(!cancelUpdate){
-				return parse;
+
+			if(resetEquation){
+				this._model.active.setEquation(this.currentID, "");
+				directives.push({id: 'equation', attribute: 'value', value: ""});
 			}
-			return null;
+			// changing this as it is essential to update the equation using createExpressionNodes.
+			// otherwise equation with correct nodes not converted to their corresponding id stays in the equation of the model
+			// fix for bug : https://trello.com/c/bVYAQBKT ~ Sachin Grover
+			/*else if(cancelUpdate){
+				//in case we are not calling the pm then we need to save the equation to the model.
+				//this._model.active.setEquation(this.currentID, inputEquation);
+			}*/
+			//if(true || !cancelUpdate){
+			return parse;
+			//}
+			//return null;
 		},
 		expressionSuggestor : function(id, answer){
 			//output: message directive, suggestion message 
@@ -1053,6 +1120,7 @@ define([
 			return rsp;
 						
 		},
+
 		createExpressionNodes: function(parse, ignoreUnknownTest){
 			/*
 			 Create Expression nodes if equation is valid and parsed sucessfully.
@@ -1095,14 +1163,15 @@ define([
 					//		him or her from being stuck indefinitely.
 
 					var descriptionID = "";
-					var badVarCount = "";
-					if (!ignoreUnknownTest) {
+					//var badVarCount = "";
+					/*if (!ignoreUnknownTest) {
 						// Check for number of unknown var, only in student mode.
 						descriptionID = this._model.active.getDescriptionID(this.currentID);
 						badVarCount = this._model.given.getAttemptCount(descriptionID, "unknownVar");
-					}
+					}*/
 
-					if(givenID || ignoreUnknownTest || badVarCount > 3){
+					if(givenID || ignoreUnknownTest){
+						//|| ignoreUnknownTest || badVarCount > 3){
 						// Test if variable has been defined already
 						var subID = unMapID.call(this._model.active, givenID);
 						if(subID){
@@ -1119,40 +1188,9 @@ define([
 							//get Node ID and substitute in equation
 							var subID2 = unMapID.call(this._model.active, givenID||id);
 							parse.substitute(variable, subID2); //this should handle createInputs and connections to automatic node
-						}else{
+						}/*else{
 							directives.push({id: 'message', attribute: 'append', value: "Quantity '" + variable + "' not defined yet."});
-						}
-					}else{
-						cancelUpdate = true;  // Don't update model or send ot PM.
-
-						// The following if statement prevents a user from being endlessly stuck if he/she is using an incorrect variable. 
-						//		To organize this better in the future we may want to move this check into another file with the code from 
-						//		pedagogical_module.js that is responsible for deciding the correctness of a student's response.
-						if(badVarCount){
-							this._model.given.setAttemptCount(descriptionID, "unknownVar", badVarCount+1);
-
-							if(badVarCount > 2){
-								this._model.given.setAttemptCount(descriptionID, "equation", badVarCount+1);
-							}
-						}else{
-							this._model.given.setAttemptCount(descriptionID, "unknownVar", 1);
-						}
-						directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
-						directives.push({id: 'message', attribute: 'append', value: "Unknown variable '" + variable + "'."});
-						directives.push({
-							id: 'crisisAlert',
-							attribute: 'open',
-							value: "Unknown variable '" + variable + "' entered in equation."
-						});
-						this.logging.log("solution-step", {
-							type: "unknown-variable",
-							node: this._model.active.getName(this.currentID),
-							nodeID: this.currentID,
-							property: "equation",
-							value: inputEquation,
-							correctResult: this._model.given.getEquation(this.currentID),
-							checkResult: "INCORRECT"
-						});
+						}*/
 					}
 				}, this);
 				if(directives.length > 0){
@@ -1473,6 +1511,10 @@ define([
 						if(directive.attribute === "status"){
 							tempDirective = directive;
 						}
+						if(this.activityConfig.get("ElectronixTutor") && directive.id === "message"
+							&& this._mode !== "AUTHOR"){
+							this.sendETFeedback(directives);
+						}
 					}
 				}else if(directive.attribute == "display"){
 					if(this.genericDivMap[directive.id]){
@@ -1593,6 +1635,63 @@ define([
 
 		nodeCloseAssessment: function(){
 			//stub over written in con-student. assessment function called at node close
+		},
+
+		//Set ET Connector Object
+		setETConnector: function(ET) {
+			this.ETConnect = ET;
+		},
+
+		deletePrematureNodes: function(){
+			//Summary : Scan and delete the premature nodes after validating current Node equation
+
+			var node = this._model.active.getNode(this.currentID);
+			if(node && node.inputs) {
+				var prematureNodesExist = false;
+				array.forEach(node.inputs , lang.hitch(this, function(n){
+					if(this._PM.checkPremature(n.ID)){
+						prematureNodesExist = true;
+						this.deleteNode(n.ID);
+					}
+				}));
+
+				if(prematureNodesExist){
+					var message = "Your expression did not match the author's expression, please click on <strong>"+ this._model.active.getName(this.currentID) +"</strong> to try again."
+					this.applyDirectives([{
+						id: "crisisAlert",
+						attribute: "title",
+						value: "Incorrect Expression"
+					}, {
+						id: "crisisAlert",
+						attribute: "open",
+						value: message
+					}]);
+				}
+			}
+		},
+
+		deleteNode: function(id){
+			//Stub to delete node with id by inturn calling drawmodel.deleteNode in main.js
+			return id;
+		},
+
+		sendETFeedback: function(directives){
+			var field = "";
+			var content = "";
+			array.forEach(directives, function(directive){
+				if(directive.attribute ===  "status"){
+					field = directive.id;
+				}else if (directive.id === "message"){
+					content = directive.value;
+				}
+			});
+
+			var taskname = this._model.getTaskName().split(' ').join('-');
+			var nodename = this._model.active.getName(this.currentID).split(' ').join('-');
+			var step_id = taskname +'_'+ nodename +'_'+'Select'+field;
+			console.log("STEPID" + step_id);
+			this.ETConnect.sendFeedback( field, content , step_id, "text");
+
 		}
 
 	});

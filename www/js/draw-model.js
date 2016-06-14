@@ -150,6 +150,8 @@ define([
 		},
 
 		colorNodeBorder: function(/*Object*/ nodeID, updateNode){
+			if(!this._givenModel.getNode(nodeID)) return;
+
 			var type = this._givenModel.getNode(nodeID).type;
 
 			var isComplete = this._givenModel.isComplete(nodeID)?'solid':'dashed';

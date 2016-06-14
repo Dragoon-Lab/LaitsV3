@@ -1,8 +1,22 @@
-/** zet.js Module from https://github.com/nemisj/zet.js
-	Looks like reasonable and stable class inheritance styles.
+/** Zet.js Module from https://github.com/nemisj/Zet.js
+	Handles inheritance and factory function registration/creation/type-checking
+    This is a fork from the original, with updates and enhancements as noted.
+    Revised by: Benjamin Nye
+    Package: SuperGLU
+    License: APL 2.0
+    
+    Notes: 
+        - Fixes to update it to newer versions of JS (was outdated).
+        - Added class factory function for automatically registering and creating Zet objects
+        - Expanded isInstance functionality for type-checking of class
+        - Fixed function inheritance functionality for newer JS versions
 */
-if (typeof window === "undefined"){
-	window = this;
+if (typeof SuperGLU === "undefined"){
+    var SuperGLU = {};
+    if (typeof window === "undefined") {
+        var window = this;
+    }
+    window.SuperGLU = SuperGLU;
 }
 
 (function(){
@@ -14,9 +28,9 @@ if (typeof window === "undefined"){
     var declarescope = globalscope; 
 
     // support for CommonJS Modules 1.0 API
-    // zet.js can be include as CommonJS module, by calling
-    // var Zet = require('zet.js');
-	var _c = (typeof(exports) != "undefined") ? exports : (globalscope.Zet = function zet(){
+    // Zet.js can be include as CommonJS module, by calling
+    // var Zet = require('Zet.js');
+	var _c = (typeof(exports) != "undefined") ? exports : (globalscope.Zet = function Zet(){
         if(arguments.length == 1){
             var sub = arguments[0];
             return sub.instanceOf ? sub : {
@@ -25,7 +39,7 @@ if (typeof window === "undefined"){
                 }
             };
         }else if(arguments.length == 2){
-            return zet.declare(arguments[0], arguments[1]);
+            return Zet.declare(arguments[0], arguments[1]);
         }
     });
 
@@ -337,3 +351,4 @@ if (typeof window === "undefined"){
     };
 
 })();
+SuperGLU.Zet = Zet;

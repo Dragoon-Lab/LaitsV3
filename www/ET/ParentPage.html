@@ -1,0 +1,154 @@
+<!-- Imagine this is a wrapper inside of ASSISTments -->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"> 
+    <title>Parent Container Page</title>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+        
+        <!-- General Utilities Imports --> 
+        <script type="text/javascript" src="js/SuperGLU/Util/emacs5-compatibility-patches.js"></script>
+        
+        <!-- SuperGLU Imports -->              
+        <script type="text/javascript" src="js/SuperGLU/Util/uuid.js"></script>
+		<script type="text/javascript" src="js/SuperGLU/Util/zet.js"></script>
+		<script type="text/javascript" src="js/SuperGLU/super-glu.js"></script>
+		<script type="text/javascript" src="js/SuperGLU/Util/serialization.js"></script>
+		<script type="text/javascript" src="js/SuperGLU/Core/messaging.js"></script>
+		<script type="text/javascript" src="js/SuperGLU/Core/messaging-gateway.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.1.0/socket.io.min.js"></script>
+        
+        <!-- SuperGLU Services --> 
+		<script type="text/javascript" src="js/SuperGLU/Services/Orchestration/heartbeat-service.js"></script>
+        
+        <!-- Reference-Implementation Data --> 
+		<script type="text/javascript" src="js/reference-data.js"></script>
+        
+		<script type="text/javascript">
+            // Set a window name
+            window.name = "MainPostingGateway";
+            var HTTP_MESSAGING_GATEWAY,
+                MAIN_POSTING_GATEWAY,               // A gateway for relaying messages to other gateways and services (as a tree)
+                CHILD_WINDOW,                       // Child window iframe reference
+                CHILD_GATEWAY,                      // A child gateway stub to send HTML5 messages
+                TEST_SERVICE,                       // A test service that can send simple messages and watch for messages
+                HEART_MONITOR_SERVICE,              // A heart monitor service that looks for a heartbeat named in HEARTBEAT_NAME
+                CHILD_GATEWAY_ID = "ActivityFrame", // Name to give the postMessage gateway in the child frame
+                IS_CHILD_LOADED = false,            // A flag that remains false until a message with LOADED_VERB is received
+                LOADING_WAIT_TIME = 60,             // In seconds, how long to wait for child to load
+                LOADED_VERB = "Loaded",             // A Message verb for the "Loaded" message, which indicates that the activity loaded right
+                HEARTBEAT_NAME = "ChildHeartbeat",  // A Message verb for the heartbeat this frame looks for
+                COMPLETED_VERB = "Completed",       // A Message verb for a "Completed" message, which occurs when the activity is done
+                DUMP_LOG_VERB = "Dump Logs";        // A Message verb for dumping the logs to console
+            
+            /** Function for heartbeat monitor call if any heartbeats are skipped. 
+                In practice, would typically close the child frame and go to new activity.
+                @param name: The name of the heartbeat skipped
+                @param monitor: The monitor service which detected the skip
+            **/
+            var onSkipHeartbeat = function(name, monitor){
+                alert("Heartbeat skipped a beat: " + name);
+                monitor.stop();
+            };
+            
+            /** Function to call to detect if child page has loaded in time. 
+                If page not loaded, kill the heartbeat monitor also.
+            **/
+            var onLoadingTimeout = function(){
+                if (IS_CHILD_LOADED !== true){
+                    alert("Child frame did not load in " + LOADING_WAIT_TIME + " seconds.");
+                    HEART_MONITOR_SERVICE.stop();
+                }
+            };
+            
+            /** When page loaded, set up the services. **/
+            var oldOnload = window.onload;
+            window.onload = function(){
+                if (oldOnload != null){ 
+                    oldOnload();
+                }
+                /** Set up gateway and service structure. 
+                    In this example, the structure is:
+                    MAIN_POSTING_GATEWAY (id="MainPostingGateway")
+                        - HEART_MONITOR_SERVICE (id=Random UUID)
+                        - TEST_SERVICE (id="ParentTestService")
+                        - CHILD_GATEWAY [stub] (id=""ActivityFrame"")
+                            - LOGGING_SERVICE
+                            - HEARTBEAT_SERVICE (id=Random UUID)
+                            
+                    In practice, this parent frame and the child iframe gateways each
+                    have a stub that represents the other one, such as the following:
+                        Parent (This Page): PostMessageGateway("MainPostingGateway") 
+                        Child (iframe): PostMessageGatewayStub("MainPostingGateway")
+                    These are used to determine how to route the message after it arrives,
+                    to avoid any loops or echos.
+                **/
+                var gatewayScope = {};
+                    gatewayScope[ReferenceData.REFERENCE_IMPLEMENTATION_VERSION_KEY] = ReferenceData.version;
+                    gatewayScope[ReferenceData.USER_AGENT_KEY] = navigator.userAgent;
+                
+                // Set up Child Frame
+                var childFrameElement = document.getElementById("Child");
+                childFrameElement.name = CHILD_GATEWAY_ID;
+                childFrameElement.src = "ChildWindow.html?taskId=MyUniqueTaskID&p1=p1Data&p2=p2Data&p3=p3Data&p4=p4Data&p5=p5Data&p6=ChuckInP6&p7=ReferrerGUID";
+                CHILD_WINDOW = childFrameElement.contentWindow;
+                
+                // Set up Services and Gateways
+                CHILD_GATEWAY = SuperGLU.Messaging_Gateway.PostMessageGatewayStub(CHILD_GATEWAY_ID, null, null, CHILD_WINDOW);
+                TEST_SERVICE = SuperGLU.Messaging_Gateway.TestService("ParentTestService");
+                HEART_MONITOR_SERVICE = SuperGLU.Heartbeat_Service.HeartbeatMonitor(null, [HEARTBEAT_NAME],
+                    150, onSkipHeartbeat);
+			
+                /** Create a gateway as: GatewayId, Child Nodes (Gateways/Services/Stubs), Parent Gateway, Scope added to each message**/
+                MAIN_POSTING_GATEWAY = SuperGLU.Messaging_Gateway.PostMessageGateway("MainPostingGateway", 
+                    [CHILD_GATEWAY, HEART_MONITOR_SERVICE, TEST_SERVICE], 
+                    null, gatewayScope);
+                // HTTP Gateway disabled for this example
+                //HTTP_MESSAGING_GATEWAY = Messaging_Gateway.HTTPMessagingGateway(null, [MAIN_POSTING_GATEWAY], window.location.protocol + "//" + document.domain + ':' + location.port);
+                window.name = "MainPostingGateway";
+                HEART_MONITOR_SERVICE.start();
+                
+                /** This Test Service is looking for a certain message. In this case, looking for "Completed"
+                    as a verb and "Inform" as the speech act (i.e., Informing that x is completed)
+                    Technically, better to subclass using Zet (examples found in messaging-gateway.js), 
+                    but this works fine too as long as you're not trying to handle anything crazy.
+                    The child frame shows an alternate example of properly subclassing the base test service.
+                **/
+                var oldReceiveMsg = TEST_SERVICE.receiveMessage;
+                TEST_SERVICE.receiveMessage = function(msg){
+                    oldReceiveMsg(msg);
+                    if ((msg.getSpeechAct() == Messaging.INFORM_ACT) &&
+                        (msg.getVerb() == COMPLETED_VERB)){
+                        document.getElementById("AnElement").innerHTML  = "The activity is complete!<br><br>" + 
+                            "This message was sent to " + msg.getSpeechAct() + " that: <br>" +
+                            "The Learner '" + msg.getActor() + "' " + msg.getVerb() + " <br>" +
+                            "the activity '" + msg.getObject() + "'<br>" + 
+                            "with the score " + msg.getResult();
+                    
+                    // Note: Relying entirely on receiving a "Loaded" message is
+                    //       perilous, since the child might finish loading before
+                    //       the parent (and, in fact, might even be likely to).
+                    } else if ((msg.getSpeechAct() == Messaging.INFORM_ACT) &&
+                               ((msg.getVerb() == LOADED_VERB) || 
+                                (msg.getVerb() == Heartbeat_Service.HEARTBEAT_VERB))){
+                        IS_CHILD_LOADED = true;
+                    } else if (msg.getVerb() == DUMP_LOG_VERB)
+                    {
+                        console.log("RECEIVED LOG DUMP")
+                    }
+                };
+                
+                // Mark that everything is loaded
+                document.getElementById('AnElement').innerHTML = 'You are working on some activity now.';
+                
+                // Set a timeout for the maximum wait for the child frame send a Loaded message
+                setTimeout(onLoadingTimeout, LOADING_WAIT_TIME*1000);
+            };
+		</script>
+	</head>
+	<body>
+        <iframe id="Child" src="" style="width:85%;"></iframe>
+        <div id="AnElement">The page is loading.</div>
+	</body>
+</html>
+
