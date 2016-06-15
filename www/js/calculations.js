@@ -90,7 +90,7 @@ define([
 			}, this);
 			
 			// These are not used for the tables
-			if(mode != "AUTHOR"){
+			if(mode != "AUTHOR" && mode != "ROAUTHOR"){
 				console.log("now in given model");
 				this.given.timeStep = this.initializeSolution(model.given);
 				if(!this.given.timeStep){
@@ -402,7 +402,7 @@ define([
 				//console.log(this.model.student.getName(paramID));
 				//console.log(this.mode);
 				//console.log(this.active);
-				if(this.mode != "AUTHOR")
+				if(this.mode != "AUTHOR" && this.mode != "ROAUTHOR")
 				{
 					var logObj = lang.mixin({
 						type : "solution-manipulation",
@@ -480,8 +480,10 @@ define([
 		/*
 		 * @brief: create slider object for graphs and table
 		 */
-		createSliderAndDialogObject: function(){
+		createSliders: function(){
 			var units;
+			var slidersContent = dom.byId("SliderPane").innerHTML;
+
 			var sliderVars = lang.clone(this.active.timeStep.parameters);
 			for(var j=0; j<this.active.timeStep.xvars.length; j++){
 				sliderVars[this.active.timeStep.xvars[j]] = this.active.initialValues[j];
@@ -533,26 +535,28 @@ define([
 				//create label for name of a textbox
 				//create input for a textbox
 				//create div for embedding a slider
-				this.dialogContent += "<label id=\"labelGraph_" + paramID + "\">" + labelText + " = " + "</label>";
+				slidersContent += "<label id=\"labelGraph_" + paramID + "\">" + labelText + " = " + "</label>";
 				// The input element does not have an end tag so we can't use
 				// this.createDom().
 				// Set width as number of characters.
-				this.dialogContent += "<input id=\"" + textBoxID[paramID] + "\" type=\"text\" size=10 value=\"" + sliderVars[paramID] + "\">";
+				slidersContent += "<input id=\"" + textBoxID[paramID] + "\" type=\"text\" size=10 value=\"" + sliderVars[paramID] + "\">";
 				units = this.model.active.getUnits(paramID);
 				if(units){
-					this.dialogContent += " " + units;
+					slidersContent += " <span id=\"sliderUnits_"+ paramID +"\">" + units + "</span>";
 				}
-				this.dialogContent += "<br>";
+				slidersContent += "<br>";
 				// DOM id for slider <div>
 				sliderID[paramID] = this.sliderID + "_" + paramID;
-				this.dialogContent += "<div id='" + sliderID[paramID] + "'> " + "</div>";
+				slidersContent += "<div id='" + sliderID[paramID] + "'> " + "</div>";
 			}
-			this.dialogContent += "</div></div></div>";
-			var dialogWidget = registry.byId("solution");
-			dialogWidget.set("title", this.model.getTaskName() + " - " + this.type);
-			// Attach contents of dialog box to DOM all at once
-			console.log(dialogWidget);
-			dialogWidget.set("content", this.dialogContent);
+			slidersContent += "</div></div></div>";
+			var sliderPane = registry.byId("SliderPane");
+			sliderPane.set("content", slidersContent);
+
+			this.dialogWidget.set("title", this.model.getTaskName() + " - " + this.type);
+			//// Attach contents of dialog box to DOM all at once
+			//console.log(dialogWidget);
+			//dialogWidget.set("content", this.dialogContent);
 
 			// Attach slider widget to DOM
 			for(paramID in sliderVars){
@@ -597,7 +601,7 @@ define([
 
 			if (content.search("There isn't anything to plot. Try adding some accumulator or function nodes.") >= 0
 				|| content.search("There is nothing to show in the table.   Please define some quantitites.") >= 0 ||
-				this.mode === "EDITOR" || this.mode === "AUTHOR" || !this.model.active.matchesGivenSolutionAndCorrect()) {
+				this.mode === "EDITOR" || this.mode === "AUTHOR" || this.mode === "ROAUTHOR" || !this.model.active.matchesGivenSolutionAndCorrect()) {
 				console.log("graph not being shown");
 				return;
 			}

@@ -92,14 +92,14 @@ define([
 				},
 
 				COACHED:{
-					allowCreateNode:true,
+					allowCreateNode:false,
 					allowGraph:true,
 					allowTable:true,
 					allowForum:true,
 					allowPrettify:true,
 					allowHelp: true,
 					allowLessonsLearned:true,
-					allowDeleteNode: true,
+					allowDeleteNode: false,
 					allowEditNode: true,
 
 					showHints: true,
@@ -175,7 +175,39 @@ define([
 					],
 
 					allowSliders: true
-				}
+				},
+                ROAUTHOR:{
+                    allowCreateNode:false,
+                    allowGraph:true,
+                    allowTable:true,
+                    allowForum:true,
+                    allowCreateSchema:true,
+                    allowProblemTimes:true,
+                    allowMerge: false,
+                    allowSaveAs:true,
+                    allowPreview:true,
+                    allowPrettify: false,
+                    allowHelp: true,
+                    allowHistory : true,
+                    allowDeleteNode: true,
+                    allowEditNode: true,
+
+                    showHints: true,
+                    showFeedback: true,
+                    showEquationAutoComplete: true,
+
+                    enable:[
+                    ],
+
+                    allowSliders: true,
+                    allowZoom: true,
+                    "allowAssignWaveFormButton": "true",
+                    showWaveformEditor : true,
+                    "disableTimesUnitsFields" : true,
+                    "disableSchemaFields": true,
+                    "disableNodeEditorFields": true,
+                    "restrictNodeMovement": true
+                }
 			},
 
 			incremental: {

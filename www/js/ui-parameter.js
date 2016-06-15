@@ -26,7 +26,7 @@ define(["dojo/_base/lang"], function (lang) {
 		var parameters = {
 			construction: [
 				{
-					"mode": ["AUTHOR", "STUDENT", "COACHED", "TEST","EDITOR"],
+					"mode": ["AUTHOR", "STUDENT", "COACHED", "TEST","EDITOR","ROAUTHOR"],
 					"param": {
 						"showColor": true,
 						"nodeBorderSize": "3px ",
@@ -51,7 +51,8 @@ define(["dojo/_base/lang"], function (lang) {
 						"nodeBorderFailColor": "red",
 						"imageButton": "none",
 						"historyButton": "none",
-						"zoomButtons": "inline"
+						"zoomButtons": "inline",
+						"nodeEditorDeleteButton": "inline"
 
 
 					}
@@ -77,8 +78,43 @@ define(["dojo/_base/lang"], function (lang) {
 
 					}
 				},
+                {
+                    "mode": ["ROAUTHOR"],
+                    "param": {
+                        "createNodeButton": "inline",
+                        "graphButton": "inline",
+                        "tableButton": "inline",
+                        "forumButton": "inline",
+                        "schemaButton": "inline",
+                        "descButton": "inline",
+                        "saveButton": "inline",
+                        "mergeButton": "inline",
+                        "previewButton": "inline",
+                        "slidesButton": "none",
+                        "lessonsLearnedButton": "none",
+                        "doneButton": "inline",
+                        "prettifyButton": "inline",
+                        "imageButton": "inline",
+                        "historyButton": "inline"
+
+                    }
+                },
 				{
-					"mode": ["STUDENT", "COACHED", "TEST","EDITOR"],
+					"mode": ["COACHED"],
+					"param": {
+						"createNodeButton": "none",
+						"graphButton": "inline",
+						"tableButton": "inline",
+						"forumButton": "inline",
+						"slidesButton": "inline",
+						"prettifyButton": "inline",
+						"doneButton": "inline",
+						"lessonsLearnedButton": "inline",
+						"nodeEditorDeleteButton": "none"
+					}
+				},
+				{
+					"mode": ["STUDENT", "TEST","EDITOR"],
 					"param": {
 						"createNodeButton": "inline",
 						"graphButton": "inline",

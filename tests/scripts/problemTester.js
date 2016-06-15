@@ -16,6 +16,9 @@ var sync = require('synchronize');
 // import wrapper for asynchronous functions
 var async = sync.asyncIt;
 
+// exec for running system commands
+var exec = require('child_process').exec;
+
 //Setup initial variables
 var Mocha = require('mocha');
 var Suite = Mocha.Suite;
@@ -63,6 +66,26 @@ if(process.argv.length < 3){
 	return;
 }
 
+//Start Selenium
+var startSelenium = function(){
+	console.log("Starting Selenium ....");
+	var cmd = 'java -jar ../selenium-server-standalone-2.46.0.jar -log selenium.log &';
+
+	exec(cmd, function(error, stdout1, stderr1) {
+		if(!error){
+		}
+	});
+	//Hack to start Selenium in one run by executing same command twice.
+	exec(cmd, function(err, stdout2, stderr2) {
+		if(!err){
+			next();
+		}
+	});
+
+};
+
+startSelenium();
+
 //Fetch the problem
 var options = cli.parse();
 var problems = options.problem.split(" ").join("");
@@ -73,11 +96,21 @@ var next = function(){
 		options.problem = problems[problemIndex];
 		fetchProblem(options);
 		problemIndex++;
+	}else{
+		stopSelenium();
 	}
+
 };
 
-//Start first Test
-next();
+
+function stopSelenium(){
+	var cmd = "curl localhost:4444/selenium-server/driver/?cmd=shutDownSeleniumServer";
+	exec(cmd, function(error, stdout1, stderr1) {
+		if(!error){
+			console.log("Selenium shutdown");
+		}
+	});
+}
 
 function fetchProblem(options){
 	if(!options.target || options.target == "local"){
@@ -96,8 +129,14 @@ function fetchProblem(options){
 	//console.log(host + "task_fetcher.php" + url);
 	request({ url: host + "task_fetcher.php" + url},  function(error, response, body) {
 		 if(body){
-			//Generate the test
-			 generateConstructionTests(options, body);
+			//Generate the test based on activity
+			 if(options.activity === "construction") {
+				 generateConstructionTests(options, body);
+			 }else if(options.activity === "waveform"){
+				 generateWaveformTests(options, body);
+			 }else if(options.activity === "incremental"){
+				 generateIncrementalTests(options, body);
+			 }
 		 }
 	});
 }
@@ -259,6 +298,204 @@ function generateGraphWindowTest(){
 
 	return suite;
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Waveform Functions
+////////////////////////////////////////////////////////////////////////////////////////////////////
+function generateWaveformTests(options, model){
+	var mocha = new Mocha({
+		timeout: 15000
+	});
+	try{
+		this.problem = JSON.parse(model);
+	}
+	catch(e){
+		console.error("INVALID PROBLEM JSON: " + e);
+		return;
+	}
+
+	var suiteName = "Waveform - "+ options.mode + " Mode  " + this.problem.task.taskName;
+	var parentSuite = Suite.create(mocha.suite, suiteName);
+
+	parentSuite.beforeAll("Open Problem", async(function (done) {
+		dtest.openProblem(client,[["user", options.user], ["problem", options.problem],["mode", options.mode],
+			["activity", options.activity],
+			["section", options.section],
+			["logging", options.logging]]);
+	}));
+	//Create Nodes
+	var selWaveformSuite = generateSelectWaveformTests();
+	parentSuite.addSuite(selWaveformSuite);
+
+	parentSuite.afterAll(async(function(){
+		dtest.endTest(client);
+		//Test next problem
+		next();
+	}));
+
+	mocha.run();
+}
+
+function generateSelectWaveformTests(){
+
+	var mocha = new Mocha({
+		timeout: 25000
+	});
+	var selectWaveformSuite = "Select Waveform for nodes:";
+	var suite = Suite.create(mocha.suite, selectWaveformSuite);
+
+	//push given student nodes to visited
+	if(this.problem.task.givenModelNodes.length > 0){
+		this.problem.task.givenModelNodes.forEach(function(node){
+			if(node.waveformValue) {
+				//Node Test
+				var testName = "Should select " + node.waveformValue + " node - " + node.name;
+				(function (node) {
+					suite.addTest(new Test(testName, async(function () {
+						if (dtest.nodeExists(client, node.name)) {
+							openNodeEditor(node.name);
+						}
+						//Fill node waveform
+						selectNodeWaveform(node);
+
+						//Check Node border and color
+						atest.checkNodeValue(dtest.getNodeBorderColor(client, node.name), "green", "net growth border");
+						atest.checkNodeValue(dtest.getNodeFillColor(client, node.name), "green", "net growth fill");
+					})));
+				})(node);
+			}
+		});
+	}
+
+	suite.addTest(new Test("Should show Done message and close", async(function(){
+			// close done window
+			assert(dtest.isDonePopupVisible(client), "The Done hint popup is not visible, but it should be!");
+			dtest.closeMenuDonePopup(client);
+		})
+	));
+
+	return suite;
+}
+
+function selectNodeWaveform(node){
+	if(node && node.waveformValue) {
+		dtest.selectWaveform(client, node.waveformValue);
+	}
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Incremental Functions
+////////////////////////////////////////////////////////////////////////////////////////////////////
+function generateIncrementalTests(options, model){
+	var mocha = new Mocha({
+		timeout: 15000
+	});
+	try{
+		this.problem = JSON.parse(model);
+	}
+	catch(e){
+		console.error("INVALID PROBLEM JSON: " + e);
+		return;
+	}
+
+	var suiteName = "Incremental - "+ options.mode + " Mode  " + this.problem.task.taskName;
+	var parentSuite = Suite.create(mocha.suite, suiteName);
+
+	parentSuite.beforeAll("Open Problem", async(function (done) {
+		dtest.openProblem(client,[["user", options.user], ["problem", options.problem],["mode", options.mode],
+			["activity", options.activity],
+			["section", options.section],
+			["logging", options.logging]]);
+	}));
+	//Create Nodes
+	var selIncSuite = generateSelectIncrementalTests();
+	parentSuite.addSuite(selIncSuite);
+
+	parentSuite.afterAll(async(function(){
+		dtest.endTest(client);
+		//Test next problem
+		next();
+	}));
+
+	mocha.run();
+}
+
+function generateSelectIncrementalTests() {
+
+	var mocha = new Mocha({
+		timeout: 25000
+	});
+	var selectWaveformSuite = "Select Waveform for nodes:";
+	var suite = Suite.create(mocha.suite, selectWaveformSuite);
+
+	////push given student nodes to visited
+	if(this.problem.task.givenModelNodes.length > 0){
+		this.problem.task.givenModelNodes.forEach(function(node){
+
+			//Node Test
+			var testName = "Should select option" + " node - " + node.name;
+			(function (node) {
+				if(!node.genus || node.genus == "required") {
+					suite.addTest(new Test(testName, async(function () {
+						var nodeBorderStyle = dtest.getNodeBorderStyle(client, node.name);
+						var nodeBorderColor = dtest.getNodeBorderColor(client, node.name);
+						while (dtest.nodeExists(client, node.name) && (nodeBorderStyle !== "solid" || nodeBorderColor == "red")) {
+							openNodeEditor(node.name);
+							//Fill node waveform
+							selectNodeIncremental(node);
+							nodeBorderStyle = dtest.getNodeBorderStyle(client, node.name);
+							nodeBorderColor = dtest.getNodeBorderColor(client, node.name);
+						}
+					})));
+				}
+			})(node);
+
+
+		});
+	}
+
+
+	suite.addTest(new Test("Should show Done message and close", async(function(){
+			// close done window
+			assert(dtest.isDonePopupVisible(client), "The Done hint popup is not visible, but it should be!");
+			dtest.closeMenuDonePopup(client);
+		})
+	));
+
+	var that = this;
+
+	suite.addTest(new Test("Should check if all nodes are complete", async(function(){
+			if(that.problem.task.givenModelNodes.length > 0){
+				that.problem.task.givenModelNodes.forEach(function(node) {
+					if(!node.genus || node.genus == "required") {
+						var nodeBorderStyle = dtest.getNodeBorderStyle(client, node.name);
+						assert(nodeBorderStyle === "solid", "Node " + node.name + " is not complete");
+					}
+				});
+			}
+		})
+	));
+
+	return suite;
+}
+
+function selectNodeIncremental(node){
+	var opt = Math.floor(Math.random()*4);
+	//Randomly select the option from incremental editor
+	if(node) {
+		if(opt == 0){
+			dtest.clickIncrementalDecrease(client);
+		}else if(opt == 1){
+			dtest.clickIncrementalIncrease(client);
+		}else if(opt == 2){
+			dtest.clickIncrementalStaysSame(client);
+		}else{
+			dtest.clickIncrementalUnknown(client);
+		}
+	}
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Helper Functions

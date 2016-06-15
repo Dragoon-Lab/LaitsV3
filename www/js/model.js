@@ -74,14 +74,14 @@ define([
 				/*
 				 Define the "active model" (see doucumentation/node-editor.md).
 				 */
-				obj.active = (mode == "AUTHOR") ? obj.given : obj.student;
+				obj.active = (mode == "AUTHOR" || mode == "ROAUTHOR") ? obj.given : obj.student;
 
 			},
 			// Private variables
 			_ID: 1,
 			_SID: 1,
 			// Public variables
-			beginX: 400,
+			beginX: 450,
 			beginY: 100,
 			nodeWidth: 100,
 			nodeHeight: 100,

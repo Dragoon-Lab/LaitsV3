@@ -3,9 +3,12 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
     <title>Dragoon</title>
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./dijit/themes/claro/claro.css">
     <script type = "text/javascript" src = "version.js"></script>
     <script src="tincan/tincan-min.js"></script>
     <script type="text/javascript">
@@ -118,6 +121,36 @@
     </script>
 
     <!-- jsPlumb Libs End Here -->
+	<!-- SuperGLU javascript files -->
+	<script type = "text/javascript">
+		var params = window.location.search;
+		var ETSectionName = ["ElectronixTutor"]; //for now keeping the section name at this place
+		for(var section in ETSectionName){
+			if(params.indexOf("&s="+ETSectionName[section]) >= 0){
+				//meta data for the section
+				document.write("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
+				document.write("<meta name=\"google\" value=\"notranslate\" />");
+				//import utitilities
+				document.write('<scr'+'ipt type="text/javascript" src="ET/js/SuperGLU/Util/emacs5-compatibility-patches.js"></scr'+'ipt>');
+				document.write('<scr'+'ipt type="text/javascript" src="ET/js/SuperGLU/Util/general-utilities.js"></scr'+'ipt>');
+				document.write('<scr'+'ipt type="text/javascript" src="ET/js/SuperGLU/Util/encoder.js"></scr'+'ipt>');
+				//superGLU imports
+				document.write('<scr'+'ipt type="text/javascript" src="ET/js/SuperGLU/Util/uuid.js"></scr'+'ipt>');
+				document.write('<scr'+'ipt type="text/javascript" src="ET/js/SuperGLU/Util/zet.js"></scr'+'ipt>');
+				document.write('<scr'+'ipt type="text/javascript" src="ET/js/SuperGLU/super-glu.js"></scr'+'ipt>');
+				document.write('<scr'+'ipt type="text/javascript" src="ET/js/SuperGLU/Util/serialization.js"></scr'+'ipt>');
+				document.write('<scr'+'ipt type="text/javascript" src="ET/js/SuperGLU/Core/messaging.js"></scr'+'ipt>');
+				document.write('<scr'+'ipt type="text/javascript" src="ET/js/SuperGLU/Core/messaging-gateway.js"></scr'+'ipt>');
+
+				//superglu services
+				document.write('<scr'+'ipt type="text/javascript" src="ET/js/SuperGLU/Services/Orchestration/heartbeat-service.js"></scr'+'ipt>');
+				document.write('<scr'+'ipt type="text/javascript" src="ET/js/SuperGLU/Services/LoggingService/standard-its-logging.js"></scr'+'ipt>');
+
+				//reference implementation data
+				document.write('<scr'+'ipt type="text/javascript" src="ET/js/reference-data.js"></scr'+'ipt>');
+			}
+		}
+	</script>
 
 </head>
 
@@ -143,7 +176,7 @@
         <button type="button" data-dojo-type="dijit/form/Button" id="graphButton" disabled="true" style="display: none">Graph</button>
         <button type="button" data-dojo-type="dijit/form/Button" id="tableButton" disabled="true" style="display: none">Table</button>
         <button type="button" data-dojo-type="dijit/form/Button" id="forumButton" disabled="true" style="display: none">Forum</button>
-        <button type="button" data-dojo-type="dijit/form/Button" id="schemaButton" disabled="true" style="display: none">Create Schema</button>
+        <button type="button" data-dojo-type="dijit/form/Button" id="schemaButton" disabled="true" style="display: none">Schemas</button>
         <button type="button" data-dojo-type="dijit/form/Button" id="descButton" disabled="true" style="display: none">Problem &amp; Times</button>
         <button type="button" data-dojo-type="dijit/form/Button" id="saveButton" disabled="true" style="display: none">Save As</button>
         <button type="button" data-dojo-type="dijit/form/Button" id="mergeButton" disabled="true" style="display: none">Merge </button>
@@ -160,7 +193,7 @@
             </div>
         </div>
         <button type="button" data-dojo-type="dijit/form/Button" id="slidesButton" disabled="true" style="display: none">Hints</button>
-        <button type="button" data-dojo-type="dijit/form/Button" id="prettifyButton" style="display: none">Prettify</button>
+        <button type="button" data-dojo-type="dijit/form/Button" id="prettifyButton" disabled="true" style="display: none">Prettify</button>
         <div data-dojo-type="dijit/PopupMenuBarItem">
             <span>Help</span>
             <div data-dojo-type="dijit/Menu" id="menuHelp">                
@@ -197,7 +230,18 @@
     </div>
 
     <!-- Dialog showing plot or table of solution  -->
-    <div class="claro dijitLayoutContainer dijitDialog" id="solution" data-dojo-type="dijit.Dialog" style="background-color: #FFFFFF">
+    <div id="solution" data-dojo-type="dijit.Dialog" style="min-width:70%; min-height:80%; background-color: #FFFFFF">
+        <div id= 'graphErrorMessage'></div>
+        <div data-dojo-type= 'dijit/layout/ContentPane' style='overflow:visible; width:55%; min-height: 95%; float:left; background-color: #FFFFFF;'>
+            <div id="GraphTabContainer" data-dojo-type='dijit/layout/TabContainer' style='overflow:visible; display:none;'>
+                <div id='GraphTab' data-dojo-type='dijit/layout/ContentPane' style='overflow:auto;' title="Graph"></div>
+                <div id='TableTab' data-dojo-type='dijit/layout/ContentPane' style='overflow:auto' title="Table"></div>
+                <div id='StaticTab' data-dojo-type='dijit/layout/ContentPane' style='overflow:auto' title="Static"></div>
+            </div>
+         </div>
+        <div id="SliderPane" data-dojo-type='dijit/layout/ContentPane' style='overflow:visible; min-height: 95%; width:40%; float:right; background-color: #FFFFFF'>
+            <div id= 'solutionMessage'></div>
+        </div>
     </div>
 
     <!-- Dialog showing lessonsLearned  -->
@@ -315,7 +359,7 @@
         </div>
         <div class="fieldgroup">
             <label for="authorSaveGroup" style="width:7em">Folder Name:</label>
-            <select id="authorSaveGroup" style="width:20em" data-dojo-type="dijit/form/ComboBox" searchAttr: "id">
+            <select id="authorSaveGroup" style="width:20em" data-dojo-type="dijit/form/ComboBox" searchAttr="id">
             </select>
         </div>
         <div class="fieldgroup" aligh="right" id="authorSaveStatus">
@@ -349,7 +393,7 @@
     </div>
 
     <!-- Putting Node-Editor -Dialog stuff for demo -->
-    <div class="claro sameedit" data-dojo-type="dijit/Dialog" id="nodeeditor">
+    <div class="sameedit" data-dojo-type="dijit/Dialog" id="nodeeditor">
         <div id="studentModelControl" class="fieldgroup" style="display:none;" >
             <label style="width:20ex;" for="setStudentNode">Show in Student Model</label>
             <input id="setStudentNode" name="markStudentNode" data-dojo-type="dijit/form/CheckBox" checked="false"/>
@@ -631,7 +675,9 @@
         </div>
         <div class="fieldgroup">
             <label for="nodesDropdown">Nodes: </label>
-            <div id="nodesDropdown"></div> <!-- place holder for nodes dropdown -->
+            <div id="nodesDropdown">
+                <select class="nodesDropdown" id="nodes1" data-dojo-type="dijit/form/Select"></select>
+            </div> <!-- place holder for nodes dropdown -->
         </div>
         <div id="buttons">
             <button id="showAllSchemas" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">View All Schemas</button>
@@ -698,6 +744,9 @@
 
     <div class="claro sameedit" id="viewAllSchemaDialog" data-dojo-type="dijit/Dialog" title="Edit Schemas" style="width:300px;">
     </div>
+
+    <div id="ETContainer" style="visibility: hidden; width: 0; height: 0;"></div> <!-- container for SuperGLU integration for Electronix Tutor -->
+
 </div>  <!-- main -->
 
 <!-- import liviz -->
@@ -706,14 +755,6 @@
 <script type="text/javascript" src="Liviz/progress-view.js?v=2"></script>
 <script type="text/javascript" src="Liviz/progress-model.js?v=2"></script>
 <script type="text/javascript" src="Liviz/stopgo.js?v=2"></script>
-<script type="text/javascript" src="ET/Util/emacs5-compatibility-patches.js"></script>
-<script type="text/javascript" src="ET/Util/uuid.js"></script>
-<script type="text/javascript" src="ET/Util/encoder.js"></script>
-<script type="text/javascript" src="ET/Util/zet.js"></script>
-<script type="text/javascript" src="ET/Util/serialization.js"></script>
-<script type="text/javascript" src="ET/Core/messaging.js"></script>
-<script type="text/javascript" src="ET/Core/messaging-gateway.js"></script>
-<script type="text/javascript" src="ET/Services/Orchestration/heartbeat-service.js"></script>
 <script type="text/javascript" src="cryptoJS/sha256.js"></script>
 </body>
 </html>

@@ -36,28 +36,28 @@ $mysqli = mysqli_connect("localhost", $dbuser, $dbpass, $dbname)
   or trigger_error('Could not connect to database.', E_USER_ERROR);
 
 // Must always provide problem name
-$problem =  mysqli_real_escape_string($mysqli,$_GET['p'])
+$problem =  mysqli_real_escape_string($mysqli,$_REQUEST['p'])
   or trigger_error('Problem name not supplied.', E_USER_ERROR);
 $shortProblemName = (strlen($problem) > 50) ? substr($problem, 0,50) : $problem;
 
 // Group is optional
-$group = isset($_GET['g'])?mysqli_real_escape_string($mysqli,$_GET['g']):null;
+$group = isset($_REQUEST['g'])?mysqli_real_escape_string($mysqli,$_REQUEST['g']):null;
 $userPrecedence = true;
-if(isset($_GET['m']) && $_GET['m'] == "AUTHOR"){
-  $userPrecedence = isset($_GET['up'])?($_GET['up'] == "true"):false;
+if(isset($_REQUEST['m']) && $_REQUEST['m'] == "AUTHOR"){
+  $userPrecedence = isset($_REQUEST['up'])?($_REQUEST['up'] == "true"):false;
 }
-$restartProblemFlag = isset($_GET['rp'])?$_GET['rp']:false;
+$restartProblemFlag = isset($_REQUEST['rp'])?$_REQUEST['rp']:false;
 
-$activity = !empty($_GET['a'])?$_GET['a']:"construction";
+$activity = !empty($_REQUEST['a'])?$_REQUEST['a']:"construction";
 // Check if the session is public and expired
 date_default_timezone_set('America/Phoenix'); 
 $subtime =  date('Y-m-d h:m:s', strtotime('-1 minutes')); // Get the time stamp for 24h ago
-if (isset($_GET['s'])) { 
-   $section = mysqli_real_escape_string($mysqli,$_GET['s']);
+if (isset($_REQUEST['s'])) { 
+   $section = mysqli_real_escape_string($mysqli,$_REQUEST['s']);
    if ($section=='public-login.html') {
-     if(isset($_GET['u']) && isset($_GET['m'])){
-      $user = mysqli_real_escape_string($mysqli,$_GET['u']);
-      $mode = $_GET['m'];
+     if(isset($_REQUEST['u']) && isset($_REQUEST['m'])){
+      $user = mysqli_real_escape_string($mysqli,$_REQUEST['u']);
+      $mode = $_REQUEST['m'];
       $query = <<<EOT
       SELECT * FROM session WHERE session.user = '$user' AND session.section = '$section' AND session.mode = '$mode' AND session.activity = '$activity' AND session.problem = '$shortProblemName' ORDER BY session.time DESC LIMIT 1
 EOT;
@@ -97,9 +97,9 @@ function printModel($row){
        forward to published problems
 
 */
-if(isset($_GET['x'])){
+if(isset($_REQUEST['x'])){
   
-  $session_id = mysqli_real_escape_string($mysqli,$_GET['x']);
+  $session_id = mysqli_real_escape_string($mysqli,$_REQUEST['x']);
 
     $query = <<<EOT
     SELECT solution_graph, share from solutions where session_id = '$session_id'      
@@ -116,11 +116,11 @@ EOT;
 
 if(!$restartProblemFlag) /* if rp(restart problem) not set check in previously sovled problems */
 {
-  if(isset($_GET['u']) && isset($_GET['s']) && isset($_GET['m'])){
-     $user = mysqli_real_escape_string($mysqli,$_GET['u']);
-     $section = mysqli_real_escape_string($mysqli,$_GET['s']);
-     $mode = $_GET['m'];  // only four choices
-   if(isset($_GET['g']) && !$userPrecedence){
+  if(isset($_REQUEST['u']) && isset($_REQUEST['s']) && isset($_REQUEST['m'])){
+     $user = mysqli_real_escape_string($mysqli,$_REQUEST['u']);
+     $section = mysqli_real_escape_string($mysqli,$_REQUEST['s']);
+     $mode = $_REQUEST['m'];  // only four choices
+   if(isset($_REQUEST['g']) && !$userPrecedence){
       //group takes precedence over user, quick fix for sustainability class
         $query = <<<EOT
          SELECT t1.solution_graph, t1.share FROM solutions AS t1 JOIN session AS t2 USING (session_id) 
@@ -129,7 +129,7 @@ if(!$restartProblemFlag) /* if rp(restart problem) not set check in previously s
 EOT;
 	  
     } else {
-     $gs = isset($_GET['g'])?"= '$group'":'IS NULL';
+     $gs = isset($_REQUEST['g'])?"= '$group'":'IS NULL';
 	  if($activity == 'construction'){
      	$query = <<<EOT
           SELECT t1.solution_graph, t1.share FROM solutions AS t1 JOIN session AS t2 USING (session_id)
@@ -148,6 +148,17 @@ EOT;
 	}
    $result = $mysqli->query($query)
      or trigger_error("Previous work query failed." . $mysqli->error);
+
+      //Ritesh: this is piece of code to retrieve query from a copy parameter , if it is set and existing folder does not contain the specific problem
+      if($result->num_rows == 0 && isset($_REQUEST['cp'])){
+          $new_group = $_REQUEST['cp'];
+          $query = <<<EOT
+         SELECT t1.solution_graph, t1.share FROM solutions AS t1 JOIN session AS t2 USING (session_id)
+              WHERE t2.section = '$section' AND t2.mode = '$mode'
+              AND t2.problem = '$shortProblemName' AND t2.group = '$new_group' AND t2.activity = '$activity' ORDER BY t1.time DESC LIMIT 1
+EOT;
+      $result = $mysqli->query($query);
+      }
    if($row = $result->fetch_row()){
        printModel($row);
     mysqli_close($mysqli);
@@ -162,13 +173,13 @@ EOT;
      a matching published problem
 */
 
-if(isset($_GET['g']) && !empty($_GET['g']) && isset($_GET['s']) && !empty($_GET['s'])){
+if(isset($_REQUEST['g']) && !empty($_REQUEST['g']) && isset($_REQUEST['s']) && !empty($_REQUEST['s'])){
   /*
     If group and section are supplied, then look for 
     custom problem stored in database.
   */
 
-  $section = mysqli_real_escape_string($mysqli,$_GET['s']);
+  $section = mysqli_real_escape_string($mysqli,$_REQUEST['s']);
   if($activity == "construction"){
     $query = <<<EOT
       SELECT t1.solution_graph, t1.share FROM solutions AS t1 JOIN session AS t2

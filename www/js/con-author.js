@@ -468,6 +468,13 @@ define([
 		
 		handleType: function(type){
             var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
+
+            //If type is function last initial value field has to be set to null irrespective of model type to ensure
+            // that if type is changed back to Acc/Par the previous initial value should be sent for feedback
+            if(type == "function"){
+                this.lastInitial.value = null;
+            }
+
             if(this.getModelType() == "correct"){
 				// Summary: Sets the type of the current node.
 				this.applyDirectives(this.authorPM.process(this.currentID,'type', type));
@@ -739,6 +746,7 @@ define([
 		},	
 		
 		initialControlSettings: function(nodeid){
+            console.log("initial control settings in author mode");
 
 			// Apply settings appropriate for a new node
 			// This is the equivalent to newAction() in student mode.
@@ -888,6 +896,20 @@ define([
 					this.applyDirectives([{id:"equation", attribute:"status", value:"entered"}]);
 			}
             this.enableDisablewaveFormAssignmentButton(this.currentID);
+
+            if(this.activityConfig.get("disableNodeEditorFields")){
+                console.log("using apply directives");
+
+                this.applyDirectives([{id: "setName", attribute : "disabled", value: true}]);
+
+                /*
+                    DQuery("#nodeeditor input").attr("disabled",true);
+                    DQuery("#nodeeditor textarea").attr("disabled",true);
+                    dijit.byId("setName").readOnly = true;
+                    dijit.byId("selectKind").readOnly = true;
+                */
+            }
+
         },
 		updateModelStatus: function(desc, id){
 			//stub for updateModelStatus

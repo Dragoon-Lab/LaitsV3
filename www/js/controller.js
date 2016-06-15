@@ -1326,7 +1326,21 @@ define([
 					this.tour = null;
 				}
 			}
-		},
+		if(this.activityConfig.get("disableNodeEditorFields")) {
+            dijit.byId("typeId").disabled=true;
+            dijit.byId("setUnits").disabled = true;
+            dijit.byId("setInput").disabled = true;
+            dijit.byId("deleteButton").disabled = true;
+            dijit.byId("undoButton").disabled = true;
+            dijit.byId("explanationButton").disabled = true;
+            dijit.byId("equationDoneButton").disabled = true;
+            dijit.byId("assignWaveFormButton").disabled = true;
+            dijit.byId("plusButton").disabled = true;
+            dijit.byId("minusButton").disabled = true;
+            dijit.byId("timesButton").disabled = true;
+            dijit.byId("divideButton").disabled = true;
+        }
+        },
 
 		// Stub to be overwritten by student or author mode-specific method.
 		initialControlSettings: function(id){
@@ -1405,6 +1419,7 @@ define([
 			 Note that if equation is disabled then
 			 input, +, -, *, /, undo, and done should also be disabled.
 			 */
+
 		},
 		setLogging: function(/*string*/ logging){
 			this.logging = logging;
@@ -1495,6 +1510,10 @@ define([
 						w.set(directive.attribute, directive.value);
 						if(directive.attribute === "status"){
 							tempDirective = directive;
+						}
+						if(this.activityConfig.get("ElectronixTutor") && directive.id === "message"
+							&& this._mode !== "AUTHOR"){
+							this.sendETFeedback(directives);
 						}
 					}
 				}else if(directive.attribute == "display"){
@@ -1618,6 +1637,11 @@ define([
 			//stub over written in con-student. assessment function called at node close
 		},
 
+		//Set ET Connector Object
+		setETConnector: function(ET) {
+			this.ETConnect = ET;
+		},
+
 		deletePrematureNodes: function(){
 			//Summary : Scan and delete the premature nodes after validating current Node equation
 
@@ -1649,6 +1673,25 @@ define([
 		deleteNode: function(id){
 			//Stub to delete node with id by inturn calling drawmodel.deleteNode in main.js
 			return id;
+		},
+
+		sendETFeedback: function(directives){
+			var field = "";
+			var content = "";
+			array.forEach(directives, function(directive){
+				if(directive.attribute ===  "status"){
+					field = directive.id;
+				}else if (directive.id === "message"){
+					content = directive.value;
+				}
+			});
+
+			var taskname = this._model.getTaskName().split(' ').join('-');
+			var nodename = this._model.active.getName(this.currentID).split(' ').join('-');
+			var step_id = taskname +'_'+ nodename +'_'+'Select'+field;
+			console.log("STEPID" + step_id);
+			this.ETConnect.sendFeedback( field, content , step_id, "text");
+
 		}
 
 	});
