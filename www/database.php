@@ -31,14 +31,14 @@
 			} else {
 				return null;
 			}
-			echo $query;
+
 			$result = $this->getDBResults($query);
 			$problems = array();
 			if($result->num_rows != 0){
 				while($row = $result->fetch_assoc()){
 					if(!array_key_exists($row['group'], $problems))
 						$problems[$row['group']] = array();
-					$problems[$row['group']][count($problems[$row['group']])] = $row['problem'];
+					array_push($problems[$row['group']], $row['problem']);
 				}
 			} else {
 				return null;
