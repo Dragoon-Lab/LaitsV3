@@ -1,11 +1,14 @@
 <?php
-include('../db-login.php');
-include('database.php');
+
+require "db-login.php";
+include "database.php";
 
 $type = $_REQUEST['t'];
-$db = new Database();
+$mysql = mysqli_connect("localhost", $dbuser, $dbpass, $dbname)
+						or trigger_error('Could not connect to database.', E_USER_ERROR);
+$db = new Database($mysql);
 $parameters = array();
-switch(type){
+switch($type){
 	case 'classProblems':
 		$parameters['u'] = $_REQUEST['u'];
 		$parameters['g'] = $_REQUEST['g'];
@@ -18,4 +21,5 @@ if($result == null)
 else
 	echo $result;
 
+mysqli_close($mysql);
 ?>

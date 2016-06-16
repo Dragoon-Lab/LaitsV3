@@ -1,24 +1,24 @@
 <?php
 	Class Database{
-		private $db_connection;
+		private $db_connection = null;
 		private static $queries = array();
 
 		function __construct($con){
-			self::$db_connection = $con;
-			self::$queries = setQueries();
+			$this->db_connection = $con;
+			self::$queries = $this->setQueries();
 		}
 
 		function getDBResults($query){
-			return mysql_query(self::$db_connection, $query);
+			return mysqli_query($this->db_connection, $query);
 		}
 
 		function getQuery($name){
-			return (array_key_exists(self::$queries, $name) ? self::$queries[$name] : '');		
+			return (array_key_exists($name, self::$queries) ? self::$queries[$name] : '');		
 		}
 
 		function setQueries(){
 			$q = array();
-			$q['classProblems'] = 'SELECT DISTINCT on problem, user, `group` FROM session WHERE user = "%s" AND `group` IN (%s)'
+			$q['classProblems'] = 'SELECT DISTINCT problem, user, `group` FROM session WHERE user = "%s" AND `group` IN (%s);';
 
 			return $q;
 		}
@@ -28,17 +28,17 @@
 			$result = null;
 			if($query != ''){
 				$query = sprintf($query, $parameters['u'], $parameters['g']);
-				$result = $this->getDBResults($query);
 			} else {
 				return null;
 			}
-
+			echo $query;
+			$result = $this->getDBResults($query);
 			$problems = array();
 			if($result->num_rows != 0){
 				while($row = $result->fetch_assoc()){
-					if(!array_key_exists($problems, $row['group']))
+					if(!array_key_exists($row['group'], $problems))
 						$problems[$row['group']] = array();
-					$problems[$row['group']][count($problems[$row['group']])] = $problem;
+					$problems[$row['group']][count($problems[$row['group']])] = $row['problem'];
 				}
 			} else {
 				return null;
