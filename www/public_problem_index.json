@@ -1,0 +1,44 @@
+{
+    "Science": {
+        "Electronics": {
+            "Basics": {
+                "Ohm's Law": "resistor-battery-series",
+                "Kirchoff's Voltage Law": "two-resistors-in-series",
+                "Kirchoff's Current Law": "kcl"
+
+            },
+            "RLC": {
+                "Resistor Capacitor 1": "resistor-capacitor-1",
+                "Resistor Capacitor 2": "resistor-capacitor-2",
+                "Resistor Inductor": "resistor-inductor"
+
+            }
+        },
+        "Human Physiology": {
+            "Blood Glucose": {
+                "Zero set point homeostasis": "zero-set-point-homeostasis",
+                "Nonzero set point homeostasis": "nonzero-set-point-homeostasis",
+                "Two loop homeostasis": "two-loop-homeostasis",
+                "Simple blood glucose homeostasis": "simple-blood-glucose-homeostasis",
+                "Glucose min model": "glucose-min-model"
+            },
+            "Human Digestive Energy Balance": {
+                "Energy Balance 0": "Energy-balance-0",
+                "Energy Balance 1": "Energy-balance-1",
+                "Energy Balance 2": "Energy-balance-2",
+                "Energy Balance 3": "Energy-balance-3",
+                "Energy Balance 4": "Energy-balance-4",
+                "Energy Balance 5": "Energy-balance-5",
+                "Energy Balance 6": "Energy-balance-6",
+                "Energy Balance 7": "Energy-balance-7",
+                "Energy Balance 8": "Energy-balance-8"
+            }
+        }
+    },
+    "Mastering Model Construction": {
+        "Part 1": {
+            "Bookworm": "CPI-2014-ps1-01"
+
+        }
+    }
+}
