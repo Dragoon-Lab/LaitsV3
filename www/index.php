@@ -56,22 +56,25 @@
          Most widgets have an associated css style sheet that is
          loaded by css/dragoon.css
          */
-        require([
-            "dojo/parser",
-            "dijit/Dialog",
-            "dijit/Editor",
-            "dijit/_editor/plugins/LinkDialog",
-            "dijit/MenuBar", "dijit/PopupMenuBarItem",
-            "dijit/layout/BorderContainer", "dijit/MenuItem",
-            "dijit/form/Select", "dijit/form/Textarea",
-            "dijit/form/Button", "dijit/form/CheckBox", "dijit/form/TextBox",
-            "dijit/form/ComboBox", "dijit/form/Textarea", "dijit/form/RadioButton",
-            "dijit/form/SimpleTextarea", "dijit/Menu",
-            "dijit/layout/ContentPane", "dijit/registry",
-            "dijit/TooltipDialog",
-            "dragoon/menu", // Wire up menus
-            "dragoon" // Load up Dragoon itself
-        ]);
+        require(["dojo/domReady!"], function() {
+            //Load once dom is ready
+            require([
+                "dojo/parser",
+                "dijit/Dialog",
+                "dijit/Editor",
+                "dijit/_editor/plugins/LinkDialog",
+                "dijit/MenuBar", "dijit/PopupMenuBarItem",
+                "dijit/layout/BorderContainer", "dijit/MenuItem",
+                "dijit/form/Select", "dijit/form/Textarea",
+                "dijit/form/Button", "dijit/form/CheckBox", "dijit/form/TextBox",
+                "dijit/form/ComboBox", "dijit/form/Textarea", "dijit/form/RadioButton",
+                "dijit/form/SimpleTextarea", "dijit/Menu",
+                "dijit/layout/ContentPane", "dijit/registry",
+                "dijit/TooltipDialog",
+                "dragoon/menu", // Wire up menus
+                "dragoon" // Load up Dragoon itself
+            ]);
+        });
     </script>
 
 
