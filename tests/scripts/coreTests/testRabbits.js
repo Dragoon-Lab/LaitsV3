@@ -99,10 +99,10 @@ describe("Test mode with correct rabbits", function() {
                                     ["expectedInitialValue", "24"],
                                     ["expectedNodeUnits", "rabbits"],
                                     ["expectedExpression", "net growth"],
-                                    ["expectedDescriptionColor", "gray"],
-                                    ["expectedTypeColor", "gray"],
-                                    ["expectedInitialColor", "gray"],
-                                    ["expectedUnitsColor", "gray"],
+                                    ["expectedDescriptionColor", "white"],
+                                    ["expectedTypeColor", "white"],
+                                    ["expectedInitialColor", "white"],
+                                    ["expectedUnitsColor", "white"],
                                     ["expectedExpressionColor", "white"]], dtest, client);
         }));
 
@@ -116,9 +116,9 @@ describe("Test mode with correct rabbits", function() {
                                     ["expectedNodeType", "Function"],
                                     ["expectedNodeUnits", "rabbits/year"],
                                     ["expectedExpression", "growth rate*population"],
-                                    ["expectedDescriptionColor", "gray"],
-                                    ["expectedTypeColor", "gray"],
-                                    ["expectedUnitsColor", "gray"],
+                                    ["expectedDescriptionColor", "white"],
+                                    ["expectedTypeColor", "white"],
+                                    ["expectedUnitsColor", "white"],
                                     ["expectedExpressionColor", "white"]], dtest, client);
         }));
 
@@ -132,10 +132,10 @@ describe("Test mode with correct rabbits", function() {
                                     ["expectedNodeType", "Parameter"],
                                     ["expectedInitialValue", "0.3"],
                                     ["expectedNodeUnits", "1/year"],
-                                    ["expectedDescriptionColor", "gray"],
-                                    ["expectedTypeColor", "gray"],
-                                    ["expectedInitialColor", "gray"],
-                                    ["expectedUnitsColor", "gray"]], dtest, client);
+                                    ["expectedDescriptionColor", "white"],
+                                    ["expectedTypeColor", "white"],
+                                    ["expectedInitialColor", "white"],
+                                    ["expectedUnitsColor", "white"]], dtest, client);
         }));
     });
 
