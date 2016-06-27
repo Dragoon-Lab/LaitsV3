@@ -165,7 +165,6 @@ define([
 			if(! domClass.contains(dom.byId(id), "active")) {
 				array.forEach(this._steps, function(step){
 					if(step["element"] === id){
-						debugger;
 						Tooltip.show(step["title"], dom.byId(id), ["before-centered"]);
 					}
 				});

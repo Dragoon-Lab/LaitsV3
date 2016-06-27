@@ -198,7 +198,6 @@ define([
 				alert(debugReport);
 			}
 			console.log(debugReport);
-			debugger;
 		},
 
 		isoDuration: function(milliseconds) {

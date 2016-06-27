@@ -91,7 +91,6 @@ define([
 
             this.dialogWindow = registry.byId("solution");
             this.hideCallback = on(this.dialogWindow, "hide", lang.hitch(this, function(){
-                debugger;
                 this.closeDialog();
             }));
 
