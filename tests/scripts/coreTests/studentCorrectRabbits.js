@@ -31,7 +31,7 @@ describe("Student mode with correct rabbits", function() {
                                       ["logging","true"]]);
     }));
 
-    describe("Creating nodes:", function(){
+    describe("Creating nodes:", function(){        
         it("Should create Accumulator node - population", async(function(){
             dtest.menuCreateNode(client);
             dtest.setNodeDescription(client, "The number of rabbits in the population");
@@ -189,10 +189,10 @@ describe("Student mode with correct rabbits", function() {
 
         it("Should switch to graph tab and check the message", async(function(){
             dtest.selectGraphTab(client);
-            var message = dtest.getGraphResultText;
+            var message = dtest.getGraphResultText(client);
 
-            assert(message = "Congratulations, your model's behavior matches the author's",
-                "Message text was " + message + " instead of Congratulations, your model's behavior matches the author's");
+            assert(message == "Congratulations, your model's behavior matches the author's!",
+                "Message text was " + message + " instead of Congratulations, your model's behavior matches the author's!");
         }));
     });
 

@@ -287,6 +287,7 @@ exports.openProblem = function(client,parameters){
     //if(await(client.session(defer())) === undefined){
     await(client.init(defer()));
     await(client.url(url,defer()));
+    wait(3000);
     //} else {
     //    await(client.url(url,defer()));
     //}
@@ -980,7 +981,7 @@ exports.getGraphMessageText = function(client){
 exports.getGraphResultText = function(client){
     // Summary: returns the text used to display if the student matched the author's result or not
     //          (i.e. the red or green text) or null if neither message is not present
-    return await(client.getText('#graphResultText',defer()));
+    return await(client.getText('#solutionMessage',defer()));
 }
 
 // Slider and value manipulation

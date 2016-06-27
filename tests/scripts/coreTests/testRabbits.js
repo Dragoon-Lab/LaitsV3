@@ -186,10 +186,10 @@ describe("Test mode with correct rabbits", function() {
 
         it("Should switch to graph tab and check the message", async(function(){
             dtest.selectGraphTab(client);
-            var message = dtest.getGraphResultText;
+            var message = dtest.getGraphResultText(client);
 
-            assert(message = "Congratulations, your model's behavior matches the author's",
-                "Message text was " + message + " instead of Congratulations, your model's behavior matches the author's");
+            assert(message == "Congratulations, your model's behavior matches the author's!",
+                "Message text was " + message + " instead of Congratulations, your model's behavior matches the author's!");
         }));
     });
 

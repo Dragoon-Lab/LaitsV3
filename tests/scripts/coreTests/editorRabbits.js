@@ -182,12 +182,12 @@ describe("Editor mode with correct rabbits", function() {
                 "Values in the \"net growth (rabbits/year)\" column were incorrect");
         }));
 
-        it("Should switch to graph tab and check the message", async(function(){
+        it("Should switch to graph tab and see no message", async(function(){
             dtest.selectGraphTab(client);
-            var message = dtest.getGraphResultText;
+            var message = dtest.getGraphResultText(client);
 
-            assert(message = "Congratulations, your model's behavior matches the author's",
-                "Message text was " + message + " instead of Congratulations, your model's behavior matches the author's");
+            assert(message === "",
+                "Message text was " + message + " instead of blank.");
         }));
     });
 
