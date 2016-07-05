@@ -33,12 +33,84 @@
                 "Energy Balance 7": "Energy-balance-7",
                 "Energy Balance 8": "Energy-balance-8"
             }
+        },
+        "Physics": {
+            "Kinematics": {
+                "Fall from building 1": "Fall-from-building-1",
+                "Fall from building 2": "Fall-from-building-2",
+                "Fall from building 3": "Fall-from-building-3",
+                "Thrown Stone 1": "Thrown-Stone-1",
+                "Thrown Stone 2": "Thrown-Stone-2"
+            }
+        },
+        "Population Ecology": {
+            "Isle Royale": {
+                "Moose population 1": "isle1",
+                "Moose population 2": "isle2",
+                "Moose population 3": "isle3",
+                "Moose population 4": "isle4",
+                "Wolves": "isle5",
+                "Moose and Wolves": "isle6"
+            },
+            "Waterfowl and Cats": {
+                "Waterfowl 1": "201",
+                "Waterfowl 2": "202",
+                "Waterfowl 3": "203",
+                "Waterfowl & cats": "204"
+            }
         }
     },
     "Mastering Model Construction": {
-        "Part 1": {
-            "Bookworm": "CPI-2014-ps1-01"
-
+        "Problem Set 1": {
+            "Problem 1.01": "CPI-2014-ps1-01",
+            "Problem 1.02": "CPI-2014-ps1-02",
+            "Problem 1.03": "CPI-2014-ps1-03",
+            "Problem 1.04": "CPI-2014-ps1-04",
+            "Problem 1.05": "CPI-2014-ps1-05",
+            "Problem 1.06": "CPI-2014-ps1-06",
+            "Problem 1.07": "CPI-2014-ps1-07",
+            "Problem 1.08": "CPI-2014-ps1-08",
+            "Problem 1.09": "CPI-2014-ps1-09",
+            "Problem 1.10": "CPI-2014-ps1-10",
+            "Problem 1.11": "CPI-2014-ps1-11",
+            "Problem 1.12": "CPI-2014-ps1-12"
+        },
+        "Problem Set 2": {
+            "Problem 2.1": "CPI-2014-ps2-01",
+            "Problem 2.2": "CPI-2014-ps2-02",
+            "Problem 2.3": "CPI-2014-ps2-03",
+            "Problem 2.4": "CPI-2014-ps2-04",
+            "Problem 2.5": "CPI-2014-ps2-05",
+            "Problem 2.6": "CPI-2014-ps2-06",
+            "Problem 2.7": "CPI-2014-ps2-07",
+            "Problem 2.8": "CPI-2014-ps2-08",
+            "Problem 2.9": "CPI-2014-ps2-09"
+        },
+        "Problem Set 3": {
+            "Problem 3.1": "CPI-2014-ps3-01",
+            "Problem 3.2": "CPI-2014-ps3-02",
+            "Problem 3.3": "CPI-2014-ps3-03",
+            "Problem 3.4": "CPI-2014-ps3-04",
+            "Problem 3.5": "CPI-2014-ps3-05",
+            "Problem 3.6": "CPI-2014-ps3-06",
+            "Problem 3.7": "CPI-2014-ps3-07",
+            "Problem 3.8": "CPI-2014-ps3-08"
+        },
+        "Problem Set 4": {
+            "Problem 4.1": "CPI-2014-ps4-01",
+            "Problem 4.2": "CPI-2014-ps4-02",
+            "Problem 4.3": "CPI-2014-ps4-03",
+            "Problem 4.4": "CPI-2014-ps4-04",
+            "Problem 4.5": "CPI-2014-ps4-05",
+            "Problem 4.6": "CPI-2014-ps4-06"
+        },
+        "Problem Set 5": {
+            "Problem 5.1": "CPI-2014-ps5-01",
+            "Problem 5.2": "CPI-2014-ps5-02",
+            "Problem 5.3": "CPI-2014-ps5-03",
+            "Problem 5.4": "CPI-2014-ps5-04",
+            "Problem 5.5": "CPI-2014-ps5-05",
+            "Problem 5.6": "CPI-2014-ps5-06"
         }
     }
 }
