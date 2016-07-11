@@ -95,8 +95,8 @@ gulp.task('build', ['dojoBuild'], function (done){
 
 	gulp.src(['../release/www/jsPlumb/*.*']).pipe(gulp.dest(config.wwwPath +'/jsPlumb/src')).on("end", function(){
 		gulp.src(filesToCopy , {base: './'}).pipe(gulp.dest(config.wwwPath)).on("end", function(){
-			console.log("Modifying Index.html");
-			gulp.src(['index.html']).pipe(replace("document.write('<scr'+'ipt src=\"dojo/dojo.js\"></scr'+'ipt>');",
+			console.log("Modifying Index.php");
+			gulp.src(['index.php']).pipe(replace("document.write('<scr'+'ipt src=\"dojo/dojo.js\"></scr'+'ipt>');",
 				"document.write('<scr'+'ipt src=\"dojo/dojo.js?'+ version +'\"></scr'+'ipt>'); \n document.write('<scr'+'ipt src=\"dragoon/index.js?'+ version +'\"></scr'+'ipt>');"))
 				.pipe(gulp.dest(config.wwwPath)).on("end", function(){
 					gulp.src(config.wwwPath+'/**', {base:'../release'}).pipe(gulp.dest(config.releasePath)).on("end", function(){
