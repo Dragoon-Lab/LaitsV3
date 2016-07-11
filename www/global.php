@@ -14,6 +14,14 @@ switch($type){
 		$parameters['g'] = $_REQUEST['g'];
 		$result = $db->getClassProblemGroups($parameters);
 		break;
+    case 'reqNonClassProblems':
+        $parameters['g'] = $_REQUEST['g'];
+        $result = $db->getNonClassProblems($parameters);
+        break;
+    case 'deleteNonClassProblems':
+        $parameters['df'] = $_REQUEST['df'];
+        $parameters['dm'] = $_REQUEST['dm'];
+        $result = $db->deleteNonClassProblems($parameters);
 }
 
 if($result == null)
