@@ -52,65 +52,77 @@
                 "Wolves": "isle5",
                 "Moose and Wolves": "isle6"
             },
-            "Waterfowl and Cats": {
+            "Waterfowl & Cats": {
                 "Waterfowl 1": "201",
                 "Waterfowl 2": "202",
                 "Waterfowl 3": "203",
                 "Waterfowl & cats": "204"
+            },
+            "Zebra & Lions": {
+                "Zebra population level 1": "zebra-population-growth-1",
+                "Zebra population level 2": "zebra-population-growth-2",
+                "Zebra population level 3": "zebra-population-growth-3",
+                "Zebra population level 4": "zebra-population-growth-4",
+                "Lion population level 1": "lion-population-growth-1",
+                "Lion population level 2": "lion-population-growth-2",
+                "Lion population level 3": "lion-population-growth-3",
+                "Lion population level 4": "lion-population-growth-4",
+                "Zebra & lions level 1": "zebra-lions-independent-solo",
+                "Zebra & lions level 2": "zebra-lions-combined"
             }
         }
     },
     "Mastering Model Construction": {
         "Problem Set 1": {
-            "Problem 1.01": "CPI-2014-ps1-01",
-            "Problem 1.02": "CPI-2014-ps1-02",
-            "Problem 1.03": "CPI-2014-ps1-03",
-            "Problem 1.04": "CPI-2014-ps1-04",
-            "Problem 1.05": "CPI-2014-ps1-05",
-            "Problem 1.06": "CPI-2014-ps1-06",
-            "Problem 1.07": "CPI-2014-ps1-07",
-            "Problem 1.08": "CPI-2014-ps1-08",
-            "Problem 1.09": "CPI-2014-ps1-09",
-            "Problem 1.10": "CPI-2014-ps1-10",
-            "Problem 1.11": "CPI-2014-ps1-11",
-            "Problem 1.12": "CPI-2014-ps1-12"
+            "1.01 Bookworm": "CPI-2014-ps1-01",
+            "1.02 Moose population": "CPI-2014-ps1-02",
+            "1.03 Jared's weight": "CPI-2014-ps1-03",
+            "1.04 Dodo extinction": "CPI-2014-ps1-04",
+            "1.05 Corky is falling behind": "CPI-2014-ps1-05",
+            "1.06 Moose births and deaths": "CPI-2014-ps1-06",
+            "1.07 Retirement": "CPI-2014-ps1-07",
+            "1.08 Body temperature": "CPI-2014-ps1-08",
+            "1.09 Book shuttle": "CPI-2014-ps1-09",
+            "1.10 Two barrels": "CPI-2014-ps1-10",
+            "1.11 Weight toss": "CPI-2014-ps1-11",
+            "1.12 Student infections": "CPI-2014-ps1-12"
         },
         "Problem Set 2": {
-            "Problem 2.1": "CPI-2014-ps2-01",
-            "Problem 2.2": "CPI-2014-ps2-02",
-            "Problem 2.3": "CPI-2014-ps2-03",
-            "Problem 2.4": "CPI-2014-ps2-04",
-            "Problem 2.5": "CPI-2014-ps2-05",
-            "Problem 2.6": "CPI-2014-ps2-06",
-            "Problem 2.7": "CPI-2014-ps2-07",
-            "Problem 2.8": "CPI-2014-ps2-08",
-            "Problem 2.9": "CPI-2014-ps2-09"
+            "2.1 Front lot to back lot": "CPI-2014-ps2-01",
+            "2.2 Buses in the shop": "CPI-2014-ps2-02",
+            "2.3 Deadly cruise": "CPI-2014-ps2-03",
+            "2.4 Vig trouble": "CPI-2014-ps2-04",
+            "2.5 Custom bike backlog": "CPI-2014-ps2-05",
+            "2.6 Furnace-only thermostat": "CPI-2014-ps2-06",
+            "2.7 Toilet tank": "CPI-2014-ps2-07",
+            "2.8 Strange retirement plan": "CPI-2014-ps2-08",
+            "2.9 Cascading barrels": "CPI-2014-ps2-09"
         },
         "Problem Set 3": {
-            "Problem 3.1": "CPI-2014-ps3-01",
-            "Problem 3.2": "CPI-2014-ps3-02",
-            "Problem 3.3": "CPI-2014-ps3-03",
-            "Problem 3.4": "CPI-2014-ps3-04",
-            "Problem 3.5": "CPI-2014-ps3-05",
-            "Problem 3.6": "CPI-2014-ps3-06",
-            "Problem 3.7": "CPI-2014-ps3-07",
-            "Problem 3.8": "CPI-2014-ps3-08"
+            "3.1 Venice": "CPI-2014-ps3-01",
+            "3.2 Oil tanker": "CPI-2014-ps3-02",
+            "3.3 Hardwood forest": "CPI-2014-ps3-03",
+            "3.4 Merchant marine": "CPI-2014-ps3-04",
+            "3.5 Capacity utilization": "CPI-2014-ps3-05",
+            "3.6 Metro singles club": "CPI-2014-ps3-06",
+            "3.7 Accelerating evaporation": "CPI-2014-ps3-07",
+            "3.8 Busy hospital": "CPI-2014-ps3-08"
         },
         "Problem Set 4": {
-            "Problem 4.1": "CPI-2014-ps4-01",
-            "Problem 4.2": "CPI-2014-ps4-02",
-            "Problem 4.3": "CPI-2014-ps4-03",
-            "Problem 4.4": "CPI-2014-ps4-04",
-            "Problem 4.5": "CPI-2014-ps4-05",
-            "Problem 4.6": "CPI-2014-ps4-06"
+            "4.1 Super gun": "CPI-2014-ps4-01",
+            "4.2 Saturated air": "CPI-2014-ps4-02",
+            "4.3 Snowball": "CPI-2014-ps4-03",
+            "4.4 The growth of terrorism": "CPI-2014-ps4-04",
+            "4.5 Running out of poison": "CPI-2014-ps4-05",
+            "4.6 Varmits at the waterhole": "CPI-2014-ps4-06"
         },
         "Problem Set 5": {
-            "Problem 5.1": "CPI-2014-ps5-01",
-            "Problem 5.2": "CPI-2014-ps5-02",
-            "Problem 5.3": "CPI-2014-ps5-03",
-            "Problem 5.4": "CPI-2014-ps5-04",
-            "Problem 5.5": "CPI-2014-ps5-05",
-            "Problem 5.6": "CPI-2014-ps5-06"
+            "5.1 Capacity-limited moose population": "CPI-2014-ps5-01",
+            "5.2 Moose and wolves": "CPI-2014-ps5-02",
+            "5.3 Pred-prey with capacity limits": "CPI-2014-ps5-03",
+            "5.4 Arms race": "CPI-2014-ps5-04",
+            "5.5 Blood glucose homeostasis": "CPI-2014-ps5-05",
+            "5.6 Digestive energy balance": "CPI-2014-ps5-06"
         }
     }
 }
