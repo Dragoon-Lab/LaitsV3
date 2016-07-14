@@ -1,4 +1,4 @@
-﻿{
+{
     "task": {
         "taskName": "eb7",
         "time": {
@@ -50,6 +50,7 @@
                 "name": "fat",
                 "description": "Amount of fat in pounds",
                 "type": "accumulator",
+                "parentNode":true,
                 "initial": 32,
                 "units": "lbs",
                 "equation": "id2"

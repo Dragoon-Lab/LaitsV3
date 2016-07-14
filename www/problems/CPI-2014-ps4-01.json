@@ -64,6 +64,7 @@
                 "name": "Distance",
                 "description": "Distance of the shell from the center of the earth",
                 "type": "accumulator",
+                "parentNode": true,
                 "initial": 3960,
                 "units": "miles",
                 "equation": "id2"

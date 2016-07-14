@@ -150,6 +150,7 @@
                 "name": "Weight",
                 "description": "The weight of the snowball each second",
                 "type": "function",
+                "parentNode": true,
                 "equation": "id1*id5",
                 "units": "kg"
             },

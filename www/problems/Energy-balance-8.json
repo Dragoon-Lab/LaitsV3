@@ -1,4 +1,4 @@
-﻿{
+{
     "task": {
         "taskName": "eb7",
         "time": {
@@ -46,6 +46,7 @@
                 "name": "weight",
                 "description": "total weight of joes body",
                 "type": "function",
+                "parentNode":true,
                 "units": "lbs",
                 "equation": "id2+id3"
             },

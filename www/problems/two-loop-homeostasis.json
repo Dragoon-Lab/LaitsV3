@@ -50,6 +50,7 @@
                 "name": "controlled quantity",
                 "description": "The quantity (e.g., body temperature) being held constant",
                 "type": "accumulator",
+                "parentNode":true,
                 "initial": 98.6,
                 "equation": "id9-id7"
             },

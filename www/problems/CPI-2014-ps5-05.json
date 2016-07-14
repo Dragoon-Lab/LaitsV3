@@ -70,6 +70,7 @@
                 "name": "blood glucose",
                 "description": "Amount of glucose in the blood",
                 "type": "accumulator",
+                "parentNode": true,
                 "initial": 279,
                 "units": "mg/dL",
                 "equation": "(-id2)-id3"

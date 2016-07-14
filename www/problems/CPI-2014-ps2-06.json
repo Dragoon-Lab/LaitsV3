@@ -71,6 +71,7 @@
                 "name": "Room temperature",
                 "description": "Temperature of the room each minute",
                 "type": "accumulator",
+                "parentNode": true,
                 "initial": 70,
                 "units": "degrees",
                 "equation": "id2"

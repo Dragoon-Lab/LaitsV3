@@ -66,6 +66,7 @@
                 "name": "Backlog",
                 "description": "The number of orders waiting to be fulfilled",
                 "type": "accumulator",
+                "parentNode": true,
                 "initial": 23,
                 "equation": "-id2"
             },

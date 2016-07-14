@@ -86,6 +86,7 @@
                 "name": "Debt",
                 "description": "Amount of money that Benny owes the mob",
                 "type": "accumulator",
+                "parentNode": true,
                 "initial": 5,
                 "units": "Grand",
                 "equation": "(id2-id3)+id4"

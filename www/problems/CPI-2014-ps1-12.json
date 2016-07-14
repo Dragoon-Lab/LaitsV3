@@ -80,6 +80,7 @@
                 "name": "Infected students",
                 "description": "Number of infected students",
                 "type": "accumulator",
+                "parentNode": true,
                 "initial": 5,
                 "equation": "id7"
             },

@@ -1,4 +1,4 @@
-﻿{
+{
 "task":{
     "taskName": "eb6",
     "time": {
@@ -54,6 +54,7 @@
             "status": {},
             "name": "weight",
             "type": "accumulator",
+            "parentNode":true,
             "initial": 150,
             "units": "lbs",
             "equation": "id2",

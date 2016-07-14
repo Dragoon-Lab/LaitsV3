@@ -1,4 +1,4 @@
-﻿{
+{
     "task": {
         "taskName": "eb1",
         "time": {
@@ -48,6 +48,7 @@
                 "name": "energy stored",
                 "description": "The energy stored in the body",
                 "type": "accumulator",
+                "parentNode":true,
                 "initial": 345000,
                 "units": "calories",
                 "equation": "id2"

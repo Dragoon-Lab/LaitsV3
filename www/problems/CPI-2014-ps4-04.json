@@ -63,6 +63,7 @@
                 "name": "Terrorist",
                 "description": "Number of terrorists in the town",
                 "type": "accumulator",
+                "parentNode": true,
                 "initial": 1,
                 "equation": "id2"
             },

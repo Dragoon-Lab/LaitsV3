@@ -55,6 +55,7 @@
                 "name": "Blood glucose",
                 "description": "Amount of glucose in the blood",
                 "type": "accumulator",
+                "parentNode":true,
                 "initial": 92,
                 "equation": "id2-id3",
                 "units": "mg/dL"

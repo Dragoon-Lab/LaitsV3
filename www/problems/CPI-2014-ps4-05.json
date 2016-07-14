@@ -78,6 +78,7 @@
                 "name": "Poison in the tank",
                 "description": "Amount of poison left in the tank",
                 "type": "accumulator",
+                "parentNode": true,                
                 "initial": 326,
                 "units": "gallons",
                 "equation": "-id2"

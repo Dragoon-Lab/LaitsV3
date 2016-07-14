@@ -1,4 +1,4 @@
-﻿{
+{
  "task": {
     "taskName": "eb2",
     "time": {
@@ -43,6 +43,7 @@
             "name": "weight",
             "description": "The weight of the body as it varies day by day",
             "type": "accumulator",
+            "parentNode":true,
             "initial": 150,
             "units": "lbs",
             "equation": "id2"

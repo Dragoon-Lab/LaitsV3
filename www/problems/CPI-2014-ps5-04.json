@@ -74,6 +74,7 @@
                 "name": "Budget of A",
                 "description": "Country A's money budgeted for arms",
                 "type": "accumulator",
+                "parentNode": true,
                 "initial": 100,
                 "equation": "(id5+id4)-id2"
             },

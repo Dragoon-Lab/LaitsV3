@@ -1,4 +1,4 @@
-﻿{
+{
  "task": {
     "taskName": "eb3",
     "time": {
@@ -51,6 +51,7 @@
             "name": "weight",
             "description": "Joe's weight each day",
             "type": "accumulator",
+            "parentNode":true,
             "initial": 150,
             "units": "lbs",
             "equation": "id2"

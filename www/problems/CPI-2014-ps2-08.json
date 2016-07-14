@@ -63,6 +63,7 @@
                 "name": "Account balance",
                 "description": "Money in the retirement account",
                 "type": "accumulator",
+                "parentNode": true,
                 "initial": 1000,
                 "units": "dollars",
                 "equation": "id2"

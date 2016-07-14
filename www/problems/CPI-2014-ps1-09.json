@@ -69,6 +69,7 @@
                 "name": "Books in office",
                 "description": "Number of books in the office",
                 "type": "accumulator",
+                "parentNode": true,
                 "initial": 250,
                 "equation": "-id2"
             },

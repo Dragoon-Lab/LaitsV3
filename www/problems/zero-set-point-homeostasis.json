@@ -34,6 +34,7 @@
 				"name":"controlled quantity",
 				"description":"The quantity (e.g., body temperature) being kept constant",
 				"type":"accumulator",
+				"parentNode":true,
 				"initial":0,
 				"equation":"-id2"
 			},

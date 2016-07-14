@@ -65,6 +65,7 @@
                 "name": "Higher barrel",
                 "description": "Water in the higher barrel",
                 "type": "accumulator",
+                "parentNode": true,
                 "initial": 55,
                 "units": "gallons",
                 "equation": "-id2"
@@ -128,6 +129,7 @@
                 "name": "Lower barrel",
                 "description": "Water in the lower barrel",
                 "type": "accumulator",
+                "parentNode": true,
                 "initial": 0,
                 "units": "gallons",
                 "equation": "id2-id4"
