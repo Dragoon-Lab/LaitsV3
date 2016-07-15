@@ -1,5 +1,6 @@
 
 var cmdLineArgs = require('command-line-args');
+var cmdLineUsage = require('command-line-args');
 var http = require('http');
 var testPath = require('./test-paths');
 var request = require('request');
@@ -26,7 +27,7 @@ var Test = Mocha.Test;
 
 //Define command line options
 var cli = cmdLineArgs([
-	{name: "target", alias: "t",  type: String,  defaultValue: "local", description:"Optional, DefauDefault Valuelt: local"},
+	{name: "target", alias: "t",  type: String,  defaultValue: "local", description:"Optional, Defaut Value: local"},
 	{name: "user", alias: "u", type: String, defaultValue: getDate(), description:"Optional, Default Value: timestamp"},
 	{name: "problem", alias: "p",  type: String,  defaultValue: getDate(), description:"Required"},
 	{name: "mode", alias: "m",  type: String, defaultValue: "STUDENT", description:"Optional, Default Value: STUDENT"},
@@ -62,7 +63,7 @@ var client = require('webdriverio').remote({
 });
 
 if(process.argv.length < 3){
-	console.log("Please provide valid options: (Only -p is required others are optional) " +cli.getUsage());
+	console.log("Please provide valid options: (Only -p is required others are optional) ");
 	return;
 }
 
@@ -87,7 +88,7 @@ var startSelenium = function(){
 startSelenium();
 
 //Fetch the problem
-var options = cli.parse();
+var options = cli; //.parse();
 var problems = options.problem.split(" ").join("");
 var problemIndex = 0;
 problems = problems.split(",");
@@ -126,7 +127,7 @@ function fetchProblem(options){
 		}
 	}
 	var host = localhost || "https://dragoon.asu.edu/"+ options.target +"/";
-	//console.log(host + "task_fetcher.php" + url);
+	console.log("Fetching: "+ host + "task_fetcher.php" + url);
 	request({ url: host + "task_fetcher.php" + url},  function(error, response, body) {
 		 if(body){
 			//Generate the test based on activity
@@ -150,6 +151,7 @@ function generateConstructionTests(options, model){
 		timeout: 15000
 	});
 	try{
+		//console.log(model);
 		this.problem = JSON.parse(model);
 	}
 	catch(e){

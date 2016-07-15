@@ -17,6 +17,7 @@ install:
 	cd npm;make
 	sudo npm install -g mocha phantomjs
 	sudo npm install chai webdriverio synchronize 
+	sudo npm install command-line-args request pug
 	sudo curl http://selenium-release.storage.googleapis.com/2.46/selenium-server-standalone-2.46.0.jar
 	#sudo curl http://chromedriver.storage.googleapis.com/2.14/chromedriver_mac32.zip
 else ifeq ($(OS),Windows_NT)
