@@ -17,7 +17,7 @@
         if(window.location.hostname == "dragoon.asu.edu"){
             version = getVersion();  // Get version from version.js
         }else{
-            version = "";//new Date();
+            version = new Date();
         }
 
         dojoConfig = {
@@ -245,9 +245,9 @@
     </div>
 
     <!-- Dialog showing plot or table of solution  -->
-    <div id="solution" data-dojo-type="dijit.Dialog" style="min-width:70%; min-height:80%; background-color: #FFFFFF">
+    <div id="solution" data-dojo-type="dijit.Dialog" style="min-width:70%; background-color: #FFFFFF">
         <div id= 'graphErrorMessage'></div>
-        <div data-dojo-type= 'dijit/layout/ContentPane' style='overflow:visible; width:55%; min-height: 95%; float:left; background-color: #FFFFFF;'>
+        <div data-dojo-type= 'dijit/layout/ContentPane' style='overflow:visible; width:55%; float:left; background-color: #FFFFFF;'>
             <div id="GraphTabContainer" data-dojo-type='dijit/layout/TabContainer' style='overflow:visible; display:none;'>
                 <div id='GraphTab' data-dojo-type='dijit/layout/ContentPane' style='overflow:auto;' title="Graph"></div>
                 <div id='TableTab' data-dojo-type='dijit/layout/ContentPane' style='overflow:auto' title="Table"></div>

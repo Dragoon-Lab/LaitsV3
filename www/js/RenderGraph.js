@@ -937,10 +937,15 @@ define([
         resizeWindow: function(){
             console.log("resizing window");
             var dialogWindow = document.getElementById("solution");
-            dialogWindow.style.height = "750px";
-            dialogWindow.style.width = "1000px";
+            dialogWindow.style.height = "770px";
+            dialogWindow.style.width = "70%";
             dialogWindow.style.left = "0px";
             dialogWindow.style.top = "0px";
+
+			var tabContainer = document.getElementById("GraphTabContainer");
+			tabContainer.style.height = "700px";
+			//tabContainer.style.height = "";
+
         }
 
     });
