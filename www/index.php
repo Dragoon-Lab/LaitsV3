@@ -8,7 +8,6 @@
     <title>Dragoon</title>
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="./dijit/themes/claro/claro.css">
     <script type = "text/javascript" src = "version.js"></script>
     <script src="tincan/tincan-min.js"></script>
     <script type="text/javascript">
@@ -245,9 +244,9 @@
     </div>
 
     <!-- Dialog showing plot or table of solution  -->
-    <div id="solution" data-dojo-type="dijit.Dialog" style="min-width:70%; background-color: #FFFFFF">
+    <div class="claro dijitLayoutContainer dijitDialog" id="solution" data-dojo-type="dijit.Dialog" style="min-width:70%; min-height: 80%; background-color: #FFFFFF">
         <div id= 'graphErrorMessage'></div>
-        <div data-dojo-type= 'dijit/layout/ContentPane' style='overflow:visible; width:55%; float:left; background-color: #FFFFFF;'>
+        <div data-dojo-type= 'dijit/layout/ContentPane' style='overflow:visible; width:55%; min-height:95%; float:left; background-color: #FFFFFF;'>
             <div id="GraphTabContainer" data-dojo-type='dijit/layout/TabContainer' style='overflow:visible; display:none;'>
                 <div id='GraphTab' data-dojo-type='dijit/layout/ContentPane' style='overflow:auto;' title="Graph"></div>
                 <div id='TableTab' data-dojo-type='dijit/layout/ContentPane' style='overflow:auto' title="Table"></div>
@@ -408,7 +407,7 @@
     </div>
 
     <!-- Putting Node-Editor -Dialog stuff for demo -->
-    <div class="sameedit" data-dojo-type="dijit/Dialog" id="nodeeditor">
+    <div class="claro sameedit" data-dojo-type="dijit/Dialog" id="nodeeditor">
         <div id="studentModelControl" class="fieldgroup" style="display:none;" >
             <label style="width:20ex;" for="setStudentNode">Show in Student Model</label>
             <input id="setStudentNode" name="markStudentNode" data-dojo-type="dijit/form/CheckBox" checked="false"/>
