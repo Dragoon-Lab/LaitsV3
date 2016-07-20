@@ -16,7 +16,6 @@
         },
         "Human Physiology": {
             "Blood Glucose": {
-                "Zero set point homeostasis": "zero-set-point-homeostasis",
                 "Nonzero set point homeostasis": "nonzero-set-point-homeostasis",
                 "Two loop homeostasis": "two-loop-homeostasis",
                 "Simple blood glucose homeostasis": "simple-blood-glucose-homeostasis",
