@@ -82,27 +82,28 @@ var startSelenium = function(){
 			next();
 		}
 	});
-
 };
 
-startSelenium();
-
-//Fetch the problem
-var options = cli; //.parse();
-var problems = options.problem.split(" ").join("");
-var problemIndex = 0;
-problems = problems.split(",");
 var next = function(){
 	if(problems[problemIndex]) {
 		options.problem = problems[problemIndex];
 		fetchProblem(options);
 		problemIndex++;
 	}else{
-		stopSelenium();
+		//stopSelenium();
 	}
-
 };
 
+//startSelenium(); // let the shell script handle this
+
+//Fetch the problem
+var options = cli; //.parse();
+var problems = options.problem.split(" ").join("");
+var problemIndex = 0;
+problems = problems.split(",");
+
+// start the first problem
+next();
 
 function stopSelenium(){
 	var cmd = "curl localhost:4444/selenium-server/driver/?cmd=shutDownSeleniumServer";
