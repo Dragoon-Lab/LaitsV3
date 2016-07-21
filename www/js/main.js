@@ -990,11 +990,29 @@ define([
 			if(activity_config.get("allowMerge")){
 				var mergeButton = registry.byId("mergeButton");
 				mergeButton.set("disabled", false);
+
+				var problemArray;
 				// Merge button wiring
 				menu.add("mergeButton", function(e){
 					event.stop(e);
+					var widget = registry.byId("authorMergeProblem");
+					if(!problemArray){
+						session.getProblemForFolderSection().then(function(data){
+							problemArray = data;
+						});
+
+						if(problemArray && problemArray.length > 0){
+							var options = [];
+							array.forEach(problemArray, function(p){
+								options.push({label: p, value: p});
+							});
+
+							widget.addOption(options);
+						}
+					}
+
 					registry.byId("authorMergeDialog").show();
-						var combo = registry.byId("authorMergeGroup");
+					/*var combo = registry.byId("authorMergeGroup");
 					var arr=[{name: "Private("+query.u+")", id: "query.u"},
 						{name: "public", id: "public"},
 						{name:"Official Problems",id:""}
@@ -1027,28 +1045,28 @@ define([
 						combo.set("value","Group 1-Water Challenges");
 					} else {
 						combo.set("value","Private("+query.u+")"); //setting the default
-					}
+					}*/
 				});
 
 				on(registry.byId("mergeDialogButton"),"click",function(){
-					var group = registry.byId("authorMergeGroup").value;
+					/*var group = registry.byId("authorMergeGroup").value;
 					var results = saveGroupMem.query({name:group});
 					if (results.length > 0){
 						group = results[0].id;
-					}
-
-					var section = registry.byId("authorMergeSection").value;
+					}*/
+					var group = session.params.g;
+					var section = session.params.s;
 					var problem = registry.byId("authorMergeProblem").value;
 					if(!problem){
 						alert("Problem field can't be empty");
 						return;
 					}
-					if (group.split("(")[0]+"("=="Private("){
+					/*if (group.split("(")[0]+"("=="Private("){
 						group=group.split(")")[0].substr(8);//Private(username)=>username
 					} else if (group === "Official Problems"){
 						group=null;
 						section=null;
-					}
+					}*/
 					var query = {g:group,m:"AUTHOR",s:section,p:problem,a:"construction"};
 					session.loadProblem(query).then(function(solutionGraph){
 						console.log("Merge problem is loaded "+solutionGraph);

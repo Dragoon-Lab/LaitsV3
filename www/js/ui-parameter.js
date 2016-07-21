@@ -66,7 +66,7 @@ define(["dojo/_base/lang"], function (lang) {
 						"forumButton": "inline",
 						"schemaButton": "inline",
 						"descButton": "inline",
-						"saveButton": "inline",
+						"saveButton": "none",
 						"mergeButton": "inline",
 						"previewButton": "inline",
 						"slidesButton": "none",
