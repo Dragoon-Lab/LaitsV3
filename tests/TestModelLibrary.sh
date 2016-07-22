@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if [ "$1" == --help ]; then
+	echo Usage: $0 [file-to-test]
+fi
+
 ModelLibrary="resistor-battery-series,two-resistors-in-series,kcl,resistor-capacitor-1,resistor-capacitor-2,resistor-inductor"
 ModelLibrary+=",zero-set-point-homeostasis,nonzero-set-point-homeostasis,two-loop-homeostasis,simple-blood-glucose-homeostasis,glucose-min-model"
 ModelLibrary+=",Energy-balance-0,Energy-balance-1,Energy-balance-2,Energy-balance-3,Energy-balance-4,Energy-balance-5,Energy-balance-6,Energy-balance-7,Energy-balance-8"
@@ -12,6 +16,10 @@ ModelLibrary+=",CPI-2014-ps1-12,CPI-2014-ps2-01,CPI-2014-ps2-02,CPI-2014-ps2-03,
 ModelLibrary+=",CPI-2014-ps3-01,CPI-2014-ps3-02,CPI-2014-ps3-03,CPI-2014-ps3-04,CPI-2014-ps3-05,CPI-2014-ps3-06,CPI-2014-ps3-07,CPI-2014-ps3-08"
 ModelLibrary+=",CPI-2014-ps4-01,CPI-2014-ps4-02,CPI-2014-ps4-03,CPI-2014-ps4-04,CPI-2014-ps4-05,CPI-2014-ps4-06"
 ModelLibrary+=",CPI-2014-ps5-01,CPI-2014-ps5-02,CPI-2014-ps5-03,CPI-2014-ps5-04,CPI-2014-ps5-05,CPI-2014-ps5-06"
+
+if [ "$1" != "" ]; then # for running an individual script
+    ModelLibrary="$1"
+fi
 
 
 java -jar selenium-server-standalone-2.46.0.jar -log selenium.log &
@@ -29,13 +37,13 @@ sleep 1
 printf "Engage!\n"
 
 
-> ModelLibraryCoachedTestlog.txt
+> ModelLibraryCoachedTest.log
 echo "##########################################"
 echo "Running tests in construction/coached mode"
 echo "##########################################"
 node scripts/problemTester.js -p $ModelLibrary -m COACHED >> ModelLibraryCoachedTest.log
 
-> ModelLibraryStudentTestlog.txt
+> ModelLibraryStudentTest.log
 echo "##########################################"
 echo "Running tests in construction/student mode"
 echo "##########################################"
