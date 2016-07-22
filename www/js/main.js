@@ -1004,7 +1004,8 @@ define([
 						if(problemArray && problemArray.length > 0){
 							var options = [];
 							array.forEach(problemArray, function(p){
-								options.push({label: p, value: p});
+								if(p != session.params.p)
+									options.push({label: p, value: p});
 							});
 
 							widget.addOption(options);

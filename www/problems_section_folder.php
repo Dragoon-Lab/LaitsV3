@@ -11,7 +11,7 @@ $section = $_REQUEST['s'];
 $group = $_REQUEST['f'];
 
 $query = <<<EOT
-		SELECT DISTINCT problem FROM session WHERE section = '$section' AND `group` = '$group';
+		SELECT DISTINCT problem FROM session JOIN solutions USING (session_id) WHERE session.section = '$section' AND session.group = '$group';
 EOT;
 
 $result = $mysqli->query($query) or
