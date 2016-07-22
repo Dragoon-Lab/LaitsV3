@@ -389,9 +389,11 @@
     <div class="claro sameedit" data-dojo-type="dijit/Dialog" id="authorMergeDialog" title="Merge Problem">
         <div class="fieldgroup">
             <label for="authorMergeProblem" style="width:7em">Problem Name:</label>
-            <input id="authorMergeProblem" style="width:10em" value="" data-dojo-type="dijit/form/TextBox"/>
+            <!--input id="authorMergeProblem" style="width:10em" value="" data-dojo-type="dijit/form/TextBox"/-->
+			<select id = "authorMergeProblem" style="width:20em" data-dojo-type="dijit/form/Select">
+			</select>
         </div>
-        <div class="fieldgroup">
+        <!--div class="fieldgroup">
             <label for="authorMergeSection" style="width:7em">Section Name:</label>
             <input id="authorMergeSection" style="width:10em" value="" data-dojo-type="dijit/form/TextBox"/>
         </div>
@@ -399,7 +401,7 @@
             <label for="authorMergeGroup" style="width:7em">Folder Name:</label>
             <select id="authorMergeGroup" style="width:20em" data-dojo-type="dijit/form/ComboBox">
             </select>
-        </div>
+        </div-->
         <div class="fieldgroup" align="left">Note: Any forum posts attached to the source model will not be copied.</div>
         <div class="fieldgroup" align="right">
             <button id="mergeDialogButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Merge</button>

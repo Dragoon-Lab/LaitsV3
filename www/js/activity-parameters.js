@@ -34,7 +34,7 @@ define([
 					allowForum:true,
 					allowCreateSchema:true,
 					allowProblemTimes:true,
-					allowSaveAs:true,
+					allowSaveAs:false,
 					allowMerge:true,
 					allowPreview:true,
 					allowPrettify:true,
@@ -52,7 +52,7 @@ define([
 
 					allowSliders: true,
 
-					promptSaveAs:true,
+					promptSaveAs:false,
 					allowZoom: true,
                     allowAssignWaveFormButton: true,
                     showWaveformEditor : true

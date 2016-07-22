@@ -207,6 +207,24 @@ define([
 			}
 		},
 
+		getProblemForFolderSection: function(section, folder){
+			console.log("sachin get problem called");
+			return xhr.get(this.path + "problems_section_folder.php", {
+				query: {
+					s: section || this.params.s,
+					f: folder || this.params.g
+				},
+				handleAs: "json",
+				sync: true
+			}).then(lang.hitch(this, function(reply){
+				console.log("data from problems using section and folder ");
+				return reply;
+			}), lang.hitch(this, function(err){
+				console.error("There was an error while fetching the problems from database -> " + err);
+				return err;
+			}));
+		},
+
 		publishProblem: function(model){
 			var object = {
 				sg: json.toJson(model.task),
