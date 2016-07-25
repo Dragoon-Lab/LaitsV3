@@ -48,7 +48,7 @@
 		}
 
         function getNonClassProblems($parameters){
-            $group = $parameters['g'];
+            $group = $this->db_connection->real_escape_string($parameters['g']);
             //we made sure group is unique each time
             //query by group name and return problem names
             $query = "select DISTINCT problem from session where `group` = '$group'";
