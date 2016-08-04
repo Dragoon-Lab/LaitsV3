@@ -46,7 +46,7 @@ $userPrecedence = true;
 if(isset($_REQUEST['m']) && $_REQUEST['m'] == "AUTHOR"){
   $userPrecedence = isset($_REQUEST['up'])?($_REQUEST['up'] == "true"):false;
 }
-$restartProblemFlag = isset($_REQUEST['rp'])?$_REQUEST['rp']:false;
+$restartProblemFlag = (isset($_REQUEST['rp']) && $_REQUEST['rp'] == 'on')?$_REQUEST['rp']:false;
 
 $activity = !empty($_REQUEST['a'])?$_REQUEST['a']:"construction";
 // Check if the session is public and expired
