@@ -15,37 +15,43 @@
 				"example" : ""
 			},
 			{
-				"name" : "Negative Biased Negative Clampers Behavior",
+				"name" : "Clamper Behavior",
+				"id" : "clamper_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Negative Biased Negative Clamper Behavior",
 				"id" : "neg_bias_neg_clampers_behavior",
 				"template" : "",
 				"example" : ""
 			},
 			{
-				"name" : "Negative Biased Positive Clampers Behavior",
+				"name" : "Negative Biased Positive Clamper Behavior",
 				"id" : "neg_bias_pos_clampers_behavior",
 				"template" : "",
 				"example" : ""
 			},
 			{
-				"name" : "Negative Clampers Behavior",
+				"name" : "Negative Clamper Behavior",
 				"id" : "negative_clampers_behavior",
 				"template" : "",
 				"example" : ""
 			},
 			{
-				"name" : "Positive Biased Negative Clampers Behavior",
+				"name" : "Positive Biased Negative Clamper Behavior",
 				"id" : "pos_bias_neg_clampers_behavior",
 				"template" : "",
 				"example" : ""
 			},
 			{
-				"name" : "Positive Biased Positive Clampers Behavior",
+				"name" : "Positive Biased Positive Clamper Behavior",
 				"id" : "pos_bias_pos_clampers_behavior",
 				"template" : "",
 				"example" : ""
 			},
 			{
-				"name" : "Positive Clampers Behavior",
+				"name" : "Positive Clamper Behavior",
 				"id" : "positive_clampers_behavior",
 				"template" : "",
 				"example" : ""
@@ -107,6 +113,12 @@
 			{
 				"name" : "Inductor Behavior",
 				"id" : "inductor_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Limiter Behavior",
+				"id" : "limiter_behavior",
 				"template" : "",
 				"example" : ""
 			},
@@ -255,6 +267,18 @@
 				"example" : ""
 			},
 			{
+				"name" : "Resistor Series Behavior",
+				"id" : "resistor_series_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "Resistor Parallel Behavior",
+				"id" : "resistor_parallel_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
 				"name" : "Resistor Capacitor in Series Behavior",
 				"id" : "rc_in_series_behavior",
 				"template" : "",
@@ -297,6 +321,12 @@
 				"example" : ""
 			},
 			{
+				"name" : "Zener Diode Behavior-Forward",
+				"id" : "zener_diode_behavior-forward",
+				"template" : "",
+				"example" : ""
+			},
+			{
 				"name" : "Zener Diode Behavior-Reverse",
 				"id" : "zener_diode_behavior-reverse",
 				"template" : "",
@@ -333,8 +363,26 @@
 				"example" : ""
 			},
 			{
-				"name" : "CE Transistor Fixed Bias Behavior",
-				"id" : "CE_transistor_fixed_bias_bhvr",
+				"name" : "CE Transistor AC Behavior",
+				"id" : "CE_transistor_AC_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "CE Transistor DC Behavior",
+				"id" : "CE_transistor_DC_behavior",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "CE Transistor Fixed Bias DC Behavior",
+				"id" : "CE_trans_fixed_bias_DC_bhvr",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "CE Transistor Fixed Bias AC Behavior",
+				"id" : "CE_trans_fixed_bias_AC_bhvr",
 				"template" : "",
 				"example" : ""
 			},
@@ -345,8 +393,74 @@
 				"example" : ""
 			},
 			{
-				"name" : "CE Transistor Voltage Divider Bias Behavior",
-				"id" : "CE_trnsstr_vltg_div_bias_bhvr",
+				"name" : "CE Transistor Voltage Divider Bias DC Behavior",
+				"id" : "CE_trans_vltg_div_bias_DC_bhvr",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "CE Transistor Voltage Divider Bias AC Behavior",
+				"id" : "CE_trans_vltg_div_bias_AC_bhvr",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "CB Transistor Amplifier DC Behavior",
+				"id" : "CB_trans_amplifier_DC_bhvr",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "CB Transistor Amplifier AC Behavior",
+				"id" : "CB_trans_amplifier_AC_bhvr",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "CC Transistor Amplifier DC Behavior",
+				"id" : "CC_trans_amplifier_DC_bhvr",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "CC Transistor Amplifier AC Behavior",
+				"id" : "CC_trans_amplifier_AC_bhvr",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "CE Transistor Amplifier DC Behavior",
+				"id" : "CE_trans_amplifier_DC_bhvr",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "CE Transistor Amplifier AC Behavior",
+				"id" : "CE_trans_amplifier_AC_bhvr",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "CE Push Pull Amplifier DC Behavior",
+				"id" : "CE_push_pull_amplifier_DC_bhvr",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "CE Push Pull Amplifier AC Behavior",
+				"id" : "CE_push_pull_amplifier_AC_bhvr",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "RC Coupled Multistage Amplifier DC Behavior",
+				"id" : "RC_coupled_multi_amp_DC_bhvr",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "RC Coupled Multistage Amplifier AC Behavior",
+				"id" : "RC_coupled_multi_amp_AC_bhvr",
 				"template" : "",
 				"example" : ""
 			},
@@ -477,6 +591,12 @@
 			{
 				"name" : "Zener diode",
 				"id" : "zener_diode",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "CE Transistor Voltage Divider Bias Behavior",
+				"id" : "CE_trnsstr_vltg_div_bias_bhvr",
 				"template" : "",
 				"example" : ""
 			}
