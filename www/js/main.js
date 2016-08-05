@@ -950,15 +950,22 @@ define([
 						if(registry.byId("menu_"+activity)) {
 							on(registry.byId("menu_" + activity), "click", function () {
 								var timestamp = new Date().getTime();
-								var url = document.URL.replace("u=" + query.u, "u=" + query.u + "-" + timestamp);
-								url = url + "&l=false";
-								url = url.replace("a=" + query.a, "a=" + activity);
-								if(query.m === "AUTHOR") {
-									window.open(url.replace("m=AUTHOR", "m=STUDENT"), "newwindow");
+								var mode = query.m;
+								if(query.m === "AUTHOR" || query.m === "ROAUTHOR") {
+									mode = "STUDENT";
 								}
-								if(query.m === "ROAUTHOR"){
-									window.open(url.replace("m=ROAUTHOR", "m=STUDENT"), "newwindow");
-								}
+								var url = document.URL.replace(".php",".html");
+								url = url+
+									"?"+"u=" + query.u + "-" + timestamp+
+									"&p="+query.p+
+									"&a=" + activity+
+									"&m="+mode+
+									"&s="+query.s+
+									"&sm="+query.sm+
+									"&is=algebraic&c=continue&l=false";
+								if(query.g)
+									url = url+"&g="+query.g;
+								window.open(url,"newwindow");
 							});
 						}
 					});
