@@ -965,7 +965,6 @@ define([
 									"&is=algebraic&c=continue&l=false";
 								if(query.g)
 									url = url+"&g="+query.g;
-								console.log("final url is",url);
 								window.open(url,"newwindow");
 							});
 						}
