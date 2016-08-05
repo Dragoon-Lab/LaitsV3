@@ -950,24 +950,24 @@ define([
 						if(registry.byId("menu_"+activity)) {
 							on(registry.byId("menu_" + activity), "click", function () {
 								var timestamp = new Date().getTime();
-                                var mode = query.m;
-                                if(query.m === "AUTHOR" || query.m === "ROAUTHOR") {
-                                    mode = "STUDENT";
-                                }
-                                var url = document.URL.replace(".php",".html");
+								var mode = query.m;
+								if(query.m === "AUTHOR" || query.m === "ROAUTHOR") {
+									mode = "STUDENT";
+								}
+								var url = document.URL.replace(".php",".html");
 								url = url+
-                                    "?"+"u=" + query.u + "-" + timestamp+
-                                    "&p="+query.p+
-                                    "&a=" + activity+
-                                    "&m="+mode+
-                                    "&s="+query.s+
-                                    "&sm="+query.sm+
-                                    "&is=algebraic&c=continue&l=false";
-                                if(query.g)
-                                    url = url+"&g="+query.g;
-                                console.log("final url is",url);
-                                window.open(url,"newwindow");
-                            });
+									"?"+"u=" + query.u + "-" + timestamp+
+									"&p="+query.p+
+									"&a=" + activity+
+									"&m="+mode+
+									"&s="+query.s+
+									"&sm="+query.sm+
+									"&is=algebraic&c=continue&l=false";
+								if(query.g)
+									url = url+"&g="+query.g;
+								console.log("final url is",url);
+								window.open(url,"newwindow");
+							});
 						}
 					});
 				}
