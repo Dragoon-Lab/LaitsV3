@@ -1533,9 +1533,9 @@
                 }
             },
             {
-                "ID": "schema8",
-                "schemaClass": "CE_push_pull_amplifier_AC_bhvr",
-                "name": "CE Push Pull Amplifier AC Behavior",
+                "ID": "schema9",
+                "schemaClass": "CC_push_pull_amplifier_AC_bhvr",
+                "name": "CC Push Pull Amplifier AC Behavior",
                 "competence": {
                     "errors": 0,
                     "total": 0,
@@ -1544,7 +1544,7 @@
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id6, id7, id11, id13, id14, id20, id21, id22, id26, id23",
+                "nodes": "id6, id7, id11, id13, id20, id14, id21, id22, id26, id23",
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,
