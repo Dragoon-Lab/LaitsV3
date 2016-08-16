@@ -756,73 +756,6 @@
                 "type": "parameter"
             },
             {
-                "ID": "id4",
-                "inputs": [],
-                "position": {
-                    "x": 550.85607910156,
-                    "y": 57.179302215576
-                },
-                "status": {
-                    "description": {
-                        "disabled": true,
-                        "status": "correct"
-                    },
-                    "type": {
-                        "disabled": true,
-                        "status": "correct"
-                    },
-                    "units": {
-                        "disabled": false,
-                        "status": "incorrect"
-                    },
-                    "initial": {
-                        "disabled": false,
-                        "status": "incorrect"
-                    }
-                },
-                "descriptionID": "id3",
-                "initial": 0.01,
-                "units": "seconds",
-                "type": "parameter"
-            },
-            {
-                "ID": "id6",
-                "inputs": [
-                    {
-                        "ID": "id2"
-                    },
-                    {
-                        "ID": "id4"
-                    }
-                ],
-                "position": {
-                    "x": 502,
-                    "y": 227
-                },
-                "status": {
-                    "equation": {
-                        "disabled": true,
-                        "status": "correct"
-                    },
-                    "description": {
-                        "disabled": true,
-                        "status": "correct"
-                    },
-                    "type": {
-                        "disabled": true,
-                        "status": "correct"
-                    },
-                    "units": {
-                        "disabled": true,
-                        "status": "correct"
-                    }
-                },
-                "descriptionID": "id5",
-                "units": "volts",
-                "type": "function",
-                "equation": "id2*sinewave(id4,0)"
-            },
-            {
                 "ID": "id10",
                 "inputs": [],
                 "position": {
@@ -906,6 +839,73 @@
                 "initial": 9300,
                 "units": "ohms",
                 "type": "parameter"
+            },
+            {
+                "ID": "id18",
+                "inputs": [],
+                "position": {
+                    "x": 550.85607910156,
+                    "y": 57.179302215576
+                },
+                "status": {
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id3",
+                "initial": 30,
+                "units": "milliseconds",
+                "type": "parameter"
+            },
+            {
+                "ID": "id19",
+                "inputs": [
+                    {
+                        "ID": "id2"
+                    },
+                    {
+                        "ID": "id18"
+                    }
+                ],
+                "position": {
+                    "x": 502,
+                    "y": 227
+                },
+                "status": {
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id5",
+                "units": "volts",
+                "type": "function",
+                "equation": "id2*sinewave(id18,0)"
             }
         ],
         "schemas": [

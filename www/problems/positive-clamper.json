@@ -12,17 +12,17 @@
             "isGraphHelpShown": true
         },
         "image": {
-            "URL": "images/PAL3/positive-clamper.png"
+            "URL": "images\/PAL3\/positive-clamper.png"
         },
         "taskDescription": {
             "construction": [
                 "Please construct a model of the positive clamper shown in the schematic.  Nodes for the AC input source voltage have been constructed already.  Assume the diode is not ideal, and it has a knee voltage of 0.7 volts. The resistance of R1 is 33000 ohms and the capacitance of C1 is 0.068 Farads.  Finish the model and view the graph of the output voltage.  How would it be different if the diode were ideal (i.e., knee voltage = 0)?"
             ],
             "incremental": [
-                "Here is a model of the positive clamper. Assume the diode is not ideal, and it has a knee voltage of 0.7 volts. The resistance of R1 is 33000 ohms and the capacitance of C1 is 0.068 Farads.  "
+                "Here is a model of the positive clamper.  Nodes for the AC input source voltage have been constructed already.  Assume the diode is not ideal, and it has a knee voltage of 0.7 volts. The resistance of R1 is 33000 ohms and the capacitance of C1 is 0.068 Farads.  "
             ],
             "execution": [
-                "Here is a model of the positive clamper. Assume the diode is not ideal, and it has a knee voltage of 0.7 volts. The resistance of R1 is 33000 ohms and the capacitance of C1 is 0.068 Farads."
+                "Here is a model of the positive clamper.  Nodes for the AC input source voltage have been constructed already.  Assume the diode is not ideal, and it has a knee voltage of 0.7 volts. The resistance of R1 is 33000 ohms and the capacitance of C1 is 0.068 Farads."
             ],
             "waveform": [
                 "Here is a model of a positive clamper.  Assume the diode is not ideal, and it has a knee voltage of 0.7 volts. The resistance of R1 is 33000 ohms and the capacitance of C1 is 0.068 Farads.  Although the model treats the diode(s) as non-ideal and includes a knee voltage, for this activity, assume that the knee voltage is so small that it graphs as zero on the y-axis. "
@@ -52,15 +52,76 @@
                     "equation": 0,
                     "assistanceScore": 1
                 },
-                "status": {},
-                "name": "input v",
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                },
+                "name": "V across source",
                 "type": "function",
                 "units": "volts",
                 "equation": "id2*sinewave(id10,0)",
                 "genus": "required",
                 "description": "Voltage relative to ground of top input",
-                "explanation": "This is the voltage relative to ground of the upper terminal of the input. The lower terminal is at ground.",
-                "waveformValue": "wave007"
+                "explanation": "This is the voltage relative to ground of the upper terminal of the input. \u00a0The lower terminal is at ground.",
+                "waveformValue": "wave007",
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                }
             },
             {
                 "ID": "id2",
@@ -77,7 +138,38 @@
                     "equation": 0,
                     "assistanceScore": 1
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "units": {
+                        "status": "entered"
+                    }
+                },
                 "name": "max peak",
                 "equation": "",
                 "type": "parameter",
@@ -85,7 +177,39 @@
                 "initial": 5,
                 "genus": "required",
                 "description": "max peak",
-                "units": "volts"
+                "units": "volts",
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                }
             },
             {
                 "ID": "id9",
@@ -96,8 +220,8 @@
                     }
                 ],
                 "position": {
-                    "x": 549,
-                    "y": 466
+                    "x": 654,
+                    "y": 442
                 },
                 "attemptCount": {
                     "description": 0,
@@ -107,16 +231,77 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "units": {
+                        "status": "entered"
+                    }
+                },
                 "name": "output voltage",
                 "type": "function",
                 "genus": "required",
                 "description": "output voltage",
                 "equation": "id24",
-                "explanation": "Because anode (bottom) of the diode is at ground, the voltage at the output (= the cathode of the diode) is just the drop across the diode, where the drop is measured from top (cathode) to bottom (anode) of the diode.",
+                "explanation": "Because anode (bottom) of the diode is at ground, the output voltage (= the cathode of the diode) is just the drop across the diode, where the drop is measured from top (cathode) to bottom (anode) of the diode.",
                 "units": "volts",
                 "parentNode": true,
-                "waveformValue": "wave015"
+                "waveformValue": "wave015",
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                }
             },
             {
                 "ID": "id10",
@@ -136,7 +321,38 @@
                     "waveformValue": null,
                     "assistanceScore": 1
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    }
+                },
                 "name": "wavelength",
                 "description": "wavelenght of input sine wave",
                 "equation": "",
@@ -144,7 +360,39 @@
                 "parentNode": false,
                 "initial": 80,
                 "genus": "required",
-                "units": "milliseconds"
+                "units": "milliseconds",
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                }
             },
             {
                 "ID": "id11",
@@ -173,7 +421,37 @@
                     "waveformValue": null,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
                 "name": "V across C1",
                 "description": "Voltage rightward across capacitor C1",
                 "type": "accumulator",
@@ -181,8 +459,39 @@
                 "units": "volts",
                 "equation": "id23-id12",
                 "genus": "required",
-                "explanation": "This is the voltage of the right side of the capacitor relative to the left side. In the positive clamper, it should always be positive, indicating that the right side is at a higher voltage than the left side.",
-                "waveformValue": "wave000"
+                "explanation": "This is the voltage of the right side of the capacitor relative to the left side. \u00a0In the positive clamper, it should always be positive, indicating that the right side is at a higher voltage than the left side. \u00a0The capacitor is charge on the negative downswing of the voltage source, because makes the anode of the diode positive, and starts it conducting. \u00a0This rapidly charges the capacitor. \u00a0The capacitor stays charge thereafter. \u00a0Granted, it loses a little charge due to current though the load, but this charge is replentished on the next downward swing of the voltage source. \u00a0",
+                "waveformValue": "wave000",
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                }
             },
             {
                 "ID": "id12",
@@ -193,12 +502,12 @@
                     },
                     {
                         "ID": "id14",
-                        "label": "/"
+                        "label": "\/"
                     }
                 ],
                 "position": {
-                    "x": 839,
-                    "y": 618
+                    "x": 835,
+                    "y": 622
                 },
                 "attemptCount": {
                     "description": 0,
@@ -211,14 +520,76 @@
                     "waveformValue": null,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
                 "name": "Discharging C1",
                 "description": "Change in voltage across capacitor C1",
                 "type": "function",
                 "units": "volts",
-                "equation": "id17/id14",
+                "equation": "id17\/id14",
                 "genus": "required",
-                "waveformValue": "wave015"
+                "waveformValue": "wave015",
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                },
+                "explanation": "The current through the load resistor subtracts charge from the capacitor."
             },
             {
                 "ID": "id14",
@@ -236,9 +607,40 @@
                     "tweakedDirection": 0,
                     "executionValue": 0,
                     "waveformValue": null,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
                 "name": "capacitance of C1",
                 "description": "Capacitance of capacitor C1",
                 "equation": "",
@@ -246,7 +648,39 @@
                 "parentNode": false,
                 "initial": 0.068,
                 "units": "farads",
-                "genus": "required"
+                "genus": "required",
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                }
             },
             {
                 "ID": "id17",
@@ -257,7 +691,7 @@
                     },
                     {
                         "ID": "id18",
-                        "label": "/"
+                        "label": "\/"
                     }
                 ],
                 "position": {
@@ -275,15 +709,76 @@
                     "waveformValue": null,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
                 "name": "I thru R1",
                 "description": "Current through resistor R1",
                 "type": "function",
                 "units": "amps",
-                "equation": "id9/id18",
+                "equation": "id9\/id18",
                 "genus": "required",
-                "explanation": "Measured downward through the resistor",
-                "waveformValue": "wave015"
+                "explanation": "Measured downward through the resistor, this current comes from the voltage source and capacitor mostly, because the diode is almost always reverse biased. \u00a0Thus, we just represent that all the current comes those sources and ignore the diode.",
+                "waveformValue": "wave015",
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                }
             },
             {
                 "ID": "id18",
@@ -301,9 +796,40 @@
                     "tweakedDirection": 0,
                     "executionValue": 0,
                     "waveformValue": null,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
                 "name": "Resistance of R1",
                 "description": "Resistance of resistor R1",
                 "equation": "",
@@ -311,7 +837,39 @@
                 "parentNode": false,
                 "initial": 33000,
                 "units": "ohms",
-                "genus": "required"
+                "genus": "required",
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                }
             },
             {
                 "ID": "id19",
@@ -329,9 +887,40 @@
                     "tweakedDirection": 0,
                     "executionValue": 0,
                     "waveformValue": null,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
                 "name": "Knee V of D1",
                 "description": "Knee voltage of diode D1",
                 "equation": "",
@@ -339,7 +928,39 @@
                 "parentNode": false,
                 "initial": 0.7,
                 "units": "volts",
-                "genus": "required"
+                "genus": "required",
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                }
             },
             {
                 "ID": "id23",
@@ -368,13 +989,75 @@
                     "waveformValue": null,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
                 "name": "Charging C1",
                 "description": "Voltage added to C1 via diode D1",
                 "type": "function",
                 "units": "volts",
                 "equation": "id28-id11",
-                "genus": "required"
+                "genus": "required",
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                },
+                "explanation": "This represents the small difference in the voltage across the capacitor and the voltage that is being applied across it. \u00a0It will be added to the capacitor's voltage and thus eliminate the difference."
             },
             {
                 "ID": "id24",
@@ -387,8 +1070,8 @@
                     }
                 ],
                 "position": {
-                    "x": 457,
-                    "y": 388
+                    "x": 451,
+                    "y": 370
                 },
                 "attemptCount": {
                     "description": 0,
@@ -401,15 +1084,76 @@
                     "waveformValue": null,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
                 "name": "V across D1",
                 "description": "Voltage drop across diode D1",
                 "type": "function",
                 "units": "volts",
                 "equation": "if(((id26<(-id19)),(-id19)),id26)",
                 "genus": "required",
-                "explanation": "This is the actual voltage drop across the diode. When the diode is forward biased, it is just the knee voltage, but because this quantity is measure from the cathode (top) to the anode (bottom), then voltage drop is <i>minus</i>the knee voltage. When the diode is reverse biased, then it acts like an open circuit, so its drop is the input drop: V across D1 when open.",
-                "waveformValue": "wave015"
+                "explanation": "This is the actual voltage drop across the diode. \u00a0When the diode is forward biased, it is just the knee voltage, but because this quantity is measure from the cathode (top) to the anode (bottom), then voltage drop is <i>minus<\/i>\u00a0the knee voltage. \u00a0When the diode is reverse biased, then it acts like an open circuit, so its drop is the input drop: V across D1 when open. \u00a0<br \/><br \/>In this clamper circuit, the diode is almost always reverse biased. \u00a0It conducts briefly on the first downswing of the voltage source. \u00a0That's when it charges up the capacitor. \u00a0After that, it conducts very briefly at the bottom of each negative swing, and tops up the voltage on the capacitor.",
+                "waveformValue": "wave015",
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                }
             },
             {
                 "ID": "id26",
@@ -424,8 +1168,8 @@
                     }
                 ],
                 "position": {
-                    "x": 546,
-                    "y": 302
+                    "x": 655,
+                    "y": 297
                 },
                 "attemptCount": {
                     "description": 0,
@@ -438,21 +1182,82 @@
                     "waveformValue": null,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
                 "name": "V across D1 when open",
                 "description": "Voltage drop across diode D1 when it is reverse biased",
                 "type": "function",
                 "units": "volts",
                 "equation": "id1+id11",
                 "genus": "required",
-                "explanation": "This is the voltage drop across diode D1 when it is reverse biased. It is measured from the top (cathode) to the bottom (anode) of the diode. Thus, when this voltage is sufficiently negative, the diode will become forward biased.",
-                "waveformValue": "wave015"
+                "explanation": "This is the voltage drop across diode D1 when it is reverse biased. \u00a0It is measured from the top (cathode) to the bottom (anode) of the diode. \u00a0Thus, when this voltage is sufficiently negative, the diode will become forward biased. \u00a0By Kirchhoff's voltage law, it is the sum of the other elements in its loop, namely the voltage source and the capacitor. \u00a0The other loop, involving the resistor, has not voltage storage or sources.",
+                "waveformValue": "wave015",
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                }
             },
             {
                 "ID": "id28",
                 "inputs": [
                     {
-                        "ID": "id9",
+                        "ID": "id24",
                         "label": ""
                     },
                     {
@@ -461,8 +1266,8 @@
                     }
                 ],
                 "position": {
-                    "x": 639,
-                    "y": 547
+                    "x": 566,
+                    "y": 534
                 },
                 "attemptCount": {
                     "description": 0,
@@ -475,48 +1280,79 @@
                     "waveformValue": null,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
                 "name": "V applied across C1",
                 "description": "Voltage drop applied across capacitor C1",
                 "type": "function",
                 "units": "volts",
-                "equation": "id9-id1",
+                "equation": "id24-id1",
                 "genus": "required",
-                "explanation": "This is the drop across the capacitor that the applied voltages exert. It is measured from right (output voltage) to left (input voltage).  The capacitor charges itself up to meet this voltage, but it lags by one time tick.",
-                "waveformValue": "wave000"
+                "explanation": "This is the drop across the capacitor that the applied voltage exerts. \u00a0It is measured from right (output voltage) to left (input voltage). \u00a0 The capacitor charges itself up to meet this voltage, but it lags by one time tick.",
+                "waveformValue": "wave000",
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                }
             }
         ],
         "studentModelNodes": [
-            {
-                "ID": "id30",
-                "inputs": [],
-                "position": {
-                    "x": 587.85607910156,
-                    "y": 37.179302215576
-                },
-                "status": {
-                    "description": {
-                        "disabled": true,
-                        "status": "correct"
-                    },
-                    "type": {
-                        "disabled": true,
-                        "status": "correct"
-                    },
-                    "units": {
-                        "disabled": true,
-                        "status": "correct"
-                    },
-                    "initial": {
-                        "disabled": false,
-                        "status": "incorrect"
-                    }
-                },
-                "descriptionID": "id2",
-                "initial": 125,
-                "units": "volts",
-                "type": "parameter"
-            },
             {
                 "ID": "id32",
                 "inputs": [],
@@ -548,10 +1384,40 @@
                 "type": "parameter"
             },
             {
-                "ID": "id34",
+                "ID": "id35",
+                "inputs": [],
+                "position": {
+                    "x": 587.85607910156,
+                    "y": 37.179302215576
+                },
+                "status": {
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id2",
+                "initial": 5,
+                "units": "volts",
+                "type": "parameter"
+            },
+            {
+                "ID": "id36",
                 "inputs": [
                     {
-                        "ID": "id30"
+                        "ID": "id35"
                     },
                     {
                         "ID": "id32"
@@ -582,110 +1448,100 @@
                 "descriptionID": "id1",
                 "units": "volts",
                 "type": "function",
-                "equation": "id30*sinewave(id32,0)"
+                "equation": "id35*sinewave(id32,0)"
+            },
+            {
+                "ID": "id37",
+                "inputs": [],
+                "position": {
+                    "x": 849.85607910156,
+                    "y": 36.179302215576
+                },
+                "status": {
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id14",
+                "initial": 0.068,
+                "units": "farads",
+                "type": "parameter"
+            },
+            {
+                "ID": "id38",
+                "inputs": [],
+                "position": {
+                    "x": 977.85607910156,
+                    "y": 38.179302215576
+                },
+                "status": {
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id18",
+                "initial": 33000,
+                "units": "ohms",
+                "type": "parameter"
+            },
+            {
+                "ID": "id39",
+                "inputs": [],
+                "position": {
+                    "x": 364.85607910156,
+                    "y": 33.179302215576
+                },
+                "status": {
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id19",
+                "initial": 0.7,
+                "units": "volts",
+                "type": "parameter"
             }
         ],
         "schemas": [
-            {
-                "ID": "schema1",
-                "schemaClass": "positive_clampers_behavior",
-                "name": "Positive Clampers Behavior",
-                "competence": {
-                    "errors": 0,
-                    "total": 0,
-                    "attempts": 0,
-                    "correctScore": 0,
-                    "timeSpent": 0,
-                    "values": {}
-                },
-                "nodes": "id9, id28, id26, id24, id23, id19, id18, id17, id14, id12, id11",
-                "rates": {},
-                "difficulty": {
-                    "isolation": 1,
-                    "cues": 0,
-                    "phrases": 1
-                }
-            },
-            {
-                "ID": "schema2",
-                "schemaClass": "capacitor_behavior",
-                "name": "Capacitor Behavior",
-                "competence": {
-                    "errors": 0,
-                    "total": 0,
-                    "attempts": 0,
-                    "correctScore": 0,
-                    "timeSpent": 0,
-                    "values": {}
-                },
-                "nodes": "id11, id14, id23, id12, id28",
-                "rates": {},
-                "difficulty": {
-                    "isolation": 1,
-                    "cues": 0,
-                    "phrases": 1
-                }
-            },
-            {
-                "ID": "schema3",
-                "schemaClass": "diode_behavior-forward",
-                "name": "Diode Behavior-Forward",
-                "competence": {
-                    "errors": 0,
-                    "total": 0,
-                    "attempts": 0,
-                    "correctScore": 0,
-                    "timeSpent": 0,
-                    "values": {}
-                },
-                "nodes": "id24, id19",
-                "rates": {},
-                "difficulty": {
-                    "isolation": 1,
-                    "cues": 1,
-                    "phrases": 1
-                }
-            },
-            {
-                "ID": "schema4",
-                "schemaClass": "diode_behavior-reverse",
-                "name": "Diode Behavior-Reverse",
-                "competence": {
-                    "errors": 0,
-                    "total": 0,
-                    "attempts": 0,
-                    "correctScore": 0,
-                    "timeSpent": 0,
-                    "values": {}
-                },
-                "nodes": "id24, id26, id19",
-                "rates": {},
-                "difficulty": {
-                    "isolation": 1,
-                    "cues": 1,
-                    "phrases": 1
-                }
-            },
-            {
-                "ID": "schema5",
-                "schemaClass": "resistor_behavior",
-                "name": "Resistor Behavior",
-                "competence": {
-                    "errors": 0,
-                    "total": 0,
-                    "attempts": 0,
-                    "correctScore": 0,
-                    "timeSpent": 0,
-                    "values": {}
-                },
-                "nodes": "id17, id18",
-                "rates": {},
-                "difficulty": {
-                    "isolation": 1,
-                    "cues": 1,
-                    "phrases": 1
-                }
-            },
             {
                 "ID": "schema6",
                 "schemaClass": "ohms_law",
@@ -707,26 +1563,6 @@
                 }
             },
             {
-                "ID": "schema7",
-                "schemaClass": "kirchoff_voltage_law",
-                "name": "Kirchoff's Voltage Law",
-                "competence": {
-                    "errors": 0,
-                    "total": 0,
-                    "attempts": 0,
-                    "correctScore": 0,
-                    "timeSpent": 0,
-                    "values": {}
-                },
-                "nodes": "id11",
-                "rates": {},
-                "difficulty": {
-                    "isolation": 1,
-                    "cues": 1,
-                    "phrases": 1
-                }
-            },
-            {
                 "ID": "schema8",
                 "schemaClass": "kirchoff_voltage_law",
                 "name": "Kirchoff's Voltage Law",
@@ -739,6 +1575,106 @@
                     "values": {}
                 },
                 "nodes": "id26",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema12",
+                "schemaClass": "kirchoff_voltage_law",
+                "name": "Kirchoff's Voltage Law",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id28",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema13",
+                "schemaClass": "positive_clampers_behavior",
+                "name": "Positive Clampers Behavior",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id9, id11, id12, id17, id23, id24, id26, id28",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema14",
+                "schemaClass": "capacitor_behavior",
+                "name": "Capacitor Behavior",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id12, id23, id11, id28, id17",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema15",
+                "schemaClass": "diode_behavior-forward",
+                "name": "Diode Behavior-Forward",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id24, id26",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema16",
+                "schemaClass": "diode_behavior-reverse",
+                "name": "Diode Behavior-Reverse",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id24, id26",
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,

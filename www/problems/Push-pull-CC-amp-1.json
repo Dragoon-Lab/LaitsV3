@@ -672,7 +672,7 @@
                     "tweakedDirection": 0,
                     "executionValue": 0,
                     "waveformValue": null,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "authorStatus": {
@@ -1287,30 +1287,6 @@
                 "equation": "id2*sinewave(id4,0)"
             },
             {
-                "ID": "id16",
-                "inputs": [],
-                "position": {
-                    "x": 644.85607910156,
-                    "y": 421.17929077148
-                },
-                "status": {
-                    "description": {
-                        "disabled": true,
-                        "status": "correct"
-                    },
-                    "type": {
-                        "disabled": true,
-                        "status": "correct"
-                    },
-                    "initial": {
-                        "disabled": false,
-                        "status": "incorrect"
-                    }
-                },
-                "descriptionID": "id15",
-                "type": "parameter"
-            },
-            {
                 "ID": "id17",
                 "inputs": [],
                 "position": {
@@ -1388,6 +1364,31 @@
                 "descriptionID": "id24",
                 "initial": 500,
                 "units": "ohms",
+                "type": "parameter"
+            },
+            {
+                "ID": "id27",
+                "inputs": [],
+                "position": {
+                    "x": 644.85607910156,
+                    "y": 421.17929077148
+                },
+                "status": {
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id15",
+                "initial": 80,
                 "type": "parameter"
             }
         ],
