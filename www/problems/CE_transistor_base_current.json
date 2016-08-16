@@ -222,7 +222,8 @@
                 "units": "microamps",
                 "equation": "id2*id3",
                 "genus": "required",
-                "explanation": "When a transistor is in CE configuration and biased to be active, then the collector current is beta \u00a0times the base current."
+                "explanation": "When a transistor is in CE configuration and biased to be active, then the collector current is beta \u00a0times the base current.",
+                "parentNode": true
             }
         ],
         "studentModelNodes": [],
