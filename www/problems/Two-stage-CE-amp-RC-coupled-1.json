@@ -1,0 +1,1861 @@
+{
+    "task": {
+        "taskName": "Two-stage-CE-amp-RC-coupled-1",
+        "time": {
+            "start": 0,
+            "end": 100,
+            "step": 1,
+            "integrationMethod": "Eulers Method",
+            "units": "milliseconds"
+        },
+        "properties": {
+            "isGraphHelpShown": true
+        },
+        "image": {
+            "URL": "http:\/\/i.imgur.com\/Y4PUXwa.png"
+        },
+        "taskDescription": {
+            "construction": [
+                "The schematic shows a two stage amplifier with RC coupling.  Each stage has one transistor in the common-emitter configuration.  Nodes for the input signal and the parameters have been given to you. Notice that the resistor are the same in both stages and have the same names.  Assume that the input signal frequency is such that the capacitors can be considered short circuits for the signal.  Construct a model of the AC behavior of the circuit, and plot the output voltage.  Is it in phase or out of phase with the input?"
+            ],
+            "execution": [
+                "The schematic shows a two stage amplifier with RC coupling.  Each stage has one transistor in the common-emitter configuration.  Notice that the resistor are the same in both stages and have the same names.  Assume that the input signal frequency is such that the capacitors can be considered short circuits for the signal.  "
+            ],
+            "incremental": [
+                "The schematic shows a two stage amplifier with RC coupling.  Each stage has one transistor in the common-emitter configuration.  Nodes for the input signal and the parameters have been given to you. Notice that the resistor are the same in both stages and have the same names.  Assume that the input signal frequency is such that the capacitors can be considered short circuits for the signal.  Construct a model of the AC behavior of the circuit, and plot the output voltage.  Is it in phase or out of phase with the input?"
+            ]
+        },
+        "lessonsLearned": [],
+        "increment": [
+            {
+                "tweakedNode": "id1",
+                "tweakDirection": "Decrease"
+            }
+        ],
+        "executionIterations": null,
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [],
+                "position": {
+                    "x": 456.85607910156,
+                    "y": 64.179306030273
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 1
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "units": {
+                        "status": "entered"
+                    }
+                },
+                "name": "Max input V",
+                "description": "Maximum voltage of input signal",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.0001,
+                "units": "volts",
+                "genus": "required"
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 569.85607910156,
+                    "y": 66.179306030273
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 1
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "units": {
+                        "status": "entered"
+                    }
+                },
+                "name": "Wavelength",
+                "description": "Wavelength of the signal",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 30,
+                "units": "milliseconds",
+                "genus": "required"
+            },
+            {
+                "ID": "id5",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    },
+                    {
+                        "ID": "id3"
+                    }
+                ],
+                "position": {
+                    "x": 522,
+                    "y": 200
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 1
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "Input v",
+                "description": "AC input signal voltage",
+                "equation": "id1*sinewave(id3,0)",
+                "type": "function",
+                "parentNode": false,
+                "units": "volts",
+                "genus": "required"
+            },
+            {
+                "ID": "id7",
+                "inputs": [],
+                "position": {
+                    "x": 682.85607910156,
+                    "y": 63.179302215576
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 1
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "units": {
+                        "status": "entered"
+                    }
+                },
+                "name": "R of Rs",
+                "description": "Resistance of the swamping resistor Rs",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 3300,
+                "units": "ohms",
+                "genus": "required"
+            },
+            {
+                "ID": "id9",
+                "inputs": [],
+                "position": {
+                    "x": 1049.8560791016,
+                    "y": 77.179306030273
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 1
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "R of R1",
+                "description": "Resistance of R1",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 120000,
+                "units": "ohms",
+                "genus": "required"
+            },
+            {
+                "ID": "id10",
+                "inputs": [],
+                "position": {
+                    "x": 414.85607910156,
+                    "y": 519.17932128906
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 1
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "units": {
+                        "status": "entered"
+                    }
+                },
+                "name": "R of R2",
+                "description": "Resistance of R2",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 18000,
+                "units": "ohms",
+                "genus": "required"
+            },
+            {
+                "ID": "id13",
+                "inputs": [],
+                "position": {
+                    "x": 926.85607910156,
+                    "y": 64.179306030273
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 1
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "R of RC",
+                "description": "Resistance of collector resistor RC",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 4000,
+                "units": "ohms",
+                "genus": "required"
+            },
+            {
+                "ID": "id15",
+                "inputs": [],
+                "position": {
+                    "x": 542.85607910156,
+                    "y": 516.17932128906
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 1
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "R of RE",
+                "description": "Resistance of emitter resistor RE",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 500,
+                "units": "ohms",
+                "genus": "required"
+            },
+            {
+                "ID": "id17",
+                "inputs": [],
+                "position": {
+                    "x": 794.85607910156,
+                    "y": 511.17929077148
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "units": {
+                        "status": "entered"
+                    }
+                },
+                "name": "R of RL",
+                "description": "Resistance of load resistor RL",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 1000,
+                "units": "ohms",
+                "genus": "required"
+            },
+            {
+                "ID": "id20",
+                "inputs": [
+                    {
+                        "ID": "id5",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id7",
+                        "label": "\/"
+                    }
+                ],
+                "position": {
+                    "x": 642,
+                    "y": 206
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "AC Ib into Q1",
+                "description": "AC component of current into base of transistor Q1",
+                "type": "function",
+                "units": "amps",
+                "equation": "id5\/id7",
+                "explanation": "The loop containing the input signal generator is comprised of the swamping resistor, Rs, the capacitor next to it, the emitter-based junction and the capacitor shorting the signal at the emitter to ground. \u00a0Thus, because the emitter-base junction is forward biased, it has a much smaller resistance then Rs, so the total resistance around the loop can be approximated by Rs. \u00a0Thus, one can use Ohm's law to get the AC current around this loop.",
+                "genus": "required",
+                "waveformValue": "wave007"
+            },
+            {
+                "ID": "id21",
+                "inputs": [
+                    {
+                        "ID": "id34",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id20",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 755,
+                    "y": 216
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "equation": {
+                        "disabled": false
+                    }
+                },
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "AC Ic into Q1",
+                "description": "AC component of current into collector of Q1",
+                "type": "function",
+                "units": "amps",
+                "equation": "id34*id20",
+                "explanation": "Assuming transistor biased to be in its active region, this is just beta times base current.",
+                "genus": "required",
+                "waveformValue": "wave007"
+            },
+            {
+                "ID": "id22",
+                "inputs": [
+                    {
+                        "ID": "id21",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id23",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 864,
+                    "y": 225
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "AC V across Rc and R1",
+                "description": "AC component of voltage drop across Rc and R1",
+                "type": "function",
+                "units": "volts",
+                "equation": "id21*id23",
+                "genus": "required",
+                "explanation": "Q1 is sucking an AC current from the supply via its collector and sending it via the emitter to ground. \u00a0This current must thus pass through the parallel combination of resistor Rc at Q1 and resistor R1 at Q2. \u00a0The capacitor between them acts like a short of the AC current. \u00a0Since one has the current into the collector, one can calculate the voltage drop across them using Ohm's law.",
+                "waveformValue": "wave007"
+            },
+            {
+                "ID": "id23",
+                "inputs": [
+                    {
+                        "ID": "id13"
+                    },
+                    {
+                        "ID": "id9"
+                    }
+                ],
+                "position": {
+                    "x": 999,
+                    "y": 204
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    }
+                },
+                "name": "R of Rc and R1",
+                "description": "Resistance of parallel resistors",
+                "type": "function",
+                "units": "ohms",
+                "equation": "1\/((1\/id13)+(1\/id9))",
+                "explanation": "For the AC signal, one can ignore the capacitor between RC at Q1 and R1 at Q2. \u00a0These two resistors thus form a parallel resistor sub-circuit. \u00a0There is a handy formula, which you should know, for calculating the resistance of the sub-circuit.",
+                "genus": "required"
+            },
+            {
+                "ID": "id24",
+                "inputs": [
+                    {
+                        "ID": "id32",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 852,
+                    "y": 367
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "AC Vb of Q2",
+                "description": "AC component of base voltage at Q2",
+                "type": "function",
+                "units": "volts",
+                "explanation": "The output voltage of stage one, which is the voltage at the collector of Q1, is connected to the input of stage two, which is the base of Q2, via a capacitor. \u00a0That's why this amp is called &quot;RC coupled.&quot; \u00a0 As long as the frequency of the signal is high enough, the coupling capacitor acts like a short. When the frequency is too low, then the capacitor's impedance resists it. \u00a0",
+                "equation": "id32",
+                "genus": "required",
+                "waveformValue": "wave022"
+            },
+            {
+                "ID": "id25",
+                "inputs": [
+                    {
+                        "ID": "id24",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id26",
+                        "label": "\/"
+                    }
+                ],
+                "position": {
+                    "x": 748,
+                    "y": 387
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "AC Ib into Q2",
+                "description": "AC component of current into base of Q2",
+                "type": "function",
+                "units": "amps",
+                "equation": "id24\/id26",
+                "genus": "required",
+                "explanation": "The AC voltage at the base of Q2 drives a current to ground via both R2 and the EB junction of Q2. \u00a0The emitter capacitor of Q2 can be considered a short. \u00a0Because the resistance of R2 is so much larger than the resistance of the EB junction, we can assume all the AC current flows through the EB junction, and use Ohm's law to calculate it.",
+                "waveformValue": "wave022"
+            },
+            {
+                "ID": "id26",
+                "inputs": [],
+                "position": {
+                    "x": 662.85607910156,
+                    "y": 508.17929077148
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 1
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "units": {
+                        "status": "entered"
+                    }
+                },
+                "name": "R of EB junction",
+                "description": "Resistance of EB junction of transistors",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 100,
+                "units": "ohms",
+                "explanation": "Although the forward-biased junctions are nearly shorts, they have some resistance. \u00a0 The exact amount depends on the biasing, so let's just assume 100 ohms.",
+                "genus": "required"
+            },
+            {
+                "ID": "id28",
+                "inputs": [
+                    {
+                        "ID": "id34",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id25",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 623,
+                    "y": 405
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "equation": {
+                        "disabled": false
+                    }
+                },
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "AC Ic into Q2",
+                "description": "AC component of current into collector of Q2",
+                "type": "function",
+                "units": "amps",
+                "equation": "id34*id25",
+                "explanation": "As usual, assume Q2 is in active region, and multiply by beta.",
+                "genus": "required",
+                "waveformValue": "wave022"
+            },
+            {
+                "ID": "id29",
+                "inputs": [
+                    {
+                        "ID": "id28",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id13",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 511,
+                    "y": 387
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "AC V across Rc at Q2",
+                "description": "AC component of voltage across Rc at Q2",
+                "type": "function",
+                "units": "volts",
+                "equation": "id28*id13",
+                "explanation": "The collector of Q2 pulls AC current into itself from Vcc via Rc. \u00a0Thus, one can use Ohm's law to calculate the voltage dropped by Rc.",
+                "genus": "required",
+                "waveformValue": "wave022"
+            },
+            {
+                "ID": "id32",
+                "inputs": [
+                    {
+                        "ID": "id22",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 960,
+                    "y": 323
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "AC Vc of Q1",
+                "description": "AC component of voltage at collector of Q1",
+                "type": "function",
+                "equation": "-id22",
+                "units": "volts",
+                "explanation": "The voltage drop of Rc and R1 caused by the AC current into the collector is in phase with the input signal. \u00a0however, by Kirchhoff's voltage law, the voltage at the collector is the Vcc minus that drop. \u00a0This inverts the input signal.\u00a0",
+                "genus": "required",
+                "waveformValue": "wave022"
+            },
+            {
+                "ID": "id33",
+                "inputs": [
+                    {
+                        "ID": "id29",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 395
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "AC output voltage",
+                "description": "AC component of voltage at collector of Q2",
+                "type": "function",
+                "units": "volts",
+                "equation": "-id29",
+                "explanation": "The AC voltage drop across Rc is in phase with the AC voltage at the base of Q2. \u00a0By Kirchhoff's voltage law, the voltage at the collector is the Vcc minus that drop. Since the Vcc is constant, that makes the voltage at the collector 180 degrees out of phase from the input to Q2.",
+                "genus": "required",
+                "waveformValue": "wave007",
+                "parentNode": true
+            },
+            {
+                "ID": "id34",
+                "inputs": [],
+                "position": {
+                    "x": 800.85607910156,
+                    "y": 64.179306030273
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 1
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "beta",
+                "description": "Beta of both transistors",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 120,
+                "genus": "required"
+            }
+        ],
+        "studentModelNodes": [
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 456.85607910156,
+                    "y": 64.179306030273
+                },
+                "status": {
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id1",
+                "initial": 0.0001,
+                "units": "volts",
+                "type": "parameter"
+            },
+            {
+                "ID": "id4",
+                "inputs": [],
+                "position": {
+                    "x": 569.85607910156,
+                    "y": 66.179306030273
+                },
+                "status": {
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id3",
+                "initial": 30,
+                "units": "milliseconds",
+                "type": "parameter"
+            },
+            {
+                "ID": "id6",
+                "inputs": [
+                    {
+                        "ID": "id2"
+                    },
+                    {
+                        "ID": "id4"
+                    }
+                ],
+                "position": {
+                    "x": 522,
+                    "y": 200
+                },
+                "status": {
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id5",
+                "units": "volts",
+                "type": "function",
+                "equation": "id2*sinewave(id4,0)"
+            },
+            {
+                "ID": "id8",
+                "inputs": [],
+                "position": {
+                    "x": 682.85607910156,
+                    "y": 63.179302215576
+                },
+                "status": {
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id7",
+                "initial": 3300,
+                "units": "ohms",
+                "type": "parameter"
+            },
+            {
+                "ID": "id11",
+                "inputs": [],
+                "position": {
+                    "x": 414.85607910156,
+                    "y": 519.17932128906
+                },
+                "status": {
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id10",
+                "initial": 18000,
+                "units": "ohms",
+                "type": "parameter"
+            },
+            {
+                "ID": "id12",
+                "inputs": [],
+                "position": {
+                    "x": 1049.8560791016,
+                    "y": 77.179306030273
+                },
+                "status": {
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id9",
+                "initial": 120000,
+                "units": "ohms",
+                "type": "parameter"
+            },
+            {
+                "ID": "id14",
+                "inputs": [],
+                "position": {
+                    "x": 926.85607910156,
+                    "y": 64.179306030273
+                },
+                "status": {
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id13",
+                "initial": 4000,
+                "units": "ohms",
+                "type": "parameter"
+            },
+            {
+                "ID": "id16",
+                "inputs": [],
+                "position": {
+                    "x": 542.85607910156,
+                    "y": 516.17932128906
+                },
+                "status": {
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id15",
+                "initial": 500,
+                "units": "ohms",
+                "type": "parameter"
+            },
+            {
+                "ID": "id27",
+                "inputs": [],
+                "position": {
+                    "x": 662.85607910156,
+                    "y": 508.17929077148
+                },
+                "status": {
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id26",
+                "initial": 100,
+                "units": "ohms",
+                "type": "parameter"
+            },
+            {
+                "ID": "id35",
+                "inputs": [],
+                "position": {
+                    "x": 800.85607910156,
+                    "y": 64.179306030273
+                },
+                "status": {
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "incorrect"
+                    }
+                },
+                "descriptionID": "id34",
+                "initial": 50,
+                "type": "parameter"
+            }
+        ],
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "ohms_law",
+                "name": "Ohm's Law: Voltage",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id20",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema2",
+                "schemaClass": "CE_transistor_AC_behavior",
+                "name": "CE Transistor AC Behavior",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id21",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema3",
+                "schemaClass": "resistor_parallel_behavior",
+                "name": "Resistor Parallel Behavior",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id23",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema4",
+                "schemaClass": "ohms_law",
+                "name": "Ohm's Law: Voltage",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id22",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema5",
+                "schemaClass": "kirchoff_voltage_law",
+                "name": "Kirchoff's Voltage Law",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id32",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema6",
+                "schemaClass": "ohms_law",
+                "name": "Ohm's Law: Voltage",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id25",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema7",
+                "schemaClass": "CE_transistor_AC_behavior",
+                "name": "CE Transistor AC Behavior",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id28",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema8",
+                "schemaClass": "ohms_law",
+                "name": "Ohm's Law: Voltage",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id29",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema9",
+                "schemaClass": "kirchoff_voltage_law",
+                "name": "Kirchoff's Voltage Law",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id33",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema10",
+                "schemaClass": "RC_coupled_multi_amp_AC_bhvr",
+                "name": "RC Coupled Multistage Amplifier AC Behavior",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id20, id21, id22, id23, id24, id25, id28, id29, id32, id33",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            }
+        ]
+    }
+}

@@ -453,6 +453,18 @@
 				"example" : ""
 			},
 			{
+				"name" : "CC Push Pull Amplifier DC Behavior",
+				"id" : "CC_push_pull_amplifier_DC_bhvr",
+				"template" : "",
+				"example" : ""
+			},
+			{
+				"name" : "CC Push Pull Amplifier AC Behavior",
+				"id" : "CC_push_pull_amplifier_AC_bhvr",
+				"template" : "",
+				"example" : ""
+			},
+			{
 				"name" : "RC Coupled Multistage Amplifier DC Behavior",
 				"id" : "RC_coupled_multi_amp_DC_bhvr",
 				"template" : "",
