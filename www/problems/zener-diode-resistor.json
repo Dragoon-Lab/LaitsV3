@@ -12,14 +12,17 @@
             "isGraphHelpShown": true
         },
         "image": {
-            "URL": "http://farm8.staticflickr.com/7009/6683456961_7a59380267.jpg"
+            "URL": "http:\/\/i.imgur.com\/t16Lusr.png"
         },
         "taskDescription": {
             "construction": [
-                "A battery, zener diode and resistor are connected in series as shown.  Note that the battery's negative terminal is attached to the anode of the diode.  Assume that the battery is 12 volts, the resistor is 400 ohms, and the breakdown voltage of the zener diode is 10 volts. Complete the model and view the graph of the current around the loop."
+                "A battery, zener diode and resistor are connected in series as shown.  Note that the battery's negative terminal is attached to the anode of the diode.  Construct a model of the circuit assuming that the battery is 12 volts, the resistor is 400 ohms and the breakdown voltage of the zener diode is 10 volts."
             ],
             "incremental": [
                 "A battery, zener diode and resistor are connected in series as shown.  Note that the battery's negative terminal is attached to the anode of the diode."
+            ],
+            "execution": [
+                "This is a model of the circuit shown above that has a resistor in series with a zener diode.  Note that if a current flows, it flows clockwise.  If this were an ordinary diode, it would be reverse biased and no current would flow.  However, in this circuit, the zener diode has a breakdown voltage of 10 and the battery voltage is greater, 12 volts, so just enough current flows through the zener diode so that it drops 10 volts and the resistor drops the remaining 2 volts."
             ]
         },
         "lessonsLearned": [],
@@ -49,7 +52,38 @@
                     "waveformValue": null,
                     "assistanceScore": 1
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
                 "name": "Source V",
                 "description": "Voltage of the battery",
                 "equation": "",
@@ -57,7 +91,39 @@
                 "parentNode": false,
                 "initial": 12,
                 "units": "volts",
-                "genus": "required"
+                "genus": "required",
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                }
             },
             {
                 "ID": "id2",
@@ -75,9 +141,40 @@
                     "tweakedDirection": 0,
                     "executionValue": 0,
                     "waveformValue": null,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
                 "name": "R of R",
                 "description": "Resistance of resistor R",
                 "equation": "",
@@ -85,14 +182,46 @@
                 "parentNode": false,
                 "initial": 400,
                 "units": "ohms",
-                "genus": "required"
+                "genus": "required",
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                }
             },
             {
                 "ID": "id3",
                 "inputs": [
                     {
                         "ID": "id1",
-                        "label": "-"
+                        "label": ""
                     }
                 ],
                 "position": {
@@ -110,14 +239,76 @@
                     "waveformValue": null,
                     "assistanceScore": 1
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
                 "name": "V across ZD when open",
                 "description": "Votlage across zener diode ZD when it is reverse biased",
                 "type": "function",
                 "units": "volts",
-                "equation": "-id1",
+                "equation": "id1",
                 "genus": "required",
-                "parentNode": false
+                "parentNode": false,
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                },
+                "explanation": "If we assume that the zener diode is open, and we also assume that the voltage across it is measured from top to bottom, then the voltage across it is the same as the battery voltage."
             },
             {
                 "ID": "id4",
@@ -144,13 +335,75 @@
                     "waveformValue": null,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
                 "name": "V across ZD",
                 "description": "Voltage across ZD",
                 "type": "function",
                 "units": "volts",
-                "equation": "if(((id3<id5),id5),id3)",
-                "genus": "required"
+                "equation": "if(((id3>id5),id5),id3)",
+                "genus": "required",
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                },
+                "explanation": "As usual with zener diodes that are reverse biased, the current only flows when the voltage across the diode (if it were open) is larger than the breakdown voltage. \u00a0When the current is flowing, just enough flows to make the voltage across the diode equal the breakdown voltage. \u00a0If the voltage across the diode is less than the breakdown voltage, then the diode is reverse biased, so no current flows and the voltage remains at the applied voltage. \u00a0"
             },
             {
                 "ID": "id5",
@@ -170,15 +423,79 @@
                     "waveformValue": null,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
                 "name": "breakdown V",
                 "description": "Breakdown voltage of diode ZD",
                 "equation": "",
                 "type": "parameter",
                 "parentNode": false,
-                "initial": -10,
+                "initial": 10,
                 "units": "volts",
-                "genus": "required"
+                "genus": "required",
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                },
+                "explanation": "When current is flowing, it flows downward through the diode, so let us measure voltage from top to bottom. \u00a0Thus, the breakdown voltage will be positive. \u00a0If the voltage across the diode, measured so the top (cathode) is more positive than the bottom (anode), is more positive than the breakdown voltage, then current will flow downward through the diode."
             },
             {
                 "ID": "id6",
@@ -207,13 +524,72 @@
                     "waveformValue": null,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    }
+                },
                 "name": "V across R",
                 "description": "Voltage drop across R",
                 "type": "function",
                 "units": "volts",
                 "equation": "id1-id4",
-                "genus": "required"
+                "genus": "required",
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                },
+                "explanation": "Kirchoff's voltage law applied around the loop consisting of the diode, resistor and battery."
             },
             {
                 "ID": "id7",
@@ -224,7 +600,7 @@
                     },
                     {
                         "ID": "id2",
-                        "label": "/"
+                        "label": "\/"
                     }
                 ],
                 "position": {
@@ -242,14 +618,76 @@
                     "waveformValue": null,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
                 "name": "I around loop",
                 "description": "Current thru both ZD and R",
                 "type": "function",
                 "units": "amps",
-                "equation": "id6/id2",
+                "equation": "id6\/id2",
                 "genus": "required",
-                "parentNode": true
+                "parentNode": true,
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                },
+                "explanation": "Ohm's law"
             }
         ],
         "studentModelNodes": [
@@ -284,21 +722,13 @@
                 "type": "parameter"
             },
             {
-                "ID": "id9",
-                "inputs": [
-                    {
-                        "ID": "id8"
-                    }
-                ],
+                "ID": "id11",
+                "inputs": [],
                 "position": {
-                    "x": 511,
-                    "y": 211
+                    "x": 845.85607910156,
+                    "y": 54.179302215576
                 },
                 "status": {
-                    "equation": {
-                        "disabled": true,
-                        "status": "correct"
-                    },
                     "description": {
                         "disabled": true,
                         "status": "correct"
@@ -310,35 +740,19 @@
                     "units": {
                         "disabled": true,
                         "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
                     }
                 },
-                "descriptionID": "id3",
-                "units": "volts",
-                "type": "function",
-                "equation": "-id8"
+                "descriptionID": "id2",
+                "initial": 400,
+                "units": "ohms",
+                "type": "parameter"
             }
         ],
         "schemas": [
-            {
-                "ID": "schema2",
-                "schemaClass": "resistor_behavior",
-                "name": "Resistor Behavior",
-                "competence": {
-                    "errors": 0,
-                    "total": 0,
-                    "attempts": 0,
-                    "correctScore": 0,
-                    "timeSpent": 0,
-                    "values": {}
-                },
-                "nodes": "id2, id6",
-                "rates": {},
-                "difficulty": {
-                    "isolation": 1,
-                    "cues": 0,
-                    "phrases": 1
-                }
-            },
             {
                 "ID": "schema3",
                 "schemaClass": "zener_diode_behavior-avalanche",
@@ -352,26 +766,6 @@
                     "values": {}
                 },
                 "nodes": "id4, id5",
-                "rates": {},
-                "difficulty": {
-                    "isolation": 1,
-                    "cues": 1,
-                    "phrases": 1
-                }
-            },
-            {
-                "ID": "schema4",
-                "schemaClass": "zener_diode_behavior-reverse",
-                "name": "Zener Diode Behavior-Reverse",
-                "competence": {
-                    "errors": 0,
-                    "total": 0,
-                    "attempts": 0,
-                    "correctScore": 0,
-                    "timeSpent": 0,
-                    "values": {}
-                },
-                "nodes": "id5, id4, id3",
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,
@@ -412,6 +806,26 @@
                     "values": {}
                 },
                 "nodes": "id6",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema7",
+                "schemaClass": "kirchoff_voltage_law",
+                "name": "Kirchoff's Voltage Law",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id3",
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,

@@ -12,7 +12,7 @@
             "isGraphHelpShown": true
         },
         "image": {
-            "URL": "http://i.imgur.com/xOD9n3D.png"
+            "URL": "images\/PAL3\/positive-biased-parallel-positive-limiter.png"
         },
         "taskDescription": {
             "construction": [
@@ -195,7 +195,7 @@
                     "units": 0,
                     "equation": 0,
                     "tweakedDirection": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {
                     "root": {
@@ -236,7 +236,39 @@
                 "initial": 0.7,
                 "units": "volts",
                 "genus": "required",
-                "description": "Knee voltage of the diode"
+                "description": "Knee voltage of the diode",
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                }
             },
             {
                 "ID": "id7",
@@ -252,7 +284,7 @@
                     "units": 0,
                     "equation": 0,
                     "tweakedDirection": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {
                     "root": {
@@ -293,7 +325,39 @@
                 "initial": 1000,
                 "units": "ohms",
                 "genus": "required",
-                "description": "Resistance of resistor R"
+                "description": "Resistance of resistor R",
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                }
             },
             {
                 "ID": "id41",
@@ -386,7 +450,8 @@
                     "inputs": {
                         "disabled": false
                     }
-                }
+                },
+                "explanation": "This is the actual voltage across the diode. \u00a0If the diode is reverse biased, then it is equal to &quot;V across diode if open.&quot; \u00a0If the diode is forward biased, then it is just the knee voltage."
             },
             {
                 "ID": "id42",
@@ -552,7 +617,7 @@
                     },
                     {
                         "ID": "id7",
-                        "label": "/"
+                        "label": "\/"
                     }
                 ],
                 "position": {
@@ -605,7 +670,7 @@
                 "description": "Current through the resistor (no load)",
                 "type": "function",
                 "units": "amps",
-                "equation": "id52/id7",
+                "equation": "id52\/id7",
                 "genus": "required",
                 "parentNode": true,
                 "waveformValue": "wave010",
@@ -639,7 +704,8 @@
                     "inputs": {
                         "disabled": false
                     }
-                }
+                },
+                "explanation": "Use Ohm's law"
             },
             {
                 "ID": "id50",
@@ -657,7 +723,7 @@
                     "tweakedDirection": 0,
                     "executionValue": 0,
                     "waveformValue": null,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {
                     "root": {
@@ -695,7 +761,39 @@
                 "parentNode": false,
                 "initial": 5,
                 "units": "volts",
-                "genus": "required"
+                "genus": "required",
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                }
             },
             {
                 "ID": "id51",
@@ -792,7 +890,8 @@
                     "inputs": {
                         "disabled": false
                     }
-                }
+                },
+                "explanation": "Use Kirchhoff's voltage law around the loop that includes the load, the diode and the bias voltage."
             },
             {
                 "ID": "id52",
@@ -889,7 +988,8 @@
                     "inputs": {
                         "disabled": false
                     }
-                }
+                },
+                "explanation": "Use Kirchhoff's voltage law around the loop that includes the resistor, the voltage source and the voltage across the load."
             }
         ],
         "studentModelNodes": [
@@ -989,89 +1089,99 @@
                 "units": "volts",
                 "type": "function",
                 "equation": "id47*sinewave(id48,0)"
+            },
+            {
+                "ID": "id55",
+                "inputs": [],
+                "position": {
+                    "x": 693.85607910156,
+                    "y": 24.179302215576
+                },
+                "status": {
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id50",
+                "initial": 5,
+                "units": "volts",
+                "type": "parameter"
+            },
+            {
+                "ID": "id56",
+                "inputs": [],
+                "position": {
+                    "x": 833.85607910156,
+                    "y": 29.179302215576
+                },
+                "status": {
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id4",
+                "initial": 0.7,
+                "units": "volts",
+                "type": "parameter"
+            },
+            {
+                "ID": "id57",
+                "inputs": [],
+                "position": {
+                    "x": 960.85607910156,
+                    "y": 25.179302215576
+                },
+                "status": {
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id7",
+                "initial": 1000,
+                "units": "ohms",
+                "type": "parameter"
             }
         ],
         "schemas": [
-            {
-                "ID": "schema1",
-                "schemaClass": "parallel_p_limiter_p_bias_bhvr",
-                "name": "Parallel Positive Limiter with Positive Bias Behavior",
-                "competence": {
-                    "errors": 0,
-                    "total": 0,
-                    "attempts": 0,
-                    "correctScore": 0,
-                    "timeSpent": 0,
-                    "values": {}
-                },
-                "nodes": "id4, id7, id41, id43, id46, id50, id51, id52",
-                "rates": {},
-                "difficulty": {
-                    "isolation": 1,
-                    "cues": 0,
-                    "phrases": 1
-                }
-            },
-            {
-                "ID": "schema2",
-                "schemaClass": "diode_behavior-forward",
-                "name": "Diode Behavior-Forward",
-                "competence": {
-                    "errors": 0,
-                    "total": 0,
-                    "attempts": 0,
-                    "correctScore": 0,
-                    "timeSpent": 0,
-                    "values": {}
-                },
-                "nodes": "id4, id41",
-                "rates": {},
-                "difficulty": {
-                    "isolation": 1,
-                    "cues": 1,
-                    "phrases": 1
-                }
-            },
-            {
-                "ID": "schema3",
-                "schemaClass": "diode_behavior-reverse",
-                "name": "Diode Behavior-Reverse",
-                "competence": {
-                    "errors": 0,
-                    "total": 0,
-                    "attempts": 0,
-                    "correctScore": 0,
-                    "timeSpent": 0,
-                    "values": {}
-                },
-                "nodes": "id41, id4, id43",
-                "rates": {},
-                "difficulty": {
-                    "isolation": 1,
-                    "cues": 1,
-                    "phrases": 1
-                }
-            },
-            {
-                "ID": "schema4",
-                "schemaClass": "resistor_behavior",
-                "name": "Resistor Behavior",
-                "competence": {
-                    "errors": 0,
-                    "total": 0,
-                    "attempts": 0,
-                    "correctScore": 0,
-                    "timeSpent": 0,
-                    "values": {}
-                },
-                "nodes": "id7, id46, id52",
-                "rates": {},
-                "difficulty": {
-                    "isolation": 1,
-                    "cues": 0,
-                    "phrases": 1
-                }
-            },
             {
                 "ID": "schema5",
                 "schemaClass": "ohms_law",
@@ -1133,9 +1243,9 @@
                 }
             },
             {
-                "ID": "schema8",
-                "schemaClass": "kirchoff_voltage_law",
-                "name": "Kirchoff's Voltage Law",
+                "ID": "schema9",
+                "schemaClass": "diode_behavior-forward",
+                "name": "Diode Behavior-Forward",
                 "competence": {
                     "errors": 0,
                     "total": 0,
@@ -1144,7 +1254,47 @@
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id43",
+                "nodes": "id41, id43",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema10",
+                "schemaClass": "diode_behavior-reverse",
+                "name": "Diode Behavior-Reverse",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id43, id41",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema13",
+                "schemaClass": "parallel_p_limiter_p_bias_bhvr",
+                "name": "Parallel Positive Limiter with Positive Bias Behavior",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id41, id43, id46, id51, id52",
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,
