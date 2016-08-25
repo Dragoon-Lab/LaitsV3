@@ -32,8 +32,8 @@ try {
 	$name = str_replace(" ", "-", $name);
 	$name = "problems/".$name.".json";
 	//checking if the file name already exists
-	if(file_exists($name))
-		throw new Exception("File with same name already exist");
+	//if(file_exists($name))
+	//	throw new Exception("File with same name already exist");
 	//writing to file
 	$file = fopen($name, "w");
 	//fwrite($file, stripslashes($model));
