@@ -106,6 +106,7 @@ define([
 				ready(this, this._setUpNodeEditor);
 				ready(this, this._initHandles);
 			}
+			this.nodeConnections = [];
 		},
 
 		setState: function(state){
@@ -234,7 +235,7 @@ define([
 						});
 						if(!isAlertShown) {
 							if(myThis.activityConfig.get("targetNodeStrategy")){
-								myThis.deletePrematureNodes();
+								myThis.deletePrematureNodes(false);
 							}
 							doHide.apply(myThis._nodeEditor);
 							myThis.closeEditor.call(myThis);
@@ -242,7 +243,7 @@ define([
 					}
 					else if(myThis._mode == "AUTHOR" && registry.byId("selectModel").value == "given"){
 						var equation = registry.byId("givenEquationBox");
-						if(equation.value && !myThis.givenEquationEntered){
+						if(equation.value && !myThs.givenEquationEntered){
 							//Crisis alert popup if equation not checked
 							myThis.applyDirectives([{
 								id: "crisisAlert", attribute:
@@ -256,12 +257,13 @@ define([
 						}
 					}else{
 						if(myThis.activityConfig.get("targetNodeStrategy")){
-							myThis.deletePrematureNodes();
+							myThis.deletePrematureNodes(false);
 						}
 						// Else, do normal closeEditor routine and hide
 						doHide.apply(myThis._nodeEditor);
 						myThis.closeEditor.call(myThis);
 					}
+					this.nodeConnections = [];
 				};
 			}));
 
@@ -1230,6 +1232,10 @@ define([
 					this.updateInputNode(node.id, node.variable);
 				}));
 
+				array.forEach(parse.variables(), lang.hitch(this, function(n){
+					this.nodeConnections.push(n);
+				}));
+
 				// Send to PM if all variables are known.
 				console.log(parse);
 			}
@@ -1668,6 +1674,14 @@ define([
 					}]);
 				}
 			}
+			if(node && node.inputs && this.nodeConnections){
+				array.forEach(this.nodeConnections, lang.hitch(this, function(n){
+					if(node.inputs.indexOf(n) < 0 && this._PM.checkPremature(n, true)){
+						this.deleteNode(n);
+					}
+				}));
+			}
+			this.nodeConnections = [];
 		},
 
 		deleteNode: function(id){

@@ -1342,7 +1342,7 @@ define([
 			return [];
 		},
 
-		checkPremature: function(nodeID){
+		checkPremature: function(nodeID, ignoreCorrectness){
 			//return false for other modes
 			if(!this.activityConfig.get("targetNodeStrategy")){
 				return false;
@@ -1354,11 +1354,13 @@ define([
 			else if (this.model.isParentNode(this.model.active.getDescriptionID(nodeID))){
 				return false;
 			}
+			if(!ignoreCorrectness)
+				ignoreCorrectness = false;
 			var isPremature = true;
 			array.some(this.model.active.getNodes(), lang.hitch(this, function(node){
 				if(node.inputs.length > 0){
 					var isInputNode = array.some(node.inputs, lang.hitch(this, function(input){
-						if(input.ID == nodeID && this.model.student.getCorrectness(node.ID) !== "incorrect") return true;
+						if(input.ID == nodeID && (ignoreCorrectness || this.model.student.getCorrectness(node.ID) !== "incorrect")) return true;
 					}));
 				}
 				if(isInputNode){
