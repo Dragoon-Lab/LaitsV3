@@ -243,7 +243,7 @@ define([
 					}
 					else if(myThis._mode == "AUTHOR" && registry.byId("selectModel").value == "given"){
 						var equation = registry.byId("givenEquationBox");
-						if(equation.value && !myThs.givenEquationEntered){
+						if(equation.value && !myThis.givenEquationEntered){
 							//Crisis alert popup if equation not checked
 							myThis.applyDirectives([{
 								id: "crisisAlert", attribute:
