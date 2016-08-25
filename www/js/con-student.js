@@ -141,14 +141,15 @@ define([
 			}, this);
 			descriptions.sort(function (obj1, obj2) {
 				//return obj1.label > obj2.label;
-				return descNameMap[obj1.value] > descNameMap[obj2.value];
+				return descNameMap[obj1.value].toLowerCase().localeCompare(descNameMap[obj2.value].toLowerCase());
 			}, this);
 
 			array.forEach(descriptions, function (desc) {
 				d.addOption(desc);
 				var name = this._model.given.getName(desc.value);
 				var option = {label: name + " (" + desc.label + ")", value: desc.value};
-				t.addOption(option);
+				console.log("option is",option);
+                t.addOption(option);
 				positiveInputs.addOption(option);
 				negativeInputs.addOption(option);
 			}, this);

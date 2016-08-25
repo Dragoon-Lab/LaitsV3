@@ -57,6 +57,7 @@ tests/selenium.log
 tests/chromedriver
 tests/node/
 tests/scripts/test-paths.js
+tests/ModelLibrary*.log
 
 release/*
 !./server-build.sh

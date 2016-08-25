@@ -1,0 +1,566 @@
+{
+    "task": {
+        "taskName": "two-resistors-in-series--ask-I2",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 1,
+            "integrationMethod": "Eulers Method",
+            "units": "seconds"
+        },
+        "properties": {
+            "isGraphHelpShown": true
+        },
+        "image": {
+            "URL": "http:\/\/www.webassign.net\/userimages\/madewitt@ncsu\/SR.1.52.png"
+        },
+        "taskDescription": {
+            "construction": [
+                "Assume the battery is 15 volts, R1 is 1500 ohms and R2 is 3100 ohms.  Construct a model and use it to calculate the current thru R2."
+            ],
+            "execution": [
+                "Assume the battery is 15 volts, R1 is 1500 ohms and R2 is 3100 ohms.  "
+            ],
+            "incremental": [
+                "Assume the battery is 15 volts, R1 is 1500 ohms and R2 is 3100 ohms.  Construct a model and use it to calculate the current thru R2."
+            ]
+        },
+        "lessonsLearned": [],
+        "increment": [
+            {
+                "tweakedNode": "id2",
+                "tweakDirection": "Increase"
+            }
+        ],
+        "executionIterations": null,
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [],
+                "position": {
+                    "x": 429.85607910156,
+                    "y": 85.179306030273
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 1
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "v across battery",
+                "description": "Voltage of the battery",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 15,
+                "units": "volts",
+                "explanation": "Notice that the top terminal of the battery is positive: it has the longer line. \u00a0Thus, the current flows clockwise. \u00a0This quantity is positive, so the voltage drop is measures from bottom to top.",
+                "genus": "required"
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 584.85607910156,
+                    "y": 79.179306030273
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 1
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "R of R1",
+                "description": "Resistance of resistor R1",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 1500,
+                "units": "ohms",
+                "genus": "required"
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 768.85607910156,
+                    "y": 81.179306030273
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 1
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "R of R2",
+                "description": "Resistance of R2 resistor",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 3100,
+                "units": "ohms",
+                "genus": "required"
+            },
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id3",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 692,
+                    "y": 212
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    }
+                },
+                "name": "R of R1 and R2",
+                "description": "Resistance of R1 and R2 in series",
+                "explanation": "To calculate the resistance of the sub-circuit consisting of R1 and R2 in series, use the handy rule that the total resistance of a series circuit is the sum of the resistances of the resistors that comprise it.",
+                "type": "function",
+                "units": "ohms",
+                "equation": "id2+id3",
+                "genus": "required"
+            },
+            {
+                "ID": "id5",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id4",
+                        "label": "\/"
+                    }
+                ],
+                "position": {
+                    "x": 557,
+                    "y": 290
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    }
+                },
+                "name": "I thru R1 and R2",
+                "description": "Current flowing downward through R1 R2 sub-circuit",
+                "explanation": "Use Ohm's law to derive this",
+                "type": "function",
+                "units": "amps",
+                "equation": "id1\/id4",
+                "genus": "required"
+            },
+            {
+                "ID": "id6",
+                "inputs": [
+                    {
+                        "ID": "id5",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 667,
+                    "y": 378
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "I thru R2",
+                "description": "Current downward through R2",
+                "explanation": "The current through the components of a series circuit is just the current through the whole circuit.",
+                "type": "function",
+                "units": "amps",
+                "equation": "id5",
+                "genus": "required",
+                "parentNode": true
+            }
+        ],
+        "studentModelNodes": [
+            {
+                "ID": "id7",
+                "inputs": [],
+                "position": {
+                    "x": 584.85607910156,
+                    "y": 79.179306030273
+                },
+                "status": {
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id2",
+                "initial": 1500,
+                "units": "ohms",
+                "type": "parameter"
+            },
+            {
+                "ID": "id8",
+                "inputs": [],
+                "position": {
+                    "x": 768.85607910156,
+                    "y": 81.179306030273
+                },
+                "status": {
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id3",
+                "initial": 3100,
+                "units": "ohms",
+                "type": "parameter"
+            },
+            {
+                "ID": "id9",
+                "inputs": [],
+                "position": {
+                    "x": 429.85607910156,
+                    "y": 85.179306030273
+                },
+                "status": {
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id1",
+                "initial": 15,
+                "units": "volts",
+                "type": "parameter"
+            }
+        ],
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "resistance_series",
+                "name": "Resistance of two resistors in Series",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id4",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema2",
+                "schemaClass": "ohms_law",
+                "name": "Ohm's Law: Voltage",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id5",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema3",
+                "schemaClass": "kirchoff_current_law",
+                "name": "Kirchoff's Current Law",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id6",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            }
+        ]
+    }
+}

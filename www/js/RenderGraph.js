@@ -543,13 +543,16 @@ define([
                 dom.byId("labelGraph_" + parameter.ID).style.display = "initial";
                 dom.byId("textGraph_" + parameter.ID).style.display = "initial";
                 dom.byId("sliderGraph_" + parameter.ID).style.display = "initial";
-                dom.byId("sliderUnits_" + parameter.ID).style.display = "initial";
+                if(dom.byId("sliderUnits_" + parameter.ID)){ // Some nodes have no units.
+                    dom.byId("sliderUnits_" + parameter.ID).style.display = "initial"; 
+                }
             });
             dom.byId("labelGraph_" +id).style.display = "none";
             dom.byId("textGraph_" + id).style.display = "none";
             dom.byId("sliderGraph_" + id).style.display = "none";
-            dom.byId("sliderUnits_" + id).style.display = "none";
-
+            if(dom.byId("sliderUnits_" + id)){  // Some nodes have no units
+                dom.byId("sliderUnits_" + id).style.display = "none";
+            }
         },
 
 

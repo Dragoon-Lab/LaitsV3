@@ -1,6 +1,6 @@
 {
     "task": {
-        "taskName": "Model a Zener Diode",
+        "taskName": "3-r-in-series-parallel-ask-i",
         "time": {
             "start": 0,
             "end": 10,
@@ -12,24 +12,24 @@
             "isGraphHelpShown": true
         },
         "image": {
-            "URL": "http:\/\/i.imgur.com\/t16Lusr.png"
+            "URL": "http:\/\/i.imgur.com\/d6yO7fi.png?1"
         },
         "taskDescription": {
             "construction": [
-                "A battery, zener diode and resistor are connected in series as shown.  Note that the battery's negative terminal is attached to the anode of the diode.  Construct a model of the circuit assuming that the battery is 12 volts, the resistor is 400 ohms and the breakdown voltage of the zener diode is 10 volts."
-            ],
-            "incremental": [
-                "A battery, zener diode and resistor are connected in series as shown.  Note that the battery's negative terminal is attached to the anode of the diode."
+                "The schematic shows a combination of 3 resistors.  Assume R1 is 4700 ohms, R2 is 13,000 ohms and R3 is 53,000 ohms.  If the battery voltage is 100 volts, what is the current through the battery?"
             ],
             "execution": [
-                "This is a model of the circuit shown above that has a resistor in series with a zener diode.  Note that if a current flows, it flows clockwise.  If this were an ordinary diode, it would be reverse biased and no current would flow.  However, in this circuit, the zener diode has a breakdown voltage of 10 and the battery voltage is greater, 12 volts, so just enough current flows through the zener diode so that it drops 10 volts and the resistor drops the remaining 2 volts."
+                "The schematic shows a combination of 3 resistors.  Assume R1 is 4700 ohms, R2 is 13,000 ohms and R3 is 53,000 ohms.  "
+            ],
+            "incremental": [
+                "The schematic shows a combination of 3 resistors.  Assume R1 is 4700 ohms, R2 is 13,000 ohms and R3 is 53,000 ohms.  If the battery voltage is 100 volts, what is the current through the battery?"
             ]
         },
         "lessonsLearned": [],
         "increment": [
             {
-                "tweakedNode": "id1",
-                "tweakDirection": "Increase"
+                "tweakedNode": "id3",
+                "tweakDirection": "Decrease"
             }
         ],
         "executionIterations": null,
@@ -38,378 +38,7 @@
                 "ID": "id1",
                 "inputs": [],
                 "position": {
-                    "x": 407.85607910156,
-                    "y": 60.179302215576
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "tweakedDirection": 0,
-                    "executionValue": 0,
-                    "waveformValue": null,
-                    "assistanceScore": 1
-                },
-                "status": {
-                    "root": {
-                        "disabled": true
-                    },
-                    "name": {
-                        "status": "entered"
-                    },
-                    "description": {
-                        "status": "entered"
-                    },
-                    "type": {
-                        "status": "entered"
-                    },
-                    "initial": {
-                        "disabled": false,
-                        "status": "entered"
-                    },
-                    "inputs": {
-                        "disabled": true,
-                        "status": ""
-                    },
-                    "equation": {
-                        "disabled": true,
-                        "status": ""
-                    },
-                    "units": {
-                        "status": "entered"
-                    },
-                    "kind": {
-                        "status": "entered"
-                    }
-                },
-                "name": "Source V",
-                "description": "Voltage of the battery",
-                "equation": "",
-                "type": "parameter",
-                "parentNode": false,
-                "initial": 12,
-                "units": "volts",
-                "genus": "required",
-                "authorStatus": {
-                    "root": {
-                        "disabled": true
-                    },
-                    "name": {
-                        "status": "entered"
-                    },
-                    "kind": {
-                        "status": "entered"
-                    },
-                    "description": {
-                        "status": "entered"
-                    },
-                    "units": {
-                        "status": "entered"
-                    },
-                    "initial": {
-                        "status": "entered",
-                        "disabled": false
-                    },
-                    "type": {
-                        "status": "entered"
-                    },
-                    "inputs": {
-                        "disabled": true,
-                        "status": ""
-                    },
-                    "equation": {
-                        "disabled": true,
-                        "status": ""
-                    }
-                }
-            },
-            {
-                "ID": "id2",
-                "inputs": [],
-                "position": {
-                    "x": 845.85607910156,
-                    "y": 54.179302215576
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "tweakedDirection": 0,
-                    "executionValue": 0,
-                    "waveformValue": null,
-                    "assistanceScore": 1
-                },
-                "status": {
-                    "root": {
-                        "disabled": true
-                    },
-                    "name": {
-                        "status": "entered"
-                    },
-                    "description": {
-                        "status": "entered"
-                    },
-                    "type": {
-                        "status": "entered"
-                    },
-                    "initial": {
-                        "disabled": false,
-                        "status": "entered"
-                    },
-                    "inputs": {
-                        "disabled": true,
-                        "status": ""
-                    },
-                    "equation": {
-                        "disabled": true,
-                        "status": ""
-                    },
-                    "units": {
-                        "status": "entered"
-                    },
-                    "kind": {
-                        "status": "entered"
-                    }
-                },
-                "name": "R of R",
-                "description": "Resistance of resistor R",
-                "equation": "",
-                "type": "parameter",
-                "parentNode": false,
-                "initial": 400,
-                "units": "ohms",
-                "genus": "required",
-                "authorStatus": {
-                    "root": {
-                        "disabled": true
-                    },
-                    "name": {
-                        "status": "entered"
-                    },
-                    "kind": {
-                        "status": "entered"
-                    },
-                    "description": {
-                        "status": "entered"
-                    },
-                    "units": {
-                        "status": "entered"
-                    },
-                    "initial": {
-                        "status": "entered",
-                        "disabled": false
-                    },
-                    "type": {
-                        "status": "entered"
-                    },
-                    "inputs": {
-                        "disabled": true,
-                        "status": ""
-                    },
-                    "equation": {
-                        "disabled": true,
-                        "status": ""
-                    }
-                }
-            },
-            {
-                "ID": "id3",
-                "inputs": [
-                    {
-                        "ID": "id1",
-                        "label": ""
-                    }
-                ],
-                "position": {
-                    "x": 511,
-                    "y": 211
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "tweakedDirection": 0,
-                    "executionValue": 0,
-                    "waveformValue": null,
-                    "assistanceScore": 1
-                },
-                "status": {
-                    "root": {
-                        "disabled": false
-                    },
-                    "name": {
-                        "status": "entered"
-                    },
-                    "description": {
-                        "status": "entered"
-                    },
-                    "type": {
-                        "status": "entered"
-                    },
-                    "initial": {
-                        "disabled": true,
-                        "status": ""
-                    },
-                    "inputs": {
-                        "disabled": false
-                    },
-                    "equation": {
-                        "disabled": false,
-                        "status": "entered"
-                    },
-                    "units": {
-                        "status": "entered"
-                    },
-                    "kind": {
-                        "status": "entered"
-                    }
-                },
-                "name": "V across ZD when open",
-                "description": "Votlage across zener diode ZD when it is reverse biased",
-                "type": "function",
-                "units": "volts",
-                "equation": "id1",
-                "genus": "required",
-                "parentNode": false,
-                "authorStatus": {
-                    "root": {
-                        "disabled": false
-                    },
-                    "name": {
-                        "status": "entered"
-                    },
-                    "kind": {
-                        "status": "entered"
-                    },
-                    "description": {
-                        "status": "entered"
-                    },
-                    "units": {
-                        "status": "entered"
-                    },
-                    "equation": {
-                        "status": "entered",
-                        "disabled": false
-                    },
-                    "type": {
-                        "status": "entered"
-                    },
-                    "initial": {
-                        "disabled": true,
-                        "status": ""
-                    },
-                    "inputs": {
-                        "disabled": false
-                    }
-                },
-                "explanation": "If we assume that the zener diode is open, and we also assume that the voltage across it is measured from top to bottom, then the voltage across it is the same as the battery voltage."
-            },
-            {
-                "ID": "id4",
-                "inputs": [
-                    {
-                        "ID": "id3"
-                    },
-                    {
-                        "ID": "id5"
-                    }
-                ],
-                "position": {
-                    "x": 607,
-                    "y": 288
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "tweakedDirection": 0,
-                    "executionValue": 0,
-                    "waveformValue": null,
-                    "assistanceScore": 0
-                },
-                "status": {
-                    "root": {
-                        "disabled": false
-                    },
-                    "name": {
-                        "status": "entered"
-                    },
-                    "description": {
-                        "status": "entered"
-                    },
-                    "type": {
-                        "status": "entered"
-                    },
-                    "initial": {
-                        "disabled": true,
-                        "status": ""
-                    },
-                    "inputs": {
-                        "disabled": false
-                    },
-                    "equation": {
-                        "disabled": false,
-                        "status": "entered"
-                    },
-                    "units": {
-                        "status": "entered"
-                    },
-                    "kind": {
-                        "status": "entered"
-                    }
-                },
-                "name": "V across ZD",
-                "description": "Voltage across ZD",
-                "type": "function",
-                "units": "volts",
-                "equation": "if(((id3>id5),id5),id3)",
-                "genus": "required",
-                "authorStatus": {
-                    "root": {
-                        "disabled": false
-                    },
-                    "name": {
-                        "status": "entered"
-                    },
-                    "kind": {
-                        "status": "entered"
-                    },
-                    "description": {
-                        "status": "entered"
-                    },
-                    "units": {
-                        "status": "entered"
-                    },
-                    "equation": {
-                        "status": "entered",
-                        "disabled": false
-                    },
-                    "type": {
-                        "status": "entered"
-                    },
-                    "initial": {
-                        "disabled": true,
-                        "status": ""
-                    },
-                    "inputs": {
-                        "disabled": false
-                    }
-                },
-                "explanation": "As usual with zener diodes that are reverse biased, the current only flows when the voltage across the diode (if it were open) is larger than the breakdown voltage. \u00a0When the current is flowing, just enough flows to make the voltage across the diode equal the breakdown voltage. \u00a0If the voltage across the diode is less than the breakdown voltage, then the diode is reverse biased, so no current flows and the voltage remains at the applied voltage. \u00a0"
-            },
-            {
-                "ID": "id5",
-                "inputs": [],
-                "position": {
-                    "x": 663.85607910156,
+                    "x": 860.85607910156,
                     "y": 55.179302215576
                 },
                 "attemptCount": {
@@ -421,9 +50,10 @@
                     "tweakedDirection": 0,
                     "executionValue": 0,
                     "waveformValue": null,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
-                "status": {
+                "status": {},
+                "authorStatus": {
                     "root": {
                         "disabled": true
                     },
@@ -455,14 +85,34 @@
                         "status": "entered"
                     }
                 },
-                "name": "breakdown V",
-                "description": "Breakdown voltage of diode ZD",
+                "name": "V battery",
+                "description": "Voltage of the battery",
                 "equation": "",
                 "type": "parameter",
                 "parentNode": false,
-                "initial": 10,
+                "initial": 100,
                 "units": "volts",
-                "genus": "required",
+                "genus": "required"
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 386.85607910156,
+                    "y": 50.179302215576
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 1
+                },
+                "status": {},
                 "authorStatus": {
                     "root": {
                         "disabled": true
@@ -470,20 +120,14 @@
                     "name": {
                         "status": "entered"
                     },
-                    "kind": {
-                        "status": "entered"
-                    },
                     "description": {
                         "status": "entered"
                     },
-                    "units": {
+                    "type": {
                         "status": "entered"
                     },
                     "initial": {
-                        "status": "entered",
-                        "disabled": false
-                    },
-                    "type": {
+                        "disabled": false,
                         "status": "entered"
                     },
                     "inputs": {
@@ -493,25 +137,223 @@
                     "equation": {
                         "disabled": true,
                         "status": ""
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
                     }
                 },
-                "explanation": "When current is flowing, it flows downward through the diode, so let us measure voltage from top to bottom. \u00a0Thus, the breakdown voltage will be positive. \u00a0If the voltage across the diode, measured so the top (cathode) is more positive than the bottom (anode), is more positive than the breakdown voltage, then current will flow downward through the diode."
+                "name": "R of R1",
+                "description": "Resistance of R1",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 4700,
+                "units": "ohms",
+                "genus": "required"
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 530.85607910156,
+                    "y": 46.179302215576
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 1
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "R of R2",
+                "description": "Resistance of R2",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 13000,
+                "units": "ohms",
+                "genus": "required"
+            },
+            {
+                "ID": "id4",
+                "inputs": [],
+                "position": {
+                    "x": 707.85607910156,
+                    "y": 53.179302215576
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 1
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "R of R3",
+                "description": "Resistance of R3",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 53000,
+                "units": "ohms",
+                "genus": "required"
+            },
+            {
+                "ID": "id5",
+                "inputs": [
+                    {
+                        "ID": "id4"
+                    },
+                    {
+                        "ID": "id3"
+                    }
+                ],
+                "position": {
+                    "x": 634,
+                    "y": 153
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "R of R2 and R3",
+                "description": "Resistance of the parallel circuit of R2 and R3",
+                "type": "function",
+                "units": "ohms",
+                "equation": "1\/((1\/id4)+(1\/id3))",
+                "genus": "required",
+                "explanation": "R2 and R3 form a parallel circuit"
             },
             {
                 "ID": "id6",
                 "inputs": [
                     {
-                        "ID": "id1",
+                        "ID": "id2",
                         "label": ""
                     },
                     {
-                        "ID": "id4",
-                        "label": "-"
+                        "ID": "id5",
+                        "label": ""
                     }
                 ],
                 "position": {
-                    "x": 731,
-                    "y": 307
+                    "x": 504,
+                    "y": 214
                 },
                 "attemptCount": {
                     "description": 0,
@@ -524,7 +366,8 @@
                     "waveformValue": null,
                     "assistanceScore": 0
                 },
-                "status": {
+                "status": {},
+                "authorStatus": {
                     "root": {
                         "disabled": false
                     },
@@ -550,62 +393,34 @@
                     },
                     "units": {
                         "status": "entered"
-                    }
-                },
-                "name": "V across R",
-                "description": "Voltage drop across R",
-                "type": "function",
-                "units": "volts",
-                "equation": "id1-id4",
-                "genus": "required",
-                "authorStatus": {
-                    "root": {
-                        "disabled": false
-                    },
-                    "name": {
-                        "status": "entered"
                     },
                     "kind": {
                         "status": "entered"
-                    },
-                    "description": {
-                        "status": "entered"
-                    },
-                    "units": {
-                        "status": "entered"
-                    },
-                    "equation": {
-                        "status": "entered",
-                        "disabled": false
-                    },
-                    "type": {
-                        "status": "entered"
-                    },
-                    "initial": {
-                        "disabled": true,
-                        "status": ""
-                    },
-                    "inputs": {
-                        "disabled": false
                     }
                 },
-                "explanation": "Kirchoff's voltage law applied around the loop consisting of the diode, resistor and battery."
+                "name": "R of R1 R2 R3",
+                "description": "Resistance of all three resistors",
+                "type": "function",
+                "units": "ohms",
+                "equation": "id2+id5",
+                "genus": "required",
+                "explanation": "R1 is in series with the sub-circuit composed of R2 and R3"
             },
             {
                 "ID": "id7",
                 "inputs": [
                     {
-                        "ID": "id6",
+                        "ID": "id8",
                         "label": ""
                     },
                     {
-                        "ID": "id2",
+                        "ID": "id6",
                         "label": "\/"
                     }
                 ],
                 "position": {
-                    "x": 860,
-                    "y": 335
+                    "x": 618,
+                    "y": 322
                 },
                 "attemptCount": {
                     "description": 0,
@@ -618,7 +433,8 @@
                     "waveformValue": null,
                     "assistanceScore": 0
                 },
-                "status": {
+                "status": {},
+                "authorStatus": {
                     "root": {
                         "disabled": false
                     },
@@ -649,13 +465,38 @@
                         "status": "entered"
                     }
                 },
-                "name": "I around loop",
-                "description": "Current thru both ZD and R",
+                "name": "I thru R1 R2 R3",
+                "description": "Current sub-circuit of R1 R2 and R3",
                 "type": "function",
                 "units": "amps",
-                "equation": "id6\/id2",
+                "equation": "id8\/id6",
                 "genus": "required",
-                "parentNode": true,
+                "explanation": "Ohm's Law"
+            },
+            {
+                "ID": "id8",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 751,
+                    "y": 219
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
                 "authorStatus": {
                     "root": {
                         "disabled": false
@@ -663,18 +504,8 @@
                     "name": {
                         "status": "entered"
                     },
-                    "kind": {
-                        "status": "entered"
-                    },
                     "description": {
                         "status": "entered"
-                    },
-                    "units": {
-                        "status": "entered"
-                    },
-                    "equation": {
-                        "status": "entered",
-                        "disabled": false
                     },
                     "type": {
                         "status": "entered"
@@ -685,48 +516,95 @@
                     },
                     "inputs": {
                         "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
                     }
                 },
-                "explanation": "Ohm's law"
+                "name": "V across R1 R2 R3",
+                "description": "Voltage drop across sub-circuit of R1 R2 R3",
+                "type": "function",
+                "units": "volts",
+                "explanation": "Kirchhoff's voltage law",
+                "equation": "id1",
+                "genus": "required"
+            },
+            {
+                "ID": "id9",
+                "inputs": [
+                    {
+                        "ID": "id7",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 729,
+                    "y": 408
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "I thru battery",
+                "description": "Current upwards thru battery",
+                "type": "function",
+                "units": "amps",
+                "explanation": "Kirchhoff's current law",
+                "equation": "id7",
+                "genus": "required",
+                "parentNode": true
             }
         ],
         "studentModelNodes": [
             {
-                "ID": "id8",
+                "ID": "id10",
                 "inputs": [],
                 "position": {
-                    "x": 407.85607910156,
-                    "y": 60.179302215576
-                },
-                "status": {
-                    "description": {
-                        "disabled": true,
-                        "status": "correct"
-                    },
-                    "type": {
-                        "disabled": true,
-                        "status": "correct"
-                    },
-                    "units": {
-                        "disabled": true,
-                        "status": "correct"
-                    },
-                    "initial": {
-                        "disabled": true,
-                        "status": "correct"
-                    }
-                },
-                "descriptionID": "id1",
-                "initial": 12,
-                "units": "volts",
-                "type": "parameter"
-            },
-            {
-                "ID": "id11",
-                "inputs": [],
-                "position": {
-                    "x": 845.85607910156,
-                    "y": 54.179302215576
+                    "x": 386.85607910156,
+                    "y": 50.179302215576
                 },
                 "status": {
                     "description": {
@@ -747,16 +625,106 @@
                     }
                 },
                 "descriptionID": "id2",
-                "initial": 400,
+                "initial": 4700,
                 "units": "ohms",
+                "type": "parameter"
+            },
+            {
+                "ID": "id11",
+                "inputs": [],
+                "position": {
+                    "x": 530.85607910156,
+                    "y": 46.179302215576
+                },
+                "status": {
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id3",
+                "initial": 13000,
+                "units": "ohms",
+                "type": "parameter"
+            },
+            {
+                "ID": "id12",
+                "inputs": [],
+                "position": {
+                    "x": 707.85607910156,
+                    "y": 53.179302215576
+                },
+                "status": {
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id4",
+                "initial": 53000,
+                "units": "ohms",
+                "type": "parameter"
+            },
+            {
+                "ID": "id13",
+                "inputs": [],
+                "position": {
+                    "x": 860.85607910156,
+                    "y": 55.179302215576
+                },
+                "status": {
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id1",
+                "initial": 100,
+                "units": "volts",
                 "type": "parameter"
             }
         ],
         "schemas": [
             {
-                "ID": "schema3",
-                "schemaClass": "zener_diode_behavior-avalanche",
-                "name": "Zener Diode Behavior-Avalanche",
+                "ID": "schema5",
+                "schemaClass": "resistance_series",
+                "name": "Resistance of two resistors in Series",
                 "competence": {
                     "errors": 0,
                     "total": 0,
@@ -765,7 +733,7 @@
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id4, id5",
+                "nodes": "id6",
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,
@@ -774,7 +742,27 @@
                 }
             },
             {
-                "ID": "schema5",
+                "ID": "schema6",
+                "schemaClass": "resistance_parallel",
+                "name": "Resistance of two resistors in Parallel",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id5",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema8",
                 "schemaClass": "ohms_law",
                 "name": "Ohm's Law: Voltage",
                 "competence": {
@@ -794,9 +782,29 @@
                 }
             },
             {
-                "ID": "schema6",
-                "schemaClass": "kirchoff_voltage_law",
-                "name": "Kirchoff's Voltage Law",
+                "ID": "schema9",
+                "schemaClass": "kirchoff_current_law",
+                "name": "Kirchoff's Current Law",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id9",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            },
+            {
+                "ID": "schema10",
+                "schemaClass": "resistance_series",
+                "name": "Resistance of two resistors in Series",
                 "competence": {
                     "errors": 0,
                     "total": 0,
@@ -814,9 +822,9 @@
                 }
             },
             {
-                "ID": "schema7",
-                "schemaClass": "kirchoff_voltage_law",
-                "name": "Kirchoff's Voltage Law",
+                "ID": "schema11",
+                "schemaClass": "resistance_parallel",
+                "name": "Resistance of two resistors in Parallel",
                 "competence": {
                     "errors": 0,
                     "total": 0,
@@ -825,7 +833,7 @@
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id3",
+                "nodes": "id5",
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,

@@ -86,6 +86,7 @@ gulp.task('build', ['dojoBuild'], function (done){
 		'./*.php',
 		'./*.html',
 		'./*.json',
+		'form.js',
 		'version.js'];
 
 	var externalFiles = [

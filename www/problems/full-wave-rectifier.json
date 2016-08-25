@@ -12,7 +12,7 @@
             "isGraphHelpShown": true
         },
         "image": {
-            "URL": "images/PAL3/full-wave-rectifier.png"
+            "URL": "images\/PAL3\/full-wave-rectifier.png"
         },
         "taskDescription": {
             "construction": [
@@ -46,7 +46,38 @@
                     "tweakedDirection": 0,
                     "assistanceScore": 1
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
                 "name": "maximum peak voltage",
                 "description": "Maximum peak value of the voltage source",
                 "equation": "",
@@ -54,7 +85,39 @@
                 "parentNode": false,
                 "initial": 10,
                 "units": "volts",
-                "genus": "required"
+                "genus": "required",
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                }
             },
             {
                 "ID": "id2",
@@ -79,13 +142,74 @@
                     "tweakedDirection": 0,
                     "assistanceScore": 1
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
                 "name": "input voltage",
                 "type": "function",
                 "description": "input voltage source",
                 "units": "volts",
                 "equation": "id1*sinewave(id20,0)",
-                "genus": "required"
+                "genus": "required",
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                }
             },
             {
                 "ID": "id3",
@@ -101,9 +225,40 @@
                     "units": 0,
                     "equation": 0,
                     "tweakedDirection": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
                 "name": "knee voltage of CR1",
                 "description": "knee voltage of diode CR1",
                 "equation": "",
@@ -111,7 +266,39 @@
                 "parentNode": false,
                 "initial": 0.7,
                 "units": "volts",
-                "genus": "required"
+                "genus": "required",
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                }
             },
             {
                 "ID": "id4",
@@ -127,9 +314,40 @@
                     "units": 0,
                     "equation": 0,
                     "tweakedDirection": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    }
+                },
                 "name": "knee voltage of CR2",
                 "equation": "",
                 "type": "parameter",
@@ -137,7 +355,39 @@
                 "initial": 0.7,
                 "units": "volts",
                 "genus": "required",
-                "description": "knee voltage of CR2"
+                "description": "knee voltage of CR2",
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                }
             },
             {
                 "ID": "id7",
@@ -153,9 +403,40 @@
                     "units": 0,
                     "equation": 0,
                     "tweakedDirection": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
                 "name": "R of RL",
                 "description": "Resistance of load resistor RL",
                 "type": "parameter",
@@ -163,7 +444,39 @@
                 "parentNode": false,
                 "initial": 1000,
                 "units": "ohms",
-                "genus": "required"
+                "genus": "required",
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                }
             },
             {
                 "ID": "id11",
@@ -190,14 +503,76 @@
                     "tweakedDirection": 0,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
                 "name": "Output V",
                 "description": "Voltage across load resistance",
                 "type": "function",
                 "units": "volts",
                 "equation": "id22+id21",
                 "genus": "required",
-                "parentNode": false
+                "parentNode": false,
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                },
+                "explanation": "Here's where we combine the voltages from the two sources, upper and lower winding, that were derived separately using superposition."
             },
             {
                 "ID": "id12",
@@ -220,13 +595,74 @@
                     "tweakedDirection": 0,
                     "assistanceScore": 1
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    }
+                },
                 "name": "V across upper half of secondary winding",
                 "type": "function",
                 "units": "volts",
                 "equation": "id2",
                 "genus": "required",
-                "description": "voltage coupled between the upper end of the secondary transformer and center tap"
+                "description": "voltage coupled between the upper end of the secondary transformer and center tap",
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                }
             },
             {
                 "ID": "id13",
@@ -249,13 +685,75 @@
                     "tweakedDirection": 0,
                     "assistanceScore": 1
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    }
+                },
                 "name": "V across lower half of secondary winding",
                 "genus": "required",
                 "description": "voltage coupled between the center tap and the lower end of the secondary winding of the transformer",
                 "type": "function",
                 "units": "volts",
-                "equation": "-id2"
+                "equation": "-id2",
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                },
+                "explanation": "Because the center tap is at ground, the lower terminal of the secondary winding is negative with respect to the center tap. \u00a0That is, as the primary swings positive, the center also swings positive with respect to the lower tap. \u00a0However, we view this as the center holding still at zero, then its the lower tap swinging negative."
             },
             {
                 "ID": "id18",
@@ -282,13 +780,75 @@
                     "waveformValue": null,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
                 "name": "V across CR2",
                 "description": "Voltage drop across diode CR2",
                 "type": "function",
                 "units": "volts",
                 "equation": "if(((id24>id4),id4),id24)",
-                "genus": "required"
+                "genus": "required",
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                },
+                "explanation": "If the diode were an open, and the voltage across it were higher than the knee voltage, then the diode would conduct enough current to reduce the voltage to the knee voltage. \u00a0On the other hand, if the applied voltage were less than the knee voltage, then the diode would act like an open (i.e., it would not conduct any current) so the voltage across it would be the applied voltage."
             },
             {
                 "ID": "id19",
@@ -315,13 +875,75 @@
                     "waveformValue": null,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
                 "name": "V across CR1",
                 "description": "Voltage drop across diode CR1",
                 "type": "function",
                 "units": "volts",
                 "equation": "if(((id25>id3),id3),id25)",
-                "genus": "required"
+                "genus": "required",
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                },
+                "explanation": "<span style=\"font-size: 13.3333px;\">If the diode were an open, and the voltage across it were higher than the knee voltage, then the diode would conduct enough current to reduce the voltage to the knee voltage. \u00a0On the other hand, if the applied voltage were less than the knee voltage, then the diode would act like an open (i.e., it would not conduct any current) so the voltage across it would be the applied voltage.<\/span>"
             },
             {
                 "ID": "id20",
@@ -341,7 +963,38 @@
                     "waveformValue": null,
                     "assistanceScore": 1
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
                 "name": "wavelength",
                 "description": "Length of sine wave input voltage",
                 "equation": "",
@@ -349,7 +1002,39 @@
                 "parentNode": false,
                 "initial": 40,
                 "units": "milliseconds",
-                "genus": "required"
+                "genus": "required",
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    }
+                }
             },
             {
                 "ID": "id21",
@@ -378,14 +1063,75 @@
                     "waveformValue": null,
                     "assistanceScore": 0
                 },
-                "status": {},
-                "name": "V from lower winding",
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "Output V from lower",
                 "description": "Output V from lower winding alone",
                 "type": "function",
                 "units": "volts",
                 "equation": "id13-id18",
                 "genus": "required",
-                "explanation": "Using superposition, this is the output voltage due to the lower winding alone."
+                "explanation": "<span style=\"font-size: 13.3333px;\">Using superposition, this variable represents is the output voltage from the lower winding acting through CR2 diode. \u00a0There is a loop involving the diode, the lower winding and the load resistor. \u00a0This output voltage is the voltage across the load resistor, so by Kirchoff's law, it is\u00a0<\/span><span style=\"font-size: 13.3333px;\">(V across lower winding - V across CR2).<\/span><span style=\"font-size: 13.3333px;\"><br \/><br \/>Here's another way to look it it. When the lower winding's bottom terminal is positive, then the diode conducts and drops the knee voltage, so this quantity (i.e., output V from lower) is (V across lower winding - V across CR2). \u00a0 \u00a0 When the lower winding's bottom terminal is negative, then the diode does not conduct, and drops whatever is applied to it, so this quantity (output V from upper) is zero, which is also (V across lower winding - V across CR2). \u00a0 \u00a0<\/span>",
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                }
             },
             {
                 "ID": "id22",
@@ -414,14 +1160,75 @@
                     "waveformValue": null,
                     "assistanceScore": 0
                 },
-                "status": {},
-                "name": "V from upper winding",
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "Output V from upper",
                 "description": "Output V from upper winding alone",
                 "type": "function",
                 "units": "volts",
                 "equation": "id12-id19",
                 "genus": "required",
-                "explanation": "Using superposition, this is the output voltage if the lower winding is ignored."
+                "explanation": "Using superposition, this is the output voltage from the upper winding acting through CR1 diode. \u00a0<span style=\"font-size: 13.3333px;\">Using superposition, this variable represents is the output voltage from the upper winding acting through CR1 diode. \u00a0There is a loop involving the diode, the upper winding and the load resistor. \u00a0This output voltage is the voltage across the load resistor, so by Kirchoff's law, it is\u00a0<\/span><span style=\"font-size: 13.3333px;\">(V across upper winding - V across CR1).<\/span><span style=\"font-size: 13.3333px;\"><br \/><br \/>Here's another way to look it it.\u00a0<\/span>When the upper winding's top terminal is positive, then the diode conducts and drops the knee voltage, so this quantity (output V from upper) is (V across upper winding - V across CR1). \u00a0 \u00a0 when the upper winding's top terminal is negative, then the diode does not conduct, and drops whatever is applied to it, so this quantity (output V from upper) is zero, which is also (V across upper winding - V across CR1).",
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                }
             },
             {
                 "ID": "id23",
@@ -432,7 +1239,7 @@
                     },
                     {
                         "ID": "id7",
-                        "label": "/"
+                        "label": "\/"
                     }
                 ],
                 "position": {
@@ -450,14 +1257,76 @@
                     "waveformValue": null,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
                 "name": "I thru R",
                 "description": "Current through resistor R",
                 "type": "function",
                 "units": "amps",
-                "equation": "id11/id7",
+                "equation": "id11\/id7",
                 "genus": "required",
-                "parentNode": true
+                "parentNode": true,
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                },
+                "explanation": "Ohm's law."
             },
             {
                 "ID": "id24",
@@ -482,14 +1351,75 @@
                     "waveformValue": null,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
                 "name": "V across CR2 when open",
-                "description": "Voltage drop across CR2 when it is in reverse biased",
+                "description": "Voltage drop across CR2 when it is reverse biased",
                 "type": "function",
                 "units": "volts",
                 "equation": "id13",
-                "explanation": "If the diode were an open circuit, then this node represents the voltage drop across it measure from left to right.  However, there are two voltage sources in this circuit: the upper and lower windings. We can user superposition and analyze them separately. So here we just consider the lower winding as a source. <br /><br />If CR2 is open, it just sees the lower winding's voltage on its left and ground on its right, so it's voltage drop left to right is just the lower winding's voltage.",
-                "genus": "required"
+                "explanation": "If the diode were an open circuit, then this node represents the voltage drop across the diode measures from left to right. \u00a0 However, there are two voltage sources in this circuit: the upper and lower windings. \u00a0We can user superposition and analyze them separately. \u00a0So here we just consider the lower winding as a source. \u00a0<br \/><br \/>If CR2 is open, it just sees the lower winding's voltage on its left and ground on its right, so it's voltage drop left to right is just the lower winding's voltage.",
+                "genus": "required",
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                }
             },
             {
                 "ID": "id25",
@@ -514,14 +1444,75 @@
                     "waveformValue": null,
                     "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
                 "name": "V across CR1 when open",
-                "description": "Voltage drop across diode CR1 when it is in reverse biased",
+                "description": "Voltage drop across diode CR1 when it is reverse biased",
                 "type": "function",
                 "units": "volts",
                 "equation": "id12",
-                "explanation": "Using superposition, we ignore the lower winding and only consider the upper winding as a voltage source. The drop across CR1 from left to right if it were an open circuit is just the upper winding's voltage because the right side of CR1 would be at ground.",
-                "genus": "required"
+                "explanation": "Using superposition, we ignore the lower winding and only consider the upper winding as a voltage source. \u00a0The drop across CR1 from left to right if it were an open circuit is just the upper winding's voltage because the right side of CR1 would be at ground.",
+                "genus": "required",
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "equation": {
+                        "status": "entered",
+                        "disabled": false
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    }
+                }
             }
         ],
         "studentModelNodes": [
@@ -689,6 +1680,96 @@
                 "units": "volts",
                 "type": "function",
                 "equation": "id16"
+            },
+            {
+                "ID": "id29",
+                "inputs": [],
+                "position": {
+                    "x": 399.85607910156,
+                    "y": 42.179302215576
+                },
+                "status": {
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id4",
+                "initial": 0.7,
+                "units": "volts",
+                "type": "parameter"
+            },
+            {
+                "ID": "id30",
+                "inputs": [],
+                "position": {
+                    "x": 876.85607910156,
+                    "y": 40.179302215576
+                },
+                "status": {
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id3",
+                "initial": 0.7,
+                "units": "volts",
+                "type": "parameter"
+            },
+            {
+                "ID": "id31",
+                "inputs": [],
+                "position": {
+                    "x": 1029.8560791016,
+                    "y": 38.179302215576
+                },
+                "status": {
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id7",
+                "initial": 1000,
+                "units": "ohms",
+                "type": "parameter"
             }
         ],
         "schemas": [
@@ -793,26 +1874,6 @@
                 }
             },
             {
-                "ID": "schema26",
-                "schemaClass": "kirchoff_voltage_law",
-                "name": "Kirchoff's Voltage Law",
-                "competence": {
-                    "errors": 0,
-                    "total": 0,
-                    "attempts": 0,
-                    "correctScore": 0,
-                    "timeSpent": 0,
-                    "values": {}
-                },
-                "nodes": "id11",
-                "rates": {},
-                "difficulty": {
-                    "isolation": 1,
-                    "cues": 1,
-                    "phrases": 1
-                }
-            },
-            {
                 "ID": "schema27",
                 "schemaClass": "kirchoff_voltage_law",
                 "name": "Kirchoff's Voltage Law",
@@ -873,9 +1934,9 @@
                 }
             },
             {
-                "ID": "schema30",
-                "schemaClass": "resistor_behavior",
-                "name": "Resistor Behavior",
+                "ID": "schema31",
+                "schemaClass": "electronic_superposition",
+                "name": "Superposition",
                 "competence": {
                     "errors": 0,
                     "total": 0,
@@ -884,7 +1945,7 @@
                     "timeSpent": 0,
                     "values": {}
                 },
-                "nodes": "id7, id23",
+                "nodes": "id11",
                 "rates": {},
                 "difficulty": {
                     "isolation": 1,

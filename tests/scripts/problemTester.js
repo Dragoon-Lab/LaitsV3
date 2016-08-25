@@ -82,27 +82,28 @@ var startSelenium = function(){
 			next();
 		}
 	});
-
 };
 
-startSelenium();
-
-//Fetch the problem
-var options = cli; //.parse();
-var problems = options.problem.split(" ").join("");
-var problemIndex = 0;
-problems = problems.split(",");
 var next = function(){
 	if(problems[problemIndex]) {
 		options.problem = problems[problemIndex];
 		fetchProblem(options);
 		problemIndex++;
 	}else{
-		stopSelenium();
+		//stopSelenium();
 	}
-
 };
 
+//startSelenium(); // let the shell script handle this
+
+//Fetch the problem
+var options = cli; //.parse();
+var problems = options.problem.split(" ").join("");
+var problemIndex = 0;
+problems = problems.split(",");
+
+// start the first problem
+next();
 
 function stopSelenium(){
 	var cmd = "curl localhost:4444/selenium-server/driver/?cmd=shutDownSeleniumServer";
@@ -292,10 +293,13 @@ function generateGraphWindowTest(){
 		dtest.menuOpenTable(client);
 	})));
 
-	testName = "Should switch to Graph tab ";
+	testName = "Should switch to Graph tab and see the completion message";
 
 	suite.addTest(new Test(testName, async(function(){
 		dtest.selectGraphTab(client);
+        var message = dtest.getGraphResultText(client);
+        assert(message == "Congratulations, your model's behavior matches the author's!",
+            "Message text was " + message + " instead of Congratulations, your model's behavior matches the author's!");
 	})));
 
 	return suite;

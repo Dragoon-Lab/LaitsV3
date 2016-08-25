@@ -1,0 +1,253 @@
+{
+    "task": {
+        "taskName": "CE_transistor_base_current",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 1,
+            "integrationMethod": "Eulers Method",
+            "units": "seconds"
+        },
+        "properties": {
+            "isGraphHelpShown": true
+        },
+        "image": {
+            "URL": "http:\/\/i.imgur.com\/lt3JnWo.png"
+        },
+        "taskDescription": {
+            "construction": [
+                "When a transistor circuit has two loops that share the emitter, as shown in the schematic above, the transistor is being used in \"common emitter\" configuration.  In this configuration, the base current controls the collector current.  In particular, the collector current is beta times the base current, where beta is a parameter of the transistor and is usually around 100.  However, this assumes that the transistor is operating in its active region, which means that the base-emitter junction is forward biased and the collector-base junction is reverse biased.  For the NPN transistor shown and assuming the emitter is a ground, the base voltage is +0.7 volts (the knee voltage) and the collector voltage is several volts more positive than the base voltage.  Construct a model of the given circuit and graph the collector current as a function of the base current. "
+            ],
+            "incremental": [
+                "When a transistor circuit has two loops that share the emitter, as shown in the schematic above, the transistor is being used in \"common emitter\" configuration.  In this configuration, the base current controls the collector current.  In particular, the collector current is about beta times the base current, where beta is a parameter of the transistor and is usually around 100.  However, this assumes that the transistor is operating in its active region, which means that the base-emitter junction is forward biased and the collector-base junction is reverse biased.  For the NPN transistor shown and assuming the emitter is a ground, the base voltage is +0.7 volts (the knee voltage) and the collector voltage is several volts more positive than the base voltage.  Indicate what will happen if the base current increases."
+            ],
+            "execution": [
+                "When a transistor circuit has two loops that share the emitter, as shown in the schematic above, the transistor is being used in \"common emitter\" configuration.  In this configuration, the base current controls the collector current.  In particular, the collector current is beta times the base current, where beta is a parameter of the transistor and is usually around 100.  However, this assumes that the transistor is operating in its active region, which means that the base-emitter junction is forward biased and the collector-base junction is reverse biased.  For the NPN transistor shown and assuming the emitter is a ground, the base voltage is +0.7 volts (the knee voltage) and the collector voltage is several volts more positive than the base voltage.   "
+            ],
+            "waveform": [
+                "When a transistor circuit has two loops that share the emitter, as shown in the schematic above, the transistor is being used in \"common emitter\" configuration.  In this configuration, the base current controls the collector current.  In particular, the collector current is beta times the base current, where beta is a parameter of the transistor and is usually around 100.  However, this assumes that the transistor is operating in its active region, which means that the base-emitter junction is forward biased and the collector-base junction is reverse biased.  For the NPN transistor shown and assuming the emitter is a ground, the base voltage is +0.7 volts (the knee voltage) and the collector voltage is several volts more positive than the base voltage.  "
+            ]
+        },
+        "lessonsLearned": [],
+        "increment": [
+            {
+                "tweakedNode": "id2",
+                "tweakDirection": "Increase"
+            }
+        ],
+        "executionIterations": null,
+        "givenModelNodes": [
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 423.85607910156,
+                    "y": 100.17929840088
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "Base current",
+                "description": "Current into the base due to the current source",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 3,
+                "units": "microamps",
+                "genus": "required"
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 642.85607910156,
+                    "y": 102.17929840088
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": true
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "inputs": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "kind": {
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    }
+                },
+                "name": "Beta",
+                "description": "beta of the transistor",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 110,
+                "genus": "required",
+                "units": "none"
+            },
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id3",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 538,
+                    "y": 206
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "tweakedDirection": 0,
+                    "executionValue": 0,
+                    "waveformValue": null,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "authorStatus": {
+                    "root": {
+                        "disabled": false
+                    },
+                    "name": {
+                        "status": "entered"
+                    },
+                    "description": {
+                        "status": "entered"
+                    },
+                    "type": {
+                        "status": "entered"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": ""
+                    },
+                    "inputs": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "entered"
+                    },
+                    "units": {
+                        "status": "entered"
+                    },
+                    "kind": {
+                        "status": "entered"
+                    }
+                },
+                "name": "Collector current",
+                "description": "Current into the collector",
+                "type": "function",
+                "units": "microamps",
+                "equation": "id2*id3",
+                "genus": "required",
+                "explanation": "When a transistor is in CE configuration and biased to be active, then the collector current is beta \u00a0times the base current.",
+                "parentNode": true
+            }
+        ],
+        "studentModelNodes": [],
+        "schemas": [
+            {
+                "ID": "schema1",
+                "schemaClass": "CE_transistor_behavior",
+                "name": "CE Transistor Behavior",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id4",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 1
+                }
+            }
+        ]
+    }
+}
