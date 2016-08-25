@@ -1,18 +1,45 @@
 {
     "Science": {
         "Electronics": {
-            "Basics": {
-                "Ohm's Law": "resistor-battery-series",
-                "Kirchoff's Voltage Law": "two-resistors-in-series",
-                "Kirchoff's Current Law": "kcl"
-
+            "Fundamental laws": {
+                "Ohm's Law": "resistor-battery-series"
             },
-            "RLC": {
-                "Resistor Capacitor 1": "resistor-capacitor-1",
-                "Resistor Capacitor 2": "resistor-capacitor-2",
-                "Resistor Inductor": "resistor-inductor"
-
-            }
+            "Resistors in series and parallel": {
+                "Series": "two-resistors-in-series--ask-I2",
+                "Parallel": "2-resistors-in-parallel-3",
+                "Series-parallel":"3-r-in-series-parallel-ask-I"
+            },
+            "Resistor + capacitor or inductor or diode": {
+                "Resistor + capacitor": "resistor-capacitor-2",
+                "Resistor + diode": "diode-resistor",
+                "Resistor + zener diode": "zener-diode-resistor"
+            },
+            "Limiters": {
+                "Parallel positive limiter with positive bias": "positive-biased-parallel-positive-limiter"
+            },
+            "Clampers":{
+                "Positive clamper": "positive-clamper"
+            },
+            "Rectifiers": {
+                "Full wave rectifier": "full-wave-rectifier"
+            },
+            "Voltage regulators": {
+                "Zener diode voltage regulator": "zener-voltage-regulator"
+            },
+            "Voltage doublers": {
+                "Full wave voltage doubler": "voltage-doubler-full-wave"
+            },
+            "Single transistor amplifiers": {
+                "CE battery bias AC analysis": "CE_transistor_base_current",
+                "CE battery bias DC analysis": "CE-transistor-battery-bias",
+                "CE fixed bias": "CE-transistor-fixed-bias-1",
+                "CC AC analysis": "common-collector-transistor-amplifier",
+                "CB AC analysis": "CB-transistor-amp-1"
+            },
+            "Multi-transistor amplifiers": {
+                "Two CE stages with RC coupling": "Two-stage-CE-amp-RC-coupled-1",
+                "Push-pull CC": "Push-pull-CC-amp-1"
+          }
         },
         "Human Physiology": {
             "Blood Glucose": {
