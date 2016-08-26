@@ -4,25 +4,28 @@
         "time": {
             "start": 1949,
             "end": 2009,
-            "step": 1.0,
-            "units": "Years"
+            "step": 1,
+            "units": "Years",
+            "integrationMethod": "Eulers Method"
         },
         "properties": {
             "phase": "",
             "type": ""
         },
         "image": {
-            "URL": "images/moose_wolves.png"
+            "URL": "images\/moose_wolves.png"
         },
-        "taskDescription": [
-            "Assumptions:",
-	    " * The wolf population is 2 in the first year (1949).",
-	    " * Births and deaths are the only change in the population. Immigration and emigration do not occur.",
-        " * The number of wolf births each year is the wolf birth probability times the wolf population",
-        " * The probability of a wolf giving birth each year is 75%.",
-        " * The number of wolf deaths each year is the wolf death probability times the wolf population.",
-        " * The probability of a wolf dying each year is 67%."
-        ],
+        "taskDescription": {
+            "construction": [
+                "Assumptions:",
+                " * The wolf population is 2 in the first year (1949).",
+                " * Births and deaths are the only change in the population. Immigration and emigration do not occur.",
+                " * The number of wolf births each year is the wolf birth probability times the wolf population",
+                " * The probability of a wolf giving birth each year is 75%.",
+                " * The number of wolf deaths each year is the wolf death probability times the wolf population.",
+                " * The probability of a wolf dying each year is 67%."
+            ]
+        },
         "givenModelNodes": [
             {
                 "ID": "id1",
@@ -35,8 +38,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 666.95365868594,
+                    "y": 50
                 },
                 "attemptCount": {
                     "description": 0,
@@ -58,8 +61,8 @@
                 "ID": "id2",
                 "inputs": [],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 410,
+                    "y": 50
                 },
                 "attemptCount": {
                     "description": 0,
@@ -87,8 +90,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 530.02312856027,
+                    "y": 50
                 },
                 "attemptCount": {
                     "description": 0,
@@ -116,8 +119,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 804.04555260777,
+                    "y": 50
                 },
                 "attemptCount": {
                     "description": 0,
@@ -138,8 +141,8 @@
                 "ID": "id5",
                 "inputs": [],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 924.04555260777,
+                    "y": 50
                 },
                 "attemptCount": {
                     "description": 0,
@@ -157,6 +160,8 @@
                 "initial": 0.67
             }
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [],
+        "lessonsLearned": [],
+        "increment": []
     }
 }

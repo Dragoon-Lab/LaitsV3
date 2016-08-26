@@ -20,17 +20,7 @@
       "- The zebra population is 20 in the first year (1950).",
       "- Births and deaths are the only change in the population. Immigration and emigration do not occur.",
       "- The probability of a zebra giving birth (birth rate) each year is 50%.",
-      "- The probability of a zebra dying (death rate) each year is 30%.",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
+      "- The probability of a zebra dying (death rate) each year is 30%."
     ],
     "lessonsLearned": "",
     "givenModelNodes": [

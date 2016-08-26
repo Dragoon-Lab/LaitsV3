@@ -5,31 +5,34 @@
             "start": 1950,
             "end": 2009,
             "step": 1,
-            "units": "Years"
+            "units": "Years",
+            "integrationMethod": "Eulers Method"
         },
         "properties": {
             "phase": "",
             "type": "debug"
         },
         "image": {
-            "URL": "images/isle6pic.jpg"
+            "URL": "images\/isle6pic.jpg"
         },
-        "taskDescription": [
-            "Assumptions:",
-            " * Births and deaths are the only change in the population.",
-            " * The wolf population is 20 in the first year.",
-            " * The number of wolf deaths each year is the wolf death probability times the wolf population.",
-            " * The probability of a wolf dying each year is 25%.",
-            " * The number of wolf births is wolf birth probability times the wolf population.",
-            " * The wolf birth probability is the moose pop. times the effect of moose on wolves.",
-            " * The effect of moose on wolves is 0.00075.",
-            " * The moose population is 500 in the first year.",
-            " * The number of moose births each year is the moose birth probability times the moose population",
-            " * The probability of a moose giving birth each year is 10%.",
-            " * The number of moose deaths is the moose death probability times the moose pop.",
-            " * The mose death probability is the wolf pop. times the effect of wolves on moose.",
-            " * The effect of wolves on moose is 0.003."
-        ],
+        "taskDescription": {
+            "construction": [
+                "Assumptions:",
+                " * Births and deaths are the only change in the population.",
+                " * The wolf population is 20 in the first year.",
+                " * The number of wolf deaths each year is the wolf death probability times the wolf population.",
+                " * The probability of a wolf dying each year is 25%.",
+                " * The number of wolf births is wolf birth probability times the wolf population.",
+                " * The wolf birth probability is the moose pop. times the effect of moose on wolves.",
+                " * The effect of moose on wolves is 0.00075.",
+                " * The moose population is 500 in the first year.",
+                " * The number of moose births each year is the moose birth probability times the moose population",
+                " * The probability of a moose giving birth each year is 10%.",
+                " * The number of moose deaths is the moose death probability times the moose pop.",
+                " * The mose death probability is the wolf pop. times the effect of wolves on moose.",
+                " * The effect of wolves on moose is 0.003."
+            ]
+        },
         "givenModelNodes": [
             {
                 "ID": "id1",
@@ -42,8 +45,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 507.81773974799,
+                    "y": 149.66328378304
                 },
                 "attemptCount": {
                     "description": 0,
@@ -71,8 +74,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 622.33677917202,
+                    "y": 276.66199211506
                 },
                 "attemptCount": {
                     "description": 0,
@@ -101,8 +104,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 536.98791562701,
+                    "y": 367.98619101607
                 },
                 "attemptCount": {
                     "description": 0,
@@ -130,8 +133,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 663.21043411942,
+                    "y": 408.6394594405
                 },
                 "attemptCount": {
                     "description": 0,
@@ -153,8 +156,8 @@
                 "ID": "id5",
                 "inputs": [],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 410,
+                    "y": 51.415623353362
                 },
                 "attemptCount": {
                     "description": 0,
@@ -182,8 +185,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 909.41663678548,
+                    "y": 367.4441394032
                 },
                 "attemptCount": {
                     "description": 0,
@@ -211,8 +214,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 937.29079174473,
+                    "y": 148.64492395056
                 },
                 "attemptCount": {
                     "description": 0,
@@ -240,8 +243,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 783.21043411942,
+                    "y": 408.7321468723
                 },
                 "attemptCount": {
                     "description": 0,
@@ -263,8 +266,8 @@
                 "ID": "id9",
                 "inputs": [],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 1034.6398446516,
+                    "y": 50
                 },
                 "attemptCount": {
                     "description": 0,
@@ -285,8 +288,8 @@
                 "ID": "id10",
                 "inputs": [],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 852.64300793133,
+                    "y": 548.62736328833
                 },
                 "attemptCount": {
                     "description": 0,
@@ -307,8 +310,8 @@
                 "ID": "id11",
                 "inputs": [],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 594.37237059565,
+                    "y": 548.66768346875
                 },
                 "attemptCount": {
                     "description": 0,
@@ -336,8 +339,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 823.64314386697,
+                    "y": 276.2810756769
                 },
                 "attemptCount": {
                     "description": 0,
@@ -563,8 +566,8 @@
                 "ID": "id19",
                 "inputs": [],
                 "position": {
-                    "x": 691.7451782226562,
-                    "y": 33.74516677856445
+                    "x": 691.74517822266,
+                    "y": 33.745166778564
                 },
                 "status": {
                     "description": {
@@ -588,8 +591,8 @@
                 "ID": "id20",
                 "inputs": [],
                 "position": {
-                    "x": 869.7451782226562,
-                    "y": 490.74517822265625
+                    "x": 869.74517822266,
+                    "y": 490.74517822266
                 },
                 "status": {
                     "description": {
@@ -613,8 +616,8 @@
                 "ID": "id21",
                 "inputs": [],
                 "position": {
-                    "x": 858.7451782226562,
-                    "y": 29.745166778564453
+                    "x": 858.74517822266,
+                    "y": 29.745166778564
                 },
                 "status": {
                     "description": {
@@ -633,8 +636,8 @@
                 "ID": "id22",
                 "inputs": [],
                 "position": {
-                    "x": 698.7451782226562,
-                    "y": 485.74517822265625
+                    "x": 698.74517822266,
+                    "y": 485.74517822266
                 },
                 "status": {
                     "description": {
@@ -649,6 +652,8 @@
                 "descriptionID": "id4",
                 "type": "parameter"
             }
-        ]
+        ],
+        "lessonsLearned": [],
+        "increment": []
     }
 }

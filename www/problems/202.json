@@ -4,17 +4,21 @@
         "time": {
             "start": 0,
             "end": 10,
-            "step": 0.1,
-            "units": "years"
+            "step": 1,
+            "units": "years",
+            "integrationMethod": "Eulers Method"
         },
         "properties": {
             "phase": "Challenge",
-            "type": "Whole"
+            "type": "Whole",
+            "isGraphHelpShown": true
         },
         "image": {
-            "URL": "http://laits.engineering.asu.edu/laits_images/1.jpg"
+            "URL": "images\/lake.png"
         },
-        "taskDescription": "Problem: You are still interested in the same population of water fowl, but you now want to include information on how the rate of population growth is constrained by environmental factors (i.e. limited by food and space). Suppose the urban lake starts with a population size of 10 water fowl and the population growth rate is 40% per year, but the lake can only support a maximum of 50 individuals. Goal: Graph the water fowl population over 10 years. Hint: 1. Use the logistic equation form (K-N)/K to calculate environmental resistance, p. 242 2. Only use up to the thousandth decimal place. ",
+        "taskDescription": {
+            "construction": "Problem: You are still interested in the same population of water fowl, but you now want to include information on how the rate of population growth is constrained by environmental factors (i.e. limited by food and space). Suppose the urban lake starts with a population size of 10 water fowl and the population growth rate is 40% per year, but the lake can only support a maximum of 50 individuals. Goal: Graph the water fowl population over 10 years. Hint: 1. Use the logistic equation form (K-N)\/K to calculate environmental resistance, p. 242 2. Only use up to the thousandth decimal place. "
+        },
         "givenModelNodes": [
             {
                 "ID": "id1",
@@ -27,8 +31,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 693.04553046657,
+                    "y": 53.167293875163
                 },
                 "attemptCount": {
                     "description": 0,
@@ -43,14 +47,14 @@
                 "parentNode": false,
                 "units": "",
                 "description": "The proportion of the carrying capacity not utilized by the water fowl",
-                "equation": "id3 / id2"
+                "equation": "id3 \/ id2"
             },
             {
                 "ID": "id2",
                 "inputs": [],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 818.0215504118,
+                    "y": 50
                 },
                 "attemptCount": {
                     "description": 0,
@@ -78,8 +82,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 753.71904031791,
+                    "y": 144.07271001666
                 },
                 "attemptCount": {
                     "description": 0,
@@ -110,8 +114,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 549.23594152591,
+                    "y": 95.756375065272
                 },
                 "attemptCount": {
                     "description": 0,
@@ -132,8 +136,8 @@
                 "ID": "id5",
                 "inputs": [],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 410,
+                    "y": 71.210395392256
                 },
                 "attemptCount": {
                     "description": 0,
@@ -158,8 +162,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 633.71904031791,
+                    "y": 196.02042402321
                 },
                 "attemptCount": {
                     "description": 0,
@@ -178,6 +182,8 @@
                 "equation": "+ id4"
             }
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [],
+        "lessonsLearned": [],
+        "increment": []
     }
 }

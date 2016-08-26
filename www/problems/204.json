@@ -4,17 +4,21 @@
         "time": {
             "start": 0,
             "end": 10,
-            "step": 0.05,
-            "units": "years"
+            "step": 1,
+            "units": "years",
+            "integrationMethod": "Eulers Method"
         },
         "properties": {
             "phase": "Challenge",
-            "type": "Whole"
+            "type": "Whole",
+            "isGraphHelpShown": true
         },
         "image": {
-            "URL": "http://laits.engineering.asu.edu/laits_images/2.jpg"
+            "URL": "images\/lake.png"
         },
-        "taskDescription": " The urban lake is home to two interacting populations: the water fowl and domestic cat. The urban lake starts with a population of 10 water fowl and 2 domestic cats. The water fowl birth rate is 2 per year per bird and deaths can decrease the population size by 30% per cat per year. Similarly, domestic cat births can increase the cat population size by 9% per bird per year and deaths can decrease the population size at a rate of 1 per year per cat. The water fowl population also serves as a resource (i.e. food) for the domestic cats. Hence, the size of the cat population directly affects the number of birds that die each year (e.g. doubling the cat population doubles the number of birds that die each year). The water fowl population is an important supplementary source of food needed to support a larger cat population. The size of the water fowl population also directly affects the number of cats that are born each year. Goal: Graph the water fowl and domestic cat populations over 10 years. Explore how changing initial population size, birth rate, and death rate of the two populations affect population dynamics. ",
+        "taskDescription": {
+            "construction": " The urban lake is home to two interacting populations: the water fowl and domestic cat. The urban lake starts with a population of 10 water fowl and 2 domestic cats. The water fowl birth rate is 2 per year per bird and deaths can decrease the population size by 30% per cat per year. Similarly, domestic cat births can increase the cat population size by 9% per bird per year and deaths can decrease the population size at a rate of 1 per year per cat. The water fowl population also serves as a resource (i.e. food) for the domestic cats. Hence, the size of the cat population directly affects the number of birds that die each year (e.g. doubling the cat population doubles the number of birds that die each year). The water fowl population is an important supplementary source of food needed to support a larger cat population. The size of the water fowl population also directly affects the number of cats that are born each year. Goal: Graph the water fowl and domestic cat populations over 10 years. Explore how changing initial population size, birth rate, and death rate of the two populations affect population dynamics. "
+        },
         "givenModelNodes": [
             {
                 "ID": "id1",
@@ -27,8 +31,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 516.52880476108,
+                    "y": 371.53302528629
                 },
                 "attemptCount": {
                     "description": 0,
@@ -59,8 +63,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 656.72956435186,
+                    "y": 161.11147070243
                 },
                 "attemptCount": {
                     "description": 0,
@@ -91,8 +95,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 786.44829139084,
+                    "y": 157.24114218801
                 },
                 "attemptCount": {
                     "description": 0,
@@ -120,8 +124,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 938.52896714989,
+                    "y": 364.82329339917
                 },
                 "attemptCount": {
                     "description": 0,
@@ -149,8 +153,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 640.25319991219,
+                    "y": 268.6189061531
                 },
                 "attemptCount": {
                     "description": 0,
@@ -179,8 +183,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 810.3341464743,
+                    "y": 264.68768925665
                 },
                 "attemptCount": {
                     "description": 0,
@@ -202,8 +206,8 @@
                 "ID": "id7",
                 "inputs": [],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 427.85607910156,
+                    "y": 499.17929077148
                 },
                 "attemptCount": {
                     "description": 0,
@@ -224,8 +228,8 @@
                 "ID": "id8",
                 "inputs": [],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 540.89543672048,
+                    "y": 65.097597627178
                 },
                 "attemptCount": {
                     "description": 0,
@@ -246,8 +250,8 @@
                 "ID": "id9",
                 "inputs": [],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 890.80348716959,
+                    "y": 50
                 },
                 "attemptCount": {
                     "description": 0,
@@ -268,8 +272,8 @@
                 "ID": "id10",
                 "inputs": [],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 1045.6411592348,
+                    "y": 447.215047343
                 },
                 "attemptCount": {
                     "description": 0,
@@ -287,6 +291,8 @@
                 "initial": 1
             }
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [],
+        "lessonsLearned": [],
+        "increment": []
     }
 }

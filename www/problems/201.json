@@ -4,17 +4,20 @@
         "time": {
             "start": 0,
             "end": 10,
-            "step": 0.1,
-            "units": "years"
+            "step": 1,
+            "units": "years",
+            "integrationMethod": "Eulers Method"
         },
         "properties": {
             "phase": "Challenge",
             "type": "Whole"
         },
         "image": {
-            "URL": "http://laits.engineering.asu.edu/laits_images/1.jpg"
+            "URL": "images\/lake.png"
         },
-        "taskDescription": " Problem: You are interested in a population of a water fowl and how fast it will grow in a newly created urban lake. Suppose the urban lake starts with a population of 10 birds and the population growth rate is 40% per year. Goal: Graph the water fowl population over 10 years. Hint: 1. Only use up to the thousandth decimal place. ",
+        "taskDescription": {
+            "construction": " Problem: You are interested in a population of a water fowl and how fast it will grow in a newly created urban lake. Suppose the urban lake starts with a population of 10 birds and the population growth rate is 40% per year. Goal: Graph the water fowl population over 10 years. Hint: 1. Only use up to the thousandth decimal place. "
+        },
         "givenModelNodes": [
             {
                 "ID": "id1",
@@ -27,8 +30,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 530.50385147701,
+                    "y": 50
                 },
                 "attemptCount": {
                     "description": 0,
@@ -49,8 +52,8 @@
                 "ID": "id2",
                 "inputs": [],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 650.50385147701,
+                    "y": 50
                 },
                 "attemptCount": {
                     "description": 0,
@@ -75,8 +78,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 410,
+                    "y": 50
                 },
                 "attemptCount": {
                     "description": 0,
@@ -95,6 +98,8 @@
                 "equation": "+ id1"
             }
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [],
+        "lessonsLearned": [],
+        "increment": []
     }
 }

@@ -30,14 +30,7 @@
       "-- there are 4 lions initially",
       "-- there is a 0.5 probability of a lion being born per year",
       "-- the lion carrying capacity is 65",
-      "-- the probability of a lion death is the probability of a lion birth times (the lion population / the lion carrying capacity).",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
+      "-- the probability of a lion death is the probability of a lion birth times (the lion population / the lion carrying capacity)."
     ],
     "lessonsLearned": "",
     "givenModelNodes": [

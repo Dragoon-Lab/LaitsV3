@@ -20,16 +20,7 @@
       "- The zebra population is 20 in the first year (1950).",
       "- Births are the only change in the population. Deaths, immigration, and emigration do not occur.",
       "- There are unlimited resources.",
-      "- The number of zebra births each year is 2.",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
+      "- The number of zebra births each year is 2."
     ],
     "lessonsLearned": "",
     "givenModelNodes": [

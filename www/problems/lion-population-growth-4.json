@@ -25,13 +25,7 @@
       "-- The probability of a lion giving birth during the year is 50%.",
       "-- The number of lion deaths each year is the lion death probability times the lion population.",
       "-- The lion death probability is the lion birth probability times (the lion population / the lion carrying capacity).",
-      "-- The lion carrying capacity is 65 (for lions living in Tanzania, Africa).",
-      "",
-      "",
-      " ",
-      "",
-      "",
-      ""
+      "-- The lion carrying capacity is 65 (for lions living in Tanzania, Africa)."
     ],
     "lessonsLearned": "",
     "givenModelNodes": [

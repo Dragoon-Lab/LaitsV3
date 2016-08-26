@@ -25,17 +25,7 @@
       "- The probability of a zebra giving birth each year is 50%.",
       "- The number of zebra deaths each year is the zebra death probability times the zebra population.",
       "- Zebra death probability = zebra birth probability * (zebra population / carrying capacity).",
-      "- Carrying capacity is 500 (for zebras living in Tanzania, Africa).",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
+      "- Carrying capacity is 500 (for zebras living in Tanzania, Africa)."
     ],
     "lessonsLearned": "",
     "givenModelNodes": [

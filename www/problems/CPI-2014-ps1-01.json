@@ -4,27 +4,31 @@
         "time": {
             "start": 0,
             "end": 52,
-            "step": 0.5,
-            "units": "weeks"
+            "step": 1,
+            "units": "weeks",
+            "integrationMethod": "Eulers Method"
         },
         "properties": {
             "phase": "Challenge",
-            "type": "Construct"
+            "type": "Construct",
+            "isGraphHelpShown": true
         },
         "image": {
-            "URL": "images/CPI/CPI-2014-ps1-01.jpg"
+            "URL": "images\/CPI\/CPI-2014-ps1-01.jpg"
         },
-        "taskDescription": [
-            "Rod is a book worm. He already has 100 books. Each week, he buys and reads two more books. Construct a model that",
-            "shows how many books he has each week.",
-            "Analysis:",
-            "* Process: buying books",
-            "* Source: irrelevant",
-            "* Destination: Rod's books",
-            "* Changing: a constant number, 2, of books changes state each week",
-            "Implementation: See image above, but change the numbers and names. Or see the problem constant in the problem",
-            "set generic changes."
-        ],
+        "taskDescription": {
+            "construction": [
+                "Rod is a book worm. He already has 100 books. Each week, he buys and reads two more books. Construct a model that",
+                "shows how many books he has each week.",
+                "Analysis:",
+                "* Process: buying books",
+                "* Source: irrelevant",
+                "* Destination: Rod's books",
+                "* Changing: a constant number, 2, of books changes state each week",
+                "Implementation: See image above, but change the numbers and names. Or see the problem constant in the problem",
+                "set generic changes."
+            ]
+        },
         "lessonsLearned": [
             "The graph of the quantity \"books\" is a straight line headed upwards. This type of behavior is called \"linear growth.\"",
             "The simplest model that exhibits linear growth is exactly like the one you just constructed: An accumulator with a",
@@ -38,12 +42,12 @@
             },
             {
                 "type": "image",
-                "value": "images/CPI/bookworm_graph.png",
+                "value": "images\/CPI\/bookworm_graph.png",
                 "title": "Author's graph for Bookworm Problem"
             },
             {
                 "type": "image",
-                "value": "images/CPI/bookworm_correctnodes.png",
+                "value": "images\/CPI\/bookworm_correctnodes.png",
                 "title": "Author's solution for Bookworm Problem"
             },
             {
@@ -61,7 +65,7 @@
                     "y": 100
                 },
                 "attemptCount": {
-                    "description":0,
+                    "description": 0,
                     "type": 0,
                     "initial": 0,
                     "units": 0,
@@ -84,8 +88,8 @@
                     }
                 ],
                 "position": {
-                    "x": 400,
-                    "y": 100
+                    "x": 567,
+                    "y": 111
                 },
                 "attemptCount": {
                     "description": 0,
@@ -124,6 +128,7 @@
                     "phrases": 0
                 }
             }
-        ]
+        ],
+        "increment": []
     }
 }
