@@ -605,5 +605,5 @@ span.slip{
 
 /*Fix for tooltips to appear below  the dialogboxes */
 .dijitTooltipDialogPopup {
-    z-index: 700 !important;
+    z-index: 951 !important;
 }
