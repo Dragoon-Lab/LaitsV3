@@ -277,7 +277,7 @@ define([
                 dom.byId("initLabel").innerHTML = "";
             }
             else if(type == "accumulator"){
-                dom.byId("initLabel").innerHTML = "Initial";
+                dom.byId("initLabel").innerHTML = "Initial ";
             }
 			this.logging.setModelChanged(true);
 		},	
