@@ -273,7 +273,12 @@ define([
 				var step_id = taskname +'_'+ nodename +'_'+'SelectType';
 				this.ETConnect.sendSubmittedAnswer('type', type , step_id, "text");
 			}
-
+            if(type == "parameter"){
+                dom.byId("initLabel").innerHTML = "";
+            }
+            else if(type == "accumulator"){
+                dom.byId("initLabel").innerHTML = "Initial";
+            }
 			this.logging.setModelChanged(true);
 		},	
 

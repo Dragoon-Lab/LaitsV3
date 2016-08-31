@@ -80,7 +80,7 @@
                 $new_folder = $this->db_connection->real_escape_string($new_folder);
                 $eachFolder = $this->db_connection->real_escape_string($eachFolder);
                 $del_folder_query = "update session set `group` = '$new_folder' where `group` = '$eachFolder' ";
-                echo $del_folder_query;
+                //echo $del_folder_query;
                 $del_suc1 = $this->getDBResults($del_folder_query);
             }
 
@@ -97,6 +97,64 @@
             if($del_suc1 && $del_suc2)
                 return $del_folders;
             else return null;
+
+        }
+
+        function modelAction($parameters){
+            $src = $this->db_connection->real_escape_string($parameters['src']);
+            $model = $this->db_connection->real_escape_string($parameters['mod']);
+            $dest = $this->db_connection->real_escape_string($parameters['dest']);
+            $action = $parameters['action'];
+            $user = $this->db_connection->real_escape_string($parameters['user']);
+            if($action == "moveModel"){
+                //move Model
+                $update_query = "update session set `group` = '$dest' where `group`='$src' AND problem='$model' ";
+                //echo $update_query;
+                $update_res = $this->getDBResults($update_query);
+                if($update_res)
+                    return "success";
+                else
+                    return null;
+            }
+            else if($action == "copyModel"){
+                //step 1 : retrieve the most recent copy of model authored ( session id and other params)
+                $get_q = "select * from session where `group` = '$src' AND problem='$model' AND mode = 'AUTHOR' ORDER BY time DESC limit 1";
+                $res = $this->getDBResults($get_q);
+                if(!$res) {
+                    //echo "session selection failed"."<br/>";
+                    return null;
+                }
+                $data = mysqli_fetch_array($res);
+                $old_session_id = $data["session_id"];
+
+                //step 2: copy solution for the old session id which also has to be a fresh insert
+                $get_sol_q = "select * from solutions where session_id='$old_session_id'";
+                $sol_res = $this->getDBResults($get_sol_q);
+                $sol_data = mysqli_fetch_array($sol_res);
+                $solution_graph = $sol_data['solution_graph'];
+                //step 3 : create a new session id with current micro timestamp and session_id
+                //This is work around and in future we need a php session creator from username and section like in js
+                $new_sess1 = explode("_",$old_session_id);
+                $milliseconds = round(microtime(true) * 1000);
+                $new_session_id = $new_sess1[0]."_".$milliseconds;
+
+                //step 4 : insert new session
+
+                $create_sess_q = "insert into session(`session_id`,`user`,problem,`mode`,`group`,`section`,`activity`)
+                                  VALUES ('$new_session_id','$user','$model','AUTHOR','$dest','non-class-models','construction')";
+                $create_sess_res = $this->getDBResults($create_sess_q);
+                if(!$create_sess_res)
+                    return null;
+
+                $create_new_sol = "insert into solutions(`session_id`,`share`,`deleted`,`solution_graph`)
+                                   VALUES ('$new_session_id',0,0,'$solution_graph')";
+                $create_sol_res = $this->getDBResults($create_new_sol);
+                //echo $create_new_sol;
+                if($create_sol_res)
+                    return "success";
+                else
+                    return null;
+            }
 
         }
 	}

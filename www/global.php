@@ -22,6 +22,17 @@ switch($type){
         $parameters['df'] = $_REQUEST['df'];
         $parameters['dm'] = $_REQUEST['dm'];
         $result = $db->deleteNonClassProblems($parameters);
+        break;
+    case 'modelAction':
+        //common for copy and move models
+        $parameters['action'] = $_REQUEST['action'];
+        $parameters['src'] = $_REQUEST['src'];
+        $parameters['mod'] = $_REQUEST['mod'];
+        $parameters['dest'] = $_REQUEST['dest'];
+        $parameters['user'] = $_REQUEST['user'];
+        $result = $db->modelAction($parameters);
+        break;
+
 }
 
 if($result == null)
