@@ -81,7 +81,7 @@ define([
 			loggingScope['ASSISTments_p7'] = getParameterByName('p7');
 			this.LOGGING_SERVICE = SuperGLU.Standard_ITS_Logging.StandardITSLoggingService(null,
 				getParameterByName('p1'), taskId, null, getParameterByName('p7'), loggingScope);
-			this.HEARTBEAT_SERVICE = SuperGLU.Heartbeat_Service.HeartbeatService(null, this.HEARTBEAT_NAME, 30);
+			this.HEARTBEAT_SERVICE = SuperGLU.Heartbeat_Service.HeartbeatService(null, this.HEARTBEAT_NAME, 15);
 			this.PARENT_POSTING_STUB = SuperGLU.Messaging_Gateway.PostMessageGatewayStub(this.PARENT_NAME, null, null, parent);
 
 			/** Create a gateway as: GatewayId, Child Nodes (Gateways/Services/Stubs), Parent Gateway, Scope added to each message**/

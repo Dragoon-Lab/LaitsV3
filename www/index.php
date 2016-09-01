@@ -125,33 +125,26 @@
     <!-- jsPlumb Libs End Here -->
 	<!-- SuperGLU javascript files -->
 	<script type = "text/javascript">
-		var params = window.location.search;
-		var ETSectionName = ["ElectronixTutor"]; //for now keeping the section name at this place
-		for(var section in ETSectionName){
-			if(params.indexOf("&s="+ETSectionName[section]) >= 0){
-				//meta data for the section
-				document.write("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
-				document.write("<meta name=\"google\" value=\"notranslate\" />");
-				//import utitilities
-				document.write('<scr'+'ipt type="text/javascript" src="ET/js/SuperGLU/Util/emacs5-compatibility-patches.js"></scr'+'ipt>');
-				document.write('<scr'+'ipt type="text/javascript" src="ET/js/SuperGLU/Util/general-utilities.js"></scr'+'ipt>');
-				document.write('<scr'+'ipt type="text/javascript" src="ET/js/SuperGLU/Util/encoder.js"></scr'+'ipt>');
-				//superGLU imports
-				document.write('<scr'+'ipt type="text/javascript" src="ET/js/SuperGLU/Util/uuid.js"></scr'+'ipt>');
-				document.write('<scr'+'ipt type="text/javascript" src="ET/js/SuperGLU/Util/zet.js"></scr'+'ipt>');
-				document.write('<scr'+'ipt type="text/javascript" src="ET/js/SuperGLU/super-glu.js"></scr'+'ipt>');
-				document.write('<scr'+'ipt type="text/javascript" src="ET/js/SuperGLU/Util/serialization.js"></scr'+'ipt>');
-				document.write('<scr'+'ipt type="text/javascript" src="ET/js/SuperGLU/Core/messaging.js"></scr'+'ipt>');
-				document.write('<scr'+'ipt type="text/javascript" src="ET/js/SuperGLU/Core/messaging-gateway.js"></scr'+'ipt>');
+		document.write("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
+		document.write("<meta name=\"google\" value=\"notranslate\" />");
+		//import utitilities
+		document.write('<scr'+'ipt type="text/javascript" src="ET/js/SuperGLU/Util/emacs5-compatibility-patches.js"></scr'+'ipt>');
+		document.write('<scr'+'ipt type="text/javascript" src="ET/js/SuperGLU/Util/general-utilities.js"></scr'+'ipt>');
+		document.write('<scr'+'ipt type="text/javascript" src="ET/js/SuperGLU/Util/encoder.js"></scr'+'ipt>');
+		//superGLU imports
+		document.write('<scr'+'ipt type="text/javascript" src="ET/js/SuperGLU/Util/uuid.js"></scr'+'ipt>');
+		document.write('<scr'+'ipt type="text/javascript" src="ET/js/SuperGLU/Util/zet.js"></scr'+'ipt>');
+		document.write('<scr'+'ipt type="text/javascript" src="ET/js/SuperGLU/super-glu.js"></scr'+'ipt>');
+		document.write('<scr'+'ipt type="text/javascript" src="ET/js/SuperGLU/Util/serialization.js"></scr'+'ipt>');
+		document.write('<scr'+'ipt type="text/javascript" src="ET/js/SuperGLU/Core/messaging.js"></scr'+'ipt>');
+		document.write('<scr'+'ipt type="text/javascript" src="ET/js/SuperGLU/Core/messaging-gateway.js"></scr'+'ipt>');
 
-				//superglu services
-				document.write('<scr'+'ipt type="text/javascript" src="ET/js/SuperGLU/Services/Orchestration/heartbeat-service.js"></scr'+'ipt>');
-				document.write('<scr'+'ipt type="text/javascript" src="ET/js/SuperGLU/Services/LoggingService/standard-its-logging.js"></scr'+'ipt>');
+		//superglu services
+		document.write('<scr'+'ipt type="text/javascript" src="ET/js/SuperGLU/Services/Orchestration/heartbeat-service.js"></scr'+'ipt>');
+		document.write('<scr'+'ipt type="text/javascript" src="ET/js/SuperGLU/Services/LoggingService/standard-its-logging.js"></scr'+'ipt>');
 
-				//reference implementation data
-				document.write('<scr'+'ipt type="text/javascript" src="ET/js/reference-data.js"></scr'+'ipt>');
-			}
-		}
+		//reference implementation data
+		document.write('<scr'+'ipt type="text/javascript" src="ET/js/reference-data.js"></scr'+'ipt>');
 	</script>
 
 </head>
