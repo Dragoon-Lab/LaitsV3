@@ -1386,6 +1386,12 @@ define([
 			console.log('node type is', type || "not set");
 
 			registry.byId(this.controlMap.type).set('value', type || 'defaultSelect');
+            if(type == "parameter"){
+                dom.byId("initLabel").innerHTML = "";
+            }
+            else if(type == "accumulator"){
+                dom.byId("initLabel").innerHTML = "Initial ";
+            }
 			//update labels
 			this.updateEquationLabels(type);
 
