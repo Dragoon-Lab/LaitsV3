@@ -36,7 +36,7 @@ switch($type){
 }
 
 if($result == null)
-	echo '{"error" : "no data found"}';
+	echo '{"error" : "No models"}';
 else
 	echo $result;
 
