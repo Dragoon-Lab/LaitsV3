@@ -5,6 +5,7 @@
   "resistor-capacitor-1" : "RC Series Circuits",
   "resistor-inductor-1" : "RL Series Circuits",
   "diode-resistor-2" : "Diodes",
+  "diode-resistor" : "Diodes",
   "full-wave-rectifier" : "Power Supplies",
   "full-wave-rectifier-capacitor" : "Power Supplies",  
   "static-zener-diode-regulator" : "Zener Diodes",
