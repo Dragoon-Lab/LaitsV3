@@ -77,23 +77,23 @@
 
             foreach($del_folders as $eachFolder){
                 $user = explode("-",$eachFolder);
-                $user=$user[1];
-                $new_folder = $user.'-deleted';
+                $new_folder = ($user[1] == 'private') ? $user[0] : $user[1];
+                $new_folder = $new_folder."-deleted";
                 //escape quotes, make strings query safe
                 $new_folder = $this->db_connection->real_escape_string($new_folder);
                 $eachFolder = $this->db_connection->real_escape_string($eachFolder);
-                $del_folder_query = "update session set `group` = '$new_folder' where `group` = '$eachFolder' ";
+                $del_folder_query = "update session set `group` = '$new_folder',time = time where `group` = '$eachFolder' ";
                 //echo $del_folder_query;
                 $del_suc1 = $this->getDBResults($del_folder_query);
             }
 
             foreach($del_models as $name=>$group){
                 $user = explode("-",$group);
-                $user=$user[1];
-                $new_folder = $user.'-deleted';
+                $new_folder = ($user[1] == 'private') ? $user[0] : $user[1];
+                $new_folder = $new_folder.'-deleted';
                 $new_folder = $this->db_connection->real_escape_string($new_folder);
                 $name = $this->db_connection->real_escape_string($name);
-                $del_folder_query = "update session set `group` = '$new_folder' where `group` = '$group' and problem='$name' ";
+                $del_folder_query = "update session set `group` = '$new_folder',time = time where `group` = '$group' and problem='$name' ";
                 echo $del_folder_query;
                 $del_suc2 = $this->getDBResults($del_folder_query);
             }
@@ -111,7 +111,7 @@
             $user = $this->db_connection->real_escape_string($parameters['user']);
             if($action == "moveModel"){
                 //move Model
-                $update_query = "update session set `group` = '$dest' where `group`='$src' AND problem='$model' ";
+                $update_query = "update session set `group` = '$dest',time = time where `group`='$src' AND problem='$model' ";
                 //echo $update_query;
                 $update_res = $this->getDBResults($update_query);
                 if($update_res)
