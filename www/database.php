@@ -19,6 +19,9 @@
 		function setQueries(){
 			$q = array();
 			$q['classProblems'] = 'SELECT DISTINCT problem, user, `group` FROM session WHERE user = "%s" AND `group` IN (%s);';
+			$q['getNCModel'] = 'SELECT session_id, problem, user, `group`, solution_graph FROM session JOIN solutions USING (session_id) WHERE user = "%s" AND problem = "%s" AND mode = "%s" ORDER BY session.time desc LIMIT 1;';
+			$q['insertSession'] = 'INSERT INTO session (session_id, mode, user, section, problem, `group`, activity) VALUES ("%s", "%s", "%s", "%s", "%s", "%s", "%s");';
+			$q['insertSolutionGraph'] = 'INSERT INTO solutions (session_id, share, deleted, solution_graph) VALUES ("%s", "%s", "%s", "%s");';
 
 			return $q;
 		}
@@ -157,5 +160,54 @@
             }
 
         }
+
+		function copy_nc_model_section($parameters){
+			$u = $this->db_connection->real_escape_string($parameters['u']);
+			$s = $this->db_connection->real_escape_string($parameters['s']);
+			$p = $this->db_connection->real_escape_string($parameters['p']);
+
+			$query = $this->getQuery('getNCModel');
+			if($query != ''){
+				$query = sprintf($query, $u, $p, $parameters['m']);
+			} else {
+				return null;
+			}
+
+			echo $query;
+
+			$result = $this->getDBResults($query);
+			$session = '';
+			$row = '';
+			if($result->num_rows != 0){
+				$row = $result->fetch_assoc();
+				$session = explode("_", $row['session_id'])[0]."_".round(microtime(true) * 1000);
+			} else {
+				return null;
+			}
+
+			$query = $this->getQuery('insertSession');
+			if($query != ''){
+				$query = sprintf($query, $session, $parameters['m'], $u, $s, $p, $row['group'], $parameters['a']);
+			} else {
+				return null;
+			}
+			$result = $this->getDBResults($query);
+			if(!$result){
+				return null;
+			}
+			$query = $this->getQuery('insertSolutionGraph');
+			if($query != ''){
+				$query = sprintf($query, $session, 1, 0, $this->db_connection->real_escape_string($row['solution_graph']));
+			} else {
+				return null;
+			}
+			echo $query;
+			$result = $this->getDBResults($query);
+			if(!$result){
+				return null;
+			}
+
+			return "success";
+		}
 	}
 ?>

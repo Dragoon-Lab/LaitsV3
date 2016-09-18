@@ -32,7 +32,14 @@ switch($type){
         $parameters['user'] = $_REQUEST['user'];
         $result = $db->modelAction($parameters);
         break;
-
+	case 'copyNCModelToSection':
+		$parameters['u'] = $_REQUEST['u'];
+		$parameters['p'] = $_REQUEST['p'];
+		$parameters['s'] = $_REQUEST['s'];
+		$parameters['m'] = "AUTHOR";
+		$parameters['a'] = "construction";
+		$result = $db->copy_nc_model_section($parameters);
+		break;
 }
 
 if($result == null)
