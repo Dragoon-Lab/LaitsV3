@@ -1,5 +1,5 @@
 <?php
-
+date_default_timezone_set('America/Phoenix');
 require "db-login.php";
 include "database.php";
 
@@ -8,6 +8,7 @@ $mysql = mysqli_connect("localhost", $dbuser, $dbpass, $dbname)
 						or trigger_error('Could not connect to database.', E_USER_ERROR);
 $db = new Database($mysql);
 $parameters = array();
+$result = null;
 switch($type){
 	case 'classProblems':
 		$parameters['u'] = $_REQUEST['u'];

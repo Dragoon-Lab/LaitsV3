@@ -180,7 +180,8 @@
 			$row = '';
 			if($result->num_rows != 0){
 				$row = $result->fetch_assoc();
-				$session = explode("_", $row['session_id'])[0]."_".round(microtime(true) * 1000);
+				$temp = explode("_", $row['session_id']);
+				$session = $temp[0]."_".round(microtime(true) * 1000);
 			} else {
 				return null;
 			}
