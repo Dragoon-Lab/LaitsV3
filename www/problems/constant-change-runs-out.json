@@ -119,7 +119,8 @@
                 "description": "Amount of stuff in the destination state",
                 "type": "accumulator",
                 "initial": 4,
-                "equation": "id2"
+                "equation": "id2",
+                "parentNode": true
             },
             {
                 "ID": "id4",

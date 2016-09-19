@@ -51,7 +51,8 @@
                 "description": "Quantity of stuff in the source state",
                 "type": "accumulator",
                 "initial": 100,
-                "equation": "-id2"
+                "equation": "-id2",
+                "parentNode": true
             },
             {
                 "ID": "id2",
@@ -115,7 +116,8 @@
                 "description": "Quantity of stuff in the destination state",
                 "type": "accumulator",
                 "initial": 1,
-                "equation": "id2"
+                "equation": "id2",
+                "parentNode": true
             },
             {
                 "ID": "id4",
