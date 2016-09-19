@@ -19,7 +19,7 @@
 		function setQueries(){
 			$q = array();
 			$q['classProblems'] = 'SELECT DISTINCT problem, user, `group` FROM session WHERE user = "%s" AND `group` IN (%s);';
-			$q['getNCModel'] = 'SELECT session_id, problem, user, `group`, solution_graph FROM session JOIN solutions USING (session_id) WHERE user = "%s" AND problem = "%s" AND mode = "%s" ORDER BY session.time desc LIMIT 1;';
+			$q['getNCModel'] = 'SELECT session_id, problem, user, `group`, solution_graph FROM session JOIN solutions USING (session_id) WHERE (user = "%s" OR `group` = "%s") AND problem = "%s" AND mode = "%s" ORDER BY session.time desc LIMIT 1;';
 			$q['insertSession'] = 'INSERT INTO session (session_id, mode, user, section, problem, `group`, activity) VALUES ("%s", "%s", "%s", "%s", "%s", "%s", "%s");';
 			$q['insertSolutionGraph'] = 'INSERT INTO solutions (session_id, share, deleted, solution_graph) VALUES ("%s", "%s", "%s", "%s");';
 
