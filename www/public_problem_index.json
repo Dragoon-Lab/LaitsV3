@@ -99,6 +99,16 @@
         }
     },
     "Mastering Model Construction": {
+        "Generic Changes": {
+            "0.01 Constant": "constant",
+            "0.02 Proportional to source": "proportional-to-source",
+            "0.03 Proportional to destination": "proportional-to-destination",
+            "0.04 Proportional to set point minus destination": "propor-to-set-point-minus-destination",
+            "0.05 Proportional to source minus destination": "propor-to-source-minus-destination",
+            "0.06 Constant change runs out": "constant-change-runs-out",
+            "0.07 Acceleration": "acceleration",
+            "0.08 Epidemic": "epidemic"
+        },
         "Problem Set 1": {
             "1.01 Bookworm": "CPI-2014-ps1-01",
             "1.02 Moose population": "CPI-2014-ps1-02",
