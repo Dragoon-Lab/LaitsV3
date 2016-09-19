@@ -37,6 +37,7 @@ switch($type){
 		$parameters['u'] = $_REQUEST['u'];
 		$parameters['p'] = $_REQUEST['p'];
 		$parameters['s'] = $_REQUEST['s'];
+		$parameters['g'] = array_key_exists('g', $_REQUEST) ? $_REQUEST['g'] : "";
 		$parameters['m'] = "AUTHOR";
 		$parameters['a'] = "construction";
 		$result = $db->copy_nc_model_section($parameters);
