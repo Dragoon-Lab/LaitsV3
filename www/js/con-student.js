@@ -402,8 +402,9 @@ define([
 				var dd = this._PM.processAnswer(this.currentID, 'equation', parse, registry.byId(this.controlMap.equation).get("value"));
 				directives = directives.concat(dd);
 				var context = this;
+				var showHints = this.activityConfig.get("showHints");
 				directives.every(function(ele){
-					if(ele.attribute != 'status' || ele.value != 'incorrect') return true;
+					if(ele.attribute != 'status' || ele.value != 'incorrect' || !showHints) return true;
 					var d, s;
 					d = (s = context.expressionSuggestor(context.currentID, parse)) ?
 						{ attribute : "append",
