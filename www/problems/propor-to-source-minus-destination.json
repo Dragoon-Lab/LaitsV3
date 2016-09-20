@@ -51,7 +51,8 @@
                 "description": "Quantity of stuff in the source state",
                 "type": "accumulator",
                 "initial": 55,
-                "equation": "-id2"
+                "equation": "-id2",
+                "parentNode": true
             },
             {
                 "ID": "id2",
