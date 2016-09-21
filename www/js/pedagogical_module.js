@@ -945,6 +945,7 @@ define([
 			switch(nodePart){
 				case "description":
 					this.descriptionCounter++;
+					var isParentVisible = this.model.isNodesParentVisible(studentID, answer);
 
 					if(this.model.given.getGenus(answer) && (this.model.given.getGenus(answer) != "required" && this.model.given.getGenus(answer) != "allowed")){
 						/*array.forEach(this.model.given.getNodes(), function(extra){
@@ -960,7 +961,7 @@ define([
 						interpretation = this.model.given.getGenus(answer);
 					}else if(this.model.isNodeVisible(studentID, answer)){
 						interpretation = "redundant";
-					}else if(this.model.isParentNode(answer) || (this.model.isNodesParentVisible(studentID, answer) && !this.checkPremature(studentID))){
+					}else if(this.model.isParentNode(answer) || (isParentVisible && !this.checkPremature(studentID, false, isParentVisible))){
 						interpretation = "optimal";
 					}else if(this.model.student.getNodes().length === 0){
 						interpretation = "notTopLevel";
@@ -1342,7 +1343,7 @@ define([
 			return [];
 		},
 
-		checkPremature: function(nodeID, ignoreCorrectness){
+		checkPremature: function(nodeID, ignoreCorrectness, isParentVisible){
 			//return false for other modes
 			if(!this.activityConfig.get("targetNodeStrategy")){
 				return false;
@@ -1356,11 +1357,13 @@ define([
 			}
 			if(!ignoreCorrectness)
 				ignoreCorrectness = false;
+			if(!isParentVisible)
+				isParentVisible = false;
 			var isPremature = true;
 			array.some(this.model.active.getNodes(), lang.hitch(this, function(node){
 				if(node.inputs.length > 0){
 					var isInputNode = array.some(node.inputs, lang.hitch(this, function(input){
-						if(input.ID == nodeID && (ignoreCorrectness || this.model.student.getCorrectness(node.ID) !== "incorrect")) return true;
+						if(input.ID == nodeID && (ignoreCorrectness || this.model.student.getCorrectness(node.ID) !== "incorrect" || isParentVisible)) return true;
 					}));
 				}
 				if(isInputNode){
