@@ -36,12 +36,16 @@ define([
 ], function(
 	ioQuery, dom, ready, Toggler, xhr, lang, json, on, array, domClass, domQuery, nodeList, html, dashboard
 ){
-	var query = ioQuery.queryToObject(window.location.search.slice(1));
+	if(dom.byId("params").value){
+		query = ioQuery.queryToObject(dom.byId("params").value);
+	} else {
+		query = ioQuery.queryToObject(window.location.search.slice(1));
+	}
 
 	var db = new dashboard(query);
 	
 	if((db.modules.query == "custom" || query == "") && db.modules.qObject){
-		query = db.modules.qObject;
+		query = db.modules.query;
 	}
 
 	ready(function(){

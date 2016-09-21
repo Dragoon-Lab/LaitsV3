@@ -168,6 +168,38 @@
 			}
 		},
 		{
+			"names": false,
+			"display": "errors",
+			"options": false,
+			"heading": "Leader Board",
+			"subHeading": "Each cell shows your proportion of correct selections in the node editor. Each time you get a red or yellow box, it goes down. (Remember, however, that homework does not affect your grade--only the in-class quizzes.) Your cells have red borders and bold numbers. The number of boxes in the column corresponds to the number of people who have started that problem. Refresh page to update.",
+			"colors": true,
+			"sessionLink": false,
+			"completeAnalysis": false,
+			"userData": false,
+			"tName": "lms-leader",
+			"query": "custom",
+			"qObject": {
+				"m": "%AUTHOR"
+			}
+		},
+		{
+			"names": true,
+			"display": "empty",
+			"options": true,
+			"heading": "Dashboard",
+			"subHeading": "Click on the box to show the complete session details of the user.",
+			"colors": true,
+			"sessionLink": true,
+			"completeAnalysis": true,
+			"userData": true,
+			"tName": "lms-dashboard",
+			"query": "custom",
+			"qObject": {
+				"m": "%AUTHOR"
+			}
+		},
+		{
 			"names": true,
 			"display": "empty",
 			"options": true,

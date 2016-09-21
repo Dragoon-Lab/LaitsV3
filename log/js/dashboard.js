@@ -81,9 +81,12 @@ define([
 			this.section = params['s']||this.modules.qObject.s;
 			this.currentUser = params['us'];
 			//this.mode = params['m'];
-			if(this.modules.query == 'custom')
+			if(this.modules.query == 'custom'){
 				this.query = this.modules.qObject;
-			else 
+				if(params.t.indexOf("lms") >= 0){
+					this.query.s = params.s;
+				}
+			}else
 				this.query = params;
 			this.separatingSymbol = " - ";
 			this.pSymbol = "||";
