@@ -45,10 +45,12 @@
 			$fromTimeString =  "AND time >= '".$fromDate.(!empty($fromTime)?(" ".$fromTime):"")."' ";
 			$toTimeString = "AND time <= '".(!empty($toDate)?$toDate:$fromDate).(!empty($toTime)?(" ".$toTime):"")."' ";
 			
-			$notMode = false;
+			$modeConnector = "=";
 			if(substr($mode, 0, 1) == "!"){
-				$notMode = true;
+				$modeConnector = "!=";
 				$mode = substr($mode, 1);
+			} else if (substr($mode, 0, 1) == "%" || substr($mode, -1) == "%"){
+				$modeConnector = "LIKE";
 			}
 			$likeProblem = false;
 			if(substr($problem, 0, 1) == "%"){
@@ -60,7 +62,7 @@
 			}
 			$activityString = "AND activity = '".$activity."' ";
 			$problemString = "AND problem ".($likeProblem?"LIKE":"=")." '".$problem."' ";
-			$modeString = " AND mode ".($notMode?"!":"")."= '".$mode."' ";
+			$modeString = " AND mode ".$modeConnector." '".$mode."' ";
 			$sectionString = " section ".($likeSection?"LIKE":"=")." '".$section."' ";
 			$queryString = 
 			"SELECT 
