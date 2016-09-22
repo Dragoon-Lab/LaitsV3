@@ -180,7 +180,7 @@
 			"tName": "lms-leader",
 			"query": "custom",
 			"qObject": {
-				"m": "%AUTHOR"
+				"m": "%AUTHOR!"
 			}
 		},
 		{
@@ -196,7 +196,7 @@
 			"tName": "lms-dashboard",
 			"query": "custom",
 			"qObject": {
-				"m": "%AUTHOR"
+				"m": "%AUTHOR!"
 			}
 		},
 		{
