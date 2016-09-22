@@ -306,7 +306,7 @@ define([
 
                 chart.addSeries(
                     "Author's solution",
-                    this.formatSeriesForChart(solution, index), {stroke: "black"}
+                    this.formatSeriesForChart(this.givenSolution, index), {stroke: "black"}
                 );
             }
 
