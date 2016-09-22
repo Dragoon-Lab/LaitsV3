@@ -49,7 +49,7 @@
 			if(substr($mode, 0, 1) == "!"){
 				$modeConnector = "!=";
 				$mode = substr($mode, 1);
-			} else if (substr($mode, 0, 1) == "%" || substr($mode, -1) == "%" || substr($mode, -2, -1) == "%"){
+			} else if (strpos($mode, "%") !== false){
 				if(substr($mode, -1) == "!"){
 					$modeConnector = "NOT LIKE";
 					$mode = substr($mode, 0, -1);
@@ -85,7 +85,7 @@
 				(!empty($activity)?$activityString:"").
 			"ORDER BY user asc, problem asc, activity asc, time asc, id asc;";
 		//	$queryString = "SELECT tid, mode, session.session_id, user, problem, time, method, message, `group` from session JOIN step ON session.session_id = step.session_id where method != 'client-message' AND mode != 'AUTHOR' AND user = 'cdluna' AND problem LIKE '%ps3-0%' ORDER BY user asc, problem asc, tid asc;";
-		//	echo $queryString;
+			echo $queryString;
 
 			return $queryString;
 		}
