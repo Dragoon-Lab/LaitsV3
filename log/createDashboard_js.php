@@ -49,8 +49,13 @@
 			if(substr($mode, 0, 1) == "!"){
 				$modeConnector = "!=";
 				$mode = substr($mode, 1);
-			} else if (substr($mode, 0, 1) == "%" || substr($mode, -1) == "%"){
-				$modeConnector = "LIKE";
+			} else if (substr($mode, 0, 1) == "%" || substr($mode, -1) == "%" || substr($mode, -2, -1) == "%"){
+				if(substr($mode, -1) == "!"){
+					$modeConnector = "NOT LIKE";
+					$mode = substr($mode, 0, -1);
+				} else {
+					$modeConnector = "LIKE";
+				}
 			}
 			$likeProblem = false;
 			if(substr($problem, 0, 1) == "%"){
