@@ -43,6 +43,7 @@ define([
 		detailedNodeAnalysis: [],
 		emptyArray: [],
 		mode: [],
+		group: [],
 		modules:{},
 		query:{}, // added if we want to send multiple queries. moving the query from main function to the global init. this init can be called again for each new function and then new table can be created. 
 		problemNames: [],
@@ -114,6 +115,7 @@ define([
 				this.problemRevisits[i] = [];
 				this.nodesAttempted[i] = [];
 				this.mode[i] = [];
+				this.group[i] = [];
 				this.totalProblemsStarted[i] = 0;
 				this.totalProblemsCompleted[i] = 0;
 				this.totalTimeSpent[i] = 0;
@@ -127,6 +129,7 @@ define([
 					this.emptyArray[i][j] = " ";
 					this.problemRevisits[i][j] = "-";
 					this.mode[i][j] = "-"; //added because for the cases when the mode might not be same
+					this.group[i][j] = "-";
 					this.nodesAttempted[i][j] = 0;
 					//this.sessionDetails[i][j] = " ";
 				}
@@ -333,6 +336,7 @@ define([
 				var problemIndex = array.indexOf(this.problems, pa);
 				if(userIndex >= 0 && problemIndex >= 0){
 					this.mode[userIndex][problemIndex] = upObject['mode'];
+					this.group[userIndex][problemIndex] = upObject['group'];
 					//this.timeSpent[userIndex][problemIndex] = (number.round(upObject['totalTime']*10))/10+ " - " + (number.round(upObject['outOfFocusTime']*10))/10;
 					this.timeSpent[userIndex][problemIndex] = (number.round((upObject['focusTime'] - upObject['wastedTime'])*10))/10;
 					this.totalTimeSpent[userIndex] += this.timeSpent[userIndex][problemIndex];
@@ -456,7 +460,11 @@ define([
 					if(this.modules['sessionLink']){
 						//for devel server
 						var temp = problem.split(this.separatingSymbol);
-						urlString = "<a href='../index.html?u=" + user + "&m=" + this.mode[row][col] + "&sm=feedback&is=algebraic&p=" + temp[0] + "&a=" + temp[1] + "&s=" + this.section + "&c=Continue&l=false' target='_blank' title='Click to check session'>";
+						urlString = "<a href='../index.php?u=" + user + "&m=" + this.mode[row][col] + "&sm=feedback&is=algebraic&p=" + temp[0] + "&a=" + temp[1] + "&s=" + this.section;
+						if(this.group[row][col] && this.group[row][col] != "-" && this.group[row][col] != "NULL"){
+							urlString += "&g=" + this.group[row][col];
+						}
+						urlString += "&c=Continue&l=false' target='_blank' title='Click to check session'>";
 					}
 					var complete = this.problemComplete[row][col];
 					var runningStatus = this.sessionRunning[row][col];
