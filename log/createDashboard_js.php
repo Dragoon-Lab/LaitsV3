@@ -85,7 +85,7 @@
 				(!empty($activity)?$activityString:"").
 			"ORDER BY user asc, problem asc, activity asc, time asc, id asc;";
 		//	$queryString = "SELECT tid, mode, session.session_id, user, problem, time, method, message, `group` from session JOIN step ON session.session_id = step.session_id where method != 'client-message' AND mode != 'AUTHOR' AND user = 'cdluna' AND problem LIKE '%ps3-0%' ORDER BY user asc, problem asc, tid asc;";
-			echo $queryString;
+		//	echo $queryString;
 
 			return $queryString;
 		}
@@ -146,6 +146,7 @@
 					$nodeUpdate = false;
 					$upObject->problem = $row['problem'];
 					$upObject->user = $row['user'];
+					$upObject->group = $row['group'];
 					$upObject->mode = $row['mode'];
 					$upObject->activity = $row['activity'];
 					$timeSkip = false;

@@ -4,6 +4,7 @@
 		public $user;
 		public $mode;
 		public $activity;
+		public $group;
 		public $totalTime; // total time for which the session is running
 		public $outOfFocusTime; // time when the window was out of focus
 		public $wastedTime; // for a long time when nothing was done, no logs for 420 seconds.
