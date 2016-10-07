@@ -84,14 +84,32 @@ define([
 	//as $_REQUEST is used at the place instead of $_POST.
 	if(dom.byId("query").value){
 		query = ioQuery.queryToObject(dom.byId("query").value);
+		//new problem is being opened with fresh params
+		//update the local session storage
+		for(var prop in query){
+			sessionStorage.setItem("drag"+prop,query[prop]);
+		}
 	}else{
-		console.warn("Should have method for logging this to Apache log files.");
-		console.warn("Dragoon log files won't work since we can't set up a session.");
-		console.error("Function called without arguments");
-		// show error message and exit
-		var errorMessage = new messageBox("errorMessageBox", "error", "Missing information, please recheck the query");
-		errorMessage.show();
-		throw Error("please retry, insufficient information");
+		//trying to open an old problem using a refresh or it is a bad request
+		//check sessionStorage for a reload
+		//else leave console warnings
+		if(sessionStorage.getItem("dragp")){
+			//check for dragp item which implies all other params are stored
+			for(var key in sessionStorage){
+				var temp = (key.substring(0,4) == "drag") && key.substring(4);
+				if(temp)
+					query[temp] = sessionStorage.getItem(key);
+			}
+		}
+		else {
+			console.warn("Should have method for logging this to Apache log files.");
+			console.warn("Dragoon log files won't work since we can't set up a session.");
+			console.error("Function called without arguments");
+			// show error message and exit
+			var errorMessage = new messageBox("errorMessageBox", "error", "Missing information, please recheck the query");
+			errorMessage.show();
+			throw Error("please retry, insufficient information");
+		}
 	}
 
 	// PAL3 HACK - for pal3 sections only!
