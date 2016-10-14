@@ -197,7 +197,7 @@ define([
 			 list of plot variables.  The list may include function nodes.
 			 */
 
-			var step=(range>100) ? (range / 100):1; // range/step<=100
+			var step= range/100; // range/step<=100
 			//var step=1;
 			var nodes = [];
 			try{
@@ -240,7 +240,7 @@ define([
 					message:"graph/table created with missing node : "+miss_node,
 					functionTag : "findSolution"
 				});*/
-				console.log("test");
+				console.log(err);
 				this._logging.clientLog("error", {
 					message:"graph/table created with missing node : 1",
 					functionTag : "findSolution"

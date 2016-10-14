@@ -470,7 +470,7 @@ define([
             this.createComboBox(staticNodes);
             var staticVar = this.checkStaticVar(true);
             this.staticPlot = this.findStaticSolution(true, staticVar, this.active.plotVariables);
-            this.givenSolution = this.findStaticSolution(false, staticNodes[this.staticVar], this.given.plotVariables);
+            this.givenSolution = this.given.plotVariables ? this.findStaticSolution(false, staticNodes[this.staticVar], this.given.plotVariables) : "";
 
             array.forEach(this.active.plotVariables, function(id, index){
                 var domNode = "chartStatic" + id ;
@@ -519,6 +519,9 @@ define([
             if(values.length == 0){
                 isStatic = false;
             }
+			if(this.model.active.isNodeTypePresent("accumulator")){
+				return false;
+			}
             array.forEach(values, function(value)
             {
                 temp = value[0];
