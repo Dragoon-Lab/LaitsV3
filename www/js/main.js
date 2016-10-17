@@ -370,13 +370,14 @@ define([
 			//This array is used later to called the setSelected function for all the buttons in the menu bar
 			//moved this at the start so that the buttons flicker at the start rather than at the end.
 			var menuButtons=[];
-			menuButtons.push("createNodeButton","graphButton","tableButton","forumButton",
+			menuButtons.push("createNodeButton","graphButton","tableButton",
 				"schemaButton","descButton","saveButton","mergeButton",
 				"previewButton","slidesButton","lessonsLearnedButton","resetButton","doneButton", "prettifyButton", "imageButton","historyButton");
 
 
 			array.forEach(menuButtons, function(button){
 				//setting display for each menu button
+				console.log(button);
 				style.set(registry.byId(button).domNode, "display", ui_config.get(button));
 
 				/*
@@ -1382,7 +1383,8 @@ define([
 					startTable();
 				});
 			}
-
+			//Forum Button no longer in use
+			/*
 			if(activity_config.get("allowForum")){
 				// checks if forumurl is present
 				if(query.f && query.fe=="true") {
@@ -1406,7 +1408,7 @@ define([
 					//inside controller
 					controllerObject.setForum(query);
 				}
-			}
+			} */
 
 			if(activity_config.get("allowLessonsLearned")){
 
