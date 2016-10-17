@@ -1027,7 +1027,7 @@
                 "descriptionID": "id22",
                 "type": "function",
                 "units": "uIU/mL",
-                "equation": "id39*id28"
+                "equation": "max(0, id39*id28)"
             },
             {
                 "ID": "id39",
