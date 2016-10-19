@@ -667,6 +667,12 @@ define([
                     return a - b;
                 });
             },
+			isNodeTypePresent: function(type, modelType){
+				var nodes = modelType ? obj[modelType].getNodes() : obj.given.getNodes();
+				return array.some(nodes, function(node){
+					return (node.type == type);
+				});
+			},
 			setSchemas: function(/* object */ schemas){
 				obj.model.task.schemas = schemas;
 			},
