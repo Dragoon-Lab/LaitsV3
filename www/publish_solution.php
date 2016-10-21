@@ -15,8 +15,9 @@ $model = $_REQUEST["sg"];
 
 try{
 	$modelArray = json_decode($model, true);
-	foreach($modelArray["taskDescriotion"] as $key => $value)
-		$modelArray["taskDescriptions"][key] = addslashes($value);
+	foreach($modelArray["taskDescription"] as $key => $value)
+		foreach($value as $v)
+			$modelArray["taskDescription"][$key] = addslashes($v);
 
 	$completeModel = '{ "task" : ' . $model .'}';
 	$model = json_format($completeModel); // convert messy JSON to pretty JSON
