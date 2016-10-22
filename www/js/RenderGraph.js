@@ -276,6 +276,14 @@ define([
             });
 
             var obj = this.getMinMaxFromArray(solution.plotValues[index]);
+			/*if(obj.max - obj.min < Math.pow(10, -15)){
+				var len = solution.plotValues[index].length;
+				for(var i = 0; i < len; i++){
+					solution.plotValues[index][i] = obj.max;
+				}
+				obj.min = obj.max;
+			}*/
+
             chart.addAxis("y", {
                 vertical: true, // min: obj.min, max: obj.max,
                 title: yAxis,
@@ -310,12 +318,13 @@ define([
                 );
             }
 
-            if(obj.max - obj.min > (Math.pow(10,-16)) || (obj.max - obj.min === 0)) {
-                chart.render();
-            }
-            else {
-                dom.byId("solutionMessage").innerHTML = "Unable to graph, please increase the number of timesteps";
-            }
+			//this check is handled in initializeGraphTab function.
+            //if(obj.max - obj.min > (Math.pow(10,-15)) || (obj.max - obj.min === 0)) {
+			chart.render();
+            //}
+            //else {
+            //    dom.byId("solutionMessage").innerHTML = "Unable to graph, please increase the number of timesteps";
+            //}
             return chart;
         },
 
@@ -414,6 +423,12 @@ define([
 
                 array.forEach(this.active.plotVariables, function (id, index) {
                     var domNode = "chart" + id;
+					var val = this.checkEpsilon(this.activeSolution, index);
+					if(val){
+						var len = this.activeSolution.plotValues[index].length;
+						for(var i = 0; i < len; i++)
+							this.activeSolution.plotValues[index][i] = val;
+					}
                     var xAxis = this.labelString();
                     var yAxis = this.labelString(id);
                     this.charts[id] = this.createChart(domNode, id, xAxis, yAxis, this.activeSolution, index);
@@ -536,6 +551,12 @@ define([
             });
             return isStatic;
         },
+
+		//checks if the difference between min and max values for plot is not less than 10^-15
+		checkEpsilon: function(solution, index){
+			var obj = this.getMinMaxFromArray(solution.plotValues[index]);
+			return (obj.max - obj.min < Math.pow(10, -15)) && (obj.max != obj.min) && obj.max;
+		},
 
         //hides the slider for the variable that is selected
         disableStaticSlider: function() {
