@@ -1,6 +1,6 @@
 {
     "task": {
-        "taskName": "diode-resistor",
+        "taskName": "Model a Diode",
         "time": {
             "start": 0,
             "end": 300,
@@ -120,7 +120,8 @@
                     "inputs": {
                         "disabled": false
                     }
-                }
+                },
+                "waveformValue": "wave007"
             },
             {
                 "ID": "id2",
@@ -477,7 +478,8 @@
                         "disabled": false
                     }
                 },
-                "explanation": "If the voltage across the diode exceeds the knee voltage, then the diode passes enough current through the rest of the circuit so that the voltage across the diode is just the knee voltage. \u00a0If the rest of the circuit has a low overall resistance, then the diode will try to pass so much current that it overheats and is damaged. \u00a0On the other hand, if the voltage across the diode is less than the knee voltage (and that includes the case where the voltage is negative), then the diode acts like an open, and the voltage across it \u00a0is just the voltage applied to it."
+                "explanation": "If the voltage across the diode exceeds the knee voltage, then the diode passes enough current through the rest of the circuit so that the voltage across the diode is just the knee voltage. \u00a0If the rest of the circuit has a low overall resistance, then the diode will try to pass so much current that it overheats and is damaged. \u00a0On the other hand, if the voltage across the diode is less than the knee voltage (and that includes the case where the voltage is negative), then the diode acts like an open, and the voltage across it \u00a0is just the voltage applied to it.",
+                "waveformValue": "wave009"
             },
             {
                 "ID": "id16",
@@ -574,7 +576,8 @@
                         "disabled": false
                     }
                 },
-                "explanation": "Kirchhoff's voltage law around the loop: \u00a0source, diode, resistor."
+                "explanation": "Kirchhoff's voltage law around the loop: \u00a0source, diode, resistor.",
+                "waveformValue": "wave010"
             },
             {
                 "ID": "id17",
@@ -672,7 +675,8 @@
                     }
                 },
                 "explanation": "Ohm's law established the amount of current through the resistor, and Kirchhoff's current law determines that the same current flows through the diode and the source.",
-                "parentNode": true
+                "parentNode": true,
+                "waveformValue": "wave010"
             },
             {
                 "ID": "id18",
@@ -765,44 +769,11 @@
                     "inputs": {
                         "disabled": false
                     }
-                }
+                },
+                "waveformValue": "wave007"
             }
         ],
         "studentModelNodes": [
-            {
-                "ID": "id6",
-                "inputs": [
-                    {
-                        "ID": "id7"
-                    }
-                ],
-                "position": {
-                    "x": 526,
-                    "y": 194
-                },
-                "status": {
-                    "equation": {
-                        "disabled": false,
-                        "status": "correct"
-                    },
-                    "description": {
-                        "disabled": true,
-                        "status": "correct"
-                    },
-                    "type": {
-                        "disabled": true,
-                        "status": "correct"
-                    },
-                    "units": {
-                        "disabled": true,
-                        "status": "correct"
-                    }
-                },
-                "descriptionID": "id1",
-                "units": "volts",
-                "type": "function",
-                "equation": "id7*sinewave(1,0)"
-            },
             {
                 "ID": "id7",
                 "inputs": [],
@@ -862,6 +833,43 @@
                 "initial": 100,
                 "units": "milliseconds",
                 "type": "parameter"
+            },
+            {
+                "ID": "id22",
+                "inputs": [
+                    {
+                        "ID": "id7"
+                    },
+                    {
+                        "ID": "id19"
+                    }
+                ],
+                "position": {
+                    "x": 526,
+                    "y": 194
+                },
+                "status": {
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "description": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id1",
+                "units": "volts",
+                "type": "function",
+                "equation": "id7*sinewave(id19,0)"
             }
         ],
         "schemas": [
