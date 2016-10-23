@@ -150,7 +150,13 @@ define([
                 var errMessageBox = new messageBox("graphErrorMessage", "error", errorMessage, false);
                 errMessageBox.show();
                 return;
-            }
+            } else if (this.activeSolution.status == "error" && this.activeSolution.type == "unknown") {
+				//There is an unknown node in the expression of one of the nodes.
+				errorMessage = this.generateUnknownErrorMessage(this.activeSolution);
+				var errMessageBox = new messageBox("graphErrorMessage", "error", errorMessage, false);
+				errMessageBox.show();
+				return;
+			}
 
             //Checks if there are graphable nodes (only applicable in author mode)
             if (this.activeSolution.plotValues.length == 0) {
