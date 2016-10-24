@@ -176,7 +176,7 @@
 
 	$params = substr($params, 0, -1);
 ?>
-<input type = "hidden" id = "query" value = "<?php echo $params?>"\>
+<input type = "hidden" id = "query" value = "<?php echo $params?>"/>
 <div id="main" data-dojo-type="dijit/layout/BorderContainer" gutters="false">
 	<div data-dojo-type="dijit/MenuBar" id="menuBar" region="top" splitter="false">
 		<button type="button" data-dojo-type="dijit/form/Button" id="createNodeButton" disabled="true" style="display: none">Create Node</button>
