@@ -149,7 +149,7 @@ define([
 				var name = this._model.given.getName(desc.value);
 				var option = {label: name + " (" + desc.label + ")", value: desc.value};
 				console.log("option is",option);
-                t.addOption(option);
+				t.addOption(option);
 				positiveInputs.addOption(option);
 				negativeInputs.addOption(option);
 			}, this);
@@ -229,10 +229,11 @@ define([
 			this.updateEquationLabels();
 			this.applyDirectives(
 				this._PM.processAnswer(this.currentID, 'description', selectDescription, this._model.given.getName(selectDescription)));
+			/*
 			if (this._forumparams) {
 				// enable forum button and activate the event
 				this.activateForumButton();
-			}
+			}*/
 
 			// Send selectedAnswer for elecronix tutor
 			if(this.activityConfig.get("ElectronixTutor")){
@@ -273,12 +274,12 @@ define([
 				var step_id = taskname +'_'+ nodename +'_'+'SelectType';
 				this.ETConnect.sendSubmittedAnswer('type', type , step_id, "text");
 			}
-            if(type == "parameter"){
-                dom.byId("initLabel").innerHTML = "";
-            }
-            else if(type == "accumulator"){
-                dom.byId("initLabel").innerHTML = "Initial ";
-            }
+			if(type == "parameter"){
+				dom.byId("initLabel").innerHTML = "";
+			}
+			else if(type == "accumulator"){
+				dom.byId("initLabel").innerHTML = "Initial ";
+			}
 			this.logging.setModelChanged(true);
 		},	
 

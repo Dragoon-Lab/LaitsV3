@@ -30,15 +30,15 @@ define([
 	'dojo/dom-style',
 	'dojo/keys',
 	'dojo/ready',
-    "dojo/on",
+	"dojo/on",
 	"dojo/store/Memory",
 	"dojo/aspect",
 	'dijit/registry',
 	'./controller',
 	"./equation",
 	"./typechecker",
-    "dojo/dom",
-    "dojo/dom-class",
+	"dojo/dom",
+	"dojo/dom-class",
 	"dojo/domReady!"
 ], function(array, declare, lang, style, keys, ready, on, memory, aspect, registry, controller, equation, typechecker, dom, domClass){
 
@@ -69,9 +69,9 @@ define([
 						returnObj.push({attribute:"disabled", id:"equation", value:true});
 						returnObj.push({attribute:"status", id:"equation", value:""});
 
-                        //disable and uncheck root node
-                        returnObj.push({attribute:"checked", id:"root", value:false});
-                        returnObj.push({attribute:"disabled", id:"root", value:true});
+						//disable and uncheck root node
+						returnObj.push({attribute:"checked", id:"root", value:false});
+						returnObj.push({attribute:"disabled", id:"root", value:true});
 					}else if(value == "function"){
 						returnObj.push({attribute:"disabled", id:"initial", value:true});
 						returnObj.push({attribute:"status", id:"initial", value:""});
@@ -80,7 +80,7 @@ define([
 
 						returnObj.push({attribute:"disabled", id:"equation", value:false});
 
-                        returnObj.push({attribute:"disabled", id:"root", value:false});
+						returnObj.push({attribute:"disabled", id:"root", value:false});
 					}else if(value == "accumulator"){
 						returnObj.push({attribute:"disabled", id:"initial", value:false});
 
@@ -88,7 +88,7 @@ define([
 
 						returnObj.push({attribute:"disabled", id:"equation", value:false});
 
-                        returnObj.push({attribute:"disabled", id:"root", value:false});
+						returnObj.push({attribute:"disabled", id:"root", value:false});
 					}
 					else{
 						returnObj.push({id:"type", attribute:"status", value:""});
@@ -181,13 +181,13 @@ define([
 			console.log("++++++++ In author constructor");
 			lang.mixin(this.widgetMap, this.controlMap);
 			this.authorControls();
-		    //initialize error status array to track cleared expression for given model nodes
+			//initialize error status array to track cleared expression for given model nodes
 			this.errorStatus =[];
 			ready(this, "initAuthorHandles");
-            if(this.activityConfig.get("showWaveformEditor")) {
-                this.initWaveformAssignerAuthor();
-            }
-        },
+			if(this.activityConfig.get("showWaveformEditor")) {
+				this.initWaveformAssignerAuthor();
+			}
+		},
 
 		resettableControls: ["name","description","initial","units","equation"],
 
@@ -200,8 +200,8 @@ define([
 			root: "markRootNode",
 			student: "setStudentNode",
 			modelType: "selectModel",
-            waveForm: "assignWaveFormButton",
-            nodeType: "typeId"
+			waveForm: "assignWaveFormButton",
+			nodeType: "typeId"
 		},
 		authorControls: function(){
 			console.log("++++++++ Setting AUTHOR format in Node Editor.");
@@ -218,8 +218,8 @@ define([
 			style.set('studentModelControl', 'display', 'inline-block');
 			style.set('editorLabel', 'display', 'block');
 			style.set('cancelEditorButton', 'display', 'block');
-            style.set('assignButtonBox', 'display', 'block');
-            style.set('waveButtonStore','display','none');
+			style.set('assignButtonBox', 'display', 'block');
+			style.set('waveButtonStore','display','none');
 		},
 		
 		initAuthorHandles: function(){
@@ -248,10 +248,10 @@ define([
 					return this.disableHandlers || this.handleGivenEquation.apply(this, arguments);
 			}));
 
-		    var OKEditorButton = registry.byId("OKEditorButton");
-		    OKEditorButton.on('click', lang.hitch(this, function(){
-		    	return this.disableHandlers || this.handleOKButton.apply(this, arguments);
-		    }));
+			var OKEditorButton = registry.byId("OKEditorButton");
+			OKEditorButton.on('click', lang.hitch(this, function(){
+				return this.disableHandlers || this.handleOKButton.apply(this, arguments);
+			}));
 
 			this.handleErrorMessage(); //binds a function to Display Error message if expression is cleared.
 		},
@@ -296,7 +296,7 @@ define([
 				}
 			}
 			this.enableDisableSetStudentNode();
-            this.enableDisablewaveFormAssignmentButton(this.currentID);
+			this.enableDisablewaveFormAssignmentButton(this.currentID);
 			
 			logObj = lang.mixin({
 				type: "solution-enter",
@@ -363,10 +363,12 @@ define([
 					message: "duplication"
 				};
 			}
+			/*
 			if(this._forumparams){
 				// enable forum button and activate event
 				this.activateForumButton();
 			}
+			*/
 			logObj = lang.mixin({
 				type: "solution-enter",
 				nodeID: this.currentID,
@@ -398,10 +400,10 @@ define([
 
 		},
 
-        handleRoot: function(root){
-            // Summary: Sets the current node to be parent node
-            console.log("********************* in handleRoot", root);
-            this._model.given.setParent(this.currentID, root);
+		handleRoot: function(root){
+			// Summary: Sets the current node to be parent node
+			console.log("********************* in handleRoot", root);
+			this._model.given.setParent(this.currentID, root);
 
 			this.logging.log("solution-step", {
 				type: "solution-enter",
@@ -410,7 +412,7 @@ define([
 				node: this._model.given.getName(this.currentID),
 				value: root
 			});
-        },
+		},
 
 		handleSetStudentNode: function(checked){
 			console.log("********************* in handleSelecetModel", checked);
@@ -420,19 +422,19 @@ define([
 				if(studentNode == null){
 					this.addStudentNode(this.currentID);
 				}
-			    //also don not show the waveform assignment button and image
-                style.set('assignButtonBox', 'display', 'none');
-                style.set('waveformStore', 'display', 'none');
-            }else{
+				//also don not show the waveform assignment button and image
+				style.set('assignButtonBox', 'display', 'none');
+				style.set('waveformStore', 'display', 'none');
+			}else{
 
 				this._model.active = this._model.given;
 				registry.byId("selectModel").set('value',"correct");
 				style.set('selectModelControl', 'display', 'none');
 				this.removeStudentNode(this.currentID);
-                //also show the waveform assignment button and image
-                style.set('assignButtonBox', 'display', 'block');
-                style.set('waveformStore', 'display', 'block');
-            }
+				//also show the waveform assignment button and image
+				style.set('assignButtonBox', 'display', 'block');
+				style.set('waveformStore', 'display', 'block');
+			}
 		},
 
 		handleSelectModel: function(modelType){
@@ -467,15 +469,15 @@ define([
 		},
 		
 		handleType: function(type){
-            var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
+			var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
 
-            //If type is function last initial value field has to be set to null irrespective of model type to ensure
-            // that if type is changed back to Acc/Par the previous initial value should be sent for feedback
-            if(type == "function"){
-                this.lastInitial.value = null;
-            }
+			//If type is function last initial value field has to be set to null irrespective of model type to ensure
+			// that if type is changed back to Acc/Par the previous initial value should be sent for feedback
+			if(type == "function"){
+				this.lastInitial.value = null;
+			}
 
-            if(this.getModelType() == "correct"){
+			if(this.getModelType() == "correct"){
 				// Summary: Sets the type of the current node.
 				this.applyDirectives(this.authorPM.process(this.currentID,'type', type));
 				if(type == 'defaultSelect' || type == ''){
@@ -487,12 +489,12 @@ define([
 				}
 				this.updateType(type);
 				//update student node status
-                if(studentNodeID) this.updateStatus("type", type,  this._model.student.getType(studentNodeID));
+				if(studentNodeID) this.updateStatus("type", type,  this._model.student.getType(studentNodeID));
 
-                // "Initial Value" label --> "Value" for parameters
-                if (type=="parameter") style.set('initLabel', 'display', 'none');
+				// "Initial Value" label --> "Value" for parameters
+				if (type=="parameter") style.set('initLabel', 'display', 'none');
 				else style.set('initLabel',"display","inline");
-            }
+			}
 			else if(this.getModelType() == "given"){
 				this.controlMap.equation = "givenEquationBox";
 				this._model.active.setType(studentNodeID, type);
@@ -510,19 +512,19 @@ define([
 					var equationNode = registry.byId(this.controlMap.equation);
 					equationNode.set("value", "");
 					this._model.active.setEquation(studentNodeID, '');
-                    registry.byId(this.controlMap.initial).set("disabled", false);
+					registry.byId(this.controlMap.initial).set("disabled", false);
 					registry.byId(this.controlMap.inputs).set("disabled", true);
 					registry.byId(this.controlMap.equation).set("disabled", true);
-                }
+				}
 				if(type == "accumulator"){
-                    registry.byId(this.controlMap.initial).set("disabled", false);
-                    registry.byId(this.controlMap.inputs).set("disabled", false);
+					registry.byId(this.controlMap.initial).set("disabled", false);
+					registry.byId(this.controlMap.inputs).set("disabled", false);
 					registry.byId(this.controlMap.equation).set("disabled", false);
 					//registry.byId(this.controlMap.equation).set("disabled", false);
 				}
 				//update student node status
-                this.updateStatus("type", this._model.given.getType(this.currentID), type);
-            }
+				this.updateStatus("type", this._model.given.getType(this.currentID), type);
+			}
 
 			var valueFor = this.getModelType() == "given" ? "student-model": "author-model";
 			this.logging.log("solution-step", {
@@ -533,8 +535,8 @@ define([
 				value: type,
 				usage: valueFor
 			});
-            this.enableDisablewaveFormAssignmentButton(this.currentID);
-        },
+			this.enableDisablewaveFormAssignmentButton(this.currentID);
+		},
 
 		handleUnits: function(units){
 			console.log("**************** in handleUnits ", units);
@@ -645,7 +647,7 @@ define([
 						message: "parse error"
 					}
 				}
-                console.log("directives are", directives);
+				console.log("directives are", directives);
 				this.applyDirectives(directives);
 				this.createExpressionNodes(parse, true); 
 			}
@@ -655,15 +657,15 @@ define([
 				var inputs = [];
 				if(typeof equation != "undefined" && eqn != null && eqn != ""){
 					var parse = equation.parse(eqn);
-                    console.log("parse is ", parse);
-                    this.givenEquationEntered = true;
-                    array.forEach(parse.variables(), lang.hitch(this, function(variable){
+					console.log("parse is ", parse);
+					this.givenEquationEntered = true;
+					array.forEach(parse.variables(), lang.hitch(this, function(variable){
 						console.log("there are variables");
-                        var givenID = this._model.given.getNodeIDByName(variable);
+						var givenID = this._model.given.getNodeIDByName(variable);
 						var studentID = this._model.student.getNodeIDFor(givenID);
-					    eqn = eqn.replace(variable, studentID);
+						eqn = eqn.replace(variable, studentID);
 						inputs.push({"ID": studentID});
-                        if(studentID == null){
+						if(studentID == null){
 							this.givenEquationEntered = false;
 							eqn = "";
 							this.applyDirectives([{
@@ -671,8 +673,8 @@ define([
 								"open", value: "You are trying to add a node that is not part of student model."
 							}]);
 							registry.byId(this.controlMap.equation).set("value", "");
-						    return;
-                        }
+							return;
+						}
 					}));
 
 					this._model.student.setInputs(inputs, studentNodeID);
@@ -746,7 +748,7 @@ define([
 		},	
 		
 		initialControlSettings: function(nodeid){
-            console.log("initial control settings in author mode");
+			console.log("initial control settings in author mode");
 
 			// Apply settings appropriate for a new node
 			// This is the equivalent to newAction() in student mode.
@@ -760,7 +762,7 @@ define([
 			var desc = this._model.given.getDescription(nodeid);
 			registry.byId(this.controlMap.description).set('value', desc || '', false);
 
-            // Initialize root node checkbox
+			// Initialize root node checkbox
 			registry.byId(this.controlMap.root).set('value', this._model.given.getParent(nodeid));
 
 			// Initialize student node checkbox
@@ -785,7 +787,7 @@ define([
 			var descriptionWidget = registry.byId(this.controlMap.description);
 			var unitsWidget = registry.byId(this.controlMap.units);
 			var kind = registry.byId(this.controlMap.kind);
-            var waveFormButton = registry.byId(this.controlMap.waveForm);
+			var waveFormButton = registry.byId(this.controlMap.waveForm);
 			
 			var value = this._model.given.getGenus(this.currentID);
 			if(!value)
@@ -895,22 +897,22 @@ define([
 				if(this._model.given.getEquation(this.currentID) && this._model.given.getAuthorStatus(this.currentID, "equation").status != "incorrect")
 					this.applyDirectives([{id:"equation", attribute:"status", value:"entered"}]);
 			}
-            this.enableDisablewaveFormAssignmentButton(this.currentID);
+			this.enableDisablewaveFormAssignmentButton(this.currentID);
 
-            if(this.activityConfig.get("disableNodeEditorFields")){
-                console.log("using apply directives");
+			if(this.activityConfig.get("disableNodeEditorFields")){
+				console.log("using apply directives");
 
-                this.applyDirectives([{id: "setName", attribute : "disabled", value: true}]);
+				this.applyDirectives([{id: "setName", attribute : "disabled", value: true}]);
 
-                /*
-                    DQuery("#nodeeditor input").attr("disabled",true);
-                    DQuery("#nodeeditor textarea").attr("disabled",true);
-                    dijit.byId("setName").readOnly = true;
-                    dijit.byId("selectKind").readOnly = true;
-                */
-            }
+				/*
+					DQuery("#nodeeditor input").attr("disabled",true);
+					DQuery("#nodeeditor textarea").attr("disabled",true);
+					dijit.byId("setName").readOnly = true;
+					dijit.byId("selectKind").readOnly = true;
+				*/
+			}
 
-        },
+		},
 		updateModelStatus: function(desc, id){
 			//stub for updateModelStatus
 			 id = id || this.currentID;
@@ -941,7 +943,7 @@ define([
 				var isExpressionValid = true;
 				var equation = currentNode.equation;
 				array.forEach(currentNode.inputs, lang.hitch(this, function(input){
-				     var studentNodeID = this._model.student.getNodeIDFor(input.ID);
+					 var studentNodeID = this._model.student.getNodeIDFor(input.ID);
 					 if(studentNodeID){
 						inputs.push({ "ID": studentNodeID});
 						var regexp = "(" +input.ID +")([^0-9]?)";
@@ -972,7 +974,7 @@ define([
 			this._model.student.setStatus(newNodeID, "type" , {"disabled":true,"status":"correct"});
 			if(typeof currentNode.units !== "undefined"){
 				this._model.student.setStatus(newNodeID, "units" , {"disabled":true,"status":"correct"});
-		    }
+			}
 			if(currentNode.type === "parameter" || currentNode.type === "accumulator" ){
 				this._model.student.setStatus(newNodeID, "initial" , {"disabled":true,"status":"correct"});
 			}
@@ -1073,40 +1075,40 @@ define([
 			}
 		},
 
-        enableDisablewaveFormAssignmentButton: function(id){
-            var name = registry.byId(this.controlMap.name).value;
-            var type = this._model.given.getType(this.currentID);
-            if(name != ''){
-                if(type!=="parameter") {
-                    registry.byId(this.controlMap.waveForm).set("disabled", false);
-                    var value = this._model.active.getWaveformValue(this.currentID);
-                    console.log("ret val is", value);
-                    if(value !== undefined){
-                        console.log("value not undefined");
-                        var selectedWaveform_temp = "<img src='images/waveforms/"+value+".png' style='width: 50px; height: 50px;'/>";
-                        var refplace = dom.byId("waveformStore");
-                        dojo.place(selectedWaveform_temp,refplace,"only");
-                        style.set("waveformStore","display","block");
-                        style.set("removeWaveform","display","block");
-                    }
-                    else{
-                        style.set("waveformStore","display","none");
-                        style.set("removeWaveform","display","none");
-                    }
+		enableDisablewaveFormAssignmentButton: function(id){
+			var name = registry.byId(this.controlMap.name).value;
+			var type = this._model.given.getType(this.currentID);
+			if(name != ''){
+				if(type!=="parameter") {
+					registry.byId(this.controlMap.waveForm).set("disabled", false);
+					var value = this._model.active.getWaveformValue(this.currentID);
+					console.log("ret val is", value);
+					if(value !== undefined){
+						console.log("value not undefined");
+						var selectedWaveform_temp = "<img src='images/waveforms/"+value+".png' style='width: 50px; height: 50px;'/>";
+						var refplace = dom.byId("waveformStore");
+						dojo.place(selectedWaveform_temp,refplace,"only");
+						style.set("waveformStore","display","block");
+						style.set("removeWaveform","display","block");
+					}
+					else{
+						style.set("waveformStore","display","none");
+						style.set("removeWaveform","display","none");
+					}
 
-                }
-                else{
-                    registry.byId(this.controlMap.waveForm).set("disabled",true);
-                    style.set("waveformStore","display","none");
-                    style.set("removeWaveform","display","none");
-                }
-            }
-            else{
-                registry.byId(this.controlMap.waveForm).set("disabled",true);
-                style.set("waveformStore","display","none");
-                style.set("removeWaveform","display","none");
-            }
-        },
+				}
+				else{
+					registry.byId(this.controlMap.waveForm).set("disabled",true);
+					style.set("waveformStore","display","none");
+					style.set("removeWaveform","display","none");
+				}
+			}
+			else{
+				registry.byId(this.controlMap.waveForm).set("disabled",true);
+				style.set("waveformStore","display","none");
+				style.set("removeWaveform","display","none");
+			}
+		},
 		updateStatus: function(/*String*/control, /*String*/correctValue, /*String*/newValue){
 			//Summary: Updates the status of the student model nodes
 			var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
@@ -1131,93 +1133,93 @@ define([
 			}
 		},
 
-        /*
-         *************************** Waveform Editor *******************************
-         */
-        initWaveformAssignerAuthor: function(){
-            console.log("---initWaveformEditor---");
-            var waveformEditorDialog = registry.byId('waveformEditor');
+		/*
+		 *************************** Waveform Editor *******************************
+		 */
+		initWaveformAssignerAuthor: function(){
+			console.log("---initWaveformEditor---");
+			var waveformEditorDialog = registry.byId('waveformEditor');
 
-            //Fetch array of waveforms
-            dojo.xhrGet({
-                url:"waveforms.json",
-                handleAs: "json",
-                load: lang.hitch(this, function(result){
-                    this.waveforms = result;
-                    if(this.waveforms.length > 0) {
-                        var waveformsContainer = dom.byId("waveform-container");
-                        this.waveforms.forEach(lang.hitch(this, function (w, index) {
-                            var waveform = '<div id="' + w + 'Div" class="waveformItem">' +
-                                '<img class="imgWaveform" alt="' + w + '" src="images/waveforms/' + w + '.png"/>' +
-                                '</div>';
-                            if ((index + 1) % 7 == 0) waveform += '<br/>'
-                            dojo.place(waveform, waveformsContainer, "last");
-                            console.log();
-                            //Add click event for waveform images except the already selected one
-                            var waveFormDivDom = dom.byId(w + "Div");
-                            on(waveFormDivDom, "click", lang.hitch(this, function (evt) {
-                                var selectedWaveform = evt.target;
-                                var value = dojo.getAttr(selectedWaveform, 'alt');
-                                var selectedWaveform_temp = "<img src='images/waveforms/"+value+".png' style='width: 50px; height: 50px;'/>";
-                                var refplace = dom.byId("waveformStore");
-                                console.log(selectedWaveform);
-                                dojo.place(selectedWaveform_temp,refplace,"only");
-                                style.set("waveformStore","display","block");
-                                style.set("removeWaveform","display","block");
-                                if (value != null) {
-                                    this._model.active.setWaveformValue(this.currentID, value);
-                                    waveformEditorDialog.hide();
-                                }
-                            }));
-                        }));
-                    }
-                }),
-                error: function(err){
-                    console.log(err);
-                }
-            });
-            var waveformRemover = dom.byId("removeWaveform");
-            on(waveformRemover,"click",lang.hitch(this, function () {
-                this._model.given.emptyWaveformValue(this.currentID);
-                style.set("waveformStore","display","none");
-                style.set("removeWaveform","display","none");
-            }));
-        },
+			//Fetch array of waveforms
+			dojo.xhrGet({
+				url:"waveforms.json",
+				handleAs: "json",
+				load: lang.hitch(this, function(result){
+					this.waveforms = result;
+					if(this.waveforms.length > 0) {
+						var waveformsContainer = dom.byId("waveform-container");
+						this.waveforms.forEach(lang.hitch(this, function (w, index) {
+							var waveform = '<div id="' + w + 'Div" class="waveformItem">' +
+								'<img class="imgWaveform" alt="' + w + '" src="images/waveforms/' + w + '.png"/>' +
+								'</div>';
+							if ((index + 1) % 7 == 0) waveform += '<br/>'
+							dojo.place(waveform, waveformsContainer, "last");
+							console.log();
+							//Add click event for waveform images except the already selected one
+							var waveFormDivDom = dom.byId(w + "Div");
+							on(waveFormDivDom, "click", lang.hitch(this, function (evt) {
+								var selectedWaveform = evt.target;
+								var value = dojo.getAttr(selectedWaveform, 'alt');
+								var selectedWaveform_temp = "<img src='images/waveforms/"+value+".png' style='width: 50px; height: 50px;'/>";
+								var refplace = dom.byId("waveformStore");
+								console.log(selectedWaveform);
+								dojo.place(selectedWaveform_temp,refplace,"only");
+								style.set("waveformStore","display","block");
+								style.set("removeWaveform","display","block");
+								if (value != null) {
+									this._model.active.setWaveformValue(this.currentID, value);
+									waveformEditorDialog.hide();
+								}
+							}));
+						}));
+					}
+				}),
+				error: function(err){
+					console.log(err);
+				}
+			});
+			var waveformRemover = dom.byId("removeWaveform");
+			on(waveformRemover,"click",lang.hitch(this, function () {
+				this._model.given.emptyWaveformValue(this.currentID);
+				style.set("waveformStore","display","none");
+				style.set("removeWaveform","display","none");
+			}));
+		},
 
-        showWaveformAssignerAuthor: function(id){
-            this.currentID = id;
-            if(this._model.active.getType(id) === "parameter") return;
+		showWaveformAssignerAuthor: function(id){
+			this.currentID = id;
+			if(this._model.active.getType(id) === "parameter") return;
 
-            var nodeName = this._model.active.getName(id);
-            var waveformEditorDialog = registry.byId('waveformEditor');
-            var waveformContainer = dom.byId('waveform-container');
-            style.set(waveformContainer, "display", "block");
-            var value = this._model.active.getWaveformValue(id);
+			var nodeName = this._model.active.getName(id);
+			var waveformEditorDialog = registry.byId('waveformEditor');
+			var waveformContainer = dom.byId('waveform-container');
+			style.set(waveformContainer, "display", "block");
+			var value = this._model.active.getWaveformValue(id);
 
-            //array of handlers for waveforms
-            var waveformStatus = this._model.active.getNode(id).status["waveformValue"];
-            //Add handlers to the images
-            style.set(waveformContainer, "display", "block");
-            dojo.query(".waveformDisabled").forEach(dojo.destroy);
-            this.waveforms.forEach(lang.hitch(this, function (w, index) {
-                var waveFormDivDom = dom.byId(w + "Div");
-                //Set selected answer in the editor
-                if (value == w) {
-                    domClass.add(waveFormDivDom, "waveformSelected");
-                } else {
-                    domClass.remove(waveFormDivDom, "waveformSelected");
-                }
-                if (waveformStatus && waveformStatus.disabled) {
-                    var disableOverlay = '<div class="waveformDisabled"></div>';
-                    dojo.place(disableOverlay, waveFormDivDom, "first");
-                    waveFormDivDom.style.pointerEvents = "none";
-                } else {
-                    waveFormDivDom.style.pointerEvents = "auto";
-                }
-            }));
-            //Show Waveform editor
-            waveformEditorDialog.set('title', "Choose correct waveform for "+ nodeName);
-            waveformEditorDialog.show();
-        }
+			//array of handlers for waveforms
+			var waveformStatus = this._model.active.getNode(id).status["waveformValue"];
+			//Add handlers to the images
+			style.set(waveformContainer, "display", "block");
+			dojo.query(".waveformDisabled").forEach(dojo.destroy);
+			this.waveforms.forEach(lang.hitch(this, function (w, index) {
+				var waveFormDivDom = dom.byId(w + "Div");
+				//Set selected answer in the editor
+				if (value == w) {
+					domClass.add(waveFormDivDom, "waveformSelected");
+				} else {
+					domClass.remove(waveFormDivDom, "waveformSelected");
+				}
+				if (waveformStatus && waveformStatus.disabled) {
+					var disableOverlay = '<div class="waveformDisabled"></div>';
+					dojo.place(disableOverlay, waveFormDivDom, "first");
+					waveFormDivDom.style.pointerEvents = "none";
+				} else {
+					waveFormDivDom.style.pointerEvents = "auto";
+				}
+			}));
+			//Show Waveform editor
+			waveformEditorDialog.set('title', "Choose correct waveform for "+ nodeName);
+			waveformEditorDialog.show();
+		}
 	});
 });

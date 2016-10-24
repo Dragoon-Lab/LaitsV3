@@ -31,7 +31,6 @@ define([
 					allowCreateNode:true,
 					allowGraph:true,
 					allowTable:true,
-					allowForum:true,
 					allowCreateSchema:true,
 					allowProblemTimes:true,
 					allowSaveAs:false,
@@ -54,15 +53,14 @@ define([
 
 					promptSaveAs:false,
 					allowZoom: true,
-                    allowAssignWaveFormButton: true,
-                    showWaveformEditor : true
-                },
+					allowAssignWaveFormButton: true,
+					showWaveformEditor : true
+				},
 
 				STUDENT:{
 					allowCreateNode:true,
 					allowGraph:true,
 					allowTable:true,
-					allowForum:true,
 					allowPrettify:true,
 					allowHelp: true,
 					allowLessonsLearned:true,
@@ -95,7 +93,6 @@ define([
 					allowCreateNode:false,
 					allowGraph:true,
 					allowTable:true,
-					allowForum:true,
 					allowPrettify:true,
 					allowHelp: true,
 					allowLessonsLearned:true,
@@ -129,7 +126,6 @@ define([
 					allowCreateNode:true,
 					allowGraph:true,
 					allowTable:true,
-					allowForum:true,
 					allowPrettify:true,
 					allowHelp: true,
 
@@ -156,7 +152,6 @@ define([
 					allowCreateNode:true,
 					allowGraph:true,
 					allowTable:true,
-					allowForum:true,
 					allowPrettify:true,
 					allowHelp: true,
 					allowHints:true,
@@ -176,38 +171,37 @@ define([
 
 					allowSliders: true
 				},
-                ROAUTHOR:{
-                    allowCreateNode:false,
-                    allowGraph:true,
-                    allowTable:true,
-                    allowForum:true,
-                    allowCreateSchema:true,
-                    allowProblemTimes:true,
-                    allowMerge: false,
-                    allowSaveAs:true,
-                    allowPreview:true,
-                    allowPrettify: false,
-                    allowHelp: true,
-                    allowHistory : true,
-                    allowDeleteNode: true,
-                    allowEditNode: true,
+				ROAUTHOR:{
+					allowCreateNode:false,
+					allowGraph:true,
+					allowTable:true,
+					allowCreateSchema:true,
+					allowProblemTimes:true,
+					allowMerge: false,
+					allowSaveAs:true,
+					allowPreview:true,
+					allowPrettify: false,
+					allowHelp: true,
+					allowHistory : true,
+					allowDeleteNode: true,
+					allowEditNode: true,
 
-                    showHints: true,
-                    showFeedback: true,
-                    showEquationAutoComplete: true,
+					showHints: true,
+					showFeedback: true,
+					showEquationAutoComplete: true,
 
-                    enable:[
-                    ],
+					enable:[
+					],
 
-                    allowSliders: true,
-                    allowZoom: true,
-                    "allowAssignWaveFormButton": "true",
-                    showWaveformEditor : true,
-                    "disableTimesUnitsFields" : true,
-                    "disableSchemaFields": true,
-                    "disableNodeEditorFields": true,
-                    "restrictNodeMovement": true
-                }
+					allowSliders: true,
+					allowZoom: true,
+					"allowAssignWaveFormButton": "true",
+					showWaveformEditor : true,
+					"disableTimesUnitsFields" : true,
+					"disableSchemaFields": true,
+					"disableNodeEditorFields": true,
+					"restrictNodeMovement": true
+				}
 			},
 
 			incremental: {
@@ -706,7 +700,7 @@ define([
 						"executionValue"
 					],
 					executionExercise: true
-                },
+				},
 
 				TEST:{
 					allowPrettify:true,
@@ -737,7 +731,7 @@ define([
 						"executionValue"
 					],
 					executionExercise: true
-                },
+				},
 
 				EDITOR:{
 					allowPrettify:true,
@@ -911,7 +905,6 @@ define([
 				allowCreateNode: false,
 				allowGraph: false,
 				allowTable: false,
-				allowForum: false,
 				allowCreateSchema: false,
 				allowProblemTimes: false,
 				allowSaveAs: false,
@@ -976,7 +969,7 @@ define([
 				setExecutionValues:false,
 				setStudentExecutionValues:false,
 				demoExecutionFeatures:false,
-                executionExercise: false,
+				executionExercise: false,
 
 				//Waveform Behavior
 				showWaveformEditor: false,

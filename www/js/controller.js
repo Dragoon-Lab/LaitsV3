@@ -895,6 +895,8 @@ define([
 		},
 		//Enables the Forum Button in node editor
 		//Also uses the forum module to activate the event button click
+		//function no loner being used
+		/*
 		activateForumButton: function(){
 			var nodeForumBut = registry.byId("nodeForumButton");
 			nodeForumBut.set("disabled", false);
@@ -902,6 +904,7 @@ define([
 			console.log("attatching event",this.logging);
 			forum.activateForum(this._model, this.currentID, this._forumparams, this.logging);
 		},
+		*/
 
 		equationAnalysis: function(directives, ignoreUnknownTest){
 			this.equationEntered = true;
@@ -1292,7 +1295,7 @@ define([
 			this._nodeEditor.show().then(lang.hitch(this, function(){
 				this.disableHandlers = false;
 			}));
-			var nodeForumBut = registry.byId("nodeForumButton");
+			//var nodeForumBut = registry.byId("nodeForumButton");
 			var check_desc=this._model.active.getGivenID(id);
 			if(this._forumparams && check_desc && this._model.given.getDescription(check_desc)){
 				try{
@@ -1303,12 +1306,12 @@ define([
 					console.log(err);
 				}
 				if(this._forumparams && this._model.given.getDescription(check_desc)){
-					nodeForumBut.set("disabled", false);
+					//nodeForumBut.set("disabled", false);
 					forum.activateForum(this._model, this.currentID, this._forumparams,this.logging);
 				}else{
 					//In case there are many nodes,
 					//make sure forum button is disabled
-					nodeForumBut.set("disabled", true);
+					//nodeForumBut.set("disabled", true);
 				}
 			}
 			if(this.activityConfig.get("showNodeEditorTour")) {
@@ -1333,20 +1336,20 @@ define([
 				}
 			}
 		if(this.activityConfig.get("disableNodeEditorFields")) {
-            dijit.byId("typeId").disabled=true;
-            dijit.byId("setUnits").disabled = true;
-            dijit.byId("setInput").disabled = true;
-            dijit.byId("deleteButton").disabled = true;
-            dijit.byId("undoButton").disabled = true;
-            dijit.byId("explanationButton").disabled = true;
-            dijit.byId("equationDoneButton").disabled = true;
-            dijit.byId("assignWaveFormButton").disabled = true;
-            dijit.byId("plusButton").disabled = true;
-            dijit.byId("minusButton").disabled = true;
-            dijit.byId("timesButton").disabled = true;
-            dijit.byId("divideButton").disabled = true;
-        }
-        },
+			dijit.byId("typeId").disabled=true;
+			dijit.byId("setUnits").disabled = true;
+			dijit.byId("setInput").disabled = true;
+			dijit.byId("deleteButton").disabled = true;
+			dijit.byId("undoButton").disabled = true;
+			dijit.byId("explanationButton").disabled = true;
+			dijit.byId("equationDoneButton").disabled = true;
+			dijit.byId("assignWaveFormButton").disabled = true;
+			dijit.byId("plusButton").disabled = true;
+			dijit.byId("minusButton").disabled = true;
+			dijit.byId("timesButton").disabled = true;
+			dijit.byId("divideButton").disabled = true;
+		}
+		},
 
 		// Stub to be overwritten by student or author mode-specific method.
 		initialControlSettings: function(id){
@@ -1386,12 +1389,12 @@ define([
 			console.log('node type is', type || "not set");
 
 			registry.byId(this.controlMap.type).set('value', type || 'defaultSelect');
-            if(type == "parameter"){
-                dom.byId("initLabel").innerHTML = "";
-            }
-            else if(type == "accumulator"){
-                dom.byId("initLabel").innerHTML = "Initial ";
-            }
+			if(type == "parameter"){
+				dom.byId("initLabel").innerHTML = "";
+			}
+			else if(type == "accumulator"){
+				dom.byId("initLabel").innerHTML = "Initial ";
+			}
 			//update labels
 			this.updateEquationLabels(type);
 
