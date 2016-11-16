@@ -92,8 +92,8 @@ define([
 		createRowHTML : function(data){
 			var html = this.HTMLBuilder[0];
 			html += this.HTMLBuilder[1] + this.getHash(data["session_id"]) + this.HTMLBuilder[2];			
-			html += this.HTMLBuilder[1] + data["time"]; + this.HTMLBuilder[2];	
-			var solution_json = JSON.parse(data["solution_graph"]);
+			html += this.HTMLBuilder[1] + data["time"]; + this.HTMLBuilder[2];
+			var solution_json = (data["solution_graph"]) ? JSON.parse(data["solution_graph"]) : null;
 			var count = (solution_json) ? solution_json['givenModelNodes'].length : 0;
 			html += this.HTMLBuilder[1] + count + this.HTMLBuilder[2];	
 			html += this.HTMLBuilder[1] + data["user"] + this.HTMLBuilder[2];	
