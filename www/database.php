@@ -110,6 +110,12 @@
 			$dest = $this->db_connection->real_escape_string($parameters['dest']);
 			$action = $parameters['action'];
 			$user = $this->db_connection->real_escape_string($parameters['user']);
+			$copy_sec = "non-class-models";
+			//print_r($parameters);
+			if(isset($parameters['section'])){
+				$copy_sec = $parameters['section'];
+			}
+
 			if($action == "moveModel"){
 				//move Model
 				$update_query = "update session set `group` = '$dest',time = time where `group`='$src' AND problem='$model' ";
@@ -145,7 +151,7 @@
 				//step 4 : insert new session
 
 				$create_sess_q = "insert into session(`session_id`,`user`,problem,`mode`,`group`,`section`,`activity`)
-								  VALUES ('$new_session_id','$user','$model','AUTHOR','$dest','non-class-models','construction')";
+								  VALUES ('$new_session_id','$user','$model','AUTHOR','$dest','$copy_sec','construction')";
 				$create_sess_res = $this->getDBResults($create_sess_q);
 				if(!$create_sess_res)
 					return null;
