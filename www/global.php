@@ -31,6 +31,7 @@ switch($type){
 		$parameters['mod'] = $_REQUEST['mod'];
 		$parameters['dest'] = $_REQUEST['dest'];
 		$parameters['user'] = $_REQUEST['user'];
+		$parameters['section'] = $_REQUEST['section'];
 		$result = $db->modelAction($parameters);
 		break;
 	case 'copyNCModelToSection':
