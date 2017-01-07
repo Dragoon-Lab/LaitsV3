@@ -292,7 +292,7 @@ define([
 			var setEnableOption = function(value){
 				console.log("++++ in setEnableOption, scope=", this);
 				array.forEach(this.options, function(option){
-					if(!value || option.value == value)
+					if((!value || option.value == value ) && option.value !== "defaultSelect")
 						option.disabled = false;
 				});
 				this.startup();

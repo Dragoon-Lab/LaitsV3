@@ -495,7 +495,8 @@
 					<div id="unitsQuestionMark" class="questionMark"></div>
 					<label id="selectUnitsControl">Units
 						<select id="selectUnits" data-dojo-type="dijit/form/Select">
-							<option value='defaultSelect'>No Units</option>
+							<option value='defaultSelect' disabled="disabled" selected ="selected" style="display: none;">--Select--</option>
+							<option value=null>No Units</option>
 						</select>
 					</label>
 			 </div>
