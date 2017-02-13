@@ -12,7 +12,7 @@ define([
 	"dojo/_base/json",
 	"dojo/_base/lang",
 	'dojo/aspect',
-	"form.js"
+	"./form"
 ], function(declare, parser, _WidgetBase, dom, ready, registry, on, style, Dialog, xhr, json, lang, aspect){
 	return declare(null, {
 		params : null,
