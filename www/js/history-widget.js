@@ -11,7 +11,8 @@ define([
 	"dojo/request/xhr",
 	"dojo/_base/json",
 	"dojo/_base/lang",
-	'dojo/aspect'
+	'dojo/aspect',
+	"form.js"
 ], function(declare, parser, _WidgetBase, dom, ready, registry, on, style, Dialog, xhr, json, lang, aspect){
 	return declare(null, {
 		params : null,
@@ -116,10 +117,32 @@ define([
 		loadHandler : function(e){
 			var label = e.target.id;
 			var session_id = label.slice(4,label.indexOf('_label'));
-			window.location = window.location.href + "&x=" + session_id;
+			//before attaching the session id or x parameter
+			//verify if it is undefined , then add form property
+			//else just modify the value with current session id depending on history item opted
+			var form = document.forms[formID];
+			if(form.x === undefined){
+				addFormProperty("x",session_id);
+			}
+			else{
+				form.x.value = session_id;
+			}
+			submit();		
 		},
 		initHandlers : function(){
-			var sessions = this.sessions;	
+			var sessions = this.sessions;
+			var query_params = this.params;
+
+			//Before attaching click handlers to buttons which open each session
+			//create a form which reads parameters from session
+			//we already have js file for this purpose : form.js
+			//step 1: create a form and add properties from parameters
+			console.log("form id is",formID);
+			createForm();
+			for (var prop in query_params) {
+ 				addFormProperty(prop,query_params[prop]);
+			}
+			//step 2 : attach handlers	
 			for(var k in Object.keys(sessions)){		
 					var btn = dom.byId('btn_' + sessions[k]['session_id']);
 					if(!btn) continue;
