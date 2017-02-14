@@ -1,7 +1,7 @@
 
 define([
 	"dojo/_base/declare", "dojo/parser",
-    "dijit/_WidgetBase",
+	"dijit/_WidgetBase",
 	"dojo/dom",
 	"dojo/ready",
 	"dijit/registry",
@@ -93,8 +93,8 @@ define([
 		createRowHTML : function(data){
 			var html = this.HTMLBuilder[0];
 			html += this.HTMLBuilder[1] + this.getHash(data["session_id"]) + this.HTMLBuilder[2];			
-			html += this.HTMLBuilder[1] + data["time"]; + this.HTMLBuilder[2];	
-			var solution_json = JSON.parse(data["solution_graph"]);
+			html += this.HTMLBuilder[1] + data["time"]; + this.HTMLBuilder[2];
+			var solution_json = (data["solution_graph"]) ? JSON.parse(data["solution_graph"]) : null;
 			var count = (solution_json) ? solution_json['givenModelNodes'].length : 0;
 			html += this.HTMLBuilder[1] + count + this.HTMLBuilder[2];	
 			html += this.HTMLBuilder[1] + data["user"] + this.HTMLBuilder[2];	
@@ -135,11 +135,11 @@ define([
 			var session_element_exists = false;
 			for (var prop in query_params) {
 				if(prop == "x") session_element_exists = true;
- 				elements_data.push({
- 					name: prop,
- 					type: "text",
- 					value: query_params[prop]
- 				})
+				elements_data.push({
+					name: prop,
+					type: "text",
+					value: query_params[prop]
+				})
 			}
 			if(!session_element_exists){
 				elements_data.push({

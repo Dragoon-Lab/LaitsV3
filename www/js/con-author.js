@@ -1180,7 +1180,7 @@ define([
 			});
 			var waveformRemover = dom.byId("removeWaveform");
 			on(waveformRemover,"click",lang.hitch(this, function () {
-				this._model.given.emptyWaveformValue(this.currentID);
+				this._model.given.emptyWaveform(this.currentID);
 				style.set("waveformStore","display","none");
 				style.set("removeWaveform","display","none");
 			}));
