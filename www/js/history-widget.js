@@ -12,8 +12,8 @@ define([
 	"dojo/_base/json",
 	"dojo/_base/lang",
 	'dojo/aspect',
-	"form.js"
-], function(declare, parser, _WidgetBase, dom, ready, registry, on, style, Dialog, xhr, json, lang, aspect){
+	"./create_form"
+], function(declare, parser, _WidgetBase, dom, ready, registry, on, style, Dialog, xhr, json, lang, aspect, form){
 	return declare(null, {
 		params : null,
 		path : null,		
@@ -117,38 +117,47 @@ define([
 		loadHandler : function(e){
 			var label = e.target.id;
 			var session_id = label.slice(4,label.indexOf('_label'));
-			//before attaching the session id or x parameter
-			//verify if it is undefined , then add form property
-			//else just modify the value with current session id depending on history item opted
-			var form = document.forms[formID];
-			if(form.x === undefined){
-				addFormProperty("x",session_id);
-			}
-			else{
-				form.x.value = session_id;
-			}
-			submit();		
+			console.log("session_id",session_id);
+			//history_form has already been created and attached in initial handlers
+			var form = document.forms["history_form"];
+			//update the session id parameter based on the particular session in history
+			//to be loaded identified by session_id
+			form.x.value = session_id;
+			form.submit();		
 		},
 		initHandlers : function(){
 			var sessions = this.sessions;
 			var query_params = this.params;
 
-			//Before attaching click handlers to buttons which open each session
-			//create a form which reads parameters from session
-			//we already have js file for this purpose : form.js
-			//step 1: create a form and add properties from parameters
-			console.log("form id is",formID);
-			createForm();
+			//create an array of form element objects			
+			//This form is hidden and will be used to load sessions using session ids
+			var elements_data = [];
+			var session_element_exists = false;
 			for (var prop in query_params) {
- 				addFormProperty(prop,query_params[prop]);
+				if(prop == "x") session_element_exists = true;
+ 				elements_data.push({
+ 					name: prop,
+ 					type: "text",
+ 					value: query_params[prop]
+ 				})
 			}
-			//step 2 : attach handlers	
+			if(!session_element_exists){
+				elements_data.push({
+					name: "x",
+					type: "text",
+					value: ""
+				})
+			}
+
+			console.log("element data",elements_data);
+			//create a form with id, method, action and data as parameters
+			var prob_form = new form("history_form","post","index.php",elements_data);
 			for(var k in Object.keys(sessions)){		
 					var btn = dom.byId('btn_' + sessions[k]['session_id']);
 					if(!btn) continue;
 					on(btn, 'click', this.loadHandler);				
 			}
-
+		
 			on(this.dialog, "hide", lang.hitch(this,function(e){
 				var ele = document.getElementById('tbl_history');
 				if(ele)
