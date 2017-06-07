@@ -82,9 +82,7 @@ define([
 					"innerHTML": "<img src='images/close.png' width='12px' height='12px'>"
 				});
 				domConstruct.place(errorMessageCloseDiv, messageOuterDiv);
-			}
-
-			var handler = on(errorMessageCloseDiv, "click", function(){
+				var handler = on(errorMessageCloseDiv, "click", function(){
 						//Fade Out
 					    var fadeArgs = {
 					        node: messageOuterDiv,
@@ -96,7 +94,8 @@ define([
 						if(typeof _callback == "function") _callback();
 					    handler.remove();
 			    	});
-
+			}
+			
 			//add message box to container.
 			domConstruct.place(messageOuterDiv, _container, "last");
 			style.set(_messageBox, "display", "none");
