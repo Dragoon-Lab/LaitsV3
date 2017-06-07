@@ -63,7 +63,7 @@ define([
 			var nl = query(".error-message");
 			var idCount = nl.length;
 			//Create Outer Div
-			messageOuterDiv = domConstruct.create("div", {
+			var messageOuterDiv = domConstruct.create("div", {
 				"id": _container+ "message-outer-"+ idCount,
 				"class":"messageBox messageBox-"+_type });
 			_messageBox = messageOuterDiv;
@@ -84,17 +84,16 @@ define([
 				domConstruct.place(errorMessageCloseDiv, messageOuterDiv);
 			}
 
-			var handler = on(messageOuterDiv, "click", function(){
-			    		//Fade Out
-					    dojo.style(messageOuterDiv, "opacity", "1");
+			var handler = on(errorMessageCloseDiv, "click", function(){
+						//Fade Out
 					    var fadeArgs = {
 					        node: messageOuterDiv,
 					        onEnd: function(){
-					        	style.set(_messageBox, "display", "none");
+					        	style.set(messageOuterDiv, "display", "none");
               				}
 					    };
 					    dojo.fadeOut(fadeArgs).play();
-						if(_callback && typeof _callback == "function") _callback();
+						if(typeof _callback == "function") _callback();
 					    handler.remove();
 			    	});
 
