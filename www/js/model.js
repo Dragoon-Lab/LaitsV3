@@ -952,9 +952,11 @@ define([
 				// Summary: returns the id of a node matching the given name from the
 				//			given or extra nodes.  If none is found, return null.
 				var id;
+				var regEx = new RegExp('^'+name+'$', 'i');
+
 				var gotIt = array.some(this.getNodes(), function(node){
 					id = node.ID;
-					return node.name === name;
+					return regEx.test(node.name);
 				});
 				return gotIt ? id : null;
 			},
