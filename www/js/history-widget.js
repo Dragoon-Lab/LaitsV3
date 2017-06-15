@@ -139,14 +139,14 @@ define([
 					name: prop,
 					type: "text",
 					value: query_params[prop]
-				})
+				});
 			}
 			if(!session_element_exists){
 				elements_data.push({
 					name: "x",
 					type: "text",
 					value: ""
-				})
+				});
 			}
 
 			console.log("element data",elements_data);
