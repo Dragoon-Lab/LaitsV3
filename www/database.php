@@ -23,11 +23,11 @@
 			$q['getNCModel'] = 'SELECT session_id, problem, user, `group`, solution_graph FROM session JOIN solutions USING (session_id) WHERE user = "%s" AND problem = "%s" AND mode = "%s" ORDER BY session.time desc LIMIT 1;';
 			$q['insertSession'] = 'INSERT INTO session (session_id, mode, user, section, problem, `group`, activity) VALUES ("%s", "%s", "%s", "%s", "%s", "%s", "%s");';
 			$q['insertSolutionGraph'] = 'INSERT INTO solutions (session_id, share, deleted, solution_graph) VALUES ("%s", "%s", "%s", "%s");';
-			$q['listNCModelsInGroup'] = 'SELECT DISTINCT problem FROM session WHERE `group` = "%s"';
-			$q['updateFolderGivenFolder'] = 'UPDATE session SET `group` = "%s",time = time WHERE `group` = "%s" ';
-			$q['updateFolderGivenProblemFolder'] = 'UPDATE session SET `group` = "%s",time = time WHERE `group` = "%s" AND problem="%s" ';
-			$q['updateModelGivenProblemFolder'] = 'UPDATE session SET problem = "%s",time = time WHERE `group` = "%s" AND problem="%s" ';
-			$q['getSolutionGraph'] = 'SELECT solutions.session_id,solutions.solution_graph FROM solutions INNER JOIN session ON solutions.session_id = session.session_id AND session.group = "%s" AND session.problem = "%s" AND session.mode = "%s" ORDER BY session.time DESC limit 1';
+			$q['listNCModelsInGroup'] = 'SELECT DISTINCT problem FROM session WHERE `group` = "%s";';
+			$q['updateFolderGivenFolder'] = 'UPDATE session SET `group` = "%s",time = time WHERE `group` = "%s";';
+			$q['updateFolderGivenProblemFolder'] = 'UPDATE session SET `group` = "%s",time = time WHERE `group` = "%s" AND problem="%s";';
+			$q['updateModelGivenProblemFolder'] = 'UPDATE session SET problem = "%s",time = time WHERE `group` = "%s" AND problem="%s";';
+			$q['getSolutionGraph'] = 'SELECT solutions.session_id,solutions.solution_graph FROM solutions INNER JOIN session ON solutions.session_id = session.session_id AND session.group = "%s" AND session.problem = "%s" AND session.mode = "%s" ORDER BY session.time DESC limit 1;';
 
 			return $q;
 		}
@@ -134,7 +134,7 @@
 				if($query != '')
 					$query = sprintf($query, $dest, $src, $model);
 				$update_res = $this->getDBResults($query);
-				if($update_res)
+				if($this->db_connection->affected_rows > 0)
 					return "success";
 				else
 					return null;
