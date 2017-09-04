@@ -35,12 +35,8 @@
 		function getClassProblemGroups($parameters){
 			$query = $this->getQuery('classProblems');
 			$result = null;
-			if($query != ''){
+			if($query != '')
 				$query = sprintf($query, $parameters['u'], $parameters['g']);
-			} else {
-				return null;
-			}
-
 			$result = $this->getDBResults($query);
 			$problems = array();
 			if($result->num_rows != 0){
@@ -62,12 +58,8 @@
 			//query by group name and return problem names
 			//$query = "select DISTINCT problem from session where `group` = '$group'";
 			$query = $this->getQuery('listNCModelsInGroup');
-			if($query != ''){
+			if($query != '')
 				$query = sprintf($query, $group);
-			}
-			else{
-				return null;
-			}
 			$result = $this->getDBResults($query);
 			$nc_probs = array();
 			if($result->num_rows != 0){
@@ -98,12 +90,8 @@
 				//$del_folder_query = "update session set `group` = '$new_folder',time = time where `group` = '$eachFolder' ";
 				//echo $del_folder_query;
 				$query = $this->getQuery('updateFolderGivenFolder');
-				if($query != ''){
+				if($query != '')
 					$query = sprintf($query, $new_folder, $each_folder);
-				}
-				else{
-					return null;
-				}
 				$del_suc1 = $this->getDBResults($query);
 			}
 
@@ -116,12 +104,8 @@
 				//$del_folder_query = "update session set `group` = '$new_folder',time = time where `group` = '$group' and problem='$name' ";
 				//echo $del_folder_query;
 				$query = $this->getQuery('updateFolderGivenProblemFolder');
-				if($query != ''){
+				if($query != '')
 					$query = sprintf($query, $new_folder, $group, $name);
-				}
-				else{
-					return null;
-				}
 				$del_suc2 = $this->getDBResults($query);
 			}
 			if($del_suc1 && $del_suc2)
@@ -147,12 +131,8 @@
 				//$update_query = "update session set `group` = '$dest',time = time where `group`='$src' AND problem='$model' ";
 				//echo $update_query;
 				$query = $this->getQuery('updateFolderGivenProblemFolder');
-				if($query != ''){
+				if($query != '')
 					$query = sprintf($query, $dest, $src, $model);
-				}
-				else{
-					return null;
-				}
 				$update_res = $this->getDBResults($query);
 				if($update_res)
 					return "success";
@@ -164,12 +144,8 @@
 
 				//$get_sol_q = "select solutions.session_id,solutions.solution_graph from solutions INNER JOIN session ON solutions.session_id = session.session_id AND session.group = '$src' AND session.problem = '$model' AND session.mode = 'AUTHOR' ORDER BY session.time DESC limit 1";
 				$query = $this->getQuery('getSolutionGraph');
-				if($query != ''){
+				if($query != '')
 					$query = sprintf($query, $src, $model, 'AUTHOR');
-				}
-				else{
-					return null;
-				}
 				$sol_res = $this->getDBResults($query);
 				$sol_data = mysqli_fetch_array($sol_res);
 				$solution_graph = $this->db_connection->real_escape_string($sol_data['solution_graph']);
@@ -187,12 +163,8 @@
 								  VALUES ('$new_session_id','$user','$model','AUTHOR','$dest','$copy_sec','construction')";
 				*/
 				$query = $this->getQuery('insertSession');
-				if($query != ''){
+				if($query != '')
 					$query = sprintf($query, $new_session_id, 'AUTHOR', $user, $copy_sec, $model, $dest, 'construction');
-				} else {
-					return null;
-				}
-
 				$create_sess_res = $this->getDBResults($query);
 				if(!$create_sess_res)
 					return null;
@@ -227,9 +199,8 @@
 				//$update_query = "update session set `group` = '$new_item',time = time where `group`='$old_folder'";
 				//echo $update_query;
 				$query = $this->getQuery('updateFolderGivenFolder');
-				if($query != ''){
+				if($query != '')
 					$query = sprintf($query, $new_item, $old_folder);
-				}
 				$update_res = $this->getDBResults($query);
 				//echo $update_query;
 				if($update_res)
@@ -241,9 +212,8 @@
 				//$update_query = "update session set problem = '$new_item',time = time where `group`='$old_folder' AND problem='$old_model' ";
 				//echo $update_query;
 				$query = $this->getQuery('updateModelGivenProblemFolder');
-				if($query != ''){
+				if($query != '')
 					$query = sprintf($query, $new_item, $old_folder, $old_model);
-				}
 				$update_res = $this->getDBResults($query);
 				if($update_res)
 					return "success";
@@ -269,8 +239,6 @@
 				$query = sprintf($query, $u, $parameters['g'], $p, $parameters['m']);
 			} else if ($query != '' && !$flag) {
 				$query = sprintf($query, $u, $p, $parameters['m']);
-			} else {
-				return null;
 			}
 
 			$result = $this->getDBResults($query);
@@ -285,21 +253,15 @@
 			}
 
 			$query = $this->getQuery('insertSession');
-			if($query != ''){
+			if($query != '')
 				$query = sprintf($query, $session, $parameters['m'], $u, $s, $p, $row['group'], $parameters['a']);
-			} else {
-				return null;
-			}
 			$result = $this->getDBResults($query);
 			if(!$result){
 				return null;
 			}
 			$query = $this->getQuery('insertSolutionGraph');
-			if($query != ''){
+			if($query != '')
 				$query = sprintf($query, $session, 1, 0, $this->db_connection->real_escape_string($row['solution_graph']));
-			} else {
-				return null;
-			}
 
 			$result = $this->getDBResults($query);
 			if(!$result){
