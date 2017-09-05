@@ -134,7 +134,7 @@
 				if($query != '')
 					$query = sprintf($query, $dest, $src, $model);
 				$update_res = $this->getDBResults($query);
-				if($this->db_connection->affected_rows > 0)
+				if($update_res)
 					return "success";
 				else
 					return null;
