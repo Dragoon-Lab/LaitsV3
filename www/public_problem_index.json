@@ -1,164 +1,101 @@
 {
-    "Science": {
-        "Electronics": {
-            "Fundamental laws": {
-                "Ohm's Law": "resistor-battery-series"
-            },
-            "Resistors in series and parallel": {
-                "Series": "two-resistors-in-series--ask-I2",
-                "Parallel": "2-resistors-in-parallel-3",
-                "Series-parallel":"3-r-in-series-parallel-ask-I"
-            },
-            "Resistor + capacitor or inductor or diode": {
-                "Resistor + capacitor": "resistor-capacitor-2",
-                "Resistor + diode": "diode-resistor",
-                "Resistor + zener diode": "zener-diode-resistor"
-            },
-            "Limiters": {
-                "Parallel positive limiter with positive bias": "positive-biased-parallel-positive-limiter"
-            },
-            "Clampers":{
-                "Positive clamper": "positive-clamper"
-            },
-            "Rectifiers": {
-                "Full wave rectifier": "full-wave-rectifier"
-            },
-            "Voltage regulators": {
-                "Zener diode voltage regulator": "zener-voltage-regulator"
-            },
-            "Voltage doublers": {
-                "Full wave voltage doubler": "voltage-doubler-full-wave"
-            },
-            "Single transistor amplifiers": {
-                "CE battery bias AC analysis": "CE_transistor_base_current",
-                "CE battery bias DC analysis": "CE-transistor-battery-bias",
-                "CE fixed bias": "CE-transistor-fixed-bias-1",
-                "CC AC analysis": "common-collector-transistor-amplifier",
-                "CB AC analysis": "CB-transistor-amp-1"
-            },
-            "Multi-transistor amplifiers": {
-                "Two CE stages with RC coupling": "Two-stage-CE-amp-RC-coupled-1",
-                "Push-pull CC": "Push-pull-CC-amp-1"
-          }
-        },
-        "Human Physiology": {
-            "Blood Glucose": {
-                "Nonzero set point homeostasis": "nonzero-set-point-homeostasis",
-                "Two loop homeostasis": "two-loop-homeostasis",
-                "Simple blood glucose homeostasis": "simple-blood-glucose-homeostasis",
-                "Glucose min model": "glucose-min-model"
-            },
-            "Human Digestive Energy Balance": {
-                "Energy Balance 0": "Energy-balance-0",
-                "Energy Balance 1": "Energy-balance-1",
-                "Energy Balance 2": "Energy-balance-2",
-                "Energy Balance 3": "Energy-balance-3",
-                "Energy Balance 4": "Energy-balance-4",
-                "Energy Balance 5": "Energy-balance-5",
-                "Energy Balance 6": "Energy-balance-6",
-                "Energy Balance 7": "Energy-balance-7",
-                "Energy Balance 8": "Energy-balance-8"
-            }
-        },
-        "Physics": {
-            "Kinematics": {
-                "Fall from building 1": "Fall-from-building-1",
-                "Fall from building 2": "Fall-from-building-2",
-                "Fall from building 3": "Fall-from-building-3",
-                "Thrown Stone 1": "Thrown-Stone-1",
-                "Thrown Stone 2": "Thrown-Stone-2"
-            }
-        },
-        "Population Ecology": {
-            "Isle Royale": {
-                "Moose population 1": "isle1",
-                "Moose population 2": "isle2",
-                "Moose population 3": "isle3",
-                "Moose population 4": "isle4",
-                "Wolves": "isle5",
-                "Moose and Wolves": "isle6"
-            },
-            "Waterfowl & Cats": {
-                "Waterfowl 1": "201",
-                "Waterfowl 2": "202",
-                "Waterfowl 3": "203",
-                "Waterfowl & cats": "204"
-            },
-            "Zebra & Lions": {
-                "Zebra population level 1": "zebra-population-growth-1",
-                "Zebra population level 2": "zebra-population-growth-2",
-                "Zebra population level 3": "zebra-population-growth-3",
-                "Zebra population level 4": "zebra-population-growth-4",
-                "Lion population level 1": "lion-population-growth-1",
-                "Lion population level 2": "lion-population-growth-2",
-                "Lion population level 3": "lion-population-growth-3",
-                "Lion population level 4": "lion-population-growth-4",
-                "Zebra & lions level 1": "zebra-lions-independent-solo",
-                "Zebra & lions level 2": "zebra-lions-combined"
-            }
-        }
-    },
-    "Mastering Model Construction": {
-        "Generic Changes": {
-            "0.01 Constant": "constant",
-            "0.02 Proportional to source": "proportional-to-source",
-            "0.03 Proportional to destination": "proportional-to-destination",
-            "0.04 Proportional to set point minus destination": "propor-to-set-point-minus-destination",
-            "0.05 Proportional to source minus destination": "propor-to-source-minus-destination",
-            "0.06 Constant change runs out": "constant-change-runs-out",
-            "0.07 Acceleration": "acceleration",
-            "0.08 Epidemic": "epidemic"
-        },
-        "Problem Set 1": {
-            "1.01 Bookworm": "CPI-2014-ps1-01",
-            "1.02 Moose population": "CPI-2014-ps1-02",
-            "1.03 Jared's weight": "CPI-2014-ps1-03",
-            "1.04 Dodo extinction": "CPI-2014-ps1-04",
-            "1.05 Corky is falling behind": "CPI-2014-ps1-05",
-            "1.06 Moose births and deaths": "CPI-2014-ps1-06",
-            "1.07 Retirement": "CPI-2014-ps1-07",
-            "1.08 Body temperature": "CPI-2014-ps1-08",
-            "1.09 Book shuttle": "CPI-2014-ps1-09",
-            "1.10 Two barrels": "CPI-2014-ps1-10",
-            "1.11 Weight toss": "CPI-2014-ps1-11",
-            "1.12 Student infections": "CPI-2014-ps1-12"
-        },
-        "Problem Set 2": {
-            "2.1 Front lot to back lot": "CPI-2014-ps2-01",
-            "2.2 Buses in the shop": "CPI-2014-ps2-02",
-            "2.3 Deadly cruise": "CPI-2014-ps2-03",
-            "2.4 Vig trouble": "CPI-2014-ps2-04",
-            "2.5 Custom bike backlog": "CPI-2014-ps2-05",
-            "2.6 Furnace-only thermostat": "CPI-2014-ps2-06",
-            "2.7 Toilet tank": "CPI-2014-ps2-07",
-            "2.8 Strange retirement plan": "CPI-2014-ps2-08",
-            "2.9 Cascading barrels": "CPI-2014-ps2-09"
-        },
-        "Problem Set 3": {
-            "3.1 Venice": "CPI-2014-ps3-01",
-            "3.2 Oil tanker": "CPI-2014-ps3-02",
-            "3.3 Hardwood forest": "CPI-2014-ps3-03",
-            "3.4 Merchant marine": "CPI-2014-ps3-04",
-            "3.5 Capacity utilization": "CPI-2014-ps3-05",
-            "3.6 Metro singles club": "CPI-2014-ps3-06",
-            "3.7 Accelerating evaporation": "CPI-2014-ps3-07",
-            "3.8 Busy hospital": "CPI-2014-ps3-08"
-        },
-        "Problem Set 4": {
-            "4.1 Super gun": "CPI-2014-ps4-01",
-            "4.2 Saturated air": "CPI-2014-ps4-02",
-            "4.3 Snowball": "CPI-2014-ps4-03",
-            "4.4 The growth of terrorism": "CPI-2014-ps4-04",
-            "4.5 Running out of poison": "CPI-2014-ps4-05",
-            "4.6 Varmits at the waterhole": "CPI-2014-ps4-06"
-        },
-        "Problem Set 5": {
-            "5.1 Capacity-limited moose population": "CPI-2014-ps5-01",
-            "5.2 Moose and wolves": "CPI-2014-ps5-02",
-            "5.3 Pred-prey with capacity limits": "CPI-2014-ps5-03",
-            "5.4 Arms race": "CPI-2014-ps5-04",
-            "5.5 Blood glucose homeostasis": "CPI-2014-ps5-05",
-            "5.6 Digestive energy balance": "CPI-2014-ps5-06"
-        }
-    }
+	"Science": {
+		"Electronics": {
+			"Fundamental laws": {
+				"Ohm's Law": "resistor-battery-series"
+			},
+			"Resistors in series and parallel": {
+				"Series": "two-resistors-in-series--ask-I2",
+				"Parallel": "2-resistors-in-parallel-3",
+				"Series-parallel":"3-r-in-series-parallel-ask-I"
+			},
+			"Resistor + capacitor or inductor or diode": {
+				"Resistor + capacitor": "resistor-capacitor-2",
+				"Resistor + diode": "diode-resistor",
+				"Resistor + zener diode": "zener-diode-resistor"
+			},
+			"Limiters": {
+				"Parallel positive limiter with positive bias": "positive-biased-parallel-positive-limiter"
+			},
+			"Clampers":{
+				"Positive clamper": "positive-clamper"
+			},
+			"Rectifiers": {
+				"Full wave rectifier": "full-wave-rectifier"
+			},
+			"Voltage regulators": {
+				"Zener diode voltage regulator": "zener-voltage-regulator"
+			},
+			"Voltage doublers": {
+				"Full wave voltage doubler": "voltage-doubler-full-wave"
+			},
+			"Single transistor amplifiers": {
+				"CE battery bias AC analysis": "CE_transistor_base_current",
+				"CE battery bias DC analysis": "CE-transistor-battery-bias",
+				"CE fixed bias": "CE-transistor-fixed-bias-1",
+				"CC AC analysis": "common-collector-transistor-amplifier",
+				"CB AC analysis": "CB-transistor-amp-1"
+			},
+			"Multi-transistor amplifiers": {
+				"Two CE stages with RC coupling": "Two-stage-CE-amp-RC-coupled-1",
+				"Push-pull CC": "Push-pull-CC-amp-1"
+		  }
+		},
+		"Human Physiology": {
+			"Blood Glucose": {
+				"Nonzero set point homeostasis": "nonzero-set-point-homeostasis",
+				"Two loop homeostasis": "two-loop-homeostasis",
+				"Simple blood glucose homeostasis": "simple-blood-glucose-homeostasis",
+				"Glucose min model": "glucose-min-model"
+			},
+			"Human Digestive Energy Balance": {
+				"Energy Balance 0": "Energy-balance-0",
+				"Energy Balance 1": "Energy-balance-1",
+				"Energy Balance 2": "Energy-balance-2",
+				"Energy Balance 3": "Energy-balance-3",
+				"Energy Balance 4": "Energy-balance-4",
+				"Energy Balance 5": "Energy-balance-5",
+				"Energy Balance 6": "Energy-balance-6",
+				"Energy Balance 7": "Energy-balance-7",
+				"Energy Balance 8": "Energy-balance-8"
+			}
+		},
+		"Physics": {
+			"Kinematics": {
+				"Fall from building 1": "Fall-from-building-1",
+				"Fall from building 2": "Fall-from-building-2",
+				"Fall from building 3": "Fall-from-building-3",
+				"Thrown Stone 1": "Thrown-Stone-1",
+				"Thrown Stone 2": "Thrown-Stone-2"
+			}
+		},
+		"Population Ecology": {
+			"Isle Royale": {
+				"Moose population 1": "isle1",
+				"Moose population 2": "isle2",
+				"Moose population 3": "isle3",
+				"Moose population 4": "isle4",
+				"Wolves": "isle5",
+				"Moose and Wolves": "isle6"
+			},
+			"Waterfowl & Cats": {
+				"Waterfowl 1": "201",
+				"Waterfowl 2": "202",
+				"Waterfowl 3": "203",
+				"Waterfowl & cats": "204"
+			},
+			"Zebra & Lions": {
+				"Zebra population level 1": "zebra-population-growth-1",
+				"Zebra population level 2": "zebra-population-growth-2",
+				"Zebra population level 3": "zebra-population-growth-3",
+				"Zebra population level 4": "zebra-population-growth-4",
+				"Lion population level 1": "lion-population-growth-1",
+				"Lion population level 2": "lion-population-growth-2",
+				"Lion population level 3": "lion-population-growth-3",
+				"Lion population level 4": "lion-population-growth-4",
+				"Zebra & lions level 1": "zebra-lions-independent-solo",
+				"Zebra & lions level 2": "zebra-lions-combined"
+			}
+		}
+	}
 }
