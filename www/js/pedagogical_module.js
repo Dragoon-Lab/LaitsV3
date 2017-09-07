@@ -1044,6 +1044,7 @@ define([
 			for(var i = 0; i < obj.length; i++){
 				if(obj[i].id == "displayRemaining"){
 					this._display(returnObj, id, answer);
+					this._enableNext(returnObj, this.model.student.getDescriptionID(id), nodePart);
 					break;
 				}
 			}
