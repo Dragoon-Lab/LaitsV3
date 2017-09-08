@@ -8,6 +8,8 @@
 	<title>Dragoon</title>
 	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon"/>
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="./dijit/themes/claro/claro.css">
+
 	<script type = "text/javascript" src = "version.js"></script>
 	<script src="tincan/tincan-min.js"></script>
 	<script type="text/javascript">

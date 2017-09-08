@@ -201,6 +201,10 @@ table.solution th {
     padding-left:10px;
 }
 
+.tabLabel:focus{
+    outline: none;
+}
+
 div.legend {
     margin:0 auto;
 }
