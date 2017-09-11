@@ -3,7 +3,7 @@ define([
 	"dojo/dom",
 	"dijit/form/Form",
 	"dijit/form/TextBox",
-	"dojo/_base/lang",
+	"dojo/_base/lang"
 ], function(declare,dom,form,TextBox,lang){
 	return declare(null, {
 		constructor: function(formId,method,action,data){
@@ -12,7 +12,7 @@ define([
 				id: formId,
 				action: action,
 				method: method,
-				style: "display: none", /*generally idea is to create hidden forms and submit them*/
+				style: "display: none" /*generally idea is to create hidden forms and submit them*/
 			}, dojo.doc.createElement('div'));
 			//console.log(newForm);
 			document.body.appendChild(this.newForm.domNode);
@@ -42,7 +42,7 @@ define([
 					this.newForm.domNode.appendChild(textbox.domNode);
 					break;
 			}
-		},
+		}
 
 	});
 
