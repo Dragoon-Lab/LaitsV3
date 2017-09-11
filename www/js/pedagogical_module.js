@@ -348,12 +348,12 @@ define([
 			TEST: function(obj, part){
 				display(obj, "displayRemaining", true);
 				state(obj, part, "correct");
-				disable(obj, "enableRemaining", false);
+				disable(obj, "enableRemaining", true);
 			},
 			EDITOR: function(obj, part){
 				display(obj, "displayRemaining", true);
 				state(obj, part, "correct");
-				disable(obj, "enableRemaining", false);
+				disable(obj, "enableRemaining", true);
 			}
 		},
 		firstFailure: {
@@ -374,12 +374,12 @@ define([
 			TEST: function(obj, part){
 				state(obj, part, "incorrect");
 				display(obj, "displayRemaining", true);
-				disable(obj, "enableRemaining", false);
+				disable(obj, "enableRemaining", true);
 			},
 			EDITOR: function(obj, part){
 				state(obj, part, "incorrect");
 				display(obj, "displayRemaining", true);
-				disable(obj, "enableRemaining", false);
+				disable(obj, "enableRemaining", true);
 			}
 		},
 		secondFailure: {
@@ -404,12 +404,12 @@ define([
 			TEST: function(obj, part){
 				state(obj, part, "incorrect");
 				display(obj, "displayRemaining", true);
-				disable(obj, "enableRemaining", false);
+				disable(obj, "enableRemaining", true);
 			},
 			EDITOR: function(obj, part){
 				state(obj, part, "incorrect");
 				display(obj, "displayRemaining", true);
-				disable(obj, "enableRemaining", false);
+				disable(obj, "enableRemaining", true);
 			}
 		},
 		anotherFailure: {
@@ -425,23 +425,23 @@ define([
 			},
 			TEST: function(obj, part){
 				display(obj, "displayRemaining", true);
-				disable(obj, "enableRemaining", false);
+				disable(obj, "enableRemaining", true);
 			},
 			EDITOR: function(obj, part){
 				display(obj, "displayRemaining", true);
-				disable(obj, "enableRemaining", false);
+				disable(obj, "enableRemaining", true);
 			}
 		},
 		incorrect: {
 			TEST: function(obj, part){
 				state(obj, part, "incorrect");
 				display(obj, "displayRemaining", true);
-				disable(obj, "enableRemaining", false);
+				disable(obj, "enableRemaining", true);
 			},
 			EDITOR: function(obj, part){
 				state(obj, part, "incorrect");
 				display(obj, "displayRemaining", true);
-				disable(obj, "enableRemaining", false);
+				disable(obj, "enableRemaining", true);
 			}
 		}
 	};
@@ -1037,14 +1037,14 @@ define([
 			var interpretation = this._getInterpretation(id, nodePart, answer);
 			var obj = [];
 			var returnObj = [];
-			if(nodePart == "type"){
-				nodeEditorActionTable[interpretation][this.userType](obj, nodePart);
-			}
+			nodeEditorActionTable[interpretation][this.userType](obj, nodePart);
 
 			for(var i = 0; i < obj.length; i++){
 				if(obj[i].id == "displayRemaining"){
 					this._display(returnObj, id, answer);
-					break;
+				}
+				if(obj[i].id == "enableRemaining" && obj[i].value && !this.model.active.isComplete(id)){
+					this._enableNext(returnObj, this.model.active.getDescriptionID(id), nodePart);
 				}
 			}
 
