@@ -12,7 +12,7 @@ install:
 	git clone https://github.com/bhosaledipak/JsPlumb_Dojo_Integreate.git jsPlumb
 	git clone https://github.com/bvds/js-expression-eval.git math-parser  
 	echo "${dojo-version}" > dojo-install-version
-	sudo npm install
+	npm install
 	@echo "call to build script goes here"
 	@echo "Installed Dojo $(dojo-version)."
 
@@ -25,7 +25,7 @@ ifeq ($(shell test -f dojo-install-version && cat dojo-install-version),${dojo-v
 	cd jsPlumb; git pull
 	cd math-parser; git pull
 	cd ..
-	sudo npm update
+	npm update
 	@echo "call to build script goes here"
 	@echo "Updated Dojo $(dojo-version)."
 else 
