@@ -27,10 +27,10 @@
     "mocha": "^2.3.3"
   },
   "scripts": {
-    "start": "sudo gulp",
-    "build": "sudo gulp build",
-    "test": "sudo ../tests/RunTests.sh",
-    "deploy": "sudo gulp deploy"
+    "start": "gulp",
+    "build": "gulp build",
+    "test": "../tests/RunTests.sh",
+    "deploy": "gulp deploy"
   },
   "repository": {
     "type": "git",
