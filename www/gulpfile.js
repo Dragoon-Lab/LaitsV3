@@ -103,9 +103,17 @@ gulp.task('build', ['dojoBuild'], function (done){
 					gulp.src(config.wwwPath+'/**', {base:'../release'}).pipe(gulp.dest(config.releasePath)).on("end", function(){
 						console.log('Copying other folders...');
 						gulp.src(externalFiles).pipe(gulp.dest(config.releasePath)).on("end", function(){
-							console.log("Build Complete");
-						        // generateZip();  // No longer needed since we do builds on the server directly now.
-							done();
+						    console.log("Build complete, copying files...");
+						    // generateZip();  // No longer needed since we do builds on the server directly now.
+						    shell.task(['rm -rf '+ config.wwwPath,
+								'rm -rf '+ config.destinationDir,
+								'mv '+ config.releasePath+' '+ config.destinationDir,
+								'mkdir '+ config.destinationDir + '/www/problems',
+								'mkdir '+ config.destinationDir + '/www/images',
+								'cp -R ./problems/* '+ config.destinationDir + '/www/problems/',
+								'cp -R ./images/* '+ config.destinationDir +'/www/images/',
+								'cp ../db_user_password '+ config.destinationDir +'/db_user_password']);
+						    done();
 						});
 					});
 				});
