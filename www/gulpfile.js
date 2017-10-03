@@ -104,7 +104,7 @@ gulp.task('build', ['dojoBuild'], function (done){
 						console.log('Copying other folders...');
 						gulp.src(externalFiles).pipe(gulp.dest(config.releasePath)).on("end", function(){
 							console.log("Build Complete");
-							generateZip();
+						        // generateZip();  // No longer needed since we do builds on the server directly now.
 							done();
 						});
 					});
