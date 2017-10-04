@@ -13,6 +13,7 @@ pipeline {
             steps {
                 sh 'cp tests/scripts/example-test-paths.js tests/scripts/test-paths.js'
                 sh 'make install'
+		sh 'touch db_user_password'
             }
         }
         stage('Build'){
