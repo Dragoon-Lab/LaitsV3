@@ -313,6 +313,17 @@ define([
 			}
 			return true;
 		},
+		isOnlySum: function(parse){
+			// Return true if expression is a sum of variables, restricting minus signs.
+			// Used to display + sign on node if expression is merely a sum
+			var ops = parse.operators();
+			var allowed = {"+": true, "variable": true};
+			for(var op in ops){
+				if(ops[op] > 0 && !allowed[op])
+					return false;
+			}
+			return true;
+		},
 		isProduct: function(parse){
 			// Return true if the expression is a product of variables, allowing for division
 			// Note that explicit powers (a^2) are not allowed, which is mathematically incorrect
