@@ -469,6 +469,7 @@ define([
 			this.staticVar = 0;
 			var staticNodes = this.checkForParameters();
 			this.isStatic = this.isStatic && staticNodes.length > 0;
+			dom.byId("StaticTab").innerHTML = "";
 			if(this.isStatic){
 				//TODO: Duplicate code in forEach
 				array.forEach(this.active.plotVariables, function(id){

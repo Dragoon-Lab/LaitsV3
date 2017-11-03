@@ -216,7 +216,6 @@ define([
         },
 		/* addNode: Add a node to the jsPlumb model, returning the DOM element.	 */
 		addNode: function(/*object*/ node){
-			debugger;
 			var type = node.type || "triangle";
 			var mx=0, my=0, offsetTop=30.975
 			if (type=="parameter") {
