@@ -426,7 +426,6 @@ define([
 
 				this.graphTab.set("content", graphContent);
 
-
 				array.forEach(this.active.plotVariables, function (id, index) {
 					var domNode = "chart" + id;
 					var val = this.checkEpsilon(this.activeSolution, index);
@@ -469,41 +468,49 @@ define([
 			var staticContent = "";
 			this.staticVar = 0;
 			var staticNodes = this.checkForParameters();
+			this.isStatic = this.isStatic && staticNodes.length > 0;
+			dom.byId("StaticTab").innerHTML = "";
+			if(this.isStatic){
+				//TODO: Duplicate code in forEach
+				array.forEach(this.active.plotVariables, function(id){
+					var show = this.model.active.getType(id) == "accumulator" || this.model.given.getParent(this.model.active.getGivenID(id));
+					var checked = show ? " checked='checked'" : "";
+					staticContent += "<div><input id='selStatic" + id + "' data-dojo-type='dijit/form/CheckBox' class='show_graphs' thisid='" + id + "'" + checked + "/>" + " Show " + this.model.active.getName(id) + "</div>";
+					var style = show ? "" : " style='display: none;'";
+					staticContent += "<div	 id='chartStatic" + id + "'" + style + "></div>";
 
-			//TODO: Duplicate code in forEach
-			array.forEach(this.active.plotVariables, function(id){
-				var show = this.model.active.getType(id) == "accumulator" || this.model.given.getParent(this.model.active.getGivenID(id));
-				var checked = show ? " checked='checked'" : "";
-				staticContent += "<div><input id='selStatic" + id + "' data-dojo-type='dijit/form/CheckBox' class='show_graphs' thisid='" + id + "'" + checked + "/>" + " Show " + this.model.active.getName(id) + "</div>";
-				var style = show ? "" : " style='display: none;'";
-				staticContent += "<div	 id='chartStatic" + id + "'" + style + "></div>";
+					//graph error message
+					staticContent += "<font color='red' id='staticGraphMessage" + id + "'></font>";
+					// Since the legend div is replaced, we cannot hide the legend here.
+					staticContent += "<div class='legend' id='legendStatic" + id + "'></div>";
+				}, this);
 
-				//graph error message
-				staticContent += "<font color='red' id='staticGraphMessage" + id + "'></font>";
-				// Since the legend div is replaced, we cannot hide the legend here.
-				staticContent += "<div class='legend' id='legendStatic" + id + "'></div>";
-			}, this);
+				this.staticTab = registry.byId("StaticTab");
 
-			this.staticTab = registry.byId("StaticTab");
+				this.staticTab.set("content", "<div id='staticSelectContainer'></div>" + staticContent);
 
-			this.staticTab.set("content", "<div id='staticSelectContainer'></div>" + staticContent);
+				this.createComboBox(staticNodes);
+				var staticVar = this.checkStaticVar(true);
+				this.staticPlot = this.findStaticSolution(true, staticVar, this.active.plotVariables);
+				this.givenSolution = this.given.plotVariables ? this.findStaticSolution(false, staticNodes[this.staticVar], this.given.plotVariables) : "";
 
-			this.createComboBox(staticNodes);
-			var staticVar = this.checkStaticVar(true);
-			this.staticPlot = this.findStaticSolution(true, staticVar, this.active.plotVariables);
-			this.givenSolution = this.given.plotVariables ? this.findStaticSolution(false, staticNodes[this.staticVar], this.given.plotVariables) : "";
+				array.forEach(this.active.plotVariables, function(id, index){
+					var domNode = "chartStatic" + id ;
+					var xAxis = dom.byId("staticSelect").value;
+					var yAxis = this.labelString(id);
+					this.chartsStatic[id] = this.createChart(domNode, id, xAxis, yAxis, this.staticPlot, index);
+					this.legendStatic[id] = new Legend({chart: this.chartsStatic[id]}, "legendStatic" + id);
+				}, this);
 
-			array.forEach(this.active.plotVariables, function(id, index){
-				var domNode = "chartStatic" + id ;
-				var xAxis = dom.byId("staticSelect").value;
-				var yAxis = this.labelString(id);
-				this.chartsStatic[id] = this.createChart(domNode, id, xAxis, yAxis, this.staticPlot, index);
-				this.legendStatic[id] = new Legend({chart: this.chartsStatic[id]}, "legendStatic" + id);
-			}, this);
-
-			if(this.buttonClicked == "graph") {
-				this.tabContainer.selectChild(this.staticTab);
+				if(this.buttonClicked == "graph") {
+					this.tabContainer.selectChild(this.staticTab);
+				}
+			} else {
+				var errorMessage  = "<div>There are no Parameters to graph against</div>";
+				var errMessageBox = new messageBox("StaticTab", "warn", errorMessage, false);
+				errMessageBox.show();
 			}
+
 		},
 
 		//creates the dropdown menu for the static window
