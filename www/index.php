@@ -755,6 +755,8 @@
 	<div class="claro sameedit" id="viewAllSchemaDialog" data-dojo-type="dijit/Dialog" title="Edit Schemas" style="width:300px;">
 	</div>
 
+	<div data-dojo-type="dijit/Dialog" data-dojo-id="alertDialog" id ="alertDialog" title="Message" style="width:300px; position: absolute; top: 150px; right: 300px;"> If you want to keep the values you set here, write them down because they won't be installed in the model automatically.</div>
+
 	<div id="ETContainer" style="visibility: hidden; width: 0; height: 0;"></div> <!-- container for SuperGLU integration for Electronix Tutor -->
 
 </div>  <!-- main -->
