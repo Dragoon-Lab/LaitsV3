@@ -302,29 +302,22 @@ define([
 				}
 			},this);
 		},
-		isSum: function(parse){
+		isSum: function(parse, allowMinus){
 			// Return true if expression is a sum of variables, allowing for minus signs.
 			// Note that a bare variable will also return true.
+			// Using parameter allowMinus to include minus sign
+			// allowMinus = false handles case where we add + sign to node when all nodes are added( no minus)
+			// allowMinus = true handles case where there is negative sign and we do not want to show + on node in that case, but want '-'
+			// on the connector
 			var ops = parse.operators();
 			var allowed = {"+": true, "-": true, "variable": true};
 			for(var op in ops){
-				if(ops[op] > 0 && !allowed[op])
+				if(!(allowed[op] && (op==='+' || op ==='variable'|| allowMinus)) || ops[op] > 0 && !allowed[op])
 					return false;
 			}
 			return true;
 		},
-		isOnlySum: function(parse){
-			// Return true if expression is a sum of variables, restricting minus signs.
-			// Used to display + sign on node if expression is merely a sum
-			var ops = parse.operators();
-			var allowed = {"+": true, "variable": true};
-			for(var op in ops){
-				if(ops[op] > 0 && !allowed[op])
-					return false;
-			}
-			return true;
-		},
-		isProduct: function(parse){
+		isProduct: function(parse, allowDivide){
 			// Return true if the expression is a product of variables, allowing for division
 			// Note that explicit powers (a^2) are not allowed, which is mathematically incorrect
 			// but we have no mechanism for adding powers on our user interface.  For problems
@@ -333,7 +326,7 @@ define([
 			var ops = parse.operators();
 			var allowed = {"*": true, "/": true, "variable": true};
 			for(var op in ops){
-				if(ops[op] > 0 && !allowed[op])
+				if(!(allowed[op] && (op==='*' || op ==='variable') || allowDivide ) || ops[op] > 0 && !allowed[op])
 					return false;
 			}
 			return true;
@@ -392,12 +385,12 @@ define([
 			var chooseSign = function(x, a, b, c){
 				return x>0.5?a:(x<-0.5?b:c);
 			};
-			if(this.isSum(parse)){
+			if(this.isSum(parse, true)){
 				grad = this.gradient(parse, false);
 				return array.map(parse.variables(), function(x){
 					return {ID: x, label: chooseSign(grad[x],"","-","0")};
 				});
-			}else if(this.isProduct(parse)){
+			}else if(this.isProduct(parse, true)){
 				grad = this.gradient(parse, true);
 				return array.map(parse.variables(), function(x){
 					return {ID: x, label: chooseSign(grad[x],"","/","none")};

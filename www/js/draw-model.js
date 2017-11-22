@@ -328,8 +328,8 @@ define([
 			if(parse){
 				try{
 					parse = equation.parse(parse);
-					isSum = equation.isSum(parse);
-					isProduct = equation.isProduct(parse);
+					isSum = equation.isSum(parse, true);
+					isProduct = equation.isProduct(parse, true);
 				}
 				catch(err){
 					console.log("Parse Error" + err);
@@ -380,8 +380,8 @@ define([
 				if(parse){
 					try{
 						parse=equation.parse(parse);
-						isSum=equation.isSum(parse);
-						isProduct=equation.isProduct(parse);
+						isSum=equation.isSum(parse, true);
+						isProduct=equation.isProduct(parse, true);
 					}catch(err){
 						console.log("Parse Error" + err);
 					}
