@@ -143,7 +143,6 @@ define([
 			 */
 			this.activeSolution = this.findSolution(true, this.active.plotVariables);
 			console.log(this.activeSolution);
-
 			if (this.activeSolution.status == "error" && this.activeSolution.type == "missing") {
 				// Return value from findSlution in calculation, returns an array and we check for status and any missing nodes
 				errorMessage = this.generateMissingErrorMessage(this.activeSolution); //We show the error message like "A Node is Missing"
@@ -872,13 +871,13 @@ define([
 
 		//helper method for error messages
 		generateMissingErrorMessage: function(solution){
-			return "content", "<div>Not all nodes have been completed. For example, "
+			return "<div>Not all nodes have been completed. For example, "
 			+ solution.missingNode + " has an empty "+ solution.missingField +
 			" field.</div>";
 		},
 
 		generateUnknownErrorMessage: function(solution){
-			return "content", "<div>There is an unknown node <b>"+ solution.unknownNode +
+			return "<div>There is an unknown node <b>"+ solution.unknownNode +
 			"</b> used in the <b>"+ solution.missingField +" field</b> of the <b>" + solution.missingNode +
 			" node</b>. Please check the spelling of all the nodes you have entered in the expression</div>";
 		},
