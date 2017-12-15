@@ -75,6 +75,7 @@
 		public $id;
 		public $nodeExist;
 		public $openTimes;
+		public $isNodeCorrect = true;
 		public $properties = array();
 
 		function getPropertyFromName($name){

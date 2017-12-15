@@ -582,6 +582,7 @@
 								$currentProperty = null;
 							}
 						} else if($checkResult === "INCORRECT"){
+							$currentNode->isNodeCorrect = false;
 							array_push($currentProperty->answers, $newMessage['value']);
 							$incorrectChecks = $incorrectChecks+1;
 							if(in_array('correctValue', $newMessage)){

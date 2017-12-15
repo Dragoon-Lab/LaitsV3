@@ -38,6 +38,7 @@ define([
 		nodesAttempted: [],
 		timeSpent: [],
 		errorRatio: [],
+		nodesCorrectRatio: [],
 		problemComplete: [],
 		sessionRunning: [],
 		detailedNodeAnalysis: [],
@@ -108,6 +109,7 @@ define([
 			for(var i = 0; i<totalUsers; i++){
 				this.timeSpent[i] = [];
 				this.errorRatio[i] = [];
+				this.nodesCorrectRatio[i] = [];
 				this.problemComplete[i] = [];
 				this.sessionRunning[i] = [];
 				this.detailedNodeAnalysis[i] = [];
@@ -123,6 +125,7 @@ define([
 				for(var j = 0; j<totalProblems; j++){
 					this.timeSpent[i][j] = "-";
 					this.errorRatio[i][j] = "-";
+					this.nodesCorrectRatio[i][j] = "-";
 					this.problemComplete[i][j] = false;
 					this.sessionRunning[i][j] = false;
 					this.detailedNodeAnalysis[i][j] = "-";
@@ -341,7 +344,6 @@ define([
 					this.timeSpent[userIndex][problemIndex] = (number.round((upObject['focusTime'] - upObject['wastedTime'])*10))/10;
 					this.totalTimeSpent[userIndex] += this.timeSpent[userIndex][problemIndex];
 					this.totalTimeSpent[userIndex] = (number.round(this.totalTimeSpent[userIndex]*100))/100; // just making sure no extra long decimals show up.
-
 					var errorRatioText = "Blank";
                     var errorRatioNumber = (100-((parseFloat(upObject['incorrectChecks'])/parseFloat(upObject['totalSolutionChecks']))*100));
                     if (!isNaN(errorRatioNumber)){ 
@@ -350,13 +352,24 @@ define([
  					this.errorRatio[userIndex][problemIndex] = errorRatioText;
 					
 					this.problemComplete[userIndex][problemIndex] = upObject['problemComplete'];
+					var nodesCorrectRatioText = "Blank";
 					if(this.problemComplete[userIndex][problemIndex] == true){
 						this.totalProblemsCompleted[userIndex]++;
 						this.totalProblemsStarted[userIndex]++;
+						var nodesCorrect = 0;
+						array.forEach(upObject["nodes"], function(node){
+							if(node.isNodeCorrect){
+								nodesCorrect++;
+							}
+						});
+						var nodesCorrectRatio = (nodesCorrect/upObject["nodes"].length)*100;
+						if (!isNaN(nodesCorrectRatio)){
+	                        nodesCorrectRatioText = nodesCorrectRatio.toFixed(1)+"%";
+	                    }
 					} else {
 						this.totalProblemsStarted[userIndex]++;
 					}
-
+					this.nodesCorrectRatio[userIndex][problemIndex] = nodesCorrectRatioText;
 					this.problemRevisits[userIndex][problemIndex] = upObject['openTimes'];
 					//this.nodesAttempted[userIndex][problemIndex] = upObject['nodes'].length;
 					this.sessionRunning[userIndex][problemIndex] = upObject['sessionRunning'];
@@ -498,7 +511,17 @@ define([
 						tableString += "</a>";
 					}
 					tableString +=  "</span>";
-					
+
+					tableString += "<span class='nodesCorrect all'>";
+					if(this.modules['sessionLink'] && this.nodesCorrectRatio[row][col] != "-"){
+						tableString += urlString;
+					}
+					tableString += this.nodesCorrectRatio[row][col];
+					if(this.modules['sessionLink'] && this.nodesCorrectRatio[row][col] != "-"){
+						tableString += "</a>";
+					}
+					tableString +=  "</span>";
+
 					tableString += "<span class='revisits all'>";
 					if(this.modules['sessionLink'] && this.problemRevisits[row][col] != "-"){
 						tableString += urlString;
