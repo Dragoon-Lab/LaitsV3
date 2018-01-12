@@ -1412,7 +1412,6 @@ define([
 
 			// Input choices are different in AUTHOR and student modes
 			// So they are set in con-author.js and con-student.js
-
 			var equation = model.getEquation(nodeid);
 			console.log("equation before conversion ", equation);
 			var mEquation = equation ? expression.convert(model, equation) : '';
@@ -1522,7 +1521,9 @@ define([
 						// Each control has its own function to update the
 						// the model and the graph.
 					}else{
-						w.set(directive.attribute, directive.value);
+						if(!((this._mode === "EDITOR" || this._mode === "TEST" ) && directive.attribute === "disabled")){
+							w.set(directive.attribute, directive.value);
+						}
 						if(directive.attribute === "status"){
 							tempDirective = directive;
 						}

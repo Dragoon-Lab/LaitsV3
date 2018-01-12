@@ -496,17 +496,19 @@ define([
 			/*
 			 Set color and enable/disable
 			 */
-			array.forEach(this._model.student.getStatusDirectives(nodeid), function (directive) {
-				var w = registry.byId(this.controlMap[directive.id]);
-				w.set(directive.attribute, directive.value);
-				// The actual values should be in the model itself, not in status directives.
-				if (directive.attribute == "value") {
-					this.logging.clientLog("error", {
-						message: "Values should not be set in status directives",
-						functionTag: 'initialControlSettings'
-					});
-				}
-			}, this);
+			if(this._PM.mode !== "EDITOR" && this._PM.mode !== "TEST"){
+				array.forEach(this._model.student.getStatusDirectives(nodeid), function (directive) {
+					var w = registry.byId(this.controlMap[directive.id]);
+					w.set(directive.attribute, directive.value);
+					// The actual values should be in the model itself, not in status directives.
+					if (directive.attribute == "value") {
+						this.logging.clientLog("error", {
+							message: "Values should not be set in status directives",
+							functionTag: 'initialControlSettings'
+						});
+					}
+				}, this);
+			}
 		},
 
 		// Need to save state of the node editor in the status section
