@@ -481,7 +481,7 @@ define([
 			if(activity_config.get("ElectronixTutor") && query.m !== "AUTHOR" ){
 				var etHelper = new ETHelper(query, ETConfig.problemLsrMap, ETConfig.schemaETKCMap);
 				// send score after student complete the model
-				aspect.after(controllerObject._PM, " notifyCompleteness", function(){
+				aspect.after(controllerObject._PM, "notifyCompleteness", function(){
 					if( !sendKCScore || !givenModel.isCompleteFlag) return;
 					var learningResourceName = etHelper.getLearningResourceName();
 					var KCScores = controllerObject._assessment.getSchemaSuccessFactor();
