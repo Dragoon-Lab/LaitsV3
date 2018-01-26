@@ -477,7 +477,6 @@ define([
 				});
 			}
 			// setting environment for loading dragoon inside ET
-
 			var etHelper = null;
 			if(activity_config.get("ElectronixTutor") && query.m !== "AUTHOR" ){
 				var etHelper = new ETHelper(query, ETConfig.problemLsrMap, ETConfig.schemaETKCMap);
@@ -486,8 +485,16 @@ define([
 					if( !sendKCScore || !givenModel.isCompleteFlag) return;
 					var learningResourceName = etHelper.getLearningResourceName();
 					var KCScores = controllerObject._assessment.getSchemaSuccessFactor();
-					var learningResourceName = etHelper.getLearningResourceName();
 					if(Object.keys(KCScores).length > 0) {
+						Object.keys(KCScores).forEach(function(key) {
+							// Get new KCs Mapped to schemas
+							var newkey = etHelper.getKCForSchema(key);
+							if(newkey != key){
+								KCScores[newkey] = KCScores[key];
+								delete KCScores[key];
+							}
+						});
+
 						console.log("Sending KC Scores", KCScores);
 						sendKCScore(ETConfig.config.learningResource,learningResourceName, KCScores);
 					}
@@ -1690,21 +1697,6 @@ define([
 						domClass.remove(dom.byId(buttonID), "active");
 						toolTip.hide(dom.byId(buttonID));
 					});
-
-					if( !sendKCScore || !givenModel.isCompleteFlag) return;
-					var learningResourceName = etHelper.getLearningResourceName();
-					var KCScores = controllerObject._assessment.getSchemaSuccessFactor();
-					if(Object.keys(KCScores).length > 0) {
-						Object.keys(KCScores).forEach(function(key) {
-							// Get new KCs Mapped to schemas
-							var newkey = etHelper.getKCForSchema(key);
-							KCScores[newkey] = KCScores[key];
-							delete KCScores[key];
-						});
-
-						console.log("Sending KC Scores", KCScores);
-						sendKCScore(ETConfig.config.learningResource,learningResourceName, KCScores);
-					}
 				}, this);
 				// Wire up close button...
 				// This will trigger the above session.saveProblem()
