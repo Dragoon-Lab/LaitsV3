@@ -22,10 +22,11 @@
 define(["dojo/_base/declare"], function(declare){
 	return declare(null, {
 
-		constructor: function(/* object */ query, data){
+		constructor: function(/* object */ query, data, mapping){
 			this.problem = query.p;
 			this.activity = query.a;
 			this.problemLSRMap = data;
+			this.schemaETKCMap = mapping;
 		},
 
 		getLearningResourceName: function(){
@@ -34,6 +35,13 @@ define(["dojo/_base/declare"], function(declare){
 				code = code.replace("--","-"+this.activity.charAt(0).toUpperCase()+"-");
 			}
 			return code;
+		},
+
+		getKCForSchema: function(schemaClass){
+			if(schemaClass != null){
+				schemaClass = this.schemaETKCMap[schemaClass];	
+			}
+			return schemaClass;
 		}
 	});
 	

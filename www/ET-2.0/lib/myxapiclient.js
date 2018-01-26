@@ -3,7 +3,6 @@ log = function(msg){
 }
 
 setupConfig = function(err, launchdata, xAPIWrapper) {
-  debugger;
     if (!err) {
       wrapper = ADL.XAPIWrapper = xAPIWrapper;
       log("--- content launched via xAPI Launch ---");
@@ -15,7 +14,7 @@ setupConfig = function(err, launchdata, xAPIWrapper) {
 }
 
 sendKCScore = function(learningResource,problemID,kcNamesAndScores){
-  var vars = window.location.search.substring(1).split('&');
+  var vars = document.getElementById("query").value.split('&');
   var params = {}
   for (var i=0;i<vars.length;i++) {
     var pair = vars[i].split("=");
@@ -64,7 +63,7 @@ sendKCScore = function(learningResource,problemID,kcNamesAndScores){
 }
 
 sendCompleted = function(learningResource,problemID){
-  var vars = window.location.search.substring(1).split('&');
+  var vars = document.getElementById("query").value.split('&');
   var params = {}
   for (var i=0;i<vars.length;i++) {
     var pair = vars[i].split("=");
@@ -101,7 +100,7 @@ sendCompleted = function(learningResource,problemID){
 }
 
 QueryStringToJSON = function(SKOTitle) {
-	var pairs = window.location.href.split('?')[1].split('&');
+	var pairs = document.getElementById("query").value.split('&');
 
 	var result = {};
 	pairs.forEach(function(pair) {
@@ -117,7 +116,7 @@ QueryStringToJSON = function(SKOTitle) {
 }
 
 qs = function(search_for) {
-	var query = window.location.search.substring(1);
+	var query = document.getElementById("query").value;
 	var params = query.split('&');
 	for (var i = 0; i<params.length; i++) {
 		var pos = params[i].indexOf('=');

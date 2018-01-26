@@ -480,7 +480,7 @@ define([
 
 			var etHelper = null;
 			if(activity_config.get("ElectronixTutor") && query.m !== "AUTHOR" ){
-				var etHelper = new ETHelper(query, ETConfig.problemLsrMap);
+				var etHelper = new ETHelper(query, ETConfig.problemLsrMap, ETConfig.schemaETKCMap);
 				// send score after student complete the model
 				aspect.after(controllerObject._PM, " notifyCompleteness", function(){
 					if( !sendKCScore || !givenModel.isCompleteFlag) return;
@@ -1694,8 +1694,14 @@ define([
 					if( !sendKCScore || !givenModel.isCompleteFlag) return;
 					var learningResourceName = etHelper.getLearningResourceName();
 					var KCScores = controllerObject._assessment.getSchemaSuccessFactor();
-					var learningResourceName = etHelper.getLearningResourceName();
 					if(Object.keys(KCScores).length > 0) {
+						Object.keys(KCScores).forEach(function(key) {
+							// Get new KCs Mapped to schemas
+							var newkey = etHelper.getKCForSchema(key);
+							KCScores[newkey] = KCScores[key];
+							delete KCScores[key];
+						});
+
 						console.log("Sending KC Scores", KCScores);
 						sendKCScore(ETConfig.config.learningResource,learningResourceName, KCScores);
 					}
