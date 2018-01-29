@@ -206,10 +206,9 @@
 			<span>Help</span>
 			<div data-dojo-type="dijit/Menu" id="menuHelp">                
 				<div id="menuIntroTutorial" data-dojo-type="dijit/MenuItem">Introduction</div>
-				<div id="menuIntroVideo" data-dojo-type="dijit/MenuItem">Introductory video</div>
+				<div id="menuIntroVideo" data-dojo-type="dijit/MenuItem">Electronics Tutorial Video</div>
 				<div id="menuIntroConcept" data-dojo-type="dijit/MenuItem">Intro to Dragoon concepts</div>
 				<div id="menuOldIntroVideo" data-dojo-type="dijit/MenuItem">Slightly older intro video</div>
-				<div id="menuIntroText" data-dojo-type="dijit/MenuItem">Introduction webpage</div>
 				<div id="menuMathFunctions" data-dojo-type="dijit/MenuItem">Math functions</div>
 			</div>
 		</div>
