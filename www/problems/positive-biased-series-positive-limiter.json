@@ -12,7 +12,7 @@
             "isGraphHelpShown": true
         },
         "image": {
-            "URL": "http://i.imgur.com/6Yu8HoY.png?1"
+            "URL": "http:\/\/i.imgur.com\/6Yu8HoY.png?1"
         },
         "taskDescription": {
             "construction": [
@@ -587,7 +587,7 @@
                     },
                     {
                         "ID": "id4",
-                        "label": "/"
+                        "label": "\/"
                     }
                 ],
                 "position": {
@@ -640,7 +640,7 @@
                 "description": "Current thru resistor R",
                 "type": "function",
                 "units": "amps",
-                "equation": "id17/id4",
+                "equation": "id17\/id4",
                 "genus": "required",
                 "authorStatus": {
                     "root": {
@@ -1185,6 +1185,26 @@
                     "isolation": 1,
                     "cues": 1,
                     "phrases": 1
+                }
+            },
+            {
+                "ID": "schema11",
+                "schemaClass": "resistor_behavior",
+                "name": "Resistor Behavior",
+                "competence": {
+                    "errors": 0,
+                    "total": 0,
+                    "attempts": 0,
+                    "correctScore": 0,
+                    "timeSpent": 0,
+                    "values": {}
+                },
+                "nodes": "id4, id11",
+                "rates": {},
+                "difficulty": {
+                    "isolation": 1,
+                    "cues": 1,
+                    "phrases": 0
                 }
             }
         ]
