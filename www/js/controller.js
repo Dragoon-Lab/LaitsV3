@@ -1521,7 +1521,7 @@ define([
 						// Each control has its own function to update the
 						// the model and the graph.
 					}else{
-						if(!((this._mode === "EDITOR" || this._mode === "TEST" ) && directive.attribute === "disabled")){
+						if( !this.activityConfig.get('allowEditGivenNode') ){
 							w.set(directive.attribute, directive.value);
 						}
 						if(directive.attribute === "status"){

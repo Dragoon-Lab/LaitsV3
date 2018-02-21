@@ -496,7 +496,7 @@ define([
 			/*
 			 Set color and enable/disable
 			 */
-			if(this._PM.mode !== "EDITOR" && this._PM.mode !== "TEST"){
+			if(!this.activityConfig.get("allowEditGivenNode")){
 				array.forEach(this._model.student.getStatusDirectives(nodeid), function (directive) {
 					var w = registry.byId(this.controlMap[directive.id]);
 					w.set(directive.attribute, directive.value);
