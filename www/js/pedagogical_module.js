@@ -363,7 +363,6 @@ define([
 			},
 			feedback: function(obj, part){
 				state(obj, part, "incorrect");
-				display(obj, "displayRemaining", true);
 				message(obj, part, "incorrect");
 				disable(obj, "enableNext", false);
 			},
