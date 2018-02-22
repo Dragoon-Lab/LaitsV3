@@ -1330,13 +1330,11 @@ define([
 				record.increment("problemCompleted", 1);
 				if(this.activityConfig.getActivity() == "construction" && this.activityConfig.get("showFeedback")){
 					// Number of problems to show the hint upon completion
-					if(record.getLocal("problemCompleted") < 3 ){
-						return	[{
-							id: "crisisAlert",
-							attribute: "open",
-							value: 'You have completed your model. Click on "Graph" or "Table" to see what the solution looks like'
-						}];
-					}
+					return	[{
+						id: "crisisAlert",
+						attribute: "open",
+						value: 'You have completed your model. Click on "Graph" or "Table" to see what the solution looks like'
+					}];
 				}
 			}
 			return [];
