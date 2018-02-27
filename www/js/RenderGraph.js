@@ -71,8 +71,9 @@ define([
 		 *	@brief:constructor for a graph object
 		 *	@param: noOfParam
 		 */
-		constructor: function(model, mode, logging, buttonClicked){
+		constructor: function(model, mode, logging, buttonClicked, activityConfig){
 			this.buttonClicked = buttonClicked;
+			this.activityConfig = activityConfig;
 			logger.setSession(logging);
 			console.log("***** In RenderGraph constructor");
 			console.log(logging);
@@ -289,7 +290,8 @@ define([
 				}
 				obj.min = obj.max;
 			}*/
-			if(this.mode != "AUTHOR" && this.mode != "ROAUTHOR" && this.mode != "EDITOR" && this.givenSolution.plotValues[index]){
+			debugger;
+			if(this.activityConfig.get("plotAuthorSolution") && this.givenSolution.plotValues[index]){
 				var step = (obj.max - obj.min)/10;
 				if(obj.min >= this.givenSolution.plotValues[index][index] - step){
 					obj.min = obj.min - step;
@@ -360,7 +362,7 @@ define([
 				}
 			}
 			var step = (obj.max - obj.min)/10;
-			if(this.mode != "AUTHOR" && this.mode != "ROAUTHOR" && this.mode != "EDITOR" && this.givenSolution.plotValues[index]){
+			if(this.activityConfig.get("plotAuthorSolution") && this.givenSolution.plotValues[index]){
 				if(obj.min >= this.givenSolution.plotValues[index][index] - step){
 					obj.min = obj.min - step;
 				}
