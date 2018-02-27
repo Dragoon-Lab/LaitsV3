@@ -29,6 +29,13 @@
                 " * Births are the only change in the population. Deaths, immigration and emigration do not occur.",
                 " * The number of moose births each year is the moose population times the probability of a moose giving birth during the year.",
                 " * The probability of a moose giving birth each year is 20%."
+            ],
+            "execution": [
+                "Assumptions:",
+                " * The moose population is 20 in the first year (1900).",
+                " * Births are the only change in the population. Deaths, immigration and emigration do not occur.",
+                " * The number of moose births each year is the moose population times the probability of a moose giving birth during the year.",
+                " * The probability of a moose giving birth each year is 20%."
             ]
         },
         "increment": [
@@ -118,12 +125,6 @@
             }
         ],
         "studentModelNodes": [],
-        "lessonsLearned": [],
-        "increment": [
-            {
-                "tweakedNode": "id2",
-                "tweakDirection": "Increase"
-            }
-        ]
+        "lessonsLearned": []
     }
 }
