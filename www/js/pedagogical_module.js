@@ -1494,8 +1494,7 @@ define([
 						var n = nodesCopy[index];
 						var inputs = n.inputs;
 						var inputsCopy = dojo.clone(inputs);
-						var k = inputsCopy.length-1;
-						for(k; k >= 0; k--){
+						for(var k= inputsCopy.length-1; k >= 0; k--){
 							if(hierarchy[i].indexOf(inputsCopy[k].ID) >= 0){
 								n.inputs.splice(k, 1);
 							}

@@ -194,8 +194,7 @@ define([
 					var orderedInput = [];
 					array.forEach(givenNode.inputs, function(input){
 						var id = input.ID.substring(2, input.ID.length);
-						var i = 0;
-						for(i; i<orderedInput.length; i++){
+						for(var i=0; i<orderedInput.length; i++){
 							if(orderedInput[i] < id)
 								break;
 						}

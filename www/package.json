@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Node modules for dragoon",
   "main": "gulpfile.js",
-  "dependencies": {},
+  "dependencies": {
+    "semver": "^5.4.1"
+  },
   "devDependencies": {
     "browser-sync": "^2.9.10",
     "gulp": "^3.9.0",
