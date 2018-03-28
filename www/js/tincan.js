@@ -126,9 +126,14 @@ define([
 			var schemas = this._model.active.getSchemas();
 			var debugReport = "Overall success factor: "+successFactor+"\n";
 			var debugScoreSum = 0;
-			array.forEach(schemas, lang.hitch(this, function(schema){ 
+			var kc_scores = "";
+			array.forEach(schemas, lang.hitch(this, function(schema, index){
 				debugReport += "Success factor for "+ schema.schemaClass+": "+schemaSuccessFactor[schema.schemaClass]+"\n";
 				debugScoreSum += schemaSuccessFactor[schema.schemaClass];
+				kc_scores += schema.schemaClass + "," + schemaSuccessFactor[schema.schemaClass];
+				if(index != schemas.length - 1){
+					kc_scores += "|"
+				}
 				/*
 				statement.context = {
 						"contextActivities": {
@@ -196,13 +201,16 @@ define([
 				});
 				*/
 			}));
+			var pal3_score = (debugScoreSum / ( schemas.length || 1 ));
 			var stmt = {
 				"player_id": this._session.params.player_id,
 				"resource_guid": this._session.params.resource_guid,
 				"resource_session_id": this._session.params.resource_session_id,
 				"duration": this.isoDuration(this._session.calculateDuration()),
-				"score": pal3_score
+				"score": pal3_score,
+				"kc_scores": kc_scores
 			};
+			console.log("Sending statement : " + stmt);
 
 			dojo.xhrPost({
 					url:'https://pal3.ict.usc.edu/php/SubmitScore.php',
@@ -217,7 +225,7 @@ define([
 						console.log(err);
 					}
 				});
-			var pal3_score = (debugScoreSum / ( schemas.length || 1 ));
+
 			debugReport += "PAL3 score should be: " + pal3_score;
 			if(this._session.params.s == "PAL3-regression-testing"){
 				alert(debugReport);
