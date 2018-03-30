@@ -47,6 +47,8 @@ www/node_modules
 
 www/selenium.log*
 
+www/PAL3-config.json
+
 .idea/
 
 tests/npm/
