@@ -70,7 +70,7 @@ define([
 			this.tincan = new TinCan ({
 			    	recordStores: [
 			            {
-			                endpoint:"https://pal3.ict.usc.edu/php/SubmitResourceScore.php",
+			                endpoint:"https://pal3.ict.usc.edu/php/SubmitScore.php",
 			                username: "0ed3c15d57b33439145ed2684c1ba09b48a33410",
 			                password: "feb46eec5cdedce5553550318ff93ea9b48ea69a",
 			                allowFail: false
@@ -133,7 +133,6 @@ define([
 			*/
 			//Create a new Statement for every schema associated with the problem 
 			var schemas = this._model.active.getSchemas();
-
 			var debugReport = "Overall success factor: "+successFactor+"\n";
 			var debugScoreSum = 0;
 			var kc_scores = "";
