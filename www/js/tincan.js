@@ -214,14 +214,12 @@ define([
 				*/
 			}));
 			var pal3_score = (debugScoreSum / ( schemas.length || 1 ));
-			var stmt = {
-				"player_id": this._session.params.player_id,
-				"resource_guid": this._session.params.resource_guid,
-				"resource_session_id": this._session.params.resource_session_id,
-				"duration": this.isoDuration(this._session.calculateDuration()),
-				"score": pal3_score,
-				"kc_scores": kc_scores
-			};
+			var stmt = "&player_id="+this._session.params.player_id+
+				"&resource_guid="+ this._session.params.resource_guid+
+				'&resource_session_id="'+ this._session.params.resource_session_id+'"'+
+				"&duration="+ this.isoDuration(this._session.calculateDuration())+
+				"&score="+ pal3_score+
+				"&kc_scores="+ kc_scores;
 			console.log("Sending statement : " , stmt);
 			/*
 			// dojo.xhrPost is deprecated. Replacing with request/xhr
@@ -239,10 +237,10 @@ define([
 					}
 				});
 			*/
-				xhr("https://pal3.ict.usc.edu/php/SubmitScore.php",{
+			xhr("https://pal3.ict.usc.edu/php/SubmitScore.php",{
 				handleAs: "text",
 				method: "POST",
-				data: "json="+JSON.stringify(stmt)+"&api_key="+api_key,
+				data: stmt+"&api_key="+api_key,
 				sync: true,
 			}).then(function(data){
 				console.log(data);
