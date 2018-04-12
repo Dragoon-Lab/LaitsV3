@@ -1,4 +1,5 @@
 <?php
+	set_time_limit(300);
 	include "problemObject.php";
 
 	$includeDifficulty = false;
@@ -197,14 +198,8 @@ EOT;
 	}
 
 	function createDataRows($objs, $fastData){
-		$fileName = "data.train.xls";
 		$includeDifficulty = $GLOBALS["includeDifficulty"];
-		//$fileName = "data.test.xls";
-		if($fastData){
-			$fileName = ($GLOBALS["removeParameter"]?"_parameter_removed":"").
-							($GLOBALS["analyseByParts"] != "" ?("_".$GLOBALS["analyseByParts"]):"").".csv";
-		}
-		
+				
 		$allSchemas = $GLOBALS["allSchemas"];
 		$allSchemas2 = $GLOBALS["allSchemas2"];
 		$allSchemas3 = $GLOBALS["allSchemas3"];
@@ -495,18 +490,23 @@ EOT;
 		return $formattedData;
 	}
 
-	function writeFiles($rows, $datacount){
-		$data = $rows[0];
-		$data2 = $rows[1];
-		$data3 = $rows[2];
-		$data4 = $rows[3];
-		$data5 = $rows[4];
-		$data6 = $rows[5];
-		$data7 = $rows[6];
+	function writeFiles($rows, $fastData, $dataCount){
+		$formattedData = $rows[0];
+		$formattedData2 = $rows[1];
+		$formattedData3 = $rows[2];
+		$formattedData4 = $rows[3];
+		$formattedData5 = $rows[4];
+		$formattedData6 = $rows[5];
+		$formattedData7 = $rows[6];
 		$includeDifficulty = $GLOBALS["includeDifficulty"];
 		$counters = $GLOBALS["counters"];
 		$path = $GLOBALS["path"];
 		$copy = 0;
+		$fileName = "data.train.xls";
+		if($fastData){
+			$fileName = ($GLOBALS["removeParameter"]?"_parameter_removed":"").
+							($GLOBALS["analyseByParts"] != "" ?("_".$GLOBALS["analyseByParts"]):"").".csv";
+		}
 
 		for(; $copy < $dataCount; $copy++){
 			$indexes = getIndexes(sizeof($counters));
@@ -514,7 +514,7 @@ EOT;
 			$i = 0;
 			$temp = "train";
 			$temp1 = "test";
-			$tempData = createTestData($data, $indexes);
+			$tempData = createTestData($formattedData, $indexes);
 			$data = $tempData[0];
 			$test = $tempData[1];
 			if($includeDifficulty){
@@ -522,129 +522,129 @@ EOT;
 			}
 			$str = "model1";
 			if($fastData){
-				$str = $temp.$i++."_".$copy;
+				$str = $temp.$i."_".$copy;
 				$testStr = $temp1.$i++."_".$copy;
 			}
-			$file = fopen($path.$str.$fileName, "w");
+			$file = fopen($path.$str.$fileName, "w+");
 			foreach($data as $row){
 				fwrite($file, $row);
 			}
 			fclose($file);
-			$testFile = fopen($path.$testStr.$fileName, "w");
+			$testFile = fopen($path.$testStr.$fileName, "w+");
 			foreach($test as $row){
 				fwrite($testFile, $row);
 			}
 			fclose($testFile);
 
-			$tempData = createTestData($data2, $indexes);
+			$tempData = createTestData($formattedData2, $indexes);
 			$data2 = $tempData[0];
 			$test2 = $tempData[1];
 			$str = "model2";
 			if($fastData){
-				$str = $temp.$i++."_".$copy;
+				$str = $temp.$i."_".$copy;
 				$testStr = $temp1.$i++."_".$copy;
 			}
-			$file2 = fopen($path.$str.$fileName, "w");
+			$file2 = fopen($path.$str.$fileName, "w+");
 			foreach($data2 as $row){
 				fwrite($file2, $row);
 			}
 			fclose($file2);
-			$testFile2 = fopen($path.$testStr.$fileName, "w");
+			$testFile2 = fopen($path.$testStr.$fileName, "w+");
 			foreach($test as $row){
 				fwrite($testFile2, $row);
 			}
 			fclose($testFile2);
 
-			$tempData = createTestData($data3, $indexes);
+			$tempData = createTestData($formattedData3, $indexes);
 			$data3 = $tempData[0];
 			$test3 = $tempData[1];
 			$str = "model3";
 			if($fastData){
-				$str = $temp.$i++."_".$copy;
+				$str = $temp.$i."_".$copy;
 				$testStr = $temp1.$i++."_".$copy;
 			}
-			$file3 = fopen($path.$str.$fileName, "w");
+			$file3 = fopen($path.$str.$fileName, "w+");
 			foreach($data3 as $row){
 				fwrite($file3, $row);
 			}
 			fclose($file3);
-			$testFile3 = fopen($path.$testStr.$fileName, "w");
+			$testFile3 = fopen($path.$testStr.$fileName, "w+");
 			foreach($test as $row){
 				fwrite($testFile3, $row);
 			}
 			fclose($testFile3);
 
-			$tempData = createTestData($data4, $indexes);
+			$tempData = createTestData($formattedData4, $indexes);
 			$data4 = $tempData[0];
 			$test4 = $tempData[1];
 			$str = "control";
 			if($fastData){
-				$str = $temp.$i++."_".$copy;
+				$str = $temp.$i."_".$copy;
 				$testStr = $temp1.$i++."_".$copy;
 			}
-			$file4 = fopen($path.$str.$fileName, "w");
+			$file4 = fopen($path.$str.$fileName, "w+");
 			foreach($data4 as $row){
 				fwrite($file4, $row);
 			}
 			fclose($file4);
-			$testFile4 = fopen($path.$testStr.$fileName, "w");
+			$testFile4 = fopen($path.$testStr.$fileName, "w+");
 			foreach($test as $row){
 				fwrite($testFile4, $row);
 			}
 			fclose($testFile4);
 
-			$tempData = createTestData($data5, $indexes);
+			$tempData = createTestData($formattedData5, $indexes);
 			$data5 = $tempData[0];
 			$test5 = $tempData[1];
 			$str = "model4";
 			if($fastData){
-				$str = $temp.$i++."_".$copy;
+				$str = $temp.$i."_".$copy;
 				$testStr = $temp1.$i++."_".$copy;
 			}
-			$file5 = fopen($path.$str.$fileName, "w");
+			$file5 = fopen($path.$str.$fileName, "w+");
 			foreach($data5 as $row){
 				fwrite($file5, $row);
 			}
 			fclose($file5);
-			$testFile5 = fopen($path.$testStr.$fileName, "w");
+			$testFile5 = fopen($path.$testStr.$fileName, "w+");
 			foreach($test as $row){
 				fwrite($testFile5, $row);
 			}
 			fclose($testFile5);
 
-			$tempData = createTestData($data6, $indexes);
+			$tempData = createTestData($formattedData6, $indexes);
 			$data6 = $tempData[0];
 			$test6 = $tempData[1];
 			$str = "model5";
 			if($fastData){
-				$str = $temp.$i++."_".$copy;
+				$str = $temp.$i."_".$copy;
 				$testStr = $temp1.$i++."_".$copy;
 			}
-			$file6 = fopen($path.$str.$fileName, "w");
+			$file6 = fopen($path.$str.$fileName, "w+");
 			foreach($data6 as $row){
 				fwrite($file6, $row);
 			}
 			fclose($file6);
-			$testFile6 = fopen($path.$testStr.$fileName, "w");
+			$testFile6 = fopen($path.$testStr.$fileName, "w+");
 			foreach($test as $row){
 				fwrite($testFile6, $row);
 			}
 			fclose($testFile6);
 
-			$tempData = createTestData($data7, $indexes);
+			$tempData = createTestData($formattedData7, $indexes);
 			$data7 = $tempData[0];
 			$test7 = $tempData[1];
 			$str = "model6";
 			if($fastData){
-				$str = $temp.$i++."_".$copy;
+				$str = $temp.$i."_".$copy;
 				$testStr = $temp1.$i++."_".$copy;
 			}
-			$file7 = fopen($path.$str.$fileName, "w");
+			$file7 = fopen($path.$str.$fileName, "w+");
 			foreach($data7 as $row){
 				fwrite($file7, $row);
 			}
 			fclose($file7);
-			$testFile7 = fopen($path.$testStr.$fileName, "w");
+			$testFile7 = fopen($path.$testStr.$fileName, "w+");
 			foreach($test as $row){
 				fwrite($testFile7, $row);
 			}
@@ -655,10 +655,17 @@ EOT;
 	function getIndexes($size){
 		$indexes = array();
 		$index = rand(0, $size - 1);
-		if(!in_array($index, $indexes))
-			array_push($indexes, $index);
+		$count = intval(ceil(0.2*$size));
+		echo $index;
+		for($i = 0; $i < $count; ){
+			if(!in_array($index, $indexes)){
+				array_push($indexes, $index);
+				$i++;
+			}
+		}
 
 		arsort($indexes);
+		print_r($indexes);
 		return $indexes;
 	}
 
@@ -669,10 +676,15 @@ EOT;
 		$testData = array();
 
 		for($i = 0; $i < $size; $i++){
-			$start = $counters[$indexes[$i]]
-			$steps = $counters[$indexes[$i + 1]] - $start;
-			$testData = array_merge($testData, array_slice($trainData, $start, $steps);
-			$trainData = array_splice($trainData, $start, $steps);
+			$start = $counters[$indexes[$i]];
+			if($i == 0 && $indexes[0] == sizeof($counters) - 1){
+				$testData = array_merge($testData, array_slice($trainData, $start));
+				$trainData = array_splice($trainData, $start);
+			}else{
+				$steps = $counters[$indexes[$i]+1] - $start;
+				$testData = array_merge($testData, array_slice($trainData, $start, $steps));
+				$trainData = array_splice($trainData, $start, $steps);
+			}
 		}
 
 		return array($trainData, $testData);
@@ -734,7 +746,7 @@ EOT;
 			}
 		}
 
-		$file = fopen($path."train".$fileName, "w");
+		$file = fopen($path."train".$fileName, "w+");
 		foreach($data as $row){
 			fwrite($file, $row);
 		}
@@ -747,7 +759,7 @@ EOT;
 		$fastData = true;
 		$data = createDataRows($objs, $fastData);
 		//createFastData($objs, $fastData);
-		writeFiles($data, 10);
+		writeFiles($data, $fastData, 10);
 		return $objs;
 	}
 ?>
