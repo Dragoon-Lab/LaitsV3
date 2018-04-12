@@ -1,14 +1,16 @@
 <?php
 	include "problemObject.php";
 
+	$includeDifficulty = false;
 	$allSchemas = array();//"line_acc_description", "line_acc_type", "line_acc_initial", "line_par_description", "line_acc_equation", "line_par_type", "line_par_initial", "expo_fun_description", "expo_fun_type", "expo_acc_description", "expo_par_description", "expo_fun_equation", "expo_acc_type", "expo_acc_initial", "expo_acc_equation", "expo_par_type", "expo_par_initial", "expo_acc_units", "line_acc_units", "expo_fun_units", "line_par_units", "acce_acc_description", "acce_acc_type", "acce_acc_initial", "acce_fun_description", "acce_acc_equation", "acce_fun_type", "acce_par_description", "acce_fun_equation", "acce_par_type", "acce_par_initial");  //schema(4)_node type(3)count_property
 	$allSchemas2 = array(); //schema(4)_node type(3)
 	$allSchemas3 = array();//"line_description", "line_type", "line_initial", "line_equation", "expo_description", "expo_type", "expo_equation", "expo_initial", "expo_units", "line_units", "acce_description", "acce_type", "acce_initial", "acce_equation"); //schema(4)_property
 	$allSchemas4 = array("description", "type", "initial", "units", "equation");
 	$removeParameter = false; // boolean
-	$analyseByParts = "two-thirds"; //two-thirds - for first 8 problems, one-thirds for last two problems, anything else - complete data
+	$analyseByParts = "";#"two-thirds"; //two-thirds - for first 8 problems, one-thirds for last two problems, anything else - complete data
+	$path = "data/";
 
-	//main();
+	main();
 	function analyzeLogs(){
 		$section = "public-workbook";
 		$allSchemas = $GLOBALS["allSchemas"];
@@ -44,7 +46,7 @@
 		$query = <<<EOT
 		SELECT t1.user, t1.problem, t1.session_id, t2.method, t2.message FROM (SELECT user, problem, session_id, time FROM session WHERE section = "$section" AND mode = "STUDENT" AND problem IN $problemString /*AND (user = "akhil1302" OR user = "abratcher56")*/) AS t1 JOIN (SELECT tid, method, message, session_id FROM step WHERE method = "solution-step") as t2 USING (session_id) ORDER BY user ASC, time ASC, problem ASC, tid ASC;
 EOT;
-		//echo $query;
+		echo $query;
 
 		$result = mysqli_query($mysqli, $query);
 		$first = true;
@@ -196,7 +198,7 @@ EOT;
 
 	function createDataRows($objs, $fastData){
 		$fileName = "data.train.xls";
-		$includeDifficulty = false;
+		$includeDifficulty = $GLOBALS["includeDifficulty"];
 		//$fileName = "data.test.xls";
 		if($fastData){
 			$fileName = ($GLOBALS["removeParameter"]?"_parameter_removed":"").
@@ -215,6 +217,7 @@ EOT;
 		$data5 = array();
 		$data6 = array();
 		$data7 = array();
+		$formattedData = array();
 
 		$tab = "\t";
 		$schemaExist = "2";
@@ -300,6 +303,9 @@ EOT;
 		array_push($data5, $text5);
 		array_push($data6, $text6);
 		array_push($data7, $text7);
+		$index = 1;
+		$counters = array();
+		array_push($counters, $index);
 
 		foreach($objs as $usr){
 			echo $usr->name."<br/>";
@@ -419,7 +425,7 @@ EOT;
 						$text6 .= "NULL".$tab;
 						$text7 .= "NULL".$tab;
 					}
-					
+
 					if(!$fastData){
 						if($property->value == "CORRECT"){
 							$text .= $propertyCorrect;
@@ -472,81 +478,204 @@ EOT;
 					array_push($data6, $text6);
 					array_push($data7, $text7);
 				}
+				$index++;
 			}
+			array_push($counters, $index);
 		}
-		$i = 0;
-		$temp = "train";
-		if($includeDifficulty){
-			$temp = "diff_train";
-		}
-		$str = "model1";
-		if($fastData){
-			$str = $temp.$i++;
-		}
-		$file = fopen($str.$fileName, "w");
-		foreach($data as $row){
-			fwrite($file, $row);
-		}
-		fclose($file);
 
-		$str = "model2";
-		if($fastData){
-			$str = $temp.$i++;
+		array_push($formattedData, $data);
+		array_push($formattedData, $data2);
+		array_push($formattedData, $data3);
+		array_push($formattedData, $data4);
+		array_push($formattedData, $data5);
+		array_push($formattedData, $data6);
+		array_push($formattedData, $data7);
+		$GLOBALS["counters"] = $counters;
+
+		return $formattedData;
+	}
+
+	function writeFiles($rows, $datacount){
+		$data = $rows[0];
+		$data2 = $rows[1];
+		$data3 = $rows[2];
+		$data4 = $rows[3];
+		$data5 = $rows[4];
+		$data6 = $rows[5];
+		$data7 = $rows[6];
+		$includeDifficulty = $GLOBALS["includeDifficulty"];
+		$counters = $GLOBALS["counters"];
+		$path = $GLOBALS["path"];
+		$copy = 0;
+
+		for(; $copy < $dataCount; $copy++){
+			$indexes = getIndexes(sizeof($counters));
+
+			$i = 0;
+			$temp = "train";
+			$temp1 = "test";
+			$tempData = createTestData($data, $indexes);
+			$data = $tempData[0];
+			$test = $tempData[1];
+			if($includeDifficulty){
+				$temp = "diff_train";
+			}
+			$str = "model1";
+			if($fastData){
+				$str = $temp.$i++."_".$copy;
+				$testStr = $temp1.$i++."_".$copy;
+			}
+			$file = fopen($path.$str.$fileName, "w");
+			foreach($data as $row){
+				fwrite($file, $row);
+			}
+			fclose($file);
+			$testFile = fopen($path.$testStr.$fileName, "w");
+			foreach($test as $row){
+				fwrite($testFile, $row);
+			}
+			fclose($testFile);
+
+			$tempData = createTestData($data2, $indexes);
+			$data2 = $tempData[0];
+			$test2 = $tempData[1];
+			$str = "model2";
+			if($fastData){
+				$str = $temp.$i++."_".$copy;
+				$testStr = $temp1.$i++."_".$copy;
+			}
+			$file2 = fopen($path.$str.$fileName, "w");
+			foreach($data2 as $row){
+				fwrite($file2, $row);
+			}
+			fclose($file2);
+			$testFile2 = fopen($path.$testStr.$fileName, "w");
+			foreach($test as $row){
+				fwrite($testFile2, $row);
+			}
+			fclose($testFile2);
+
+			$tempData = createTestData($data3, $indexes);
+			$data3 = $tempData[0];
+			$test3 = $tempData[1];
+			$str = "model3";
+			if($fastData){
+				$str = $temp.$i++."_".$copy;
+				$testStr = $temp1.$i++."_".$copy;
+			}
+			$file3 = fopen($path.$str.$fileName, "w");
+			foreach($data3 as $row){
+				fwrite($file3, $row);
+			}
+			fclose($file3);
+			$testFile3 = fopen($path.$testStr.$fileName, "w");
+			foreach($test as $row){
+				fwrite($testFile3, $row);
+			}
+			fclose($testFile3);
+
+			$tempData = createTestData($data4, $indexes);
+			$data4 = $tempData[0];
+			$test4 = $tempData[1];
+			$str = "control";
+			if($fastData){
+				$str = $temp.$i++."_".$copy;
+				$testStr = $temp1.$i++."_".$copy;
+			}
+			$file4 = fopen($path.$str.$fileName, "w");
+			foreach($data4 as $row){
+				fwrite($file4, $row);
+			}
+			fclose($file4);
+			$testFile4 = fopen($path.$testStr.$fileName, "w");
+			foreach($test as $row){
+				fwrite($testFile4, $row);
+			}
+			fclose($testFile4);
+
+			$tempData = createTestData($data5, $indexes);
+			$data5 = $tempData[0];
+			$test5 = $tempData[1];
+			$str = "model4";
+			if($fastData){
+				$str = $temp.$i++."_".$copy;
+				$testStr = $temp1.$i++."_".$copy;
+			}
+			$file5 = fopen($path.$str.$fileName, "w");
+			foreach($data5 as $row){
+				fwrite($file5, $row);
+			}
+			fclose($file5);
+			$testFile5 = fopen($path.$testStr.$fileName, "w");
+			foreach($test as $row){
+				fwrite($testFile5, $row);
+			}
+			fclose($testFile5);
+
+			$tempData = createTestData($data6, $indexes);
+			$data6 = $tempData[0];
+			$test6 = $tempData[1];
+			$str = "model5";
+			if($fastData){
+				$str = $temp.$i++."_".$copy;
+				$testStr = $temp1.$i++."_".$copy;
+			}
+			$file6 = fopen($path.$str.$fileName, "w");
+			foreach($data6 as $row){
+				fwrite($file6, $row);
+			}
+			fclose($file6);
+			$testFile6 = fopen($path.$testStr.$fileName, "w");
+			foreach($test as $row){
+				fwrite($testFile6, $row);
+			}
+			fclose($testFile6);
+
+			$tempData = createTestData($data7, $indexes);
+			$data7 = $tempData[0];
+			$test7 = $tempData[1];
+			$str = "model6";
+			if($fastData){
+				$str = $temp.$i++."_".$copy;
+				$testStr = $temp1.$i++."_".$copy;
+			}
+			$file7 = fopen($path.$str.$fileName, "w");
+			foreach($data7 as $row){
+				fwrite($file7, $row);
+			}
+			fclose($file7);
+			$testFile7 = fopen($path.$testStr.$fileName, "w");
+			foreach($test as $row){
+				fwrite($testFile7, $row);
+			}
+			fclose($testFile7);
 		}
-		$file2 = fopen($str.$fileName, "w");
-		foreach($data2 as $row){
-			fwrite($file2, $row);
+	}
+	
+	function getIndexes($size){
+		$indexes = array();
+		$index = rand(0, $size - 1);
+		if(!in_array($index, $indexes))
+			array_push($indexes, $index);
+
+		arsort($indexes);
+		return $indexes;
+	}
+
+	function createTestData($data, $indexes){
+		$counters = $GLOBALS["counters"];
+		$size = sizeof($indexes);
+		$trainData = $data;
+		$testData = array();
+
+		for($i = 0; $i < $size; $i++){
+			$start = $counters[$indexes[$i]]
+			$steps = $counters[$indexes[$i + 1]] - $start;
+			$testData = array_merge($testData, array_slice($trainData, $start, $steps);
+			$trainData = array_splice($trainData, $start, $steps);
 		}
-		fclose($file2);
-		
-		$str = "model3";
-		if($fastData){
-			$str = $temp.$i++;
-		}
-		$file3 = fopen($str.$fileName, "w");
-		foreach($data3 as $row){
-			fwrite($file3, $row);
-		}
-		
-		$str = "control";
-		if($fastData){
-			$str = $temp.$i++;
-		}
-		$file4 = fopen($str.$fileName, "w");
-		foreach($data4 as $row){
-			fwrite($file4, $row);
-		}
-		fclose($file4);
-		
-		$str = "model4";
-		if($fastData){
-			$str = $temp.$i++;
-		}
-		$file5 = fopen($str.$fileName, "w");
-		foreach($data5 as $row){
-			fwrite($file5, $row);
-		}
-		fclose($file5);
-		
-		$str = "model5";
-		if($fastData){
-			$str = $temp.$i++;
-		}
-		$file6 = fopen($str.$fileName, "w");
-		foreach($data6 as $row){
-			fwrite($file6, $row);
-		}
-		fclose($file6);
-		
-		$str = "model6";
-		if($fastData){
-			$str = $temp.$i++;
-		}
-		$file7 = fopen($str.$fileName, "w");
-		foreach($data7 as $row){
-			fwrite($file7, $row);
-		}
-		fclose($file7);
+
+		return array($trainData, $testData);
 	}
 
 	function createFastData($objs, $fastData){
@@ -592,8 +721,12 @@ EOT;
 								}
 							}
 						}
-						$dp = $node->difficultyParams[$index];
-						$text .= $dp["isolation"].$tab.$dp["cues"].$tab.$dp["phrases"].$tab.strtolower($property->value).$tab.$node->problem."\n";
+						if($GLOBALS["includeDifficulty"]){
+							$dp = $node->difficultyParams[$index];
+							$text .= $dp["isolation"].$tab.$dp["cues"].$tab.$dp["phrases"].$tab.strtolower($property->value).$tab.$node->problem."\n";
+						} else 
+							$text .= strtolower($property->value).$tab.$node->problem."\n";
+						
 						array_push($data, $text);
 						$index++;
 					}
@@ -601,7 +734,7 @@ EOT;
 			}
 		}
 
-		$file = fopen("train".$fileName, "w");
+		$file = fopen($path."train".$fileName, "w");
 		foreach($data as $row){
 			fwrite($file, $row);
 		}
@@ -612,8 +745,9 @@ EOT;
 		$objs = analyzeLogs();
 		//echo json_encode($objs);
 		$fastData = true;
-		//createDataRows($objs, $fastData);
+		$data = createDataRows($objs, $fastData);
 		//createFastData($objs, $fastData);
+		writeFiles($data, 10);
 		return $objs;
 	}
 ?>
