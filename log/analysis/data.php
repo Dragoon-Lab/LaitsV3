@@ -491,6 +491,7 @@ EOT;
 	}
 
 	function writeFiles($rows, $fastData, $dataCount){
+		echo "write data files";
 		$formattedData = $rows[0];
 		$formattedData2 = $rows[1];
 		$formattedData3 = $rows[2];
@@ -654,37 +655,43 @@ EOT;
 	
 	function getIndexes($size){
 		$indexes = array();
-		$index = rand(0, $size - 1);
-		$count = intval(ceil(0.2*$size));
-		echo $index;
-		for($i = 0; $i < $count; ){
+		$count = intval(floor(0.2*$size));
+		for($i = 0; $i < $count; $i++){
+			$index = rand(0, $size - 2);
 			if(!in_array($index, $indexes)){
 				array_push($indexes, $index);
-				$i++;
+			} else {
+				$i--;
 			}
 		}
 
 		arsort($indexes);
-		print_r($indexes);
 		return $indexes;
 	}
 
 	function createTestData($data, $indexes){
+		print_r($indexes);
 		$counters = $GLOBALS["counters"];
+		echo "<br/>";
+		print_r($counters);
+		echo "<br/>";
 		$size = sizeof($indexes);
 		$trainData = $data;
 		$testData = array();
+		echo sizeof($trainData);
 
-		for($i = 0; $i < $size; $i++){
-			$start = $counters[$indexes[$i]];
-			if($i == 0 && $indexes[0] == sizeof($counters) - 1){
-				$testData = array_merge($testData, array_slice($trainData, $start));
-				$trainData = array_splice($trainData, $start);
+		$i = 0;
+		foreach($indexes as $key => $value){
+			$start = $counters[$value];
+			echo "start ".$start."<br/>"." indexes ".$value;
+			if($i == 0 && $value == sizeof($counters) - 1){
+				$testData = array_merge($testData, array_splice($trainData, $start));
 			}else{
-				$steps = $counters[$indexes[$i]+1] - $start;
-				$testData = array_merge($testData, array_slice($trainData, $start, $steps));
-				$trainData = array_splice($trainData, $start, $steps);
+				$steps = $counters[$value+1] - $start;
+				echo "steps ".$steps."</br>";
+				$testData = array_merge($testData, array_splice($trainData, $start, $steps));
 			}
+			$i++;
 		}
 
 		return array($trainData, $testData);
