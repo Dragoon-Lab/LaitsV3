@@ -45,9 +45,9 @@
 		$mysqli = mysqli_connect("localhost", $user, $password, $db_name);
 
 		$query = <<<EOT
-		SELECT t1.user, t1.problem, t1.session_id, t2.method, t2.message FROM (SELECT user, problem, session_id, time FROM session WHERE section = "$section" AND mode = "STUDENT" AND problem IN $problemString /*AND (user = "akhil1302" OR user = "abratcher56")*/) AS t1 JOIN (SELECT tid, method, message, session_id FROM step WHERE method = "solution-step") as t2 USING (session_id) ORDER BY user ASC, time ASC, problem ASC, tid ASC;
+		SELECT t1.user, t1.problem, t1.session_id, t2.method, t2.message FROM (SELECT user, problem, session_id, time FROM session WHERE section = "$section" AND mode = "STUDENT" AND problem IN $problemString/* AND (user = "akhil1302" OR user = "abratcher56")*/) AS t1 JOIN (SELECT tid, method, message, session_id FROM step WHERE method = "solution-step") as t2 USING (session_id) ORDER BY user ASC, time ASC, problem ASC, tid ASC;
 EOT;
-		echo $query;
+		//echo $query;
 
 		$result = mysqli_query($mysqli, $query);
 		$first = true;
@@ -301,9 +301,7 @@ EOT;
 		$index = 1;
 		$counters = array();
 		array_push($counters, $index);
-
 		foreach($objs as $usr){
-			echo $usr->name."<br/>";
 			$nodes = $usr->pNodes;
 			foreach($nodes as $node){
 				$schemas = $node->schemas;
@@ -349,7 +347,7 @@ EOT;
 						if(!$fastData || (
 							(strpos($node->skill[0], substr($schema, 0, 4)) !== false) && 
 							strpos($node->skill[0], $type) !== false)){
-							if(in_array($schema, $property->schemaName)){
+							if(in_array($schema, $property->schemaName2)){
 								$text2 .= $schemaExist.$tab;
 							} else {
 								$text2 .= $schemaNotExist.$tab;
@@ -472,8 +470,8 @@ EOT;
 					array_push($data5, $text5);
 					array_push($data6, $text6);
 					array_push($data7, $text7);
+					$index++;
 				}
-				$index++;
 			}
 			array_push($counters, $index);
 		}
@@ -503,6 +501,8 @@ EOT;
 		$counters = $GLOBALS["counters"];
 		$path = $GLOBALS["path"];
 		$copy = 0;
+		$temp = "train";
+		$temp1 = "test";
 		$fileName = "data.train.xls";
 		if($fastData){
 			$fileName = ($GLOBALS["removeParameter"]?"_parameter_removed":"").
@@ -513,8 +513,6 @@ EOT;
 			$indexes = getIndexes(sizeof($counters));
 
 			$i = 0;
-			$temp = "train";
-			$temp1 = "test";
 			$tempData = createTestData($formattedData, $indexes);
 			$data = $tempData[0];
 			$test = $tempData[1];
@@ -546,7 +544,7 @@ EOT;
 				$testStr = $temp1.$i++."_".$copy;
 			}
 			$file2 = fopen($path.$str.$fileName, "w+");
-			foreach($data2 as $row){
+			foreach($formattedData2 as $row){
 				fwrite($file2, $row);
 			}
 			fclose($file2);
@@ -670,25 +668,18 @@ EOT;
 	}
 
 	function createTestData($data, $indexes){
-		print_r($indexes);
 		$counters = $GLOBALS["counters"];
-		echo "<br/>";
-		print_r($counters);
-		echo "<br/>";
 		$size = sizeof($indexes);
 		$trainData = $data;
-		$testData = array();
-		echo sizeof($trainData);
+		$testData = array($data[0]);
 
 		$i = 0;
 		foreach($indexes as $key => $value){
 			$start = $counters[$value];
-			echo "start ".$start."<br/>"." indexes ".$value;
 			if($i == 0 && $value == sizeof($counters) - 1){
 				$testData = array_merge($testData, array_splice($trainData, $start));
 			}else{
 				$steps = $counters[$value+1] - $start;
-				echo "steps ".$steps."</br>";
 				$testData = array_merge($testData, array_splice($trainData, $start, $steps));
 			}
 			$i++;
