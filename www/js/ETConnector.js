@@ -30,11 +30,6 @@ define([
 
 		constructor: function(/* object */ query){
 			//parameters from ParentPage.html
-			this.LOGGING_SERVICE;                    // Test service to send messages to the parent about an activity
-			this.GATEWAY_SERVICE;                    // Gateway service for relaying messages in this frame
-			this.PARENT_POSTING_STUB;                // Stub that represents the parent frame's messaging gateway
-			this.LOGGING_POSTING_STUB;              // Stub for the logging and recommender service
-			this.HEARTBEAT_SERVICE;                  // Heartbeat service, to generate a steady heartbeat
 			this.FRAME_NAME = "ActivityFrame";       // A name to call this frame, for reporting purposes and postMessage
 			this.PARENT_NAME = "MainPostingGateway"; // A name to call the parent frame, for reporting purposes and postMessage
 			this.LOGGER_FRAME_NAME = "RecommenderLoggingGateway"; // Logging window name
@@ -46,7 +41,11 @@ define([
 			this.DEFAULT_PARENT_NAME = "MainPostingGateway";
 
 		},
-
+		LOGGING_SERVICE:null,                 // Test service to send messages to the parent about an activity
+		GATEWAY_SERVICE:null,                 // Gateway service for relaying messages in this frame
+		PARENT_POSTING_STUB : null,             // Stub that represents the parent frame's messaging gateway
+		LOGGING_POSTING_STUB : null,            // Stub for the logging and recommender service
+		HEARTBEAT_SERVICE : null,               // Heartbeat service, to generate a steady heartbeat
 		startService : function(){
 			/*
 			// unknown: if the all the constructor initializations are synchronous

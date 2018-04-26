@@ -51,6 +51,7 @@
 			<li><span class="green border">Problem Completed</span></li>
 			<li><span class="yellow border">Problem Incomplete & Session Running</span></li>
 			<li><span class="border">Problem not Started or Incomplete</span></li>
+			<li><span class="light-blue border">Current User</span></li>
 		</ul>
 	</div>
 	<div class="clear"></div>

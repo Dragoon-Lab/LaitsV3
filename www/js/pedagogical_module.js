@@ -363,7 +363,6 @@ define([
 			},
 			feedback: function(obj, part){
 				state(obj, part, "incorrect");
-				display(obj, "displayRemaining", true);
 				message(obj, part, "incorrect");
 				disable(obj, "enableNext", false);
 			},
@@ -1331,13 +1330,11 @@ define([
 				record.increment("problemCompleted", 1);
 				if(this.activityConfig.getActivity() == "construction" && this.activityConfig.get("showFeedback")){
 					// Number of problems to show the hint upon completion
-					if(record.getLocal("problemCompleted") < 3 ){
-						return	[{
-							id: "crisisAlert",
-							attribute: "open",
-							value: 'You have completed your model. Click on "Graph" or "Table" to see what the solution looks like'
-						}];
-					}
+					return	[{
+						id: "crisisAlert",
+						attribute: "open",
+						value: 'You have completed your model. Click on "Graph" or "Table" to see what the solution looks like'
+					}];
 				}
 			}
 			return [];
@@ -1497,8 +1494,7 @@ define([
 						var n = nodesCopy[index];
 						var inputs = n.inputs;
 						var inputsCopy = dojo.clone(inputs);
-						var k = inputsCopy.length-1;
-						for(k; k >= 0; k--){
+						for(var k= inputsCopy.length-1; k >= 0; k--){
 							if(hierarchy[i].indexOf(inputsCopy[k].ID) >= 0){
 								n.inputs.splice(k, 1);
 							}

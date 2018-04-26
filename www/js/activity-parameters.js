@@ -41,6 +41,7 @@ define([
 					allowHistory : true,
 					allowDeleteNode: true,
 					allowEditNode: true,
+					allowEditGivenNode: false,
 
 					showHints: true,
 					showFeedback: true,
@@ -66,6 +67,7 @@ define([
 					allowLessonsLearned:true,
 					allowDeleteNode: true,
 					allowEditNode: true,
+					allowEditGivenNode: false,
 
 					showHints: true,
 					showFeedback: true,
@@ -98,6 +100,7 @@ define([
 					allowLessonsLearned:true,
 					allowDeleteNode: false,
 					allowEditNode: true,
+					allowEditGivenNode : false,
 
 					showHints: true,
 					showFeedback: true,
@@ -131,6 +134,7 @@ define([
 
 					allowDeleteNode: true,
 					allowEditNode: true,
+					allowEditGivenNode : true,
 					showEquationAutoComplete: true,
 					showDoneMessage: true,
 					allowZoom: true,
@@ -157,6 +161,7 @@ define([
 					allowHints:true,
 					allowDeleteNode: true,
 					allowEditNode: true,
+					allowEditGivenNode : true,
 					showEquationAutoComplete: true,
 					allowZoom: true,
 					enable:[
@@ -185,6 +190,7 @@ define([
 					allowHistory : true,
 					allowDeleteNode: true,
 					allowEditNode: true,
+					allowEditGivenNode : false,
 
 					showHints: true,
 					showFeedback: true,
@@ -211,6 +217,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : false,
 
 					showHints: true,
 					showFeedback: true,
@@ -246,6 +253,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : false,
 					allowZoom: true,
 
 					showHints: true,
@@ -281,6 +289,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : true,
 					allowZoom: true,
 
 					initializeStudentModel : true,
@@ -312,6 +321,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : true,
 					allowZoom: true,
 					showFeedback: true,
 
@@ -345,6 +355,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : false,
 					allowZoom: true,
 
 					showHints: true,
@@ -384,6 +395,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : false,
 					allowZoom: true,
 
 					showHints: true,
@@ -423,6 +435,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : true,
 					allowZoom: true,
 					initializeStudentModel : true,
 					resetAssistanceScore : true,
@@ -457,6 +470,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : true,
 					allowZoom: true,
 					showFeedback: true,
 
@@ -493,6 +507,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : false,
 					allowZoom: true,
 
 					showHints: true,
@@ -531,6 +546,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : false,
 					allowZoom: true,
 
 					showHints: true,
@@ -569,6 +585,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : true,
 					allowZoom: true,
 					copyFields: [
 						"description",
@@ -602,6 +619,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : true,
 					allowZoom: true,
 					showFeedback: true,
 					copyFields: [
@@ -638,6 +656,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : false,
 					allowZoom: true,
 
 					showHints: true,
@@ -673,6 +692,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : false,
 					allowZoom: true,
 
 					showHints: true,
@@ -708,6 +728,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : true,
 					allowZoom: true,
 					showFeedback: true,
 					copyFields: [
@@ -739,6 +760,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : true,
 					allowZoom: true,
 					showFeedback: true,
 					copyFields: [
@@ -774,6 +796,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : false,
 					allowZoom: true,
 
 					showHints: true,
@@ -807,6 +830,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : false,
 					allowZoom: true,
 
 					showHints: true,
@@ -841,6 +865,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : true,
 					allowZoom: true,
 					showFeedback: true,
 					copyFields: [
@@ -870,6 +895,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : true,
 					allowZoom: true,
 					showFeedback: true,
 					copyFields: [
@@ -919,6 +945,7 @@ define([
 				//Node
 				allowDeleteNode: false,
 				allowEditNode: false,
+				allowEditGivenNode : false,
 
 				//Feedback
 				showHints:false,
