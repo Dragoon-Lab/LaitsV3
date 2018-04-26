@@ -21,8 +21,27 @@
                 " * The moose population is 20 in the first year (1900).",
                 " * Births are the only change in population. Deaths, immigration and emigration do not occur.",
                 " * The number of moose births each year is 2."
-            ]
+            ],
+			"incremental": [
+                "Assumptions: ",
+                " * The moose population is 20 in the first year (1900).",
+                " * Births are the only change in population. Deaths, immigration and emigration do not occur.",
+                " * The number of moose births each year is 2."
+			],
+			"execution": [
+                "Assumptions: ",
+                " * The moose population is 20 in the first year (1900).",
+                " * Births are the only change in population. Deaths, immigration and emigration do not occur.",
+                " * The number of moose births each year is 2."
+			]
+
         },
+		"increment": [
+            {
+                "tweakedNode" : "id2",
+                "tweakDirection": "Increase"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",

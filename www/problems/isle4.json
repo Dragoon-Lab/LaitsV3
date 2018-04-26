@@ -28,6 +28,12 @@
                 " * Carrying capacity is 500 (for moose living on Isle Royale). "
             ]
         },
+		"increment": [
+            {
+                "tweakedNode" : "id2",
+                "tweakDirection": "Increase"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",
@@ -342,7 +348,6 @@
                 "type": "parameter"
             }
         ],
-        "lessonsLearned": [],
-        "increment": []
+        "lessonsLearned": []
     }
 }
