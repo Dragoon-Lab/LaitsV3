@@ -1,21 +1,21 @@
 /*
-     Dragoon Project
-     Arizona State University
-     (c) 2014, Arizona Board of Regents for and on behalf of Arizona State University
-     
-     This file is a part of Dragoon
-     Dragoon is free software: you can redistribute it and/or modify
-     it under the terms of the GNU Lesser General Public License as published by
-     the Free Software Foundation, either version 3 of the License, or
-     (at your option) any later version.
-     
-     Dragoon is distributed in the hope that it will be useful,
-     but WITHOUT ANY WARRANTY; without even the implied warranty of
-     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-     GNU Lesser General Public License for more details.
-     
-     You should have received a copy of the GNU Lesser General Public License
-     along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
+	Dragoon Project
+	Arizona State University
+	(c) 2014, Arizona Board of Regents for and on behalf of Arizona State University
+
+	This file is a part of Dragoon
+	Dragoon is free software: you can redistribute it and/or modify
+	it under the terms of the GNU Lesser General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+
+	Dragoon is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU Lesser General Public License for more details.
+
+	You should have received a copy of the GNU Lesser General Public License
+	along with Dragoon. If not, see <http://www.gnu.org/licenses/>.
 */
 /* global define */
 define([ 
@@ -345,10 +345,10 @@ define([
 					this.totalTimeSpent[userIndex] += this.timeSpent[userIndex][problemIndex];
 					this.totalTimeSpent[userIndex] = (number.round(this.totalTimeSpent[userIndex]*100))/100; // just making sure no extra long decimals show up.
 					var errorRatioText = "Blank";
-                    var errorRatioNumber = (100-((parseFloat(upObject['incorrectChecks'])/parseFloat(upObject['totalSolutionChecks']))*100));
-                    if (!isNaN(errorRatioNumber)){ 
-                        errorRatioText = errorRatioNumber.toFixed(1)+"%"; 
-                    }
+					var errorRatioNumber = (100-((parseFloat(upObject['incorrectChecks'])/parseFloat(upObject['totalSolutionChecks']))*100));
+					if (!isNaN(errorRatioNumber)){
+						errorRatioText = errorRatioNumber.toFixed(1)+"%";
+					}
  					this.errorRatio[userIndex][problemIndex] = errorRatioText;
 					
 					this.problemComplete[userIndex][problemIndex] = upObject['problemComplete'];
@@ -358,8 +358,8 @@ define([
 						this.totalProblemsStarted[userIndex]++;
 						var nodesCorrectRatio = (1-(upObject.incorrectNodes.length/upObject.nodes.length))*100;
 						if (nodesCorrectRatio !== undefined && !isNaN(nodesCorrectRatio)){
-	                        nodesCorrectRatioText = nodesCorrectRatio.toFixed(1)+"%";
-	                    }
+							nodesCorrectRatioText = nodesCorrectRatio.toFixed(1)+"%";
+						}
 					} else {
 						this.totalProblemsStarted[userIndex]++;
 					}
