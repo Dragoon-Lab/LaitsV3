@@ -582,7 +582,6 @@
 								$currentProperty = null;
 							}
 						} else if($checkResult === "INCORRECT"){
-							$currentNode->isNodeCorrect = false;
 							array_push($currentProperty->answers, $newMessage['value']);
 							$incorrectChecks = $incorrectChecks+1;
 							if(in_array('correctValue', $newMessage)){
@@ -591,6 +590,9 @@
 							}
 							if($newMessage['solutionProvided'] == "true" && !$autoCreated){
 								array_push($currentProperty->status, "DEMO");
+								if(!in_array( $currentNode->id, $upObject->incorrectNodes, true)){
+									array_push($upObject->incorrectNodes, $currentNode->id);
+								}
 								$currentProperty->time = $newMessage['time'] - $propertyStartTime;
 								$propertyStartTime = $newMessage['time'];
 
@@ -781,7 +783,6 @@
 			$upObject->slides = $slides;
 			if($upObject->totalTime > 0)
 				array_push($objectArray, $upObject);
-			
 			return $objectArray;
 		}
 	}

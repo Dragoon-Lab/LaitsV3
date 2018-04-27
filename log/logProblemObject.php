@@ -14,6 +14,7 @@
 		public $openTimes;
 		public $sessionRunning;
 		public $incorrectChecks;
+		public $incorrectNodes = array();
 		public $totalSolutionChecks;
 		public $errorRatio;
 		public $slides = array();
@@ -75,7 +76,6 @@
 		public $id;
 		public $nodeExist;
 		public $openTimes;
-		public $isNodeCorrect = true;
 		public $properties = array();
 
 		function getPropertyFromName($name){

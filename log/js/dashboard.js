@@ -348,7 +348,7 @@ define([
                     var errorRatioNumber = (100-((parseFloat(upObject['incorrectChecks'])/parseFloat(upObject['totalSolutionChecks']))*100));
                     if (!isNaN(errorRatioNumber)){ 
                         errorRatioText = errorRatioNumber.toFixed(1)+"%"; 
-                    } 
+                    }
  					this.errorRatio[userIndex][problemIndex] = errorRatioText;
 					
 					this.problemComplete[userIndex][problemIndex] = upObject['problemComplete'];
@@ -356,14 +356,8 @@ define([
 					if(this.problemComplete[userIndex][problemIndex] == true){
 						this.totalProblemsCompleted[userIndex]++;
 						this.totalProblemsStarted[userIndex]++;
-						var nodesCorrect = 0;
-						array.forEach(upObject["nodes"], function(node){
-							if(node.isNodeCorrect){
-								nodesCorrect++;
-							}
-						});
-						var nodesCorrectRatio = (nodesCorrect/upObject["nodes"].length)*100;
-						if (!isNaN(nodesCorrectRatio)){
+						var nodesCorrectRatio = (1-(upObject.incorrectNodes.length/upObject.nodes.length))*100;
+						if (nodesCorrectRatio !== undefined && !isNaN(nodesCorrectRatio)){
 	                        nodesCorrectRatioText = nodesCorrectRatio.toFixed(1)+"%";
 	                    }
 					} else {
