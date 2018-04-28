@@ -14,6 +14,7 @@
 		public $openTimes;
 		public $sessionRunning;
 		public $incorrectChecks;
+		public $incorrectNodes = array();
 		public $totalSolutionChecks;
 		public $errorRatio;
 		public $slides = array();
