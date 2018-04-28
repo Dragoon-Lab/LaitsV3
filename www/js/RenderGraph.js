@@ -71,8 +71,9 @@ define([
 		 *	@brief:constructor for a graph object
 		 *	@param: noOfParam
 		 */
-		constructor: function(model, mode, logging, buttonClicked){
+		constructor: function(model, mode, logging, buttonClicked, activityConfig){
 			this.buttonClicked = buttonClicked;
+			this.activityConfig = activityConfig;
 			logger.setSession(logging);
 			console.log("***** In RenderGraph constructor");
 			console.log(logging);
@@ -288,30 +289,38 @@ define([
 				}
 				obj.min = obj.max;
 			}*/
-
+			debugger;
+			if(this.activityConfig.get("plotAuthorSolution") && this.givenSolution.plotValues[index]){
+				var step = (obj.max - obj.min)/10;
+				if(obj.min >= this.givenSolution.plotValues[index][index] - step){
+					obj.min = obj.min - step;
+				}
+				if(obj.max <= this.givenSolution.plotValues[index][index] + step){
+					obj.max = obj.max + step;
+				}
+			}
 			chart.addAxis("y", {
 				vertical: true, // min: obj.min, max: obj.max,
 				title: yAxis,
 				titleGap: 20,
 				min: obj.min,
-				max:obj.max,
+				max: obj.max,
 				labelFunc: this.formatAxes
 			});
-
 
 			if(this.isCorrect || this.mode == "AUTHOR" || this.mode == "ROAUTHOR") {
 				//plot chart for student node
 				chart.addSeries(
 					"Your solution",
 					this.formatSeriesForChart(solution, index),
-					{stroke: "#5cd65c"}
+					{stroke: {color: "#5cd65c", width: 1.5}}
 				);
 			}
 			else {
 				chart.addSeries(
 					"Your solution",
 					this.formatSeriesForChart(solution, index),
-					{stroke: "red"}
+					{stroke: {color: "red", width: 1.5}}
 				);
 			}
 
@@ -319,7 +328,7 @@ define([
 
 				chart.addSeries(
 					"Author's solution",
-					this.formatSeriesForChart(this.givenSolution, index), {stroke: "black"}
+					this.formatSeriesForChart(this.givenSolution, index), {stroke: {color:"black", width:2}}
 				);
 			}
 
@@ -351,7 +360,15 @@ define([
 					obj.max = givenObj.max;
 				}
 			}
-
+			var step = (obj.max - obj.min)/10;
+			if(this.activityConfig.get("plotAuthorSolution") && this.givenSolution.plotValues[index]){
+				if(obj.min >= this.givenSolution.plotValues[index][index] - step){
+					obj.min = obj.min - step;
+				}
+				if(obj.max <= this.givenSolution.plotValues[index][index] + step){
+					obj.max = obj.max + step;
+				}
+			}
 			//Redraw y axis based on new min and max values
 			charts[id].addAxis("y", {
 				vertical: true,
@@ -372,7 +389,7 @@ define([
 					charts[id].updateSeries(
 						"Author's solution",
 						this.formatSeriesForChart(this.givenSolution, index),
-						{stroke: "black"}
+						{stroke: {color: "black", width: 1.5}}
 					);
 				}
 			}
@@ -381,14 +398,14 @@ define([
 				charts[id].updateSeries(
 					"Your solution",
 					this.formatSeriesForChart(solution, index),
-					{stroke: "green"}
+					{stroke: {color: "green", width: 1.5}}
 				);
 			}
 			else{
 				charts[id].updateSeries(
 					"Your solution",
 					this.formatSeriesForChart(solution, index),
-					{stroke: "red"}
+					{stroke: {color: "red", width: 1.5}}
 				);
 			}
 			charts[id].render();

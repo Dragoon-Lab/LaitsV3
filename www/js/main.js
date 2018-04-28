@@ -1273,7 +1273,7 @@ define([
 				// instantiate graph object
 				console.debug("button clicked");
 				var buttonClicked = "graph";
-				var graph = new Graph(givenModel, query.m, session, buttonClicked);
+				var graph = new Graph(givenModel, query.m, session, buttonClicked, activity_config);
 				graph.setStateGraph(state);
 				var problemComplete = givenModel.matchesGivenSolution();
 				graph._logging.log('ui-action', {
@@ -1305,7 +1305,7 @@ define([
 			var startTable = function(){
 				console.debug("table button clicked");
 				var buttonClicked = "table";
-				var table = new Graph(givenModel, query.m, session, buttonClicked);
+				var table = new Graph(givenModel, query.m, session, buttonClicked, activity_config);
 				table.setStateGraph(state);
 				table._logging.log('ui-action', {
 					type: "menu-choice",
