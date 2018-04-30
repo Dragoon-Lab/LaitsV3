@@ -41,6 +41,7 @@ define([
 					allowHistory : true,
 					allowDeleteNode: true,
 					allowEditNode: true,
+					allowEditGivenNode: false,
 
 					showHints: true,
 					showFeedback: true,
@@ -66,6 +67,7 @@ define([
 					allowLessonsLearned:true,
 					allowDeleteNode: true,
 					allowEditNode: true,
+					allowEditGivenNode: false,
 
 					showHints: true,
 					showFeedback: true,
@@ -98,6 +100,7 @@ define([
 					allowLessonsLearned:true,
 					allowDeleteNode: false,
 					allowEditNode: true,
+					allowEditGivenNode : false,
 
 					showHints: true,
 					showFeedback: true,
@@ -131,6 +134,7 @@ define([
 
 					allowDeleteNode: true,
 					allowEditNode: true,
+					allowEditGivenNode : true,
 					showEquationAutoComplete: true,
 					showDoneMessage: true,
 					allowZoom: true,
@@ -157,6 +161,7 @@ define([
 					allowHints:true,
 					allowDeleteNode: true,
 					allowEditNode: true,
+					allowEditGivenNode : true,
 					showEquationAutoComplete: true,
 					allowZoom: true,
 					enable:[
@@ -185,6 +190,7 @@ define([
 					allowHistory : true,
 					allowDeleteNode: true,
 					allowEditNode: true,
+					allowEditGivenNode : false,
 
 					showHints: true,
 					showFeedback: true,
@@ -211,6 +217,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : false,
 
 					showHints: true,
 					showFeedback: true,
@@ -237,7 +244,8 @@ define([
 					properties: [
 						"tweakDirection"
 					],
-					useTweakStatus: true
+					useTweakStatus: true,
+					plotAuthorSolution:true
 				},
 
 				COACHED:{
@@ -246,6 +254,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : false,
 					allowZoom: true,
 
 					showHints: true,
@@ -272,7 +281,8 @@ define([
 					properties: [
 						"tweakDirection"
 					],
-					useTweakStatus: true
+					useTweakStatus: true,
+					plotAuthorSolution:true
 				},
 
 				TEST:{
@@ -281,6 +291,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : true,
 					allowZoom: true,
 
 					initializeStudentModel : true,
@@ -303,7 +314,8 @@ define([
 					properties: [
 						"tweakDirection"
 					],
-					useTweakStatus: true
+					useTweakStatus: true,
+					plotAuthorSolution:true
 				},
 
 				EDITOR:{
@@ -312,6 +324,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : true,
 					allowZoom: true,
 					showFeedback: true,
 
@@ -345,6 +358,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : false,
 					allowZoom: true,
 
 					showHints: true,
@@ -375,7 +389,8 @@ define([
 					properties: [
 						"tweakDirection"
 					],
-					useTweakedNodeForOrdering: true
+					useTweakedNodeForOrdering: true,
+					plotAuthorSolution:true
 				},
 
 				COACHED:{
@@ -384,6 +399,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : false,
 					allowZoom: true,
 
 					showHints: true,
@@ -414,7 +430,8 @@ define([
 					properties: [
 						"tweakDirection"
 					],
-					showPopupIfComplete: true
+					showPopupIfComplete: true,
+					plotAuthorSolution:true
 				},
 
 				TEST:{
@@ -423,6 +440,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : true,
 					allowZoom: true,
 					initializeStudentModel : true,
 					resetAssistanceScore : true,
@@ -448,7 +466,8 @@ define([
 					properties: [
 						"tweakDirection"
 					],
-					showPopupIfComplete: true
+					showPopupIfComplete: true,
+					plotAuthorSolution:true
 				},
 
 				EDITOR:{
@@ -457,6 +476,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : true,
 					allowZoom: true,
 					showFeedback: true,
 
@@ -493,6 +513,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : false,
 					allowZoom: true,
 
 					showHints: true,
@@ -522,7 +543,8 @@ define([
 					properties: [
 						"executionValue"
 					],
-					demoExecutionFeatures:true
+					demoExecutionFeatures:true,
+					plotAuthorSolution:true
 				},
 
 				COACHED:{
@@ -531,6 +553,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : false,
 					allowZoom: true,
 
 					showHints: true,
@@ -560,7 +583,8 @@ define([
 					properties: [
 						"executionValue"
 					],
-					demoExecutionFeatures:true
+					demoExecutionFeatures:true,
+					plotAuthorSolution:true
 				},
 
 				TEST:{
@@ -569,6 +593,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : true,
 					allowZoom: true,
 					copyFields: [
 						"description",
@@ -593,7 +618,8 @@ define([
 					properties: [
 						"executionValue"
 					],
-					demoExecutionFeatures:true
+					demoExecutionFeatures:true,
+					plotAuthorSolution:true
 				},
 
 				EDITOR:{
@@ -602,6 +628,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : true,
 					allowZoom: true,
 					showFeedback: true,
 					copyFields: [
@@ -638,6 +665,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : false,
 					allowZoom: true,
 
 					showHints: true,
@@ -664,7 +692,8 @@ define([
 					properties: [
 						"executionValue"
 					],
-					executionExercise: true
+					executionExercise: true,
+					plotAuthorSolution:true
 				},
 
 				COACHED:{
@@ -673,6 +702,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : false,
 					allowZoom: true,
 
 					showHints: true,
@@ -699,7 +729,8 @@ define([
 					properties: [
 						"executionValue"
 					],
-					executionExercise: true
+					executionExercise: true,
+					plotAuthorSolution:true
 				},
 
 				TEST:{
@@ -708,6 +739,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : true,
 					allowZoom: true,
 					showFeedback: true,
 					copyFields: [
@@ -730,7 +762,8 @@ define([
 					properties: [
 						"executionValue"
 					],
-					executionExercise: true
+					executionExercise: true,
+					plotAuthorSolution:true
 				},
 
 				EDITOR:{
@@ -739,6 +772,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : true,
 					allowZoom: true,
 					showFeedback: true,
 					copyFields: [
@@ -774,6 +808,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : false,
 					allowZoom: true,
 
 					showHints: true,
@@ -798,7 +833,8 @@ define([
 						"waveformValue"
 					],
 					nodeDetails: "WAVEFORM",
-					showNodeBorderTutorial: true
+					showNodeBorderTutorial: true,
+					plotAuthorSolution:true
 				},
 
 				COACHED:{
@@ -807,6 +843,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : false,
 					allowZoom: true,
 
 					showHints: true,
@@ -832,7 +869,8 @@ define([
 						"executionValue"
 					],
 					copyAuthorNodes: true,
-					showNodeBorderTutorial: true
+					showNodeBorderTutorial: true,
+					plotAuthorSolution:true
 				},
 
 				TEST:{
@@ -841,6 +879,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : true,
 					allowZoom: true,
 					showFeedback: true,
 					copyFields: [
@@ -861,7 +900,8 @@ define([
 					properties: [
 						"executionValue"
 					],
-					copyAuthorNodes: true
+					copyAuthorNodes: true,
+					plotAuthorSolution:true
 				},
 
 				EDITOR:{
@@ -870,6 +910,7 @@ define([
 					allowLessonsLearned:true,
 
 					allowEditNode:true,
+					allowEditGivenNode : true,
 					allowZoom: true,
 					showFeedback: true,
 					copyFields: [
@@ -919,6 +960,7 @@ define([
 				//Node
 				allowDeleteNode: false,
 				allowEditNode: false,
+				allowEditGivenNode : false,
 
 				//Feedback
 				showHints:false,

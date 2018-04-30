@@ -102,7 +102,7 @@ define([
 				}
 			}
 			console.log("midpoint method called");
-			return ret; 
+			return ret;
 		}		
 	}
 });

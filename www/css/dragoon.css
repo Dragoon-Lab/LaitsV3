@@ -611,3 +611,8 @@ span.slip{
 .dijitTooltipDialogPopup {
     z-index: 951 !important;
 }
+
+/*Fix for value input showing grey color*/
+.dijitTextBoxDisabled .dijitInputField.dijitInputContainer {
+	background-color: transparent;
+}

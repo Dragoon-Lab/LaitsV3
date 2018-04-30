@@ -71,8 +71,9 @@ define([
 		 *	@brief:constructor for a graph object
 		 *	@param: noOfParam
 		 */
-		constructor: function(model, mode, logging, buttonClicked){
+		constructor: function(model, mode, logging, buttonClicked, activityConfig){
 			this.buttonClicked = buttonClicked;
+			this.activityConfig = activityConfig;
 			logger.setSession(logging);
 			console.log("***** In RenderGraph constructor");
 			console.log(logging);
@@ -143,7 +144,6 @@ define([
 			 */
 			this.activeSolution = this.findSolution(true, this.active.plotVariables);
 			console.log(this.activeSolution);
-
 			if (this.activeSolution.status == "error" && this.activeSolution.type == "missing") {
 				// Return value from findSlution in calculation, returns an array and we check for status and any missing nodes
 				errorMessage = this.generateMissingErrorMessage(this.activeSolution); //We show the error message like "A Node is Missing"
@@ -289,30 +289,38 @@ define([
 				}
 				obj.min = obj.max;
 			}*/
-
+			debugger;
+			if(this.activityConfig.get("plotAuthorSolution") && this.givenSolution.plotValues[index]){
+				var step = (obj.max - obj.min)/10;
+				if(obj.min >= this.givenSolution.plotValues[index][index] - step){
+					obj.min = obj.min - step;
+				}
+				if(obj.max <= this.givenSolution.plotValues[index][index] + step){
+					obj.max = obj.max + step;
+				}
+			}
 			chart.addAxis("y", {
 				vertical: true, // min: obj.min, max: obj.max,
 				title: yAxis,
 				titleGap: 20,
 				min: obj.min,
-				max:obj.max,
+				max: obj.max,
 				labelFunc: this.formatAxes
 			});
-
 
 			if(this.isCorrect || this.mode == "AUTHOR" || this.mode == "ROAUTHOR") {
 				//plot chart for student node
 				chart.addSeries(
 					"Your solution",
 					this.formatSeriesForChart(solution, index),
-					{stroke: "#5cd65c"}
+					{stroke: {color: "#5cd65c", width: 1.5}}
 				);
 			}
 			else {
 				chart.addSeries(
 					"Your solution",
 					this.formatSeriesForChart(solution, index),
-					{stroke: "red"}
+					{stroke: {color: "red", width: 1.5}}
 				);
 			}
 
@@ -320,7 +328,7 @@ define([
 
 				chart.addSeries(
 					"Author's solution",
-					this.formatSeriesForChart(this.givenSolution, index), {stroke: "black"}
+					this.formatSeriesForChart(this.givenSolution, index), {stroke: {color:"black", width:2}}
 				);
 			}
 
@@ -352,7 +360,15 @@ define([
 					obj.max = givenObj.max;
 				}
 			}
-
+			var step = (obj.max - obj.min)/10;
+			if(this.activityConfig.get("plotAuthorSolution") && this.givenSolution.plotValues[index]){
+				if(obj.min >= this.givenSolution.plotValues[index][index] - step){
+					obj.min = obj.min - step;
+				}
+				if(obj.max <= this.givenSolution.plotValues[index][index] + step){
+					obj.max = obj.max + step;
+				}
+			}
 			//Redraw y axis based on new min and max values
 			charts[id].addAxis("y", {
 				vertical: true,
@@ -373,7 +389,7 @@ define([
 					charts[id].updateSeries(
 						"Author's solution",
 						this.formatSeriesForChart(this.givenSolution, index),
-						{stroke: "black"}
+						{stroke: {color: "black", width: 1.5}}
 					);
 				}
 			}
@@ -382,14 +398,14 @@ define([
 				charts[id].updateSeries(
 					"Your solution",
 					this.formatSeriesForChart(solution, index),
-					{stroke: "green"}
+					{stroke: {color: "green", width: 1.5}}
 				);
 			}
 			else{
 				charts[id].updateSeries(
 					"Your solution",
 					this.formatSeriesForChart(solution, index),
-					{stroke: "red"}
+					{stroke: {color: "red", width: 1.5}}
 				);
 			}
 			charts[id].render();
@@ -425,7 +441,6 @@ define([
 				}, this);
 
 				this.graphTab.set("content", graphContent);
-
 
 				array.forEach(this.active.plotVariables, function (id, index) {
 					var domNode = "chart" + id;
@@ -469,41 +484,49 @@ define([
 			var staticContent = "";
 			this.staticVar = 0;
 			var staticNodes = this.checkForParameters();
+			this.isStatic = this.isStatic && staticNodes.length > 0;
+			dom.byId("StaticTab").innerHTML = "";
+			if(this.isStatic){
+				//TODO: Duplicate code in forEach
+				array.forEach(this.active.plotVariables, function(id){
+					var show = this.model.active.getType(id) == "accumulator" || this.model.given.getParent(this.model.active.getGivenID(id));
+					var checked = show ? " checked='checked'" : "";
+					staticContent += "<div><input id='selStatic" + id + "' data-dojo-type='dijit/form/CheckBox' class='show_graphs' thisid='" + id + "'" + checked + "/>" + " Show " + this.model.active.getName(id) + "</div>";
+					var style = show ? "" : " style='display: none;'";
+					staticContent += "<div	 id='chartStatic" + id + "'" + style + "></div>";
 
-			//TODO: Duplicate code in forEach
-			array.forEach(this.active.plotVariables, function(id){
-				var show = this.model.active.getType(id) == "accumulator" || this.model.given.getParent(this.model.active.getGivenID(id));
-				var checked = show ? " checked='checked'" : "";
-				staticContent += "<div><input id='selStatic" + id + "' data-dojo-type='dijit/form/CheckBox' class='show_graphs' thisid='" + id + "'" + checked + "/>" + " Show " + this.model.active.getName(id) + "</div>";
-				var style = show ? "" : " style='display: none;'";
-				staticContent += "<div	 id='chartStatic" + id + "'" + style + "></div>";
+					//graph error message
+					staticContent += "<font color='red' id='staticGraphMessage" + id + "'></font>";
+					// Since the legend div is replaced, we cannot hide the legend here.
+					staticContent += "<div class='legend' id='legendStatic" + id + "'></div>";
+				}, this);
 
-				//graph error message
-				staticContent += "<font color='red' id='staticGraphMessage" + id + "'></font>";
-				// Since the legend div is replaced, we cannot hide the legend here.
-				staticContent += "<div class='legend' id='legendStatic" + id + "'></div>";
-			}, this);
+				this.staticTab = registry.byId("StaticTab");
 
-			this.staticTab = registry.byId("StaticTab");
+				this.staticTab.set("content", "<div id='staticSelectContainer'></div>" + staticContent);
 
-			this.staticTab.set("content", "<div id='staticSelectContainer'></div>" + staticContent);
+				this.createComboBox(staticNodes);
+				var staticVar = this.checkStaticVar(true);
+				this.staticPlot = this.findStaticSolution(true, staticVar, this.active.plotVariables);
+				this.givenSolution = this.given.plotVariables ? this.findStaticSolution(false, staticNodes[this.staticVar], this.given.plotVariables) : "";
 
-			this.createComboBox(staticNodes);
-			var staticVar = this.checkStaticVar(true);
-			this.staticPlot = this.findStaticSolution(true, staticVar, this.active.plotVariables);
-			this.givenSolution = this.given.plotVariables ? this.findStaticSolution(false, staticNodes[this.staticVar], this.given.plotVariables) : "";
+				array.forEach(this.active.plotVariables, function(id, index){
+					var domNode = "chartStatic" + id ;
+					var xAxis = dom.byId("staticSelect").value;
+					var yAxis = this.labelString(id);
+					this.chartsStatic[id] = this.createChart(domNode, id, xAxis, yAxis, this.staticPlot, index);
+					this.legendStatic[id] = new Legend({chart: this.chartsStatic[id]}, "legendStatic" + id);
+				}, this);
 
-			array.forEach(this.active.plotVariables, function(id, index){
-				var domNode = "chartStatic" + id ;
-				var xAxis = dom.byId("staticSelect").value;
-				var yAxis = this.labelString(id);
-				this.chartsStatic[id] = this.createChart(domNode, id, xAxis, yAxis, this.staticPlot, index);
-				this.legendStatic[id] = new Legend({chart: this.chartsStatic[id]}, "legendStatic" + id);
-			}, this);
-
-			if(this.buttonClicked == "graph") {
-				this.tabContainer.selectChild(this.staticTab);
+				if(this.buttonClicked == "graph") {
+					this.tabContainer.selectChild(this.staticTab);
+				}
+			} else {
+				var errorMessage  = "<div>There are no Parameters to graph against</div>";
+				var errMessageBox = new messageBox("StaticTab", "warn", errorMessage, false);
+				errMessageBox.show();
 			}
+
 		},
 
 		//creates the dropdown menu for the static window
@@ -865,13 +888,13 @@ define([
 
 		//helper method for error messages
 		generateMissingErrorMessage: function(solution){
-			return "content", "<div>Not all nodes have been completed. For example, "
+			return "<div>Not all nodes have been completed. For example, "
 			+ solution.missingNode + " has an empty "+ solution.missingField +
 			" field.</div>";
 		},
 
 		generateUnknownErrorMessage: function(solution){
-			return "content", "<div>There is an unknown node <b>"+ solution.unknownNode +
+			return "<div>There is an unknown node <b>"+ solution.unknownNode +
 			"</b> used in the <b>"+ solution.missingField +" field</b> of the <b>" + solution.missingNode +
 			" node</b>. Please check the spelling of all the nodes you have entered in the expression</div>";
 		},

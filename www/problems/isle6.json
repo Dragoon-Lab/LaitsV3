@@ -654,6 +654,11 @@
             }
         ],
         "lessonsLearned": [],
-        "increment": []
+        "increment": [
+			{
+                "tweakedNode": "id5",
+                "tweakDirection": "Increase"
+            }
+		]
     }
 }

@@ -24,8 +24,32 @@
                 " * The probability of a wolf giving birth each year is 75%.",
                 " * The number of wolf deaths each year is the wolf death probability times the wolf population.",
                 " * The probability of a wolf dying each year is 67%."
+            ],
+			"incremental": [
+                "Assumptions:",
+                " * The wolf population is 2 in the first year (1949).",
+                " * Births and deaths are the only change in the population. Immigration and emigration do not occur.",
+                " * The number of wolf births each year is the wolf birth probability times the wolf population",
+                " * The probability of a wolf giving birth each year is 75%.",
+                " * The number of wolf deaths each year is the wolf death probability times the wolf population.",
+                " * The probability of a wolf dying each year is 67%."
+            ],
+			"execution": [
+                "Assumptions:",
+                " * The wolf population is 2 in the first year (1949).",
+                " * Births and deaths are the only change in the population. Immigration and emigration do not occur.",
+                " * The number of wolf births each year is the wolf birth probability times the wolf population",
+                " * The probability of a wolf giving birth each year is 75%.",
+                " * The number of wolf deaths each year is the wolf death probability times the wolf population.",
+                " * The probability of a wolf dying each year is 67%."
             ]
         },
+		"increment": [
+            {
+                "tweakedNode" : "id2",
+                "tweakDirection": "Increase"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",
@@ -161,7 +185,6 @@
             }
         ],
         "studentModelNodes": [],
-        "lessonsLearned": [],
-        "increment": []
+        "lessonsLearned": []
     }
 }

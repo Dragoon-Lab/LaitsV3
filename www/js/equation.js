@@ -448,7 +448,7 @@ define([
 						env.xvars.push(node.ID);
 						break;
 					default:
-						new Error("Invalid type ", node.type);
+						throw new Error("Invalid type ", node.type);
 					}
 				}
 			});

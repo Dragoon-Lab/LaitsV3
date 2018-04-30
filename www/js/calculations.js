@@ -28,13 +28,15 @@ define([
 	"dojo/dom",
 	"dojo/aspect",
 	"dijit/registry",
+	"dijit/Dialog",
 	"dijit/form/HorizontalSlider",
 	"./equation",
+	"./state",
 	"./integrate","./typechecker",
 	"./lessons-learned",
 	"dijit/form/Button",
 	"dijit/focus"
-], function(array, declare, lang, on, dom, aspect, registry, HorizontalSlider, equation, integrate, typechecker,lessonsLearned, Button, focusUtil){
+], function(array, declare, lang, on, dom, aspect, registry, Dialog, HorizontalSlider, equation, State, integrate, typechecker,lessonsLearned, Button, focusUtil){
 	// Summary: 
 	//          Finds model solutions and sets up the sliders
 	// Description:
@@ -404,6 +406,7 @@ define([
 				//console.log(this.active);
 				if(this.mode != "AUTHOR" && this.mode != "ROAUTHOR")
 				{
+					prevVal = null;
 					var logObj = lang.mixin({
 						type : "solution-manipulation",
 						name : "slider-change",
@@ -414,6 +417,26 @@ define([
 					console.log(logObj);
 					this._logging.doLogging = true;
 					this._logging.log('ui-action', logObj);
+					if(input.value != prevVal){
+						var dragu = sessionStorage.getItem('dragu');
+						var drags = sessionStorage.getItem('drags');
+						var graphShownNumState = new State(dragu, drags, "action");
+						graphShownNumState.get("graphShownNum").then(function(res){
+							if(res === null ) res = 0;
+							var alertShown = sessionStorage.getItem("sliderAlertShown");
+							if ( !alertShown || !(alertShown === dragu )){
+								if(res && res >= 3) return;
+								if(res < 3){
+									graphShownNumState.put("graphShownNum", ++res);
+								}
+								sessionStorage.setItem("sliderAlertShown", dragu);
+
+								var alertMessagePopup = registry.byId("alertDialog");
+								alertMessagePopup.show();
+							}
+						});
+					}
+					prevVal = input.value;
 				}
 				// Fire an "onchange" event since the value has changed.
 				on.emit(input, "change", {});

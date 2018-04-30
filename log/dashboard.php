@@ -51,6 +51,7 @@
 			<li><span class="green border">Problem Completed</span></li>
 			<li><span class="yellow border">Problem Incomplete & Session Running</span></li>
 			<li><span class="border">Problem not Started or Incomplete</span></li>
+			<li><span class="light-blue border">Current User</span></li>
 		</ul>
 	</div>
 	<div class="clear"></div>
@@ -80,6 +81,10 @@
 			<div class="newLine">
 			    <input type="radio" name="type" value="nodes" id="nodes" data-dojo-type="dijit/form/RadioButton"/>
 				<label for="nodes">Nodes Attempted</label>
+			</div>
+			<div class="newLine">
+			    <input type="radio" name="type" value="nodesCorrect" id="nodesCorrect" data-dojo-type="dijit/form/RadioButton"/>
+				<label for="nodesCorrect">Nodes Correct %</label>
 			</div>
 		</div>
 	</fieldset>

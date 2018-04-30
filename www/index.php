@@ -206,10 +206,9 @@
 			<span>Help</span>
 			<div data-dojo-type="dijit/Menu" id="menuHelp">                
 				<div id="menuIntroTutorial" data-dojo-type="dijit/MenuItem">Introduction</div>
-				<div id="menuIntroVideo" data-dojo-type="dijit/MenuItem">Introductory video</div>
+				<div id="menuIntroVideo" data-dojo-type="dijit/MenuItem">Electronics Tutorial Video</div>
 				<div id="menuIntroConcept" data-dojo-type="dijit/MenuItem">Intro to Dragoon concepts</div>
 				<div id="menuOldIntroVideo" data-dojo-type="dijit/MenuItem">Slightly older intro video</div>
-				<div id="menuIntroText" data-dojo-type="dijit/MenuItem">Introduction webpage</div>
 				<div id="menuMathFunctions" data-dojo-type="dijit/MenuItem">Math functions</div>
 			</div>
 		</div>
@@ -754,6 +753,8 @@
 
 	<div class="claro sameedit" id="viewAllSchemaDialog" data-dojo-type="dijit/Dialog" title="Edit Schemas" style="width:300px;">
 	</div>
+
+	<div data-dojo-type="dijit/Dialog" data-dojo-id="alertDialog" id ="alertDialog" title="Message" style="width:300px; position: absolute; top: 150px; right: 300px;"> If you want to keep the values you set here, write them down because they won't be installed in the model automatically.</div>
 
 	<div id="ETContainer" style="visibility: hidden; width: 0; height: 0;"></div> <!-- container for SuperGLU integration for Electronix Tutor -->
 
