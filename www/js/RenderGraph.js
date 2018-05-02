@@ -289,7 +289,6 @@ define([
 				}
 				obj.min = obj.max;
 			}*/
-			debugger;
 			if(this.activityConfig.get("plotAuthorSolution") && this.givenSolution.plotValues[index]){
 				var step = (obj.max - obj.min)/10;
 				if(obj.min >= this.givenSolution.plotValues[index][index] - step){
