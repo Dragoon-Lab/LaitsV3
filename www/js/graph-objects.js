@@ -54,7 +54,13 @@ define([
 					try {
 						parse = expression.parse(parse);
 						// May want to change symbols to "sum" and "product"
-						parameter = expression.isSum(parse) && expression.isProduct(parse) ? '' : expression.isSum(parse) ? '+' : expression.isProduct(parse) ? '*' : '';
+						if( expression.isSum(parse, false) ) {
+							parameter = '+'
+						}else if( expression.isProduct(parse, false) ){
+							parameter = '*'
+						}else{
+							parameter = ''
+						}
 						if(parameter)
 							parameter = '<strong style="font-size:18px">' + parameter + '</strong><br/>';
 					} catch (err) {

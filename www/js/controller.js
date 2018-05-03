@@ -289,6 +289,10 @@ define([
 					true);
 			}
 
+			aspect.after(this, "equationDoneHandler", lang.hitch(this,function(){
+				this.updateNodeLabel(this.currentID);
+			}));
+
 			var setEnableOption = function(value){
 				console.log("++++ in setEnableOption, scope=", this);
 				array.forEach(this.options, function(option){
