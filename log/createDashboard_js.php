@@ -155,7 +155,7 @@
 					$slides = array();
 					$currentSession = new Session();
 					$currentSession->timeStamp = $row['time'];
-					$currentAction;
+					$currentAction = null;
 					$resetVariables = false;
 				}
 				$method = $row['method'];
