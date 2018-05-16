@@ -12,6 +12,7 @@
 
 	<script type = "text/javascript" src = "version.js"></script>
 	<script src="tincan/tincan-min.js"></script>
+
 	<script type="text/javascript">
 		var version = "";
 
@@ -147,6 +148,11 @@
 
 		//reference implementation data
 		document.write('<scr'+'ipt type="text/javascript" src="ET/js/reference-data.js"></scr'+'ipt>');
+
+		//ET New libraries
+			document.write('<scr'+'ipt type="text/javascript" src="ET-2.0/lib/xapiwrapper.min.js"></scr'+'ipt>');
+			document.write('<scr'+'ipt src="ET-config.json"></scr'+'ipt>');
+			document.write('<scr'+'ipt type="text/javascript" src="ET-2.0/lib/myxapiclient.js"></scr'+'ipt>');
 	</script>
 
 </head>

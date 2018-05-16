@@ -47,6 +47,8 @@ www/node_modules
 
 www/selenium.log*
 
+www/ET-config.json
+
 .idea/
 
 tests/npm/

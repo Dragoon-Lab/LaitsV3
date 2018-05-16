@@ -59,15 +59,15 @@ define([
 	"dijit/Dialog",
 	"./image-box",
 	"./modelChanges",
-	"./ETConnector",
 	"./tutorialWidget",
 	"./zoom-correction",
-	"./history-widget"
+	"./history-widget",
+	"./ET-Helper",
 ], function(
 	array, lang, dom, geometry, style, domClass, on, aspect, ioQuery, DQuery, ready, registry, toolTip, tooltipDialog, popup,
 	menu, loadSave, model, Graph, controlStudent, controlAuthor, drawmodel, logging, equation,
 	description, State, typechecker, slides, lessonsLearned, schemaAuthor, messageBox, tincan,
-	activityParameters, memory, event, UI, Dialog, ImageBox, modelUpdates, ETConnector, TutorialWidget, ZoomCorrector, HistoryWidget){
+	activityParameters, memory, event, UI, Dialog, ImageBox, modelUpdates, TutorialWidget, ZoomCorrector, HistoryWidget, ETHelper){
 
 	/*  Summary:
 	 *			Menu controller
@@ -155,11 +155,12 @@ define([
 	if(activity_config && query.s === "ElectronixTutor"){
 		activity_config.set("ElectronixTutor", true);
 		ui_config.set("doneButton", "none");
-		if(typeof query.p1 != 'undefined' && typeof query.p2 != 'undefined'){
+		/*if(typeof query.p1 != 'undefined' && typeof query.p2 != 'undefined'){
 			// santization required
 			query.u = 'ETUser_' + query.p1;
 			query.s = 'ETClass_' + query.p2;
-		}
+		}*/
+
 	}
 	// Start up new session and get model object from server
 	try {
@@ -476,9 +477,30 @@ define([
 				});
 			}
 			// setting environment for loading dragoon inside ET
+			var etHelper = null;
+			if(activity_config.get("ElectronixTutor") && query.m !== "AUTHOR" ){
+				var etHelper = new ETHelper(query, ETConfig.problemLsrMap, ETConfig.schemaETKCMap);
+				// send score after student complete the model
+				aspect.after(controllerObject._PM, "notifyCompleteness", function(){
+					if( !sendKCScore || !givenModel.isCompleteFlag) return;
+					var learningResourceName = etHelper.getLearningResourceName();
+					var KCScores = controllerObject._assessment.getSchemaSuccessFactor();
+					if(Object.keys(KCScores).length > 0) {
+						Object.keys(KCScores).forEach(function(key) {
+							// Get new KCs Mapped to schemas
+							var newkey = etHelper.getKCForSchema(key);
+							if(newkey != key){
+								KCScores[newkey] = KCScores[key];
+								delete KCScores[key];
+							}
+						});
 
-			var etConnect = null;
-			if(activity_config.get("ElectronixTutor") && query.m !== "AUTHOR"){
+						console.log("Sending KC Scores", KCScores);
+						sendKCScore(ETConfig.config.learningResource,learningResourceName, KCScores);
+					}
+				}, this);
+
+				/*
 				etConnect = new ETConnector(query);
 				etConnect.startService();
 				//set ET Connector in controller
@@ -503,6 +525,7 @@ define([
 					//Sending percent complete after problem is complete
 					etConnect.sendCompletedAllSteps(100);
 				});
+				*/
 			}
 
 			if(activity_config.get("targetNodeStrategy")){
@@ -1657,7 +1680,7 @@ define([
 						domClass.remove(dom.byId(buttonID), "active");
 						toolTip.hide(dom.byId(buttonID));
 					});
-				});
+				}, this);
 				// Wire up close button...
 				// This will trigger the above session.saveProblem()
 				on(registry.byId("closeButton"), "click", function(){
@@ -1753,6 +1776,7 @@ define([
 					}
 
 					//Send complete step message on close node editor
+					/*
 					if(activity_config.get("ElectronixTutor") &&
 						controllerObject._model.active.isComplete(controllerObject.currentID)){
 						var taskname = query.p;
@@ -1760,7 +1784,7 @@ define([
 						var step_id = taskname +"_"+ nodename;
 						// Send Complete step message
 						etConnect.sendCompletedStep(step_id, true);
-					}
+					}*/
 
 				});
 			}
@@ -1857,6 +1881,7 @@ define([
 					}
 
 				}
+				/*
 				if(activity_config.get("ElectronixTutor") && etConnect){
 					if(etConnect.needsToSendsScore) {
 						var score = controllerObject._assessment.getSuccessFactor();
@@ -1865,7 +1890,7 @@ define([
 					}
 					else
 						etConnect.stopService();
-				}
+				}*/
 			});
 
 			menu.add("prettifyButton", function(e){

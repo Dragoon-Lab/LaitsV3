@@ -1550,7 +1550,7 @@ define([
 						}
 						if(this.activityConfig.get("ElectronixTutor") && directive.id === "message"
 							&& this._mode !== "AUTHOR"){
-							this.sendETFeedback(directives);
+							//this.sendETFeedback(directives);
 						}
 					}
 				}else if(directive.attribute == "display"){
