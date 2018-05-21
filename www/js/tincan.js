@@ -28,7 +28,8 @@ define([
 	'dojo/dom-class',
 	'dojo/dom-construct',
 	'dojo/dom-style',
-	'dojo/keys', 
+	'dojo/keys',
+	'dojo/request/xhr',
 	'dojo/on',
 	'dojo/io-query',
 	'dojo/ready',
@@ -40,7 +41,7 @@ define([
 	'./typechecker',
 	'./forum',
 	'./schemas-student'
-], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ioquery, ready, popup, registry, TooltipDialog, expression, graphObjects, typechecker, forum, schemasStudent){
+], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, xhr, on, ioquery, ready, popup, registry, TooltipDialog, expression, graphObjects, typechecker, forum, schemasStudent){
 	// Summary: 
 	//			Module to connect to LRS and send statement data
 	// Description:
@@ -54,6 +55,14 @@ define([
 			this._assessment = assessment;
 			this._session = session;
 			this.needsToSendScore = true;
+			var self = this;
+			xhr("PAL3-config.json",{
+				handleAs: "json"
+			}).then(function(data){
+				self.pal3Mapping = data;
+			}, function(err){
+				self.pal3Mapping = {};
+			})
 		},
 
 		connect: function() {
@@ -61,7 +70,7 @@ define([
 			this.tincan = new TinCan ({
 			    	recordStores: [
 			            {
-			                endpoint:"https://pal3.ict.usc.edu/php/SubmitResourceScore.php",
+			                endpoint:"https://pal3.ict.usc.edu/php/SubmitScore.php",
 			                username: "0ed3c15d57b33439145ed2684c1ba09b48a33410",
 			                password: "feb46eec5cdedce5553550318ff93ea9b48ea69a",
 			                allowFail: false
@@ -92,11 +101,12 @@ define([
 			// var successFactor = this.getSchemasAverageFactor();
 			var successFactor=this._assessment.getSchemasAverageFactor();
 			var schemaSuccessFactor = this._assessment.getSchemaSuccessFactor();
-			var username = this._session.params.u;
-			var email = username;
+			//var username = this._session.params.u;
+			//var email = username;
 			var context = this;
-			var topic = this._session.params.topic || "No Topic";
+			//var topic = this._session.params.topic || "No Topic";
 
+			/*
 			if (username.indexOf("..") > 0){
 				email = username.split("..")[0];
 			}
@@ -120,14 +130,23 @@ define([
 					            "name": { "en-US": this.getResourceName() }
 					        }
 						  };			
-			
+			*/
 			//Create a new Statement for every schema associated with the problem 
 			var schemas = this._model.active.getSchemas();
 			var debugReport = "Overall success factor: "+successFactor+"\n";
 			var debugScoreSum = 0;
-			array.forEach(schemas, lang.hitch(this, function(schema){ 
+			var kc_scores = "";
+			array.forEach(schemas, lang.hitch(this, function(schema, index){
 				debugReport += "Success factor for "+ schema.schemaClass+": "+schemaSuccessFactor[schema.schemaClass]+"\n";
 				debugScoreSum += schemaSuccessFactor[schema.schemaClass];
+				var kc_guid = this.pal3Mapping[schema.schemaClass];
+				if(kc_guid !== undefined){
+					kc_scores += this.pal3Mapping[schema.schemaClass] + "," + schemaSuccessFactor[schema.schemaClass];
+					if(index != schemas.length - 1){
+						kc_scores += "|"
+					}
+				}
+				/*
 				statement.context = {
 						"contextActivities": {
 				           "category": [{
@@ -174,10 +193,10 @@ define([
 				},false);
 
 				//Add object and remove target from Statement
+
 				stmt.object = stmt.target;
 				delete stmt.target;
 				console.log("Sending Statement: ", stmt);
-
 				//Send statement to LRS
 				dojo.xhrPost({
 					url:'https://pal3.ict.usc.edu/php/SubmitResourceScore.php',
@@ -192,8 +211,44 @@ define([
 						console.log(err);
 					}
 				});
+				*/
 			}));
-			debugReport += "PAL3 score should be: " + (debugScoreSum / ( schemas.length || 1 ));
+			var pal3_score = (debugScoreSum / ( schemas.length || 1 ));
+			var stmt = "&player_id="+this._session.params.player_id+
+				"&resource_guid="+ this._session.params.resource_guid+
+				'&resource_session_id="'+ this._session.params.resource_session_id+'"'+
+				"&duration="+ this.isoDuration(this._session.calculateDuration())+
+				"&score="+ pal3_score+
+				"&kc_scores="+ kc_scores;
+			console.log("Sending statement : " , stmt);
+			/*
+			// dojo.xhrPost is deprecated. Replacing with request/xhr
+			dojo.xhrPost({
+					url:'https://pal3.ict.usc.edu/php/SubmitScore.php',
+					postData:"json="+ JSON.stringify(stmt) + "&api_key="+ api_key,
+					handleAs:'text',
+					sync:true,
+					load: function(response){
+						console.log(response);
+						context.needsToSendScore = false;
+					},
+					error: function(err){
+						console.log(err);
+					}
+				});
+			*/
+			xhr("https://pal3.ict.usc.edu/php/SubmitScore.php",{
+				handleAs: "text",
+				method: "POST",
+				data: stmt+"&api_key="+api_key,
+				sync: true,
+			}).then(function(data){
+				console.log(data);
+				context.needsToSendScore = false;
+			}, function(err){
+				console.log(err);
+			})
+			debugReport += "PAL3 score should be: " + pal3_score;
 			if(this._session.params.s == "PAL3-regression-testing"){
 				alert(debugReport);
 			}
@@ -201,8 +256,10 @@ define([
 		},
 
 		isoDuration: function(milliseconds) {
-   			var d = new Date(milliseconds);
-   			return 'P' + 'T' + d.getUTCHours() + 'H' + d.getUTCMinutes() + 'M' + d.getUTCSeconds() +'S';
+			var d = new Date(milliseconds);
+			d = d/1000;
+			// convert to seconds
+			return d;
 		},
 
 		getResourceName: function(){

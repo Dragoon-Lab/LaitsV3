@@ -47,6 +47,7 @@ www/node_modules
 
 www/selenium.log*
 
+www/PAL3-config.json
 www/ET-config.json
 
 .idea/
