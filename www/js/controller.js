@@ -289,6 +289,10 @@ define([
 					true);
 			}
 
+			aspect.after(this, "equationDoneHandler", lang.hitch(this,function(){
+				this.updateNodeLabel(this.currentID);
+			}));
+
 			var setEnableOption = function(value){
 				console.log("++++ in setEnableOption, scope=", this);
 				array.forEach(this.options, function(option){
@@ -569,6 +573,20 @@ define([
 				return this.disableHandlers || this.handleEquation.apply(this, arguments);
 			}));
 
+			equationWidget.on("focus", function(){
+				var cursorPosition = this.get("cursorPosition");
+				if(cursorPosition){
+					this.textbox.setSelectionRange(cursorPosition[0], cursorPosition[1]);
+				}
+			});
+
+			equationWidget.on("blur", function(){
+				var start = this.textbox.selectionStart;
+				var end = this.textbox.selectionEnd;
+				this.set("cursorPosition", [start, end]);
+			});
+
+
 			// When the equation box is enabled/disabled, do the same for
 			// the inputs widgets.
 			array.forEach(["nodeInputs", "positiveInputs", "negativeInputs"], function(input){
@@ -754,11 +772,14 @@ define([
 			var oldEqn = widget.get("value");
 			// Get current cursor position or go to end of input
 			// console.log("	   Got offsets, length: ", widget.domNode.selectionStart, widget.domNode.selectionEnd, oldEqn.length);
-			var p1 = widget.domNode.selectionStart;
-			var p2 = widget.domNode.selectionEnd;
+			var p1 = widget.textbox.selectionStart;
+			var p2 = widget.textbox.selectionEnd;
 			widget.set("value", oldEqn.substr(0, p1) + text + oldEqn.substr(p2));
+			widget.focus();
 			// Set cursor to end of current paste
-			widget.domNode.selectionStart = widget.domNode.selectionEnd = p1 + text.length;
+			var newPosition = p1 + text.length;
+			widget.textbox.setSelectionRange(newPosition, newPosition);
+			//widget.domNode.selectionStart = widget.domNode.selectionEnd = p1 + text.length;
 		},
 
 		handleEquation: function(equation){
@@ -1529,7 +1550,7 @@ define([
 						}
 						if(this.activityConfig.get("ElectronixTutor") && directive.id === "message"
 							&& this._mode !== "AUTHOR"){
-							this.sendETFeedback(directives);
+							//this.sendETFeedback(directives);
 						}
 					}
 				}else if(directive.attribute == "display"){

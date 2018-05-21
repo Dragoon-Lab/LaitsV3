@@ -244,7 +244,8 @@ define([
 					properties: [
 						"tweakDirection"
 					],
-					useTweakStatus: true
+					useTweakStatus: true,
+					plotAuthorSolution:true
 				},
 
 				COACHED:{
@@ -280,7 +281,8 @@ define([
 					properties: [
 						"tweakDirection"
 					],
-					useTweakStatus: true
+					useTweakStatus: true,
+					plotAuthorSolution:true
 				},
 
 				TEST:{
@@ -312,7 +314,8 @@ define([
 					properties: [
 						"tweakDirection"
 					],
-					useTweakStatus: true
+					useTweakStatus: true,
+					plotAuthorSolution:true
 				},
 
 				EDITOR:{
@@ -386,7 +389,8 @@ define([
 					properties: [
 						"tweakDirection"
 					],
-					useTweakedNodeForOrdering: true
+					useTweakedNodeForOrdering: true,
+					plotAuthorSolution:true
 				},
 
 				COACHED:{
@@ -426,7 +430,8 @@ define([
 					properties: [
 						"tweakDirection"
 					],
-					showPopupIfComplete: true
+					showPopupIfComplete: true,
+					plotAuthorSolution:true
 				},
 
 				TEST:{
@@ -461,7 +466,8 @@ define([
 					properties: [
 						"tweakDirection"
 					],
-					showPopupIfComplete: true
+					showPopupIfComplete: true,
+					plotAuthorSolution:true
 				},
 
 				EDITOR:{
@@ -537,7 +543,8 @@ define([
 					properties: [
 						"executionValue"
 					],
-					demoExecutionFeatures:true
+					demoExecutionFeatures:true,
+					plotAuthorSolution:true
 				},
 
 				COACHED:{
@@ -576,7 +583,8 @@ define([
 					properties: [
 						"executionValue"
 					],
-					demoExecutionFeatures:true
+					demoExecutionFeatures:true,
+					plotAuthorSolution:true
 				},
 
 				TEST:{
@@ -610,7 +618,8 @@ define([
 					properties: [
 						"executionValue"
 					],
-					demoExecutionFeatures:true
+					demoExecutionFeatures:true,
+					plotAuthorSolution:true
 				},
 
 				EDITOR:{
@@ -683,7 +692,8 @@ define([
 					properties: [
 						"executionValue"
 					],
-					executionExercise: true
+					executionExercise: true,
+					plotAuthorSolution:true
 				},
 
 				COACHED:{
@@ -719,7 +729,8 @@ define([
 					properties: [
 						"executionValue"
 					],
-					executionExercise: true
+					executionExercise: true,
+					plotAuthorSolution:true
 				},
 
 				TEST:{
@@ -751,7 +762,8 @@ define([
 					properties: [
 						"executionValue"
 					],
-					executionExercise: true
+					executionExercise: true,
+					plotAuthorSolution:true
 				},
 
 				EDITOR:{
@@ -821,7 +833,8 @@ define([
 						"waveformValue"
 					],
 					nodeDetails: "WAVEFORM",
-					showNodeBorderTutorial: true
+					showNodeBorderTutorial: true,
+					plotAuthorSolution:true
 				},
 
 				COACHED:{
@@ -856,7 +869,8 @@ define([
 						"executionValue"
 					],
 					copyAuthorNodes: true,
-					showNodeBorderTutorial: true
+					showNodeBorderTutorial: true,
+					plotAuthorSolution:true
 				},
 
 				TEST:{
@@ -886,7 +900,8 @@ define([
 					properties: [
 						"executionValue"
 					],
-					copyAuthorNodes: true
+					copyAuthorNodes: true,
+					plotAuthorSolution:true
 				},
 
 				EDITOR:{

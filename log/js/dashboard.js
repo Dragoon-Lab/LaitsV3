@@ -1,21 +1,21 @@
 /*
-     Dragoon Project
-     Arizona State University
-     (c) 2014, Arizona Board of Regents for and on behalf of Arizona State University
-     
-     This file is a part of Dragoon
-     Dragoon is free software: you can redistribute it and/or modify
-     it under the terms of the GNU Lesser General Public License as published by
-     the Free Software Foundation, either version 3 of the License, or
-     (at your option) any later version.
-     
-     Dragoon is distributed in the hope that it will be useful,
-     but WITHOUT ANY WARRANTY; without even the implied warranty of
-     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-     GNU Lesser General Public License for more details.
-     
-     You should have received a copy of the GNU Lesser General Public License
-     along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
+	Dragoon Project
+	Arizona State University
+	(c) 2014, Arizona Board of Regents for and on behalf of Arizona State University
+
+	This file is a part of Dragoon
+	Dragoon is free software: you can redistribute it and/or modify
+	it under the terms of the GNU Lesser General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+
+	Dragoon is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU Lesser General Public License for more details.
+
+	You should have received a copy of the GNU Lesser General Public License
+	along with Dragoon. If not, see <http://www.gnu.org/licenses/>.
 */
 /* global define */
 define([ 
@@ -38,6 +38,7 @@ define([
 		nodesAttempted: [],
 		timeSpent: [],
 		errorRatio: [],
+		nodesCorrectRatio: [],
 		problemComplete: [],
 		sessionRunning: [],
 		detailedNodeAnalysis: [],
@@ -108,6 +109,7 @@ define([
 			for(var i = 0; i<totalUsers; i++){
 				this.timeSpent[i] = [];
 				this.errorRatio[i] = [];
+				this.nodesCorrectRatio[i] = [];
 				this.problemComplete[i] = [];
 				this.sessionRunning[i] = [];
 				this.detailedNodeAnalysis[i] = [];
@@ -123,6 +125,7 @@ define([
 				for(var j = 0; j<totalProblems; j++){
 					this.timeSpent[i][j] = "-";
 					this.errorRatio[i][j] = "-";
+					this.nodesCorrectRatio[i][j] = "-";
 					this.problemComplete[i][j] = false;
 					this.sessionRunning[i][j] = false;
 					this.detailedNodeAnalysis[i][j] = "-";
@@ -341,22 +344,26 @@ define([
 					this.timeSpent[userIndex][problemIndex] = (number.round((upObject['focusTime'] - upObject['wastedTime'])*10))/10;
 					this.totalTimeSpent[userIndex] += this.timeSpent[userIndex][problemIndex];
 					this.totalTimeSpent[userIndex] = (number.round(this.totalTimeSpent[userIndex]*100))/100; // just making sure no extra long decimals show up.
-
 					var errorRatioText = "Blank";
-                    var errorRatioNumber = (100-((parseFloat(upObject['incorrectChecks'])/parseFloat(upObject['totalSolutionChecks']))*100));
-                    if (!isNaN(errorRatioNumber)){ 
-                        errorRatioText = errorRatioNumber.toFixed(1)+"%"; 
-                    } 
+					var errorRatioNumber = (100-((parseFloat(upObject['incorrectChecks'])/parseFloat(upObject['totalSolutionChecks']))*100));
+					if (!isNaN(errorRatioNumber)){
+						errorRatioText = errorRatioNumber.toFixed(1)+"%";
+					}
  					this.errorRatio[userIndex][problemIndex] = errorRatioText;
 					
 					this.problemComplete[userIndex][problemIndex] = upObject['problemComplete'];
+					var nodesCorrectRatioText = "Blank";
 					if(this.problemComplete[userIndex][problemIndex] == true){
 						this.totalProblemsCompleted[userIndex]++;
 						this.totalProblemsStarted[userIndex]++;
+						var nodesCorrectRatio = (1-(upObject.incorrectNodes.length/upObject.nodes.length))*100;
+						if (nodesCorrectRatio !== undefined && !isNaN(nodesCorrectRatio)){
+							nodesCorrectRatioText = nodesCorrectRatio.toFixed(1)+"%";
+						}
 					} else {
 						this.totalProblemsStarted[userIndex]++;
 					}
-
+					this.nodesCorrectRatio[userIndex][problemIndex] = nodesCorrectRatioText;
 					this.problemRevisits[userIndex][problemIndex] = upObject['openTimes'];
 					//this.nodesAttempted[userIndex][problemIndex] = upObject['nodes'].length;
 					this.sessionRunning[userIndex][problemIndex] = upObject['sessionRunning'];
@@ -498,7 +505,17 @@ define([
 						tableString += "</a>";
 					}
 					tableString +=  "</span>";
-					
+
+					tableString += "<span class='nodesCorrect all'>";
+					if(this.modules['sessionLink'] && this.nodesCorrectRatio[row][col] != "-"){
+						tableString += urlString;
+					}
+					tableString += this.nodesCorrectRatio[row][col];
+					if(this.modules['sessionLink'] && this.nodesCorrectRatio[row][col] != "-"){
+						tableString += "</a>";
+					}
+					tableString +=  "</span>";
+
 					tableString += "<span class='revisits all'>";
 					if(this.modules['sessionLink'] && this.problemRevisits[row][col] != "-"){
 						tableString += urlString;

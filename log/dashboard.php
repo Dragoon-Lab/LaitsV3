@@ -82,6 +82,10 @@
 			    <input type="radio" name="type" value="nodes" id="nodes" data-dojo-type="dijit/form/RadioButton"/>
 				<label for="nodes">Nodes Attempted</label>
 			</div>
+			<div class="newLine">
+			    <input type="radio" name="type" value="nodesCorrect" id="nodesCorrect" data-dojo-type="dijit/form/RadioButton"/>
+				<label for="nodesCorrect">Nodes Correct %</label>
+			</div>
 		</div>
 	</fieldset>
 

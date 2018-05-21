@@ -155,7 +155,7 @@
 					$slides = array();
 					$currentSession = new Session();
 					$currentSession->timeStamp = $row['time'];
-					$currentAction;
+					$currentAction = null;
 					$resetVariables = false;
 				}
 				$method = $row['method'];
@@ -590,6 +590,9 @@
 							}
 							if($newMessage['solutionProvided'] == "true" && !$autoCreated){
 								array_push($currentProperty->status, "DEMO");
+								if(!in_array( $currentNode->id, $upObject->incorrectNodes, true)){
+									array_push($upObject->incorrectNodes, $currentNode->id);
+								}
 								$currentProperty->time = $newMessage['time'] - $propertyStartTime;
 								$propertyStartTime = $newMessage['time'];
 
@@ -780,7 +783,6 @@
 			$upObject->slides = $slides;
 			if($upObject->totalTime > 0)
 				array_push($objectArray, $upObject);
-			
 			return $objectArray;
 		}
 	}

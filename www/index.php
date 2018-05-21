@@ -12,6 +12,7 @@
 
 	<script type = "text/javascript" src = "version.js"></script>
 	<script src="tincan/tincan-min.js"></script>
+
 	<script type="text/javascript">
 		var version = "";
 
@@ -147,6 +148,11 @@
 
 		//reference implementation data
 		document.write('<scr'+'ipt type="text/javascript" src="ET/js/reference-data.js"></scr'+'ipt>');
+
+		//ET New libraries
+			document.write('<scr'+'ipt type="text/javascript" src="ET-2.0/lib/xapiwrapper.min.js"></scr'+'ipt>');
+			document.write('<scr'+'ipt src="ET-config.json"></scr'+'ipt>');
+			document.write('<scr'+'ipt type="text/javascript" src="ET-2.0/lib/myxapiclient.js"></scr'+'ipt>');
 	</script>
 
 </head>
@@ -206,10 +212,9 @@
 			<span>Help</span>
 			<div data-dojo-type="dijit/Menu" id="menuHelp">                
 				<div id="menuIntroTutorial" data-dojo-type="dijit/MenuItem">Introduction</div>
-				<div id="menuIntroVideo" data-dojo-type="dijit/MenuItem">Introductory video</div>
+				<div id="menuIntroVideo" data-dojo-type="dijit/MenuItem">Electronics Tutorial Video</div>
 				<div id="menuIntroConcept" data-dojo-type="dijit/MenuItem">Intro to Dragoon concepts</div>
 				<div id="menuOldIntroVideo" data-dojo-type="dijit/MenuItem">Slightly older intro video</div>
-				<div id="menuIntroText" data-dojo-type="dijit/MenuItem">Introduction webpage</div>
 				<div id="menuMathFunctions" data-dojo-type="dijit/MenuItem">Math functions</div>
 			</div>
 		</div>
