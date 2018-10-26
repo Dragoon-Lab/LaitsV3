@@ -1690,8 +1690,8 @@ define([
 				if(activity_config.get("allowDeleteNode")) {
 					on(registry.byId("deleteButton"), "click", function () {
 						//delete node from model and remove from display
-						drawModel.deleteNode(controllerObject.currentID);
 						registry.byId("nodeeditor").hide();
+						drawModel.deleteNode(controllerObject.currentID);
 					});
 				}
 				style.set(registry.byId("deleteButton").domNode, "display", ui_config.get("nodeEditorDeleteButton"));
