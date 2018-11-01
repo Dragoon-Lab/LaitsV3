@@ -22,22 +22,22 @@
 /* global define, jsPlumb */
 
 define([
-	"dojo/_base/array", 
-	'dojo/_base/declare', 
+	"dojo/_base/array",
+	'dojo/_base/declare',
 	'dojo/_base/lang',
     "dojo/dom",
-	"dojo/dom-attr", 
-	"dojo/dom-construct", 
+	"dojo/dom-attr",
+	"dojo/dom-construct",
 	"dojo/dom-style",
 	"dojo/query",
     "dojo/on",
-	"dijit/Menu", 
+	"dijit/Menu",
 	"dijit/MenuItem",
 	"./equation",
-	"./graph-objects", 
+	"./graph-objects",
 	"jsPlumb/jsPlumb"
 ], function(array, declare, lang, dom, attr, domConstruct, domStyle, query, on, Menu, MenuItem, equation, graphObjects){
-	// Summary: 
+	// Summary:
 	//			MVC for the canvas
 	// Description:
 	//			Acts as interface to JS Plumb
@@ -56,12 +56,17 @@ define([
             //check needed for student mode ?
             var nodes=this._givenModel.getNodes();
             array.forEach(nodes,function(node){
-               this.colorNodeBorder(node.ID,true); 
+               this.colorNodeBorder(node.ID,true);
             },this);
             //time to delete all connectiion having node as source node
             array.forEach(this._instance.getConnections(), function(connection){
                 if(setOfConnections[connection.targetId]){
-                	this._instance.detach(connection); //remove that connection
+									try {
+										this._instance.detach(connection); //remove that connection
+									}
+									catch (err){
+										console.log("Error while detaching: " + err);
+									}
             	}
             }, this);
 
@@ -181,7 +186,7 @@ define([
 					backgroundcolor = "";
 				}
 				borderColor += "3px "+isComplete+" " + colorMap[color];
-				boxshadow = 'inset 0px 0px 5px #000 , 0px 0px 10px #000';				
+				boxshadow = 'inset 0px 0px 5px #000 , 0px 0px 10px #000';
 			}
 			console.log("borderColor: ", borderColor);
 			if(updateNode){
@@ -201,7 +206,12 @@ define([
 							if(connection.sourceId == nodeID){
 						        	setConnections[connection.targetId]=true;//connections to delete for matching sourceId
 							}
-							this._instance.detach(connection);
+							try {
+								this._instance.detach(connection);
+							}
+							catch (err){
+								console.log("Error while detaching: " + err);
+							}
 						}
 					}, this);
 
@@ -224,7 +234,7 @@ define([
 			console.log("------- Adding element to canvas, id = ", node.ID, ", class = ", type);
 			// Add div to drawing
 			console.log("	   --> setting position for vertex : "+ node.ID +" position: x"+node.position.x+"  y:"+node.position.y);
-	
+
 			var htmlContent = graphObjects.getNodeName(this._givenModel,node.ID, this._activityConfig.get("nodeDetails"));
 			// Don't actually update node, since we will create it below.
 			var colorBorder = this.colorNodeBorder(node.ID, false);
@@ -321,7 +331,7 @@ define([
 			// console.log("----- setConnections:  Need to delete existing connections going into " + destination, this._instance);
 			// Go through existing connections and delete those that
 			// have this destination as their target.
-		
+
 			var targetId = attr.get(destination, "id");
 			var parse = this._givenModel.getEquation(targetId), isSum, isProduct;
 			if(parse){
@@ -337,7 +347,12 @@ define([
 
 			array.forEach(this._instance.getConnections(), function(connection){
 				if(connection.targetId == destination)
-					this._instance.detach(connection);
+					try {
+						this._instance.detach(connection);
+					}
+					catch (err){
+						console.log("Error while detaching: " + err);
+					}
 			}, this);
 			// Create new connections
 
@@ -371,7 +386,12 @@ define([
 			// that have this source.
 			array.forEach(this._instance.getConnections(), function(connection){
 				if(connection.sourceId == source)
+				try {
 					this._instance.detach(connection);
+				}
+				catch (err){
+					console.log("Error while detaching: " + err);
+				}
 			}, this);
 			// Create new connections
 			array.forEach(destinations, function(destination){
