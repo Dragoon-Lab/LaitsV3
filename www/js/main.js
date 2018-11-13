@@ -62,7 +62,7 @@ define([
 	"./tutorialWidget",
 	"./zoom-correction",
 	"./history-widget",
-	"./ET-Helper",
+	"./ET-Helper"
 ], function(
 	array, lang, dom, geometry, style, domClass, on, aspect, ioQuery, DQuery, ready, registry, toolTip, tooltipDialog, popup,
 	menu, loadSave, model, Graph, controlStudent, controlAuthor, drawmodel, logging, equation,

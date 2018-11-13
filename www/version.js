@@ -4,17 +4,17 @@
  *  (c) 2014, Arizona Board of Regents for and on behalf of Arizona State University
  *
  *	This file stores the number of current version of Dragoon deployed on server
- *	currentVersion number should be manually incremented to higher version when 
+ *	currentVersion number should be manually incremented to higher version when
  *	new build is deployed on server.
- *	 
+ *
  */
 
 
-currentVersion = "2.3.18"; //Current version number for Dragoon
+currentVersion = "2.4.0"; //Current version number for Dragoon
 
 this.getVersion = function(){
 	/*
 	 * Function to return the current Version number for Dragoon
- 	 */			
+ 	 */
 	return currentVersion;
 }

@@ -33,20 +33,20 @@ define([
 	'dojo/on',
 	'dojo/io-query',
 	'dojo/ready',
-	'dijit/popup', 
-	'dijit/registry', 
+	'dijit/popup',
+	'dijit/registry',
 	'dijit/TooltipDialog',
-	'./equation', 
+	'./equation',
 	'./graph-objects',
 	'./typechecker',
 	'./forum',
 	'./schemas-student'
 ], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, xhr, on, ioquery, ready, popup, registry, TooltipDialog, expression, graphObjects, typechecker, forum, schemasStudent){
-	// Summary: 
+	// Summary:
 	//			Module to connect to LRS and send statement data
 	// Description:
 	//			Handles all the operations to be performed on the Learning Record Store(LRS)
-	//			
+	//
 
 	return declare(null, {
 
@@ -122,16 +122,16 @@ define([
 					            "en-US": "Completed"
 					        }
 				    	};
-			
+
 			statement['object'] = {
 							"objectType": "Activity",
 							"id" : baseURL+ "activities/"+ this.getResourceName(),
 					        "definition": {
 					            "name": { "en-US": this.getResourceName() }
 					        }
-						  };			
+						  };
 			*/
-			//Create a new Statement for every schema associated with the problem 
+			//Create a new Statement for every schema associated with the problem
 			var schemas = this._model.active.getSchemas();
 			var debugReport = "Overall success factor: "+successFactor+"\n";
 			var debugScoreSum = 0;
@@ -166,7 +166,7 @@ define([
 				                        "en-US": topic
 				                    }
 				                }
-				            }]			            	
+				            }]
 				        },
 				    	"revision" : this._session.params.rid
 				    };
@@ -241,7 +241,7 @@ define([
 				handleAs: "text",
 				method: "POST",
 				data: stmt+"&api_key="+api_key,
-				sync: true,
+				sync: true
 			}).then(function(data){
 				console.log(data);
 				context.needsToSendScore = false;
