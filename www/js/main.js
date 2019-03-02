@@ -154,13 +154,8 @@ define([
 	//activity_config.set("ElectronixTutor", false);
 	if(activity_config && query.s === "ElectronixTutor"){
 		activity_config.set("ElectronixTutor", true);
-		ui_config.set("doneButton", "none");
-		/*if(typeof query.p1 != 'undefined' && typeof query.p2 != 'undefined'){
-			// santization required
-			query.u = 'ETUser_' + query.p1;
-			query.s = 'ETClass_' + query.p2;
-		}*/
-
+ 		ui_config.set("doneButton", "none");
+ 		start();  //start the myxapi client
 	}
 	// Start up new session and get model object from server
 	try {
