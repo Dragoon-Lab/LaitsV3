@@ -480,8 +480,11 @@ define([
 					if( !sendKCScore || !givenModel.isCompleteFlag) return;
 					var learningResourceName = etHelper.getLearningResourceName();
 					var KCScores = controllerObject._assessment.getSchemaSuccessFactor();
+					var score = ''; // ET now only has one KC per problem, just send that one
 					if(Object.keys(KCScores).length > 0) {
 						Object.keys(KCScores).forEach(function(key) {
+							score = KCScores[key]
+
 							// Get new KCs Mapped to schemas
 							var newkey = etHelper.getKCForSchema(key);
 							if(newkey != key){
@@ -490,8 +493,9 @@ define([
 							}
 						});
 
-						console.log("Sending KC Scores", KCScores);
-						sendKCScore(ETConfig.config.learningResource,learningResourceName, KCScores);
+						console.log("KC Scores", KCScores);
+						console.log("Sending score", score);
+						sendKCScore(ETConfig.config.learningResource,learningResourceName.toLowerCase(), score);
 					}
 				}, this);
 

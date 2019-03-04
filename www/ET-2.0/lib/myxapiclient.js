@@ -25,8 +25,8 @@ sendKCScore = function(learningResource,problemID,kcScore){
     var pair = vars[i].split("=");
     params[pair[0]] = pair[1];
   }
-  var email = "mailto:" + decodeURIComponent(params['user']);
-  var fullName = decodeURIComponent(params['fullname']);
+  var email = "mailto:" + decodeURIComponent(params['u']);
+  var fullName = decodeURIComponent(params['s']);
   var SKOTitle = learningResource + ":" + problemID;
 
   var statements = [];
