@@ -77,6 +77,7 @@ gulp.task('build', ['dojoBuild'], function (done){
 	var filesToCopy = [
 		'./css/**/*.*',
 		'./ET/**/*.*',
+		'./ET-2.0/**/*.*',
 		'./Liviz/**/*.*',
 		'./tincan/**/*.*',
 		'./cryptoJS/**/*.*',
@@ -86,7 +87,7 @@ gulp.task('build', ['dojoBuild'], function (done){
 		'./*.php',
 		'./*.html',
 		'./*.json',
-		'form.js',
+		'./js/form.js',
 		'version.js'];
 
 	var externalFiles = [
