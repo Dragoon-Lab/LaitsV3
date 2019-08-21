@@ -14,26 +14,52 @@ switch($type){
 		$parameters['u'] = $_REQUEST['u'];
 		$parameters['g'] = $_REQUEST['g'];
 		$result = $db->getClassProblemGroups($parameters);
+		if($result == null)
+			echo '{"error" : "No models"}';
+		else
+			echo $result;
 		break;
+	
 	case 'reqNonClassProblems':
-		$parameters['g'] = $_REQUEST['g'];
+		$parameters['g'] = isset($_REQUEST['g'])? $_REQUEST['g'] : '';
+		$parameters['s'] = isset($_REQUEST['s'])? $_REQUEST['s'] : '0';
 		$result = $db->getNonClassProblems($parameters);
+		if($result == null)
+			echo '{"error" : "No models"}';
+		else
+			echo $result;
 		break;
-	case 'deleteNonClassProblems':
-		$parameters['df'] = $_REQUEST['df'];
-		$parameters['dm'] = $_REQUEST['dm'];
-		$result = $db->deleteNonClassProblems($parameters);
+
+	case 'deleteSpecificModels':
+		$parameters['dm'] = isset($_REQUEST['dm'])? $_REQUEST['dm']: null;
+		if(!empty($parameters['dm']))
+			$result = $db->deleteSpecificModels($parameters);
+		if($result == null)
+			echo 'fail';
+		else 
+			echo $result;		
 		break;
+
 	case 'modelAction':
-		//common for copy and move models
-		$parameters['action'] = $_REQUEST['action'];
-		$parameters['src'] = $_REQUEST['src'];
-		$parameters['mod'] = $_REQUEST['mod'];
-		$parameters['dest'] = $_REQUEST['dest'];
-		$parameters['user'] = $_REQUEST['user'];
-		$parameters['section'] = $_REQUEST['section'];
+		$parameters['action'] = isset($_REQUEST['action']) ? $_REQUEST['action'] : "";
+		$parameters['src'] = isset($_REQUEST['src']) ? $_REQUEST['src'] : "";
+		$parameters['mod'] = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : "";
+		$parameters['dest'] = isset($_REQUEST['dest']) ? $_REQUEST['dest'] : "";
+		$parameters['user'] = isset($_REQUEST['user']) ? $_REQUEST['user'] : "";
+		if(empty($parameters['action']) || empty($parameters['src']) || empty($parameters['mod']) || empty($parameters['dest']) || empty($parameters['user'])){
+			echo 'make sure all fields are valid and not empty';
+			break;
+		} 
+		//new model name can be empty
+		$parameters['new_mod'] = isset($_REQUEST['new_mod']) ? $_REQUEST['new_mod'] : "";
+		$parameters['section'] = isset($_REQUEST['section']) ? $_REQUEST['section'] : "";
 		$result = $db->modelAction($parameters);
+		if($result == null)
+			echo 'fail';
+		else
+			echo $result;
 		break;
+
 	case 'copyNCModelToSection':
 		$parameters['u'] = $_REQUEST['u'];
 		$parameters['p'] = $_REQUEST['p'];
@@ -41,24 +67,50 @@ switch($type){
 		$parameters['g'] = array_key_exists('g', $_REQUEST) ? $_REQUEST['g'] : "";
 		$parameters['m'] = "AUTHOR";
 		$parameters['a'] = "construction";
+		//incase new name is sent, assignments use this
+		$parameters['nn'] = isset($_REQUEST['aname']) ? $_REQUEST['aname']: "";
 		$result = $db->copy_nc_model_section($parameters);
-		break;
-	case 'renameItems':
-		$parameters['action'] = $_REQUEST['action'];
-		$parameters['old_folder'] = $_REQUEST['old_folder'];
-		if(isset($_REQUEST['old_model']))
-			$parameters['old_model'] = $_REQUEST['old_model'];
+		if($result == null)
+			echo '{"error" : "No models"}';
 		else
-			$parameters['old_model'] = 'undefined';
-		$parameters['new_item'] = $_REQUEST['new_item'];
-		$result = $db->renameAction($parameters);
+			echo $result;
 		break;
+
+	case 'renameItems':
+		$parameters['action'] = isset($_REQUEST['action']) ? $_REQUEST['action'] : "";
+		$parameters['old_folder'] = isset($_REQUEST['old_folder']) ? $_REQUEST['old_folder']: "";
+		$parameters['new_name'] = isset($_REQUEST['new_name']) ? $_REQUEST['new_name'] : "";
+		if(empty($parameters['action']) || empty($parameters['old_folder']) || empty($parameters['new_name'])){
+			echo 'fail';
+			break;
+		}
+
+		if($parameters['action'] == "Model"){
+			$parameters['old_model'] = isset($_REQUEST['old_model']) ? $_REQUEST['old_model']: "";
+			if(empty($parameters['old_model'])){
+				echo 'fail';
+				break;
+			}
+		}	
+		
+		$result = $db->renameAction($parameters);
+		if($result == null)
+			echo 'fail';
+		else
+			echo $result;
+		break;
+
+	case 'deleteFolderModels':
+		$parameters['fol'] = isset($_REQUEST['fid'])? $_REQUEST['fid'] : "";
+		if($parameters['fol'] !== ""){
+			$result = $db->deleteAllModelsFromFolder($parameters);
+		}
+		if($result == null)
+			echo 'fail';
+		else
+			echo $result;
+		break;
+
 }
-
-if($result == null)
-	echo '{"error" : "No models"}';
-else
-	echo $result;
-
 mysqli_close($mysql);
 ?>
