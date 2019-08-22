@@ -323,7 +323,7 @@
 			}
 			$query = $this->getQuery('insertSolutionGraph');
 			if($query != ''){
-				$query = sprintf($query, $session, $this->db_connection->real_escape_string($row['solution_graph']));
+				$query = sprintf($query, $session, 0, 0, $this->db_connection->real_escape_string($row['solution_graph']));
 			} else {
 				return null;
 			}
