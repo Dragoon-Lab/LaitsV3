@@ -25,7 +25,7 @@
 			$q['classProblems'] = 'SELECT DISTINCT problem, user, `group` FROM session WHERE user = "%s" AND `group` IN (%s);';
 			$q['getNCModelWithGroup'] = 'SELECT session_id, problem, user, `group`, solution_graph FROM session JOIN solutions USING (session_id) WHERE (user = "%s" OR `group` = "%s") AND problem = "%s" AND mode = "%s" AND section = "non-class-models" ORDER BY session.time desc LIMIT 1;';
 			$q['getNCModel'] = 'SELECT session_id, problem, user, `group`, solution_graph FROM session JOIN solutions USING (session_id) WHERE user = "%s" AND problem = "%s" AND mode = "%s" AND section = "non-class-models" ORDER BY session.time desc LIMIT 1;';
-			$q['insertSession'] = 'INSERT INTO session (session_id, mode, user, section, problem, `group`) VALUES ("%s", "%s", "%s", "%s", "%s", "%s");';
+			$q['insertSession'] = 'INSERT INTO session (session_id, mode, user, section, problem, `group`, activity) VALUES ("%s", "%s", "%s", "%s", "%s", "%s", "%s");';
 			$q['insertSolutionGraph'] = 'INSERT INTO solutions (session_id, share, deleted, solution_graph) VALUES ("%s", "%s", "%s", "%s");';
 			$q['listNCModelsInGroup'] = 'SELECT DISTINCT problem FROM session WHERE `group` = "%s" AND section = "non-class-models";';
 			$q['countModelsInFolder'] = 'SELECT COUNT(DISTINCT problem) AS model_count FROM session WHERE `group` = "%s" AND section = "non-class-models";';
@@ -201,7 +201,7 @@
 					$new_model = $model;
 				$query = $this->getQuery('insertSession');
 				if($query != '')
-					$query = sprintf($query, $new_session_id, 'AUTHOR', $user, $copy_sec, $new_model, $dest);
+					$query = sprintf($query, $new_session_id, 'AUTHOR', $user, $copy_sec, $new_model, $dest, 'construction');
 				else
 					return null;
 				$create_sess_res = $this->getDBResults($query);
@@ -313,7 +313,7 @@
 				$probName = $newName;
 			}
 			if($query != ''){
-				$query = sprintf($query, $session, $parameters['m'], $u, $s, $probName, $row['group']);
+				$query = sprintf($query, $session, $parameters['m'], $u, $s, $probName, $row['group'], $parameters['a']);
 			} else {
 				return null;
 			}
