@@ -158,7 +158,7 @@
 			$action = $parameters['action'];
 			$user = $this->db_connection->real_escape_string($parameters['user']);
 			$copy_sec = "non-class-models";
-			if(isset($parameters['section'])){
+			if(isset($parameters['section']) && $parameters['section'] != ""){
 				$copy_sec = $parameters['section'];
 			}
 
