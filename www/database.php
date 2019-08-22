@@ -31,7 +31,7 @@
 			$q['countModelsInFolder'] = 'SELECT COUNT(DISTINCT problem) AS model_count FROM session WHERE `group` = "%s" AND section = "non-class-models";';
 			$q['updateFolderGivenFolder'] = 'UPDATE session SET `group` = "%s",time = time WHERE `group` = "%s" AND section = "non-class-models";';
 			$q['updateFolderGivenProblemFolder'] = 'UPDATE session SET `group` = "%s",time = time WHERE `group` = "%s" AND problem="%s" AND section = "non-class-models";';
-			$q['updateModelGivenProblemFolder'] = 'UPDATE session SET `group` = "%s",time = time WHERE `group` = "%s" AND problem="%s" AND section = "non-class-models";';
+			$q['updateModelGivenProblemFolder'] = 'UPDATE session SET problem = "%s",time = time WHERE `group` = "%s" AND problem="%s" AND section = "non-class-models";';
 			$q['getSolutionGraph'] = 'SELECT solutions.session_id,solutions.solution_graph FROM solutions INNER JOIN session ON solutions.session_id = session.session_id AND session.group = "%s" AND session.problem = "%s" AND session.mode = "%s" ORDER BY session.time DESC limit 1;';
 			$q['checkDupModels'] = 'SELECT COUNT(*) AS modelCount FROM session WHERE `group` = "%s" AND problem = "%s" AND section = "non-class-models";';
 			return $q;
