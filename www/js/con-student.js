@@ -420,13 +420,20 @@ define([
 					return false;
 				});
 			}
-			console.log(directives);
 			this.applyDirectives(directives);
 
 			var isDemo = false;
+			//When the PM returns directives, and the status is demo, there are two cases
+			//case 1: user got the equation wrong twice and PM sent a demo status
+			//case 2: user got the equation wrong, deleted the constituent nodes, then entered correct input, but still the user gets a demo
+			//In case 1, nodes are auto created, but in case 2 node has been deleted and we need to create expression nodes so isDemo parameter should consider that additional case
+			//So, as a additional check, we can check if PM has sent equation value attribute directive as well when sending a demo status, in case 2 it does not sends a value attribute
+			var hasValAttr = false;
 			if (directives.length > 0) {
 				isDemo = array.some(directives, function (directive) {
-					if (directive.attribute == "status" && directive.value == "demo") return true;
+					if(directive.attribute == "value" && directive.value != "")
+						hasValAttr = true;
+					if (directive.attribute == "status" && directive.value == "demo" && hasVal) return true;
 				});
 			}
 			if (!isDemo) {
