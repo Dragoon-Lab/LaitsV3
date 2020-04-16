@@ -1,0 +1,724 @@
+{
+  "taskName": "SEIR model",
+  "time": {
+    "start": 0,
+    "end": 500,
+    "step": 1,
+    "integrationMethod": "Eulers Method",
+    "units": "days"
+  },
+  "properties": {
+    "isGraphHelpShown": true
+  },
+  "image": {},
+  "taskDescription": {
+    "construction": [
+      "SEIR model (https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology)",
+      "With minimal modifications:  remove natural birth and death rate.  Add infection-caused death as an outcome."
+    ]
+  },
+  "lessonsLearned": [],
+  "increment": [],
+  "executionIterations": null,
+  "givenModelNodes": [
+    {
+      "ID": "id1",
+      "inputs": [
+        {
+          "ID": "id4"
+        },
+        {
+          "ID": "id5"
+        },
+        {
+          "ID": "id1"
+        },
+        {
+          "ID": "id6"
+        }
+      ],
+      "position": {
+        "x": 76,
+        "y": 309
+      },
+      "attemptCount": {
+        "description": 0,
+        "type": 0,
+        "initial": 0,
+        "units": 0,
+        "equation": 0,
+        "tweakedDirection": 0,
+        "executionValue": 0,
+        "waveformValue": null,
+        "assistanceScore": 0
+      },
+      "status": {
+        "equation": {
+          "disabled": false
+        }
+      },
+      "authorStatus": {
+        "root": {
+          "disabled": false
+        },
+        "name": {
+          "status": "entered"
+        },
+        "description": {
+          "status": "entered"
+        },
+        "type": {
+          "status": "entered"
+        },
+        "initial": {
+          "disabled": false,
+          "status": "entered"
+        },
+        "inputs": {
+          "disabled": false
+        },
+        "equation": {
+          "disabled": false,
+          "status": "entered"
+        },
+        "units": {
+          "status": "entered"
+        },
+        "kind": {
+          "status": "entered"
+        }
+      },
+      "name": "S",
+      "description": "susceptable",
+      "explanation": "Number of people susceptible to the infection.Â  Initially, this is the entire population.",
+      "type": "accumulator",
+      "initial": 1000,
+      "units": "people",
+      "equation": "((-id4)*id5)*(id1/id6)",
+      "genus": "required"
+    },
+    {
+      "ID": "id4",
+      "inputs": [],
+      "position": {
+        "x": 155,
+        "y": 476
+      },
+      "attemptCount": {
+        "description": 0,
+        "type": 0,
+        "initial": 0,
+        "units": 0,
+        "equation": 0,
+        "tweakedDirection": 0,
+        "executionValue": 0,
+        "waveformValue": null,
+        "assistanceScore": 0
+      },
+      "status": {},
+      "authorStatus": {
+        "root": {
+          "disabled": true
+        },
+        "name": {
+          "status": "entered"
+        },
+        "description": {
+          "status": "entered"
+        },
+        "units": {
+          "status": "entered"
+        },
+        "initial": {
+          "status": "entered",
+          "disabled": false
+        },
+        "type": {
+          "status": "entered"
+        },
+        "inputs": {
+          "disabled": true,
+          "status": ""
+        },
+        "equation": {
+          "disabled": true,
+          "status": ""
+        },
+        "kind": {
+          "status": "entered"
+        }
+      },
+      "name": "beta",
+      "description": "Infection rate",
+      "units": "1/day",
+      "initial": 0.3,
+      "equation": "",
+      "type": "parameter",
+      "parentNode": false,
+      "genus": "required"
+    },
+    {
+      "ID": "id5",
+      "inputs": [
+        {
+          "ID": "id7"
+        },
+        {
+          "ID": "id8"
+        },
+        {
+          "ID": "id9"
+        },
+        {
+          "ID": "id5"
+        },
+        {
+          "ID": "id11"
+        }
+      ],
+      "position": {
+        "x": 555,
+        "y": 270
+      },
+      "attemptCount": {
+        "description": 0,
+        "type": 0,
+        "initial": 0,
+        "units": 0,
+        "equation": 0,
+        "tweakedDirection": 0,
+        "executionValue": 0,
+        "waveformValue": null,
+        "assistanceScore": 0
+      },
+      "status": {
+        "equation": {
+          "disabled": false
+        }
+      },
+      "authorStatus": {
+        "root": {
+          "disabled": false
+        },
+        "name": {
+          "status": "entered"
+        },
+        "description": {
+          "status": "entered"
+        },
+        "type": {
+          "status": "entered"
+        },
+        "initial": {
+          "disabled": false,
+          "status": "entered"
+        },
+        "inputs": {
+          "disabled": false
+        },
+        "equation": {
+          "disabled": false,
+          "status": "entered"
+        },
+        "units": {
+          "status": "entered"
+        },
+        "kind": {
+          "status": "entered"
+        }
+      },
+      "name": "I",
+      "description": "Infectious",
+      "type": "accumulator",
+      "initial": 1,
+      "units": "people",
+      "explanation": "People who have the disease and can spread it.",
+      "equation": "((id7*id8)-(id9*id5))-(id11*id5)",
+      "genus": "required"
+    },
+    {
+      "ID": "id6",
+      "inputs": [
+        {
+          "ID": "id1",
+          "label": ""
+        },
+        {
+          "ID": "id8",
+          "label": ""
+        },
+        {
+          "ID": "id5",
+          "label": ""
+        },
+        {
+          "ID": "id10",
+          "label": ""
+        }
+      ],
+      "position": {
+        "x": 364,
+        "y": 538
+      },
+      "attemptCount": {
+        "description": 0,
+        "type": 0,
+        "initial": 0,
+        "units": 0,
+        "equation": 0,
+        "tweakedDirection": 0,
+        "executionValue": 0,
+        "waveformValue": null,
+        "assistanceScore": 0
+      },
+      "status": {},
+      "authorStatus": {
+        "root": {
+          "disabled": false
+        },
+        "name": {
+          "status": "entered"
+        },
+        "description": {
+          "status": "entered"
+        },
+        "type": {
+          "status": "entered"
+        },
+        "initial": {
+          "disabled": true,
+          "status": ""
+        },
+        "inputs": {
+          "disabled": false,
+          "status": ""
+        },
+        "equation": {
+          "disabled": false,
+          "status": "entered"
+        },
+        "units": {
+          "status": "entered"
+        },
+        "kind": {
+          "status": "entered"
+        }
+      },
+      "name": "N",
+      "description": "total population alive",
+      "explanation": "This is the total number of living people.Â  This plus the number of deaths is constant in time.",
+      "equation": "((id1+id8)+id5)+id10",
+      "type": "function",
+      "parentNode": false,
+      "initial": null,
+      "units": "people",
+      "genus": "required"
+    },
+    {
+      "ID": "id7",
+      "inputs": [],
+      "position": {
+        "x": 524.9000244140625,
+        "y": 457.26666259765625
+      },
+      "attemptCount": {
+        "description": 0,
+        "type": 0,
+        "initial": 0,
+        "units": 0,
+        "equation": 0,
+        "tweakedDirection": 0,
+        "executionValue": 0,
+        "waveformValue": null,
+        "assistanceScore": 0
+      },
+      "status": {},
+      "authorStatus": {
+        "root": {
+          "disabled": true
+        },
+        "name": {
+          "status": "entered"
+        },
+        "description": {
+          "status": "entered"
+        },
+        "units": {
+          "status": "entered"
+        },
+        "initial": {
+          "status": "entered",
+          "disabled": false
+        },
+        "type": {
+          "status": "entered"
+        },
+        "inputs": {
+          "disabled": true,
+          "status": ""
+        },
+        "equation": {
+          "disabled": true,
+          "status": ""
+        },
+        "kind": {
+          "status": "entered"
+        }
+      },
+      "name": "a",
+      "description": "E to I rate",
+      "explanation": "Rate of progression from exposed to infectious.",
+      "units": "1/day",
+      "initial": 0.2,
+      "equation": "",
+      "type": "parameter",
+      "parentNode": false,
+      "genus": "required"
+    },
+    {
+      "ID": "id8",
+      "inputs": [
+        {
+          "ID": "id4"
+        },
+        {
+          "ID": "id5"
+        },
+        {
+          "ID": "id1"
+        },
+        {
+          "ID": "id6"
+        },
+        {
+          "ID": "id7"
+        },
+        {
+          "ID": "id8"
+        }
+      ],
+      "position": {
+        "x": 354,
+        "y": 367
+      },
+      "attemptCount": {
+        "description": 0,
+        "type": 0,
+        "initial": 0,
+        "units": 0,
+        "equation": 0,
+        "tweakedDirection": 0,
+        "executionValue": 0,
+        "waveformValue": null,
+        "assistanceScore": 0
+      },
+      "status": {
+        "equation": {
+          "disabled": false
+        }
+      },
+      "authorStatus": {
+        "root": {
+          "disabled": false
+        },
+        "name": {
+          "status": "entered"
+        },
+        "description": {
+          "status": "entered"
+        },
+        "initial": {
+          "status": "entered",
+          "disabled": false
+        },
+        "units": {
+          "status": "entered"
+        },
+        "type": {
+          "status": "entered"
+        },
+        "inputs": {
+          "disabled": false
+        },
+        "equation": {
+          "disabled": false,
+          "status": "entered"
+        },
+        "kind": {
+          "status": "entered"
+        }
+      },
+      "name": "E",
+      "description": "Exposed",
+      "explanation": "Number of people exposed to the infection",
+      "initial": 0,
+      "units": "people",
+      "type": "accumulator",
+      "equation": "((id4*id5)*(id1/id6))-(id7*id8)",
+      "genus": "required"
+    },
+    {
+      "ID": "id9",
+      "inputs": [],
+      "position": {
+        "x": 687,
+        "y": 119
+      },
+      "attemptCount": {
+        "description": 0,
+        "type": 0,
+        "initial": 0,
+        "units": 0,
+        "equation": 0,
+        "tweakedDirection": 0,
+        "executionValue": 0,
+        "waveformValue": null,
+        "assistanceScore": 0
+      },
+      "status": {},
+      "authorStatus": {
+        "root": {
+          "disabled": true
+        },
+        "name": {
+          "status": "entered"
+        },
+        "description": {
+          "status": "entered"
+        },
+        "units": {
+          "status": "entered"
+        },
+        "type": {
+          "status": "entered"
+        },
+        "initial": {
+          "disabled": false,
+          "status": "entered"
+        },
+        "inputs": {
+          "disabled": true,
+          "status": ""
+        },
+        "equation": {
+          "disabled": true,
+          "status": ""
+        },
+        "kind": {
+          "status": "entered"
+        }
+      },
+      "name": "gamma",
+      "description": "Recovery rate",
+      "units": "1/day",
+      "equation": "",
+      "type": "parameter",
+      "parentNode": false,
+      "initial": 0.08,
+      "genus": "required"
+    },
+    {
+      "ID": "id10",
+      "inputs": [
+        {
+          "ID": "id9",
+          "label": ""
+        },
+        {
+          "ID": "id5",
+          "label": ""
+        }
+      ],
+      "position": {
+        "x": 791,
+        "y": 270
+      },
+      "attemptCount": {
+        "description": 0,
+        "type": 0,
+        "initial": 0,
+        "units": 0,
+        "equation": 0,
+        "tweakedDirection": 0,
+        "executionValue": 0,
+        "waveformValue": null,
+        "assistanceScore": 0
+      },
+      "status": {
+        "equation": {
+          "disabled": false
+        }
+      },
+      "authorStatus": {
+        "root": {
+          "disabled": false
+        },
+        "name": {
+          "status": "entered"
+        },
+        "description": {
+          "status": "entered"
+        },
+        "type": {
+          "status": "entered"
+        },
+        "initial": {
+          "disabled": false,
+          "status": "entered"
+        },
+        "inputs": {
+          "disabled": false
+        },
+        "equation": {
+          "disabled": false,
+          "status": "entered"
+        },
+        "units": {
+          "status": "entered"
+        },
+        "kind": {
+          "status": "entered"
+        }
+      },
+      "name": "R",
+      "description": "Recovered",
+      "explanation": "Number of people who have recovered from the disease.",
+      "type": "accumulator",
+      "initial": 0,
+      "units": "people",
+      "equation": "id9*id5",
+      "genus": "required"
+    },
+    {
+      "ID": "id11",
+      "inputs": [],
+      "position": {
+        "x": 655.9000244140625,
+        "y": 417.26666259765625
+      },
+      "attemptCount": {
+        "description": 0,
+        "type": 0,
+        "initial": 0,
+        "units": 0,
+        "equation": 0,
+        "tweakedDirection": 0,
+        "executionValue": 0,
+        "waveformValue": null,
+        "assistanceScore": 0
+      },
+      "status": {},
+      "authorStatus": {
+        "root": {
+          "disabled": true
+        },
+        "name": {
+          "status": "entered"
+        },
+        "description": {
+          "status": "entered"
+        },
+        "units": {
+          "status": "entered"
+        },
+        "type": {
+          "status": "entered"
+        },
+        "initial": {
+          "disabled": false,
+          "status": "entered"
+        },
+        "inputs": {
+          "disabled": true,
+          "status": ""
+        },
+        "equation": {
+          "disabled": true,
+          "status": ""
+        },
+        "kind": {
+          "status": "entered"
+        }
+      },
+      "name": "mu",
+      "description": "death rate",
+      "units": "1/day",
+      "equation": "",
+      "type": "parameter",
+      "parentNode": false,
+      "initial": 0.01,
+      "explanation": "Fraction of people who are infected and die in a week.",
+      "genus": "required"
+    },
+    {
+      "ID": "id12",
+      "inputs": [
+        {
+          "ID": "id11",
+          "label": ""
+        },
+        {
+          "ID": "id5",
+          "label": ""
+        }
+      ],
+      "position": {
+        "x": 853,
+        "y": 513
+      },
+      "attemptCount": {
+        "description": 0,
+        "type": 0,
+        "initial": 0,
+        "units": 0,
+        "equation": 0,
+        "tweakedDirection": 0,
+        "executionValue": 0,
+        "waveformValue": null,
+        "assistanceScore": 0
+      },
+      "status": {},
+      "authorStatus": {
+        "root": {
+          "disabled": false
+        },
+        "name": {
+          "status": "entered"
+        },
+        "description": {
+          "status": "entered"
+        },
+        "type": {
+          "status": "entered"
+        },
+        "initial": {
+          "disabled": false,
+          "status": "entered"
+        },
+        "inputs": {
+          "disabled": false
+        },
+        "equation": {
+          "disabled": false,
+          "status": "entered"
+        },
+        "units": {
+          "status": "entered"
+        },
+        "kind": {
+          "status": "entered"
+        }
+      },
+      "name": "D",
+      "description": "deaths",
+      "explanation": "Number of people who have died from the epidemic.",
+      "type": "accumulator",
+      "initial": 0,
+      "units": "people",
+      "equation": "id11*id5",
+      "genus": "required"
+    }
+  ],
+  "studentModelNodes": [],
+  "schemas": []
+}

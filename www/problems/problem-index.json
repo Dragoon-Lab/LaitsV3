@@ -18,6 +18,9 @@
         "Waterfowl 3": "203",
         "Waterfowl & cats": "204"
     },
+    "Epidemiology": {
+        "COVID-19 SEIR model": "seir-model-1"
+    },
     "Generic Models": {
         "constant": "constant",
         "constant change runs out": "constant-change-runs-out",

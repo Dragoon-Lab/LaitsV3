@@ -109,7 +109,7 @@ This section gives an outline of the coding method we will follow to implement a
 To visualize this we can imagine activities and modes to laid out on grid like structure. See the image:
 ![Alt Interaction of Activity and Modes](activity_modes.jpg "Interaction of Activities and Modes")
 
-Now, Dragoon can be used in n X m ways where `n` is number of activities and `m` are number of modes. To add another new activity we will add just another line in the grid in that direction. Thus code changes have to be in a similar manner as well. There are a few modes which wont be available in all the activities and we will stop that from happening using `activities-parameters.js`.  
+Now, Dragoon can be used in n X m ways where `n` is number of activities and `m` are number of modes. To add another new activity we will add just another line in the grid in that direction. Thus code changes have to be in a similar manner as well. There are a few modes which won't be available in all the activities and we will stop that from happening using `activities-parameters.js`.  
 
 Now lets see the proper changes that we need to make to specific parts of dragoon. The basic coding methodology will be to make Dragoon activities and modes modular. The parameters given for activity and mode will define how the Dragoon interface will change. One important thing here is we want to make minimal changes to the model (in part for backwards-compatibility).  That is, ideally we will be able to open any existing models for use with the new activities.  For certain activities we might need to copy the given nodes to student nodes with appropriate changes at load time.
 
