@@ -31,7 +31,7 @@ define([
 	"dojo/on",
 	'dojo/dom-attr',
 	"dijit/registry",
-	"dijit/form/ComboBox",
+	"dijit/form/Select",
 	"dojo/store/Memory",
 	"dojox/charting/Chart",
 	"dojox/charting/axis2d/Default",
@@ -50,7 +50,7 @@ define([
 	"dijit/Dialog",
 	"dijit/layout/TabContainer",
 	"dojo/domReady!"
-], function(array, declare, lang, on, domAttr, registry, ComboBox, Memory, Chart, Default, Lines, Grid, Legend, calculations, logger, base, contentPane, messageBox, dom, domStyle, domClass, integrate, Dialog){
+], function(array, declare, lang, on, domAttr, registry, Select, Memory, Chart, Default, Lines, Grid, Legend, calculations, logger, base, contentPane, messageBox, dom, domStyle, domClass, integrate, Dialog){
 
 	// The calculations constructor is loaded before the RenderGraph constructor
 	return declare(calculations, {
@@ -377,10 +377,9 @@ define([
 				labelFunc: this.formatAxes,
 				title: this.labelString(id)
 			});
-
 			if(isStatic){
 				charts[id].addAxis("x", {
-					title: dom.byId("staticSelect").value,
+					title: registry.byId("staticSelect").value,
 					titleOrientation: "away", titleGap: 5
 				});
 
@@ -504,14 +503,14 @@ define([
 
 				this.staticTab.set("content", "<div id='staticSelectContainer'></div>" + staticContent);
 
-				this.createComboBox(staticNodes);
+				this.createSelectBox(staticNodes);
 				var staticVar = this.checkStaticVar(true);
 				this.staticPlot = this.findStaticSolution(true, staticVar, this.active.plotVariables);
 				this.givenSolution = this.given.plotVariables ? this.findStaticSolution(false, staticNodes[this.staticVar], this.given.plotVariables) : "";
 
 				array.forEach(this.active.plotVariables, function(id, index){
 					var domNode = "chartStatic" + id ;
-					var xAxis = dom.byId("staticSelect").value;
+					var xAxis = registry.byId("staticSelect").value;
 					var yAxis = this.labelString(id);
 					this.chartsStatic[id] = this.createChart(domNode, id, xAxis, yAxis, this.staticPlot, index);
 					this.legendStatic[id] = new Legend({chart: this.chartsStatic[id]}, "legendStatic" + id);
@@ -529,26 +528,26 @@ define([
 		},
 
 		//creates the dropdown menu for the static window
-		createComboBox: function(staticNodes){
+		createSelectBox: function(staticNodes){
 			var stateStore = new Memory();
-			var combo = registry.byId("staticSelect");
-			if(combo){
-				combo.destroyRecursive();
+			var selectWid = registry.byId("staticSelect");
+			if(selectWid){
+				selectWid.destroyRecursive();
 			}
 			array.forEach(staticNodes, function(node)
 			{
 				stateStore.put({id:node.name, name:node.name});
 			});
-			var comboBox = new ComboBox({
+			var selectBox = new Select({
 				id: "staticSelect",
 				name: "state",
 				value: staticNodes[0].name,
 				store: stateStore,
-				searchAttr: "name"
+				labelAttr: "name"
 			}, "staticSelectContainer");
 			//console.log(comboBox);
 			this.disableStaticSlider();
-			on(comboBox, "change", lang.hitch(this, function(){
+			on(selectBox, "change", lang.hitch(this, function(){
 				this.renderStaticDialog(true);// Call the function for updating both the author graph and the student graph
 				this.disableStaticSlider();
 			}));
@@ -637,7 +636,7 @@ define([
 		checkStaticVar: function(choice){	//true is active, false is given
 			var parameters = this.checkForParameters(choice);
 			var result = parameters[0];
-			var staticSelect = dom.byId("staticSelect");
+			var staticSelect = registry.byId("staticSelect");
 
 			if(typeof parameters[0].description != 'undefined')
 			{
