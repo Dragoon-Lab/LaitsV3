@@ -33,6 +33,7 @@
 			$q['updateFolderGivenProblemFolder'] = 'UPDATE session SET `group` = "%s",time = time WHERE `group` = "%s" AND problem="%s" AND section = "non-class-models";';
 			$q['updateModelGivenProblemFolder'] = 'UPDATE session SET problem = "%s",time = time WHERE `group` = "%s" AND problem="%s" AND section = "non-class-models";';
 			$q['getSolutionGraph'] = 'SELECT solutions.session_id,solutions.solution_graph FROM solutions INNER JOIN session ON solutions.session_id = session.session_id AND session.group = "%s" AND session.problem = "%s" AND session.mode = "%s" ORDER BY session.time DESC limit 1;';
+			$q['getSolutionGraphEmptySource'] = 'SELECT solutions.session_id,solutions.solution_graph FROM solutions INNER JOIN session ON solutions.session_id = session.session_id AND session.group IS NULL AND session.problem = "%s" AND session.mode = "%s" ORDER BY session.time DESC limit 1;';
 			$q['checkDupModels'] = 'SELECT COUNT(*) AS modelCount FROM session WHERE `group` = "%s" AND problem = "%s" AND section = "non-class-models";';
 			return $q;
 		}
@@ -175,11 +176,12 @@
 			else if($action == "copyModel"){
 				//step 1: retrieve the most recent session for the specific problem and group which has a corresponding solutions entry
 				//$get_sol_q = "select solutions.session_id,solutions.solution_graph from solutions INNER JOIN session ON solutions.session_id = session.session_id AND session.group = '$src' AND session.problem = '$model' AND session.mode = 'AUTHOR' ORDER BY session.time DESC limit 1";
-				$query = $this->getQuery('getSolutionGraph');
+				$query = $src!= "" ? $this->getQuery('getSolutionGraph') : $this->getQuery('getSolutionGraphEmptySource');
 				if($query != '')
-					$query = sprintf($query, $src, $model, 'AUTHOR');
+					$query = $src != "" ? sprintf($query, $src, $model, 'AUTHOR') : sprintf($query, $model, 'AUTHOR');
 				else
 					return null;
+
 				$sol_res = $this->getDBResults($query);
 				//number of rows selected has to be exactly 1
 				if(mysqli_num_rows($sol_res) !== 1)
@@ -224,7 +226,6 @@
 				else
 					return "could not create new model solution";
 			}
-
 		}
 
 		function renameAction($parameters){
