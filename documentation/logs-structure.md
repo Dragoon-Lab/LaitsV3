@@ -18,16 +18,16 @@ The logging will use the **`session`** table (see [sessions.md](sessions.md))  a
     * `ui-action` - Actions taken by the user on the interface, such
        as clicking on a menu, opening the node editor, or moving a node on the canvas, that are
        not problem-solving steps.   We will not log keystrokes or mouse events but a level above it.
- * `seek-help` -  Student request for help and the response. Not implemented yet in Dragoon (as of June 2014).
- *	`close-problem` - The student has closed the session.  This may be missing if the session was interrupted (e.g. the network connection died).
- * `window-focus` - The student window goes in and out of focus after the session has been started. 
-    See [`andes/drawing.js`](https://github.com/bvds/andes/blob/master/web-UI/andes/drawing.js) for an example.
+    * `seek-help` -  Student request for help and the response. Not implemented yet in Dragoon (as of June 2014).
+    * `close-problem` - The student has closed the session.  This may be missing if the session was interrupted (e.g. the network connection died).
+    * `window-focus` - The student window goes in and out of focus after the session has been started. 
+       See [`andes/drawing.js`](https://github.com/bvds/andes/blob/master/web-UI/andes/drawing.js) for an example.
 *	`message` - A `text` format field that holds actual log message. The format is specified in the section "Message Format" below.
 
 This table is analogous to the table `STEP_TRANSACTION` in Andes; see [`create_STEP_TRANSACTION.sql`](https://github.com/bvds/andes/blob/master/LogProcessing/database/create_STEP_TRANSACTION.sql).  The Andes table can be used to see how the `step` table should be formatted.
 
 
-## Data to be logged##
+## Data to be logged ##
 
 Following a conversation with the instructors of the classes which
 have used Dragoon, we've identified specific information which must be
